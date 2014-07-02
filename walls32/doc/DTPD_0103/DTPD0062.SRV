@@ -1,0 +1,11 @@
+;HAMMOND.12.93
+;Import from DTPD.SEF, dated 11:11 2000-06-17
+;N. HAMMOND - Duty: 
+;T. HAMMOND - Duty: 
+;
+#Units Feet Order=DAV Decl=0 Tape=SS IncA=0 IncAB=0 IncV=0 IncVB=0 IncD=0
+#date 1993-12-11
+2320G32	H1	19.9	225/44	1/-1
+H1	H2	20.7	314/133	1/-1	<6,2,0,1.5>
+H2	H3	20.8	304.5/124	0.5/0	<8,3,2,1>
+H3	H2	<0,3,7,1>

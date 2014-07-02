@@ -1,0 +1,17 @@
+; ID: 24, NAME: TT 11 W 1936, LAT: 37 11 05.81, LON: 86 06 00.59
+; River Hall, near the NW. corner of; 15 ft E. of W. wall and 12
+; ft W. of path to stairway leading up to Spark's Avenue; cemented
+; in surface of ledge; standard tablet stamped "TT 11 W 1936"
+;
+#flag	TT11W	/WBM
+#note	TT11W	TT11W
+
+;***NOTE: Three slightly different locations for TT11W have been assigned
+;***in various files I've encountered. The CML assignment (converted from feet)
+;***fits the remaining data a little better (lower UveH). (DMcK)
+;Walker2.DBF  version --
+;#fix	TT11W	579872.39310m	4115564.92320m	468.473f
+;CML equivalent version --
+#fix	TT11W	579872.3503m	4115565.5641m	468.473f
+;DTPD.SEF equivalent version --
+;#fix	TT11W	579871.8955m	4115565.3159m	468.473f

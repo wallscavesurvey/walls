@@ -1,0 +1,14 @@
+;MYSTIC --
+#flag	643:C1	/Fixed
+#note	643:C1	Mystic-C1
+#Fix	643:C1	582244.9639	4113301.3815	494f
+
+;VIOLET --
+#flag	802:P1	/Fixed
+#note	802:P1	Violet-P1
+#Fix	802:P1	580832.8992	4114207.755	595f
+
+;KENTUCKY --
+#flag	643:D19	/Fixed
+#note	643:D19	Kentucky-D19
+#fix	643:D19	581951.5256	4112872.0688	582.1f

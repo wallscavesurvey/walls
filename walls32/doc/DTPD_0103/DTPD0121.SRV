@@ -1,0 +1,13 @@
+;2358UX
+;Import from DTPD.SEF, dated 11:11 2000-06-17
+;JIM KAUFMANN - Duty: BOOK
+;ROGER BRUCKER - Duty: TAPE
+;BEN KELLER - Duty: INST
+;DAN CRUTCHER - Duty: TAPE
+;
+;Instruments - A:824612 AB:824612
+#Units Feet Order=DAV Decl=0 IncA=-3d IncAB=-3d IncV=0 IncVB=0 IncD=0
+#date 1988-11-25
+;***NOTE: This shot also appears in Historic/Ranshaw Avenue/2358U
+;***with similar but not identical readings and instrument corrections. (DMcK)
+2358U56	2358U57	45.4	96.5/276	-1/-0.5	<12,7,3,0>

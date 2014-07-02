@@ -1,0 +1,7 @@
+grayscale tiff: Snookies Cave map (9-15-09).tif - 1069 KB (300 dpi from 130 KB pdf)
+p5  1049
+p10 1378
+zn  1455
+ln  1840
+filter g no change
+pdf version: 130

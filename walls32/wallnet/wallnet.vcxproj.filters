@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{7dbc5f77-a0cf-4d73-9081-9f3217c5ec64}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\netlib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\wnetlib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\wnetadj.c" />
+    <ClCompile Include="..\wnetdbf.c" />
+    <ClCompile Include="..\wnetdfs.c" />
+    <ClCompile Include="..\wneterr.c" />
+    <ClCompile Include="..\wnetinv.c" />
+    <ClCompile Include="..\wnetlnk.cpp" />
+    <ClCompile Include="..\wnetnet.c" />
+    <ClCompile Include="..\wnetslv.c" />
+    <ClCompile Include="..\wnetupd.c" />
+  </ItemGroup>
+</Project>

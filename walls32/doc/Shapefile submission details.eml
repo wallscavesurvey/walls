@@ -1,0 +1,259 @@
+From: "David McKenzie" <davidmck@austin.rr.com>
+To: "Mike Yocum" <myocum@mis.net>
+Subject: Shapefile submission details
+Date: Tue, 12 Jun 2001 16:11:04 -0500
+MIME-Version: 1.0
+Content-Type: multipart/mixed;
+	boundary="----=_NextPart_000_32BA_01C44F83.B1AAB000"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 5.50.4522.1200
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1409
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_32BA_01C44F83.B1AAB000
+Content-Type: text/plain;
+	charset="Windows-1252"
+Content-Transfer-Encoding: 7bit
+
+Mike,
+
+My first cut at a special shapefile DLL should be finished sometime today --
+I've already coded and tested the basic framework. I've also worked some more
+on the project data itself. At this point, however, I would like to run by you
+some tentative decisions I've made regarding what we give Teresa. Please
+review this and suggest what needs to be changed. If you're swamped now, I'm
+sure we can easily revise various details later. Teresa might like to suggest
+changes as well.
+
+For the most part, I'm trying to adhere to the design outlined in your revised
+version of the CRFMetadata.doc file that's dated 1 Jan, 2001. I'm assuming
+it's the most recent. (Although you should have it somewhere, I've attached an
+archive containing it for your convenience.)
+
+First, there are the custom table fields that must be dealt with. Most of
+these, I think, will have constant values for a particular shapefile export
+operation. Also, except for CAVENO and DATAHISTORY in the vector shapefile,
+they all belong to the separate table (not shapefile) you describe in Note 4
+of the doc file. I'm assuming that you would like this table to be created by
+our custom export DLL, which already has the capability to create a DBF file
+compatible with ArcView. We can do this by having it read a standard text
+file, say <shapefile base name>_.DEF, containing field names, field lengths,
+and field values. Below is an example:
+
+;MCNP cave number (also used in creating vector shapefile) --
+.CAVENO             C     4  : 1
+;Shapefile base name automatically filled in --
+.FILENAME         C    16
+;Process date automatically filled in if blank --
+.PROC_DATE    C    10
+;Data history (also used in creating vector shapefile) --
+.DATA_HIST       C    128 : Import from DTPD.SEF, dated 2000-06-17
+;Compatible with Arcview 3.1 or above --
+.GIS_SW             C    32    : ArcView 3.1
+;"Walls B6, Build 2001-06-12" automatically filled in if blank --
+.SURVEY_SW     C    32
+;Horizontal unit variance estimate --
+.HORZ_UVE        N    8.2   : 1.57
+ ;Surveyed loop count in horizontal dimension --
+.HORZ_LOOPS   N    8      : 170
+;Vertical unit variance estimate --
+.VERT_UVE        N    8.2   : 1.66
+;Surveyed loop count in vertical dimension --
+.VERT_LOOPS   N    8      : 169
+
+Colons separate field values from field definitions. Note that I've changed
+some field names to have lengths no greater than 10 (DBF requirement).
+Comments are prefixed with semicolons. Other lines are also comments unless
+prefixed with a period. Also note that I've added CAVENO and DATA_HIST
+since they are needed for the vector shapefile.
+
+This text file can be linked (but not "attached") to the appropriate project
+branch (or root) so that it can be easily edited within Walls. However, to do
+this we need to form its name by appending an underline to the appropriate
+base name to preserve the uniqueness of all 8-char base names in the project.
+If the branch's base name already has 8 chars, the last char is replaced. For
+example, when exporting the HISTORIC branch, the DLL will look for
+HISTORI_.DEF.
+
+About the statistics...  For now it would be easiest to require you or me to
+manually insert the UVEs and loop counts in the DEF file before shapefile
+export (since they are hard to get at programmatically from the DLL). The
+reason I've added the loop count fields is that they are helpful in assessing
+the significance of the UVEs. They also allow UVEs from different projects to
+be averaged: UVE_total = (LOOPS1*UVE1+LOOPS2*UVE2)/(LOOPS1+LOOPS2). It should
+be explained somewhere in our "meta-metadata" that UVEs are consistency
+measures closely analogous to standard deviations. They should have a bearing
+on expected accuracy (smaller  UVEs are better), but of course they aren't
+precisely the same thing. When there are no loops, a meaningless "0.0" is
+produced. Alternatively, if you think it better, we can make the "accuracy"
+fields text strings instead of numbers. We could then enter anything we
+wanted, for example "UVE=1.57 (170 loops)."
+
+All the above can get implemented in time for your trip. Hopefully I can get
+you a revised project and a resulting shapefile set sometime tomorrow, perhaps
+allowing time for another revision before you leave.
+
+The SHEETNAME field in the station shapefile might be a problem, however. If
+this is important, then I need to create a file containing the NAD27 corner
+coordinates of the sheets. (I don't think you've sent me the sheet definitions
+yet, but I may be wrong.) Then I need to add code to examine this file to
+determine the sheet name for each station as the shapefile is generated. Not
+especially hard, but not trivial either. I'm hoping we can postpone this for
+awhile.
+
+I'm tentatively adding an ATTRIBUTES field to the vector database, even though
+no vectors yet have any file-assigned segment attributes (e.g., "#seg
+surface", "#seg length-exclude", etc.) These are used heavily in other
+projects. Also, I notice that you (or Theresa) are still proposing an
+LRUDSTYLE field in the station shapefile, even though we are already supplying
+an azimuth (LRUD_AZ). Surely the style has no relevance except in allowing
+Walls to determine the associated station and LRUD direction during raw data
+processing. After this, the style is no longer available to the program --
+that is, it's not stored in the work files. I hope you agree we can drop this
+field. A separate passage outline shapefile might be appreciated even more
+than the LRUD numbers, but thankfully this hasn't yet been proposed. I plan to
+have that option in Walls eventually. :)
+
+In accordance with Note 2 and Note 3 of the DOC, I'm dropping the
+DESCRIPTION and ATTRIBUTES fields of the station shapefile since we are
+providing separate note and flag shapefiles. (Except for the fixed benchmarks,
+the current project is lacking notes and flags, but that will hopefully
+change.) I'm tentatively keeping some numeric fields that Walls already
+supplies in the vector shapefile: CTR-X, CTR-Y, CTR-Z, LENGTH, AZIMUTH,
+INCLINE, and LINETYPE. They are teke up little space and are potentially
+useful. (The CTR-Z coordinate allows color-by-depth plots in ArcView.) Still,
+it would be trivial to drop any or all of these fields if you think it
+advisable.
+
+There are other issues, but I think I can spare you all the details for now.
+I'm trying to make some reasonable decisions about them in this first version.
+In summary, I'm going to supply you with a revised Walls program, a DLL named
+WALLSHPX.DLL (which, if present in the Walls folder, will be loaded in place
+of WALLSHP.DLL), and at least one set of shapefiles representing the project
+root. I'll also create a revised version of CRFMetadata.doc.
+
+The statistics (UVEs) overall are decent, but they would be better if not for
+the Carlos Way branch, which has several bad isolated (not interconnected)
+loop closures. Those traverses can be semi-permanently "floated" to make the
+statistics look better, but that's about all. We can discuss this later. Of
+course I'm also giving you the capability to rework the project and regenerate
+shapefile sets for all or part of it. You'll likely want to rename some
+branches.
+
+More later. In the meantime, let me know if you can think of anything I may be
+overlooking.
+
+--David
+
+
+
+
+
+------=_NextPart_000_32BA_01C44F83.B1AAB000
+Content-Type: application/x-zip-compressed;
+	name="CRFmetadata.zip"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment;
+	filename="CRFmetadata.zip"
+
+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
+
+------=_NextPart_000_32BA_01C44F83.B1AAB000--

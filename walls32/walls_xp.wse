@@ -1,0 +1,2438 @@
+Document Type: WSE
+item: Global
+  Version=6.0
+  Title=Walls Project Editor 2.0 B8 Installation
+  Flags=00010100
+  Languages=65 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+  Japanese Font Name=MS Gothic
+  Japanese Font Size=10
+  Progress Bar DLL=%_WISE_%\Progress\WIZ%_EXE_OS_TYPE_%.DLL
+  Start Gradient=0 0 255
+  End Gradient=0 0 0
+  Windows Flags=00000100000000010000010000001000
+  Log Pathname=%MAINDIR%\INSTALL.LOG
+  Message Font=MS Sans Serif
+  Font Size=8
+  Disk Filename=SETUP
+  Patch Flags=0000000000001001
+  Patch Threshold=85
+  Patch Memory=4000
+  EXE Filename=F:\Walls_Setup\Walls_setup.exe
+  FTP Cluster Size=20
+  Dialogs Version=6
+  Variable Name1=_SYS_
+  Variable Default1=C:\WINNT\System32
+  Variable Flags1=00001000
+  Variable Name2=_WISE_
+  Variable Default2=C:\PROGRA~2\Wise
+  Variable Flags2=00001000
+  Variable Name3=_ODBC16_
+  Variable Default3=C:\WINNT\System32
+  Variable Flags3=00001000
+  Variable Name4=_ODBC32_
+  Variable Default4=C:\PROGRA~2\Wise\Runtime\ODBC30
+  Variable Flags4=00001000
+  Variable Name5=_ALIASNAME_
+  Variable Flags5=00001000
+  Variable Name6=_ALIASPATH_
+  Variable Flags6=00001000
+  Variable Name7=_ALIASTYPE_
+  Variable Flags7=00001000
+end
+item: Get Temporary Filename
+  Variable=READMEFILE
+end
+item: Install File
+  Source=F:\Walls_Setup\Readme32.txt
+  Destination=%TEMP%\%READMEFILE%
+  Flags=0000000000100010
+end
+item: Open/Close INSTALL.LOG
+  Flags=00000001
+end
+item: Check Configuration
+  Message=Walls requires a 32-bit version of Windows
+  Title=Incompatible Windows Version
+  Flags=01011010
+end
+item: Check if File/Dir Exists
+  Pathname=%SYS%
+  Flags=10000100
+end
+item: Set Variable
+  Variable=SYS
+  Value=%WIN%
+end
+item: End Block
+end
+item: Set Variable
+  Variable=APPNAME
+  Value=Walls
+end
+item: Set Variable
+  Variable=APPTITLE
+  Value=Walls Project Editor 2.0 B8
+  Flags=10000000
+end
+item: Set Variable
+  Variable=GROUP
+  Value=Walls Project Editor
+  Flags=10000000
+end
+item: Set Variable
+  Variable=DISABLED
+  Value=!
+end
+item: Set Variable
+  Variable=MAINDIR
+  Value=Walls
+  Flags=10000000
+end
+item: Set Variable
+  Variable=UNINSTALL_STR
+end
+item: Set Variable
+  Variable=B8_REG_KEY
+end
+item: Set Variable
+  Variable=B7_REG_KEY
+end
+item: Set Variable
+  Variable=USERDIR
+end
+item: Check Configuration
+  Flags=10111011
+end
+item: Install File
+  Source=F:\Walls_Setup\GetUserDir.dll
+  Destination=%TEMP%\GetUserDir.dll
+  Flags=0000000000100010
+end
+item: Call DLL Function
+  Pathname=%TEMP%\GetUserDir.dll
+  Function Name=GetUserDir
+  Parameter=USERDIR
+  Return Variable=0
+end
+remarked item: Install File
+  Source=F:\Walls_Setup\GETCPU32.DLL
+  Destination=%TEMP%\GETCPU32.DLL
+  Flags=0000000000100010
+end
+remarked item: Call DLL Function
+  Pathname=%TEMP%\GETCPU32.DLL
+  Function Name=GetCPU
+  Parameter=USERDIR
+  Return Variable=0
+end
+item: Display Message
+  Title=UserDir
+  Text=USERDIR=%USERDIR%
+end
+item: Get Registry Key Value
+  Variable=COMMON
+  Key=SOFTWARE\Microsoft\Windows\CurrentVersion
+  Default=C:\Program Files\Common Files
+  Value Name=CommonFilesDir
+  Flags=00000100
+end
+item: Get Registry Key Value
+  Variable=PROGRAM_FILES
+  Key=SOFTWARE\Microsoft\Windows\CurrentVersion
+  Default=C:\Program Files
+  Value Name=ProgramFilesDir
+  Flags=00000100
+end
+item: Parse String
+  Source=%PROGRAM_FILES%
+  Pattern=\PROGRA
+  Variable1=PROGF_PFX
+  Variable2=PROGF_TAIL
+  Flags=00000010
+end
+item: Get Registry Key Value
+  Variable=B8_REG_KEY
+  Key=SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Walls Project Editor 2.0 B8
+  Value Name=UninstallString
+  Flags=00000100
+end
+item: If/While Statement
+  Variable=B8_REG_KEY
+end
+item: Get Registry Key Value
+  Variable=B7_REG_KEY
+  Key=SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Walls Project Editor 2.0 B7
+  Value Name=UninstallString
+  Flags=00000100
+end
+item: Set Variable
+  Variable=UNINSTALL_STR
+  Value=%B7_REG_KEY%
+end
+item: Else Statement
+end
+item: Set Variable
+  Variable=UNINSTALL_STR
+  Value=%B8_REG_KEY%
+end
+remarked item: Display Message
+  Title=B8 Installed Path
+  Text=Path: |%UNINSTALL_STR%|
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=UNINSTALL_STR
+  Flags=00000001
+end
+item: Parse String
+  Source=%UNINSTALL_STR%
+  Pattern=\UNWISE.EXE
+  Variable1=UNINSTALL_DIR
+  Variable2=UNINSTALL_TAIL
+  Flags=00000010
+end
+item: If/While Statement
+  Variable=UNINSTALL_TAIL
+  Flags=00000001
+end
+remarked item: Parse String
+  Source=%UNINSTALL_DIR%
+  Pattern=\PROGRA~
+  Variable1=UNINSTALL_PFX
+  Variable2=UNINSTALL_TAIL
+end
+remarked item: If/While Statement
+  Variable=UNINSTALL_TAIL
+  Flags=00000001
+end
+remarked item: If/While Statement
+  Variable=PROGF_PFX
+  Value=%UNINSTALL_PFX%
+  Flags=00000100
+end
+remarked item: Parse String
+  Source=%UNINSTALL_DIR%
+  Pattern=\
+  Variable1=UNINSTALL_PFX
+  Variable2=UNINSTALL_TAIL
+  Flags=00000100
+end
+remarked item: Set Variable
+  Variable=UNINSTALL_DIR
+  Value=%PROGRAM_FILES%\%UNINSTALL_TAIL%
+end
+remarked item: End Block
+end
+remarked item: End Block
+end
+item: Set Variable
+  Variable=UNINSTALL_DIR
+  Value=%UNINSTALL_DIR%
+  Flags=00010000
+end
+item: Set Variable
+  Variable=MAINDIR
+  Value=%UNINSTALL_DIR%
+end
+item: Else Statement
+end
+item: Set Variable
+  Variable=UNINSTALL_STR
+end
+item: Set Variable
+  Variable=MAINDIR
+  Value=%PROGRAM_FILES%\%MAINDIR%
+end
+item: End Block
+end
+item: Else Statement
+end
+item: Set Variable
+  Variable=MAINDIR
+  Value=%PROGRAM_FILES%\%MAINDIR%
+end
+item: End Block
+end
+item: Set Variable
+  Variable=EXPLORER
+  Value=0
+end
+item: Else Statement
+end
+item: Set Variable
+  Variable=MAINDIR
+  Value=C:\%MAINDIR%
+  Flags=00001100
+end
+item: End Block
+end
+remarked item: Display Message
+  Title=Existing values before loop
+  Text=B7: %B7_REG_KEY%
+  Text=B8: %B8_REG_KEY%
+  Text=MAINDIR: %MAINDIR%
+  Text=UNINSTALL_STR: %UNINSTALL_STR%
+  Text=UNINSTALL_TAIL: %UNINSTALL_TAIL%
+  Text=UNINSTALL_DIR: %UNINSTALL_DIR%
+end
+remarked item: Set Variable
+  Variable=BACKUP
+  Value=%MAINDIR%\BACKUP
+  Flags=10000000
+end
+remarked item: Set Variable
+  Variable=DOBACKUP
+  Value=A
+end
+item: Set Variable
+  Variable=COMPONENTS
+  Value=ABCDE
+  Flags=10000000
+end
+item: Set Variable
+  Variable=TEST_EQ
+  Value=0
+end
+item: Wizard Block
+  Direction Variable=DIRECTION
+  Display Variable=DISPLAY
+  Bitmap Pathname=%_WISE_%\DIALOGS\TEMPLATE\WIZARD.BMP
+  X Position=9
+  Y Position=10
+  Filler Color=8421440
+  Dialog=Banner
+  Dialog=Welcome
+  Dialog=Display ReadMe
+  Dialog=Select Destination Directory
+  Dialog=B7_CAUTION
+  Dialog=Select Components
+  Dialog=Select Program Manager Group
+  Variable=
+  Variable=
+  Variable=
+  Variable=
+  Variable=TEST_EQ
+  Variable=
+  Variable=EXPLORER
+  Value=
+  Value=
+  Value=
+  Value=
+  Value=1
+  Value=
+  Value=1
+  Compare=0
+  Compare=0
+  Compare=0
+  Compare=0
+  Compare=1
+  Compare=0
+  Compare=0
+  Flags=00000011
+end
+item: Custom Dialog Set
+  Name=Banner
+  Display Variable=DISPLAY
+  item: Dialog
+    Title=Welcome
+    Width=282
+    Height=224
+    Font Name=Helv
+    Font Size=8
+    item: Push Button
+      Rectangle=169 189 214 203
+      Variable=DIRECTION
+      Value=N
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000010000000000000001
+      Text=&Next >
+    end
+    item: Push Button
+      Rectangle=219 189 261 203
+      Action=3
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000010000000000000000
+      Text=Cancel
+    end
+    item: Static
+      Rectangle=0 2 277 207
+      Action=2
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000001011
+      Pathname=F:\Walls_Setup\Kaua72p_snag_title_256.bmp
+    end
+  end
+end
+item: Custom Dialog Set
+  Name=Welcome
+  Display Variable=DISPLAY
+  item: Dialog
+    Title=Welcome
+    Title French=Bienvenue
+    Title German=Willkommen
+    Title Portuguese=Bem-vindo 
+    Title Spanish=Bienvenido
+    Title Italian=Benvenuto
+    Title Danish=Velkommen
+    Title Dutch=Welkom
+    Title Norwegian=Velkommen
+    Title Swedish=Välkommen
+    Width=282
+    Height=224
+    Font Name=Helv
+    Font Size=8
+    item: Push Button
+      Rectangle=176 185 218 199
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=&Next >
+      Text French=&Suivant>
+      Text German=&Weiter>
+      Text Portuguese=&Próximo>
+      Text Spanish=&Siguiente >
+      Text Italian=&Avanti >
+      Text Danish=&Næste>
+      Text Dutch=&Volgende>
+      Text Norwegian=&Neste>
+      Text Swedish=&Nästa >
+    end
+    item: Push Button
+      Rectangle=222 185 264 199
+      Action=3
+      Create Flags=01010000000000010000000000000000
+      Text=Cancel
+      Text French=Annuler
+      Text German=Abbrechen
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Annuller
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+    item: Static
+      Rectangle=9 177 263 178
+      Action=3
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=83 8 121 33
+      Action=2
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000001011
+      Pathname=%_WISE_%\dialogs\template\install.grf
+      Pathname French=%_WISE_%\dialogs\template\install.grf
+      Pathname German=%_WISE_%\dialogs\template\install.grf
+      Pathname Portuguese=%_WISE_%\dialogs\template\install.grf
+      Pathname Spanish=%_WISE_%\dialogs\template\install.grf
+      Pathname Italian=%_WISE_%\dialogs\template\install.grf
+      Pathname Danish=%_WISE_%\dialogs\template\install.grf
+      Pathname Dutch=%_WISE_%\dialogs\template\install.grf
+      Pathname Norwegian=%_WISE_%\dialogs\template\install.grf
+      Pathname Swedish=%_WISE_%\dialogs\template\install.grf
+    end
+    item: Static
+      Rectangle=121 10 258 44
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Text=Welcome to the %APPNAME% Setup program. This program will install %APPTITLE% on your computer.
+      Text French=Bienvenue sur le programme d'installation %APPTITLE%. Ce programme va installer %APPTITLE% sur votre ordinateur.
+      Text German=Willkommen im Installationsprogramm für %APPTITLE%. Dieses Programm installiert  %APPTITLE% auf Ihrem Computer.
+      Text Portuguese=Bem-vindo ao programa de configuração %APPTITLE%. Este programa instalará %APPTITLE% no seu computador
+      Text Spanish=Bienvenido al programa de Configuración %APPTITLE%. Este programa instalará %APPTITLE en su ordenador
+      Text Italian=Benvenuto nel programma di installazione di %APPTITLE%. Con questo programma puoi installare %APPTITLE% sul tuo computer.
+      Text Danish=Velkommen til %APPTITLE% installationsprogrammet. Dette program installerer %APPTITLE% på computeren.
+      Text Dutch=Welkom bij het %APPTITLE% installatieprogramma. Dit programma installeert %APPTITLE% op uw computer.
+      Text Norwegian=Velkommen til %APPTITLE% Oppsett-program. Dette programmet vil installere %APPTITLE% på datamaskinen din.
+      Text Swedish=Välkommen till installationsprogrammet för %APPTITLE%. Detta program installerar %APPTITLE% på din dator.
+    end
+    item: Static
+      Rectangle=90 45 267 175
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Text=It is strongly recommended that you exit all running application programs before proceeding. You MUSTclose any currently running version of Walls.
+      Text=
+      Text=Click Cancel to quit Setup and close any applications you have running.  Click Next to continue with the Setup program .
+      Text=
+      Text=
+      Text=
+      Text=WARNING: This program is protected by copyright law and international treaties.
+      Text=
+      Text=Unauthorized reproduction or distribution of this program, or any portion of it, may result in severe civil and criminal penalties, and will be prosecuted to the maximum extent possible under law.
+      Text French=Il vous est fortement recommandé de fermer tous les programmes Windows avant d'exécuter le Programme d'Installation
+      Text French=
+      Text French=Cliquez sur Annuler pour quitter l'Installation et fermez tous les programmes actuellement utilisés. Cliquez sur Suivant pour continuer l'installation
+      Text French=
+      Text French=ATTENTION : Ce programme est protégé par la loi sur les droits d'exploitation et par les traités internationaux
+      Text French=
+      Text French=Toute reproduction ou distribution, même partielle, de ce programme qui n'aura pas reçu d'autorisation préalable fera l'objet de poursuites et sera sévèrement sanctionnée par le droit civil et pénal
+      Text German=Wir empfehlen nachdrücklich, vor Ausführen dieses Installationsprogramms alle Windows-Programme zu beenden. 
+      Text German=
+      Text German=Auf Abbrechen klicken, um die Installation zu beenden und alle laufenden Programme zu schließen. Auf Weiter klicken, um mit dem Installationsprogramm beginnen.
+      Text German=
+      Text German=WARNUNG: Dieses Programm ist urheberrechtlich sowie durch internationale Verträge geschützt. 
+      Text German=
+      Text German=Die unzulässige Vervielfältigung oder Verbreitung dieses Programms, ob ganz oder auszugsweise, kann schwere zivil- und strafrechtliche Konsequenzen nach sich ziehen und wird unter voller Ausschöpfung der Rechtsmittel geahndet.
+      Text Portuguese=Recomenda-se insistentemente que saia de todos os programas do Windows antes de executar este Programa de Configuração.
+      Text Portuguese=
+      Text Portuguese=Faça um clique sobre Cancelar para sair da Configuração e feche todos os programas que estiver a executar. Faça um clique sobre Próximo para continuar com o programa de configuração
+      Text Portuguese=
+      Text Portuguese=AVISO: Este programa está protegido pela lei de direitos do autor e tratados internacionais
+      Text Portuguese=
+      Text Portuguese=A reprodução e a distribuição sem autorização deste programa, ou qualquer parte dele, pode dar lugar à aplicação de severas sanções civis e criminais, e serão perseguidas à extensão máxima permitida pela lei.
+      Text Spanish=Se recomienda encarecidamente que salga de todos los programas Windows antes de ejecutar este programa de Configuración.
+      Text Spanish=
+      Text Spanish=Haga un clic en Cancelar para abandonar la Configuración y cerrar cualquier programa que haya estado ejecutando. Haga un clic en Siguiente para continuar con el programa de Configuración.
+      Text Spanish=
+      Text Spanish=AVISO: Este programa está protegido por las leyes de derechos de autor y tratados internacionales.
+      Text Spanish=
+      Text Spanish=La reproducción o distribución no autorizadas de este programa, o cualquier parte de él, podría dar como resultado rigurosas multas civiles y penales, y se entablará la máxima acción judicial que permita la ley.
+      Text Italian=Ti consigliamo di uscire da tutti i programmi Windows prima di eseguire questo programma di installazione.
+      Text Italian=
+      Text Italian=Fai clic su Annulla per uscire dal programma di installazione e chiudi tutti i programmi aperti. Fai clic su Avanti per continuare con il programma di Installazione.
+      Text Italian=
+      Text Italian=AVVERTENZA: Questo programma è protetto ai sensi delle norme di legge e delle convenzioni internazionali in materia di diritti di copyright.
+      Text Italian=
+      Text Italian=La riproduzione o la distribuzione totale o parziale non autorizzata di questo programma potrà essere soggetta a penalità civili e penali, e sarà punita con la massima severità possibile a norma di legge.
+      Text Danish=Det anbefales kraftigt at afslutte alle Windows programmer, inden man kører dette installationsprogram.
+      Text Danish=
+      Text Danish=Klik på Annuller for at forlade installationsprogrammet og lukke alle igangværende programmer. Klik på Næste for at fortsætte med installationsprogrammet.
+      Text Danish=
+      Text Danish=ADVARSEL: Dette program er beskyttet af copyright og internationale traktater. 
+      Text Danish=
+      Text Danish=Uautoriseret gengivelse eller videresalg af dette program eller dele heraf kan føre til streng civil- og/eller kriminel stra. Retsforfølgning heraf vil finde sted i det videste omfang der hjemles muligt.
+      Text Dutch=Het wordt aangeraden om alle Windows programma's af te sluiten voordat u met de installatie van dit programma begint.
+      Text Dutch=
+      Text Dutch=Klik op Annuleren om de installatie te verlaten en eventueel nog lopende programma's af te sluiten. Klik op Volgende om verder te gaan met het Installatieprogramma.
+      Text Dutch=
+      Text Dutch=WAARSCHUWING: dit computerprogramma is auteursrechtelijk beschermd.
+      Text Dutch=
+      Text Dutch=Onrechtmatige verveelvoudiging of distributie van dit programma of een gedeelte ervan is verboden en strafbaar en zal met alle beschikbare juridische middelen worden bestreden.
+      Text Norwegian=Det anbefales på det sterkeste at du avslutter alle Windows-programmer før du kjører dette Oppsett-programmet.
+      Text Norwegian=
+      Text Norwegian=Velg Avbryt for å avbryte Oppsett og lukk alle programmer som er i bruk. Velg Neste for å fortsette med Oppsett-programmet.
+      Text Norwegian=
+      Text Norwegian=ADVARSEL: Dette programmet er beskyttet i henhold til lover om opphavsrett og internasjonale konvensjoner.
+      Text Norwegian=
+      Text Norwegian=Uautorisert kopiering eller distribuering av dette programmet eller deler av det, vil resultere i alvorlig sivil og kriminell straff og vil føre til saksmål i høyest mulig utstrekning i henhold til loven. 
+      Text Swedish=Du tillråds bestämt att gå ur alla Windows-program innan du kör installationsprogrammet.
+      Text Swedish=
+      Text Swedish=Klicka på Avbryt för att gå ur installationsprogrammet och stäng eventuella program som du har laddade. Klicka på Nästa för att fortsätta med installationen.
+      Text Swedish=
+      Text Swedish=VARNING: Detta program är skyddat av upphovsrätten och internationella avtal.
+      Text Swedish=
+      Text Swedish=Om du utan tillstånd kopierar eller distribuerar detta program eller delar av det kan det bli allvarliga civilrättsliga och brottsrättliga straffpåföljder. Vi beivrar sådana överträdelser i den allra högsta utsträckning som lagen tillåter.
+    end
+    item: Push Button
+      Rectangle=130 185 172 199
+      Variable=DIRECTION
+      Value=B
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000010000000000000000
+      Text=< &Back
+    end
+  end
+end
+item: Custom Dialog Set
+  Name=Display ReadMe
+  Display Variable=DISPLAY
+  item: Dialog
+    Title=Release Information
+    Title French=Fichier Lisez-moi
+    Title German=Liesmich-Datei
+    Title Portuguese=Ficheiro Leia-me
+    Title Spanish=Archivo Léeme
+    Title Italian=File Leggimi
+    Title Danish=Vigtigt fil
+    Title Dutch=Leesmij-bestand
+    Title Norwegian=Informasjonsfil
+    Title Swedish=Läs mig-fil
+    Width=282
+    Height=224
+    Font Name=Helv
+    Font Size=8
+    item: Push Button
+      Rectangle=176 185 218 199
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=&Next >
+      Text French=&Suivant>
+      Text German=&Weiter>
+      Text Portuguese=&Próximo>
+      Text Spanish=&Siguiente >
+      Text Italian=&Avanti >
+      Text Danish=&Næste>
+      Text Dutch=&Volgende>
+      Text Norwegian=&Neste>
+      Text Swedish=&Nästa >
+    end
+    item: Push Button
+      Rectangle=222 185 264 199
+      Action=3
+      Create Flags=01010000000000010000000000000000
+      Text=Cancel
+      Text French=Annuler
+      Text German=Abbrechen
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Slet
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+    item: Editbox
+      Rectangle=7 10 266 172
+      Value=%TEMP%\%READMEFILE%
+      Help Context=16711681
+      Create Flags=01010000101000000000100000000100
+    end
+    item: Push Button
+      Rectangle=130 185 172 199
+      Variable=DIRECTION
+      Value=B
+      Create Flags=01010000000000010000000000000000
+      Flags=0000000000000001
+      Text=< &Back
+      Text French=<&Retour
+      Text German=<&Zurück
+      Text Portuguese=<&Retornar
+      Text Spanish=<&Retroceder
+      Text Italian=< &Indietro
+      Text Danish=<&Back
+      Text Dutch=<&Terug
+      Text Norwegian=<&Tilbake
+      Text Swedish=< &Tillbaka
+    end
+  end
+end
+item: Custom Dialog Set
+  Name=Select Destination Directory
+  Display Variable=DISPLAY
+  item: Dialog
+    Title=Choose Destination Location
+    Title French=Choisissez la localisation de destination
+    Title German=Zielpfad wählen
+    Title Portuguese=Escolher Local de Destino
+    Title Spanish=Elegir una localización de destino
+    Title Italian=Scegli Posizione di Destinazione
+    Title Danish=Vælg destinationsmappe
+    Title Dutch=Kies doellocatie
+    Title Norwegian=Velg målplassering
+    Title Swedish=Välj ställe för installationen
+    Width=282
+    Height=224
+    Font Name=Helv
+    Font Size=8
+    item: Push Button
+      Rectangle=176 185 218 199
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=&Next >
+      Text French=&Suivant>
+      Text German=&Weiter>
+      Text Portuguese=&Próximo>
+      Text Spanish=&Siguiente >
+      Text Italian=&Avanti >
+      Text Danish=&Næste>
+      Text Dutch=&Volgende>
+      Text Norwegian=&Neste>
+      Text Swedish=&Nästa >
+    end
+    item: Push Button
+      Rectangle=130 185 172 199
+      Variable=DIRECTION
+      Value=B
+      Create Flags=01010000000000010000000000000000
+      Flags=0000000000000001
+      Text=< &Back
+      Text French=<&Retour
+      Text German=<&Zurück
+      Text Portuguese=<&Retornar
+      Text Spanish=<&Retroceder
+      Text Italian=< &Indietro
+      Text Danish=<&Tilbage
+      Text Dutch=<&Terug
+      Text Norwegian=<&Tilbake
+      Text Swedish=< &Tillbaka
+    end
+    item: Push Button
+      Rectangle=222 185 264 199
+      Action=3
+      Create Flags=01010000000000010000000000000000
+      Text=Cancel
+      Text French=Annuler
+      Text German=Abbrechen
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Annuller
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+    item: Static
+      Rectangle=9 177 263 178
+      Action=3
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=90 10 260 122
+      Create Flags=01010000000000000000000000000000
+      Text=Setup will install %APPTITLE% in the following folder.
+      Text=
+      Text=To install into a different folder, click Browse, and select another folder. 
+      Text=
+      Text=You can choose not to install %APPNAME% by clicking Cancel to exit Setup.
+      Text French=%APPTITLE% va être installé dans le répertoire ci-dessous
+      Text French=
+      Text French=Pour l'installer dans un répertoire différent, cliquez sur Parcourir et sélectionnez un autre répertoire
+      Text French=
+      Text French=Vous pouvez choisir de ne pas installer %APPTITLE% en cliquant sur Annuler pour quitter l'Installation
+      Text German=Installation speichert %APPTITLE% im unten angegebenen Ordner:
+      Text German=
+      Text German=Zur Installation in einem anderen Ordner auf Blättern klicken und einen anderen Ordner wählen.
+      Text German=
+      Text German=Wenn Sie %APPTITLE% nicht installieren möchten, können Sie durch Klicken auf Abbrechen die Installation beenden.
+      Text Portuguese=Configuração instalará %APPTITLE% na seguinte pasta
+      Text Portuguese=
+      Text Portuguese=Para instalar numa pasta diferente, faça um clique sobre Procurar, e seleccione uma outra pasta.
+      Text Portuguese=
+      Text Portuguese=Pode escolher não instalar %APPTITLE% clicando no botão Cancelar para sair da Configuração
+      Text Spanish=El programa de Configuración instalará %APPTITLE% en la siguiente carpeta.
+      Text Spanish=
+      Text Spanish=Para instalar en una carpeta diferente, haga un clic en Visualizar, y seleccione otra carpeta.
+      Text Spanish=
+      Text Spanish=Puede elegir no instalar %APPTITLE% haciendo un clic en Cancelar para salir de Configuración.
+      Text Italian=Il programma di installazione installerà %APPTITLE% nella seguente cartella.
+      Text Italian=
+      Text Italian=Per effettuare l’installazione in una cartella diversa, fai clic su Sfoglia, e scegli un’altra cartella.
+      Text Italian=
+      Text Italian=Puoi scegliere di non installare %APPTITLE% facendo clic su Annulla per uscire dal programma di installazione
+      Text Danish=Installationsprogrammet installerer %APPTITLE% i denne mappe.
+      Text Danish=
+      Text Danish=Man installerer i en anden mappe ved at klikke på Browse og vælge en anden mappe.
+      Text Danish=
+      Text Danish=Man kan vælge ikke at installere %APPTITLE% ved at klikke på Slet og forlade installationsprogrammet.
+      Text Dutch=Het installatieprogramma installeert %APPTITLE% in de volgende directory.
+      Text Dutch=
+      Text Dutch=Als u het in een andere directory wilt installeren, klik dan op Bladeren en kies een andere locatie.
+      Text Dutch=
+      Text Dutch=U kunt ervoor kiezen om %APPTITLE% niet te installeren: klik op Annuleren om het installatieprogramma te verlaten.
+      Text Norwegian=Oppsett vil installere %APPTITLE% i følgende mappe.
+      Text Norwegian=
+      Text Norwegian=For å installere i en annen mappe, klikk Bla igjennom og velg en annen mappe.
+      Text Norwegian=
+      Text Norwegian=Du kan velge å ikke installere %APPTITLE% ved å velge Avbryt for å gå ut av Oppsett.
+      Text Swedish=Installationsprogrammet installerar %APPTITLE% i följande mapp.
+      Text Swedish=
+      Text Swedish=Om du vill att installationen ska göras i en annan mapp, klickar du på Bläddra och väljer en annan mapp.
+      Text Swedish=
+      Text Swedish=Du kan välja att inte installera %APPTITLE% genom att klicka på Avbryt för att lämna installationsprogrammet.
+    end
+    item: Static
+      Rectangle=90 134 260 162
+      Action=1
+      Create Flags=01010000000000000000000000000111
+      Text=Destination Folder
+      Text French=Répertoire de destination
+      Text German=Zielordner
+      Text Portuguese=Pasta de Destino
+      Text Spanish=Carpeta de Destino
+      Text Italian=Cartella di destinazione
+      Text Danish=Destinationsmappe
+      Text Dutch=Doeldirectory
+      Text Norwegian=Målmappe
+      Text Swedish=Destinationsmapp
+    end
+    item: Push Button
+      Rectangle=213 143 255 157
+      Variable=MAINDIR_SAVE
+      Value=%MAINDIR%
+      Destination Dialog=1
+      Action=2
+      Create Flags=01010000000000010000000000000000
+      Text=B&rowse...
+      Text French=P&arcourir
+      Text German=B&lättern...
+      Text Portuguese=P&rocurar
+      Text Spanish=V&isualizar...
+      Text Italian=Sfoglia...
+      Text Danish=&Gennemse...
+      Text Dutch=B&laderen...
+      Text Norwegian=Bla igjennom
+      Text Swedish=&Bläddra
+    end
+    item: Static
+      Rectangle=95 145 211 156
+      Destination Dialog=2
+      Create Flags=01010000000000000000000000000000
+      Text=%MAINDIR%
+      Text French=%MAINDIR%
+      Text German=%MAINDIR%
+      Text Portuguese=%MAINDIR%
+      Text Spanish=%MAINDIR%
+      Text Italian=%MAINDIR%
+      Text Danish=%MAINDIR%
+      Text Dutch=%MAINDIR%
+      Text Norwegian=%MAINDIR%
+      Text Swedish=%MAINDIR%
+    end
+  end
+  item: Dialog
+    Title=Select Destination Directory
+    Title French=Choisissez le répertoire de destination
+    Title German=Zielverzeichnis wählen
+    Title Portuguese=Seleccionar Directório de Destino
+    Title Spanish=Seleccione el Directorio de Destino
+    Title Italian=Seleziona Directory di destinazione
+    Title Danish=Vælg Destinationsbibliotek
+    Title Dutch=Kies doeldirectory
+    Title Norwegian=Velg målkatalog
+    Title Swedish=Välj destinationskalatog
+    Width=221
+    Height=173
+    Font Name=Helv
+    Font Size=8
+    item: Listbox
+      Rectangle=5 2 160 149
+      Variable=MAINDIR
+      Create Flags=01010000100000010000000101000000
+      Flags=0000110000100010
+      Text=%MAINDIR%
+      Text French=%MAINDIR%
+      Text German=%MAINDIR%
+      Text Portuguese=%MAINDIR%
+      Text Spanish=%MAINDIR%
+      Text Italian=%MAINDIR%
+      Text Danish=%MAINDIR%
+      Text Dutch=%MAINDIR%
+      Text Norwegian=%MAINDIR%
+      Text Swedish=%MAINDIR%
+    end
+    item: Push Button
+      Rectangle=167 6 212 21
+      Create Flags=01010000000000010000000000000001
+      Text=OK
+      Text French=OK
+      Text German=OK
+      Text Portuguese=OK
+      Text Spanish=ACEPTAR
+      Text Italian=OK
+      Text Danish=OK
+      Text Dutch=OK
+      Text Norwegian=OK
+      Text Swedish=OK
+    end
+    item: Push Button
+      Rectangle=167 25 212 40
+      Variable=MAINDIR
+      Value=%MAINDIR_SAVE%
+      Create Flags=01010000000000010000000000000000
+      Flags=0000000000000001
+      Text=Cancel
+      Text French=Annuler
+      Text German=Abbrechen 
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Slet
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+  end
+end
+item: Set Variable
+  Variable=TEST_EQ
+  Value=0
+end
+item: If/While Statement
+  Variable=UNINSTALL_STR
+  Flags=00000001
+end
+item: If/While Statement
+  Variable=MAINDIR
+  Value=%UNINSTALL_DIR%
+  Flags=00000001
+end
+item: Set Variable
+  Variable=TEST_EQ
+  Value=1
+end
+item: End Block
+end
+item: End Block
+end
+item: Custom Dialog Set
+  Name=B7_CAUTION
+  Display Variable=DISPLAY
+  item: Dialog
+    Title=Multiple Install Warning
+    Title French=Bienvenue
+    Title German=Willkommen
+    Title Portuguese=Bem-vindo 
+    Title Spanish=Bienvenido
+    Title Italian=Benvenuto
+    Title Danish=Velkommen
+    Title Dutch=Welkom
+    Title Norwegian=Velkommen
+    Title Swedish=Välkommen
+    Width=282
+    Height=224
+    Font Name=Helv
+    Font Size=8
+    item: Push Button
+      Rectangle=176 185 218 199
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=&Next >
+      Text French=&Suivant>
+      Text German=&Weiter>
+      Text Portuguese=&Próximo>
+      Text Spanish=&Siguiente >
+      Text Italian=&Avanti >
+      Text Danish=&Næste>
+      Text Dutch=&Volgende>
+      Text Norwegian=&Neste>
+      Text Swedish=&Nästa >
+    end
+    item: Push Button
+      Rectangle=222 185 264 199
+      Action=3
+      Create Flags=01010000000000010000000000000000
+      Text=Cancel
+      Text French=Annuler
+      Text German=Abbrechen
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Annuller
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+    item: Static
+      Rectangle=9 177 263 178
+      Action=3
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=83 8 121 33
+      Action=2
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000001011
+      Pathname=%_WISE_%\dialogs\template\install.grf
+      Pathname French=%_WISE_%\dialogs\template\install.grf
+      Pathname German=%_WISE_%\dialogs\template\install.grf
+      Pathname Portuguese=%_WISE_%\dialogs\template\install.grf
+      Pathname Spanish=%_WISE_%\dialogs\template\install.grf
+      Pathname Italian=%_WISE_%\dialogs\template\install.grf
+      Pathname Danish=%_WISE_%\dialogs\template\install.grf
+      Pathname Dutch=%_WISE_%\dialogs\template\install.grf
+      Pathname Norwegian=%_WISE_%\dialogs\template\install.grf
+      Pathname Swedish=%_WISE_%\dialogs\template\install.grf
+    end
+    item: Static
+      Rectangle=119 14 217 28
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Text=CAUTION
+      Text French=Bienvenue sur le programme d'installation %APPTITLE%. Ce programme va installer %APPTITLE% sur votre ordinateur.
+      Text German=Willkommen im Installationsprogramm für %APPTITLE%. Dieses Programm installiert  %APPTITLE% auf Ihrem Computer.
+      Text Portuguese=Bem-vindo ao programa de configuração %APPTITLE%. Este programa instalará %APPTITLE% no seu computador
+      Text Spanish=Bienvenido al programa de Configuración %APPTITLE%. Este programa instalará %APPTITLE en su ordenador
+      Text Italian=Benvenuto nel programma di installazione di %APPTITLE%. Con questo programma puoi installare %APPTITLE% sul tuo computer.
+      Text Danish=Velkommen til %APPTITLE% installationsprogrammet. Dette program installerer %APPTITLE% på computeren.
+      Text Dutch=Welkom bij het %APPTITLE% installatieprogramma. Dit programma installeert %APPTITLE% op uw computer.
+      Text Norwegian=Velkommen til %APPTITLE% Oppsett-program. Dette programmet vil installere %APPTITLE% på datamaskinen din.
+      Text Swedish=Välkommen till installationsprogrammet för %APPTITLE%. Detta program installerar %APPTITLE% på din dator.
+    end
+    item: Static
+      Rectangle=87 37 270 172
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Text=A version of Walls is already installed at the following location:
+      Text=
+      Text=%UNINSTALL_DIR%
+      Text=
+      Text=The location you've specified for this version, or copy, is
+      Text=
+      Text=%MAINDIR%
+      Text=
+      Text=Since having more than one copy of Walls installed is unnecessay and can easily lead to unexpected behavior, the original installation will be removed automatically if you choose to proceed.
+      Text=
+      Text=Note that whenever Walls is significantly revised, a link to the prior version can be found on the web site.
+      Text French=Il vous est fortement recommandé de fermer tous les programmes Windows avant d'exécuter le Programme d'Installation
+      Text French=
+      Text French=Cliquez sur Annuler pour quitter l'Installation et fermez tous les programmes actuellement utilisés. Cliquez sur Suivant pour continuer l'installation
+      Text French=
+      Text French=ATTENTION : Ce programme est protégé par la loi sur les droits d'exploitation et par les traités internationaux
+      Text French=
+      Text French=Toute reproduction ou distribution, même partielle, de ce programme qui n'aura pas reçu d'autorisation préalable fera l'objet de poursuites et sera sévèrement sanctionnée par le droit civil et pénal
+      Text German=Wir empfehlen nachdrücklich, vor Ausführen dieses Installationsprogramms alle Windows-Programme zu beenden. 
+      Text German=
+      Text German=Auf Abbrechen klicken, um die Installation zu beenden und alle laufenden Programme zu schließen. Auf Weiter klicken, um mit dem Installationsprogramm beginnen.
+      Text German=
+      Text German=WARNUNG: Dieses Programm ist urheberrechtlich sowie durch internationale Verträge geschützt. 
+      Text German=
+      Text German=Die unzulässige Vervielfältigung oder Verbreitung dieses Programms, ob ganz oder auszugsweise, kann schwere zivil- und strafrechtliche Konsequenzen nach sich ziehen und wird unter voller Ausschöpfung der Rechtsmittel geahndet.
+      Text Portuguese=Recomenda-se insistentemente que saia de todos os programas do Windows antes de executar este Programa de Configuração.
+      Text Portuguese=
+      Text Portuguese=Faça um clique sobre Cancelar para sair da Configuração e feche todos os programas que estiver a executar. Faça um clique sobre Próximo para continuar com o programa de configuração
+      Text Portuguese=
+      Text Portuguese=AVISO: Este programa está protegido pela lei de direitos do autor e tratados internacionais
+      Text Portuguese=
+      Text Portuguese=A reprodução e a distribuição sem autorização deste programa, ou qualquer parte dele, pode dar lugar à aplicação de severas sanções civis e criminais, e serão perseguidas à extensão máxima permitida pela lei.
+      Text Spanish=Se recomienda encarecidamente que salga de todos los programas Windows antes de ejecutar este programa de Configuración.
+      Text Spanish=
+      Text Spanish=Haga un clic en Cancelar para abandonar la Configuración y cerrar cualquier programa que haya estado ejecutando. Haga un clic en Siguiente para continuar con el programa de Configuración.
+      Text Spanish=
+      Text Spanish=AVISO: Este programa está protegido por las leyes de derechos de autor y tratados internacionales.
+      Text Spanish=
+      Text Spanish=La reproducción o distribución no autorizadas de este programa, o cualquier parte de él, podría dar como resultado rigurosas multas civiles y penales, y se entablará la máxima acción judicial que permita la ley.
+      Text Italian=Ti consigliamo di uscire da tutti i programmi Windows prima di eseguire questo programma di installazione.
+      Text Italian=
+      Text Italian=Fai clic su Annulla per uscire dal programma di installazione e chiudi tutti i programmi aperti. Fai clic su Avanti per continuare con il programma di Installazione.
+      Text Italian=
+      Text Italian=AVVERTENZA: Questo programma è protetto ai sensi delle norme di legge e delle convenzioni internazionali in materia di diritti di copyright.
+      Text Italian=
+      Text Italian=La riproduzione o la distribuzione totale o parziale non autorizzata di questo programma potrà essere soggetta a penalità civili e penali, e sarà punita con la massima severità possibile a norma di legge.
+      Text Danish=Det anbefales kraftigt at afslutte alle Windows programmer, inden man kører dette installationsprogram.
+      Text Danish=
+      Text Danish=Klik på Annuller for at forlade installationsprogrammet og lukke alle igangværende programmer. Klik på Næste for at fortsætte med installationsprogrammet.
+      Text Danish=
+      Text Danish=ADVARSEL: Dette program er beskyttet af copyright og internationale traktater. 
+      Text Danish=
+      Text Danish=Uautoriseret gengivelse eller videresalg af dette program eller dele heraf kan føre til streng civil- og/eller kriminel stra. Retsforfølgning heraf vil finde sted i det videste omfang der hjemles muligt.
+      Text Dutch=Het wordt aangeraden om alle Windows programma's af te sluiten voordat u met de installatie van dit programma begint.
+      Text Dutch=
+      Text Dutch=Klik op Annuleren om de installatie te verlaten en eventueel nog lopende programma's af te sluiten. Klik op Volgende om verder te gaan met het Installatieprogramma.
+      Text Dutch=
+      Text Dutch=WAARSCHUWING: dit computerprogramma is auteursrechtelijk beschermd.
+      Text Dutch=
+      Text Dutch=Onrechtmatige verveelvoudiging of distributie van dit programma of een gedeelte ervan is verboden en strafbaar en zal met alle beschikbare juridische middelen worden bestreden.
+      Text Norwegian=Det anbefales på det sterkeste at du avslutter alle Windows-programmer før du kjører dette Oppsett-programmet.
+      Text Norwegian=
+      Text Norwegian=Velg Avbryt for å avbryte Oppsett og lukk alle programmer som er i bruk. Velg Neste for å fortsette med Oppsett-programmet.
+      Text Norwegian=
+      Text Norwegian=ADVARSEL: Dette programmet er beskyttet i henhold til lover om opphavsrett og internasjonale konvensjoner.
+      Text Norwegian=
+      Text Norwegian=Uautorisert kopiering eller distribuering av dette programmet eller deler av det, vil resultere i alvorlig sivil og kriminell straff og vil føre til saksmål i høyest mulig utstrekning i henhold til loven. 
+      Text Swedish=Du tillråds bestämt att gå ur alla Windows-program innan du kör installationsprogrammet.
+      Text Swedish=
+      Text Swedish=Klicka på Avbryt för att gå ur installationsprogrammet och stäng eventuella program som du har laddade. Klicka på Nästa för att fortsätta med installationen.
+      Text Swedish=
+      Text Swedish=VARNING: Detta program är skyddat av upphovsrätten och internationella avtal.
+      Text Swedish=
+      Text Swedish=Om du utan tillstånd kopierar eller distribuerar detta program eller delar av det kan det bli allvarliga civilrättsliga och brottsrättliga straffpåföljder. Vi beivrar sådana överträdelser i den allra högsta utsträckning som lagen tillåter.
+    end
+    item: Push Button
+      Rectangle=130 185 172 199
+      Variable=DIRECTION
+      Value=B
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000010000000000000000
+      Text=< &Back
+    end
+  end
+end
+item: Custom Dialog Set
+  Name=Select Components
+  Display Variable=DISPLAY
+  Flags=00000001
+  item: Dialog
+    Title=Select Components 
+    Title French=Sélectionner les éléments
+    Title German=Komponenten auswählen
+    Title Portuguese=Seleccionar Componentes
+    Title Spanish=Seleccione los Componentes
+    Title Italian=Seleziona Componenti
+    Title Danish=Vælg komponenter
+    Title Dutch=Selecteer onderdelen
+    Title Norwegian=Velg komponenter
+    Title Swedish=Välj komponenter
+    Width=282
+    Height=224
+    Font Name=Helv
+    Font Size=8
+    item: Push Button
+      Rectangle=176 185 218 199
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=&Next >
+      Text French=&Suivant>
+      Text German=&Weiter>
+      Text Portuguese=&Próximo>
+      Text Spanish=&Siguiente >
+      Text Italian=&Avanti >
+      Text Danish=&Næste>
+      Text Dutch=&Volgende>
+      Text Norwegian=&Neste>
+      Text Swedish=&Nästa >
+    end
+    item: Push Button
+      Rectangle=130 185 172 199
+      Variable=DIRECTION
+      Value=B
+      Create Flags=01010000000000010000000000000000
+      Text=< &Back
+      Text French=<&Retour
+      Text German=<&Zurück
+      Text Portuguese=<&Retornar
+      Text Spanish=<&Retroceder
+      Text Italian=< &Indietro
+      Text Danish=<&Tilbage
+      Text Dutch=<&Terug
+      Text Norwegian=<&Tilbake
+      Text Swedish=< &Tillbaka
+    end
+    item: Push Button
+      Rectangle=222 185 264 199
+      Action=3
+      Create Flags=01010000000000010000000000000000
+      Text=Cancel
+      Text French=Annuler
+      Text German=Abbrechen
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Annuller
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+    item: Static
+      Rectangle=9 177 263 178
+      Action=3
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=205 156 253 166
+      Variable=COMPONENTS
+      Value=MAINDIR
+      Create Flags=01010000000000000000000000000010
+    end
+    item: Static
+      Rectangle=205 148 253 157
+      Variable=COMPONENTS
+      Create Flags=01010000000000000000000000000010
+    end
+    item: Static
+      Rectangle=95 147 184 158
+      Create Flags=01010000000000000000000000000000
+      Text=Disk Space Required:
+      Text French=Espace disque requis
+      Text German=Benötigter Festplattenspeicher:
+      Text Portuguese=Espaço de disco necessário:
+      Text Spanish=Espacio de Disco Requerido:
+      Text Italian=Spazio su disco richiesto:
+      Text Danish=Nødvendig diskplads:
+      Text Dutch=Vereiste hoeveelheid schijfruimte
+      Text Norwegian=Diskplass nødvendig:
+      Text Swedish=Erforderligt diskutrymme
+    end
+    item: Static
+      Rectangle=95 157 190 167
+      Create Flags=01010000000000000000000000000000
+      Text=Disk Space Remaining:
+      Text French=Espace disque disponible
+      Text German=Verbleibender Festplattenspeicher:
+      Text Portuguese=Espaço de disco restante:
+      Text Spanish=Espacio de Disco Remanente:
+      Text Italian=Spazio su disco rimanente:
+      Text Danish=Ledig diskplads:
+      Text Dutch=Resterende schijfruimte
+      Text Norwegian=Ledig diskplass:
+      Text Swedish=Återstående diskutrymme
+    end
+    item: Static
+      Rectangle=90 138 264 168
+      Action=1
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=90 8 260 41
+      Create Flags=01010000000000000000000000000000
+      Text=In the options list below, select which components you would like to install.  The disk space fields reflect the requirements of the options you have selected.
+      Text French=Dans la liste d'options suivante, veuillez sélectionner les cases des options que vous désirez installer. Le champ d'espace disque indique les conditions requises pour les options choisies
+      Text German=Wählen Sie in der Optionenliste unten die Kontrollkästchen für diejenigen Optionen, die Sie installieren möchten. Die Speicherfelder zeigen die benötigte Speicherkapazität für die gewählten Optionen an.
+      Text Portuguese=Na lista de opções abaixo, seleccione as caixas de verificação para as opções que gostaria de ter instalado. Os campos de espaço de disco reflectem os requerimentos das opções que seleccionou.
+      Text Spanish=En la lista de opciones que se ofrece a continuación, seleccione las casillas de comprobación para las opciones que desea instalar. Los campos del espacio en el disco reflejan los requerimientos de las opciones que ha seleccionado.
+      Text Italian=Nell’elenco delle opzioni sotto, marca le caselle di controllo delle opzioni che vuoi installare. I campi dello spazio sul disco riflettono i requisiti delle opzioni selezionate.
+      Text Danish=Marker afkrydsningsfelterne for de komponenter, der skal installeres, på listen herunder. Diskpladsfelterne angiver pladskravene for de valgte komponenter.
+      Text Dutch=Kruis in de onderstaande lijst het vakje aan naast de opties die u wilt installeren. Achter elke optie staat de benodigde schijfruimte vermeld.
+      Text Norwegian=I listen over alternativer nedenfor, klikk i kontrollrutene for de alternativene du ønsker å installere. Diskplassfeltene gjenspeiler kravene for de alternativene du har valgt.
+      Text Swedish=Kryssa för i rutorna nedan vilka alternativ du vill få installerade. I diskutrymmesfälten anges utrymmesbehoven för de alternativ du väljer.
+    end
+    item: Listbox
+      Rectangle=90 42 263 133
+      Variable=COMPONENTS
+      Create Flags=01010000101000010000000101010001
+      Flags=0000010001000111
+      Text=Walls 2B8 (Required program files)
+      Text=Walls2D (SVG Viewer)
+      Text=Walls3D (VRML viewer)
+      Text=SEF Import/Export DLLs
+      Text=Sample Projects
+      Text=
+      Text French=Walls 2B8 (Required program files)
+      Text French=Walls2D (SVG Viewer)
+      Text French=Walls3D (VRML viewer)
+      Text French=SEF Import/Export DLLs
+      Text French=Sample Projects
+      Text French=
+      Text German=Walls 2B8 (Required program files)
+      Text German=Walls2D (SVG Viewer)
+      Text German=Walls3D (VRML viewer)
+      Text German=SEF Import/Export DLLs
+      Text German=Sample Projects
+      Text German=
+      Text Portuguese=%1%
+      Text Portuguese=
+      Text Spanish=Walls 2B8 (Required program files)
+      Text Spanish=Walls2D (SVG Viewer)
+      Text Spanish=Walls3D (VRML viewer)
+      Text Spanish=SEF Import/Export DLLs
+      Text Spanish=Sample Projects
+      Text Spanish=
+      Text Italian=Walls 2B8 (Required program files)
+      Text Italian=Walls2D (SVG Viewer)
+      Text Italian=Walls3D (VRML viewer)
+      Text Italian=SEF Import/Export DLLs
+      Text Italian=Sample Projects
+      Text Italian=
+      Text Danish=%1%
+      Text Danish=
+      Text Dutch=%1%
+      Text Dutch=
+      Text Norwegian=%1%
+      Text Norwegian=
+      Text Swedish=%1%
+      Text Swedish=
+    end
+  end
+end
+item: Custom Dialog Set
+  Name=Select Program Manager Group
+  Display Variable=DISPLAY
+  item: Dialog
+    Title=Select Program Manager Group
+    Title French=Sélectionnez le Groupe du Gestionnaire de Programmes
+    Title German=Programm-Managergruppe wählen
+    Title Portuguese=Seleccionar o Grupo Gestor de Programas
+    Title Spanish=Seleccione el Grupo del Administrador del Programa
+    Title Italian=Seleziona il gruppo Program Manager
+    Title Danish=Vælg Programstyringsgruppen
+    Title Dutch=Kies Programmabeheergroep.
+    Title Norwegian=Velg Programbehandlingsgruppen
+    Title Swedish=Välj grupp i Programhanteraren
+    Width=282
+    Height=224
+    Font Name=Helv
+    Font Size=8
+    item: Push Button
+      Rectangle=175 185 217 199
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=&Next >
+      Text French=&Suivant>
+      Text German=&Weiter>
+      Text Portuguese=&Próximo>
+      Text Spanish=&Siguiente >
+      Text Italian=&Avanti >
+      Text Danish=&Næste>
+      Text Dutch=&Volgende>
+      Text Norwegian=&Neste>
+      Text Swedish=&Nästa >
+    end
+    item: Push Button
+      Rectangle=130 185 172 199
+      Variable=DIRECTION
+      Value=B
+      Create Flags=01010000000000010000000000000000
+      Flags=0000000000000001
+      Text=< &Back
+      Text French=<&Retour
+      Text German=<&Zurück
+      Text Portuguese=<&Retornar
+      Text Spanish=<&Retroceder
+      Text Italian=< &Indietro
+      Text Danish=<&Back
+      Text Dutch=<&Terug
+      Text Norwegian=<&Tilbake
+      Text Swedish=< &Tillbaka
+    end
+    item: Push Button
+      Rectangle=219 185 261 199
+      Action=3
+      Create Flags=01010000000000010000000000000000
+      Text=Cancel
+      Text French=Annuler
+      Text German=Abbrechen
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Slet
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+    item: Static
+      Rectangle=9 177 263 178
+      Action=3
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=90 10 260 38
+      Create Flags=01010000000000000000000000000000
+      Text=Enter the name of the Program Manager group to add %APPTITLE% icons to:
+      Text French=Entrez le nom du groupe du Gestionnaire de Programmes où placer les icônes %APPTITLE% à :
+      Text German=Den Namen der Programm-Managergruppe wählen, in der die %APPTITLE%-Symbole gespeichert werden sollen:
+      Text Portuguese=Introduzir o nome do Grupo Gestor de Programa para acrescentar os ícones %APPTITLE% para:
+      Text Spanish=Introduzca el nombre del grupo del Administrador del Programa para añadir los iconos %APPTITLE para:
+      Text Italian=Inserisci il nome del gruppo Program Manager per aggiungere le icone di %APPTITLE% a:
+      Text Danish=Indtast navnet på Programstyringsgruppen der skal tilføjes %APPTITLE% elementer:
+      Text Dutch=Breng de naam van de programmabeheergroep in waaraan u %APPTITLE%-pictogrammen wilt toevoegen.
+      Text Norwegian=Tast inn navnet på programbehandlingsgruppen for å legge %APPTITLE%-ikoner til:
+      Text Swedish=Skriv in namnet på den grupp i Programhanteraren där du vill ha ikonerna för %APPTITLE%:
+    end
+    item: Combobox
+      Rectangle=90 42 260 172
+      Variable=GROUP
+      Create Flags=01010000001000010000001100000001
+      Flags=0000000000000001
+      Text=%GROUP%
+      Text=
+      Text French=%GROUP%
+      Text French=
+      Text German=%GROUP%
+      Text German=
+      Text Portuguese=%GROUP%
+      Text Portuguese=
+      Text Spanish=%GROUP%
+      Text Spanish=
+      Text Italian=%GROUP%
+      Text Italian=
+      Text Danish=%GROUP%
+      Text Danish=
+      Text Dutch=%GROUP%
+      Text Dutch=
+      Text Norwegian=%GROUP%
+      Text Norwegian=
+      Text Swedish=%GROUP%
+      Text Swedish=
+    end
+  end
+end
+item: Custom Dialog Set
+  Name=Start Installation
+  Display Variable=DISPLAY
+  item: Dialog
+    Title=Start Installation
+    Title French=Commencer l'installation
+    Title German=Installation beginnen
+    Title Portuguese=Iniciar Instalação
+    Title Spanish=Comenzar la Instalación
+    Title Italian=Avvia Installazione
+    Title Danish=Start installationen
+    Title Dutch=Start de installatie
+    Title Norwegian=Start installeringen
+    Title Swedish=Starta installationen
+    Width=282
+    Height=224
+    Font Name=Helv
+    Font Size=8
+    item: Push Button
+      Rectangle=176 185 218 199
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=&Next >
+      Text French=&Suivant>
+      Text German=&Weiter>
+      Text Portuguese=&Próximo>
+      Text Spanish=&Siguiente >
+      Text Italian=&Avanti >
+      Text Danish=&Næste>
+      Text Dutch=&Volgende>
+      Text Norwegian=&Neste>
+      Text Swedish=&Nästa >
+    end
+    item: Push Button
+      Rectangle=130 185 172 199
+      Variable=DIRECTION
+      Value=B
+      Create Flags=01010000000000010000000000000000
+      Text=< &Back
+      Text French=<&Retour
+      Text German=<&Zurück
+      Text Portuguese=<&Retornar
+      Text Spanish=<&Retroceder
+      Text Italian=< &Indietro
+      Text Danish=<&Tilbage
+      Text Dutch=<&Terug
+      Text Norwegian=<&Tilbake
+      Text Swedish=< &Tillbaka
+    end
+    item: Push Button
+      Rectangle=222 185 264 199
+      Action=3
+      Create Flags=01010000000000010000000000000000
+      Text=Cancel
+      Text French=Annuler
+      Text German=Abbrechen
+      Text Portuguese=Cancelar
+      Text Spanish=Cancelar
+      Text Italian=Annulla
+      Text Danish=Annuller
+      Text Dutch=Annuleren
+      Text Norwegian=Avbryt
+      Text Swedish=Avbryt
+    end
+    item: Static
+      Rectangle=9 177 263 178
+      Action=3
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=90 10 261 60
+      Create Flags=01010000000000000000000000000000
+      Text=You are now ready to install %APPTITLE%.
+      Text=
+      Text=
+      Text=Press the Next button to begin the installation or the Back button to reenter the installation information.
+      Text French=Vous êtes maintenant prêt à installer %APPTITLE%
+      Text French=
+      Text French=Cliquez sur Suivant pour commencer l'installation ou Retour pour entrer à nouveau les informations d'installation
+      Text German=Sie sind jetzt zur Installation von %APPTITLE% bereit.
+      Text German=
+      Text German=Auf die Schaltfläche Weiter klicken, um mit dem Start der Installation zu beginnen, oder auf die Schaltfläche Zurück, um die Installationsinformationen nochmals aufzurufen.
+      Text Portuguese=Está agora pronto para instalar %APPTITLE%
+      Text Portuguese=
+      Text Portuguese=Pressione o botão Próximo para começar a instalação ou o botão Retornar para introduzir novamente a informação sobre a instalação
+      Text Spanish=Ahora estará listo para instalar %APPTITLE%.
+      Text Spanish=
+      Text Spanish=Pulse el botón de Siguiente para comenzar la instalación o el botón Retroceder para volver a introducir la información sobre la instalación.
+      Text Italian=Sei pronto ad installare %APPTITLE%.
+      Text Italian=
+      Text Italian=Premi il tasto Avanti per iniziare l’installazione o il tasto Indietro per rientrare nuovamente nei dati sull’installazione
+      Text Danish=Du er nu klar til at installere %APPTITLE%.
+      Text Danish=
+      Text Danish=Klik på Næste for at starte installationen eller på Tilbage for at ændre installationsoplysningerne.
+      Text Dutch=U bent nu klaar om %APPTITLE% te installeren.
+      Text Dutch=
+      Text Dutch=Druk op Volgende om met de installatie te beginnen of op Terug om de installatie-informatie opnieuw in te voeren.
+      Text Norwegian=Du er nå klar til å installere %APPTITLE%
+      Text Norwegian=
+      Text Norwegian=Trykk på Neste-tasten for å starte installeringen, eller Tilbake-tasten for å taste inn installasjonsinformasjonen på nytt.
+      Text Swedish=Du är nu redo att installera %APPTITLE%.
+      Text Swedish=
+      Text Swedish=Tryck på Nästa för att starta installationen eller på Tillbaka för att skriva in installationsinformationen på nytt.
+    end
+  end
+end
+remarked item: If/While Statement
+  Variable=DISPLAY
+  Value=Select Destination Directory
+end
+remarked item: Set Variable
+  Variable=BACKUP
+  Value=%MAINDIR%\BACKUP
+end
+remarked item: End Block
+end
+item: End Block
+end
+remarked item: If/While Statement
+  Variable=DOBACKUP
+  Value=A
+end
+remarked item: Set Variable
+  Variable=BACKUPDIR
+  Value=%BACKUP%
+end
+remarked item: End Block
+end
+remarked item: Set Variable
+  Variable=BACKUPDIR
+  Value=%MAINDIR%\BACKUP
+end
+item: If/While Statement
+  Variable=TEST_EQ
+  Value=1
+end
+remarked item: Display Message
+  Title=Running uninstall in different folder
+  Text=Removing B7 key
+end
+item: Parse String
+  Source=%UNINSTALL_STR%
+  Pattern=\UNWISE.EXE
+  Variable1=UNINSTALL_DIR
+  Variable2=UNINSTALL_TAIL
+  Flags=00000011
+end
+item: Display Graphic
+  Pathname=F:\Walls_Setup\uninstall.bmp
+  Flags=0000000000011000
+end
+item: Execute Program
+  Pathname=%UNINSTALL_DIR%\UNWISE.EXE
+  Command Line=/S /A %UNINSTALL_TAIL%
+  Default Directory=%UNINSTALL_DIR%
+  Flags=00000010
+end
+item: Else Statement
+end
+remarked item: Display Message
+  Title=Didn't run an uninstall
+  Text=Removing B7 key
+end
+item: If/While Statement
+  Variable=UNINSTALL_STR
+  Flags=00000001
+end
+remarked item: Display Message
+  Title=Installed in same folder
+  Text=Removing B7 key
+end
+item: If/While Statement
+  Variable=B7_REG_KEY
+  Flags=00000001
+end
+remarked item: Display Message
+  Title=Installed over B7
+  Text=Removing B7 key
+end
+item: Edit Registry
+  Total Keys=1
+  Key=SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Walls Project Editor 2.0 B7
+  Root=130
+end
+item: Delete File
+  Pathname=%MAINDIR%\wallshpx.dll
+end
+item: Delete File
+  Pathname=%MAINDIR%\wallsrv.dll
+end
+item: Delete File
+  Pathname=%MAINDIR%\wallnet.dll
+end
+item: Set Variable
+  Variable=TEST_EQ
+  Value=2
+end
+item: End Block
+end
+item: End Block
+end
+item: End Block
+end
+item: Open/Close INSTALL.LOG
+end
+item: Check Disk Space
+  Component=COMPONENTS
+end
+item: Include Script
+  Pathname=%_WISE_%\INCLUDE\uninstal.wse
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=B
+  Flags=00001010
+end
+item: Install File
+  Source=f:\Walls_Setup\walls2D.exe
+  Destination=%MAINDIR%\walls2D.exe
+  Flags=0000000010000011
+end
+item: Install File
+  Source=f:\Walls_Setup\walls2D.svgz
+  Destination=%MAINDIR%\walls2D.svgz
+  Flags=0000000010000010
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=A
+  Flags=00001010
+end
+item: Install File
+  Source=f:\Walls_Setup\Walls32.exe
+  Destination=%MAINDIR%\Walls32.exe
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\walls32.chm
+  Destination=%MAINDIR%\walls32.chm
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\wallshp.dll
+  Destination=%MAINDIR%\wallshp.dll
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\wallsvg.dll
+  Destination=%MAINDIR%\wallsvg.dll
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\wallwrl.dll
+  Destination=%MAINDIR%\wallwrl.dll
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\wallzip.dll
+  Destination=%MAINDIR%\wallzip.dll
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\wallmag.dll
+  Destination=%MAINDIR%\wallmag.dll
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\wallgps.dll
+  Destination=%MAINDIR%\wallgps.dll
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\walls_manual.pdf
+  Destination=%MAINDIR%\doc\walls_manual.pdf
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\css2srv.exe
+  Destination=%MAINDIR%\css2srv.exe
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\css2srv.txt
+  Destination=%MAINDIR%\css2srv.txt
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\Readme32.txt
+  Destination=%MAINDIR%\Readme32.txt
+  Flags=0000000010000010
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=C
+  Flags=00001010
+end
+item: Install File
+  Source=f:\Walls_Setup\walls3d.exe
+  Destination=%MAINDIR%\walls3d.exe
+  Flags=0000000010000011
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=D
+  Flags=00001010
+end
+item: Install File
+  Source=f:\Walls_Setup\wallexp.dll
+  Destination=%MAINDIR%\wallexp.dll
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\wallsef.dll
+  Destination=%MAINDIR%\wallsef.dll
+  Flags=0000000010000010
+end
+item: End Block
+end
+item: Set Variable
+  Variable=WALLSARG
+  Value=""
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=E
+  Flags=00001010
+end
+item: If/While Statement
+  Variable=TEST_EQ
+  Value=2
+end
+item: Delete File
+  Pathname=%MAINDIR%\Projects\Tutorial Project\tutorial.prj
+end
+item: Delete File
+  Pathname=%MAINDIR%\Projects\Kaua North Maze\Kaua North Maze.prj
+end
+item: End Block
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\Kaua North Maze.wpj
+  Destination=%MAINDIR%\Projects\Kaua North Maze\Kaua North Maze.wpj
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Tutorial\tutorial.wpj
+  Destination=%MAINDIR%\Projects\Tutorial Project\tutorial.wpj
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Tutorial\tutorial\Tutorial.nta
+  Destination=%MAINDIR%\Projects\Tutorial Project\Tutorial\Tutorial.nta
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Tutorial\tutorial\Tutorial.ntac
+  Destination=%MAINDIR%\Projects\Tutorial Project\Tutorial\Tutorial.ntac
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Tutorial\Polygon_w2d_mrg.svg
+  Destination=%MAINDIR%\Projects\Tutorial Project\Polygon_w2d_mrg.svg
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Tutorial\Polygon.srv
+  Destination=%MAINDIR%\Projects\Tutorial Project\Polygon.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\Kaua North Maze\Kaua-nm.nta
+  Destination=%MAINDIR%\Projects\Kaua North Maze\Kaua North Maze\Kaua-nm.nta
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\Kaua North Maze\Kaua-nm.ntac
+  Destination=%MAINDIR%\Projects\Kaua North Maze\Kaua North Maze\Kaua-nm.ntac
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\Warptest.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\Warptest.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\Svginfo.txt
+  Destination=%MAINDIR%\Projects\Kaua North Maze\Svginfo.txt
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\Rtwall.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\Rtwall.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\Notes.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\Notes.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\Nm-float.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\Nm-float.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\Nmazen2.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\Nmazen2.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\Nmazen.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\Nmazen.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\KAUA-NM_w2d_mrg.svg
+  Destination=%MAINDIR%\Projects\Kaua North Maze\KAUA-NM_w2d_mrg.svg
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\Kasurvey.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\Kasurvey.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\K750720.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\K750720.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\K750719.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\K750719.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\K741208.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\K741208.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\K741120.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\K741120.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\K741119.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\K741119.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\K741109.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\K741109.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\K741021.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\K741021.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\K741010.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\K741010.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\K741009.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\K741009.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\Ent-zero.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\Ent-zero.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\01-12-26.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\01-12-26.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\01-12-29.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\01-12-29.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\011230f.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\011230f.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\011230-n.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\011230-n.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\020101f.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\020101f.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\020101n.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\020101n.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\020102f.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\020102f.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\020102n.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\020102n.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\020103n.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\020103n.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\020105-n.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\020105-n.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\020106f.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\020106f.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\020107-f.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\020107-f.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\020108-f.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\020108-f.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\020108-n.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\020108-n.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\020109n.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\020109n.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\020110-f.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\020110-f.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\020110n.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\020110n.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\Dsurv01.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\Dsurv01.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\Dsurv02.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\Dsurv02.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\Dsurv04.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\Dsurv04.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\Dsurv05.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\Dsurv05.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\Dsurv07.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\Dsurv07.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\Dsurv08.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\Dsurv08.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\Dsurv09.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\Dsurv09.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\Dsurv31.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\Dsurv31.srv
+  Flags=0000000010000010
+end
+item: Install File
+  Source=f:\Walls_Setup\projects\Kaua North Maze\D-survey.srv
+  Destination=%MAINDIR%\Projects\Kaua North Maze\D-survey.srv
+  Flags=0000000010000010
+end
+item: Set Variable
+  Variable=WALLSARG
+  Value=%MAINDIR%\Projects\Kaua North Maze\Kaua North Maze.wpj
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=AE
+  Flags=00001010
+end
+item: Check Configuration
+  Flags=10111011
+end
+item: Get Registry Key Value
+  Variable=STARTUPDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%WIN%\Start Menu\Programs\StartUp
+  Value Name=StartUp
+  Flags=00000010
+end
+item: Get Registry Key Value
+  Variable=DESKTOPDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%WIN%\Desktop
+  Value Name=Desktop
+  Flags=00000010
+end
+item: Get Registry Key Value
+  Variable=STARTMENUDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%WIN%\Start Menu
+  Value Name=Start Menu
+  Flags=00000010
+end
+item: Get Registry Key Value
+  Variable=GROUPDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%WIN%\Start Menu\Programs
+  Value Name=Programs
+  Flags=00000010
+end
+item: Get Registry Key Value
+  Variable=CSTARTUPDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%STARTUPDIR%
+  Value Name=Common Startup
+  Flags=00000100
+end
+item: Get Registry Key Value
+  Variable=CDESKTOPDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%DESKTOPDIR%
+  Value Name=Common Desktop
+  Flags=00000100
+end
+item: Get Registry Key Value
+  Variable=CSTARTMENUDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%STARTMENUDIR%
+  Value Name=Common Start Menu
+  Flags=00000100
+end
+item: Get Registry Key Value
+  Variable=CGROUPDIR
+  Key=Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders
+  Default=%GROUPDIR%
+  Value Name=Common Programs
+  Flags=00000100
+end
+item: Create Shortcut
+  Source=%MAINDIR%\Walls32.exe
+  Destination=%DESKTOPDIR%\Walls v2.lnk
+  Icon Number=0
+  Key Type=1536
+  Flags=00000001
+end
+item: Set Variable
+  Variable=GROUP
+  Value=%CGROUPDIR%\%GROUP%
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=A
+  Flags=00001010
+end
+item: Create Shortcut
+  Source=%MAINDIR%\Readme32.txt
+  Destination=%GROUP%\Readme32.txt.lnk
+  Icon Number=0
+  Key Type=1536
+  Flags=00000001
+end
+item: Create Shortcut
+  Source=%MAINDIR%\Walls32.exe
+  Destination=%GROUP%\Walls v2.lnk
+  Icon Number=0
+  Key Type=1536
+  Flags=00000001
+end
+item: Create Shortcut
+  Source=%MAINDIR%\doc\Walls_manual.pdf
+  Destination=%GROUP%\Walls Manual.lnk
+  Icon Number=0
+  Key Type=1536
+  Flags=00000001
+end
+item: Create Shortcut
+  Source=%MAINDIR%\UNWISE.EXE
+  Destination=%GROUP%\Uninstall.lnk
+  Icon Number=0
+  Key Type=1536
+  Flags=00000001
+end
+item: End Block
+end
+item: Set Variable
+  Variable=CGROUP_SAVE
+  Value=%GROUP%
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=E
+  Flags=00001010
+end
+item: Create Shortcut
+  Source=%MAINDIR%\Projects\Kaua North Maze\Kaua North Maze.wpj
+  Destination=%GROUP%\Actun Kaua Project.lnk
+  Icon Number=0
+  Key Type=1536
+  Flags=00000001
+end
+item: Create Shortcut
+  Source=%MAINDIR%\Projects\Tutorial Project\Tutorial.wpj
+  Destination=%GROUP%\Tutorial Project.lnk
+  Icon Number=0
+  Key Type=1536
+  Flags=00000001
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=B
+  Flags=00001010
+end
+item: Create Shortcut
+  Source=%MAINDIR%\walls2D.exe
+  Destination=%GROUP%\Walls2D Viewer.lnk
+  Icon Number=0
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=C
+  Flags=00001010
+end
+item: Create Shortcut
+  Source=%MAINDIR%\walls3d.exe
+  Destination=%GROUP%\Walls3D Viewer.lnk
+  Icon Number=0
+end
+item: End Block
+end
+item: Else Statement
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=B
+  Flags=00001010
+end
+item: Add ProgMan Icon
+  Group=%GROUP%
+  Icon Name=Walls2D Viewer
+  Command Line=%MAINDIR%\walls2D.exe
+  Flags=01000000
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=C
+  Flags=00001010
+end
+item: Add ProgMan Icon
+  Group=%GROUP%
+  Icon Name=Walls3D Viewer
+  Command Line=%MAINDIR%\walls3d.exe
+  Flags=01000000
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=E
+  Flags=00001010
+end
+item: Add ProgMan Icon
+  Group=%GROUP%
+  Icon Name=Actun Kaua Project
+  Command Line=%MAINDIR%\Projects\Kaua North Maze\Kaua North Maze.PRJ
+  Flags=01000000
+end
+item: Add ProgMan Icon
+  Group=%GROUP%
+  Icon Name=Tutorial Project
+  Command Line=%MAINDIR%\Projects\Tutorial Project\Tutorial.PRJ
+  Flags=01000000
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=A
+  Flags=00001010
+end
+item: Add ProgMan Icon
+  Group=%GROUP%
+  Icon Name=Readme32.txt
+  Command Line=%MAINDIR%\Readme32.txt
+end
+item: Add ProgMan Icon
+  Group=%GROUP%
+  Icon Name=Walls v2
+  Command Line=%MAINDIR%\Walls32.exe
+end
+item: End Block
+end
+item: End Block
+end
+item: End Block
+end
+remarked item: If/While Statement
+  Variable=COMPONENTS
+  Value=A
+  Flags=00001010
+end
+remarked item: Self-Register OCXs/DLLs
+  Description=Updating System Configuration, Please Wait...
+end
+remarked item: End Block
+end
+item: Set Variable
+  Variable=RUNWALLS
+  Value=A
+end
+item: Set Variable
+  Variable=REGISTER
+  Value=A
+end
+item: Wizard Block
+  Direction Variable=DIRECTION
+  Display Variable=DISPLAY
+  Bitmap Pathname=%_WISE_%\DIALOGS\TEMPLATE\WIZARD.BMP
+  X Position=9
+  Y Position=10
+  Filler Color=8421440
+  Flags=00000011
+end
+item: Custom Dialog Set
+  Name=Finished
+  Display Variable=DISPLAY
+  item: Dialog
+    Title=Installation Complete
+    Title French=Installation en cours
+    Title German=Installation abgeschlossen
+    Title Portuguese=Instalação Completa 
+    Title Spanish=Se ha completado la Instalación
+    Title Italian=Installazione completata
+    Title Danish=Installation gennemført
+    Title Dutch=Installatie afgerond
+    Title Norwegian=Installasjonen er fullført
+    Title Swedish=Installationen klar
+    Width=280
+    Height=224
+    Font Name=Helv
+    Font Size=8
+    item: Push Button
+      Rectangle=222 185 264 199
+      Variable=DIRECTION
+      Value=N
+      Create Flags=01010000000000010000000000000001
+      Text=&Finish >
+      Text French=&Terminer>
+      Text German=&Fertigstellen>
+      Text Portuguese=&Terminar >
+      Text Spanish=&Finalizar>
+      Text Italian=&Fine >
+      Text Danish=&Afslut >
+      Text Dutch=&Klaar>
+      Text Norwegian=&Avslutt>
+      Text Swedish=&Sluta>
+    end
+    item: Static
+      Rectangle=9 177 263 178
+      Action=3
+      Create Flags=01010000000000000000000000000111
+    end
+    item: Static
+      Rectangle=90 10 260 48
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Text=%APPTITLE% has been successfully installed.
+      Text=
+      Text=
+      Text=Press the Finish button to exit this installation.
+      Text=
+      Text French=L'installation de %APPTITLE% est réussie
+      Text French=
+      Text French=
+      Text French=Cliquez sur Terminer pour quitter cette installation
+      Text French=
+      Text German=%APPTITLE% wurde erfolgreich installiert.
+      Text German=
+      Text German=
+      Text German=Zum Beenden dieser Installation Fertigstellen anklicken.
+      Text German=
+      Text Portuguese=%APPTITLE% foi instalado com êxito
+      Text Portuguese=
+      Text Portuguese=
+      Text Portuguese=Pressionar o botão Terminar para sair desta instalação
+      Text Portuguese=
+      Text Spanish=%APPTITLE% se ha instalado con éxito.
+      Text Spanish=
+      Text Spanish=
+      Text Spanish=Pulse el botón de Finalizar para salir de esta instalación.
+      Text Spanish=
+      Text Italian=%APPTITLE% è stato installato.
+      Text Italian=
+      Text Italian=
+      Text Italian=Premi il pulsante Fine per uscire dal programma di installazione
+      Text Italian=
+      Text Danish=%APPTITLE% er nu installeret korrekt.
+      Text Danish=
+      Text Danish=
+      Text Danish=Klik på Afslut for at afslutte installationen.
+      Text Danish=
+      Text Dutch=%APPTITLE% is met succes geïnstalleerd.
+      Text Dutch=
+      Text Dutch=
+      Text Dutch=Druk op Klaar om deze installatie af te ronden.
+      Text Dutch=
+      Text Norwegian=Installasjonen av %APPTITLE% er vellykket.
+      Text Norwegian=
+      Text Norwegian=
+      Text Norwegian=Trykk på Avslutt-tasten for å avslutte denne installasjonen.
+      Text Norwegian=
+      Text Swedish=Installationen av %APPTITLE% har lyckats.
+      Text Swedish=
+      Text Swedish=
+      Text Swedish=Tryck på Sluta för att gå ur installationsprogrammet.
+      Text Swedish=
+    end
+    item: Checkbox
+      Rectangle=90 124 190 139
+      Variable=RUNWALLS
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000010000000000000011
+      Text=Run Walls upon exit
+      Text=
+    end
+    item: Checkbox
+      Rectangle=90 105 263 120
+      Variable=REGISTER
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000010000000000000011
+      Text=Associate file extensions WPJ and PRJ with Walls
+      Text=
+    end
+    item: Static
+      Rectangle=90 60 263 97
+      Enabled Color=00000000000000001111111111111111
+      Create Flags=01010000000000000000000000000000
+      Text=NOTE: The file extension for project scripts is now WPJ instead of PRJ. When opening a PRJ file created by earlier versions of Walls you'll be required to confirm an automatic change of the file's extension.
+    end
+    item: Set Control Attribute
+      Control Name=BACK
+      Operation=1
+    end
+    item: Set Control Attribute
+      Control Name=CANCEL
+      Operation=1
+    end
+  end
+end
+item: End Block
+end
+item: If/While Statement
+  Variable=REGISTER
+  Value=A
+end
+item: Edit Registry
+  Total Keys=1
+  Key=SOFTWARE\Classes\.wpj
+  New Value=WPJFileType
+  Root=2
+end
+item: Edit Registry
+  Total Keys=1
+  Key=SOFTWARE\Classes\.prj
+  New Value=PRJFileType
+  Root=2
+end
+item: Edit Registry
+  Total Keys=8
+  item: Key
+    Key=SOFTWARE\Classes\PRJFileType\shell\open\command
+    New Value=%MAINDIR%\Walls32.exe "%%1"
+    New Value=
+    Root=2
+  end
+  item: Key
+    Key=SOFTWARE\Classes\PRJFileType\shell\open\ddeexec
+    New Value=[open("%%1")]
+    New Value=
+    Root=2
+  end
+  item: Key
+    Key=SOFTWARE\Classes\PRJFileType
+    New Value=PRJ File Type
+    Root=2
+  end
+  item: Key
+    Key=SOFTWARE\Classes\WPJFileType
+    Root=2
+  end
+  item: Key
+    Key=SOFTWARE\Classes\WPJFileType\shell
+    Root=2
+  end
+  item: Key
+    Key=SOFTWARE\Classes\WPJFileType\shell\open
+    Root=2
+  end
+  item: Key
+    Key=SOFTWARE\Classes\WPJFileType\shell\open\command
+    New Value=%MAINDIR%\Walls32.exe "%%1"
+    Root=2
+  end
+  item: Key
+    Key=SOFTWARE\Classes\WPJFileType\shell\open\ddeexec
+    New Value=[open("%%1")]
+    Root=2
+  end
+end
+item: End Block
+end
+item: Check Configuration
+  Flags=10111011
+end
+item: If/While Statement
+  Variable=COMPONENTS
+  Value=AE
+  Flags=00001010
+end
+item: Execute Program
+  Pathname=%GROUP%
+end
+item: End Block
+end
+item: End Block
+end
+remarked item: If/While Statement
+  Variable=TEST_EQ
+  Value=1
+end
+remarked item: Display Message
+  Title=This doesn't work!
+  Text=Removing |%UNINSTALL_DIR%|
+end
+remarked item: Delete File
+  Pathname=%UNINSTALL_DIR%
+end
+remarked item: End Block
+end
+item: If/While Statement
+  Variable=RUNWALLS
+  Value=A
+end
+item: Execute Program
+  Pathname=%MAINDIR%\Walls32.exe
+  Command Line=%WALLSARG%
+end
+item: End Block
+end
+item: New Event
+  Name=Cancel
+end
+remarked item: Include Script
+  Pathname=%_WISE_%\INCLUDE\rollback.wse
+end

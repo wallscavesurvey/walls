@@ -1,0 +1,26 @@
+;Copy of Survey $1160R
+;Import from 99-04-19.sef, dated 15:55 2000-04-30
+#Units Feet Order=DAV Decl=1 IncA=0 IncAB=0 IncV=0 IncVB=0 IncD=0
+#date 1975-07-03
+;#l Stevenson's Lost River
+;***NOTE: 1140T25 could be changed to 1140T24 to
+;***create good closure. 1' vs. 19' in 255' isolated loop.
+;***To see this, on the Geometry page select "Isolated Loops",
+;***select the 13-vector traverse, click the FloatH button,
+;***and then click Zoom. (DMcK)
+1140T25	1160R1	18.3	318.5	--	<5,5,0,4>
+1160R1	1160R2	37.5	291	--	<3.5,1.5,0,1.5>
+1160R2	1160R3	21.4	302.5	--	<5,1,0,2.5>
+1160R3	1160R4	27	286.5	--	<3,3,0,2.5>
+1160R4	1160R5	25.3	285	--	<1.5,3,0,2>
+1160R5	1160R6	36.8	322.5	--	<3,6,0,1.5>
+1160R6	1160R7	38.9	304	--	<3.5,0.5,0,1.5>
+1160R7	1160R8	14.1	288	--	<5,1,0,2>
+1160R8	1160R9	31.5	250	--	<8,2,0,2.5>
+1160R9	1160R10	13.1	262.1	--	<8,6,3,0>
+1160R10	1160R11	9.4	299	--	<6,2,5,3>
+1160R11	1160R12	28.3	253.5	--	<3,1,3,1>
+1160R12	1160R13	33.7	285.5	--	<5,3,0,18>
+1160R13	1160R14	36	295.4	--	<4,4,0,2>
+1160R14	1160R15	14.9	289.75	--	<2,1,2,1>
+1160R15	1160R16	11.4	255	--	<2,1,1.5,1.5>

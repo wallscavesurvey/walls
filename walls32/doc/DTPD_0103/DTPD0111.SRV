@@ -1,0 +1,9 @@
+;3365X
+;Import from DTPD.SEF, dated 11:11 2000-06-17
+;D. BAKER - Duty: 
+;P. CANNALEY - Duty: 
+;R. HOUDI - Duty: 
+;
+#Units Feet Order=DAV Decl=0 Tape=SS IncA=-2.8d IncAB=-2.8d IncV=0 IncVB=0 IncD=0
+#date 1997-05-24
+2882V3	3365X1	22.5	331.5/150.5	-23.5/22.5

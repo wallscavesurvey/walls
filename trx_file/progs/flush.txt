@@ -1,0 +1,75 @@
+File Open Modes
+===============
+
+If a file is in a non-flushed state, any function requiring node access
+can conceivably fail by returning IDX_ErrWrite. Cache buffer reuse can
+involve a failed attempt to flush previously revised nodes to disk. (The
+actual write error could have occurred prior to the function call and
+involved buffer reuse by a different file sharing the cache.) Like
+IDX_ErrFormat and IDX_ErrRead, this must be considered fatal to file
+integrity. (The file will be marked "corrupted" when closed. It can then
+be rebuilt or submitted to a TRX file recovery function.)
+
+A flushed file state can normally be assumed, however, if the file's
+open mode is either IDX_AutoFlush or IDX_UserFlush. (The latter mode
+assumes the user flushes the file immediately after each update
+operation or, more likely, after each series of related update
+operations.) Even if neither flush mode is in effect, if the file's
+MinPreWrite value is at least one (the default) there will never be
+non-prewritten nodes in the cache, so in this case we are protected from
+a disk full condition. (Either flush mode forces a nonzero MinPreWrite
+value.)
+
+A nonzero MinPreWite value alone, however, does not protect a
+non-flushed file from an unexpected computer shutdown. Judicious use of
+IDX_AutoFlush or IDX_UserFlush can make it extremely improbable that
+this presumably random event will leave a corrupted file on disk.
+Unfortunately, I can think of no efficient software scheme that would
+make it impossible.
+
+If you are willing to consider inefficient schemes, a transaction
+control method might be of interest. One that has been devised for TRX
+files is roughly described as follows:
+
+  1) Open the file while checking for the existence of its own separate
+     transaction log. If a compatible transaction log exists and is
+     marked as having one or more "rollback" records, perform a rollback
+     by copying the rollback records to the main file until either EOF
+     or a "commit" record (described below) is encountered. If the copy
+     is successful, mark the log file as "empty", else fail the open
+     attempt.
+
+  2) Start a transaction by reopening (or creating) the transaction log.
+     Truncate the log at a point immediately following a space for one
+     record and mark the file as empty of rollback records. All
+     subsequent file revisions, or references to changed records, are
+     then redirected to "commit" records appended to the log file. The
+     original file remains unchanged and unavailable for write access by
+     other users. At any point the transaction is easily aborted without
+     further action since it is already "rolled back".
+
+  3) We commit the transaction by obtaining (temporarily) exclusive file
+     access while scanning the log file's commit records sequentially.
+     When encountering a commit record, before copying it to the main
+     file, the original version of the record is read from the main file
+     and copied to the log as a "rollback" record, overwriting a prior
+     commit record (or the initial record space). If the copy of the
+     rollback record is successful, the corresponding commit record is
+     copied to the main file and processing continues with the next
+     commit record.
+
+  4) If transferral of all commit records is successful, we complete the
+     transaction by marking the log file as "empty". Otherwise, upon
+     failure to copy either kind of record, an attempt is made to
+     rollback the transaction by restoring the original file with data
+     from the rollback records. We then fail the transaction with a
+     return code that indicates whether rollback was successful.
+
+The approach just described involves just one log file. A faster method
+might be to have separate commit and rollback log files, but this would
+require twice as much extra disk space. Also, we have glossed over a few
+details such as handling the file header, identifying a record's main
+file offset, and distinguishing between commit and rollback records in
+the log file. In the case of TRX files, we take care of this with an
+offset value and a reserved flag in each file node.
+

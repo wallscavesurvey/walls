@@ -1,0 +1,13 @@
+;BMTT11 - Attach when compiling Carlos Way only
+;Import from 99-04-19.sef, dated 15:55 2000-04-30
+#Units Feet Grid=0
+;CPoint Reference: FEET
+
+;***NOTE: This station was named BM2T11 in Scott's version, but except
+;***for a 3652.8 Northing (an apparent typo), had coordinates identical to
+;***the original(?) CML file version of TT11W which is used here.
+
+#FIX	TT11W	-2526.5	6352.8	468.5
+
+;***NOTE: FSB 1140M (CARL0015.SRV) was not originally attached to the tree
+;*** in Scott's version of the  project.  I've reattached it for now.  (DMcK)

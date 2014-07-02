@@ -1,0 +1,71 @@
+=================
+Help #1B --- I mentioned that I'm working on a project with some of the
+eastern cartographers.  It would help what I'm doing to have either a
+simple formula (or an easy to use utility like Nadworld) that would convert
+any
+cave coordinate (now in feet  with the TT8W datum) to UTM meters NAD27.
+==================
+
+Well, according to Mel's SEF export function, the way you convert a set of
+Crowther-Mann coordinates to a set of TT8W-relative coordinates is to add
+2375' and -305' to the east and north components, respectively. To go from
+there to UTM we would need to convert to meters, "rotate" the result by the
+grid convergence angle, and finally add this to the UTM coordinates of TT8W.
+I'll see if I can quickly come up with a simple dialog-based utility to do
+this.
+
+============================================================================
+Since you indicated an immediate need for some of this, I'm attaching a ZIP
+file (caveutm.zip) containing the following:
+
+1) CaveUTM.exe -- A Windows GUI program, a "stay-on-top"  dialog box for
+converting back and forth between TT8W-relative coordinates and UTM. It
+works like the calculator in Walls, all fields being updated as you type. It
+assumes a grid convergence of 0.55 degrees -- the same that Walls assumes
+when the geographical reference is Walker's UTM location for TT8W.
+
+2) SHP2W.EXE -- A command-line utility for generating a SRV file (with
+#FIXed points) from a NPS-style shapefile. You probably don't need this now.
+I needed it because I wanted to produce two types of files, one with TT8W
+feet coordinates and another with the equivalent UTM coordinates.
+Interestingly, after all conversions are done, seven of nine Walker stations
+that have specified (#CM_origin) coordinates in the original CML files agree
+to within 3 ft of their NPS shapefile counterparts. The two exceptions are
+TT21W (21' difference) and TT24W (33' difference).
+
+3) A tentative "work-in progress", CMLFILES.PRJ, and associated SRV files,
+etc. This is basically what you already have, except that three versions of
+the control points, WALKER-U.SRV, WALKER-F.SRV, and SYMBOLS.SRV are
+positioned just beneath the project root folder. The first two sets are
+outputs from SHP2W.EXE, while SYMBOLS.SRV contains the benchmarks as they
+originally appeared in the CML files (although renamed -- see comments in
+the file). Any assigned positions (#CM_origin fixed points) in the survey
+data files ROTUNDA.SRV, etc.). have now been commented out. This allows us
+to easily switch between UTM (WALKER-U), Walker TT8W (WALKER-F), and CML
+(SYMBOLS) fixed points. Of course, only one of these three point sets should
+be connected ("Attached") to the tree during a compilation. (To generate UTM
+you must also remember to toggle "UTM grid-relative" in the root folder's
+geographical reference properties.) Right now, the project is set up to
+produce TT8W coordinates based on Walker's data.
+
+At this point, you might want to postpone delving into items 2) and 3)
+and wait until I have time to finish my examination and provide
+more of the tutorial-style analysis you requested. Actually, we have
+the makings of a very good one. I've added a few more "***NOTE:" comments
+in the SRV files, but that's all I have time for right now before finishing
+some
+non-cave related work. If you want, just consider this a status "snapshot"
+that I can take off from later -- hopefully soon.
+
+Except for a very few hoplessly bad traverses, the CML data you've given me
+(with certain obvious corrections applied) is in pretty decent shape. If
+anything, the problem is that there is not enough redundancy (loops) to
+expose blunders in large portions of data. Some pieces, for example, are
+tied to a single benchmark and there are six other fragments not tied to
+anything. Those Walker benchmarks that were simply referenced, not fixed, in
+the CML data are in fact mostly consistent with the surveys, although I
+haven't finished checking this. I also haven't checked for the presence of
+Walker benchmark tie-ins in the House data. If there are such tie-ins, this
+will certainly be helpful.
+
+--David

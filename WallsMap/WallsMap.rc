@@ -1,0 +1,2564 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+IDB_POLYLINE            BITMAP                  "res\\bmp00002.bmp"
+IDB_SCALEBAR            BITMAP                  "res\\bmp00001.bmp"
+IDB_CHECKBOXES          BITMAP                  "res\\checkboxes.bmp"
+IDB_DRAGINFO            BITMAP                  "res\\draginfo.bmp"
+IDB_CHECKBOX4           BITMAP                  "res\\checkbox.bmp"
+IDB_FOLDERS_IMG         BITMAP                  "res\\folders-img.bmp"
+IDB_WHITE               BITMAP                  "res\\White-20x18.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR 16, 16
+BEGIN
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_FILE_PROPERTIES
+    BUTTON      ID_ADDLAYER
+    SEPARATOR
+    BUTTON      ID_VIEW_DEFAULT
+    BUTTON      ID_VIEW_ZOOMIN
+    BUTTON      ID_VIEW_ZOOMOUT
+    BUTTON      ID_VIEW_PAN
+    BUTTON      ID_TOOLMEASURE
+    SEPARATOR
+    BUTTON      ID_CTR_ONPOSITION
+    BUTTON      ID_FIT_IMAGE
+    BUTTON      ID_ZOOM_BACK
+    BUTTON      ID_ZOOM_FORWARD
+    SEPARATOR
+    BUTTON      ID_WINDOW_TILE_VERT
+    BUTTON      ID_WINDOW_TILE_HORZ
+    SEPARATOR
+    BUTTON      ID_SHOW_LABELS
+    BUTTON      ID_SHOW_MARKERS
+    SEPARATOR
+    BUTTON      ID_TOOLSELECT
+    BUTTON      ID_SELECT_ADD
+    BUTTON      ID_FINDLABEL
+    SEPARATOR
+    BUTTON      ID_GPS_TRACKING
+    BUTTON      ID_GPS_CENTER
+    SEPARATOR
+    BUTTON      ID_APP_ABOUT
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""res\\WallsMap.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""afxprint.rc""       // printing/print preview resources\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\icon1.ico"
+IDI_FOLDERCLOSE         ICON                    "res\\folderclose.ico"
+IDI_FOLDEROPEN          ICON                    "res\\folderopen.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1
+        MENUITEM SEPARATOR
+        MENUITEM "&Close",                      ID_FILE_CLOSE
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "GPS"
+    BEGIN
+        MENUITEM "GPS port connection...",      ID_GPS_PORTSETUP
+        MENUITEM "Placemark/track style...",    ID_GPS_SYMBOL
+        MENUITEM "Tracking preferences...",     ID_GPS_OPTIONS
+    END
+    POPUP "&Preferences"
+    BEGIN
+        MENUITEM "Open &Recent layer file on startup", ID_PREF_OPENLAST
+        MENUITEM "Open georeferenced files in &Tiled frames", ID_PREF_OPENMAXIMIZED
+        MENUITEM "Open point shapefiles as &Editable", ID_OPENEDITABLE
+        MENUITEM SEPARATOR
+        POPUP "Mouse &Scroll wheel behavior..."
+        BEGIN
+            MENUITEM "Zoom from view's center",     33026
+            MENUITEM "Zoom from cursor position",   33028
+            MENUITEM SEPARATOR
+            MENUITEM "Scroll forward to zoom in",   33031
+            MENUITEM "Scroll backward to zoom in",  33032
+        END
+        MENUITEM "Marker for selected points...", ID_SETSELECTEDMARKER
+        MENUITEM SEPARATOR
+        MENUITEM "&Text editor preferences...", 33095
+        MENUITEM "URL for web map navigation...", ID_WEBMAP_FORMAT
+        MENUITEM "&Google Earth (KML) launch options...", ID_PREFERENCES_GE
+    END
+    POPUP "&Window"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "Help &Contents",              ID_HELP
+        MENUITEM "Open &Release notes",         ID_HELP_OPENREADME
+        MENUITEM "&About WallsMap...",          ID_APP_ABOUT
+    END
+END
+
+IDR_WallsMapTYPE MENU
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM "&Close",                      ID_FILE_CLOSE
+        MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE
+        MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
+        MENUITEM SEPARATOR
+        MENUITEM "Add &Layers to view...",      33041
+        MENUITEM "&Export or convert layer...", ID_FILE_CONVERT
+        MENUITEM "Export view as PNG image &File...", 33073
+        MENUITEM "Export project as &ZIP archive...", ID_EXPORT_ZIP
+        MENUITEM "&Truncate Overviews...",      ID_FILE_TRUNCATE
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "GPS"
+    BEGIN
+        MENUITEM "GPS port connection...",      ID_GPS_PORTSETUP
+        MENUITEM "Placemark/track style...",    ID_GPS_SYMBOL
+        MENUITEM "Tracking preferences...",     ID_GPS_OPTIONS
+    END
+    POPUP "&Preferences"
+    BEGIN
+        MENUITEM "Open &Recent layer file on startup", ID_PREF_OPENLAST
+        MENUITEM "Open &Georeferenced files in tiled frames", ID_PREF_OPENMAXIMIZED
+        MENUITEM "Open point shapefiles as &Editable", ID_OPENEDITABLE
+        MENUITEM SEPARATOR
+        POPUP "Mouse &Scroll wheel behavior..."
+        BEGIN
+            MENUITEM "Zoom from view's center",     ID_ZOOMFROMCENTER
+            MENUITEM "Zoom from cursor position",   ID_ZOOMFROMCURSOR
+            MENUITEM SEPARATOR
+            MENUITEM "Scroll forward to zoom in",   ID_ZOOMFORWARDIN
+            MENUITEM "Scroll backward to zoom in",  ID_ZOOMFORWARDOUT
+        END
+        MENUITEM "Marker for selected points...", ID_SETSELECTEDMARKER
+        MENUITEM SEPARATOR
+        MENUITEM "&Text editor preferences...", ID_MEMO_DEFAULTS
+        MENUITEM "&Name for signing timestamps...", ID_PREF_EDITORNAME
+        MENUITEM "URL for web map navigation...", ID_WEBMAP_FORMAT
+        MENUITEM "&Google Earth (KML) launch options...", ID_PREFERENCES_GE
+        POPUP "&Preferences for this document..."
+        BEGIN
+            MENUITEM "&Average colors when zooming > 100%", ID_AVERAGE_COLORS
+            MENUITEM "&Restore last map view when opened", ID_RESTOREVIEW
+            MENUITEM "&Save and restore search history", ID_SAVE_HISTORY
+            MENUITEM "Save and restore Layer &Window size", ID_SAVE_LAYERWINDOW
+            MENUITEM SEPARATOR
+            MENUITEM "&Background color...",        ID_OPTIONS_BKCOLOR
+            POPUP "&Length units for scale bar..."
+            BEGIN
+                MENUITEM "Meters / Kilometers",         ID_SCALEUNITS_METERS
+                MENUITEM "Feet / Miles",                ID_SCALEUNITS_FEET
+            END
+            POPUP "&Elevation units for status bar..."
+            BEGIN
+                MENUITEM "Feet",                        33174, CHECKED
+                MENUITEM "Meters",                      ID_ELEVUNITS_METERS
+            END
+            POPUP "&Datum displayed on status bar..."
+            BEGIN
+                MENUITEM "NAD83 / WGS84",               ID_DATUMTOGGLE_1
+                MENUITEM "NAD27",                       ID_DATUMTOGGLE_2
+            END
+        END
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "Zoom &In",                    ID_VIEW_ZOOMIN
+        MENUITEM "Zoom &Out",                   ID_VIEW_ZOOMOUT
+        MENUITEM "Fit full extent in window",   ID_FIT_EXTENT
+        MENUITEM "Fit visible layers in window", ID_FIT_IMAGE
+        MENUITEM "&Pan view",                   ID_VIEW_PAN
+        MENUITEM SEPARATOR
+        MENUITEM "&Outline all layer extents",  ID_OPTIONS_SHOWOUTLINES
+        MENUITEM "Outline &Selected layer extent", ID_OPTIONS_SHOWSELECTED
+        MENUITEM SEPARATOR
+        MENUITEM "Select points in &Rectangle", ID_TOOLSELECT
+        MENUITEM "&Add points to selection",    33071
+        MENUITEM "Select &Edited features...",  ID_SELECT_EDITED
+        MENUITEM SEPARATOR
+        MENUITEM "&Text search operations...",  ID_FINDLABEL
+        POPUP "GPS tracking options for view"
+        BEGIN
+            MENUITEM "Display GPS placemark",       ID_GPS_TRACKING
+            MENUITEM "Display logged track line",   ID_GPS_DISPLAYTRACK
+            MENUITEM "Enable auto-centering",       ID_GPS_ENABLECENTERING
+            MENUITEM "Center view on GPS position", ID_GPS_CENTER
+        END
+    END
+    POPUP "&Window"
+    BEGIN
+        MENUITEM "&New Window",                 ID_WINDOW_NEW
+        MENUITEM "&Cascade",                    ID_WINDOW_CASCADE
+        MENUITEM "Tile &Vertically",            ID_WINDOW_TILE_VERT
+        MENUITEM "Tile &Horizontally",          ID_WINDOW_TILE_HORZ
+        MENUITEM SEPARATOR
+        MENUITEM "&Layers/Properties window",   ID_FILE_PROPERTIES
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+        MENUITEM SEPARATOR
+        MENUITEM "Close all &Documents",        ID_FILE_CLOSEALL
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "Help &Contents",              ID_HELP
+        MENUITEM "Open &Release notes",         ID_HELP_OPENREADME
+        MENUITEM "&About WallsMap...",          ID_APP_ABOUT
+    END
+END
+
+IDR_VIEW_CONTEXT MENU
+BEGIN
+    POPUP ""
+    BEGIN
+        MENUITEM "Zoom In",                     ID_CONTEXT_ZOOMIN
+        MENUITEM "Zoom Out",                    ID_CONTEXT_ZOOMOUT
+        POPUP "Zoom to level . . ."
+        BEGIN
+            MENUITEM "Zoom 50%",                    ID_CONTEXT_ZOOM50
+            MENUITEM "Zoom 25%",                    ID_CONTEXT_ZOOM25
+            MENUITEM "Zoom 12.5%",                  ID_CONTEXT_ZOOM12
+            MENUITEM "Zoom 6.25%",                  ID_CONTEXT_ZOOM6_25
+            MENUITEM "Zoom 3.125%",                 ID_CONTEXT_ZOOM3_125
+            MENUITEM SEPARATOR
+            MENUITEM "Specify...",                  ID_CONTEXT_ZOOM_SPECIFY
+        END
+        MENUITEM "Zoom 1:1",                    ID_CONTEXT_NOZOOM
+        MENUITEM SEPARATOR
+        MENUITEM "Fit visible layers in window", ID_FIT_IMAGE
+        MENUITEM "Fit full extent in window",   ID_FIT_EXTENT
+        MENUITEM "Center on point...",          ID_CTR_ONPOINT
+        MENUITEM "Synchronize on point",        ID_SYNC_ONPOINT
+        MENUITEM SEPARATOR
+        MENUITEM "Fly to point in Google Earth", ID_LAUNCH_GE
+        POPUP "View point at mapping site"
+        BEGIN
+            MENUITEM "Fly Direct",                  ID_LAUNCH_WEBMAP
+            MENUITEM "Options...",                  ID_OPTIONS_WEBMAP
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "Enable GPS tracking in view", ID_GPS_TRACKING
+        MENUITEM "Enable track line display",   ID_GPS_DISPLAYTRACK
+        MENUITEM "Center view on GPS position", ID_GPS_CENTER
+        MENUITEM "Enable auto-centering",       ID_GPS_ENABLECENTERING
+        MENUITEM SEPARATOR
+        MENUITEM "Select points in rectangle",  ID_TOOL_SELECT
+        MENUITEM "Measure distances",           32974
+        MENUITEM "Hide labels",                 ID_HIDELABELS
+        MENUITEM "Hide markers",                ID_HIDEMARKERS
+        MENUITEM "Image opacity...",            ID_IMAGE_OPACITY
+        MENUITEM "Background color...",         ID_OPTIONS_BKCOLOR
+    END
+END
+
+IDR_LYR_CONTEXT MENU
+BEGIN
+    POPUP ""
+    BEGIN
+        MENUITEM "Zoom to layer",               ID_ZOOMTOLAYER
+        POPUP "Insert folder"
+        BEGIN
+            MENUITEM "Above",                       ID_FOLDER_ABOVE
+            MENUITEM "Below",                       ID_FOLDER_BELOW
+            MENUITEM "As parent",                   33224
+        END
+        POPUP "Insert layer(s)"
+        BEGIN
+            MENUITEM "Above",                       ID_LAYERS_ABOVE
+            MENUITEM "Below",                       ID_LAYERS_BELOW
+        END
+        MENUITEM "Paste layer(s) at top",       ID_EDIT_PASTE
+        MENUITEM SEPARATOR
+        MENUITEM "Edit title...",               ID_EDITTITLE
+        MENUITEM "Allow editing this file",     ID_SET_EDITABLE
+        MENUITEM "Clear edited flags...",       ID_CLEAR_EDITFLAGS
+        MENUITEM SEPARATOR
+        MENUITEM "Move layer to top",           ID_MOVELAYERTOTOP
+        MENUITEM "Move layer to bottom",        ID_MOVELAYERTOBOTTOM
+        MENUITEM "Close layer",                 ID_CLOSE_LAYER
+        MENUITEM "Close layer and delete files...", ID_CLOSE_AND_DELETE
+        MENUITEM SEPARATOR
+        MENUITEM "Open attribute table",        ID_OPEN_TABLE
+        MENUITEM "Open containing folder",      ID_OPENFOLDER
+    END
+END
+
+IDR_SHOW_CONTEXT MENU
+BEGIN
+    POPUP ""
+    BEGIN
+        MENUITEM "Center view at location",     ID_SHOW_CENTER
+        MENUITEM "Zoom 4X to location",         ID_ZOOM_VIEW
+        MENUITEM "Copy coordinates",            ID_SHOW_COPYLOC
+        MENUITEM "Paste coordinates",           ID_SHOW_PASTELOC
+        MENUITEM SEPARATOR
+        POPUP "Locate in Google Earth"
+        BEGIN
+            MENUITEM "Fly direct",                  ID_LAUNCH_GE
+            MENUITEM "Options...",                  ID_OPTIONS_GE
+        END
+        POPUP "Locate at mapping site"
+        BEGIN
+            MENUITEM "Fly direct",                  ID_LAUNCH_WEBMAP
+            MENUITEM "Options...",                  ID_OPTIONS_WEBMAP
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "Remove from selection",       ID_SHOW_UNSELECT
+        MENUITEM "Clear edited flag",           ID_SHOW_CLEAREDITED
+        MENUITEM "Delete record",               ID_SHOW_DELETE
+    END
+END
+
+IDR_SHOWROOT_CONTEXT MENU
+BEGIN
+    POPUP ""
+    BEGIN
+        MENUITEM "Zoom to branch items",        ID_ZOOM_VIEW
+        MENUITEM "Open table for branch",       ID_OPEN_TABLE
+        MENUITEM SEPARATOR
+        MENUITEM "Remove from selection",       ID_SHOW_UNSELECT
+        MENUITEM "Shapefile symbols...",        ID_BRANCHSYMBOLS
+        MENUITEM "Allow editing this file",     ID_SET_EDITABLE
+        MENUITEM SEPARATOR
+        POPUP "Locate in Google Earth"
+        BEGIN
+            MENUITEM "Fly direct",                  ID_LAUNCH_GE
+            MENUITEM "Options...",                  ID_OPTIONS_GE
+        END
+        MENUITEM "Export shapefile...",         ID_EXPORT_SHAPES
+    END
+END
+
+IDR_IMAGE_CONTEXT MENU
+BEGIN
+    POPUP ""
+    BEGIN
+        MENUITEM "Properties...",               ID_IMG_PROPERTIES
+        MENUITEM "Collection title...",         ID_IMG_COLLECTION
+        MENUITEM SEPARATOR
+        MENUITEM "Add images...",               ID_IMG_INSERT
+        MENUITEM "Paste",                       ID_EDIT_PASTE
+        MENUITEM "Open containing folder",      ID_OPENFOLDER
+        MENUITEM SEPARATOR
+        MENUITEM "Remove image",                ID_IMG_REMOVE
+        MENUITEM "Remove all...",               ID_REMOVEALL
+    END
+END
+
+IDR_SCALE_CONTEXT MENU
+BEGIN
+    POPUP ""
+    BEGIN
+        MENUITEM "Meters / Kilometers",         ID_SCALEUNITS_METERS
+        MENUITEM "Feet / Miles",                ID_SCALEUNITS_FEET
+    END
+END
+
+IDR_RTF_CONTEXT MENU
+BEGIN
+    POPUP ""
+    BEGIN
+        MENUITEM "Undo\tCtrl+Z",                ID_EDIT_UNDO
+        MENUITEM "Redo\tCtrl+Y",                57644
+        MENUITEM SEPARATOR
+        MENUITEM "Cut\tCtrl+X",                 ID_EDIT_CUT
+        MENUITEM "Copy\tCtrl+C",                ID_EDIT_COPY
+        MENUITEM "Paste\tCtrl+V",               ID_EDIT_PASTE
+        MENUITEM "Select &All\tCtrl+A",         40007
+        MENUITEM SEPARATOR
+        MENUITEM "&Find...\tCtrl+F",            ID_EDIT_FIND
+        MENUITEM "&Replace...",                 ID_EDIT_REPLACE
+        MENUITEM "Print...",                    ID_FILE_PRINT
+        MENUITEM SEPARATOR
+        MENUITEM "Save to file...",             33121
+        MENUITEM "Compare with last saved",     ID__COMPAREWITHFILE
+        MENUITEM "Replace with file...",        ID__REPLACEWITHFILE
+        MENUITEM "Insert local file link...",   ID_INS_LINKTOFILE
+        MENUITEM SEPARATOR
+        POPUP "Text format"
+        BEGIN
+            MENUITEM "Plain text",                  33090
+            MENUITEM "Rich text (RTF)",             33091
+        END
+        MENUITEM "Show ruler",                  40005
+    END
+END
+
+IDR_SORTMENU MENU
+BEGIN
+    POPUP ""
+    BEGIN
+        MENUITEM "Column visibility...",        ID_CHKCOLUMNS
+        MENUITEM "Find...",                     ID_EDIT_FIND
+        MENUITEM "Find broken image links...",  33183
+        MENUITEM SEPARATOR
+        MENUITEM "Sort Ascending",              ID_SORTASCENDING
+        MENUITEM "Sort Descending",             ID_SORTDESCENDING
+    END
+END
+
+IDR_TABLE_CONTEXT MENU
+BEGIN
+    POPUP ""
+    BEGIN
+        MENUITEM "Center view at selected",     ID_SHOW_CENTER
+        MENUITEM "Zoom to selected",            ID_ZOOM_VIEW
+        POPUP "Locate in Google Earth"
+        BEGIN
+            MENUITEM "Fly Direct",                  ID_LAUNCH_GE
+            MENUITEM "Options...",                  ID_OPTIONS_GE
+        END
+        POPUP "Locate at mapping site"
+        BEGIN
+            MENUITEM "Fly direct",                  ID_LAUNCH_WEBMAP
+            MENUITEM "Options...",                  ID_OPTIONS_WEBMAP
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "Select all",                  ID_SELECT_ALL
+        MENUITEM "Collect at top of table",     ID_MOVETO_TOP
+        MENUITEM "Invert selection",            ID_INVERTSELECTION
+        MENUITEM "Remove from table",           ID_REMOVEFROMTABLE
+        MENUITEM SEPARATOR
+        MENUITEM "Open as Selected Point(s)",   ID_REPLACE_SELECTED
+        MENUITEM "Add to Selected Points",      ID_ADDTO_SELECTED
+        MENUITEM "Export to shapefile...",      ID_EXPORT_SHAPES
+        MENUITEM "Export to Excel spreadsheet...", 33206
+        MENUITEM SEPARATOR
+        MENUITEM "Delete selection",            33189
+        MENUITEM "Undelete selection",          33190
+    END
+END
+
+IDR_FOLDER_CONTEXT MENU
+BEGIN
+    POPUP ""
+    BEGIN
+        POPUP "Insert folder"
+        BEGIN
+            MENUITEM "Above",                       ID_FOLDER_ABOVE
+            MENUITEM "Below",                       ID_FOLDER_BELOW
+            MENUITEM "As parent",                   ID_FOLDER_PARENT
+            MENUITEM "As child",                    ID_FOLDER_CHILD
+        END
+        POPUP "Insert layer(s)"
+        BEGIN
+            MENUITEM "Above",                       ID_LAYERS_ABOVE
+            MENUITEM "Below",                       ID_LAYERS_BELOW
+            MENUITEM "As children",                 ID_LAYERS_WITHIN
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "Edit title...",               ID_EDITTITLE
+        MENUITEM SEPARATOR
+        MENUITEM "Move folder to top",          ID_MOVELAYERTOTOP
+        MENUITEM "Move folder to bottom",       ID_MOVELAYERTOBOTTOM
+        MENUITEM "Remove folder (ungroup)",     ID_CLOSE_LAYER
+    END
+END
+
+IDR_COLTABLE_CONTEXT MENU
+BEGIN
+    POPUP ""
+    BEGIN
+        MENUITEM "Move to Top",                 ID_MOVETOTOP
+        MENUITEM "Move to Bottom",              ID_MOVETOBOTTOM
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS
+BEGIN
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    "F",            ID_EDIT_FIND,           VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT, NOINVERT
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
+    VK_F1,          ID_HELP,                VIRTKEY, NOINVERT
+    VK_F1,          ID_CONTEXT_HELP,        VIRTKEY, SHIFT, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_FINDDLGTBL DIALOGEX 30, 73, 286, 104
+STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | DS_FIXEDSYS | DS_CONTEXTHELP | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Find"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    EDITTEXT        1152,43,6,167,12,ES_AUTOHSCROLL | WS_GROUP
+    COMBOBOX        IDC_LOOKIN,43,26,66,40,CBS_DROPDOWNLIST | WS_TABSTOP
+    CONTROL         "Search memos",IDC_SEARCH_MEMOS,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,117,27,68,10
+    CONTROL         "Match &whole word only",1040,"Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,4,60,100,12
+    CONTROL         "Match &case and accents",1041,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,76,88,12
+    CONTROL         "&Up",1056,"Button",BS_AUTORADIOBUTTON | WS_GROUP,111,72,25,12
+    CONTROL         "&Down",1057,"Button",BS_AUTORADIOBUTTON,138,72,35,12
+    DEFPUSHBUTTON   "&Find Next",IDOK,221,5,50,14,WS_GROUP
+    PUSHBUTTON      "&Select All",IDC_SELECTALL,221,24,50,14,WS_DISABLED | WS_GROUP
+    PUSHBUTTON      "Cancel",IDCANCEL,221,43,50,14
+    LTEXT           "Fi&nd what:",IDC_STATIC,4,8,38,8
+    GROUPBOX        "Direction",1072,107,61,68,28,WS_GROUP
+    PUSHBUTTON      "&Help",1038,221,62,50,14,NOT WS_VISIBLE | WS_DISABLED
+    LTEXT           "Look in:",IDC_ST_LOOKIN,4,27,26,8
+END
+
+IDD_OPENEXISTING DIALOGEX 0, 0, 284, 97
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "File Already Exists"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Static",IDC_ST_PATHNAME,10,7,265,43
+    LTEXT           "A file with that name already exists but it might not reflect the output options you've specified.",IDC_STATIC,10,50,256,23
+    DEFPUSHBUTTON   "Open",IDC_OPENEXISTING,60,76,50,14
+    PUSHBUTTON      "Overwrite",IDOK,116,76,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,173,76,50,14
+END
+
+IDD_PERCENT_ZOOM DIALOGEX 0, 0, 210, 83
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Zoom to Specific Level"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,51,61,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,107,61,50,14
+    EDITTEXT        IDC_PERCENT,97,34,61,13,ES_AUTOHSCROLL
+    LTEXT           "Percent zoom:",IDC_STATIC,42,36,51,8
+    LTEXT           "A screen pixel corresponds to an image pixel at 100% zoom. Reduce this number to zoom out.",IDC_STATIC,19,11,173,16
+END
+
+IDD_EXPORT_NTI DIALOGEX 0, 0, 325, 202
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Export from %s"
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    LTEXT           "This operation creates a tiled image file (extension NTI) that's optimized for rapid viewing. The file will contain multiple versions of the image for display at specific zoom ranges.\nSelect Options below to specify the type of compression.",IDC_STATIC,17,14,297,27
+    EDITTEXT        IDC_PATHNAME,7,63,290,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDBROWSE,302,63,16,14
+    CONTROL         "Entire image",IDC_EXTENT_ENTIRE,"Button",BS_AUTORADIOBUTTON | BS_NOTIFY | WS_GROUP | WS_TABSTOP,23,96,64,10
+    CONTROL         "Portion visible",IDC_EXTENT_WINDOW,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,23,110,64,10
+    CONTROL         "Custom",IDC_EXTENT_CUSTOM,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,23,125,64,10
+    EDITTEXT        IDC_EDGE_LEFT,144,98,53,13,ES_AUTOHSCROLL | WS_DISABLED | WS_GROUP
+    EDITTEXT        IDC_WIDTH,237,98,53,13,ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDC_EDGE_TOP,144,119,53,13,ES_AUTOHSCROLL | WS_DISABLED
+    EDITTEXT        IDC_HEIGHT,237,119,53,13,ES_AUTOHSCROLL | WS_DISABLED
+    CONTROL         "Open file",IDC_OPEN_EXPORTED,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,37,184,48,10
+    CONTROL         "Add layer to project",IDC_ADD_EXPORTED,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,88,184,74,10
+    CONTROL         "Replace source layer",IDC_REPLW_EXPORTED,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,169,184,86,10
+    DEFPUSHBUTTON   "Export",IDC_EXPORT,135,182,58,14
+    PUSHBUTTON      "Cancel",IDCANCEL,198,182,58,14
+    PUSHBUTTON      "Options...",IDC_ADVANCED,260,182,58,14,WS_GROUP
+    CONTROL         "",IDC_PROGRESS,"msctls_progress32",PBS_SMOOTH | WS_BORDER,46,159,272,9
+    PUSHBUTTON      "Exit",IDOK,260,182,58,14,NOT WS_VISIBLE
+    GROUPBOX        "",IDC_STATIC,7,4,311,43
+    LTEXT           "Records 0 of 5673",IDC_ST_PERCENT,46,149,147,8,NOT WS_VISIBLE
+    LTEXT           "Output file:",IDC_STATIC,11,53,99,8
+    LTEXT           "",IDC_ST_STATS,11,153,300,25,NOT WS_VISIBLE
+    GROUPBOX        "Exported Region (Maximum Size: %u x %u)",IDC_ST_REGION,7,83,311,61
+    LTEXT           "Left edge:",IDC_STATIC,100,100,39,8
+    LTEXT           "Width:",IDC_STATIC,206,100,29,8
+    LTEXT           "Top edge:",IDC_STATIC,100,121,39,8
+    LTEXT           "Height:",IDC_STATIC,206,121,29,8
+    RTEXT           "JP2K 20% Trunc S",IDC_ST_ADVSETTINGS,241,170,76,8,0,WS_EX_RIGHT
+    LTEXT           "Progress:",IDC_ST_PROGRESS,10,159,32,8
+END
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 292, 122
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About WallsMap"
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,192,101,60,14,WS_GROUP
+    PUSHBUTTON      "Help Contents",IDC_HELPCONTENTS,44,101,60,14
+    PUSHBUTTON      "Memory Usage",IDC_MEMORY_USAGE,117,101,60,14
+    ICON            IDR_MAINFRAME,IDC_STATIC,7,7,20,20
+    CTEXT           "",IDC_ST_TITLE,40,11,226,22,SS_NOPREFIX
+    LTEXT           "To download the most recent build, click on this link:",IDC_STATIC,29,63,235,9
+    LTEXT           "Acknowledgement: This program takes advantage of the open source Geospatial Data Abstraction Library (GDAL) available at www.gdal.org.",IDC_STATIC,30,35,242,24
+    LTEXT           "davidmck.fmnetdesign.com/WallsMap.htm",IDC_NEWURL,29,75,250,13
+END
+
+IDD_PAGE_DETAILS DIALOGEX 0, 0, 322, 182
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_DISABLED | WS_CAPTION
+CAPTION "&Properties"
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    EDITTEXT        IDC_EDIT_DETAILS,5,7,311,156,ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY | WS_VSCROLL | NOT WS_TABSTOP
+    PUSHBUTTON      "Close",IDCANCEL,267,164,50,15,BS_CENTER
+END
+
+IDD_PAGE_LAYERS DIALOGEX 0, 0, 323, 182
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_CAPTION
+CAPTION "&Layers"
+FONT 8, "MS Shell Dlg", 700, 0, 0x0
+BEGIN
+    LTEXT           "Static",IDC_COLUMNTREE,4,5,261,173,WS_TABSTOP,WS_EX_CLIENTEDGE
+    PUSHBUTTON      "Add Layer...",IDC_LAYER_ADD,269,7,50,15,BS_CENTER
+    PUSHBUTTON      "Close Layer",IDC_LAYER_DEL,269,25,50,15,BS_CENTER
+    PUSHBUTTON      "Open Table",IDC_ATTRIBUTES,269,60,50,15,BS_CENTER
+    PUSHBUTTON      "Export...",IDC_LAYER_CONV,269,78,50,15,BS_CENTER
+    PUSHBUTTON      "Symbols...",IDC_SYMBOLOGY,269,112,50,15,BS_CENTER
+    PUSHBUTTON      "Scale range...",IDC_SCALERANGE,269,130,50,15,BS_CENTER
+    PUSHBUTTON      "Close",IDCANCEL,269,164,50,15,BS_CENTER
+END
+
+IDD_SYMBOLS DIALOGEX 0, 0, 346, 222
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Symbols for %s"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "Transparent",IDC_MCLEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,19,33,54,9
+    CONTROL         "Filled with Selected Color",IDC_MOPAQUE,"Button",BS_AUTORADIOBUTTON | BS_TOP | BS_MULTILINE | WS_TABSTOP,19,50,60,18
+    COMBOBOX        IDC_MSHAPE,97,29,51,67,CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP
+    CONTROL         "Dot center",IDC_DOT_CENTER,"Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,98,64,46,10
+    CONTROL         "",IDC_FGCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,45,109,35,14
+    CONTROL         "",IDC_BKGCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,122,109,35,14
+    EDITTEXT        IDC_MLINEW,45,130,36,13,ES_AUTOHSCROLL
+    CONTROL         "",IDC_SPIN_MLINEW,"msctls_updown32",UDS_WRAP | UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,73,130,12,12
+    EDITTEXT        IDC_MSIZE,121,130,36,13,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_SPIN_MSIZE,"msctls_updown32",UDS_WRAP | UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,147,130,13,12
+    CONTROL         "        ",IDC_BKGNDCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,122,160,35,14
+    CONTROL         "Selectable by\nRt-click or Drag",IDC_SELECTABLE,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,28,193,64,18
+    CONTROL         "Selectable by\nText Search",IDC_SELECTABLE_SRCH,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,95,193,64,18
+    CONTROL         "Use Markers",IDC_SHOWMARKERS,"Button",BS_AUTO3STATE | WS_TABSTOP,193,9,51,10
+    CONTROL         "Use Labels",IDC_SHOWLABELS,"Button",BS_AUTO3STATE | WS_TABSTOP,265,9,47,10
+    COMBOBOX        IDC_LBLFIELD,230,58,78,102,CBS_DROPDOWNLIST | WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    PUSHBUTTON      "Font...",IDC_LBLFONT,188,79,47,14
+    CONTROL         "        ",IDC_LBLCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,275,79,39,14
+    LISTBOX         IDC_LIST1,176,132,68,50,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_LIST2,264,132,68,50,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      ">",IDC_MOVERIGHT,247,143,14,12,BS_CENTER
+    PUSHBUTTON      "<",IDC_MOVELEFT,247,159,14,12,BS_CENTER
+    PUSHBUTTON      "Apply",IDC_APPLY,174,201,50,14
+    DEFPUSHBUTTON   "OK",IDOK,231,201,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,288,201,50,14
+    GROUPBOX        "Marker Style",IDC_STATIC,7,5,156,187,BS_CENTER
+    GROUPBOX        "Symbol Interior",IDC_STATIC,15,17,67,60,BS_CENTER
+    GROUPBOX        "Symbol Shape",IDC_STATIC,91,17,62,60,BS_CENTER
+    LTEXT           "Total Size:",IDC_STATIC,100,127,18,18
+    LTEXT           "Outline:",IDC_STATIC,16,111,27,10
+    CONTROL         "",IDC_COLORFRM,"Static",SS_GRAYFRAME,39,149,79,39
+    LTEXT           "Interior:",IDC_STATIC,91,111,30,10
+    LTEXT           "Text Color:   ",IDC_STATIC,251,77,22,15
+    GROUPBOX        "Label Style",IDC_STATIC,169,44,169,58,BS_CENTER
+    LTEXT           "Text Field for Labels:",IDC_STATIC,188,56,38,17
+    LTEXT           "Line Width:",IDC_STATIC,16,127,28,18
+    LTEXT           "Grayed checks prevents toggling symbols off.\nAn assigned scale range can also affect labeling.",IDC_STATIC,177,22,160,17
+    CTEXT           "Not Searched",IDC_STATIC,175,123,70,8
+    CTEXT           "Searched",IDC_STATIC,268,123,62,8
+    GROUPBOX        "Default Fields for Text Searches",IDC_STATIC,169,110,169,78,BS_CENTER
+    LTEXT           "Opacity:",IDC_ST_INTOPACITY,16,91,29,11
+    LTEXT           "Static",IDC_ST_OPACITY_SYM,89,80,26,8
+    CONTROL         "",IDC_OPACITY_SYM2,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,44,88,114,17
+END
+
+IDD_EXPAND_NTI DIALOGEX 0, 0, 283, 114
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "File %s"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Cancel",IDCANCEL,226,93,50,14
+    CONTROL         "",IDC_PROGRESS,"msctls_progress32",PBS_SMOOTH | WS_BORDER,49,71,227,9
+    DEFPUSHBUTTON   "Expand",IDOK,167,93,50,14
+    GROUPBOX        "",IDC_STATIC,7,7,269,45
+    LTEXT           "Record: 10 of 534",IDC_ST_PERCENT,51,58,193,8,NOT WS_VISIBLE
+    LTEXT           "This NTI file has been reduced in size for archival purposes.  It can be opened for viewing only after it's expanded to contain overviews. You will be given the opportunity to abort the process.",IDC_ST_MESSAGE,16,17,255,25
+    LTEXT           "Progress:",IDC_STATIC,14,71,32,8
+END
+
+IDD_SYMBOLS_POLY DIALOGEX 0, 0, 343, 195
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Symbols for %s"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT_VEC_SZ,56,26,29,13,ES_AUTOHSCROLL | ES_READONLY
+    CONTROL         "",IDC_SPINSIZE_VEC,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,84,26,11,12
+    CONTROL         "",IDC_FGCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,125,26,35,14
+    CONTROL         "",IDC_OPACITY_VEC,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,46,54,114,17
+    CONTROL         "Transparent",IDC_MCLEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,17,97,54,9
+    CONTROL         "Filled with Solid Color",IDC_MOPAQUE,"Button",BS_AUTORADIOBUTTON | BS_TOP | BS_MULTILINE | WS_TABSTOP,17,110,60,18
+    CONTROL         "",IDC_BKGCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,124,105,35,14
+    CONTROL         "",IDC_OPACITY_SYM,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,46,138,114,17
+    CONTROL         "Antialiasing (smooth edges)",IDC_ANTIALIAS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,43,168,100,10
+    CONTROL         "Use Labels",IDC_SHOWLABELS,"Button",BS_AUTO3STATE | WS_TABSTOP,227,11,69,10
+    COMBOBOX        IDC_LBLFIELD,233,72,85,102,CBS_DROPDOWNLIST | WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    PUSHBUTTON      "Font...",IDC_LBLFONT,186,94,47,14
+    CONTROL         "        ",IDC_LBLCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,281,94,35,14
+    CONTROL         "Use spatial index",IDC_USE_INDEX,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,187,135,69,8
+    EDITTEXT        IDC_EDIT_IDXDEPTH,287,133,25,12,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_SPIN_IDXDEPTH,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,312,133,11,12
+    PUSHBUTTON      "Apply",IDC_APPLY,190,174,44,14
+    DEFPUSHBUTTON   "OK",IDOK,241,174,44,14
+    PUSHBUTTON      "Cancel",IDCANCEL,292,174,44,14
+    LTEXT           "Line Color:",IDC_STATIC,103,24,20,18
+    LTEXT           "Fill Color:",IDC_ST_FILLCLR,101,104,20,17
+    LTEXT           "Line width (pixels):",IDC_STATIC,16,24,35,18
+    GROUPBOX        "Polygon Interiors",IDC_ST_POLYINT,7,83,162,75
+    LTEXT           "Text Color:   ",IDC_STATIC,254,93,23,17
+    GROUPBOX        "Label Style",IDC_STATIC,176,53,156,70,BS_LEFT
+    LTEXT           "Text Field for Labels:",IDC_STATIC,187,70,38,17
+    LTEXT           "A grayed check prevents toggling labels off.\nAn assigned scale range can also affect labeling.",IDC_STATIC,178,25,158,18
+    LTEXT           "Static",IDC_ST_OPACITY_SYM,90,129,26,8
+    LTEXT           "Fill Opacity:",IDC_ST_INTOPACITY,18,135,30,18
+    LTEXT           "Static",IDC_ST_OPACITY_VEC,90,45,23,9
+    LTEXT           "Line Opacity:",IDC_STATIC,17,51,26,16
+    GROUPBOX        "Outline Style",IDC_ST_POLYLINE,7,11,162,64
+    LTEXT           "Depth:",IDC_ST_DEPTH,263,135,23,8
+END
+
+IDD_EDITTITLE DIALOGEX 0, 0, 242, 58
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Layer Title"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_TITLE,21,14,198,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,64,37,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,127,37,50,14
+END
+
+IDD_BACKCOLOR DIALOGEX 0, 0, 207, 72
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,49,51,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,107,51,50,14
+    CONTROL         "        ",IDC_BKCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,147,19,35,14
+    LTEXT           "Background color for this layer set:",IDC_STATIC,20,22,119,12
+END
+
+IDD_SHOW_SHAPE DIALOGEX 0, 0, 403, 222
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_CONTROLPARENT
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "NAD83",IDC_DATUM1,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,11,7,38,8
+    CONTROL         "NAD27",IDC_DATUM2,"Button",BS_AUTORADIOBUTTON,11,19,38,8
+    EDITTEXT        IDC_EDIT_EAST,51,14,61,13,ES_AUTOHSCROLL | WS_GROUP
+    EDITTEXT        IDC_EDIT_NORTH,116,14,59,13,ES_AUTOHSCROLL
+    CONTROL         "Lat/Lon",IDC_TYPEGEO,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,179,7,41,8
+    CONTROL         "UTM",IDC_TYPEUTM,"Button",BS_AUTORADIOBUTTON,179,19,25,8
+    EDITTEXT        IDC_UTMZONE,207,19,17,12,ES_AUTOHSCROLL | NOT WS_BORDER
+    CONTROL         "",IDC_SPIN_UTMZONE,"msctls_updown32",UDS_ALIGNRIGHT | UDS_ARROWKEYS,224,18,10,12
+    PUSHBUTTON      "Reset Loc",IDC_RESTORE,243,13,42,14
+    PUSHBUTTON      "Relocate",IDC_RELOCATE,294,13,48,14
+    PUSHBUTTON      "Undo Reloc",IDC_UNDORELOCATE,347,13,48,14
+    CONTROL         "",IDC_POINT_TREE,"SysTreeView32",TVS_NOTOOLTIPS | WS_BORDER | WS_HSCROLL | WS_TABSTOP,229,135,46,50
+    EDITTEXT        IDC_EDIT_LABEL,54,203,92,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Search",IDC_FINDBYLABEL,151,203,37,14,WS_DISABLED
+    CONTROL         "",IDC_FIELD_LIST,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_OWNERDRAWFIXED | LVS_OWNERDATA | LVS_NOCOLUMNHEADER | LVS_NOSORTHEADER | WS_BORDER | WS_TABSTOP,280,135,45,50
+    CONTROL         "Mark pts\n on map",IDC_MARKSELECTED,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,195,201,51,17
+    PUSHBUTTON      "Reset Attr",IDC_RESETATTR,291,203,49,14
+    PUSHBUTTON      "Close",IDOK,345,203,49,14
+    LTEXT           "",IDC_STATIC_SPLIT_PANE,7,34,387,162,WS_BORDER | NOT WS_GROUP
+    CTEXT           "Easting",IDC_ST_EASTING,56,3,54,8
+    CTEXT           "Northing",IDC_ST_NORTHING,119,3,52,8
+    LTEXT           "Find:",IDC_ST_FINDBYLABEL,32,205,20,11
+    DEFPUSHBUTTON   "",IDC_ENTERKEY,349,205,9,10,NOT WS_VISIBLE | NOT WS_TABSTOP
+    LTEXT           "W",IDC_ST_DATUM,14,16,37,10,NOT WS_VISIBLE
+    LTEXT           "6000",IDC_ST_TOTAL,10,205,20,11
+    LTEXT           "No matches!",IDC_ST_NOMATCHES,7,205,45,12,NOT WS_VISIBLE
+    LTEXT           "Locked #10000",IDC_RECNO,307,3,70,8,NOT WS_GROUP,WS_EX_RIGHT
+END
+
+IDD_DBTEDITDLG DIALOGEX 0, 0, 392, 230
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+FONT 8, "MS Shell Dlg", 400, 0, 0x0
+BEGIN
+    LTEXT           "Placeholder for RTF-control",IDC_STATIC_PLACEMENT,0,0,392,211,NOT WS_VISIBLE
+    PUSHBUTTON      "Image Mode",IDC_IMAGEMODE,3,215,54,14
+    PUSHBUTTON      "OK",IDOK,290,215,48,14
+    PUSHBUTTON      "Cancel",IDCANCEL,341,215,48,14
+    CONTROL         "Toolbar",IDC_CHK_TOOLBAR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,235,217,40,10
+END
+
+IDD_EXPORT_SHAPE DIALOGEX 0, 0, 326, 195
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_PATHNAME,22,56,261,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDBROWSE,287,56,16,13
+    CONTROL         "Or use table layout:",IDC_USE_LAYOUT,"Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,205,77,78,8
+    EDITTEXT        IDC_PATH_SHPDEF,22,88,261,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BROWSE_SHPDEF,287,88,16,13
+    CONTROL         "Same as source:",IDC_COORD_SOURCE,"Button",BS_AUTORADIOBUTTON | WS_GROUP,23,124,67,10
+    CONTROL         "Same as view:",IDC_COORD_VIEW,"Button",BS_AUTORADIOBUTTON,23,139,67,10
+    CONTROL         "Initialize empty shapefile",IDC_INIT_EMPTY,"Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,192,107,103,10
+    CONTROL         "Retain deleted records",IDC_RETAIN_DELETED,"Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,192,120,103,10
+    CONTROL         "Exclude memo fields",IDC_EXCLUDE_MEMOS,"Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,192,133,103,10
+    CONTROL         "Force creation of template",IDC_GEN_TEMPLATE,"Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,192,146,106,10
+    CONTROL         "Add exported shapefile to layer set",IDC_ADD_LAYER,
+                    "Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,23,168,170,10
+    DEFPUSHBUTTON   "Export",IDOK,213,175,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,268,175,50,14
+    LTEXT           "",IDC_ST_MSGHDR,12,10,306,34
+    LTEXT           "Output file (extension .shp):",IDC_STATIC,24,46,123,8
+    GROUPBOX        "",IDC_STATIC,7,1,311,43
+    LTEXT           "Optional template to read (extension .tmpshp):",IDC_STATIC,24,77,165,8
+    GROUPBOX        "Output Coordinate System",IDC_STATIC,18,111,153,50
+    LTEXT           "UTM 16N NAD83",IDC_ST_SOURCE,97,125,68,10
+    LTEXT           "Degrees NAD83",IDC_ST_SOURCE2,97,140,68,9
+    CONTROL         "Create 2D shapefile ",IDC_MAKE_2D,"Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,192,159,104,10
+END
+
+IDD_IMAGE_VIEWER DIALOGEX 0, 0, 467, 388
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_CONTROLPARENT
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_THUMB_LIST,"SysListView32",LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_EDITLABELS | LVS_ALIGNLEFT | LVS_NOCOLUMNHEADER | WS_BORDER | WS_TABSTOP,0,0,400,72,WS_EX_CLIENTEDGE
+    PUSHBUTTON      "<<",IDC_BUTTONLEFT,401,3,29,14,BS_FLAT | WS_DISABLED,WS_EX_DLGMODALFRAME
+    PUSHBUTTON      ">>",IDC_BUTTONRIGHT,436,3,29,14,BS_FLAT | WS_DISABLED,WS_EX_DLGMODALFRAME
+    PUSHBUTTON      "Open File",IDOK,405,31,56,13,WS_DISABLED
+    PUSHBUTTON      "Save and Exit",IDC_SAVEANDEXIT,405,48,56,13
+    LTEXT           "",IDC_PREVIEW_PANE,0,73,467,315,SS_SUNKEN | NOT WS_GROUP
+    CTEXT           "",IDC_ST_COUNTER,412,19,42,8,SS_CENTERIMAGE
+END
+
+IDD_SELMARKER DIALOGEX 0, 0, 329, 200
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Symbol for Marking Selected Points"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_TAB_TYPEMARK,"SysTabControl32",WS_TABSTOP,7,4,157,190,WS_EX_ACCEPTFILES
+    CONTROL         "Transparent",IDC_MCLEAR,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,20,74,54,9
+    CONTROL         "Filled with Solid Color",IDC_MOPAQUE,"Button",BS_AUTORADIOBUTTON | BS_TOP | BS_MULTILINE | WS_TABSTOP,20,90,60,18
+    COMBOBOX        IDC_MSHAPE,98,74,51,67,CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP
+    CONTROL         "",IDC_OPACITY_SYM2,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,44,126,114,17
+    CONTROL         "",IDC_FGCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,48,150,35,14
+    CONTROL         "",IDC_BKGCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,121,150,35,14
+    EDITTEXT        IDC_MLINEW,48,172,36,13,ES_AUTOHSCROLL
+    CONTROL         "",IDC_SPIN_MLINEW,"msctls_updown32",UDS_WRAP | UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,72,173,12,12
+    EDITTEXT        IDC_MSIZE,120,172,36,13,ES_AUTOHSCROLL | ES_NUMBER
+    CONTROL         "",IDC_SPIN_MSIZE,"msctls_updown32",UDS_WRAP | UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,145,173,12,12
+    CONTROL         "        ",IDC_COLORFRM_BKGND,"Button",BS_OWNERDRAW | WS_TABSTOP,279,82,39,14
+    PUSHBUTTON      "Restore Defaults",IDC_RESTORE_DFLT,169,161,64,14
+    PUSHBUTTON      "Apply",IDC_APPLY,169,180,48,14
+    DEFPUSHBUTTON   "OK",IDOK,221,180,48,14
+    PUSHBUTTON      "Cancel",IDCANCEL,273,180,48,14
+    GROUPBOX        "Symbol Interior",IDC_ST_INTERIOR,16,60,67,53,BS_CENTER
+    GROUPBOX        "Symbol Shape",IDC_ST_SHAPE,92,60,62,53,BS_CENTER
+    LTEXT           "Size:",IDC_ST_MSIZE_LBL,98,174,16,11
+    LTEXT           "Outline:",IDC_ST_OUTLINE,16,152,29,10
+    LTEXT           "Line Width:",IDC_STATIC,16,169,28,18
+    CONTROL         "",IDC_COLORFRM,"Static",SS_GRAYFRAME,173,66,103,47
+    LTEXT           "This symbol will be used to mark all points appearing in the Selected Points dialog. It will overlap symbols assigned to specific layers.",IDC_ST_ALLPOINTS,15,26,146,26
+    LTEXT           "Interior:",IDC_ST_BKGCOLOR_LBL,88,152,28,10
+    LTEXT           "This symbol will be used to mark the point highlighted in the Selected Points dialog. It will overlap all other symbols.",IDC_ST_HIGHLIGHTED,15,26,144,28
+    LTEXT           "Static",IDC_ST_OPACITY_SYM,90,118,26,8
+    LTEXT           "Opacity:",IDC_ST_INTOPACITY2,16,129,27,11
+    CTEXT           "All Selected",IDC_ST_ALLPOINTS_LBL,180,54,44,8
+    LTEXT           "Highlighted",IDC_ST_HIGHLIGHTED_LBL,230,54,44,8
+    LTEXT           "\nStyle used for the GPS track line if enabled:",IDC_ST_TRACKLINE,14,27,146,26
+END
+
+IDD_EDITOR_PREFS DIALOGEX 0, 0, 307, 183
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Text Editor Preferences"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "        ",IDC_TEXTCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,60,38,35,14
+    PUSHBUTTON      "Font...",IDC_FONT,103,38,44,14
+    CONTROL         "        ",IDC_BKGNDCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,60,59,35,14
+    CONTROL         "Display toolbar initially for memos already containing rich text (RTF format)",IDC_RTFTOOLBAR,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,33,82,257,9
+    CONTROL         "Open empty memo fields in rich text mode (RTF toolbar initially displayed)",IDC_RTFEMPTY,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,33,97,258,9
+    PUSHBUTTON      "Options...",IDC_TXTCOMP,96,153,49,14
+    DEFPUSHBUTTON   "OK",IDOK,191,167,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,250,167,50,14
+    LTEXT           "The text editor is used for the display and editing of shapefile memo fields. Unless created by this program, shapefiles are very unlikely to have such fields.",IDC_STATIC,7,6,293,22
+    LTEXT           "Text Color:   ",IDC_STATIC,16,40,39,15
+    LTEXT           "Back Color:   ",IDC_STATIC,16,61,38,13
+    CONTROL         "",IDC_COLORFRM,"Static",SS_BLACKFRAME,157,38,135,34
+    LTEXT           "NOTE: The format of individual memos can be changed to or from rich text via the editor's right-click popup menu. The second option should be left unchecked if plain text (no bold, italics, etc.) is usually sufficient for storing the data.",IDC_STATIC,15,114,273,25
+    GROUPBOX        "",IDC_STATIC,7,25,293,122
+    LTEXT           "Text compare program:\nWinMerge.exe",IDC_ST_TXTCOMP,14,153,81,17
+END
+
+IDD_SCALERANGE DIALOGEX 0, 0, 321, 190
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Scale Ranges for %s"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "Do NOT show when..",IDC_LAYER_NOSHOW,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,17,29,82,10
+    CONTROL         "Show at all scales",IDC_LAYER_SHOWALL,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,17,46,71,10
+    EDITTEXT        IDC_LAYER_ZOOMOUT,243,27,63,14,ES_AUTOHSCROLL | WS_GROUP
+    EDITTEXT        IDC_LAYER_ZOOMIN,243,46,63,14,ES_AUTOHSCROLL
+    CONTROL         "Do NOT label when...",IDC_LABEL_NOSHOW,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,17,99,85,10
+    CONTROL         "Label when layer\nis displayed",IDC_LABEL_SHOWALL,
+                    "Button",BS_AUTORADIOBUTTON | BS_MULTILINE | WS_TABSTOP,17,115,84,15
+    EDITTEXT        IDC_LABEL_ZOOMOUT,243,97,63,14,ES_AUTOHSCROLL | WS_GROUP
+    EDITTEXT        IDC_LABEL_ZOOMIN,243,116,63,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,207,169,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,264,169,50,14
+    GROUPBOX        "Scale Range for Layer Display",IDC_STATIC,7,9,307,62
+    GROUPBOX        "Scale Range for Labeling",IDC_STATIC,7,80,307,64
+    RTEXT           "zoomed OUT to scales smaller than 1:",IDC_STATIC,114,29,124,8
+    RTEXT           "..or zoomed IN to scales larger than 1:",IDC_STATIC,114,48,124,8
+    RTEXT           "zoomed OUT to scales smaller than 1:",IDC_STATIC,113,99,124,8
+    RTEXT           "..or zoomed IN to scales larger than 1:",IDC_STATIC,113,118,124,8
+    LTEXT           "Enter larger numbers for smaller scales, or zero to remove corresponding limit.\nThe view's current scale assuming 96 dpi screen resolution is 1:%u.",IDC_ST_CURRENTSCALE,14,148,287,18
+END
+
+IDD_OPTIONS_GE DIALOGEX 0, 0, 371, 226
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "KML Options"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_PATHNAME,18,17,323,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BROWSE,345,17,16,14
+    EDITTEXT        IDC_DESCRIPTION,18,55,346,105,ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY | ES_WANTRETURN | WS_VSCROLL
+    COMBOBOX        IDC_DESC_FIELD,94,166,78,102,CBS_DROPDOWNLIST | WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    PUSHBUTTON      "Append",IDC_APPEND,179,165,43,14
+    PUSHBUTTON      "Clear All",IDC_CLEAR_ALL,275,165,43,14
+    PUSHBUTTON      "<",IDC_PREV,89,192,17,14
+    PUSHBUTTON      ">",IDC_NEXT,111,192,17,14
+    PUSHBUTTON      "Remove",IDC_REMOVE_REC,138,192,43,14
+    PUSHBUTTON      "Fly To",IDOK,220,205,44,14
+    PUSHBUTTON      "Save",IDC_SAVE,270,205,44,14
+    PUSHBUTTON      "Cancel",IDCANCEL,319,205,44,14
+    GROUPBOX        "KML File to Write",IDC_STATIC,7,4,357,36
+    GROUPBOX        "Description",IDC_ST_DESC,7,42,357,145
+    LTEXT           "Append value of field:",IDC_STATIC,15,168,75,8
+    LTEXT           "Rec:",IDC_STATIC,15,195,17,8
+    LTEXT           "100 of 100",IDC_ST_RECORD,37,195,48,8
+    PUSHBUTTON      "Clear Last",IDC_CLEAR_LAST,227,165,43,14,0,WS_EX_TRANSPARENT
+END
+
+IDD_ADVANCED_SRCH DIALOGEX 0, 0, 389, 220
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LISTBOX         IDC_LIST1,7,18,95,83,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    PUSHBUTTON      ">",IDC_MOVERIGHT,105,26,14,11,BS_CENTER
+    PUSHBUTTON      "<",IDC_MOVELEFT,105,41,14,11,BS_CENTER
+    PUSHBUTTON      ">>",IDC_MOVEALL_RIGHT,105,67,14,11,BS_CENTER
+    PUSHBUTTON      "<<",IDC_MOVEALL_LEFT,105,82,14,11,BS_CENTER
+    LISTBOX         IDC_LIST2,121,18,95,83,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    LISTBOX         IDC_LIST3,226,18,68,83,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      ">",IDC_MOVERIGHT2,297,26,14,11,BS_CENTER
+    PUSHBUTTON      "<",IDC_MOVELEFT2,297,41,14,11,BS_CENTER
+    PUSHBUTTON      ">>",IDC_MOVEALL_RIGHT2,297,67,14,11,BS_CENTER
+    PUSHBUTTON      "<<",IDC_MOVEALL_LEFT2,297,82,14,11,BS_CENTER
+    LISTBOX         IDC_LIST4,314,18,68,83,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Select matched items",IDC_SELMATCHED,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,14,123,88,10
+    CONTROL         "Select unmatched items",IDC_SELUNMATCHED,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,14,139,88,10
+    CONTROL         "Add matched to selection",IDC_ADDMATCHED,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,107,124,104,10
+    CONTROL         "Add unmatched to selection",IDC_ADDUNMATCHED,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,107,140,105,10
+    CONTROL         "Keep matched",IDC_KEEPMATCHED,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,229,123,67,10
+    CONTROL         "Keep unmatched",IDC_KEEPUNMATCHED,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,229,139,66,10
+    PUSHBUTTON      "Restore Default",IDC_LOAD_DEFAULT,316,121,59,12
+    PUSHBUTTON      "Save as Default",IDC_SAVE_DEFAULT,316,138,59,12
+    COMBOBOX        IDC_FIND_COMBO,15,175,171,94,CBS_DROPDOWN | CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Match case\nand accents",IDC_SEL_MATCHCASE,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,196,171,52,17
+    CONTROL         "Match whole words",IDC_SEL_WHOLEWORDS,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,253,171,57,17
+    CONTROL         "Restrict search\nto view extent",IDC_SEL_VIEWONLY,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,314,171,68,17
+    DEFPUSHBUTTON   "Search",IDOK,261,199,57,14
+    PUSHBUTTON      "Close",IDCANCEL,324,199,57,14
+    CTEXT           "Layers Not Searched",IDC_STATIC,7,6,95,9
+    CTEXT           "Layers Searched",IDC_STATIC,123,6,91,9
+    LTEXT           "Find:",IDC_STATIC,16,165,22,8
+    GROUPBOX        "Search Project",IDC_STATIC,7,108,206,52,BS_CENTER
+    CTEXT           "Fields Not Searched",IDC_STATIC,225,6,70,9
+    CTEXT           "Fields Searched",IDC_STATIC,316,6,64,9
+    GROUPBOX        "Search Selection",IDC_STATIC,221,108,80,52,BS_CENTER
+    LTEXT           "No matches found!",IDC_ST_NOMATCHES,17,194,138,8,NOT WS_VISIBLE
+    GROUPBOX        "Layers && Fields",IDC_STATIC,309,108,73,52,BS_CENTER
+END
+
+IDD_EXPORTIMG DIALOGEX 0, 0, 350, 198
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Export Current View as PNG Image File"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "Output file:",IDC_STATIC,17,8,99,8
+    EDITTEXT        IDC_PATHNAME,13,18,284,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDBROWSE,300,17,16,14
+    GROUPBOX        "Image Size",IDC_STATIC,7,35,336,55
+    LTEXT           "NOTE:  The current view extent contains no image layers.",IDC_ST_FULLRES,13,47,323,9
+    LTEXT           "Width (pixels):",IDC_STATIC,13,69,49,8
+    EDITTEXT        IDC_WIDTH,64,67,56,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Height:",IDC_STATIC,127,69,26,8
+    EDITTEXT        IDC_HEIGHT,154,67,56,14,ES_AUTOHSCROLL | WS_DISABLED
+    LTEXT           "Pixel Count:",IDC_STATIC,216,69,40,10
+    EDITTEXT        IDC_KBSIZE,259,67,55,14,ES_AUTOHSCROLL | WS_DISABLED
+    GROUPBOX        "",IDC_ST_RATIO_BOX,7,96,336,52
+    LTEXT           "If set less than 100%, the apparent sizes of text, markers and lines in the image will be smaller than in a screen capture of the currrent view, causing less symbol overlap in large images.",IDC_ST_FULLRES2,13,107,323,19
+    CONTROL         "",IDC_RATIO,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,8,127,155,17
+    LTEXT           "100%",IDC_ST_RATIO,167,130,23,9
+    LTEXT           "Progress:",IDC_ST_PROGRESS,13,159,32,8
+    CONTROL         "",IDC_PROGRESS,"msctls_progress32",PBS_SMOOTH | WS_BORDER,71,160,272,9
+    CONTROL         "Include scale bar",IDC_INC_SCALE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,81,178,76,10
+    CONTROL         "Open image",IDC_OPEN_IMAGE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,168,178,59,10
+    DEFPUSHBUTTON   "OK",IDOK,237,177,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,293,177,50,14
+    LTEXT           "1 : 12000000",IDC_ST_DENOM,271,130,63,8
+    LTEXT           "Scale of symbol equivalence:",IDC_STATIC,211,127,57,15
+END
+
+IDD_GEDEFAULTSDLG DIALOGEX 0, 0, 317, 169
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Google Earth (KML) Launch Options"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    EDITTEXT        IDC_RANGE,49,43,41,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_SINGLE,56,79,239,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_MULTIPLE,56,99,239,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MSIZE,50,128,33,13,ES_AUTOHSCROLL | ES_READONLY | ES_NUMBER
+    CONTROL         "",IDC_SPIN_MSIZE,"msctls_updown32",UDS_WRAP | UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,75,128,11,12
+    EDITTEXT        IDC_LSIZE,130,128,33,13,ES_AUTOHSCROLL | ES_READONLY | ES_NUMBER
+    CONTROL         "",IDC_SPIN_LSIZE,"msctls_updown32",UDS_WRAP | UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,155,128,11,12
+    PUSHBUTTON      "Load Defaults",IDC_LOAD_DFLTS,144,151,53,14
+    DEFPUSHBUTTON   "OK",IDOK,201,151,53,14
+    PUSHBUTTON      "Cancel",IDCANCEL,259,151,53,14
+    LTEXT           "Range in\nmeters:",IDC_STATIC,15,41,30,17
+    LTEXT           "Range is the horizontal extent of the initial view in Google Earth when you fly to a single point.",IDC_STATIC,96,41,185,18
+    LTEXT           "Icon Size:",IDC_STATIC,16,129,32,8
+    LTEXT           "These program settings are used to construct the KML sent to Google Earth when you select ""Locate in Google Earth"" via a right-click pop-up menu.",IDC_STATIC,15,14,282,21
+    GROUPBOX        "Placemark icon URLs",IDC_STATIC,9,67,303,53
+    LTEXT           "Single Pt:",IDC_STATIC,16,81,32,8
+    LTEXT           "Multiple Pt:",IDC_STATIC,16,101,38,8
+    LTEXT           "Label Size:",IDC_STATIC,93,129,36,8
+END
+
+IDD_SELEDITED DIALOGEX 0, 0, 254, 120
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Select Modified Point Features"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "Location was edited",IDC_EDIT_SHP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,22,26,85,10
+    CONTROL         "Attributes were edited",IDC_EDIT_DBF,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,22,41,90,10
+    CONTROL         "Point was added",IDC_EDIT_ADD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,154,26,90,10
+    CONTROL         "Point was deleted",IDC_EDIT_DEL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,154,41,90,10
+    CONTROL         "Select only points within current view extent.",IDC_VIEW_ONLY,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,22,71,117,22
+    CONTROL         "Add to selection",IDC_ADDTOSEL,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,154,71,82,22
+    DEFPUSHBUTTON   "OK",IDOK,141,100,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,197,100,50,14
+    GROUPBOX        "Type of Modification",IDC_STATIC,7,10,240,52
+END
+
+IDD_UPDATED DIALOGEX 0, 0, 302, 148
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Name for Signing Timestamps"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_LOCAL_TIME,9,58,92,13,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP,WS_EX_STATICEDGE
+    EDITTEXT        IDC_EDIT_SOURCE,110,92,149,12,ES_AUTOHSCROLL | NOT WS_BORDER,WS_EX_STATICEDGE
+    CONTROL         "Suppress TS updates when modifying records and enable advanced features.",IDC_SUPPRESS_TS,
+                    "Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,14,111,273,10
+    CONTROL         "Preserve name across program sessions.",IDC_PRESERVE_NAME,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,123,150,10
+    DEFPUSHBUTTON   "OK",IDOK,186,127,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,243,127,50,14
+    LTEXT           "If a shapefile has attribute fields named either UPDATED_ or CREATED_, the program will automatically update them when records are added or edited. The fields store a UTC date and time (coordinated universal time) with your name appended.",IDC_ST_DESC,10,8,282,35
+    LTEXT           "Local time:",IDC_STATIC,11,48,38,9
+    LTEXT           "UTC time:",IDC_STATIC,11,82,61,8
+    EDITTEXT        IDC_UTC_TIME,9,92,92,13,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER | NOT WS_TABSTOP,WS_EX_STATICEDGE
+    LTEXT           "Please enter your full name:",IDC_STATIC,110,82,121,8
+    LTEXT           "If this is not the correct time, you can Cancel and try resetting your computer's clock.",IDC_STATIC,110,55,173,16
+END
+
+IDD_DBFGRID_DIALOG DIALOGEX 0, 0, 475, 244
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+EXSTYLE WS_EX_CONTROLPARENT
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_DBFLIST,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_OWNERDATA | WS_TABSTOP,0,0,475,227
+    CONTROL         "Allow edits",IDC_ALLOW_EDITS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,299,231,50,10
+    PUSHBUTTON      "Reload",IDC_RELOAD,356,228,50,14
+    DEFPUSHBUTTON   "Close",IDOK,413,228,50,14
+    LTEXT           "",IDC_ST_SELCOUNT,5,232,137,8
+END
+
+IDD_COLUMNS DIALOGEX 0, 0, 129, 313
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_THICKFRAME
+CAPTION "Column Visibility"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_LISTCOLS,"SysListView32",LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,0,0,127,278
+    PUSHBUTTON      "Reset",IDC_RESETROWS,91,281,27,12
+    DEFPUSHBUTTON   "OK",IDOK,21,297,40,14
+    PUSHBUTTON      "Cancel",IDCANCEL,69,297,40,14
+    LTEXT           "Drag to reorder columns",IDC_ST_DRAGNOTE,8,283,77,8
+END
+
+IDD_MSGCHECK DIALOGEX 0, 0, 277, 110
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Confirm Copy Operation"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,167,89,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,220,89,50,14
+    LTEXT           "Static",IDC_ST_MESSAGE,7,10,263,52
+    CONTROL         "Don't ask me this again for this target",IDC_CHK_NOTAGAIN,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,93,159,10
+END
+
+IDD_EDITIMAGE DIALOGEX 0, 0, 338, 186
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Image Properties"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_CAPTION,83,66,225,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_DESCRIPTION,11,96,318,66,ES_MULTILINE | ES_WANTRETURN | WS_VSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,226,167,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,281,167,50,14
+    EDITTEXT        IDC_PATHNAME,20,23,303,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
+    LTEXT           "Thumbnail Caption:",IDC_STATIC,14,68,64,10
+    LTEXT           "Description:",IDC_STATIC,15,85,57,8
+    LTEXT           "Size:",IDC_ST_SIZE,22,39,298,8
+    GROUPBOX        "",IDC_STATIC,7,13,324,42
+    LTEXT           "File Information:",IDC_STATIC,15,6,70,8
+END
+
+IDD_IMGZOOM DIALOGEX 0, 0, 257, 104
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "Zoom to image if added as a layer",IDC_ZOOMTOADDED,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,61,47,127,10
+    PUSHBUTTON      "Add Layer",IDYES,27,83,60,14
+    PUSHBUTTON      "New Document",IDNO,97,83,60,14
+    PUSHBUTTON      "Cancel",IDCANCEL,166,83,60,14
+    LTEXT           "This image is georeferenced with a compatible coordinate system. You can either add it as a new layer or open it as a separate document.",IDC_STATIC,11,15,228,29
+END
+
+IDD_MEMUSAGEDLG DIALOGEX 0, 0, 249, 111
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "WallsMap - Memory Usage"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "Close",IDOK,191,93,50,14
+    LTEXT           "",IDC_ST_STATS,7,7,234,82,SS_SUNKEN
+END
+
+IDD_LINKTEST DIALOGEX 0, 0, 361, 163
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    COMBOBOX        IDC_LOOKIN,7,24,72,80,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_BROKEN_LINK,7,60,326,12,ES_AUTOHSCROLL | ES_READONLY | WS_GROUP
+    EDITTEXT        IDC_REPLACEMENT,7,93,326,12,ES_AUTOHSCROLL | WS_GROUP
+    PUSHBUTTON      "...",IDC_BROWSE,334,93,16,12
+    DEFPUSHBUTTON   "Skip to Next",IDC_SKIPNEXT,12,142,66,14
+    PUSHBUTTON      "Replace",IDC_REPLACE,81,142,66,14,WS_DISABLED | WS_GROUP
+    PUSHBUTTON      "Replace All Similar",IDC_REPLACEALL,150,142,66,14,WS_DISABLED | WS_GROUP
+    PUSHBUTTON      "Create Log",IDC_CREATE_LOG,235,126,55,14,WS_DISABLED | WS_GROUP
+    PUSHBUTTON      "Select All",IDOK,235,142,55,14,WS_DISABLED | WS_GROUP
+    PUSHBUTTON      "Close",IDCANCEL,294,142,55,14
+    LTEXT           "Look in:",IDC_STATIC,12,14,26,8
+    LTEXT           "Broken link:",IDC_STATIC,12,50,38,8
+    LTEXT           "Replacement link:",IDC_STATIC,12,83,173,8
+    CONTROL         "Msg",IDC_ST_MSG,"Static",SS_LEFTNOWORDWRAP | WS_GROUP,11,114,341,8
+    LTEXT           "This function finds broken image links and repairs those for files that have moved if the layer is editable. When the Replace buttons are disabled, click the browse button [...] below to locate the file shown in the broken link.",IDC_ST_HELP,92,16,259,27
+    GROUPBOX        "",IDC_STATIC,86,7,267,42
+    LTEXT           "",IDC_ST_COUNT,11,126,176,8
+END
+
+IDD_MSGEXTENT DIALOGEX 0, 0, 253, 89
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Point Not Within Initialization Layer's Extent"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,195,68,50,14
+    LTEXT           "Static",IDC_ST_MESSAGE,7,9,238,44
+    CONTROL         "No prompting again for this field during this session",IDC_CHK_NOTAGAIN,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,58,208,10
+END
+
+IDD_ZIPDLG DIALOGEX 0, 0, 333, 155
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    EDITTEXT        IDC_PATHNAME,43,70,255,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDBROWSE,308,70,18,12
+    CONTROL         "Include only shapefiles",IDC_INC_SHAPEFILES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,113,86,10
+    CONTROL         "Exclude polygon and polyline shapefiles",IDC_INC_POINTS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,129,153,10
+    CONTROL         "Include unchecked layers",IDC_INC_HIDDEN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,108,113,96,10
+    CONTROL         "Include files linked to memos",IDC_INC_LINKED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,210,113,109,10
+    DEFPUSHBUTTON   "OK",IDOK,215,135,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,276,135,50,14
+    LTEXT           "This operation creates a ZIP archive containing a project script (*.NTL) and associated layer files. All files must reside in a folder branch whose parent is the parent of the script's folder.",IDC_STATIC,10,17,308,20
+    LTEXT           "NOTE: Any local files that are targets of links in memo fields are also optionally included.",IDC_STATIC,10,38,291,11
+    LTEXT           "Archive:",IDC_STATIC,11,71,29,9
+    GROUPBOX        "",IDC_STATIC,5,7,321,48
+    LTEXT           "",IDC_ST_FILEMSG,47,90,260,8
+    LTEXT           "",IDC_ST_ADDING,11,90,32,8
+END
+
+IDD_RELOAD DIALOGEX 0, 0, 270, 100
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Reload Table for %s"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "Undeleted only",IDC_UNDELETED,"Button",BS_AUTORADIOBUTTON | WS_GROUP,14,53,62,10
+    CONTROL         "Deleted only",IDC_DELETED,"Button",BS_AUTORADIOBUTTON,79,53,54,10
+    CONTROL         "All records",IDC_ALLRECORDS,"Button",BS_AUTORADIOBUTTON,138,53,50,10
+    CONTROL         "Restore default layout",IDC_KEEP_LAYOUT,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_GROUP | WS_TABSTOP,194,47,63,22
+    DEFPUSHBUTTON   "OK",IDOK,80,79,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,138,79,50,14
+    LTEXT           "Normally only undeleted records are loaded when a table is initially opened. Which category would you like to include in the table?\n\nDeleted records in this layer: %u",IDC_ST_DESC,14,11,244,35
+END
+
+IDD_WEBMAP_FORMAT DIALOGEX 0, 0, 357, 160
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "URL for Web Map Navigation"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    COMBOBOX        IDC_URLCOMBO,3,29,351,72,CBS_SIMPLE | CBS_AUTOHSCROLL | CBS_DISABLENOSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Update Item",IDC_UPDATE,115,95,60,14,WS_DISABLED
+    PUSHBUTTON      "Restore Original",IDC_RESET,181,95,60,14
+    CONTROL         "Save as Default ""Fly to"" Selection",IDC_SAVEASDFLT,
+                    "Button",BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,100,139,123,14
+    DEFPUSHBUTTON   "OK",IDOK,234,139,55,14
+    PUSHBUTTON      "Cancel",IDCANCEL,293,139,55,14
+    LTEXT           "Update Item will replace the highlighted list item with an edited version, saving it as a program preference. Restore Original will replace it with the program's built-in default at that position.",IDC_STATIC,8,115,342,20
+    LTEXT           "Select a URL template from the list below. Optionally you can use the top edit box to enter a different URL or to modify the parameters.  Press F1 for more information.",IDC_ST_INFO,8,6,346,21
+END
+
+IDD_SYMBOLS_IMG DIALOGEX 0, 0, 284, 154
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTROLPARENT
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      ">>",IDC_MAX_OPACITY,209,20,17,14,BS_CENTER | BS_TOP
+    CONTROL         "",IDC_OPACITY_IMG,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,92,20,118,17
+    CONTROL         "Preview",IDC_PREVIEW,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,237,23,37,10
+    CONTROL         "Treat this color in the image as transparent:",IDC_USE_TRANSCLR,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,72,155,10
+    CONTROL         "",IDC_TRANSCLR,"Button",BS_OWNERDRAW | WS_TABSTOP,175,70,35,14
+    CONTROL         "",IDC_MAKE_SIMILAR,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,89,9,10
+    CONTROL         "2",IDC_TOLERANCE,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,84,104,20,10
+    CONTROL         "4",IDC_TOLERANCE2,"Button",BS_AUTORADIOBUTTON,114,104,20,10
+    CONTROL         "8",IDC_TOLERANCE3,"Button",BS_AUTORADIOBUTTON,144,104,20,10
+    CONTROL         "16",IDC_TOLERANCE4,"Button",BS_AUTORADIOBUTTON,174,104,24,10
+    CONTROL         "32",IDC_TOLERANCE5,"Button",BS_AUTORADIOBUTTON,204,104,24,10
+    CONTROL         "64",IDC_TOLERANCE6,"Button",BS_AUTORADIOBUTTON,234,104,24,10
+    DEFPUSHBUTTON   "Accept",IDOK,182,136,44,14
+    PUSHBUTTON      "Close",IDCANCEL,233,136,44,14
+    LTEXT           "Static",IDC_ST_OPACITY_IMG,140,11,23,9
+    LTEXT           "Overall image opacity:",IDC_STATIC,14,22,74,12
+    LTEXT           "Use this option to hide solid-color margins that may obscure other layers.",IDC_STATIC,15,57,243,12
+    GROUPBOX        "Transparent Color",IDC_STATIC,7,43,270,90
+    LTEXT           "Error tolerance:",IDC_STATIC,26,104,52,8
+    LTEXT           "(Differences less than this are ignored when comparing 8-bit color bands.)",IDC_STATIC,24,117,244,8
+    LTEXT           "Also make very similar colors transparent:   (24-bit color images only)",IDC_STATIC,27,90,242,8
+END
+
+IDD_EXPORT_XLS DIALOGEX 0, 0, 300, 137
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_PATHNAME,12,65,254,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDBROWSE,271,65,16,13
+    CONTROL         "Convert RTF to plain text",IDC_STRIP_RTF,"Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,14,91,100,10
+    EDITTEXT        IDC_MAX_CHARS,225,91,44,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,190,116,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,243,116,50,14
+    LTEXT           "Output file (extension .xls):",IDC_STATIC,15,55,123,8
+    LTEXT           "Max chars to export from each memo field:",IDC_STATIC,149,88,72,18
+    CONTROL         "",IDC_PROGRESS,"msctls_progress32",PBS_SMOOTH | NOT WS_VISIBLE | WS_BORDER,13,113,156,9
+    LTEXT           "This operation will export the selected records as an Excel spreadsheet using the current layout. (To exclude or rearrange columns, open the Column Visibilty dialog by right-clicking the table's header.)",IDC_STATIC,15,14,270,27
+    GROUPBOX        "",IDC_STATIC,7,7,286,38
+    LTEXT           "",IDC_ST_MSG,15,114,169,8,NOT WS_VISIBLE
+END
+
+IDD_CENTER_VIEW DIALOGEX 0, 0, 288, 81
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Center View on Point"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Copy",IDC_COPYLOC,12,14,32,12
+    PUSHBUTTON      "Paste",IDC_PASTELOC,12,29,32,12
+    PUSHBUTTON      "Reset",IDC_RESTORE,12,44,32,12
+    CONTROL         "NAD83",IDC_DATUM1,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,52,17,38,8
+    CONTROL         "NAD27",IDC_DATUM2,"Button",BS_AUTORADIOBUTTON,52,29,38,8
+    EDITTEXT        IDC_EDIT_EAST,92,24,61,13,ES_AUTOHSCROLL | WS_GROUP
+    EDITTEXT        IDC_EDIT_NORTH,157,24,59,13,ES_AUTOHSCROLL
+    CONTROL         "Lat/Lon",IDC_TYPEGEO,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,220,17,41,8
+    CONTROL         "UTM",IDC_TYPEUTM,"Button",BS_AUTORADIOBUTTON,220,29,25,8
+    EDITTEXT        IDC_UTMZONE,248,29,17,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
+    CONTROL         "",IDC_SPIN_UTMZONE,"msctls_updown32",UDS_ALIGNRIGHT | UDS_ARROWKEYS,265,28,10,12
+    CONTROL         "Mark",IDC_MARK_PT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,39,62,31,10
+    PUSHBUTTON      "Zoom 4X",IDC_ZOOM4X,76,60,50,14
+    DEFPUSHBUTTON   "OK",IDOK,131,60,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,186,60,50,14
+    CTEXT           "Easting",IDC_ST_EASTING,97,13,54,8
+    CTEXT           "Northing",IDC_ST_NORTHING,160,13,52,8
+    LTEXT           "W",IDC_ST_DATUM,55,26,37,10,NOT WS_VISIBLE
+    CTEXT           "Out of Zone",IDC_ST_OUTOFZONE,103,41,102,11,NOT WS_VISIBLE
+END
+
+IDD_COMPARESHP DIALOGEX 0, 0, 401, 215
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Compare Revised Shapefiles with Reference"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "",IDC_ST_SCANNING,145,188,140,10
+    LISTBOX         IDC_SHP_CAND,13,65,174,81,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    LISTBOX         IDC_SHP_COMP,214,65,174,81,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Select...",IDC_SEL_IGNORED,297,27,50,13
+    PUSHBUTTON      ">",IDC_MOVERIGHT,193,72,14,11,BS_CENTER | WS_GROUP
+    PUSHBUTTON      "<",IDC_MOVELEFT,193,87,14,11,BS_CENTER
+    PUSHBUTTON      ">>",IDC_MOVEALL_RIGHT,193,113,14,11,BS_CENTER
+    PUSHBUTTON      "<<",IDC_MOVEALL_LEFT,193,128,14,11,BS_CENTER
+    CONTROL         "Include shapefile",IDC_INCLUDE_SHP,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,22,166,42,19
+    CONTROL         "Include new linked files",IDC_INCLUDE_LINKED,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,69,166,50,19
+    CONTROL         "Create updated reference",IDC_INCLUDE_ALL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,22,188,103,10
+    EDITTEXT        IDC_PATHNAME,143,167,230,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BROWSE,375,167,16,13,BS_TOP
+    CONTROL         "Log outdated records",IDC_LOGOUTDATED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,145,188,139,10
+    DEFPUSHBUTTON   "Compare",IDOK,289,198,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,344,198,50,14
+    LTEXT           "Key Field",IDC_STATIC,200,15,64,8,SS_CENTERIMAGE
+    LTEXT           "Reference Shapefile",IDC_STATIC,16,15,106,8
+    LTEXT           "Candidate Shapefiles",IDC_STATIC,16,52,163,8
+    LTEXT           "Shapefiles to Compare with Reference",IDC_STATIC,219,52,131,8
+    EDITTEXT        IDC_SHP_REF,14,28,174,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
+    EDITTEXT        IDC_SHP_KEY,200,28,83,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_TABSTOP
+    LTEXT           "Base pathname (for log, shapefile, and zip output):",IDC_STATIC,145,155,217,10
+    GROUPBOX        "Create ZIP with revised data?",IDC_STATIC,14,155,123,50
+    LTEXT           "Ignored Fields:",IDC_STATIC,299,15,49,8,SS_CENTERIMAGE
+    LTEXT           "0",IDC_ST_IGNORED,352,15,22,8
+END
+
+IDD_UPDZIP DIALOGEX 0, 0, 287, 96
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Creating UPD_Veni_2013-04-05.zip"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "The ZIP will contain an updated version of the reference and 133 linked files.",IDC_ST_STATUS,8,16,273,8
+    LTEXT           "The linked files have a total size of 123 KB uncompressed.",IDC_ST_STATUS2,8,29,273,8
+    LTEXT           "",IDC_ST_STATUS3,8,42,273,8
+    LTEXT           "Select OK to proceed...",IDC_ST_COMPLETE,8,54,246,8
+    CONTROL         "Add shapefile to project",IDC_ADDSHP,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,54,75,98,8
+    DEFPUSHBUTTON   "OK",IDOK,162,73,46,14
+    PUSHBUTTON      "Cancel",IDCANCEL,213,73,46,14
+END
+
+IDD_GPS_PORTSETTING DIALOGEX 0, 0, 257, 119
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_TOPMOST
+CAPTION "GPS Port Connection"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    COMBOBOX        IDC_PORT,32,15,74,94,CBS_DROPDOWNLIST | CBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_BAUD,137,15,48,81,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Open Port",IDC_TEST,193,14,60,14,WS_DISABLED
+    PUSHBUTTON      "Pause Logging",IDC_PAUSELOG,193,40,60,14,WS_DISABLED
+    PUSHBUTTON      "Clear Log",IDC_CLEARLOG,193,72,60,14,WS_DISABLED
+    PUSHBUTTON      "Copy Lat/lon",IDC_COPYLOC,4,102,49,14,WS_DISABLED
+    PUSHBUTTON      "Minimize",IDC_MINIMIZE,149,102,49,14
+    PUSHBUTTON      "Close",IDCANCEL,203,102,49,14
+    LTEXT           "Port:",IDC_STATIC,12,16,16,8
+    LTEXT           "Baud:",IDC_STATIC,114,16,20,8
+    LTEXT           "COM1 is available but unopened.",IDC_ST_STATUS,12,35,111,8
+    LTEXT           "",IDC_ST_POSITION,27,63,104,8
+    LTEXT           "Fix:",IDC_STATIC,11,63,13,8
+    GROUPBOX        "",IDC_ST_GROUP,3,49,187,49,BS_CENTER
+    LTEXT           "",IDC_ST_SATSUSED,51,80,72,8
+    LTEXT           "Sats Used:",IDC_STATIC,11,80,37,8
+    LTEXT           "HDOP:",IDC_STATIC,127,80,24,8
+    LTEXT           "",IDC_ST_HDOP,154,80,25,8
+    LTEXT           "Alt:",IDC_STATIC,137,63,12,8
+    LTEXT           "",IDC_ST_ALT,154,63,32,8
+    LTEXT           "Track pts:",IDC_ST_TRACKLBL,129,35,33,8,NOT WS_VISIBLE
+    LTEXT           "",IDC_ST_TRACKCNT,165,35,24,8
+    PUSHBUTTON      "Save Log...",IDC_SAVELOG,193,56,60,14,WS_DISABLED
+END
+
+IDD_GPS_OPTIONS DIALOGEX 0, 0, 255, 135
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "GPS Tracking Preferences"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "Enable recording and display of GPS track line.",IDC_AUTORECORDSTART,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,8,13,185,10
+    COMBOBOX        IDC_CONFIRMCNT,182,49,56,53,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "25%",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,111,99,28,10
+    CONTROL         "35%",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,149,99,28,10
+    CONTROL         "45%",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,184,99,28,10
+    DEFPUSHBUTTON   "OK",IDOK,143,119,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,198,119,50,14
+    GROUPBOX        "",IDC_STATIC,4,65,244,49
+    LTEXT           "Auto-centering, when enabled, will occur when a GPS position is detected beyond this distance from the view's center.",IDC_STATIC,8,75,237,19
+    LTEXT           "Percent of width or height:",IDC_STATIC,8,99,91,8
+    LTEXT           "Any change to the above option will take effect when the Port Connection window is next opened.",IDC_STATIC,8,26,243,20
+    LTEXT           "Confirm request to close connection when count of logged track points exceeds this number:",IDC_STATIC,8,47,164,19
+END
+
+IDD_EXPORT_NTI_ADV2 DIALOGEX 0, 0, 309, 182
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "NTI File Export Options"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "LOCO-I ",IDC_METHOD_LOCO,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,61,40,36,10
+    CONTROL         "Deflate",IDC_METHOD_ZLIB,"Button",BS_AUTORADIOBUTTON,107,40,36,10
+    CONTROL         "JPEG2000",IDC_METHOD_JP2K,"Button",BS_AUTORADIOBUTTON,22,67,46,10
+    CONTROL         "WebP",IDC_METHOD_WEBP,"Button",BS_AUTORADIOBUTTON,22,95,35,10
+    COMBOBOX        IDC_JP2K_CBRATE,74,66,52,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_WEBP_PRESET,74,94,47,98,CBS_DROPDOWNLIST | WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    COMBOBOX        IDC_WEBP_CBQUALITY,128,94,37,30,CBS_DROPDOWN | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "R-G, G, B-G",IDC_RMG_G_BMG,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,211,40,72,10
+    CONTROL         "R, G-R, B-R",IDC_R_GMR_BMR,"Button",BS_AUTORADIOBUTTON,211,53,72,10
+    CONTROL         "R-B, G-B, B",IDC_RMB_GMB_B,"Button",BS_AUTORADIOBUTTON,211,66,72,10
+    CONTROL         "No Filter",IDC_NOFILTER,"Button",BS_AUTORADIOBUTTON,211,79,72,10
+    COMBOBOX        IDC_TOLERANCE,128,123,29,78,CBS_DROPDOWNLIST | WS_GROUP | WS_TABSTOP
+    CONTROL         "Write truncated file for transport\n(overviews created when opened)",IDC_NO_OVERVIEWS,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,168,120,134,19
+    CONTROL         "Compute SSIM quality index",IDC_GET_SSIM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,168,145,134,10
+    CONTROL         "Overwrite an existing NTI file without warning",IDC_OVERWRITE,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_GROUP | WS_TABSTOP,25,156,103,18
+    PUSHBUTTON      "Default",IDC_DEFAULT,144,165,50,14
+    DEFPUSHBUTTON   "OK",IDOK,199,165,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,253,165,50,14
+    GROUPBOX        "Compression Method",IDC_STATIC,14,26,168,89
+    GROUPBOX        "Applied RGB Filter",IDC_STATIC,195,26,95,70
+    LTEXT           "Either JPEG2000 or WebP is recommended for most GIS imagery.  See Help (F1).",IDC_STATIC,16,9,276,11
+    LTEXT           "Tolerance for matching transparent color when copying source:",IDC_STATIC,11,121,113,17
+    LTEXT           "(only applicable when a color is assigned)",IDC_STATIC,11,139,150,8
+    CTEXT           "Quality",IDC_STATIC,134,84,30,8
+    LTEXT           "% Size",IDC_STATIC,85,56,27,8
+    CTEXT           "Profile",IDC_STATIC,82,84,33,8
+    LTEXT           "Lossless:",IDC_STATIC,24,40,27,8
+END
+
+IDD_FLDS_IGNORED DIALOGEX 0, 0, 219, 172
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Select Ignored Fields"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,55,153,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,115,153,50,14
+    LISTBOX         IDC_FLDS_COMPARED,14,23,82,122,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    LISTBOX         IDC_FLDS_IGNORED,124,23,82,122,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    PUSHBUTTON      ">",IDC_MOVERIGHT,103,30,14,11,BS_CENTER | WS_GROUP
+    PUSHBUTTON      "<",IDC_MOVELEFT,103,45,14,11,BS_CENTER
+    PUSHBUTTON      ">>",IDC_MOVEALL_RIGHT,103,71,14,11,BS_CENTER
+    PUSHBUTTON      "<<",IDC_MOVEALL_LEFT,103,86,14,11,BS_CENTER
+    CTEXT           "Fields Compared",IDC_STATIC,17,10,78,8
+    CTEXT           "Fields Ignored",IDC_STATIC,126,10,74,8
+END
+
+IDD_COMPARE_FCN DIALOGEX 0, 0, 367, 142
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Program for Comparing Memo Text"
+FONT 8, "Arial", 0, 0, 0x0
+BEGIN
+    EDITTEXT        IDC_PATHNAME,40,75,300,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDBROWSE,344,75,19,12
+    EDITTEXT        IDC_ARGUMENTS,83,95,164,12,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,249,123,52,14
+    PUSHBUTTON      "Cancel",IDCANCEL,311,123,52,14
+    LTEXT           "",IDC_ST_MSGHDR,9,13,347,42
+    GROUPBOX        "",IDC_STATIC,1,3,361,57
+    LTEXT           "Program:",IDC_STATIC,5,76,31,9
+    LTEXT           "Command arguments:",IDC_STATIC,5,98,76,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 0,0,3,0
+ PRODUCTVERSION 0,0,3,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x21L
+#else
+ FILEFLAGS 0x20L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "David McKenzie"
+            VALUE "FileDescription", "WallsMap executable"
+            VALUE "FileVersion", "0.3"
+            VALUE "InternalName", "WallsMap.exe"
+            VALUE "LegalCopyright", "(c) 2014, David McKenzie"
+            VALUE "OriginalFilename", "WallsMap.exe"
+            VALUE "ProductName", "WallsMap GIS Viewer"
+            VALUE "ProductVersion", "0.3"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_FINDDLGTBL, DIALOG
+    BEGIN
+        RIGHTMARGIN, 280
+        BOTTOMMARGIN, 99
+    END
+
+    IDD_OPENEXISTING, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 275
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 90
+    END
+
+    IDD_PERCENT_ZOOM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 203
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 76
+    END
+
+    IDD_EXPORT_NTI, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 318
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 196
+    END
+
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 283
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 115
+    END
+
+    IDD_PAGE_DETAILS, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 316
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 179
+    END
+
+    IDD_PAGE_LAYERS, DIALOG
+    BEGIN
+        LEFTMARGIN, 4
+        RIGHTMARGIN, 319
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 178
+    END
+
+    IDD_SYMBOLS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 339
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 216
+    END
+
+    IDD_EXPAND_NTI, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 276
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 107
+    END
+
+    IDD_SYMBOLS_POLY, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 336
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 188
+    END
+
+    IDD_EDITTITLE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 235
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 51
+    END
+
+    IDD_BACKCOLOR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 200
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 65
+    END
+
+    IDD_SHOW_SHAPE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 394
+        TOPMARGIN, 1
+        BOTTOMMARGIN, 217
+    END
+
+    IDD_DBTEDITDLG, DIALOG
+    BEGIN
+        TOPMARGIN, 7
+    END
+
+    IDD_EXPORT_SHAPE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 318
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 189
+    END
+
+    IDD_IMAGE_VIEWER, DIALOG
+    BEGIN
+    END
+
+    IDD_SELMARKER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 321
+        TOPMARGIN, 4
+        BOTTOMMARGIN, 194
+    END
+
+    IDD_EDITOR_PREFS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 300
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 181
+    END
+
+    IDD_SCALERANGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 314
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 183
+    END
+
+    IDD_OPTIONS_GE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 364
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 219
+    END
+
+    IDD_ADVANCED_SRCH, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 382
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 213
+    END
+
+    IDD_EXPORTIMG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 343
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 191
+    END
+
+    IDD_GEDEFAULTSDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 312
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 165
+    END
+
+    IDD_SELEDITED, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 247
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 114
+    END
+
+    IDD_UPDATED, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 295
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 141
+    END
+
+    IDD_DBFGRID_DIALOG, DIALOG
+    BEGIN
+    END
+
+    IDD_COLUMNS, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 311
+    END
+
+    IDD_MSGCHECK, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 270
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 103
+    END
+
+    IDD_EDITIMAGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 331
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 181
+    END
+
+    IDD_IMGZOOM, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 248
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 97
+    END
+
+    IDD_MEMUSAGEDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 241
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 107
+    END
+
+    IDD_LINKTEST, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 353
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 156
+    END
+
+    IDD_MSGEXTENT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 245
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 82
+    END
+
+    IDD_ZIPDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 326
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 149
+    END
+
+    IDD_RELOAD, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 263
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 93
+    END
+
+    IDD_WEBMAP_FORMAT, DIALOG
+    BEGIN
+        LEFTMARGIN, 3
+        RIGHTMARGIN, 354
+        TOPMARGIN, 3
+        BOTTOMMARGIN, 153
+    END
+
+    IDD_SYMBOLS_IMG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 277
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 150
+    END
+
+    IDD_EXPORT_XLS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 293
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 130
+    END
+
+    IDD_CENTER_VIEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 279
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 74
+    END
+
+    IDD_COMPARESHP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 394
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 212
+    END
+
+    IDD_UPDZIP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 281
+        TOPMARGIN, 4
+        BOTTOMMARGIN, 92
+    END
+
+    IDD_GPS_PORTSETTING, DIALOG
+    BEGIN
+        RIGHTMARGIN, 255
+    END
+
+    IDD_GPS_OPTIONS, DIALOG
+    BEGIN
+        RIGHTMARGIN, 253
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 133
+    END
+
+    IDD_EXPORT_NTI_ADV2, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 302
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 179
+    END
+
+    IDD_FLDS_IGNORED, DIALOG
+    BEGIN
+        LEFTMARGIN, 4
+        RIGHTMARGIN, 215
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 167
+    END
+
+    IDD_COMPARE_FCN, DIALOG
+    BEGIN
+        RIGHTMARGIN, 363
+        BOTTOMMARGIN, 127
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_SYMBOLS DLGINIT
+BEGIN
+    IDC_MSHAPE, 0x403, 7, 0
+0x7153, 0x6175, 0x6572, "\000" 
+    IDC_MSHAPE, 0x403, 7, 0
+0x6943, 0x6372, 0x656c, "\000" 
+    IDC_MSHAPE, 0x403, 9, 0
+0x7254, 0x6169, 0x676e, 0x656c, "\000" 
+    IDC_MSHAPE, 0x403, 10, 0
+0x6c50, 0x7375, 0x7320, 0x6769, 0x006e, 
+    0
+END
+
+IDD_SELMARKER DLGINIT
+BEGIN
+    IDC_MSHAPE, 0x403, 7, 0
+0x7153, 0x6175, 0x6572, "\000" 
+    IDC_MSHAPE, 0x403, 7, 0
+0x6943, 0x6372, 0x656c, "\000" 
+    IDC_MSHAPE, 0x403, 9, 0
+0x7254, 0x6169, 0x676e, 0x656c, "\000" 
+    IDC_MSHAPE, 0x403, 10, 0
+0x6c50, 0x7375, 0x7320, 0x6769, 0x006e, 
+    0
+END
+
+IDD_GPS_PORTSETTING DLGINIT
+BEGIN
+    IDC_BAUD, 0x403, 5, 0
+0x3834, 0x3030, "\000" 
+    IDC_BAUD, 0x403, 5, 0
+0x3639, 0x3030, "\000" 
+    IDC_BAUD, 0x403, 6, 0
+0x3931, 0x3032, 0x0030, 
+    IDC_BAUD, 0x403, 6, 0
+0x3833, 0x3034, 0x0030, 
+    IDC_BAUD, 0x403, 7, 0
+0x3131, 0x3235, 0x3030, "\000" 
+    0
+END
+
+IDD_GPS_OPTIONS DLGINIT
+BEGIN
+    IDC_CONFIRMCNT, 0x403, 3, 0
+0x3032, "\000" 
+    IDC_CONFIRMCNT, 0x403, 3, 0
+0x3035, "\000" 
+    IDC_CONFIRMCNT, 0x403, 4, 0
+0x3031, 0x0030, 
+    IDC_CONFIRMCNT, 0x403, 4, 0
+0x3532, 0x0030, 
+    IDC_CONFIRMCNT, 0x403, 4, 0
+0x3035, 0x0030, 
+    IDC_CONFIRMCNT, 0x403, 16, 0
+0x6f4e, 0x6320, 0x6e6f, 0x6966, 0x6d72, 0x7461, 0x6f69, 0x006e, 
+    0
+END
+
+IDD_EXPORT_NTI_ADV2 DLGINIT
+BEGIN
+    IDC_JP2K_CBRATE, 0x403, 2, 0
+0x0032, 
+    IDC_JP2K_CBRATE, 0x403, 2, 0
+0x0033, 
+    IDC_JP2K_CBRATE, 0x403, 2, 0
+0x0035, 
+    IDC_JP2K_CBRATE, 0x403, 4, 0
+0x2e37, 0x0035, 
+    IDC_JP2K_CBRATE, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_JP2K_CBRATE, 0x403, 5, 0
+0x3231, 0x352e, "\000" 
+    IDC_JP2K_CBRATE, 0x403, 3, 0
+0x3531, "\000" 
+    IDC_JP2K_CBRATE, 0x403, 3, 0
+0x3032, "\000" 
+    IDC_JP2K_CBRATE, 0x403, 3, 0
+0x3532, "\000" 
+    IDC_JP2K_CBRATE, 0x403, 3, 0
+0x3033, "\000" 
+    IDC_JP2K_CBRATE, 0x403, 3, 0
+0x3533, "\000" 
+    IDC_JP2K_CBRATE, 0x403, 11, 0
+0x6542, 0x7473, 0x6c20, 0x736f, 0x7973, "\000" 
+    IDC_JP2K_CBRATE, 0x403, 9, 0
+0x6f4c, 0x7373, 0x656c, 0x7373, "\000" 
+    IDC_WEBP_PRESET, 0x403, 8, 0
+0x6544, 0x6166, 0x6c75, 0x0074, 
+    IDC_WEBP_PRESET, 0x403, 8, 0
+0x6950, 0x7463, 0x7275, 0x0065, 
+    IDC_WEBP_PRESET, 0x403, 6, 0
+0x6850, 0x746f, 0x006f, 
+    IDC_WEBP_PRESET, 0x403, 8, 0
+0x7244, 0x7761, 0x6e69, 0x0067, 
+    IDC_WEBP_PRESET, 0x403, 5, 0
+0x6349, 0x6e6f, "\000" 
+    IDC_WEBP_PRESET, 0x403, 5, 0
+0x6554, 0x7478, "\000" 
+    IDC_WEBP_CBQUALITY, 0x403, 3, 0
+0x3032, "\000" 
+    IDC_WEBP_CBQUALITY, 0x403, 3, 0
+0x3532, "\000" 
+    IDC_WEBP_CBQUALITY, 0x403, 3, 0
+0x3033, "\000" 
+    IDC_WEBP_CBQUALITY, 0x403, 3, 0
+0x3533, "\000" 
+    IDC_WEBP_CBQUALITY, 0x403, 3, 0
+0x3034, "\000" 
+    IDC_WEBP_CBQUALITY, 0x403, 3, 0
+0x3534, "\000" 
+    IDC_WEBP_CBQUALITY, 0x403, 3, 0
+0x3035, "\000" 
+    IDC_WEBP_CBQUALITY, 0x403, 3, 0
+0x3535, "\000" 
+    IDC_WEBP_CBQUALITY, 0x403, 3, 0
+0x3036, "\000" 
+    IDC_WEBP_CBQUALITY, 0x403, 3, 0
+0x3536, "\000" 
+    IDC_WEBP_CBQUALITY, 0x403, 3, 0
+0x3037, "\000" 
+    IDC_WEBP_CBQUALITY, 0x403, 3, 0
+0x3537, "\000" 
+    IDC_WEBP_CBQUALITY, 0x403, 3, 0
+0x3038, "\000" 
+    IDC_WEBP_CBQUALITY, 0x403, 3, 0
+0x3538, "\000" 
+    IDC_WEBP_CBQUALITY, 0x403, 3, 0
+0x3039, "\000" 
+    IDC_WEBP_CBQUALITY, 0x403, 3, 0
+0x3539, "\000" 
+    IDC_WEBP_CBQUALITY, 0x403, 4, 0
+0x3031, 0x0030, 
+    IDC_TOLERANCE, 0x403, 2, 0
+0x0030, 
+    IDC_TOLERANCE, 0x403, 2, 0
+0x0032, 
+    IDC_TOLERANCE, 0x403, 2, 0
+0x0034, 
+    IDC_TOLERANCE, 0x403, 2, 0
+0x0038, 
+    IDC_TOLERANCE, 0x403, 3, 0
+0x3631, "\000" 
+    IDC_TOLERANCE, 0x403, 3, 0
+0x3233, "\000" 
+    IDC_TOLERANCE, 0x403, 3, 0
+0x3436, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_MEASURE             CURSOR                  "res\\measure.cur"
+IDC_CURSOR_ZOOMOUT      CURSOR                  "res\\cursor_zoomout.cur"
+IDC_CURSOR_ZOOMIN       CURSOR                  "res\\cursor_zoomin.cur"
+IDC_CURSOR_HAND         CURSOR                  "res\\cursor_hand.cur"
+IDC_CURSOR_SELECT       CURSOR                  "res\\cursor1.cur"
+IDC_CURSOR_SELECTADD    CURSOR                  "res\\cur00001.cur"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDS_ERR_FILERES         "Not enough memory or resouces to open file for reading or writing."
+    IDS_NTL_FILES           "WallsMap Layer Files (*.ntl)"
+    IDS_NTL_SAVEAS          "Save layerset as..."
+    IDS_NTL_ASK_TO_SAVE     "Save changes to layerset %1?"
+    IDS_ERR_OPENSHAPE1      "File: %s --\n\nShape files cannot be added to non-georeferenced data."
+    IDS_ERR_MAG_LOAD        "WALLMAG.DLL failed to load or is out of date."
+END
+
+STRINGTABLE
+BEGIN
+    IDR_MAINFRAME           "WallsMap"
+    IDR_WallsMapTYPE        "\n\n\n\n\nWallsMap.Document\nWallsMap.Document"
+    IDS_ERR_BADINT2         "An integer value between %u and %u is required."
+    IDS_MSG_SHOWCENTER      "Edits to this feature's location are pending. Select YES to center on proposed location instead of current one."
+    IDS_ERR_SIZEIMAGE2      "CAUTION: Your exported region settings will produce a file of size %.1f GB times the compression ratio.\nDo you want to start exporting anyway? (You might instead want to change the compression options and/or limit the region's size.)"
+    IDS_ERR_SHOWCENTER      "Operation canceled. The proposed location must be within the layerset's total extent."
+    IDS_ERR_SHPREEDIT1      "File %s\n\nNot opened -- shapefile is already open for editing."
+    IDS_ERR_SHPNOEDIT1      "NOTE: File %s will be accessed in read-only mode since it is already in use."
+    IDS_SHP_SAVEONDELETE    "Layer %s has been edited since it was last saved.\nSelect Yes to save, No to discard, or Cancel to keep layer."
+    IDS_ERR_SHPREEDIT       "File: %s\n\nThis shapefile is already opened for editing in another layerset's view.\nAlthough data will be displayable in this one, no editing will be allowed."
+    IDS_MSG_SAVEATTR        "You've %sedited one or more attribute values for %s.\nSelect YES to save record, NO to discard changes, or CANCEL to continue editing."
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_APP_TITLE       "WallsMap"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE
+BEGIN
+    ID_INDICATOR_SCALE      "1:1000000000"
+    ID_INDICATOR_SIZE       "2222222222222222"
+    ID_INDICATOR_ZOOM       "10000.0%"
+    ID_INDICATOR_DEG        "88888888888888888888888"
+    ID_INDICATOR_DATUM      "WGS84"
+    ID_INDICATOR_XY         "UTM 888888888888 8888888888888"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_ERR_BADFLT3         "A value between %.*f and %.*f is required%s."
+    IDS_ERR_NODIR1          "The directory %s doesn't exist.  Select OK to create it."
+END
+
+STRINGTABLE
+BEGIN
+    ID_FILE_NEW             "Create a new document\nNew"
+    ID_FILE_OPEN            "Open an existing document\nOpen"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_SAVE            "Save the active layerset\nSave"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+    ID_FILE_PAGE_SETUP      "Change the printing options\nPage Setup"
+    ID_FILE_PRINT_SETUP     "Change the printer and printing options\nPrint Setup"
+    ID_FILE_PRINT           "Print the active document\nPrint"
+    ID_FILE_PRINT_PREVIEW   "Display full pages\nPrint Preview"
+END
+
+STRINGTABLE
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+END
+
+STRINGTABLE
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
+END
+
+STRINGTABLE
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE
+BEGIN
+    ID_WINDOW_NEW           "Open another window for the active document\nNew Window"
+    ID_WINDOW_ARRANGE       "Arrange icons at the bottom of the window\nArrange Icons"
+    ID_WINDOW_CASCADE       "Arrange windows so they overlap\nCascade Windows"
+    ID_WINDOW_TILE_HORZ     "Arrange windows horizontally as non-overlapping tiles\nTile Windows Horizontally"
+    ID_WINDOW_TILE_VERT     "Arrange windows vertically as non-overlapping tiles\nTile Windows Vertically"
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified text or values\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_CLEAR2          "Erase the selection\nErase"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+    AFX_IDS_MDICHILD        "Activate this window"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_PREVIEW_CLOSE   "Layer %s has been edited since it was last saved.\nSelect Yes to save changes, No to discard changes, or Cancel to not delete the layer."
+END
+
+STRINGTABLE
+BEGIN
+    IDS_NTI_FILES           "WallsMap image files (*.nti)"
+    IDS_NTI_BROWSE          "Select folder and/or name for exported NTI file"
+    IDS_ERR_DIRPROJECT      "Directory: %s\nThe system cannot create this directory. There may be a filename conflict."
+    IDS_ERR_FILE_RW         "This file already exists but its status is locked (or read only) and can't be changed."
+    IDS_FILE_EXISTDLG       "File %s\n\nSelect OK to replace an existing file with that name.\nDate of original file: %s"
+    IDS_INSERT_FILELINK     "Select File for Opening via URL"
+    IDS_SAVETOFILE          "File Path and Name for Saving Selected Text"
+    IDP_AFXOLEINIT_FAILED   "Failed to initialize Object Linking and Embedding"
+    IDS_ABOUT_TITLE         "WallsMap v0.3, Build 2014-06-27 (%s)\nCopyright © 2014 David McKenzie, Austin TX."
+    IDS_WEBMAP_INFO         "Enter a URL for instructing your default browser to open a web mapping application at a specific location. Your entry must include ""<LAT>"" and ""<LON>"" (no quotes) as placeholders for the location's latitude and longitude in decimal degrees. Optionally include ""<NAM>"" for a label."
+    IDS_FMT_PLACEMARK       "\t<Placemark>\r\n\t\t<name>%s</name>\r\n%s%s\r\n\t\t<styleUrl>#sn_W</styleUrl>\r\n\t\t<Point><coordinates>%.7f,%.7f,0</coordinates></Point>\r\n\t</Placemark>\r\n"
+    IDS_FMT_LOOKAT          "%s<LookAt>\r\n%s<longitude>%.7f</longitude><latitude>%.7f</latitude>\r\n%s<altitude>0</altitude><range>%u</range><tilt>0</tilt><heading>0</heading>\r\n%s</LookAt>"
+    IDS_COMPARE_FCN         "Choose Text Compare Program"
+    IDS_REPLWITHFILE        "Choose File to Replace Memo Content"
+END
+
+STRINGTABLE
+BEGIN
+    ID_CTR_ONPOINT          "Scroll to recenter view at cursor position"
+    ID_SYNC_ONPOINT         "Position other documents at same georeferenced location"
+    ID_FIT_IMAGE            "Fit visible layers in window\nFit visible layers in window"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_ZOOMIN          "Zoom in with left-click or left-drag\nZoom in"
+    ID_VIEW_ZOOMOUT         "Zoom out with left-click or left-drag\nZoom out"
+    ID_VIEW_PAN             "Pan view by left dragging\nDrag to pan view"
+    ID_FILE_PROPERTIES      "Display properties and layer controls\nLayers/Properties window"
+    ID_VIEW_NOZOOM          "Zoom to full resolution (100%)\nFull resolution"
+    ID_AVERAGE_COLORS       "Smooth pixel edges when zooming in beyond 1:1"
+END
+
+STRINGTABLE
+BEGIN
+    ID_CONTEXT_NOZOOM       "Zoom to full resolution (100%)"
+    ID_CONTEXT_ZOOM25       "Zoom to 25% resolution"
+    ID_CONTEXT_ZOOM50       "Zoom to 50% resolution"
+    ID_CONTEXT_ZOOM12       "Zoom to 12.5% resolution"
+    ID_CONTEXT_ZOOM6_25     "Zoom to 6.25% resolution"
+    ID_CONTEXT_ZOOM3_125    "Zoom to 3.125% resolution"
+    ID_CONTEXT_ZOOMOUT      "Zoom out to 50% of current resolution"
+    ID_CONTEXT_ZOOMIN       "Zoom in to twice the current resolution"
+END
+
+STRINGTABLE
+BEGIN
+    ID_TOOLMEASURE          "Measure distance by dragging\nMeasure distance"
+    ID_OPTIONS_SHOWOUTLINES "Show layer extent outlines"
+END
+
+STRINGTABLE
+BEGIN
+    ID_FIT_EXTENT           "Fit extent of all layers in view window\nFit full extent in window"
+    ID__ZOOMTOLAYER         "Zoom to selected layer"
+    ID_MOVELAYERTOTOP       "Move selected layer to top (draw last)"
+    ID_OPTIONS_SHOWSELECTED "Show selected layer extent"
+END
+
+STRINGTABLE
+BEGIN
+    ID_HIDEMARKERS          "Hide display of markers for point shapefiles"
+    ID_HIDELABELS           "Hide display of labels for point shapefiles"
+    ID_SHOW_MARKERS         "Toggle marker display\nToggle marker display"
+    ID_SHOW_LABELS          "Toggle label display\nToggle label display"
+    ID_TRUNCATEOVERVIEWS    "Close NTI file and remove overviews."
+    ID_FILE_TRUNCATE        "Truncate NTI file overviews to reduce size."
+    ID_EDITTITLE            "Edit folder's title"
+    ID_ZOOM_BACK            "Previous view extent\nPrevious view extent"
+    ID_ZOOM_FORWARD         "Next view extent\nNext view extent"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_ERR_OPENLSET1       "File %s\n\nLayerset files (*.NTL) cannot be added to an existing layerset."
+    IDS_ERR_OPENLAYER0      "File %s\n\nOnly georeferenced data can be added to a layerset."
+    IDS_NTI_EXPAND          "Select Minimize to run this operation in the background at a lower priority.\nSelect Abort and the file will be restored to its original size after confirmation."
+    IDS_ABORTEXPORT         "Are you sure you want to abort the export operation?\nThe partially written file will be deleted in that case."
+    IDS_ABORTEXPAND         "Are you sure you want to stop expanding? In that case the file\nwill be truncated to its original size and not opened."
+    IDS_NTI_TRUNCATE1       "File %s\n\nAre you sure you want to close this file and remove the overviews?\nThis will reduce file size significantly but the overviews will have\nto be recreated when the file is reopened."
+    IDS_ERR_OPENSHPLAYER1   "File %s\n\nThe shapefile's projection or datum can't be converted to that of the current layerset."
+    IDS_ERR_NTIEXPANDRO     "%s\n\nThis read-only NTI file must be expanded before it can be opened. If it's on read-only media,\ncopy both it and associated data to your hard disk and try opening it from there."
+    IDC_VERT_DLG            "n"
+    IDC_HORIZ_DLG           "n"
+    ID_RELOCATE_SHAPE       "Relocate point"
+END
+
+STRINGTABLE
+BEGIN
+    ID_OPTIONS_BKCOLOR      "Choose background color for layerset"
+    ID_FILE_CONVERT         "Export or convert loaded shapefile or image file"
+    ID_EDIT_SHAPE           "Edit point location"
+    ID_SHOW_CENTER          "Pan view window to show feature at center"
+    ID_SHOW_DELETE          "Delete feature after confirmation"
+    ID_TOOLSELECT           "Select point features by dragging\nSelect points in rectangle"
+    ID_VIEW_DEFAULT         "Default cursor: Drag to zoom in, right-click for menu\nDrag to zoom in"
+    ID_SHOW_COPYLOC         "Copy coordinates to the clipboard"
+    ID_SHOW_PASTELOC        "Paste coordinates saved on clipboard"
+END
+
+STRINGTABLE
+BEGIN
+    ID_ZOOMFROMCENTER       "Mouse wheel zooms in or out while maintainting view's center location"
+    ID_ZOOMFROMCURSOR       "Mouse wheel zooms in or out from position of cursor"
+    ID_ZOOMFORWARDIN        "Scroll mouse wheel forward to zoom in"
+    ID_ZOOMFORWARDOUT       "Scroll mouse wheel backward to zoom in"
+    ID_FINDLABEL            "Select point features by searching attributes for text\nText search operations"
+END
+
+STRINGTABLE
+BEGIN
+    ID_FILE_CLOSEALL        "Close all files and layer sets."
+    ID_ADDLAYER             "Add image or shapefile layers to active view\nAdd layers to view"
+    ID_UNSELECT             "Romove feature from selected set"
+    ID_CLEAREDITED          "Clear this item's edited flag without removing changes"
+    ID_SHOW_UNSELECT        "Remove branch from selection"
+    ID_SELECT_NEW           "Select points that were added since the edit flags were cleared."
+    ID_SELECT_EDITED        "Select points that were modified since the edit flags were cleared."
+    ID_CLEAR_EDITFLAGS      "Mark all points in this layer as unedited."
+END
+
+STRINGTABLE
+BEGIN
+    ID_EXPORT_SHAPES        "Export Point Shapefile"
+    ID_SET_EDITABLE         "Allow editing of locations and attributes"
+    IDS_SHP_FILES           "Shapefiles (*.shp)"
+    IDS_SHP_EXPORT          "Export Items to New Shapefile"
+    IDS_PRJ_NAD83           "GEOGCS[""GCS_North_American_1983"",DATUM[""D_North_American_1983"",SPHEROID[""GRS_1980"",6378137.0,298.257222101]],PRIMEM[""Greenwich"",0.0],UNIT[""Degree"",0.0174532925199433]]"
+    IDS_PRJ_NAD27           "GEOGCS[""GCS_North_American_1927"",DATUM[""D_North_American_1927"",SPHEROID[""Clarke_1866"",6378206.4,294.9786982]],PRIMEM[""Greenwich"",0.0],UNIT[""Degree"",0.0174532925199433]]"
+    IDS_PRJ_NAD83UTM        "PROJCS[""NAD_1983_UTM_Zone_%d%c"",GEOGCS[""GCS_North_American_1983"",DATUM[""D_North_American_1983"",SPHEROID[""GRS_1980"",6378137.0,298.257222101]],PRIMEM[""Greenwich"",0.0],UNIT[""Degree"",0.0174532925199433]],PROJECTION[""Transverse_Mercator""],PARAMETER[""False_Easting"",500000.0],PARAMETER[""False_Northing"",%u],PARAMETER[""Central_Meridian"",%d],PARAMETER[""Scale_Factor"",0.9996],PARAMETER[""Latitude_Of_Origin"",0.0],UNIT[""Meter"",1.0]]"
+    IDS_PRJ_NAD27UTM        "PROJCS[""NAD_1927_UTM_Zone_%d%c"",GEOGCS[""GCS_North_American_1927"",DATUM[""D_North_American_1927"",SPHEROID[""Clarke_1866"",6378206.4,294.9786982]],PRIMEM[""Greenwich"",0.0],UNIT[""Degree"",0.0174532925199433]],PROJECTION[""Transverse_Mercator""],PARAMETER[""False_Easting"",500000.0],PARAMETER[""False_Northing"",%u],PARAMETER[""Central_Meridian"",%d],PARAMETER[""Scale_Factor"",0.9996],PARAMETER[""Latitude_Of_Origin"",0.0],UNIT[""Meter"",1.0]]"
+    IDS_SHPDEF_FILES        "Shapefile templates (*.tmpshp)"
+    IDS_SHPDEF_OPEN         "Select Shapefile Attribute Template"
+    IDS_JPG_FILES           "JPEG Images (*.jpg)"
+    IDS_PNG_FILES           "Portable Network Graphics (*.png)"
+    IDS_PNG_SAVEAS          "Save active view as..."
+    IDS_INSERT_LINK         "Select Image File(s) for Viewer"
+    IDS_RTF_PASTE           "NOTE: The clipboard currently has data in Rich Text Format (RTF). Select YES to preserve this formatting by switching the editor to RTF mode before pasting. Select NO to paste a plain text version of the data."
+END
+
+STRINGTABLE
+BEGIN
+    ID_OPENEDITABLE         "Open 2D point shapefiles as editable by default"
+    ID_SELECT_RELOCATED     "Select points that have been relocated"
+    ID_PREF_OPENLAST        "Open most recently viewed layer file (*.NTL) on startup"
+    ID_PREF_OPENMAXIMIZED   "Open georeferenced documents in frames that tile application window"
+    ID_SELECT_DELETED       "Select deleted points for possible recovery."
+    ID_SELECT_ADD           "Add points in rectangle to selection\nAdd points to selection"
+END
+
+STRINGTABLE
+BEGIN
+    ID_EXPORT_PNG           "Export view as PNG file"
+    ID_SHOW_FILENAMES       "Show file names under thumbnails"
+    ID_SETSELECTEDMARKER    "Specify marker stype for selected points"
+END
+
+STRINGTABLE
+BEGIN
+    ID_MEMO_DEFAULTS        "Default font and colors for memo field text editor"
+    ID_HIGHLIGHTEDMARKER    "Specify marker stype for highlighted point"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_RTF_CONVERT2PLAIN   "CAUTION: Converting from rich text to to plain text is an operation that can't be undone. Select OK to proceed."
+    IDS_KML_FILES           "KML Files (*.kml;*.kmz)"
+    IDS_KML_EXPORT          "Specify KML File to Generate"
+    IDS_RTF_FILES           "Rich Text Files (*.rtf)"
+    IDS_ZIP_FILES           "ZIP archives (*.zip)"
+    IDS_ZIP_SAVEAS          "Save project archive as..."
+    IDS_XLS_FILES           "Microsoft Excel (*.xls)"
+    IDS_XLS_EXPORT          "Export Items to Excel Spreadsheet"
+    IDS_GPS_SAVEAS          "Save GPS Track Log as Shapefile..."
+    IDS_PRJ_WGS84GEO        "GEOGCS[""GCS_WGS_1984"",DATUM[""D_WGS_1984"",SPHEROID[""WGS_1984"",6378137,298.257223563]],PRIMEM[""Greenwich"",0],UNIT[""Degree"",0.017453292519943295]]"
+    IDS_PRJ_WGS84UTM        "PROJCS[""WGS_1984_UTM_Zone_%d%c"",GEOGCS[""GCS_WGS_1984"",DATUM[""D_WGS_1984"",SPHEROID[""WGS_1984"",6378137.0,298.257223563]],PRIMEM[""Greenwich"",0.0],UNIT[""Degree"",0.0174532925199433]],PROJECTION[""Transverse_Mercator""],PARAMETER[""False_Easting"",500000.0],PARAMETER[""False_Northing"",%u],PARAMETER[""Central_Meridian"",%d],PARAMETER[""Scale_Factor"",0.9996],PARAMETER[""Latitude_Of_Origin"",0.0],UNIT[""Meter"",1.0]]"
+    IDS_EXE_FILES           "Executable Files (*.exe)"
+    IDS_TXTRTF_FILES        "Text and RTF Files (*.txt;*.rtf)"
+END
+
+STRINGTABLE
+BEGIN
+    ID_LAUNCH_GE            "View branch items in Google Earth"
+    ID_HELP_OPENREADME      "Open text file with release notes"
+    ID_PREFERENCES_GOOG     "Default scale and icon size for Google Earth launches"
+    ID_SELECT_MODIFIED      "Select points edited or relocated."
+END
+
+STRINGTABLE
+BEGIN
+    IDS_ADVSRCH_TITLE       "%s: Text Search Operations"
+END
+
+STRINGTABLE
+BEGIN
+    ID_SELECT_EDITEDONLY    "Select points whose attributes have been edited."
+    ID_SAVETOFILE           "Save selected text to file"
+    ID_OPEN_TABLE           "View attribute table"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_TXT_FILES           "Text Files (*.txt)"
+END
+
+STRINGTABLE
+BEGIN
+    ID_RESTOREVIEW          "Restore document's last view position and scale when opened"
+END
+
+STRINGTABLE
+BEGIN
+    ID_OPENFOLDER           "Explore folder containing layer's file(s)"
+    ID_LINKTEST             "Find broken image links in memo fields."
+END
+
+STRINGTABLE
+BEGIN
+    ID_FILE_EXPORTZIP       "Create ZIP archive with project  data"
+    ID_EXPORT_ZIP           "Create self-contained ZIP archive of project's files."
+    ID_WEB_FORMAT           "Specify a web mapping URL for displaying locations in your default browser"
+    ID_WEBMAP_FORMAT        "Specify URL format for web map navigation to a location"
+END
+
+STRINGTABLE
+BEGIN
+    ID_CLOSE_LAYER          "Remove layer from set"
+    ID_CLOSE_AND_DELETE     "Remove layer and delete files"
+    ID_EXPORT_XLS           "Export table as Excel spreadsheet"
+END
+
+STRINGTABLE
+BEGIN
+    ID_CTR_ONPOSITION       "Center view at specific geographical location\nCenter view at specific location"
+    ID_SAVE_HISTORY         "Save list of text strings previously searched for"
+END
+
+STRINGTABLE
+BEGIN
+    ID_COMPARE_SHP          "Compare shapefiles against this one."
+    ID_GPS_PORTSETUP        "Open/restore GPS Port Connection window"
+END
+
+STRINGTABLE
+BEGIN
+    ID_GPS_TRACKING         "Display GPS tracking symbology in view\nDisplay GPS placemark"
+    ID_GPS_CENTER           "Center view on GPS position\nCenter on GPS position"
+    ID_GPS_OPTIONS          "Advanced GPS tracking options"
+    ID_GPS_SYMBOL           "GPS placemark symbol style"
+    ID_GPS_RECORDTRACK      "Save GPS locations for optional display"
+END
+
+STRINGTABLE
+BEGIN
+    ID_GPS_DISPLAYTRACK     "Display recorded track line"
+END
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "res\WallsMap.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "afxprint.rc"       // printing/print preview resources
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

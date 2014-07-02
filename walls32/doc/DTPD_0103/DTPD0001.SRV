@@ -1,0 +1,33 @@
+;Fixed stations
+;Import from DTPD.SEF, dated 11:11 2000-06-17
+#Units Feet Grid=0
+;CPoint Reference: FEET
+#FIX	TT3WAZ1	-2113	6312	611
+;***NOTE: Walker data listings have 588.1 instead of 557.9
+;557.9 fits the remaining data much better! (DMcK)
+#FIX	TT9W	-1365	5869	557.9
+#FIX	TT6WAZ	-411	3518	602
+#FIX	TT14W	164	3884	483
+
+;***NOTE: The original(?) CML file version had TT11W at -2526.5, 6352.8, 468.5
+;***My conversion from Walker's Lat/Long for TT11W gives -2526.4, 6350.7, 468.5
+;***DTPD.SEF had -2528, 6352, 469  (DMcK)
+#FIX	TT11W	-2526.5	6352.8	468.5
+
+;***NOTE: TT2WAZ changed to TT2AZ to match data (DMcK)
+#FIX	TT2AZ	-2977	6672	600
+#FIX	TT2W	-2887	6678	599
+
+;***NOTE:  Elevations of next 2 stations (524,517)
+;***are swapped in the Walker BM database (WALKER2.DBF)! (DMcK)
+#FIX	TT10AZ	-1888	6356	524
+#FIX	TT10W	-1889	6465	517
+#FIX	TT3W	-2043	6304	586
+#FIX	TT7WAZ	582	1867	595
+#FIX	TT5W	198	3761	587
+#FIX	TT5WAZ2	192	3871	594
+#FIX	TT6W	-408	3586	589
+#FIX	TT8W	0	0	717
+#FIX	TT5WAZ1	297	3777	592
+;***NOTE: DTPD data have links to TT4W
+#fix	TT4W	-1190.7606f	5839.9940f	0	(0,?)

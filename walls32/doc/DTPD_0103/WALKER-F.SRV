@@ -1,0 +1,804 @@
+;TTY8W Stations in WALKER2.DBF
+;Processed by SHP2W v1.0, Fri Dec 17 11:52:47 1999
+#Units Feet Grid=0
+
+; ID: 1, NAME: TT 1 W 1936, LAT: 37 11 10.62, LON: 86 06 07.90 (Surface: 1230)
+; UTM Zone 16 (NAD27) Easting: 579690.74640, Northing: 4115711.43950
+; Historic Entrance of Mammoth Cave, about 600 ft SE. of; about
+; 450 ft NW. of old hotel; on S. rim of hollow; 2 ft N. of path
+; W. along rim; 12 ft S. of path to entrance; in concrete post;
+; standard tablet stamped "TT 1 W 1936"
+;
+#flag	TT1W	/WBM
+#note	TT1W	TT1W
+#fix	TT1W	-3117.6918f	6837.0910f	0	(0,?)
+
+; ID: 2, NAME: AZ. Mark, LAT: 37 11 14.54, LON: 86 06 13.56 (Surface: 1231)
+; UTM Zone 16 (NAD27) Easting: 579550.04800, Northing: 4115830.91780
+; Historic Entrance of Mammoth Cave;81 ft WNW. Of head of stairs;
+; 49 ft N. of centerline of rd. to Green River; 28 ft S. of centerline
+; of foot path leading to Dixon Cave; in concrete post; standard
+; tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK2	-3575.5167f	7233.4932f	0	(0,?)
+#Seg	..
+
+; ID: 3, NAME: TT 1 H 1972*, LAT: 37 11 13.88, LON: 86 06 11.95 (TBM)
+; UTM Zone 16 (NAD27) Easting: 579589.93690, Northing: 4115810.95460
+; Historic Entrance of Mammoth Cave, 16 1/2 ft NE. of S. wall,
+; 16 1/2 ft SW. of N. wall, at centerline of passage directly beneath
+; arch of cave entrance; 3/8 inch steel reinforcing rod extending
+; 1 inch above ground, in scree slope adjacent to stairway. TBM
+;
+#flag	TT1H	/WBM
+#note	TT1H	TT1H
+#fix	TT1H	-3445.2823f	7166.7439f	0	(0,?)
+
+; ID: 4, NAME: TT 2 W 1936, LAT: 37 11 09.03, LON: 86 06 05.03
+; UTM Zone 16 (NAD27) Easting: 579761.97530, Northing: 4115663.11240
+; The Rotunda, about 2 ft N. of wall on the SE. side, near point
+; of wall at the junction of Broadway and Audubon's Avenue; in
+; concrete post; standard tablet stamped "TT 2 W 1936"
+;
+#flag	TT2W	/WBM
+#note	TT2W	TT2W
+#fix	TT2W	-2885.5339f	6676.3016f	599.134f
+
+; ID: 5, NAME: AZ. MARK, LAT: 37 11 08.97, LON: 86 06 06.14
+; UTM Zone 16 (NAD27) Easting: 579734.62390, Northing: 4115661.00410
+; The Rotunda, near S. end of; about 20 ft W. of centerline of
+; Audubon's Avenue; about 20 ft E. of W. wall; in concrete post;
+; standard tablet stamped "AZ. MARK
+;
+#Seg	Az Mark
+#fix	TT2AZ	-2975.3317f	6670.2463f	600.179f
+#Seg	..
+
+; ID: 6, NAME: TT 3 W 1936, LAT: 37 11 05.33, LON: 86 05 54.60
+; UTM Zone 16 (NAD27) Easting: 580020.22930, Northing: 4115551.53480
+; Gothic Avenue, about 40 ft SE. of intersection with Broadway;
+; about 15 ft SE. of SE. corner of E. saltpeter vat; about 10 ft
+; N. of S. wall of cave; in concrete post; stamped "TT 3 W 1936"
+;
+#flag	TT3W	/WBM
+#note	TT3W	TT3W
+#fix	TT3W	-2041.7969f	6302.1169f	585.962f
+
+; ID: 7, NAME: AZ. Mark NO 1, LAT: 37 11 05.41, LON: 86 05 55.47
+; UTM Zone 16 (NAD27) Easting: 579998.75420, Northing: 4115553.79610
+; Bothic Avenue, on high overlooking Broadway, about 6 ft S. of
+; edge of ledge; about 30 ft E. of pathway along Gothic Avenue;
+; in surface of ledge; standard tablet stamped "AZ. MARK NO 1"
+;
+#Seg	Az Mark
+#fix	TT3WAZ1	-2112.1788f	6310.2119f	611.093f
+#Seg	..
+
+; ID: 8, NAME: AZ. MARK NO 2, LAT: 37 11 06.05, LON: 86 05 55.57
+; UTM Zone 16 (NAD27) Easting: 579996.10100, Northing: 4115573.49500
+; Broadway, about 60 ft NW. of intersection of Gothic Avenue; in
+; ledge of N. wall; on edge of path at small avenue to NW.;standard
+; tablet stamped "AZ. MARK NO 2"
+;
+#Seg	Az Mark
+#fix	AZMK8-2	-2120.2627f	6374.9214f	592.325f
+#Seg	..
+
+; ID: 9, NAME: TT 4 W 1936, LAT: 37 11 00.76, LON: 86 05 44.08
+; UTM Zone 16 (NAD27) Easting: 580280.96530, Northing: 4115413.17620
+; "Giant's Coffin", about 35 ft E. of; 2 ft W. of E. wall of cave;
+; in surface of solid ledge; standard tablet stamped "TT 4 W 1936
+;
+#flag	TT4W	/WBM
+#note	TT4W	TT4W
+#fix	TT4W	-1190.7606f	5839.9940f	0	(0,?)
+
+; ID: 10, NAME: AZ. MARK NO 1, LAT: 37 10 59.56, LON: 86 05 44.84
+; UTM Zone 16 (NAD27) Easting: 580262.57830, Northing: 4115376.01820
+; "Giant's Coffin", about 100 ft S. of; 4 ft W. of E. wall of cave;
+; in line with opening of Dante's Gateway; in concrete post; standard
+; tablet stamped "AZ. MARK NO 1"
+;
+#Seg	Az Mark
+#fix	AZMK10-1	-1252.2528f	5718.6692f	580.237f
+#Seg	..
+
+; ID: 11, NAME: AZ. MARK NO 2, LAT: 37 11 02.28, LON: 86 05 46.43
+; UTM Zone 16 (NAD27) Easting: 580222.57360, Northing: 4115459.46400
+; "Giant's Coffin", about 200 ft NW. of ; about 3 ft E. of W. wall
+; of cave; in surface of ledge about 15 ft above floor; standard
+; tablet stamped "AZ. MARK NO 2"
+;
+#Seg	Az Mark
+#fix	AZMK11-2	-1380.8678f	5993.6888f	0	(0,?)
+#Seg	..
+
+; ID: 12, NAME: TT 5 W 1936, LAT: 37 10 40.19, LON: 86 05 26.91
+; UTM Zone 16 (NAD27) Easting: 580710.41360, Northing: 4114783.33950
+; "Wright's Rotunda", on raised semi-circular ledge and near its
+; center; in concrete post; standard tablet stamped "TT 5 W 1936
+;
+#flag	TT5W	/WBM
+#note	TT5W	TT5W
+#fix	TT5W	198.2900f	3760.1711f	587.341f
+
+; ID: 13, NAME: AZ. MARK NO 1, LAT: 37 10 40.35, LON: 86 05 25.69
+; UTM Zone 16 (NAD27) Easting: 580740.45070, Northing: 4114788.55860
+; Sunset Avenue, near center of; at a point about 100 ft NE. of
+; center of Wright's Rotunda; in surface of large limestone slab;
+; standard tablet stamped "AZ. MARK NO 1"
+;
+#Seg	Az Mark
+#fix	TT5WAZ1	296.9967f	3776.3473f	591.826f
+#Seg	..
+
+; ID: 14, NAME: AZ. MARK NO 2, LAT: 37 10 41.28, LON: 86 05 26.99
+; UTM Zone 16 (NAD27) Easting: 580708.11870, Northing: 4114816.91010
+; Main Cave, near center of; at point abot 110 ft N. of center
+; of Wright's Rotunda; in surface of large rock slab; standard
+; tablet stamped "AZ. MARK NO 2"
+;
+#Seg	Az Mark
+#fix	TT5WAZ2	191.8184f	3870.3780f	593.858f
+#Seg	..
+
+; ID: 15, NAME: TT 6 W 1936, LAT: 37 10 38.46, LON: 86 05 34.40
+; UTM Zone 16 (NAD27) Easting: 580526.22520, Northing: 4114728.25850
+; "The Cataracts", about 10 ft E. of E. edge of pit; about 5 ft
+; N. of path leading to falls; in top of concrete post; standard
+; tablet stamped "TT 6 W 1936"
+;
+#flag	TT6W	/WBM
+#note	TT6W	TT6W
+#fix	TT6W	-407.7095f	3585.2682f	588.838f
+
+; ID: 16, NAME: AZ. MARK, LAT: 37 10 37.79, LON: 86 05 34.44
+; UTM Zone 16 (NAD27) Easting: 580525.43640, Northing: 4114707.60230
+; "The Cataracts", about 90 ft SE. of ; about 20 ft S. and 5 ft
+; W. of sharp turn in foot path along Main Cave; in concrete post;
+; standard tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	TT6WAZ	-410.9478f	3517.5264f	601.571f
+#Seg	..
+
+; ID: 17, NAME: TT 7 w 1936, LAT: 37 10 20.30, LON: 86 05 21.67
+; UTM Zone 16 (NAD27) Easting: 580845.51560, Northing: 4114171.64840
+; Crossing of Blue Spring Avenue and Main Cave, about 120 ft SE.
+; of ; about 12 ft E. of W. wall; about 10 ft W. of foot path;
+; in concrete post; standard tablet stamped "TT 7 W 1936"
+;
+#flag	TT7W	/WBM
+#note	TT7W	TT7W
+#fix	TT7W	622.2534f	1749.1482f	591.978f
+
+; ID: 18, NAME: AZ. MARK, LAT: 37 10 21.46, LON: 86 05 22.17
+; UTM Zone 16 (NAD27) Easting: 580832.84180, Northing: 4114207.27660
+; Crossing of Blue Spring Avenue and Main Cave, about 10 ft W.
+; of; in concrete post; standard tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	TT7WAZ	581.7967f	1866.4323f	594.724f
+#Seg	..
+
+; ID: 19, NAME: TT 8 W 1936, LAT: 37 10 03.00, LON: 86 05 29.36
+; UTM Zone 16 (NAD27) Easting: 580660.97920, Northing: 4113636.71200
+; Violet City Entrance of Mammoth Cave, about 170 ft S. 4 10 W.
+; of portal; 50 ft E. of center of road; in concrete post; standard
+; tablet stamped "TT 8 W 1936" (Ties underground line)
+;
+#flag	TT8W	/WBM
+#note	TT8W	TT8W
+#fix	TT8W	0.0000f	0.0000f	716.985f
+
+; ID: 20, NAME: TT 9 W 1936, LAT: 37 11 01.03, LON: 86 05 46.22
+; UTM Zone 16 (NAD27) Easting: 580228.11890, Northing: 4115420.99330
+; Wooden Bowl Room, 25 ft S. and 25 ft W. of head of stairway leading
+; down to Fat Man's Misery; 27 ft W. of path to Ganter's Avenue;
+; in concrete post; standard tablet stamped "TT 9 W 1936"
+;
+#flag	TT9W	/WBM
+#note	TT9W	TT9W
+;***NOTE: Changing Walker's(?) 588.058 to CML's(?) 558 improves fit!
+#fix	TT9W	-1363.8870f	5867.3038f	557.9f ;588.058f
+
+; ID: 21, NAME: AZ. MARK, LAT: 37 11 01.20, LON: 86 05 45.60
+; UTM Zone 16 (NAD27) Easting: 580243.35660, Northing: 4115426.37780
+; Wooden Bowl Room, 2 ft N. and 18 ft E. of head of stairway; 8
+; ft N. of path to Giant's Coffin; cemented in surface of ledge;
+; standard tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK21	-1313.7272f	5884.4888f	0	(0,?)
+#Seg	..
+
+; ID: 22, NAME: TT 10 W 1936, LAT: 37 11 06.92, LON: 86 05 52.70
+; UTM Zone 16 (NAD27) Easting: 580066.61150, Northing: 4115600.97810
+; Reveler's Hall (junction of Pensacola Avenue, The Valley of Humility,
+; and Avenue to Wooden Bowl Room), about 110 ft NW. of; 7 ft N.
+; of center of Pensacola Avenue; 6 ft S. of N. wall; in concrete
+; post; standard tablet stamped "TT 10 W 1936"
+;
+#flag	TT10W	/WBM
+#note	TT10W	TT10W
+#fix	TT10W	-1888.0742f	6462.8643f	516.952f ;523.869f
+
+; ID: 23, NAME: AZ. MARK, LAT: 37 11 05.84, LON: 86 05 52.68
+; UTM Zone 16 (NAD27) Easting: 580067.42130, Northing: 4115567.70140
+; Reveler's Hall, 10 ft W. of center of Pensacola Avenue; 4 ft
+; E. of W. wall; 12 ft N. of path to "The Valley of Humility";
+; cemented in surface of ledge; standard tablet stamped"AZ. MARK"
+;
+#Seg	Az Mark
+#fix	TT10AZ	-1886.4655f	6353.6683f	523.869f ;516.952f
+#Seg	..
+
+; ID: 24, NAME: TT 11 W 1936, LAT: 37 11 05.81, LON: 86 06 00.59
+; UTM Zone 16 (NAD27) Easting: 579872.39310, Northing: 4115564.92320
+; River Hall, near the NW. corner of; 15 ft E. of W. wall and 12
+; ft W. of path to stairway leading up to Spark's Avenue; cemented
+; in surface of ledge; standard tablet stamped "TT 11 W 1936"
+;
+#flag	TT11W	/WBM
+#note	TT11W	TT11W
+#fix	TT11W	-2526.3798f	6350.6960f	468.473f
+
+; ID: 25, NAME: AZ. MARK, LAT: 37 11 05.16, LON: 86 06 00.19
+; UTM Zone 16 (NAD27) Easting: 579882.44610, Northing: 4115544.98640
+; River Hall, in SE. corner of; 10 ft E. of path to Echo River;
+; 6 ft W. of E. wall; cemented in surface of ledge; standard tablet
+; stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK25	-2494.0269f	6284.9729f	462.341f
+#Seg	..
+
+; ID: 26, NAME: TT 12 W 1936, LAT: 37 10 46.96, LON: 86 05 53.42
+; UTM Zone 16 (NAD27) Easting: 580054.71000, Northing: 4114985.72040
+; The Sahara Desert, near SE. end of ; about 160 ft NW. of "Third
+; Arch"; 6 ft N. of path and 15 ft S. of N. wall; cemented in surface
+; of large boulder; standard tablet stamped "TT 12 W 1936"
+;
+#flag	TT12W	/WBM
+#note	TT12W	TT12W
+#fix	TT12W	-1946.4958f	4444.7701f	454.056f
+
+; ID: 27, NAME: AZ. MARK, LAT: 37 10 46.28, LON: 86 05 51.02
+; UTM Zone 16 (NAD27) Easting: 580114.09040, Northing: 4114965.32870
+; The Third Arch; about 40 ft SE.of; about 140 ft NW. of "Fourth
+; Arch"; 5 ft N. of path; and 10 ft S. of N. wall; cemented in
+; surface of large boulder; standard tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK27	-1752.3294f	4376.0012f	452.097f
+#Seg	..
+
+; ID: 28, NAME: TT 13 W 1936, LAT: 37 10 41.70, LON: 86 05 40.69
+; UTM Zone 16 (NAD27) Easting: 580370.16350, Northing: 4114826.61990
+; Silliman's Avenue, about 60 ft E. of entrance of Roaring River
+; Avenue; 5 ft N. of S. wall of; 8 ft S. of path; in concrete post;
+; standard tablet stamped "TT 13 W 1936"
+;
+#flag	TT13W	/WBM
+#note	TT13W	TT13W
+#fix	TT13W	-916.6016f	3912.8762f	449.053f
+
+; ID: 29, NAME: AZ. MARK, LAT: 37 10 41.52, LON: 86 05 41.60
+; UTM Zone 16 (NAD27) Easting: 580347.77660, Northing: 4114820.85870
+; Silliman's Avenue, about 20 ft W. of entrance of Roaring River
+; Avenue; 8 ft N. of path; cemented in surface of large rock slab;
+; standard tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK29	-990.2275f	3894.6805f	440.467f
+#Seg	..
+
+; ID: 30, NAME: TT 14 W 1936, LAT: 37 10 41.41, LON: 86 05 27.34
+; UTM Zone 16 (NAD27) Easting: 580699.44960, Northing: 4114820.83340
+; Silliman's Avenue, about 75 ft E. of NW. entrance to "Valley
+; Way Side Cut"; about 3 ft N. of path; cemented in surface of
+; ledge about 4 ft above floor; standard tablet stamped "TT 14
+; W 1936"
+;
+#flag	TT14W	/WBM
+#note	TT14W	TT14W
+#fix	TT14W	163.5013f	3883.5222f	483.451f
+
+; ID: 31, NAME: AZ. MARK, LAT: 37 10 41.62, LON: 86 05 28.73
+; UTM Zone 16 (NAD27) Easting: 580665.11120, Northing: 4114826.97620
+; Valley Way Side Cut, in NW. entrance of; 7 ft E. of w. wall;
+; about 40 ft S. of, and about 20 ft above path in Silliman's Avenue;
+; in concrete post; standard tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK31	51.0412f	3904.7562f	496.677f
+#Seg	..
+
+; ID: 32, NAME: TT 15 W 1936, LAT: 37 10 25.49, LON: 86 05 07.76
+; UTM Zone 16 (NAD27) Easting: 581187.00960, Northing: 4114334.88520
+; Ole Bull's Concert Hall, near center of Silliman's Avenue and
+; in line with centerline of "Pass of El Ghor"; cemented in surface
+; of ledge; standard tablet stamped "TT 15 W 1936"
+;
+#flag	TT15W	/WBM
+#note	TT15W	TT15W
+#fix	TT15W	1747.7298f	2273.9225f	498.519f
+
+; ID: 33, NAME: AZ. MARK, LAT: 37 10 26.14, LON: 86 05 08.21
+; UTM Zone 16 (NAD27) Easting: 581175.71910, Northing: 4114354.80860
+; Silliman's Avenue, about 80 ft N. of Ole Bull's Concert Hall;
+; about 10 ft W. of E. wall, and about 6 ft E. of path; in concrete
+; post; standard tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK33	1711.3166f	2339.6406f	499.003f
+#Seg	..
+
+; ID: 34, NAME: TT 16 W 1936, LAT: 37 10 14.53, LON: 86 04 46.35
+; UTM Zone 16 (NAD27) Easting: 581718.27360, Northing: 4114002.25020
+; Pass of El Ghor, about 40 ft W. of "Queen Victoria's Crown";
+; 5 ft N. of path; opposite entrance of small avenue running N.;
+; cemented in surface of ledge; standard tablet stamped "TT 16
+; W 1936"
+;
+#flag	TT16W	/WBM
+#note	TT16W	TT16W
+#fix	TT16W	3480.1658f	1165.9193f	507.366f
+
+; ID: 35, NAME: AZ. MARK, LAT: 37 10 14.26, LON: 86 04 46.70
+; UTM Zone 16 (NAD27) Easting: 581709.72280, Northing: 4113993.84610
+; Pass of El Ghor, about 75 ft W. of "Queen Victoria's Crown" 2
+; ft N. of S. wall; 4 ft S. of path; cemented in surface of ledge;
+; standard tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK35	3451.8487f	1138.6174f	508.066f
+#Seg	..
+
+; ID: 36, NAME: TT 17 W 1936, LAT: 37 10 00.47, LON: 86 04 39.49
+; UTM Zone 16 (NAD27) Easting: 581891.66720, Northing: 4113570.62060
+; Mary's Vineyard, about 40 ft E. of; in continuation of Cleaveland
+; Avenue; 13 ft N. of S. wall and 5 ft S. of N. wall; in concrete
+; post; standard tablet stamped "TT 17 W 1936"
+;
+#flag	TT17W	/WBM
+#note	TT17W	TT17W
+#fix	TT17W	4035.4228f	-255.5838f	545.828f
+
+; ID: 37, NAME: AZ. MARK, LAT: 37 10 00.60, LON: 86 04 40.59
+; UTM Zone 16 (NAD27) Easting: 581864.49900, Northing: 4113574.36280
+; Cleaveland Avenue, about 40 ft W. of Mary's Vineyard; about 6
+; ft N. of S. wall; about 2 ft S. of path; cemented in surface
+; of ledge; standard tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK37	3946.4103f	-242.4512f	548.820f
+#Seg	..
+
+; ID: 38, NAME: TT 18 W 1936, LAT: 37 10 03.33, LON: 86 04 45.02
+; UTM Zone 16 (NAD27) Easting: 581754.42520, Northing: 4113657.42900
+; Cleaveland Avenue, at "The Snowball Dining Room"; 34 ft E. of
+; N. end of lunch counter; 15 ft N. of centerline of Cleaveland
+; Avenue; 10 ft W. of Centerline of Mation Avenue; cemented in
+; surface of ledge; standard tablet stamped "TT 18 W 1936"
+;
+#flag	TT18W	/WBM
+#note	TT18W	TT18W
+#fix	TT18W	3587.9084f	33.5298f	551.460f
+
+; ID: 39, NAME: AZ. Mark, LAT: 37 10 03.18, LON: 86 04 48.05
+; UTM Zone 16 (NAD27) Easting: 581679.74210, Northing: 4113652.08130
+; Cleaveland Avenue, about 200 ft SW. of "Snowball Dining Room";
+; 5 ft S. of N. wall; 6 ft N. of path; in concrete post; standard
+; tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK39	3342.7280f	18.3377f	545.542f
+#Seg	..
+
+; ID: 40, NAME: TT 19 W 1936, LAT: 37 10 07.36, LON: 86 05 02.24
+; UTM Zone 16 (NAD27) Easting: 581328.53400, Northing: 4113777.50440
+; Cleaveland Avenue, opposite and directly in line with entrance
+; to Orpheus' Garden; 3 ft N. of S. wall; cemented in surface of
+; ledge; standard tablet stamped "TT 19 W 1936"
+;
+#flag	TT19W	/WBM
+#note	TT19W	TT19W
+#fix	TT19W	2194.4735f	440.8725f	546.383f
+
+; ID: 41, NAME: AZ. MARK, LAT: 37 10 07.81, LON: 86 05 02.96
+; UTM Zone 16 (NAD27) Easting: 581310.64320, Northing: 4113791.20010
+; Cleaveland Avenue, about 60 ft E. of entrance to Orpheus' Garden;
+; about 7 ft S. of N. wall and about 12 ft N. of path; In ledge;
+; standard tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK41	2136.2107f	486.3673f	545.542f
+#Seg	..
+
+; ID: 42, NAME: TT20 W 1936, LAT: 37 10 09.67, LON: 86 05 08.33
+; UTM Zone 16 (NAD27) Easting: 581177.65400, Northing: 4113847.23980
+; Cleaveland Avenue, about 160 ft E. of entrance of Specimen Avenue;
+; 7 ft S. of N. wall; 12 ft N. of path; in concrete post; standard
+; tablet stamped "TT 20 W 1936"
+;
+#flag	TT20W	/WBM
+#note	TT20W	TT20W
+#fix	TT20W	1701.6794f	674.4044f	544.380f
+
+; ID: 43, NAME: AZ. MARK, LAT: 37 10 09.67, LON: 86 05 08.33
+; UTM Zone 16 (NAD27) Easting: 581177.65400, Northing: 4113847.23980
+; Cleaveland Avenue, about 160 ft E. of entrance of Specimen Avenue;
+; 7 ft S. of N. wall; 12 ft N. of path; in concrete post; standard
+; tablet stamped "TT 20 W 1936"
+;
+#Seg	Az Mark
+#fix	AZMK43	1701.6794f	674.4044f	544.380f
+#Seg	..
+
+; ID: 44, NAME: AZ. MARK, LAT: 37 10 10.29, LON: 86 05 10.36
+; UTM Zone 16 (NAD27) Easting: 581127.40580, Northing: 4113865.86320
+; Cleaveland Avenue, opposite entrance and 18 ft W. of centerline
+; of Specimen Avenue; 5 ft S. of path and 8 ft N. of S. wall; cemented
+; in surface of ledge; standard tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK44	1537.4172f	737.0844f	546.798f
+#Seg	..
+
+; ID: 45, NAME: TT 21 W 1936, LAT: 37 10 02.83, LON: 86 05 25.62
+; UTM Zone 16 (NAD27) Easting: 580753.26800, Northing: 4113632.35750
+; "The Rocky Mountains", 100 ft W. of platform at head of stairs;
+; 12 ft N. of S. wall of Avenue leading to " The Maelstrom"; cemented
+; in surface of ledge; standard tablet stamped "TT 21 W 1936"
+;
+#flag	TT21W	/WBM
+#note	TT21W	TT21W
+#fix	TT21W	302.6337f	-17.1922f	588.427f
+
+; ID: 46, NAME: AZ. MARK, LAT: 37 10 02.83, LON: 86 05 27.08
+; UTM Zone 16 (NAD27) Easting: 580717.26040, Northing: 4113632.01220
+; "The Rocky Mountains", 100 ft W. of platform at head of stairs;
+; about 5 ft S. of N. wall of Avenue leading to "The Maelstrom";
+; cemented in surface of ledge; standard tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK46	184.4931f	-17.1911f	591.790f
+#Seg	..
+
+; ID: 47, NAME: AZ. MARK, LAT: 37 10 02.32, LON: 86 05 31.42 (Surface: 1305)
+; UTM Zone 16 (NAD27) Easting: 580610.37470, Northing: 4113615.27050
+; Carmichael Entrance to Mammoth Cave, about 80 ft SW. of near
+; center of circular loop formed by driveway; in concrete post;
+; standard tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK47	-166.6929f	-68.7492f	708.776f
+#Seg	..
+
+; ID: 48, NAME: TT 22 W 1936, LAT: 37 09 51.64, LON: 86 04 26.27
+; UTM Zone 16 (NAD27) Easting: 582220.36860, Northing: 4113301.69250
+; Junction of Boone Avenue and Martel Avenue, about 20 ft NW. of;
+; 2 ft E. of W. wall of Boone Avenue; 1 ft W. of path; cemented
+; in ledge, about 3 ft above floor of cave; sandard tablet stamped
+; "TT 22 W 1936"
+;
+#flag	TT22W	/WBM
+#note	TT22W	TT22W
+#fix	TT22W	5105.3204f	-1148.2050f	553.634f
+
+; ID: 49, NAME: AZ. MARK, LAT: 37 09 51.36, LON: 86 04 25.78
+; UTM Zone 16 (NAD27) Easting: 582232.53810, Northing: 4113293.18200
+; Junction of Boone Avenue and Martel Avenue, about 40 ft SE. of;
+; 6 ft W. of E. wall of Martel Avenue; 3 ft E. of path; cemented
+; in surface of ledge; standard tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK49	5144.9767f	-1176.5086f	552.548f
+#Seg	..
+
+; ID: 50, NAME: TT 23 W 1936, LAT: 37 09 36.50, LON: 86 04 37.44
+; UTM Zone 16 (NAD27) Easting: 581949.41460, Northing: 4112832.45250
+; Forks of the Cave, about 80 ft S. of; 5 ft E. of W. wall of Kentucky
+; Avenue; 20 ft W. of path; cemented in surface of ledge about
+; 14 ft above floor of cave; standard tablet stamped "TT 23 W 1936"
+;
+#flag	TT23W	/WBM
+#note	TT23W	TT23W
+#fix	TT23W	4201.6267f	-2679.1022f	592.656f
+
+; ID: 51, NAME: AZ. MARK, LAT: 37 09 37.79, LON: 86 04 37.37
+; UTM Zone 16 (NAD27) Easting: 581950.75430, Northing: 4112872.22190
+; Forks of the Cave, 40 ft N. of; 4 ft W.  Of E. wall of Boone
+; Avenue; 1 ft E. of path; cemented in surface of ledge about 4
+; ft above floor of cave; standard tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK51	4207.2743f	-2548.6734f	582.194f
+#Seg	..
+
+; ID: 52, NAME: TT 24 W 1936, LAT: 37 09 30.98, LON: 86 04 20.02
+; UTM Zone 16 (NAD27) Easting: 582380.74510, Northing: 4112666.54010
+; Morrison Avenue, 3 ft E. of W. wall; 5 ft S. of S. wall line
+; of Kentucky Avenue; 3 ft W. of path; cemented in surface of rock;
+; standard tablet stamped "TT 24 W 1936"
+;
+#flag	TT24W	/WBM
+#note	TT24W	TT24W
+#fix	TT24W	5611.4627f	-3236.9932f	602.009f
+
+; ID: 53, NAME: AZ. MARK, LAT: 37 09 30.98, LON: 86 04 20.02
+; UTM Zone 16 (NAD27) Easting: 582380.74510, Northing: 4112666.54010
+; Kentucky Avenue, about 6 ft E. of centerline of Morrison Avenue;
+; 4 ft S. of center of Main Cave;  in concrete post; standard tablet
+; stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK53	5611.4627f	-3236.9932f	602.009f
+#Seg	..
+
+; ID: 54, NAME: TT 25 W 1936, LAT: 37 09 22.97, LON: 86 04 06.77
+; UTM Zone 16 (NAD27) Easting: 582709.98870, Northing: 4112422.90700
+; The Black Onyx Formation, about 20 ft W. of; near center of cave;
+; on W. end of high ledge; cemented in rock; standard tablet stamped
+; "TT 25 W 1936"
+;
+#flag	TT25W	/WBM
+#note	TT25W	TT25W
+#fix	TT25W	6683.9356f	-4046.6465f	674.624f
+
+; ID: 55, NAME: AZ. MARK, LAT: 37 09 22.30, LON: 86 04 05.36
+; UTM Zone 16 (NAD27) Easting: 582744.97110, Northing: 4112402.60190
+; The Black Onyx Formation, about 100 ft E. of; 10 ft N. of S.
+; wall of cave; 3 ft S. of path; cemented in rock; standard tablet
+; stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK55	6798.0625f	-4114.3629f	676.814f
+#Seg	..
+
+; ID: 56, NAME: TT 26 W 1936, LAT: 37 09 10.39, LON: 86 03 48.97
+; UTM Zone 16 (NAD27) Easting: 583152.87690, Northing: 4112039.56460
+; Grand Central Station, 12 ft S. of N. wall; 3 ft N. of path;
+; 29 ft E. of path to Adalin's Avenue; in concrete post standard
+; tablet stamped "TT 26 W 1936"
+;
+#flag	TT26W	/WBM
+#note	TT26W	TT26W
+#fix	TT26W	8124.8412f	-5318.2216f	610.384f
+
+; ID: 57, NAME: AZ. MARK, LAT: 37 09 10.21, LON: 86 03 50.21
+; UTM Zone 16 (NAD27) Easting: 583122.34390, Northing: 4112033.71590
+; Grand Central Station, about 75 ft E. of; 4 ft N. of S. wall;
+; 3 ft S. of path to "Lover's Leap"; in concrete post; standard
+; tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK57	8024.4878f	-5336.4478f	616.265f
+#Seg	..
+
+; ID: 58, NAME: TT 27 W 1936, LAT: 37 09 06.24, LON: 86 03 40.47
+; UTM Zone 16 (NAD27) Easting: 583363.81630, Northing: 4111913.75060
+; Sand Avenue, about 100 ft W. of intersection with Grand Junction
+; Avenue; 4 ft N. of S.wall; 2 ft S. of path; cemented in surface
+; of ledge; standard tablet stamped "TT 27 W 1936"
+;
+#flag	TT27W	/WBM
+#note	TT27W	TT27W
+#fix	TT27W	8812.9055f	-5737.6214f	663.381f
+
+; ID: 59, NAME: AZ. MARK, LAT: 37 09 06.60, LON: 86 03 41.12
+; UTM Zone 16 (NAD27) Easting: 583347.67240, Northing: 4111924.68570
+; Sand Avenue, about 100 fr W. of intersection with Grand Junction
+; Avenue; 3 ft N. of path; cemented in surface of ledge; standard
+; tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK59	8760.2867f	-5701.2383f	663.854f
+#Seg	..
+
+; ID: 60, NAME: TT 28 W 1936, LAT: 37 08 59.56, LON: 86 03 31.98
+; UTM Zone 16 (NAD27) Easting: 583575.28880, Northing: 4111709.97480
+; Frozen Niagara, about 30 ft SW. of; on point of high rock ledge
+; overlooking the "Pit"; about 5 ft E. of path; cemented in surface
+; of rock; standard tablet stamped "TT 28 W 1936"
+;
+#flag	TT28W	/WBM
+#note	TT28W	TT28W
+#fix	TT28W	9500.2633f	-6412.8063f	671.858f
+
+; ID: 61, NAME: AZ. MARK, LAT: 37 08 59.71, LON: 86 03 32.52
+; UTM Zone 16 (NAD27) Easting: 583561.92190, Northing: 4111714.46510
+; Frozen Niagara, about 75 ft W. of; 3 ft S. of path; 10 ft N.
+; of S. wall; cemented in surface of large boulder; standard tablet
+; stamped"AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK61	9456.5521f	-6397.6541f	672.359f
+#Seg	..
+
+; ID: 62, NAME: TT 29 W 1936, LAT: 37 08 57.42, LON: 86 03 25.58 (Surface: 1277)
+; UTM Zone 16 (NAD27) Easting: 583733.82260, Northing: 4111645.59630
+; Frozen Niagara Entrance of Mammoth Cave, about 255 ft S. 80 E.
+; of portal; in clearing on E. slope of hollow; in concrete post;
+; standard tablet stamped "TT 29 W 1936"
+;
+#flag	TT29W	/WBM
+#note	TT29W	TT29W
+#fix	TT29W	10018.3359f	-6629.0049f	690.051f
+
+; ID: 63, NAME: AZ. MARK, LAT: 37 08 53.24, LON: 86 03 31.56 (Surface: 1276)
+; UTM Zone 16 (NAD27) Easting: 583587.58180, Northing: 4111515.32050
+; Frozen Niagara Entrance of Mammoth Cave, about 530 ft SSW. Of;
+; 150 ft W. of centerline of rd.; in clearing on W. slope of hollow;
+; in concrete post; standard tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK63	9534.4625f	-7051.7936f	701.061f
+#Seg	..
+
+; ID: 64, NAME: TT 30 W 1936, LAT: 37 09 51.62, LON: 86 04 25.30
+; UTM Zone 16 (NAD27) Easting: 582244.29850, Northing: 4113301.30980
+; Bottle Hall, (junction of Bransford's Way and Martel Avenue);
+; about 25 ft SW. of; 10 ft N. of S. wall in Martel Avenue; cemented
+; in surface of ledge; standard tablet stamped "TT 30 W 1936"
+;
+#flag	TT30W	/WBM
+#note	TT30W	TT30W
+#fix	TT30W	5183.8149f	-1150.2142f	494.639f
+
+; ID: 65, NAME: AZ. MARK, LAT: 37 09 51.63, LON: 86 04 25.61
+; UTM Zone 16 (NAD27) Easting: 582236.64970, Northing: 4113301.54330
+; Bottle Hall, about 50 ft W. of; 4 ft N. of S. wall in martel
+; Avenue; cemented in surface of ledge; standard tablet stamped
+; "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK65	5158.7289f	-1149.2073f	495.073f
+#Seg	..
+
+; ID: 66, NAME: TT 31 W 1936, LAT: 37 09 48.56, LON: 86 04 20.95
+; UTM Zone 16 (NAD27) Easting: 582352.50810, Northing: 4113208.06140
+; Bransford's Way, about 14 ft N. of junction of Hawkins' Way;
+; about 3 ft E. of path; cemented in surface of ledge; standard
+; tablet stamped "TT 31 W 1936"
+;
+#flag	TT31W	/WBM
+#note	TT31W	TT31W
+#fix	TT31W	5535.8802f	-1459.5411f	500.797f
+
+; ID: 67, NAME: AZ. MARK, LAT: 37 09 48.13, LON: 86 04 21.00
+; UTM Zone 16 (NAD27) Easting: 582351.40450, Northing: 4113194.79840
+; Bransford's Way, about 30 ft S. of junction with Hawkins' Way;
+; near centerline of Bransford's Way; standard tablet stamped "AZ.
+; MARK"
+;
+#Seg	Az Mark
+#fix	AZMK67	5531.8419f	-1503.0181f	501.212f
+#Seg	..
+
+; ID: 68, NAME: TT 32 W 1936, LAT: 37 09 47.38, LON: 86 04 15.51
+; UTM Zone 16 (NAD27) Easting: 582487.03670, Northing: 4113173.01170
+; Cathedral Domes, about 2 ft from SE. wall of "Fourth Dome"; 1
+; ft N. and 25 ft E. of entrance of Becky's Alley; in concrete
+; post; standard tablet stamped "TT 32 W 1936"
+;
+#flag	TT32W	/WBM
+#note	TT32W	TT32W
+#fix	TT32W	5976.1228f	-1578.7650f	503.179f
+
+; ID: 69, NAME: AZ. MARK, LAT: 37 09 47.86, LON: 86 04 15.85
+; UTM Zone 16 (NAD27) Easting: 582478.50600, Northing: 4113187.72130
+; Cathedral Domes, about 8 ft S. of NW. wall of "Fifth Dome"; about
+; 15 ft NE. of Hawkins' Pit; 5 ft N. and 10 ft E. of entrance to
+; Hawkins' Way; cementedin surface of ledge; standard tablet stamped
+; "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK69	5948.5995f	-1530.2387f	509.052f
+#Seg	..
+
+; ID: 70, NAME: TT 33 W 1936, LAT: 37 09 41.50, LON: 86 04 10.28
+; UTM Zone 16 (NAD27) Easting: 582617.80790, Northing: 4112993.07800
+; Becky's Alley, about 12 ft S. and 8 ft E. of foot of stairway
+; leading to Robertson Avenue; cemented in floor near N. wall;
+; standard tablet stamped "TT 33 W 1936"
+;
+#flag	TT33W	/WBM
+#note	TT33W	TT33W
+#fix	TT33W	6399.4757f	-2173.1898f	520.162f
+
+; ID: 71, NAME: AZ. MARK, LAT: 37 09 41.60, LON: 86 04 10.03
+; UTM Zone 16 (NAD27) Easting: 582623.94390, Northing: 4112996.22010
+; Becky's Alley, about 10 ft S., thence about 30 ft E. of foot
+; of a stairway leading to Robertson Avenue; about 4 ft above floor;
+; cemented in surface of ledge near N. wall; standard tablet stamped
+; "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK71	6419.7050f	-2163.0748f	522.147f
+#Seg	..
+
+; ID: 72, NAME: TT 34 W 1936, LAT: 37 09 38.55, LON: 86 04 06.07
+; UTM Zone 16 (NAD27) Easting: 582722.53920, Northing: 4112903.19010
+; Robertson Avenue, about 610 ft S. of its junction with Becky's
+; Alley; 2 ft N. and 5 ft E. of its junction with unnamed avenue
+; running E.; about 4 ft above path; cemented in surface of ledge;
+; standrd tablet stamped "TT 34 W 1936"
+;
+#flag	TT34W	/WBM
+#note	TT34W	TT34W
+#fix	TT34W	6740.2356f	-2471.3824f	548.014f
+
+; ID: 73, NAME: AZ. MARK, LAT: 37 09 37.64, LON: 86 04 06.96
+; UTM Zone 16 (NAD27) Easting: 582700.86280, Northing: 4112874.93190
+; Robertson Avenue, about 730 ft S. of its junction with Becky's
+; Alley; about 110 ft S. of junction of unnamed avenue running
+; E.; about 2 ft from E. wall; cemented in surface of ledge; standard
+; tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK73	6668.2322f	-2563.4061f	548.104f
+#Seg	..
+
+; ID: 74, NAME: TT 35 W 1936, LAT: 37 09 24.24, LON: 86 04 00.15
+; UTM Zone 16 (NAD27) Easting: 582872.89490, Northing: 4112463.64840
+; Robertson Avenue, about 30 ft SE. of foot of stairway leading
+; to Nickerson Avenue; at W. edge of path; in concrete post; standard
+; tablet stamped "TT 35 W 1936"
+;
+#flag	TT35W	/WBM
+#note	TT35W	TT35W
+#fix	TT35W	7219.6633f	-3918.1171f	544.916f
+
+; ID: 75, NAME: AZ. MARK, LAT: 37 09 23.97, LON: 86 03 59.88
+; UTM Zone 16 (NAD27) Easting: 582879.63670, Northing: 4112455.39370
+; Robertson Avenue, about 60 ft SE. of foot of stairway leading
+; to Nickerson Avenue; cemented in surface of ledge near W. wall;
+; standard tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK75	7241.5210f	-3945.4105f	543.425f
+#Seg	..
+
+; ID: 76, NAME: TT 36 W 1936, LAT: 37 09 14.74, LON: 86 03 49.56
+; UTM Zone 16 (NAD27) Easting: 583137.00000, Northing: 4112173.47060
+; Fox Avenue, 5 ft S. and 4 ft W. of foot of stairway leading to
+; Nickerson Avenue; cemented in surface of ledge; at W. edge of
+; path; standard tablet stamped "TT 36 W 1936"
+;
+#flag	TT36W	/WBM
+#note	TT36W	TT36W
+#fix	TT36W	8076.9712f	-4878.4177f	550.925f
+
+; ID: 77, NAME: AZ. MARK, LAT: 37 09 15.22, LON: 86 03 49.64
+; UTM Zone 16 (NAD27) Easting: 583134.88070, Northing: 4112188.24280
+; Fox Avenue, about 40 ft E. of foot of stairway leading up to
+; Nickerson Avenue; about 5 ft above path; cemented in surface
+; of ledge on S. wall; standard tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK77	8070.4837f	-4829.8880f	551.707f
+#Seg	..
+
+; ID: 78, NAME: TT 37 W 1936, LAT: 37 09 12.77, LON: 86 03 47.65
+; UTM Zone 16 (NAD27) Easting: 583184.71370, Northing: 4112113.22820
+; Big Gypsum Avenue, 10 ft S. and 5 ft W. of head of stairway leading
+; down to Fox Avenue; at W. edge of path; in concrete post; standard
+; tablet stamped "TT 37 W 1936"
+;
+#flag	TT37W	/WBM
+#note	TT37W	TT37W
+#fix	TT37W	8231.6078f	-5077.5569f	567.957f
+
+; ID: 79, NAME: AZ. MARK, LAT: 37 09 13.06, LON: 86 03 47.45
+; UTM Zone 16 (NAD27) Easting: 583189.55890, Northing: 4112122.21360
+; Fox Avenue, about 20 ft NE. of foot of stairway to Big Gypsum
+; Avenue; about 4 ft above path; cemented in surface of ledge on
+; N. wall; standard tablet stamped "AZ. MARK"
+;
+#Seg	Az Mark
+#fix	AZMK79	8247.7864f	-5048.2312f	560.588f
+#Seg	..
+

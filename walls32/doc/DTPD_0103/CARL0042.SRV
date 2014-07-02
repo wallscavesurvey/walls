@@ -1,0 +1,18 @@
+;Copy of Survey $1309A Mammoth Cave
+;Import from 99-04-19.sef, dated 15:55 2000-04-30
+;Borden_J - Duty: book
+;Zopf_R - Duty: compass
+;Neff_K - Duty: tape
+;Instruments - A:K&E #2 D:Fiberglass
+#Units Feet Order=DAV Decl=0 IncA=0 IncAB=0 IncV=0 IncVB=0 IncD=0
+#date 1977-03-19
+;#c Mammoth Cave
+;#l Carlos Way
+1287A12	1309A13	6.3	318.5	0	<1,5,2,1>
+1309A13	1309A14	18.4	298.5/118.5	0	<1.5,1.2,0,3>
+1309A14	1309A15	27.4	287/107.5	0	<1,2,1.2,1>
+1309A15	1309A16	13.7	282.5/102	0	<1,1,0,3>
+1309A16	1309A17	9	332.5/151	0	<1,3,2,1>
+1309A17	1309A18	47.5	294/114	0	<2.7,2,2,0.5>
+1309A18	1309A19	13.3	313/133	0	<2.5,1,2,0.5>
+1309A19	1309A20	47	312/132	0	<2.5,1,2,0.5>

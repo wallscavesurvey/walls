@@ -1,0 +1,264 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug_XP|Win32">
+      <Configuration>Debug_XP</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release_XP|Win32">
+      <Configuration>Release_XP</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{3F61C2DA-FAB7-477B-96A6-5CF2D786C56D}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>dbf_file</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_XP|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120_xp</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_XP|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120_xp</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\vs_version.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_XP|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\vs_version.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\vs_version.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_XP|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\vs_version.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <TargetName>$(ProjectName)</TargetName>
+    <OutDir>$(Configuration)\</OutDir>
+    <IncludePath>$(WorkINC);$(IncludePath)</IncludePath>
+    <LibraryPath>$(WorkLIB);$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_XP|Win32'">
+    <TargetName>$(ProjectName)XP</TargetName>
+    <OutDir>$(Configuration)\</OutDir>
+    <IncludePath>$(WorkINC);$(IncludePath)</IncludePath>
+    <LibraryPath>$(WorkLIB);$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <TargetName>$(ProjectName)D</TargetName>
+    <OutDir>$(Configuration)\</OutDir>
+    <IncludePath>$(WorkINC);$(IncludePath)</IncludePath>
+    <LibraryPath>$(WorkLIB);$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_XP|Win32'">
+    <TargetName>$(ProjectName)XPd</TargetName>
+    <OutDir>$(Configuration)\</OutDir>
+    <IncludePath>$(WorkINC);$(IncludePath)</IncludePath>
+    <LibraryPath>$(WorkLIB);$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy $(TargetPath) $(WorkLIB)</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copying lib to $(WorkLIB)</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_XP|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy $(TargetPath) $(WorkLIB)</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copying lib to $(WorkLIB)</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy $(TargetPath) $(WorkLIB)</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copying lib to $(WorkLIB)</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_XP|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <PostBuildEvent>
+      <Command>copy $(TargetPath) $(WorkLIB)</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copying lib to $(WorkLIB)</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dbfallc.c" />
+    <ClCompile Include="dbfalloc.c" />
+    <ClCompile Include="dbfappen.c" />
+    <ClCompile Include="dbfattc.c" />
+    <ClCompile Include="dbfcache.c" />
+    <ClCompile Include="dbfclosd.c" />
+    <ClCompile Include="dbfclose.c" />
+    <ClCompile Include="dbfcreat.c" />
+    <ClCompile Include="dbfdelc.c" />
+    <ClCompile Include="dbfdetc.c" />
+    <ClCompile Include="dbferrno.c" />
+    <ClCompile Include="dbferrs.c" />
+    <ClCompile Include="dbffilemo.c" />
+    <ClCompile Include="dbffilen.c" />
+    <ClCompile Include="dbffld.c" />
+    <ClCompile Include="dbffldde.c" />
+    <ClCompile Include="dbfflddf.c" />
+    <ClCompile Include="dbffldke.c" />
+    <ClCompile Include="dbffldle.c" />
+    <ClCompile Include="dbffldna.c" />
+    <ClCompile Include="dbffldnu.c" />
+    <ClCompile Include="dbffldp.c" />
+    <ClCompile Include="dbffldst.c" />
+    <ClCompile Include="dbffldty.c" />
+    <ClCompile Include="dbfflush.c" />
+    <ClCompile Include="dbffmerr.c" />
+    <ClCompile Include="dbfgetdb.c" />
+    <ClCompile Include="dbfgetf.c" />
+    <ClCompile Include="dbfgetfd.c" />
+    <ClCompile Include="dbfgetfk.c" />
+    <ClCompile Include="dbfgetfs.c" />
+    <ClCompile Include="dbfgetr.c" />
+    <ClCompile Include="dbfgo.c" />
+    <ClCompile Include="dbfhandle.c" />
+    <ClCompile Include="dbfhdrd.c" />
+    <ClCompile Include="dbfhdrr.c" />
+    <ClCompile Include="dbflast.c" />
+    <ClCompile Include="dbfmark.c" />
+    <ClCompile Include="dbfnext.c" />
+    <ClCompile Include="dbfnumfl.c" />
+    <ClCompile Include="dbfnumre.c" />
+    <ClCompile Include="dbfnumus.c" />
+    <ClCompile Include="dbfopen.c" />
+    <ClCompile Include="dbfopnfl.c" />
+    <ClCompile Include="dbfpathn.c" />
+    <ClCompile Include="dbfpos.c" />
+    <ClCompile Include="dbfprev.c" />
+    <ClCompile Include="dbfputf.c" />
+    <ClCompile Include="dbfputr.c" />
+    <ClCompile Include="dbfputs.c" />
+    <ClCompile Include="dbfrec.c" />
+    <ClCompile Include="dbfrecp.c" />
+    <ClCompile Include="dbfsizh.c" />
+    <ClCompile Include="dbfsizr.c" />
+    <ClCompile Include="dbfskip.c" />
+    <ClCompile Include="dbftype.c" />
+    <ClCompile Include="dbfunmar.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\inc\a__dbf.h" />
+    <ClInclude Include="..\inc\dbf_file.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="dbf_file.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

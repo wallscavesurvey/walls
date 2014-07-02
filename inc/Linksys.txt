@@ -1,0 +1,9 @@
+﻿Network Security Settings:
+
+router username: admin
+router password: admin
+data network name (SSID): linksys
+media network name (SSID): linksys_media
+network security type: Higher Security (WPA / WPA2)
+network security key: XG9WKQHBND
+connection type: Keep Alive

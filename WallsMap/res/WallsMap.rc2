@@ -1,0 +1,41 @@
+//
+// WallsMap.RC2 - resources Microsoft Visual C++ does not edit directly
+//
+
+#ifdef APSTUDIO_INVOKED
+#error this file is not editable by Microsoft Visual C++
+#endif //APSTUDIO_INVOKED
+
+/////////////////////////////////////////////////////////////////////////////
+// Add manually edited resources here...
+#include "ids.h"
+
+IDR_DATA1                     RCDATA                  "res\\shpdef_hdr.txt"
+IDR_DATA2                     RCDATA                  "res\\kml_file.txt"
+
+TOOLBAR_CONTROL               BITMAP                  "toolbar_rtf.bmp"
+
+TOOLBAR_CONTROL TOOLBAR  16, 15
+BEGIN
+    BUTTON      BUTTON_FONT
+    SEPARATOR
+    SEPARATOR
+    SEPARATOR
+    SEPARATOR
+    SEPARATOR
+    SEPARATOR
+    SEPARATOR
+    BUTTON      BUTTON_BOLD
+    BUTTON      BUTTON_ITALIC
+    BUTTON      BUTTON_UNDERLINE
+    SEPARATOR
+    BUTTON      BUTTON_LEFTALIGN
+    BUTTON      BUTTON_CENTERALIGN
+    BUTTON      BUTTON_RIGHTALIGN
+    SEPARATOR
+    BUTTON      BUTTON_INDENT
+    BUTTON      BUTTON_OUTDENT
+    BUTTON      BUTTON_BULLET
+END
+
+/////////////////////////////////////////////////////////////////////////////

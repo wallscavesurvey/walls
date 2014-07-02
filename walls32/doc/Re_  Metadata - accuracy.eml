@@ -1,0 +1,406 @@
+From: "David McKenzie" <davidmck@austin.rr.com>
+To: <dmyocum@bellsouth.net>
+References: <APEKIMLCNKKNEKJFADDBMENFCHAA.dmyocum@bellsouth.net>
+Subject: Re:  Metadata - accuracy
+Date: Wed, 29 Aug 2001 17:19:24 -0500
+MIME-Version: 1.0
+Content-Type: multipart/alternative;
+	boundary="----=_NextPart_000_3341_01C44F83.B296BDB0"
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2462.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2800.1409
+
+This is a multi-part message in MIME format.
+
+------=_NextPart_000_3341_01C44F83.B296BDB0
+Content-Type: text/plain;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+Mike,
+
+For the time being, I'm suggesting we include the following statements =
+in the metadata outline. Please condense or revise them as you see fit. =
+Note that the vertical accuracy report is similar but not quite =
+identical. To complete the quantitative positional attribute fields =
+(Accuracy Value and Accuracy Explanation) we can either say that no =
+specific value is applicable to the entire data set (explanation: =
+confidence intervals will vary with station location and are provided in =
+the station shapefile), or we can actually provide the SDUW (square root =
+of the UVE) as a metric quantity, identifying it as the scale factor =
+used to compute a posteriori confidence regions. Recall that the UVEs =
+are already provided in the metadata tables derived from the .DEF files. =
+The advantage of entering N/A, or just referring to the shapefiles,  is =
+that it doesn't have to change with each data submission.
+
+In the shapefile structure definition, I'll probably use 8.2 numeric =
+fields for SD_H/V and SDUW_H/V, and 5-character fields for LOOPS_H/V =
+(100,000 loops surely being unlikely). I won't bother you now with the =
+details of why I'm suggesting this form for the accuracy assessments. =
+Certainly there are other possibilities.
+
+Let me know whether or not this is enough for now. I've been slowly =
+digging through some incredibly complex code that I haven't seen in =
+about 10 years. I can barely recognize it as something I've written.
+
+--David
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Horizontal Positional Accuracy Report:
+
+When weighting compass and tape traverses for least squares adjustment, =
+the default error variance assumed (by Walls) for each horizontal =
+component is <total traverse length in feet>/100 ft=B2, which is =
+equivalent to a standard deviation of 0.3 m for a 30-meter vector =
+measurement. This being only a rough approximation of variance, the =
+component errors are currently treated as if they were statistically =
+similar and uncorrelated. Under these assumptions the expected =
+horizontal unit variance estimate (UVE) resulting from an adjustment is =
+1.0. Cave surveys, however, are significantly affected not only by =
+random errors in clinometer and tape readings, but also by station =
+positioning errors and systematic errors due to imperfect instrument =
+calibration (among other things). Cave difficulty and skill of surveyors =
+are important factors. When there are sufficient surveyed loops, the =
+effects of these errors normally result in UVEs ranging from 1.0 to 2.0 =
+in surveys believed to be of good quality. (CRF surveying methods and =
+standards are assumed.)
+
+The accuracy of a station's estimated UTM coordinates will depend on its =
+distance from well-established benchmarks and how much control is =
+provided by surveyed loops. Approximate confidence intervals can be =
+computed from statistics derived from the least squares adjustment and =
+error analysis. The required statistics are provided in the following =
+numeric fields of the station shapefile:
+
+SD_H      - A priori standard deviation of each horizontal component's =
+error in meters.
+SDUW_H    - A posteriori standard deviation of unit weight for each =
+horizontal component.
+LOOPS_H   - Loop count (degrees of freedom) for each horizontal =
+component.
+
+(Note that the standard deviation of unit weight is the square root of =
+the UVE.) These numbers can be used to derive any of several popular =
+kinds of approximate confidence intervals. For example, an a priori =
+bound on either the Easting or Northing of a UTM position, at 90% =
+confidence, would be computed as plus or minus 1.64 x SD_H. The radius =
+of an approximate 90% confidence region would be 2.15 x SD_H. These =
+intervals depend only on network geometry and the default variances used =
+for weighting measurements. To obtain the corresponding a posteriori =
+confidence interval, which depends on observed consistency (loop =
+closures), we would replace SD_H with with SDUW_H x SD_H. This will be a =
+legitimate confidence interval only if the loop count is large enough, =
+say over 20 (generally the case for CRF data submissions to MCNP). For =
+fewer loops, the radius of a confidence region can be computed using =
+critical values of the F distribution, with 2 and 2 x LOOPS_H degrees of =
+freedom. If there are no loops, only a priori bounds are possible.
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+Vertical Positional Accuracy Report:
+
+When weighting compass and tape traverses for least squares adjustment, =
+the default error variance assumed (by Walls) for the measured vertical =
+component is <total traverse length in feet>/100 ft=B2, which is =
+equivalent to a standard deviation of 0.3 m for a 30-meter vector =
+measurement. Under this assumption the expected vertical unit variance =
+estimate (UVE) resulting from an adjustment is 1.0. Cave surveys, =
+however, are significantly affected not only by random errors in =
+instrument and tape readings, but also by station positioning errors and =
+systematic errors due to imperfect instrument calibration (among other =
+things). Cave difficulty and skill of surveyors are important factors. =
+When there are sufficient surveyed loops, the effects of these errors =
+normally result in UVEs ranging from 1.0 to 2.0 in surveys believed to =
+be of good quality. (CRF surveying methods and standards are assumed.)
+
+The accuracy of a station's estimated elivation will depend on its =
+distance from well-established benchmarks and how much control is =
+provided by surveyed loops. Approximate confidence intervals can be =
+computed from statistics derived from the least squares adjustment and =
+error analysis. The required statistics are provided in the following =
+numeric fields of the station shapefile:
+
+SD_V      - A priori standard deviation of the vertical component's =
+error in meters.
+SDUW_V    - A posteriori standard deviation of unit weight for the =
+survey's vertical component.
+LOOPS_V   - Loop count (degrees of freedom) for the survey's vertical =
+component.
+
+(Note that the standard deviation of unit weight is the square root of =
+the UVE.) These numbers can be used to derive any of several popular =
+kinds of approximate confidence intervals for an established elevation. =
+For example, an a priori 90% confidence interval would be computed as =
+plus or minus 1.64 x SD_V. This interval depends only on network =
+geometry and the default variances used for weighting measurements. To =
+obtain the corresponding a posteriori confidence interval, which depends =
+on observed consistency (loop closures), we would replace SD_V with with =
+SDUW_V x SD_V. This will be a legitimate confidence interval only if the =
+loop count is large enough, say over 40 (generally the case for CRF data =
+submissions to MCNP). For fewer loops, the confidence interval can be =
+computed using critical values of the T distribution with LOOPS_V =
+degrees of freedom. If there are no loops, only a priori bounds are =
+possible.
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+
+
+------=_NextPart_000_3341_01C44F83.B296BDB0
+Content-Type: text/html;
+	charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<META http-equiv=3DContent-Type content=3D"text/html; =
+charset=3Diso-8859-1">
+<META content=3D"MSHTML 6.00.2462.0" name=3DGENERATOR>
+<STYLE></STYLE>
+</HEAD>
+<BODY bgColor=3D#ffffff>
+<DIV><FONT face=3D"Comic Sans MS" size=3D2>Mike,</FONT></DIV>
+<DIV><FONT face=3D"Comic Sans MS" size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT size=3D2><FONT face=3D"Comic Sans MS">For the time being, I'm =
+suggesting=20
+we include the following statements in the metadata outline. Please =
+condense or=20
+revise them as you see fit. Note that the vertical accuracy report=20
+is&nbsp;similar but not quite identical.&nbsp;</FONT><FONT face=3D"Comic =
+Sans MS"=20
+size=3D2>To complete the quantitative positional attribute fields =
+(Accuracy Value=20
+and Accuracy Explanation) we can either say that no specific value is =
+applicable=20
+to the&nbsp;entire data set (explanation: confidence intervals will vary =
+with=20
+station location and are&nbsp;provided in the station shapefile), <EM>or =
+</EM>we=20
+can actually provide&nbsp;the SDUW&nbsp;(square root of the UVE) as a =
+metric=20
+quantity, identifying it as&nbsp;the scale&nbsp;factor&nbsp;used to =
+compute a=20
+posteriori confidence regions. Recall that the UVEs are already provided =
+in the=20
+metadata tables derived from the .DEF files. The advantage of entering =
+N/A, or=20
+just referring to the shapefiles,&nbsp; is that it doesn't have to =
+change with=20
+each data submission.</FONT></FONT></DIV>
+<DIV><FONT face=3D"Comic Sans MS" size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"Comic Sans MS" size=3D2>In the shapefile structure =
+definition,=20
+I'll probably use 8.2 numeric fields for SD_H/V and SDUW_H/V, and =
+5-character=20
+fields for LOOPS_H/V (100,000 loops surely being unlikely). I won't =
+bother you=20
+now with the details of why I'm suggesting this form for the accuracy=20
+assessments. Certainly there are other possibilities.</FONT></DIV>
+<DIV><FONT face=3D"Comic Sans MS" size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"Comic Sans MS" size=3D2>Let me&nbsp;know whether or =
+not this is=20
+enough for now. I've been&nbsp;slowly digging through some incredibly =
+complex=20
+code that I haven't seen in about 10 years.&nbsp;I can&nbsp;barely =
+recognize it=20
+as something I've written.</FONT></DIV>
+<DIV><FONT face=3D"Comic Sans MS" size=3D2></FONT><FONT face=3D"Comic =
+Sans MS"=20
+size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3D"Comic Sans MS" size=3D2>--David</FONT></DIV>
+<DIV><FONT face=3D"Comic Sans MS" size=3D2></FONT><FONT face=3D"Comic =
+Sans MS"=20
+size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DFixedsys size=3D2>
+<DIV>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D</DIV>Horizontal=20
+Positional Accuracy Report:</FONT></DIV>
+<DIV><FONT face=3DFixedsys size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DFixedsys size=3D2>When weighting&nbsp;compass and tape =
+traverses=20
+for least squares adjustment, the default error variance assumed (by =
+Walls) for=20
+each horizontal component is &lt;total traverse length in feet&gt;/100 =
+ft=B2,=20
+which is equivalent to a standard deviation of 0.3 m for a 30-meter =
+vector=20
+measurement.&nbsp;This being only a rough&nbsp;approximation of =
+variance, the=20
+component errors are currently treated as if they =
+were&nbsp;statistically=20
+similar and uncorrelated. Under these&nbsp;assumptions&nbsp;the expected =
+
+horizontal unit variance estimate (UVE)&nbsp;resulting from an=20
+adjustment&nbsp;is 1.0. Cave surveys, however,&nbsp;are significantly =
+affected=20
+not only by random errors in&nbsp;clinometer and tape readings, but also =
+by=20
+station positioning errors and systematic errors&nbsp;due =
+to&nbsp;imperfect=20
+instrument calibration (among other things). Cave difficulty and skill =
+of=20
+surveyors&nbsp;are important factors. When there are sufficient surveyed =
+loops,=20
+the&nbsp;effects of these errors&nbsp;normally result in UVEs ranging=20
+from&nbsp;1.0 to 2.0 in surveys&nbsp;believed to be&nbsp;of good =
+quality. (CRF=20
+surveying&nbsp;methods and standards are assumed.)</FONT></DIV>
+<DIV><FONT face=3DFixedsys size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DFixedsys size=3D2>The accuracy of a station's =
+estimated UTM=20
+coordinates will depend on its distance from well-established benchmarks =
+and how=20
+much control is provided by surveyed loops. Approximate confidence =
+intervals can=20
+be computed from&nbsp;statistics derived from the least squares =
+adjustment and=20
+error analysis.&nbsp;The required statistics&nbsp;are provided in the=20
+following&nbsp;numeric&nbsp;fields&nbsp;of the station =
+shapefile:</FONT></DIV>
+<DIV><FONT face=3DFixedsys size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DFixedsys =
+size=3D2>SD_H&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- A=20
+priori standard deviation of each horizontal component's error in =
+meters.
+<DIV><FONT face=3DFixedsys size=3D2>SDUW_H&nbsp;&nbsp;&nbsp; -&nbsp;A =
+posteriori=20
+standard deviation of unit weight for&nbsp;each horizontal=20
+component.</FONT></DIV>
+<DIV><FONT face=3DFixedsys size=3D2>LOOPS_H&nbsp;&nbsp;&nbsp;- Loop =
+count (degrees=20
+of freedom) for&nbsp;each horizontal component.</FONT></DIV>
+<DIV><FONT face=3DFixedsys size=3D2></FONT>&nbsp;</DIV></FONT><FONT =
+face=3DFixedsys=20
+size=3D2></FONT></DIV>
+<DIV><FONT face=3DFixedsys size=3D2>(Note that the standard deviation of =
+unit weight=20
+is the square root of the UVE.) These numbers can be used to derive any=20
+of&nbsp;several popular kinds of&nbsp;approximate confidence intervals. =
+For=20
+example, an a priori&nbsp;bound on either the Easting or Northing of a =
+UTM=20
+position, at 90% confidence, would be computed as plus or minus 1.64 x =
+SD_H. The=20
+radius of an approximate&nbsp;90% confidence region would be 2.15 x =
+SD_H. These=20
+intervals&nbsp;depend only&nbsp;on network geometry and the default =
+variances=20
+used for weighting measurements.&nbsp;To obtain =
+the&nbsp;corresponding&nbsp;a=20
+posteriori confidence interval, which depends on&nbsp;observed =
+consistency (loop=20
+closures), we would replace&nbsp;SD_H with with SDUW_H x SD_H. This=20
+will&nbsp;be&nbsp;a legitimate confidence interval only if the loop =
+count is=20
+large enough, say over 20 (generally the case for CRF data submissions =
+to MCNP).=20
+For fewer loops, the radius of a confidence region can be computed using =
+
+critical values of the F distribution, with 2 and 2 x LOOPS_H degrees of =
+
+freedom. If there are no loops, only a priori bounds are =
+possible.</FONT></DIV>
+<DIV><FONT face=3DFixedsys size=3D2></FONT><FONT face=3DFixedsys=20
+size=3D2></FONT>&nbsp;</DIV>
+<DIV>
+<DIV><FONT face=3DFixedsys size=3D2>
+<DIV>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D</DIV>Vertical&nbsp;Posit=
+ional=20
+Accuracy Report:</FONT></DIV>
+<DIV><FONT face=3DFixedsys size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DFixedsys size=3D2>When weighting&nbsp;compass and tape =
+traverses=20
+for least squares adjustment, the default error variance assumed (by =
+Walls) for=20
+the measured vertical component is &lt;total traverse length in =
+feet&gt;/100=20
+ft=B2, which is equivalent to a standard deviation of 0.3 m for a =
+30-meter vector=20
+measurement.&nbsp;Under this&nbsp;assumption&nbsp;the =
+expected&nbsp;vertical=20
+unit variance estimate (UVE)&nbsp;resulting from an adjustment&nbsp;is =
+1.0. Cave=20
+surveys, however,&nbsp;are significantly affected not only by random =
+errors in=20
+instrument and tape readings, but also by station positioning errors and =
+
+systematic errors&nbsp;due to&nbsp;imperfect instrument calibration =
+(among other=20
+things). Cave difficulty and skill of surveyors&nbsp;are important =
+factors. When=20
+there are sufficient surveyed loops, the&nbsp;effects of these=20
+errors&nbsp;normally result in UVEs ranging from&nbsp;1.0 to 2.0 in=20
+surveys&nbsp;believed to be&nbsp;of good quality. (CRF =
+surveying&nbsp;methods=20
+and standards are assumed.)</FONT></DIV>
+<DIV><FONT face=3DFixedsys size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DFixedsys size=3D2>The accuracy of a station's=20
+estimated&nbsp;elivation will depend on its distance from =
+well-established=20
+benchmarks and how much control is provided by surveyed loops. =
+Approximate=20
+confidence intervals can be computed from&nbsp;statistics derived from =
+the least=20
+squares adjustment and error analysis.&nbsp;The required =
+statistics&nbsp;are=20
+provided in the following&nbsp;numeric&nbsp;fields&nbsp;of the station=20
+shapefile:</FONT></DIV>
+<DIV><FONT face=3DFixedsys size=3D2></FONT>&nbsp;</DIV>
+<DIV><FONT face=3DFixedsys size=3D2>
+<DIV><FONT face=3DFixedsys =
+size=3D2>SD_V&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- A=20
+priori standard deviation of the vertical component's error in=20
+meters.</FONT></DIV>
+<DIV><FONT face=3DFixedsys size=3D2>SDUW_V&nbsp;&nbsp;&nbsp; -&nbsp;A =
+posteriori=20
+standard deviation of unit weight for&nbsp;the survey's vertical=20
+component.</FONT></DIV>
+<DIV><FONT face=3DFixedsys size=3D2>LOOPS_V&nbsp;&nbsp;&nbsp;- Loop =
+count (degrees=20
+of freedom) for&nbsp;the survey's vertical component.</FONT></DIV>
+<DIV><FONT face=3DFixedsys size=3D2></FONT>&nbsp;</DIV></FONT></DIV>
+<DIV><FONT face=3DFixedsys size=3D2>
+<DIV><FONT face=3DFixedsys size=3D2>(Note that the standard deviation of =
+unit weight=20
+is the square root of the UVE.) These numbers can be used to derive any=20
+of&nbsp;several popular kinds of&nbsp;approximate confidence intervals =
+for an=20
+established elevation. For example, an a priori&nbsp;90% confidence =
+interval=20
+would be computed as plus or minus 1.64 x SD_V. This =
+interval&nbsp;depends=20
+only&nbsp;on network geometry and the default variances used for =
+weighting=20
+measurements.&nbsp;To obtain the&nbsp;corresponding&nbsp;a posteriori =
+confidence=20
+interval, which depends on&nbsp;observed consistency (loop closures), we =
+would=20
+replace&nbsp;SD_V with with SDUW_V x SD_V.&nbsp;This will&nbsp;be&nbsp;a =
+
+legitimate confidence interval only if the loop count is large enough, =
+say over=20
+40 (generally the case for CRF data submissions to MCNP). For fewer =
+loops, the=20
+confidence&nbsp;interval can be computed using critical values of =
+the&nbsp;T=20
+distribution with LOOPS_V degrees of freedom. If there are no loops, =
+only a=20
+priori bounds are possible.</FONT></DIV>
+<DIV>&nbsp;</DIV>
+<DIV>=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D</DIV>
+<DIV><FONT face=3DFixedsys =
+size=3D2></FONT>&nbsp;</DIV></FONT></DIV></DIV>
+<DIV><FONT face=3DFixedsys size=3D2></FONT>&nbsp;</DIV></BODY></HTML>
+
+------=_NextPart_000_3341_01C44F83.B296BDB0--

@@ -1,0 +1,13 @@
+;3446L
+;Import from DTPD.SEF, dated 11:11 2000-06-17
+;D. BAKER - Duty: BOOK
+;R. OLSON - Duty: 
+;R. TOOMEY - Duty: 
+;M. COLBURN - Duty: 
+;
+;Instruments - A:205124 AB:205124
+#Units Feet Order=DAV Decl=0 IncA=-3.7d IncAB=-3.7d IncV=0 IncVB=0 IncD=0
+#date 1998-01-18
+2877A9	3446L1	68.8	202/21	-14/14
+3446L1	3446L2	101	195/15	19.7/-19.5	<46,23,41,1>
+3446L2	3446L3	22.1	171	15	<13,44,9,1>

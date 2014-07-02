@@ -1,0 +1,114 @@
+;Stations Assigned Positions in CML
+;These #FIXed points were commented out of the SRV files
+;and moved to here, thereby allowing the option of attaching
+;the Walker versions, either UTM or TT8W. (DMcK)
+
+;NOTES --
+;Twelve stations originally named 2:T? were renamed to :TT?W.
+;The original names in Rotunda were 2:T2, 2:T3, 2:T4, 2:T9, 2:T10, and 2:T11.
+;The original names in Kentucky were 2:T22, 2:T23, 2:T24, 2:T25, 2:T27,
+;2:T28, and 2:T37.
+;
+;Three stations in Violet originally named 1111:T? were renamed to :TT?W.
+;The original names were 1111:T6,1111:T17,1111:T21.
+;
+;All renamed stations except TT2W and TT4W in Rotunda, and TT23W,
+;TT25W, TT27W, and TT37W in Kentucky had fixed (#CM_Origin) positions
+;in the original CML files. The six exceptions, although referenced in
+;the CML data, were not constrained to specified coordinates.
+;
+;The CML and Walker versions of TT21W (Violet) and TT24W (Kentucky)
+;disagree by ~21' (North) and ~33' (East), respectively. All other
+;fixed station coordinates agree to within 3'.
+
+#units feet grid=0
+#symbol		SS2	/WBM
+#symbol		CS6	/WBMX
+
+
+;ROTUNDA --
+;#CM_origin
+#flag	TT3W	/WBM
+#note	TT3W	TT3W
+#Fix	TT3W	-2041.7	6304.1	586
+#flag	TT9W	/WBM
+#note	TT9W	TT9W
+#Fix	TT9W	-1364	5870	558
+#flag	TT10W	/WBM
+#note	TT10W	TT10W
+#Fix	TT10W	-1888.2	6465.6	523.9
+#flag	TT11W	/WBM
+#note	TT11W	TT11W
+#Fix	TT11W	-2526.5	6352.8	468.5
+
+;Station 1123:K1 was originally fixed (#CM_Origin) in the CML.
+;For now we'll let it "float" and create 1123:K1- to
+;display at the position specified for 1123:K1 --
+#flag	1123:K1	/Floated
+#note	1123:K1	K1
+#flag	1123:K1-	/Fixed
+#note	1123:K1-	K1-
+#Fix	1123:K1-	-2555	6355	450
+
+;VIOLET --
+;#CM_origin
+#flag	TT6W	/WBM
+#note	TT6W	TT6W
+#Fix	TT6W	-407.6	3587.4	588.8
+#flag	TT17W	/WBM
+#note	TT17W	TT17W
+#Fix	TT17W	4037.1	-254.7	545.8
+
+#flag	TT21W	/WBM
+#note	TT21W	TT21W
+#Fix	TT21W	303.4	-38	588.4	;CML Version
+
+;***NOTE: CML version of TT21W is ~21' S. of Walker version!
+#flag	TT21W+	/WBMX
+#note	TT21W+	TT21W+
+#fix	TT21W+	302.6337f	-17.1922f	588.427f	;Walker Version
+
+#flag	802:P1	/Fixed
+#note	802:P1	P1
+#Fix	802:P1	582	1868	595
+
+;KENTUCKY --
+;#CM_origin
+#flag	TT22W	/WBM
+#note	TT22W	TT22W
+#Fix	TT22W	5107.2	-1148.5	553.6
+
+;***NOTE: The CML version of TT24W is ~33' W. of Walker version!
+;***The Kentucky survey closes poorly to either one. For now,
+;***reference to TT24W in Kentucky is changed to TT24W+. The CML
+;***fix is retained in Kentucky, but is renamed TT24W- as follows:
+#flag	TT24W	/WBM
+#note	TT24W	TT24W
+#Fix	TT24W	5578.2	-3235.7	597.4	;CML version
+#flag	TT24W+	/WBMX
+#note	TT24W+	TT24W+
+#fix	TT24W+	5611.4627f	-3236.9932f	602.009f	;Walker version
+
+#flag	TT28W	/WBM
+#note	TT28W	TT28W
+#Fix	TT28W	9503	-6415.6	671.9
+
+#flag	643:D19	/Fixed
+#note	643:D19	D19
+#Fix	643:D19	4209.8	-2549.2	582.1
+
+;Walker stations in Kentucky not fixed in CML:
+#flag	TT23W	/WBMX
+#note	TT23W	TT23WX
+#flag	TT25W	/WBMX
+#note	TT25W	TT25WX
+#flag	TT27W	/WBMX
+#note	TT27W	TT27WX
+#flag	TT37W	/WBMX
+#note	TT37W	TT37WX
+
+;MYSTIC --
+#flag	643:C1	/Fixed
+#note	643:C1	C1
+
+;CAVE -- no assigned positions

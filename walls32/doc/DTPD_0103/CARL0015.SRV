@@ -1,0 +1,17 @@
+;Survey 1140M
+
+;***NOTE: This file (CARL0015.SRV) was not originally attached to the DTPD tree
+;*** in Scott's version of the  project.  I've reattached it for now.  (DMcK)
+
+;Import from 99-04-19.sef, dated 15:55 2000-04-30
+#Units Feet Order=DAV Decl=1 IncA=-0.3d IncAB=-0.3d IncV=0 IncVB=0 IncD=0
+#date 1975-06-07
+;#l Stevenson's Lost River
+1133M163	1140M164	36	326.75	--	<10,5,0,2.5>
+1140M164	1140M165	50.4	15.75	--	<3,8,3,0.5>
+1140M165	1140M166	41.5	331.5	--	<7.5,3,2.5,5>
+1140M166	1140M167	19.3	300.5	--	<6,5,5,4>
+1140M167	1140M168	50.1	358	--	<5,8,3.5,3>
+1140M168	1140M169	27.9	12	--	<3.5,7,3.5,0>
+1140M169	1140M170	33.9	38	--	<4,7,4.5,0>
+1140M170	1140M171	33.2	25	--	<2.5,4.5,5,0>
