@@ -72,26 +72,30 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetName>$(ProjectName)D</TargetName>
-    <OutDir>$(Configuration)\</OutDir>
+    <OutDir>$(WorkLIB)\</OutDir>
     <IncludePath>$(WorkINC);$(IncludePath)</IncludePath>
     <LibraryPath>$(WorkLIB);$(LibraryPath)</LibraryPath>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_XP|Win32'">
     <TargetName>$(ProjectName)XPd</TargetName>
-    <OutDir>$(Configuration)\</OutDir>
+    <OutDir>$(WorkLIB)\</OutDir>
     <IncludePath>$(WorkINC);$(IncludePath)</IncludePath>
     <LibraryPath>$(WorkLIB);$(LibraryPath)</LibraryPath>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(Configuration)\</OutDir>
+    <OutDir>$(WorkLIB)\</OutDir>
     <IncludePath>$(WorkINC);$(IncludePath)</IncludePath>
     <LibraryPath>$(WorkLIB);$(LibraryPath)</LibraryPath>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_XP|Win32'">
-    <OutDir>$(Configuration)\</OutDir>
+    <OutDir>$(WorkLIB)\</OutDir>
     <IncludePath>$(WorkINC);$(IncludePath)</IncludePath>
     <LibraryPath>$(WorkLIB);$(LibraryPath)</LibraryPath>
     <TargetName>$(ProjectName)XP</TargetName>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -111,8 +115,10 @@
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Lib>
     <PostBuildEvent>
-      <Command>copy $(TargetPath) $(WorkLIB)</Command>
-      <Message>Copying lib to $(WorkLIB)</Message>
+      <Command>
+      </Command>
+      <Message>
+      </Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_XP|Win32'">
@@ -133,8 +139,10 @@
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Lib>
     <PostBuildEvent>
-      <Command>copy $(TargetPath) $(WorkLIB)</Command>
-      <Message>Copying lib to $(WorkLIB)</Message>
+      <Command>
+      </Command>
+      <Message>
+      </Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -158,8 +166,10 @@
       <LinkTimeCodeGeneration>false</LinkTimeCodeGeneration>
     </Lib>
     <PostBuildEvent>
-      <Command>copy $(TargetPath) $(WorkLIB)</Command>
-      <Message>Copying lib to $(WorkLIB)</Message>
+      <Command>
+      </Command>
+      <Message>
+      </Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_XP|Win32'">
@@ -183,8 +193,10 @@
       <LinkTimeCodeGeneration>false</LinkTimeCodeGeneration>
     </Lib>
     <PostBuildEvent>
-      <Command>copy $(TargetPath) $(WorkLIB)</Command>
-      <Message>Copying lib to $(WorkLIB)</Message>
+      <Command>
+      </Command>
+      <Message>
+      </Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

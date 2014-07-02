@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Walls2D</title>
+<script type="text/javascript">
+//global variables
+var svgRoot;
+var offsetX;
+var offsetY;
+var offsetX0;
+var offsetY0;
+var bPanning;
+var pixSize;
+var svgAspect,svgWidth,svgHeight;
+var scale=1;
+
+function saveView(bZoom) {
+    alert('SaveView() called!');
+	var trans=svgRoot.getCurrentTranslate();
+	if(bZoom) setPixSize(0);
+	offsetX=trans.getX(); offsetY=trans.getY();
+	if(scale==1 && offsetX==0 && offsetY==0) {
+		offsetX0=offsetY0=0;
+		bPanning=0;
+		//disable home and pan --
+		external.zzoooo(0);
+		return;
+	}
+	if(!bZoom) {
+		//enable home and pan if not already panning --
+		if(!bPanning) {
+			external.zzoooo(3);
+			bPanning=1;
+		}
+		return;
+	}
+	//enable home and disable panning --
+	external.zzoooo(1);
+	bPanning=0;
+	offsetX0=offsetX; offsetY0=offsetY;
+}
+
+function setPixSize(evt)
+{
+    alert('setPixSize() called!');
+    width = window.document.body.clientWidth;
+	height=window.document.body.clientHeight;
+	scale=svgRoot.getCurrentScale();
+	if(svgAspect>width/height) {
+	  pixSize=(svgHeight/height)/scale;
+	}
+	else {
+	  pixSize=(svgWidth/width)/scale;
+	}
+}
+
+function getDocument()
+{
+    var t = document.getElementById("SVGDoc");
+    alert(t);
+    t = t.getSVGDocument();
+    alert(t);
+    return 1;
+}
+
+function w2dInit()
+{
+    var svgDoc = document.getElementById("SVGDoc").getSVGDocument();
+    alert('w2dInit() called!');
+    if (!svgDoc) {
+        alert('getSVGDocument() failed!');
+		return 0;
+	}
+	svgRoot=svgDoc.getDocumentElement();
+	if(!svgRoot) return 0;
+	var viewbox=new String(svgRoot.getAttribute('viewBox'));
+	var viewboxes=viewbox.split(' ');
+	svgWidth=viewboxes[2];
+	svgHeight=viewboxes[3];
+	svgAspect=svgWidth/svgHeight;
+	setPixSize(0);
+	offsetX=0;
+	offsetY=0;
+	offsetX0=0;
+	offsetY0=0;
+	bPanning=0;
+	var t=svgDoc.getElementById('w2d_Ref');
+	if(t) {
+		t=t.getFirstChild();
+	  while(t) {
+			if(t.getFirstChild()) {
+			  while(t.getFirstChild()) t=t.getFirstChild();
+				break;
+			}
+			t=t.nextSibling();
+		}
+	}
+	if(t && t.data) {
+	  external.ttiitt(t.data);
+		svgRoot.addEventListener('SVGResize',setPixSize,false);
+		svgRoot.addEventListener('SVGScroll',function(evt){saveView(0);},false);
+		svgRoot.addEventListener('SVGZoom',function(evt){saveView(1);},false);
+		svgRoot.addEventListener('mousemove',onChgCoords,false);
+		svgRoot.setAttribute("preserveAspectRatio","xMinYMin slice");
+    }
+    w2dInit = 1;
+	return 1;
+}
+
+function onChgCoords(evt)
+{
+    alert('onChgCoords() called!');
+    x = evt.getClientX() - offsetX;
+	y=evt.getClientY()-offsetY;
+	external.ccoooo(pixSize*x,pixSize*y);
+}
+
+function w2dShow(id,checkVal) {
+    alert('w2dShow() called!');
+    if (checkVal > -2) {
+		var t=document.getElementById("SVGDoc").getSVGDocument();
+		if(!t) {
+            alert('getSVGDocument() failed!');
+			return 0;
+		}
+		t=t.getElementById(id);
+		if(!t) return 0;
+		if(checkVal==-1) {
+			t=t.getStyle().getPropertyValue('display');
+			return (t=='none')?1:2;
+		}
+		t.setAttribute('style',checkVal?'display:inline':'display:none');
+		return 1;
+	}
+	if(checkVal==-3) {
+		if(offsetX==offsetX0 && offsetY==offsetY0) return 0;
+		svgRoot.currentTranslate.x=offsetX0;
+		svgRoot.currentTranslate.y=offsetY0;
+		bPanning=0;
+		offsetX=offsetX0;
+		offsetY=offsetY0;
+		return 1;
+	}
+	if(checkVal==-4) {
+		svgRoot.currentTranslate.x=svgRoot.currentTranslate.y=0;
+		svgRoot.currentScale=1;
+		offsetX0=0; offsetY0=0;
+		bPanning=0;
+		return 1;
+	}
+	return 1;
+}
+</script>
+</head>
+<body scroll="no" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<button onclick="w2dInit();">Show SVG Document</button>
+<object id="SVGDoc" data="%s" width="100%%" height="100%%" type="image/svg+xml"/>
+</body>
+</html>

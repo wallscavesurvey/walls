@@ -15,14 +15,11 @@ build/
 [Bb]in/
 [Oo]bj/
 Boost/
-
 Box2D/
-
 iqa/
-
 MrSID9/
-
 opencv/
+untracked/
 
 # Enable "build/" folder in the NuGet Packages folder since NuGet packages use it for MSBuild targets
 !packages/*/build/
@@ -163,3 +160,4 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+

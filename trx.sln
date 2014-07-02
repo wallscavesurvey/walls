@@ -43,6 +43,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wallsvg", "walls32\wallsvg\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "wallzip", "walls32\Wallzip\wallzip2.vcxproj", "{3B9699CE-92DA-472A-AF35-1CE17F43DB59}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "walls2D", "walls2D\walls2D.vcxproj", "{ECD8CE74-36CA-4575-A61A-73D5A2815BAE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "qvlib", "walls3d\qvlib\qvlib.vcxproj", "{B5345136-15C3-4184-8153-5E21A6792D35}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_XP|Win32 = Debug_XP|Win32
@@ -211,6 +215,22 @@ Global
 		{3B9699CE-92DA-472A-AF35-1CE17F43DB59}.Release_XP|Win32.Build.0 = Release|Win32
 		{3B9699CE-92DA-472A-AF35-1CE17F43DB59}.Release|Win32.ActiveCfg = Release|Win32
 		{3B9699CE-92DA-472A-AF35-1CE17F43DB59}.Release|Win32.Build.0 = Release|Win32
+		{ECD8CE74-36CA-4575-A61A-73D5A2815BAE}.Debug_XP|Win32.ActiveCfg = Debug|Win32
+		{ECD8CE74-36CA-4575-A61A-73D5A2815BAE}.Debug_XP|Win32.Build.0 = Debug|Win32
+		{ECD8CE74-36CA-4575-A61A-73D5A2815BAE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{ECD8CE74-36CA-4575-A61A-73D5A2815BAE}.Debug|Win32.Build.0 = Debug|Win32
+		{ECD8CE74-36CA-4575-A61A-73D5A2815BAE}.Release_XP|Win32.ActiveCfg = Release|Win32
+		{ECD8CE74-36CA-4575-A61A-73D5A2815BAE}.Release_XP|Win32.Build.0 = Release|Win32
+		{ECD8CE74-36CA-4575-A61A-73D5A2815BAE}.Release|Win32.ActiveCfg = Release|Win32
+		{ECD8CE74-36CA-4575-A61A-73D5A2815BAE}.Release|Win32.Build.0 = Release|Win32
+		{B5345136-15C3-4184-8153-5E21A6792D35}.Debug_XP|Win32.ActiveCfg = Debug|Win32
+		{B5345136-15C3-4184-8153-5E21A6792D35}.Debug_XP|Win32.Build.0 = Debug|Win32
+		{B5345136-15C3-4184-8153-5E21A6792D35}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B5345136-15C3-4184-8153-5E21A6792D35}.Debug|Win32.Build.0 = Debug|Win32
+		{B5345136-15C3-4184-8153-5E21A6792D35}.Release_XP|Win32.ActiveCfg = Release|Win32
+		{B5345136-15C3-4184-8153-5E21A6792D35}.Release_XP|Win32.Build.0 = Release|Win32
+		{B5345136-15C3-4184-8153-5E21A6792D35}.Release|Win32.ActiveCfg = Release|Win32
+		{B5345136-15C3-4184-8153-5E21A6792D35}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -793,8 +793,8 @@ int CShpLayer::CompareUpdates(BOOL bIncludeAll)
 				ASSERT(iUpdated>=0);
 				if(nFieldsListed) {
 					nOutdated++;
-					writelognote(N_CAUTION,"Although revised, the record's UPDATED time is %s than that of the reference. It won't be %s.",
-					   iUpdated?"earlier":"the same",bIncludeAll?"used":"included");
+					writelognote(N_CAUTION,"Although there are mismatched fields, the compared record has an UPDATED time %s that of the reference and will be ignored.",
+					   iUpdated?"older than":"identical to");
 				}
 				else nUnchanged++;
 				//We'll not archive the record

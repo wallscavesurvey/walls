@@ -1,0 +1,433 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\walls2D.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\walls.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS
+BEGIN
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_UPDATELINK DIALOG 0, 0, 313, 103
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Update Web Links in About Box"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_ADOBE_URL,61,25,238,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_WALLS_URL,61,53,238,13,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,98,83,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,160,83,50,14
+    LTEXT           "Adobe URL:",IDC_STATIC,14,27,42,10
+    LTEXT           "Walls URL:",IDC_STATIC,14,55,42,10
+END
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 336, 180
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About Walls2D"
+FONT 8, "MS Shell Dlg", 0, 0, 0x0
+BEGIN
+    CTEXT           "Walls Home Page",IDC_WALLS_URL,103,135,127,11
+    DEFPUSHBUTTON   "OK",IDOK,172,157,68,14,WS_GROUP
+    PUSHBUTTON      "Update Web Links",IDC_LINKUPDATE,97,157,68,14
+    ICON            IDR_MAINFRAME,IDC_STATIC,23,20,20,20
+    CTEXT           "Walls2D Version 1.21 - SVG Map Viewer\nBuild 2011-04-06\nCopyright © 2011 by David McKenzie, Austin TX",IDC_STATIC,51,17,237,28,SS_NOPREFIX
+    GROUPBOX        "",IDC_STATIC,7,3,322,148
+    CTEXT           "To obtain more information and the latest versions of Walls and Walls2D please visit",IDC_STATIC,12,123,311,8
+    EDITTEXT        IDC_WALLS2D_INFO,22,52,290,31,ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY | NOT WS_TABSTOP
+    CTEXT           "Adobe SVG Viewer Download Area",IDC_ADOBE_URL,71,109,185,11
+    LTEXT           "NOTE: This program requires that the Adobe SVG Viewer 3.0 be installed. The viewer is free for download at",IDC_STATIC,22,90,288,17
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "FileDescription", "Walls2D Viewer Application"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "walls2D"
+            VALUE "LegalCopyright", "Copyright (C) 2001"
+            VALUE "OriginalFilename", "walls2D.EXE"
+            VALUE "ProductName", "walls2D Application"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_UPDATELINK, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 307
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 97
+    END
+
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 329
+        TOPMARGIN, 3
+        BOTTOMMARGIN, 176
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM SEPARATOR
+        MENUITEM "&Print...\tCtrl+P",           ID_FILE_PRINT
+        MENUITEM "Page Setup",                  ID_FILE_PAGE_SETUP
+        MENUITEM "Print Preview",               ID_FILE_PRINT_PREVIEW
+        MENUITEM SEPARATOR
+        MENUITEM "Recent files",                ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "&Close",                      ID_APP_EXIT
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_VIEW_REBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+        MENUITEM SEPARATOR
+        MENUITEM "Back to &Zoomed view",        ID_VIEW_STOP
+        MENUITEM "Back to &Original view",      ID_VIEW_HOME
+        MENUITEM SEPARATOR
+        MENUITEM "&Page units for coordinates", ID_COORD_PAGE
+        MENUITEM SEPARATOR
+        MENUITEM "Show &Wall outlines",         ID_SHOW_WALLS
+        MENUITEM "Show passage &Details",       ID_SHOW_ADDITIONS
+        MENUITEM "Show survey &Vectors",        ID_SHOW_VECTORS
+        MENUITEM "Show station &Labels",        ID_SHOW_STATIONS
+        MENUITEM "Show station &Flags",         ID_SHOW_FLAGS
+        MENUITEM "Show station &Notes",         ID_SHOW_NOTES
+        MENUITEM "Show &Grid",                  ID_SHOW_GRID
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Walls home page",            ID_GO_WALLS
+        MENUITEM "&About Walls2D",              ID_APP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_COLDTOOLBAR         BITMAP                  "res\\coldtool.bmp"
+IDB_HOTTOOLBAR          BITMAP                  "res\\hottoolb.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// HTML
+//
+
+WALLS2D.HTM             HTML                    "res\\walls2D.htm"
+WALLS2D_IE9.HTM         HTML                    "res\\walls2D_IE9.htm"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDR_MAINFRAME           "Walls2D Viewer\nWalls2D\n\nSVG (*.svg,*.svgz)\n.svg;.svgz\n\nWalls2D Scene\nWalls2 Scene"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_APP_TITLE       "Walls2D Viewer"
+    AFX_IDS_IDLEMESSAGE     "To navigate:  CTRL-drag to zoom in,  CTRL-SHIFT-click to zoom out,  ALT-drag to pan, right-click to access other functions."
+    AFX_IDS_IDLEMESSAGE2    "Ready"
+END
+
+STRINGTABLE
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+    ID_INDICATOR_UTM        "0000000000 E 0000000000 N"
+END
+
+STRINGTABLE
+BEGIN
+    ID_FILE_OPEN            "Open a local SVG file\nOpen SVG"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_PAGE_SETUP      "Configure page layout and printer settings"
+    ID_FILE_PRINT_SETUP     "Configure printer device"
+    ID_FILE_PRINT           "Opens dialog for printing portion of map currently in view. Is landscape option set correctly?\nPrint current view"
+    ID_FILE_PRINT_PREVIEW   "Preview printed page"
+END
+
+STRINGTABLE
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+END
+
+STRINGTABLE
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this file"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
+END
+
+STRINGTABLE
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE
+BEGIN
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
+    ID_VIEW_REBAR           "Show or hide the toolbar and address bar."
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_FILETYPES           "SVG Files|*.svg;*.svgz|HTML Files|*.htm;*.html|Text Files|*.txt|GIF Files|*.gif|JPEG Files|*.jpg;*.jpeg|AU Files|*.au|AIFF Files|*.aif;*.aiff|XBM Files|*.xbm|All Files|*.*||"
+    IDS_ERR_NOSVG           "SVG file not displayed - Adobe SVG Viewer installation required!"
+    IDS_ERR_NOSVG3          "Program Walls2D requires that the Adobe SVG Viewer (ASV), version 3 or later, be installed on your system. The About box contains a link to Adobe's Web site where it is available as a free download.\n\nInstall ASV by selecting ""Open"" rather than ""Save"" in your browser. Otherwise, simply run the downloaded setup program (SVGView.exe). Then try reopening the SVG file or close and restart this program."
+    IDS_ERR_BADGEOREF       "Corrupted wd2_Ref text element prevents georeferencing. Possible solutions prior to SVG export from Illustrator:\nVersion CS: For all text items, set kerning between chars to 0, not Auto.\nVersion CS2: Select SVG export option, ""Output fewer TSPAN elements."""
+END
+
+STRINGTABLE
+BEGIN
+    IDS_ABOUT_TEXT          "Walls2D is intended for viewing Scalable Vector Graphics (SVG) files that are specially conditioned for use with Walls Project Editor v2. This conditioning allows roundtrip processing between Walls and SVG-capable programs like Adobe Illustrator."
+    IDS_ADDRESS             "Address"
+END
+
+STRINGTABLE
+BEGIN
+    ID_SHOW_ADDRESS         "Show or hide the address bar."
+    ID_GO_WALLS             "Access Walls home page via installed browser "
+    ID_SHOW_VECTORS         "Display survey lines and station markers\nShow vectors"
+    ID_SHOW_STATIONS        "Display station labels beside survey markers\nShow station labels"
+    ID_SHOW_GRID            "Display grid lines\nShow grid"
+    ID_VIEW_STOP            "Back up to first view after last zoom operation\nBack to zoomed view "
+    ID_SHOW_ADDITIONS       "Show passage details: Layer w2d_Detail\nShow passage details"
+    ID_SHOW_WALLS           "Show wall outlines: Layer w2d_Walls\nShow wall outlines"
+    ID_VIEW_FONTS_LARGEST   "Back up to original view when file was opened\nOriginal view"
+    ID_VIEW_FONTS_LARGE     "Display flag symbols assigned to stations\nShow flag symbols"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_FONTS_MEDIUM    "Display notes assigned to stations\nShow station notes"
+    ID_VIEW_FONTS_SMALL     "Use meters for coordinates on status line"
+    ID_VIEW_FONTS_SMALLEST  "Use point units (1/72 in.) for coordinates on status line"
+    ID_GO_BACK              "Goes back one step.\nBack"
+    ID_GO_FORWARD           "Goes forward one step.\nForward"
+    ID_FONT_DROPDOWN        "Change font size.\nFont size"
+    ID_VIEW_HOME            "Back up to initial view when file was opened\nOriginal view"
+END
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\walls2D.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

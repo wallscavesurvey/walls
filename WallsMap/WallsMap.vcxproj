@@ -112,7 +112,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(ZLibSrcDir);..\Serial;..\libgdal19\port;..\libgdal19\gcore;..\libgdal19\ogr;..\libgdal19\frmts\gtiff\libtiff;..\libgdal19\frmts\gtiff\libgeotiff;..\libpng164;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ZLibSrcDir);$(WorkDIR)Serial;$(WorkDIR)libgdal19\port;$(WorkDIR)libgdal19\gcore;$(WorkDIR)libgdal19\ogr;$(WorkDIR)libgdal19\frmts\gtiff\libtiff;$(WorkDIR)libgdal19\frmts\gtiff\libgeotiff;$(WorkDIR)libpng164;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_USE_THEMES;PSAPI_VERSION=1;CPL_DISABLE_DLL;WIN32;_WINDOWS;NO_WARN_MBCS_MFC_DEPRECATION;_DEBUG;_CRT_SECURE_NO_WARNINGS;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <ExceptionHandling>Async</ExceptionHandling>
@@ -157,7 +157,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(ZLibSrcDir);..\Serial;..\libgdal19\port;..\libgdal19\gcore;..\libgdal19\ogr;..\libgdal19\frmts\gtiff\libtiff;..\libgdal19\frmts\gtiff\libgeotiff;..\libpng164;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ZLibSrcDir);$(WorkDIR)Serial;$(WorkDIR)libgdal19\port;$(WorkDIR)libgdal19\gcore;$(WorkDIR)libgdal19\ogr;$(WorkDIR)libgdal19\frmts\gtiff\libtiff;$(WorkDIR)libgdal19\frmts\gtiff\libgeotiff;$(WorkDIR)libpng164;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_USE_THEMES;PSAPI_VERSION=1;CPL_DISABLE_DLL;WIN32;_WINDOWS;NO_WARN_MBCS_MFC_DEPRECATION;_DEBUG;_CRT_SECURE_NO_WARNINGS;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <ExceptionHandling>Async</ExceptionHandling>
@@ -204,7 +204,7 @@
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(ZLibSrcDir);..\Serial;..\libgdal19\port;..\libgdal19\gcore;..\libgdal19\ogr;..\libgdal19\frmts\gtiff\libtiff;..\libgdal19\frmts\gtiff\libgeotiff;..\libpng164;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ZLibSrcDir);$(WorkDIR)Serial;$(WorkDIR)libgdal19\port;$(WorkDIR)libgdal19\gcore;$(WorkDIR)libgdal19\ogr;$(WorkDIR)libgdal19\frmts\gtiff\libtiff;$(WorkDIR)libgdal19\frmts\gtiff\libgeotiff;$(WorkDIR)libpng164;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_USE_THEMES;PSAPI_VERSION=1;CPL_DISABLE_DLL;WIN32;_WINDOWS;NO_WARN_MBCS_MFC_DEPRECATION;ZLIB_WINAPI;NDEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>false</MinimalRebuild>
@@ -267,7 +267,7 @@
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(ZLibSrcDir);..\Serial;..\libgdal19\port;..\libgdal19\gcore;..\libgdal19\ogr;..\libgdal19\frmts\gtiff\libtiff;..\libgdal19\frmts\gtiff\libgeotiff;..\libpng164;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ZLibSrcDir);$(WorkDIR)Serial;$(WorkDIR)libgdal19\port;$(WorkDIR)libgdal19\gcore;$(WorkDIR)libgdal19\ogr;$(WorkDIR)libgdal19\frmts\gtiff\libtiff;$(WorkDIR)libgdal19\frmts\gtiff\libgeotiff;$(WorkDIR)libpng164;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_USE_THEMES;PSAPI_VERSION=1;CPL_DISABLE_DLL;WIN32;_WINDOWS;NO_WARN_MBCS_MFC_DEPRECATION;ZLIB_WINAPI;NDEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>false</MinimalRebuild>

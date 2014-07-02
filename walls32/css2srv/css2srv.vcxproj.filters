@@ -22,21 +22,4 @@
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <CustomBuildStep Include="H:\Caving\WCOMPASS\BRINCO.DAT">
-      <Filter>Source Files</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="H:\Caving\WCOMPASS\brinco.srv">
-      <Filter>Source Files</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="..\css.txt">
-      <Filter>Source Files</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="H:\Caving\WCOMPASS\FULFORD.DAT">
-      <Filter>Source Files</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="H:\Caving\WCOMPASS\fulford.srv">
-      <Filter>Source Files</Filter>
-    </CustomBuildStep>
-  </ItemGroup>
 </Project>
