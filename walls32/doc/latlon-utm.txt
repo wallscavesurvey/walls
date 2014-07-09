@@ -1,8 +1,0 @@
-UTM Zone = int(1+([Longitude]+180.0)/6.0)
-
-Using this equation a point exactly on a West UTM boundary would be
-considered in that Zone. A point exactly on an East UTM boundary would be
-considered to be in the UTM Zone to the immediate East.
-
-I should have said that the above equation is valid for longitudes greater
-than or equal to -180.0 and less than +180.0.

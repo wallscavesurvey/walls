@@ -1,9 +1,0 @@
-
-The file would necessarily contain a UTM fix for the Carmichael benchmark (or TT6L if that's what it is).
-
-1) Use Walls to generate a North-relative "UTM" coordinate listing of the fixed points. You would do this simply by having UTM grid-relative turned OFF on the GR page, but with an appropriate reference still assigned. The resulting coordinates will differ from UTM only by having been rotated CW about point (0,0) by the convergence angle of 0.6 degrees. This angle is derived from the GR position, by default, or from a GRID=x compile option. You can also override the default convergence angle by entering it in a box on the GR page.
-
-2) Load the list into Excel and subtract from each point the coordinates listed for the Carmichael benchmark. You would then convert meters to feet, perform a few other manipulations (e.g., add a #fix column) and export the spreadsheet as a #Fixed point file. (I could add a "report" feature that would do all of this if you needed to do it often.)
-
-You would use this fixed point file whenever you needed to work with cave coordinates instead of UTM. To insure that cave coordinates are generated you would continue to have UTM grid-relative turned OFF. You would also be careful to set GRID=0 as a compile option (or by direct entry on the GR page) so that the #fixed points, which are cave coordinates, are not rotated.
-
