@@ -1,0 +1,447 @@
+//Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+#include "verrsrc.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "#include ""verrsrc.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE
+BEGIN
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#include ""res\\D2DSym.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""      // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\D2D-Sym.ico"
+IDR_D2D-SYMTYPE         ICON                    "res\\D2D-SymDoc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&New\tCtrl+N",                ID_FILE_NEW, INACTIVE
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN, INACTIVE
+        MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE, INACTIVE
+        MENUITEM "Save &As...",                 ID_FILE_SAVE_AS, INACTIVE
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Undo\tCtrl+Z",               ID_EDIT_UNDO, INACTIVE
+        MENUITEM SEPARATOR
+        MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT, INACTIVE
+        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY, INACTIVE
+        MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE, INACTIVE
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About D2D-Sym...",           ID_APP_ABOUT
+    END
+    POPUP "Drawing Mode"
+    BEGIN
+        MENUITEM "Symbology...",                ID_SYMBOLOGY
+        MENUITEM "GDI",                         ID_DRAW_GDI
+        MENUITEM "Direct2D",                    ID_DRAW_D2D, INACTIVE
+        MENUITEM "Cairo",                       ID_DRAW_CAIRO, CHECKED
+        MENUITEM "Antialias",                   ID_DRAW_ANTIALIAS, CHECKED
+        MENUITEM "D2D SW rendering",            ID_D2DSW
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS
+BEGIN
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT
+END
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABTBOX DIALOG 0, 0, 271, 151
+STYLE DS_SETFONT | DS_MODALFRAME |WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About D2D-Sym"
+FONT 8, "MS Shell Dlg"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,109,138,62,14,WS_GROUP
+    ICON            IDR_MAINFRAME,IDC_STATIC,14,14,20,20
+    LTEXT           "D2D-Sym, Version 1.0",IDC_STATIC,42,14,114,8,SS_NOPREFIX
+    LTEXT           "Copyright ©  2013, David McKenzie",IDC_STATIC,42,26,142,8
+    LTEXT           "Static",IDC_ST_STATS,16,50,239,82,SS_SUNKEN
+END
+
+IDD_SYMBOLOGY DIALOGEX 0, 0, 289, 177
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Symbol Properties"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    CONTROL         "Squares",IDC_SQUARES,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,19,29,40,10
+    CONTROL         "Circles",IDC_CIRCLES,"Button",BS_AUTORADIOBUTTON,19,42,40,10
+    CONTROL         "Triangles",IDC_TRIANGLES,"Button",BS_AUTORADIOBUTTON,19,55,44,10
+    CONTROL         "Dot center",IDC_DOT_CENTER,"Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,19,78,46,10
+    EDITTEXT        IDC_EDIT_SYM_SZ,129,16,33,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_SPINSIZE,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,162,16,10,14
+    EDITTEXT        IDC_EDIT_LINE_SZ,129,38,33,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_SPINSIZE_OUT,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_ARROWKEYS,161,38,11,14
+    EDITTEXT        IDC_EDIT_VEC_SZ,129,62,33,14,ES_AUTOHSCROLL
+    CONTROL         "",IDC_SPINSIZE_VEC,"msctls_updown32",UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_ARROWKEYS | UDS_NOTHOUSANDS,161,62,11,14
+    COMBOBOX        IDC_VEC_COUNT,129,84,43,97,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "        ",IDC_COLOR_SYM,"Button",BS_OWNERDRAW | WS_TABSTOP,228,14,35,14
+    CONTROL         "        ",IDC_COLOR_LINE,"Button",BS_OWNERDRAW | WS_TABSTOP,228,38,35,14
+    CONTROL         "        ",IDC_COLOR_VEC,"Button",BS_OWNERDRAW | WS_TABSTOP,228,62,35,14
+    CONTROL         "        ",IDC_COLOR_BACK,"Button",BS_OWNERDRAW | WS_TABSTOP,228,86,35,14
+    CONTROL         "",IDC_OPACITY_SYM,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,43,106,97,18
+    CONTROL         "",IDC_OPACITY_VEC,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,43,125,97,18
+    CONTROL         "Antialiasing",IDC_ANTIALIAS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,196,116,65,10
+    CONTROL         "Show large symbol",IDC_BACKSYM,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,196,132,76,10
+    CONTROL         "GDI",IDC_GDI,"Button",BS_AUTORADIOBUTTON | WS_GROUP,15,151,33,10
+    CONTROL         "Cairo",IDC_CAIRO,"Button",BS_AUTORADIOBUTTON,51,151,29,10
+    CONTROL         "Direct2D",IDC_DIRECT2D,"Button",BS_AUTORADIOBUTTON,87,151,39,10
+    PUSHBUTTON      "Apply",IDC_APPLY,134,156,45,14
+    DEFPUSHBUTTON   "OK",IDOK,184,156,45,14
+    PUSHBUTTON      "Cancel",IDCANCEL,234,156,45,14
+    GROUPBOX        "Shape",IDC_STATIC,12,15,57,79
+    LTEXT           "Size (px):",IDC_STATIC,87,18,36,11
+    LTEXT           "Outline (px):\n(float)",IDC_STATIC,86,36,42,17
+    LTEXT           "Vector sz:\n(float)",IDC_STATIC,86,60,40,16
+    LTEXT           "Fill Color:",IDC_STATIC,194,17,30,8
+    LTEXT           "Outline:",IDC_STATIC,194,40,26,8
+    LTEXT           "Vectors:",IDC_STATIC,194,64,26,8
+    LTEXT           "Background:",IDC_STATIC,181,88,40,8
+    LTEXT           "Vector\nopacity:",IDC_STATIC,12,126,30,17
+    LTEXT           "Symbol\nopacity:",IDC_STATIC,12,104,30,17
+    LTEXT           "Static",IDC_ST_OPACITY_SYM,144,108,30,9
+    LTEXT           "Static",IDC_ST_OPACITY_VEC,144,126,30,9
+    LTEXT           "Vector count:",IDC_STATIC,86,83,37,16
+END
+
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO     VERSIONINFO
+  FILEVERSION       1,0,0,1
+  PRODUCTVERSION    1,0,0,1
+ FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+#ifdef _DEBUG
+ FILEFLAGS VS_FF_DEBUG
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS VOS_NT_WINDOWS32
+ FILETYPE VFT_APP
+ FILESUBTYPE VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "TODO: <Company name>"
+            VALUE "FileDescription", "D2D-Sym"
+            VALUE "FileVersion",     "1.0.0.1"
+            VALUE "InternalName",    "D2D-Sym.exe"
+            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "OriginalFilename","D2D-Sym.exe"
+            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductVersion",  "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x0409, 1200
+    END
+END
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_ABTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 163
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 55
+    END
+
+    IDD_SYMBOLOGY, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 281
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 170
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_SYMBOLOGY DLGINIT
+BEGIN
+    IDC_VEC_COUNT, 0x403, 3, 0
+0x3031, "\000" 
+    IDC_VEC_COUNT, 0x403, 3, 0
+0x3035, "\000" 
+    IDC_VEC_COUNT, 0x403, 4, 0
+0x3031, 0x0030, 
+    IDC_VEC_COUNT, 0x403, 4, 0
+0x3032, 0x0030, 
+    IDC_VEC_COUNT, 0x403, 4, 0
+0x3035, 0x0030, 
+    IDC_VEC_COUNT, 0x403, 5, 0
+0x3031, 0x3030, "\000" 
+    IDC_VEC_COUNT, 0x403, 5, 0
+0x3032, 0x3030, "\000" 
+    IDC_VEC_COUNT, 0x403, 5, 0
+0x3035, 0x3030, "\000" 
+    IDC_VEC_COUNT, 0x403, 5, 0
+0x3037, 0x3030, "\000" 
+    IDC_VEC_COUNT, 0x403, 6, 0
+0x3031, 0x3030, 0x0030, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR 16, 16
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_SYMBOLOGY
+    SEPARATOR
+    BUTTON      ID_APP_ABOUT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDP_OLE_INIT_FAILED     "OLE initialization failed.  Make sure that the OLE libraries are the correct version."
+    ID_INDICATOR_MODE       "Cairo                     "
+END
+STRINGTABLE
+BEGIN
+// Non-mac-targeting apps remove the two extra substrings
+    IDR_MAINFRAME           "D2D-Sym\n\nD2D-Sym\n\n\nD2DSym.Document\nD2D-Sym.Document"
+
+END
+STRINGTABLE
+BEGIN
+    AFX_IDS_APP_TITLE       "D2D-Sym"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+STRINGTABLE
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+STRINGTABLE
+BEGIN
+    ID_FILE_NEW             "Create a new document\nNew"
+    ID_FILE_OPEN            "Open an existing document\nOpen"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_SAVE            "Save the active document\nSave"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+    ID_FILE_MRU_FILE5       "Open this document"
+    ID_FILE_MRU_FILE6       "Open this document"
+    ID_FILE_MRU_FILE7       "Open this document"
+    ID_FILE_MRU_FILE8       "Open this document"
+    ID_FILE_MRU_FILE9       "Open this document"
+    ID_FILE_MRU_FILE10      "Open this document"
+    ID_FILE_MRU_FILE11      "Open this document"
+    ID_FILE_MRU_FILE12      "Open this document"
+    ID_FILE_MRU_FILE13      "Open this document"
+    ID_FILE_MRU_FILE14      "Open this document"
+    ID_FILE_MRU_FILE15      "Open this document"
+    ID_FILE_MRU_FILE16      "Open this document"
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle Status Bar"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+END
+
+STRINGTABLE
+BEGIN
+    ID_DRAW_GDI             "Use GDI graphics"
+    ID_DRAW_CAIRO           "Use Cairo graphics"
+    ID_DRAW_ANTIALIAS       "Cairo: antialiased edges"
+    ID_SYMBOLOGY            "Edit symbol and line styles\nSymbology dialog"
+    ID_DRAW_D2D             "Use Direct2D rendering"
+    ID_INDICATOR_FPS        "fps: 100.0           "
+END
+
+#endif
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#include "res\\D2DSym.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"      // Standard components
+#endif
+#endif    // not APSTUDIO_INVOKED

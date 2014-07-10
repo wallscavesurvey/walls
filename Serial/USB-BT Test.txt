@@ -1,0 +1,30 @@
+NOTES:
+
+BT GPS without GPSGate (or GPSGate using USB - closed or open)
+---------------
+4 BthModem2 (hangs waiting)
+7 USBSER000 (works but appears in list only if GPS turned on) MAY NOT APPEAR!
+8 BthModem1 (hangs waiting)
+10 BthModem0 (works but slower to open, "can't be opened" if GPS off))
+
+BT GPS with GPSGate using it
+------------------------
+4 BthModem2 (hangs waiting)
+7 USBSER000 (works)
+8 BthModem1 (hangs waiting)
+10 BthModem0 (can't be opened)
+
+USB GPS with BT plug (BT GPS off) and GPSGate with valid pos using USB:
+------------------------
+1 bizVSerial1 (works)
+2 bizVSerial2 (works)
+4 BthModem2 (hangs waiting)
+8 BthModem1 (hangs waiting)
+10 BthModem0 (can't be opened)
+NOTE: To detect ports 1 and 2, 3rd param of QueryDosDevice had to be > 128. Using 255 for now.
+
+UTM GPS and BT plug (BT GPS on) and GPSGate with valid pos:
+------------------------
+Same as above but 7 (USBSER000) and 10 (BthModem0) also working
+
+

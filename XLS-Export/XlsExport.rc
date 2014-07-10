@@ -1,0 +1,242 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""res\\XlsExport.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\XlsExport.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 235, 55
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About XlsExport"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "XlsExport Version 1.0",IDC_STATIC,40,10,119,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2006",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,16,WS_GROUP
+END
+
+IDD_EXPORT_DIALOG DIALOGEX 0, 0, 341, 130
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "XLS-Export: Create Shapefile from Table Data"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_PATHNAME,88,35,211,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BROWSE,303,35,17,12
+    DEFPUSHBUTTON   "OK",IDOK,224,110,50,16
+    PUSHBUTTON      "Cancel",IDCANCEL,283,110,50,16
+    LTEXT           "This program creates a shapefile from data contained in either an Excel speadsheet (.xls) or an Access database (.mdb).  A template file (.shpdef) specifies the field correspondence.",IDC_STATIC,17,9,308,21
+    LTEXT           "Shapefile/template\nbase name:",IDC_STATIC,17,84,65,16
+    LTEXT           "Source pathname:\n(.mdb or .xls)",IDC_STATIC,18,34,65,16
+    LTEXT           "Table or sheet\nname:",IDC_STATIC,18,60,65,16
+    EDITTEXT        IDC_TABLENAME,87,60,114,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_SHAPENAME,87,84,114,13,ES_AUTOHSCROLL
+END
+
+IDD_RANGE DIALOGEX 0, 0, 249, 129
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Range of Exported Coordinates"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_TOPLEFT_LAT,82,56,68,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOPLEFT_LON,156,56,68,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_BOTRIGHT_LAT,82,79,68,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_BOTRIGHT_LON,156,79,68,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,73,108,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,131,108,50,14
+    LTEXT           "Whether or not you're exporting UTM shapefiles, the values here are assumed to be signed decimal degrees in the datum you've specified for export (NAD27 or NAD83). Latitudes must be between 29 and 31 and longitudes must be between -99 and -97.",IDC_STATIC,7,7,235,35
+    LTEXT           "Top Left Corner:",IDC_STATIC,7,58,63,11
+    LTEXT           "Bottom Right Corner:",IDC_STATIC,7,82,70,11
+    CTEXT           "Latitude",IDC_STATIC,83,45,62,8
+    CTEXT           "Longitude",IDC_STATIC,158,45,62,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "TODO: <Company name>"
+            VALUE "FileDescription", "TODO: <File description>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "XlsExport.exe"
+            VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
+            VALUE "OriginalFilename", "XlsExport.exe"
+            VALUE "ProductName", "TODO: <Product name>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_EXPORT_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 333
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 126
+    END
+
+    IDD_RANGE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 242
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 122
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDS_ABOUTBOX            "&About XlsExport..."
+    IDS_SHP_FILES           "ESRI Shapefiles (*.shp)"
+    IDS_XLS_EXPORT          "Select File with Data to Process"
+    IDS_ERR_FILERES         "Not enough memory or resouces to open file for reading or writing."
+    IDS_PRJ_WGS84UTM        "PROJCS[""WGS_1984_UTM_Zone_%dN"",GEOGCS[""GCS_WGS_1984"",DATUM[""D_WGS_1984"",SPHEROID[""WGS_1984"",6378137.0,298.257223563]],PRIMEM[""Greenwich"",0.0],UNIT[""Degree"",0.0174532925199433]],PROJECTION[""Transverse_Mercator""],PARAMETER[""False_Easting"",500000.0],PARAMETER[""False_Northing"",0.0],PARAMETER[""Central_Meridian"",-%d.0],PARAMETER[""Scale_Factor"",0.9996],PARAMETER[""Latitude_Of_Origin"",0.0],UNIT[""Meter"",1.0]]"
+    IDS_PRJ_WGS84           "GEOGCS[""GCS_WGS_1984"",DATUM[""D_WGS_1984"",SPHEROID[""WGS_1984"",6378137.0,298.257223563]],PRIMEM[""Greenwich"",0.0],UNIT[""Degree"",0.0174532925199433]]"
+    IDS_PRJ_NAD27           "GEOGCS[""GCS_North_American_1927"",DATUM[""D_North_American_1927"",SPHEROID[""Clarke_1866"",6378206.4,294.9786982]],PRIMEM[""Greenwich"",0.0],UNIT[""Degree"",0.0174532925199433]]"
+    IDS_PRJ_NAD27UTM        "PROJCS[""NAD_1927_UTM_Zone_%dN"",GEOGCS[""GCS_North_American_1927"",DATUM[""D_North_American_1927"",SPHEROID[""Clarke_1866"",6378206.4,294.9786982]],PRIMEM[""Greenwich"",0.0],UNIT[""Degree"",0.0174532925199433]],PROJECTION[""Transverse_Mercator""],PARAMETER[""False_Easting"",500000.0],PARAMETER[""False_Northing"",0.0],PARAMETER[""Central_Meridian"",-%d.0],PARAMETER[""Scale_Factor"",0.9996],PARAMETER[""Latitude_Of_Origin"",0.0],UNIT[""Meter"",1.0]]"
+    IDS_XLS_FILES           "Excel Workbook (*.xls)"
+    IDS_MDB_FILES           "Access Database (*.mdb)"
+END
+
+STRINGTABLE
+BEGIN
+    IDS_CSV_FILES           "Comma-sep text (*.csv)"
+END
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "res\XlsExport.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
