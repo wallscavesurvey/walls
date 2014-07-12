@@ -53,6 +53,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cairo", "..\..\Cairo\Cairo.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libwebp", "..\..\libwebp\libwebp.vcxproj", "{E55DDD38-D597-4AF4-8C2C-94D84DE6A9AB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Serial", "..\Serial\Serial.vcxproj", "{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_XP|Itanium = Debug_XP|Itanium
@@ -677,6 +679,30 @@ Global
 		{E55DDD38-D597-4AF4-8C2C-94D84DE6A9AB}.Release|Win32.ActiveCfg = Release|Win32
 		{E55DDD38-D597-4AF4-8C2C-94D84DE6A9AB}.Release|Win32.Build.0 = Release|Win32
 		{E55DDD38-D597-4AF4-8C2C-94D84DE6A9AB}.Release|x64.ActiveCfg = Release|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Debug_XP|Itanium.ActiveCfg = Debug|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Debug_XP|Mixed Platforms.ActiveCfg = Debug|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Debug_XP|Mixed Platforms.Build.0 = Debug|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Debug_XP|Win32.ActiveCfg = Debug|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Debug_XP|Win32.Build.0 = Debug|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Debug_XP|x64.ActiveCfg = Debug|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Debug|Itanium.ActiveCfg = Debug|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Debug|Win32.Build.0 = Debug|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Debug|x64.ActiveCfg = Debug|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Release_XP|Itanium.ActiveCfg = Release|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Release_XP|Mixed Platforms.ActiveCfg = Release|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Release_XP|Mixed Platforms.Build.0 = Release|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Release_XP|Win32.ActiveCfg = Release|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Release_XP|Win32.Build.0 = Release|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Release_XP|x64.ActiveCfg = Release|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Release|Itanium.ActiveCfg = Release|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Release|Win32.ActiveCfg = Release|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Release|Win32.Build.0 = Release|Win32
+		{BDCD0825-F7AC-4B44-B9D0-B013E7BF64CF}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

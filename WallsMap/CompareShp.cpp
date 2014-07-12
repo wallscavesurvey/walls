@@ -793,7 +793,7 @@ int CShpLayer::CompareUpdates(BOOL bIncludeAll)
 				ASSERT(iUpdated>=0);
 				if(nFieldsListed) {
 					nOutdated++;
-					writelognote(N_CAUTION,"Although there are mismatched fields, the compared record has an UPDATED time %s that of the reference and will be ignored.",
+					writelognote(N_CAUTION,"The compared record has an UPDATED time %s that of the reference and will be ignored (not included).",
 					   iUpdated?"older than":"identical to");
 				}
 				else nUnchanged++;
@@ -841,6 +841,7 @@ int CShpLayer::CompareNewRecs()
 	ASSERT(c_Trx.NumRecs()==nNewRecs);
 
 	pShpR=NULL;
+	bOutdated=bDeleted=false;
 
 	int e=c_Trx.First();
 
