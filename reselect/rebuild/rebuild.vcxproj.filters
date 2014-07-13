@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{f7def97b-3449-49bf-9314-3fa2183a9268}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="NWBB">
+      <UniqueIdentifier>{284510a4-98cf-4741-b6ca-c256c7ccb44a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NWBB.%24%24%24">
+      <UniqueIdentifier>{9cb49842-4dac-49d4-90f0-698398dbf13f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TEXBIB">
+      <UniqueIdentifier>{4b4b38f9-94f7-4ac7-8fa1-4a4a3152d93a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{9823edab-f185-42c1-9cc3-0aa96114bf66}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{ea737b6f-e883-42fb-947b-7201220dd622}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\reindex\indexa.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\reindex\rebuild.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="E:\nwbb\NWBB-A.HTM">
+      <Filter>NWBB</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-ANON.HTM">
+      <Filter>NWBB</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-B.HTM">
+      <Filter>NWBB</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-C.HTM">
+      <Filter>NWBB</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-D.HTM">
+      <Filter>NWBB</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-E.HTM">
+      <Filter>NWBB</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-F.HTM">
+      <Filter>NWBB</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-G.HTM">
+      <Filter>NWBB</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-H.HTM">
+      <Filter>NWBB</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-IL.HTM">
+      <Filter>NWBB</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-M.HTM">
+      <Filter>NWBB</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-NQ.HTM">
+      <Filter>NWBB</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-R.HTM">
+      <Filter>NWBB</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-S.HTM">
+      <Filter>NWBB</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-TZ.HTM">
+      <Filter>NWBB</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\nwbb\NWBB_e\NWBB_E.LOG">
+      <Filter>NWBB</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-A.$$$">
+      <Filter>NWBB.%24%24%24</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-ANON.$$$">
+      <Filter>NWBB.%24%24%24</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-B.$$$">
+      <Filter>NWBB.%24%24%24</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-C.$$$">
+      <Filter>NWBB.%24%24%24</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-D.$$$">
+      <Filter>NWBB.%24%24%24</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-E.$$$">
+      <Filter>NWBB.%24%24%24</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-F.$$$">
+      <Filter>NWBB.%24%24%24</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-G.$$$">
+      <Filter>NWBB.%24%24%24</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-H.$$$">
+      <Filter>NWBB.%24%24%24</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-IL.$$$">
+      <Filter>NWBB.%24%24%24</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-M.$$$">
+      <Filter>NWBB.%24%24%24</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-NQ.$$$">
+      <Filter>NWBB.%24%24%24</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-R.$$$">
+      <Filter>NWBB.%24%24%24</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-S.$$$">
+      <Filter>NWBB.%24%24%24</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\NWBB-TZ.$$$">
+      <Filter>NWBB.%24%24%24</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\A-F.HTM">
+      <Filter>TEXBIB</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\ANON.HTM">
+      <Filter>TEXBIB</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\G-L.HTM">
+      <Filter>TEXBIB</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\M-Q.HTM">
+      <Filter>TEXBIB</Filter>
+    </CustomBuild>
+    <CustomBuild Include="E:\nwbb\R-Z.HTM">
+      <Filter>TEXBIB</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\TexBib\2010-11-21\TEXBIB.LOG">
+      <Filter>TEXBIB</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

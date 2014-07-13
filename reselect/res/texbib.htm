@@ -1,0 +1,72 @@
+<html>
+
+<HEAD>
+<TITLE>TEXBIB Search Form</TITLE>
+<script LANGUAGE="JScript">
+<!--
+function Initialize()
+{
+  document.Keywords.T1.value=window.external.tteexx;
+  document.Keywords.T2.value=window.external.aattee;
+  document.Keywords.RK(window.external.ccttee).checked=true;
+  document.Keywords.RA(window.external.oottee).checked=true;
+  document.Keywords.C1.checked=window.external.tteecc;
+  document.Keywords.C2.checked=window.external.tteedd;
+  if(document.Keywords.T2.value=="" || document.Keywords.T1.value!="") {
+	  document.Keywords.T1.focus()
+	  document.Keywords.T1.select()
+  }
+  else {
+	  document.Keywords.T2.focus()
+	  document.Keywords.T2.select()
+  }
+}
+<!-->
+</script>
+
+</HEAD>
+
+<body onload="Initialize()" background="bktexbib.jpg" MARGINWIDTH="0" MARGINHEIGHT="0" SCROLL="NO">
+
+<H1 align=center>TEXBIB &ndash; Bibliography of Texas Speleology</H1>
+<p align=center><b>Compiled by the Texas Speleological Survey</b></p>
+<p><hr></p>
+
+<p><b>Instructions:</b> Enter a phrase containing keywords (or keyword prefixes) that have
+been assigned to bibliographic items, and/or enter names of authors. Operators AND, OR, NOT,
+and parentheses are allowed in either field. A single asterisk (*) will retrieve the complete bibliography.
+</p>
+
+<form action="" method="POST" name="Keywords">
+<table align=center>
+<tr>
+<td align=center><b>Keywords</b><br>Example: (hays county or travis) and bats</td>
+<td> </td>
+<td align=center><b>Authors</b><br>Example: Smith,A.R. and not J Reddell</td>
+</tr>
+<tr>
+<td><input type="text" name="T1" size="54" maxlength="127"></td>
+<td><input type="radio" name="RA" value="0">and<br>
+    <input type="radio" name="RA" value="1">or</td>
+<td><input type="text" name="T2" size="54" maxlength="127"></td>
+</tr>
+<tr><td> <br></td></tr>
+<tr>
+<td align=center talign=top colspan=3><b>Show keywords:</b>
+  <input type="radio" name="RK" value="0"> None
+  <input type="radio" name="RK" value="1"> Matched
+  <input type="radio" name="RK" value="2"> All assigned &nbsp;
+  <b>Number items:</b> <input type="checkbox" name="C1"> &nbsp;
+  <b>Sort by date:</b> <input type="checkbox" name="C2">
+</td>
+</tr>
+</table>
+<p align=center><input type="submit" value="Retrieve Items" name="B1"></p>
+</form>
+<hr>
+<h5 align=center>
+NOTE: When items are numbered, TSS file items will be displayed in bold type.<br>
+If you can suggest additions or corrections to the bibliography, please contact <a href="mailto:JerryAtkin@aol.com?subject=TexBib">Jerry Atkinson</a>.
+</h5>
+</body>
+</html>

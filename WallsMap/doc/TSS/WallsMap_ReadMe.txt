@@ -1,4 +1,4 @@
-WallsMap (TSS edition) v0.3 Build 2014-07-11 Notes
+WallsMap (TSS edition) v0.3 Build 2014-07-13 Notes
 ==================================================
 
 This TSS edition of the WallsMap setup is the same as the publicly available
@@ -10,11 +10,11 @@ and the complete TSS karst database.
 ==============
 Recent Changes
 
-* Build 07/11/2014
+* Build 07/13/2014
 
 1) When creating an update archive, the compare function could on rare occasions
 fail to include image files linked to new records. This bug was fixed and minor
-improvements made to the program and help file.
+improvements were made to the program and help file.
 
 * Build 06/20/2014
 

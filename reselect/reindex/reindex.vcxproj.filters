@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{7b258255-b83b-4122-aa5e-dc8a7fc05ec8}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="output">
+      <UniqueIdentifier>{0c0229b9-fb03-4fd0-b153-5e9812e4a1bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="input">
+      <UniqueIdentifier>{98501a13-b651-4874-bbea-c4af52d7097e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{7ee8b60c-ea11-42b3-874c-617d71e9aae7}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{15880b50-8efd-4245-b46c-045d7fc78272}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+    <Filter Include="data">
+      <UniqueIdentifier>{658bfddf-a0cd-4eb9-b555-843083b5e41d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="indexa.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="reindex.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\nwbb\NWBB_e\NWBB.LOG">
+      <Filter>output</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\nwbb\NWBB_e\NWBB.LST">
+      <Filter>output</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\nwbb\NWBB_e\nwbb.cfg">
+      <Filter>input</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\TexBib\2010-11-21\A-F.HTM">
+      <Filter>data</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\TexBib\2010-11-21\ANON.HTM">
+      <Filter>data</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\TexBib\2010-11-21\G-L.HTM">
+      <Filter>data</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\TexBib\2010-11-21\M-Q.HTM">
+      <Filter>data</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\TexBib\2010-11-21\R-Z.HTM">
+      <Filter>data</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\TexBib\2010-11-21\TEXBIB.LST">
+      <Filter>data</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

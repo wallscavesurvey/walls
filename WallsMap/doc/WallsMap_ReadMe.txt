@@ -1,4 +1,4 @@
-WallsMap v0.3 Build 2014-07-11 Notes
+WallsMap v0.3 Build 2014-07-13 Notes
 ====================================
 
 This WallsMap installation contains a preliminary GIS project named Texas Public
@@ -17,11 +17,11 @@ C:\Program Files\WallsMap\Projects folder.)
 ==============
 Recent Changes
 
-* Build 07/11/2014
+* Build 07/13/2014
 
 1) When creating an update archive, the compare function could on rare occasions
 fail to include image files linked to new records. This bug was fixed and minor
-improvements made to the program and help file.
+improvements were made to the program and help file.
 
 * Build 06/20/2014
 

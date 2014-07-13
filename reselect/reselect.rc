@@ -1,0 +1,437 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\reselect.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#include ""afxprint.rc""       // printing/print preview resources\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\tssicon.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_COLDTOOLBAR         BITMAP                  "res\\coldtool.bmp"
+IDB_HOTTOOLBAR          BITMAP                  "res\\hottoolb.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_FONT_POPUP MENU 
+BEGIN
+    POPUP "Font"
+    BEGIN
+        MENUITEM "Lar&gest",                    ID_VIEW_FONTS_LARGEST
+        MENUITEM "&Larger",                     ID_VIEW_FONTS_LARGE
+        MENUITEM "&Medium",                     ID_VIEW_FONTS_MEDIUM
+        MENUITEM "&Smaller",                    ID_VIEW_FONTS_SMALL
+        MENUITEM "Sm&allest",                   ID_VIEW_FONTS_SMALLEST
+    END
+END
+
+IDR_MAINFRAME MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM SEPARATOR
+        MENUITEM "&Print...\tCtrl+P",           ID_FILE_PRINT
+        MENUITEM SEPARATOR
+        MENUITEM "&Close",                      ID_APP_EXIT
+    END
+    POPUP "&Edit"
+    BEGIN
+        MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
+        MENUITEM SEPARATOR
+        MENUITEM "Select &All\tCtrl+A",         ID_EDIT_SELECT_ALL
+        MENUITEM SEPARATOR
+        MENUITEM "&Find on this page\tCtrl+F",  ID_EDIT_FIND
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_VIEW_REBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+        MENUITEM "&Address Bar",                ID_SHOW_ADDRESS
+        MENUITEM SEPARATOR
+        POPUP "&Font size"
+        BEGIN
+            MENUITEM "Largest",                     ID_VIEW_FONTS_LARGEST
+            MENUITEM "Large",                       ID_VIEW_FONTS_LARGE
+            MENUITEM "Medium",                      ID_VIEW_FONTS_MEDIUM
+            MENUITEM "Small",                       ID_VIEW_FONTS_SMALL
+            MENUITEM "Smallest",                    ID_VIEW_FONTS_SMALLEST
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "Sto&p\tEsc",                  ID_VIEW_STOP
+        MENUITEM "&Refresh\tF5",                ID_VIEW_REFRESH
+    END
+    POPUP "&Go"
+    BEGIN
+        MENUITEM "&Back\tAlt+Left Arrow",       ID_GO_BACK
+        MENUITEM "&Forward\tAlt+Right Arrow",   ID_GO_FORWARD
+        MENUITEM SEPARATOR
+        MENUITEM "Search &TEXBIB",              ID_GO_SEARCH_TEXBIB
+        MENUITEM "Search &NWBB ",               ID_GO_SEARCH_NWBB
+        MENUITEM "&Texas Speleological Survey", ID_GO_TSS
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About Reselect.",            ID_APP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS 
+BEGIN
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
+    VK_ESCAPE,      ID_VIEW_STOP,           VIRTKEY, NOINVERT
+    VK_F5,          ID_VIEW_REFRESH,        VIRTKEY, NOINVERT
+    VK_LEFT,        ID_GO_BACK,             VIRTKEY, ALT, NOINVERT
+    VK_RIGHT,       ID_GO_FORWARD,          VIRTKEY, ALT, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 323, 186
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About Reselect"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    LTEXT           "Texas Speleological Survey",IDC_TSS_URL,200,143,91,11
+    DEFPUSHBUTTON   "OK",IDOK,166,168,55,14,WS_GROUP
+    PUSHBUTTON      "Edit TSS Link",IDC_LINKUPDATE,103,168,55,14
+    ICON            IDR_MAINFRAME,IDC_STATIC,20,14,20,20
+    CTEXT           "RESELECT Version 1.20 - Bibliographic Item Selection and Display\nBuild 2010-12-10",IDC_STATIC,52,14,232,20,SS_NOPREFIX
+    LTEXT           "The TEXBIB bibliography was originally compiled by James Reddell and is currently being maintained by Jerry Atkinson. James Reddell is the editor of the NWBB bibliography.",IDC_STATIC,15,94,291,18
+    GROUPBOX        "",IDC_STATIC,7,3,309,157
+    CTEXT           "TEXBIB - A Bibliography of Texas Speleology\nCopyright (c) 2010 by the Texas Speleological Survey (TSS)",IDC_STATIC,16,39,247,19,SS_SUNKEN
+    CTEXT           "NWBB - A Bibliographic Guide to New World Cave Biology\nCopyright (c) 2008 by James Reddell",IDC_STATIC,16,69,248,19,SS_SUNKEN
+    LTEXT           "For information on Texas caves, visit the TSS Web page:",IDC_STATIC,15,143,180,11
+    CTEXT           "",IDC_ST_TEXDATE,270,39,37,19,SS_SUNKEN
+    CTEXT           "",IDC_ST_NWDATE,270,69,37,19,SS_SUNKEN
+    LTEXT           "The database software and Reselect were developed by David McKenzie with contributions from James Reddell and Mike Moore.",IDC_STATIC,15,118,291,18
+END
+
+IDD_UPDATELINK DIALOG  0, 0, 305, 76
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Update Link in About Box"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,98,56,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,160,56,50,14
+    EDITTEXT        IDC_NEWURL,63,25,230,13,ES_AUTOHSCROLL
+    LTEXT           "TSS Address:",IDC_STATIC,12,27,48,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "FileDescription", "Reselect Application"
+            VALUE "FileVersion", "1, 0, 0, 1"
+            VALUE "InternalName", "Reselect"
+            VALUE "LegalCopyright", "Copyright (C) D.Mckenzie, TSS, 2001"
+            VALUE "OriginalFilename", "Reselect.EXE"
+            VALUE "ProductName", "Reselect Application"
+            VALUE "ProductVersion", "1, 0, 0, 1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 316
+        TOPMARGIN, 3
+        BOTTOMMARGIN, 182
+    END
+
+    IDD_UPDATELINK, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 299
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 70
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// 2110
+//
+
+BKTEXBIB.JPG            2110                    "res\\bktexbib.jpg"
+BKNWBB.JPG              2110                    "res\\bknwbb.jpg"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// HTML
+//
+
+TEXBIB.HTM              HTML                    "res\\texbib.htm"
+NWBB.HTM                HTML                    "res\\nwbb.htm"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AVI
+//
+
+IDR_MFCAVI              AVI                     "res\\tssrect.avi"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "RESELECT\n\nRESELECT\n\n\nRESELECT.Document\nRESELECT Document"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "Reselect"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_OPEN            "Opens a document in this window."
+    ID_FILE_CLOSE           "Closes the window."
+    ID_FILE_PRINT           "Prints this document.\nPrint"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nProgram info"
+    ID_APP_EXIT             "Closes the window."
+END
+
+STRINGTABLE 
+BEGIN
+    ID_EDIT_COPY            "Copies the current selection onto the Clipboard."
+    ID_EDIT_CUT             "Removes the current selection and copies it onto the Clipboard."
+    ID_EDIT_FIND            "Searches the current window for text.\nFind on this page"
+    ID_EDIT_PASTE           "Inserts the items you have copied or cut into the selection location."
+    ID_EDIT_SELECT_ALL      "Selects all the text on this page."
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar"
+    ID_VIEW_REBAR           "Show or hide the toolbar and address bar."
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+    IDS_INET_NOTCONNECTED   "Accessing this link requires a connection to the Internet.\nPlease try again after establishing a connection."
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_SEARCH_THE_WEB      "http://www.google.com"
+    IDS_BACK                "Back"
+    IDS_FORWARD             "Forward"
+    IDS_STOP                "Stop"
+    IDS_REFRESH             "Refresh"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_FILETYPES           "HTML Files|*.htm;*.html|Text Files|*.txt|GIF Files|*.gif|JPEG Files|*.jpg;*.jpeg|AU Files|*.au|AIFF Files|*.aif;*.aiff|XBM Files|*.xbm|All Files|*.*||"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_GO_SEARCH_TEXBIB     "Displays the TEXBIB search form.\nSearch TEXBIB"
+    ID_GO_SEARCH_NWBB       "Displays the NWBB search form.\nSearch NWBB"
+    ID_SHOW_ADDRESS         "Show or hide the address bar."
+    ID_GO_TSS               "Visit TSS Web site.\nTSS Web site"
+    ID_VIEW_STOP            "Stops opening a file.\nStop"
+    ID_VIEW_REFRESH         "Refreshes the contents of the current page.\nRefresh"
+    ID_VIEW_FONTS_LARGEST   "Selects largest font size."
+    ID_VIEW_FONTS_LARGE     "Selects large font size."
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_FONTS_MEDIUM    "Selects medium font size."
+    ID_VIEW_FONTS_SMALL     "Selects small font size."
+    ID_VIEW_FONTS_SMALLEST  "Selects smallest font size."
+    ID_GO_BACK              "Goes back one step.\nBack"
+    ID_GO_FORWARD           "Goes forward one step.\nForward"
+    ID_GO_SEARCH_THE_WEB    "Displays the TEXBIB search form.\nSearch the TEXBIB bibliography"
+    ID_FONT_DROPDOWN        "Change font size.\nFont size"
+END
+
+STRINGTABLE 
+BEGIN
+    IDS_SEARCH_TEXBIB       "TEXBIB"
+    IDS_SEARCH_NWBB         "NWBB"
+    IDS_PRINT               "Print"
+    IDS_FONT                "Font"
+    IDS_ADDRESS             "Address"
+    IDS_GO_TSS              "Home"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\reselect.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#include "afxprint.rc"       // printing/print preview resources
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

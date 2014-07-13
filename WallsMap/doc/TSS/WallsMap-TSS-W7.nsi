@@ -1,5 +1,7 @@
 
 !define PRODUCT_NAME "WallsMap"
+;This nsi file normally located in \Work12\WallsMap\doc\TSS, with binaries in \Work12\bin
+!define BIN_DIR "\Work12\bin"
 !define PRODUCT_VERSION "0.3"
 !define PRODUCT_PUBLISHER "David McKenzie"
 !define PRODUCT_WEB_SITE "http://davidmck.fmnetdesign.com/WallsMap-TSS.htm"
@@ -8,12 +10,11 @@
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
 ; !define PRODUCT_STARTMENU_REGVAL "NSIS:StartMenuDir"
 
-; !include "WinVer.nsh"
 !include "MUI2.nsh"
 
 
 !ifndef BUILD_DATE
-  !define BUILD_DATE '2014-07-11'
+  !define BUILD_DATE '2014-07-13'
 !endif
 
 !define WNDCLASS "WallsMapClass"
@@ -25,9 +26,9 @@ ReadRegStr $0 HKLM "SOFTWARE\Microsoft\Windows NT\CurrentVersion" "ProductName"
 ; MessageBox MB_ICONSTOP|MB_OK "$0 SP Level $1"
 StrCmp $0 "" noInstall 0
 StrCmp $0 "Microsoft Windows 2000" noInstall 0
-StrCmp $0 "Microsoft Windows XP" 0 continueTest
+StrCmp $0 "Microsoft Windows XP" noInstall continueTest
 noInstall:
-MessageBox MB_ICONSTOP|MB_OK "Sorry, WallsMap is not compatible with your version of Windows. At least Windows XP SP2 is required."
+MessageBox MB_ICONSTOP|MB_OK "Sorry, WallsMap is not compatible with your version of Windows. At least Windows Vista is required."
 Abort
 continueTest:
 FindWindow $0 "${WNDCLASS}" "${WNDTITLE}"
@@ -91,7 +92,7 @@ FunctionEnd
 
 ; MUI end ------
 
-OutFile "WallsMap-TSS_setup.exe"
+OutFile "${BIN_DIR}\WallsMap-TSS_setup.exe"
 InstallDir "$PROGRAMFILES\WallsMap"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
@@ -100,9 +101,9 @@ ShowUninstDetails show
 Section "MainSection" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite on
-  File "..\WallsMap.exe"
-  File "..\WallsMap_sid.dll"
-  File "..\WallsMap.chm"
+  File "${BIN_DIR}\WallsMap.exe"
+  File "${BIN_DIR}\WallsMap_sid.dll"
+  File "${BIN_DIR}\WallsMap.chm"
   File "WallsMap_ReadMe.txt"
 
 ; Shortcuts
@@ -190,9 +191,7 @@ Section Uninstall
   Delete "$INSTDIR\WallsMap.exe"
   Delete "$INSTDIR\WallsMap_sid.dll"
   Delete "$INSTDIR\WallsMap.url"
-   
   Delete "$DESKTOP\WallsMap.lnk"
-
   RMDir "$INSTDIR"
   DeleteRegKey HKCR "Applications\WallsMap.exe"
   DeleteRegKey HKCR ".jp2\OpenWithList\WallsMap.exe"

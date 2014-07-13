@@ -1,5 +1,7 @@
 
 !define PRODUCT_NAME "WallsMap"
+;This nsi file normally located in \Work12\WallsMap\doc, with binaries in \Work12\bin
+!define BIN_DIR "\Work12\bin"
 !define PRODUCT_VERSION "0.3"
 !define PRODUCT_PUBLISHER "David McKenzie"
 !define PRODUCT_WEB_SITE "http://www.texasspeleologicalsurvey.org/Walls/WallsMap-TX.htm"
@@ -11,7 +13,7 @@
 !include "MUI2.nsh"
 
 !ifndef BUILD_DATE
-  !define BUILD_DATE '2014-06-02'
+  !define BUILD_DATE '2014-07-13'
 !endif
 
 !define WNDCLASS "WallsMapClass"
@@ -25,9 +27,9 @@ Function .onInit
 ; MessageBox MB_ICONSTOP|MB_OK "$0 SP Level $1"
 StrCmp $0 "" noInstall 0
 StrCmp $0 "Microsoft Windows 2000" noInstall 0
-StrCmp $0 "Microsoft Windows XP" 0 continueTest
+StrCmp $0 "Microsoft Windows XP" noInstall continueTest
 noInstall:
-MessageBox MB_ICONSTOP|MB_OK "Sorry, this build of WallsMap is not compatible with your version of Windows. A version later than XP is required."
+MessageBox MB_ICONSTOP|MB_OK "Sorry, WallsMap is not compatible with your version of Windows. At least Windows Vista is required."
 Abort
 continueTest:
 FindWindow $0 "${WNDCLASS}" "${WNDTITLE}"
@@ -92,7 +94,7 @@ FunctionEnd
 ; Language files
 !insertmacro MUI_LANGUAGE "English"
 
-OutFile "WallsMap-TX_setup.exe"
+OutFile "${BIN_DIR}\WallsMap-TX_setup.exe"
 InstallDir "$PROGRAMFILES\WallsMap"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
@@ -101,12 +103,12 @@ ShowUninstDetails show
 Section "MainSection" SEC01
   SetOutPath "$INSTDIR"
   SetOverwrite on
-  File "WallsMap.exe"
-  File "WallsMap_sid.dll"
-  File "WallsMap.chm"
+  File "${BIN_DIR}\WallsMap.exe"
+  File "${BIN_DIR}\WallsMap_sid.dll"
+  File "${BIN_DIR}\WallsMap.chm"
   File "WallsMap_ReadMe.txt"
   SetOutPath "$DATA"
-  File /r "Public_caves\*.*"
+  File /r "${BIN_DIR}\Public_caves\*.*"
 ; Shortcuts
   CreateShortCut "$DESKTOP\WallsMap.lnk" "$INSTDIR\WallsMap.exe"
   WriteINIStr "$INSTDIR\${PRODUCT_NAME}.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}" 
@@ -203,10 +205,10 @@ Section Uninstall
   RMDir "$DATA"
   RMDir "$INSTDIR"
   DeleteRegKey HKCR "Applications\WallsMap.exe"
-  DeleteRegKey HKCR ".shp\OpenWithList\WallsMap.exe"
   DeleteRegKey HKCR ".jp2\OpenWithList\WallsMap.exe"
   DeleteRegKey HKCR ".ecw\OpenWithList\WallsMap.exe"
   DeleteRegKey HKCR ".sid\OpenWithList\WallsMap.exe"
+  DeleteRegKey HKCR ".shp\OpenWithList\WallsMap.exe"
   DeleteRegKey HKCR ".nti"
   DeleteRegKey HKCU "Software\NZ Applications\WallsMap"
   DeleteRegKey HKCU "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.nti"
