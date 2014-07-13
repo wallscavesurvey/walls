@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Display of Polygons or Polylines</title>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Display of Polygons or Polylines</text></para>
+    </header>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Like a point shapefile, polygon and polyline shapefiles also have a </text><text styleclass="Normal" style="font-style:italic;" translate="true">Symbols</text><text styleclass="Normal" translate="true"> dialog for controlling appearance, one that&apos;s accessed via the same button in the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Getting_Started" anchor="Layers_Window" styleclass="Normal" translate="true">Layers Window&apos;s</link><text styleclass="Normal" translate="true"> right panel. Some of the controls are the same or similar to those in the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Symbols_for_Point_Features" styleclass="Normal" translate="true">corresponding dialog</link><text styleclass="Normal" translate="true"> for point features. One significant difference is the lack of predefined text search fields. That&apos;s because only point features are candidates for the Selected Points window (at least currently), even though text searches are supported for all shapefiles in table views. Another difference is that this dialog has separate fill and outline opacity settings for polygons. Finally, while markers for points always have smooth outlines, there&apos;s an </text><text styleclass="Normal" style="font-weight:normal; font-style:italic;" translate="true">Antialiasing</text><text styleclass="Normal" translate="true"> option for the lines and edges that you&apos;ll normally want to enable. Upon layer addition it&apos;s disabled.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><image src="Symbols_poly.png" scale="100.00%" styleclass="Image Caption"></image></para>
+  </body>
+</topic>

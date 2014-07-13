@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Preference Settings</title>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Preference Settings</text></para>
+    </header>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Dialogs for specifying various kinds of options, some document-specific and some program-specific, can be found by exploring the menus. Most of these should be self-explanatory, but some deserve a help file topic with more details. So far there are only three topics in this section, all describing items in the </text><text styleclass="Normal" style="font-style:italic;" translate="true">Preferences</text><text styleclass="Normal" translate="true"> menu.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="topiclink" href="URL_for_Web_Map" styleclass="Normal" translate="true">URL for Web Map Navigation</link></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="topiclink" href="Google_Earth_KML_Launch_Option" styleclass="Normal" translate="true">Google Earth (KML) Launch Options</link></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="topiclink" href="Name_for_Signing_Timestamps" styleclass="Normal" translate="true">Name for Signing Timestamps</link></para>
+  </body>
+</topic>

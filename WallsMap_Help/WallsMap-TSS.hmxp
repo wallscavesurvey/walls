@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<helpproject xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="helpproject.xsd" version="1.6" isskin="false" isrepository="false">
+  <config>
+    <namespaces/>
+    <export-task-groups>
+      <export-task-group name="Recent Publishes">
+        <export-tasks>
+          <export-task name="Publish as PDF" format="PDF">
+            <task-config-group name="settings">
+              <task-config-value name="outputfile">..\..\bin\WallsMap.pdf</task-config-value>
+              <task-config-value name="template">WallsMap-TSS.mnl</task-config-value>
+              <task-config-value name="make4include">PDF</task-config-value>
+              <task-config-value name="make4status">*</task-config-value>
+            </task-config-group>
+          </export-task>
+          <export-task name="Publish as CHM" format="CHM">
+            <task-config-group name="settings">
+              <task-config-value name="outputfile">..\..\bin\WallsMap.chm</task-config-value>
+              <task-config-value name="skin">C:\Program Files (x86)\EC Software\HelpAndManual6\Templates\HTML Skins\Integrated IFrames - Fancy Wood Style.hmskin</task-config-value>
+              <task-config-value name="deletetemp">1</task-config-value>
+              <task-config-value name="make0include">CHM</task-config-value>
+              <task-config-value name="make0status">*</task-config-value>
+            </task-config-group>
+          </export-task>
+          <export-task name="Publish as RTF" format="RTF">
+            <task-config-group name="settings">
+              <task-config-value name="outputfile">.\Manual\WallsMap_manual.rtf</task-config-value>
+              <task-config-value name="make5include">PRINT</task-config-value>
+              <task-config-value name="make5status">*</task-config-value>
+            </task-config-group>
+          </export-task>
+        </export-tasks>
+      </export-task-group>
+    </export-task-groups>
+    <helpwindows>
+      <helpwindow name="Main" left="-1" top="-1" width="-1" height="-1">
+        <caption translate="true">&lt;%TITLE%&gt;</caption>
+        <window-options-hlp autosize="true" maximize="false" posabsolute="false" keepontop="false" buttons="0" headercolor="#F0F0F0" textcolor="#FFFFFF"/>
+        <window-options-chm navigation="true" navigationwidth="200" search="true" favorite="true" saveregistry="true" buttons="12366">
+          <user-button name="jump1">
+            <caption translate="true">jump1</caption>
+          </user-button>
+          <user-button name="jump2">
+            <caption translate="true">jump2</caption>
+          </user-button>
+        </window-options-chm>
+      </helpwindow>
+    </helpwindows>
+    <styleclasses>
+      <styleclass name="Code Example" shortcut="0">
+        <style-set media="screen" type="para">white-space:nowrap; page-break-inside:avoid;</style-set>
+        <style-set media="screen" type="text">font-family:'Courier New'; font-size:8pt;</style-set>
+      </styleclass>
+      <styleclass name="Courier Fixed" shortcut="116">
+        <style-set media="screen" type="text">font-family:'Courier New'; font-size:9pt; color:#000000;</style-set>
+      </styleclass>
+      <styleclass name="Normal" shortcut="115">
+        <style-set media="screen" type="para">text-align:left; text-indent:0px; margin-right:0px; margin-left:0px;</style-set>
+        <style-set media="screen" type="text">font-family:Arial; font-size:11pt; color:#000000;</style-set>
+      </styleclass>
+      <styleclass name="Comment" parentclass="Normal" shortcut="0"/>
+      <styleclass name="Heading1" parentclass="Normal" shortcut="114">
+        <style-set media="screen" type="para">text-align:left; text-indent:0px; margin-right:0px; margin-left:0px;</style-set>
+        <style-set media="screen" type="text">font-family:Arial; font-size:13pt; font-weight:bold; color:#ffffff;</style-set>
+      </styleclass>
+      <styleclass name="Image Caption" parentclass="Normal" shortcut="0">
+        <style-set media="screen" type="text">font-size:8pt; font-weight:bold;</style-set>
+      </styleclass>
+      <styleclass name="Notes" parentclass="Normal" shortcut="0"/>
+      <styleclass name="Subheader" shortcut="0">
+        <style-set media="screen" type="text">font-family:Arial; font-size:12pt; font-weight:bold; color:#000000;</style-set>
+      </styleclass>
+      <tablestyleclass name="Default">
+        <style-set media="screen">width:auto; cell-padding:0px; cell-spacing:0px; page-break-inside:auto; border-width:0px; border-spacing:0px; cell-border-width:0px; border-style:none; background-color:none; head-row-background-color:none; alt-row-background-color:none;</style-set>
+      </tablestyleclass>
+    </styleclasses>
+    <config-group name="project">
+      <config-value name="title" translate="true">WallsMap</config-value>
+      <config-value name="author" translate="true">David McKenzie</config-value>
+      <config-value name="copyright" translate="true">© &lt;%YEAR%&gt; &lt;%AUTHOR%&gt;</config-value>
+      <config-value name="versionmajor">1</config-value>
+      <config-value name="versionminor">0</config-value>
+      <config-value name="versionbuild">0</config-value>
+      <config-value name="lcid" translate="true">en-us</config-value>
+      <config-value name="charset" translate="true">ANSI_CHARSET</config-value>
+      <config-value name="deffont">font-family:'MS Sans Serif'; font-size:8pt; color:#000000;</config-value>
+      <config-value name="autohelpstart">0</config-value>
+      <config-value name="autohelpincrement">1</config-value>
+      <config-value name="autohelpanchor">0</config-value>
+      <config-value name="searchpath">.\images\;.\;.\Baggage\;.\Maps\;.\Topics\</config-value>
+      <config-group name="custombuilds">
+        <config-value name="demo">Demo Build</config-value>
+        <config-value name="user1">User defined 1</config-value>
+        <config-value name="user2">User defined 2</config-value>
+        <config-value name="user3">User defined 3</config-value>
+      </config-group>
+      <config-value name="imageshortcuts_includebaggage">1</config-value>
+      <config-value name="make0include">CHM</config-value>
+      <config-value name="make0status">*</config-value>
+      <config-value name="summary" translate="true">GIS Viewer and Shapefile Editor</config-value>
+      <config-group name="spellcheck">
+        <config-value name="project">0</config-value>
+      </config-group>
+      <config-value name="contents">Contents</config-value>
+      <config-value name="bidimode">0</config-value>
+      <config-value name="make4include">PDF</config-value>
+      <config-value name="make4status">*</config-value>
+      <config-value name="make5include">PRINT</config-value>
+      <config-value name="make5status">*</config-value>
+      <config-value name="LISTSTYLES"></config-value>
+    </config-group>
+    <config-group name="user">
+      <config-group name="david">
+        <config-group name="project">
+          <config-value name="lastexport">4</config-value>
+        </config-group>
+      </config-group>
+    </config-group>
+    <config-group name="chm">
+      <config-value name="outputfile">..\..\bin\WallsMap.chm</config-value>
+      <config-value name="deletetemp">1</config-value>
+      <config-value name="skin">C:\Program Files (x86)\EC Software\HelpAndManual6\Templates\HTML Skins\Integrated IFrames - Fancy Wood Style.hmskin</config-value>
+    </config-group>
+    <config-group name="html">
+      <config-value name="topiceditor">1</config-value>
+      <config-value name="topicsimpleheadercolor">#0080C0</config-value>
+      <config-value name="topicsimpletextcolor">#FFFFFF</config-value>
+      <config-value name="topicsimplebuttons">1</config-value>
+      <config-group name="TOPICSIMPLEBUTTON1">
+        <config-value name="CAPTION" translate="true">Top</config-value>
+      </config-group>
+      <config-group name="TOPICSIMPLEBUTTON2">
+        <config-value name="CAPTION" translate="true">Previous</config-value>
+      </config-group>
+      <config-group name="TOPICSIMPLEBUTTON3">
+        <config-value name="CAPTION" translate="true">Next</config-value>
+      </config-group>
+      <config-group name="TOPICTEMPLATES">
+        <config-value name="Default" translate="true"><![CDATA[<%DOCTYPE%>
+<html>
+<head>
+   <title><%TOPIC_TITLE%></title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="<%TOPIC_KEYWORDS%>" />
+   <meta http-equiv="Content-Type" content="text/html; charset=<%DOCCHARSET%>" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="<%STYLESHEET%>" rel="stylesheet" />
+   <style type="text/css">
+     body { margin: 0px; background: #FFFFFF; }
+ 	a { color: #0055FF; text-decoration: underline; } 
+        a:visited {color: #0055FF; }
+        a:hover {text-decoration: underline; }
+        a.weblink {color: #008080; text-decoration: underline; }
+        a.weblink:visited {color: #008080; }
+        a.weblink:hover {text-decoration: underline;}
+        a.popuplink {color: blue; text-decoration: none; border-bottom: 1px dashed;}
+        a.popuplink:visited {color: blue;}
+        a.popuplink:hover {text-decoration: none; background-color: #ffff80;}
+        a.filelink {color: green;  text-decoration: none; border-bottom: 1px dashed;}
+        a.filelink:visited {color: green;}
+        a.filelink:hover {text-decoration: none; background-color: #ffff99;}
+        a.scriptlink {color: purple; text-decoration: none; border-bottom: 1px dashed; }
+        a.scriptlink:visited {color: purple;}
+        a.scriptlink:hover {text-decoration: none; background-color: #ffff99;}
+  </style>
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+<IF_TOPIC_HEADER>
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#2AAAFF">
+  <tr valign="middle">
+    <td align="left">
+      <%TOPIC_HEADER%>
+    </td>
+    <td align="right">
+     <span style="font-size: 8pt">
+     <a href="<%HREF_DEFAULT_PAGE%>">Top</a>&nbsp;
+     <IF_PREVIOUS_PAGE><a href="<%HREF_PREVIOUS_PAGE%>">Previous</a>&nbsp;</IF_PREVIOUS_PAGE>
+     <IF_NEXT_PAGE><a href="<%HREF_NEXT_PAGE%>">Next</a></IF_NEXT_PAGE>
+     </span>
+    </td>
+  </tr>
+</table>
+</IF_TOPIC_HEADER>
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<%TOPIC_TEXT%>
+</td></tr></table>
+
+</body>
+</html>]]></config-value>
+        <config-value name="WallsMapTempLate" translate="true"><![CDATA[<%DOCTYPE%>
+<html>
+<head>
+   <title><%TOPIC_TITLE%></title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="<%TOPIC_KEYWORDS%>" />
+   <meta http-equiv="Content-Type" content="text/html; charset=<%DOCCHARSET%>" />
+   <meta http-equiv="Content-Style-Type" content="text/css" />
+   <link type="text/css" href="<%STYLESHEET%>" rel="stylesheet" />
+</head>
+<body style="margin: 0px 0px 0px 0px; background: #FFFFFF;">
+
+<IF_TOPIC_HEADER>
+<table width="100%" border="0" cellspacing="0" cellpadding="5" bgcolor="#00CCFF">
+  <tr valign="middle">
+    <td align="left">
+      <%TOPIC_HEADER%>
+    </td>
+    <td align="right">
+     <span style="font-size: 9pt">
+     <a href="<%HREF_DEFAULT_PAGE%>">Top</a>&nbsp;
+     <IF_PREVIOUS_PAGE><a href="<%HREF_PREVIOUS_PAGE%>">Previous</a>&nbsp;</IF_PREVIOUS_PAGE>
+     <IF_NEXT_PAGE><a href="<%HREF_NEXT_PAGE%>">Next</a></IF_NEXT_PAGE>
+     </span>
+    </td>
+  </tr>
+</table>
+</IF_TOPIC_HEADER>
+
+<!-- Placeholder for topic body. -->
+<table width="100%" border="0" cellspacing="0" cellpadding="5"><tr valign="top"><td align="left">
+<%TOPIC_TEXT%>
+</td></tr></table>
+
+</body>
+</html>]]></config-value>
+      </config-group>
+      <config-value name="defaultext">.htm</config-value>
+      <config-value name="cssfile">default.css</config-value>
+      <config-value name="fontsizeencoding">0</config-value>
+      <config-value name="fontsizebase">100</config-value>
+      <config-value name="exportmarkersastext">1</config-value>
+      <config-value name="exportstylenames">1</config-value>
+      <config-value name="exportxhtml">0</config-value>
+      <config-value name="exportutf8bom">1</config-value>
+      <config-value name="synctimestamp">1</config-value>
+      <config-value name="syncarchivebit">0</config-value>
+      <config-value name="imagehint">0</config-value>
+      <config-value name="imageconversion">1</config-value>
+      <config-value name="jpgquality">90</config-value>
+    </config-group>
+    <config-group name="pdf">
+      <config-value name="outputfile">..\..\bin\WallsMap.pdf</config-value>
+      <config-value name="template">WallsMap-TSS.mnl</config-value>
+      <config-value name="style">0</config-value>
+      <config-value name="createoutline">1</config-value>
+      <config-value name="createhotspots">1</config-value>
+      <config-value name="insertseealso">0</config-value>
+      <config-value name="linkcolor">16711680</config-value>
+      <config-value name="ignoreblank">1</config-value>
+    </config-group>
+    <config-group name="rtf">
+      <config-value name="outputfile">.\Manual\WallsMap_manual.rtf</config-value>
+    </config-group>
+    <variables/>
+    <helpcontext-numbers>
+      <helpcontext-number href="Contents" value="1000"/>
+      <helpcontext-number href="Converting_Images_to_NTI" value="1017"/>
+      <helpcontext-number href="Converting_Images_to_NTI#Compression_Options" value="1018"/>
+      <helpcontext-number href="Editing_Records" value="1004"/>
+      <helpcontext-number href="Excel_Spreadsheet_Export" value="1009"/>
+      <helpcontext-number href="Exporting_and_Merging" value="1003"/>
+      <helpcontext-number href="Getting_Started#Center_On_Point" value="1010"/>
+      <helpcontext-number href="Getting_Started#Layers_Window" value="1007"/>
+      <helpcontext-number href="Getting_Started#Table_View" value="1016"/>
+      <helpcontext-number href="Google_Earth_KML_Export" value="1008"/>
+      <helpcontext-number href="Google_Earth_KML_Launch_Option" value="1002"/>
+      <helpcontext-number href="Image_Opacity" value="1015"/>
+      <helpcontext-number href="Name_for_Signing_Timestamps" value="1019"/>
+      <helpcontext-number href="Scale_Ranges_for_Display" value="1011"/>
+      <helpcontext-number href="Selection_by_Edited_Status" value="1005"/>
+      <helpcontext-number href="Sellection_by_Text_Search#Text_Search_Operations" value="1012"/>
+      <helpcontext-number href="Submitting_a_Shapefile_Update" value="1020"/>
+      <helpcontext-number href="Symbols_for_Point_Features" value="1013"/>
+      <helpcontext-number href="Symbols_for_Polygon_or_Polylin" value="1014"/>
+      <helpcontext-number href="URL_for_Web_Map" value="1001"/>
+    </helpcontext-numbers>
+  </config>
+  <xi:include parse="xml" href="Maps/table_of_contents.xml"/>
+  <project-files>
+    <file href="Topics/*.xml" build="ALL" filetype="topic">
+      <file-mod href="Contents_2_2.xml"/>
+      <file-mod href="Contents_2.xml"/>
+      <file-mod href="Roundtripping_TSS_Shapefiles.xml"/>
+      <file-mod href="Updating_TSS2000.MDB_with_shap.xml"/>
+      <file-mod href="Exporting_shapefiles_from_TSS2.xml"/>
+    </file>
+    <file href="Baggage/*.*" build="ALL" filetype="baggage"/>
+  </project-files>
+</helpproject>

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Selection by Text Search</title>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Selection by Text Search</text></para>
+    </header>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The goal of a text search operation is to fill the left panel of the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Editing_Records" styleclass="Normal" translate="true">Selected Points</link><text styleclass="Normal" translate="true"> window with the list of all records whose attribute fields have text matching a target string. Once selected, you can scroll the list, highlight a particular record by clicking its label, then view or edit its attributes (right panel) and its geographical coordinates (top of window). The results from searching multiple shapefiles will be shown.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Note, however, that for a shapefile to be included in a search that fills this window, it must be a </text><text styleclass="Normal" style="font-style:italic;" translate="true">visible </text><text styleclass="Normal" translate="true">layer -- that is, it must be listed with a check mark in the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Getting_Started" anchor="Layers_Window" styleclass="Normal" translate="true">Layers window</link><text styleclass="Normal" translate="true">. In the current version of the program, it must also be a </text><text styleclass="Normal" style="font-style:italic;" translate="true">2D point </text><text styleclass="Normal" style="font-style:normal;" translate="true">shapefile. </text><text styleclass="Normal" translate="true">A polygon shapefile, for example, can be searched for text in a table view, but the &quot;selection&quot; occurs only within the table.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Outside of a table view there are a couple of ways to perform a search for point features. If the Selected Points window is already open you can use the Find box at the bottom left to refill the window with matching items (or possibly to empty it):</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><image src="Search_quick.png" scale="100.00%" styleclass="Image Caption"></image></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">This method is often convenient but you&apos;re allowed no options. The search is never case-sensitive, and it looks for the specified string anywhere in the group of fields you&apos;ve designated as the </text><text styleclass="Normal" style="font-style:italic;" translate="true">default search fields</text><text styleclass="Normal" translate="true"> -- a property specific to each shapefile. You can specify those fields in the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Symbols_for_Point_Features" styleclass="Normal" translate="true">Symbols</link><text styleclass="Normal" translate="true"> dialog (button on the right panel of the Layers window).</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><anchor id="Text_Search_Operations" styleclass="Normal"><keywords><keyword translate="true">Search</keyword></keywords></anchor></para>
+    <para styleclass="Heading1"><text styleclass="Subheader" translate="true">Text Search Operations Dialog</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">When you need a more refined search, possibly to </text><text styleclass="Normal" style="font-style:italic;" translate="true">add</text><text styleclass="Normal" translate="true"> to the selection, click the binoculars icon in the program&apos;s toolbar. This opens the Text Search Operations dialog shown below. Hopefully most of it will be self-explanatory. If you adjust the layers and fields searched in the dialog&apos;s top half, then those settings will only affect subsequent searches from this dialog, not the quick find box described above. You can, however, use the &quot;Save as Default&quot; button to change the default search fields for the shapefile highlighted in the &quot;Layers Searched&quot; box. Also be aware that changes made in the &quot;Fields Searched&quot; box will only affect the search of the highlighted layer. You may need to select several layers to make adjustments. Normally a project will remain configured so that the top half of the dialog can be ignored for most searches.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><image src="Adv_Search.png" scale="100.00%" styleclass="Image Caption"></image></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Note that the Find box has a drop-down window that let&apos;s you select from up to 8 text strings (with matching criteria) that were last used successfully in a search from this dialog. Search history is a project setting that&apos;s optionally saved in the NTL file.You can enable or disable this option via the &quot;Save and restore search history&quot; item in the program&apos;s &quot;Preferences &gt; Preferences for this document&quot; menu. You can also empty the list at any time by right-clicking in the Find box and selecting &quot;Clear search history.&quot;</text></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>

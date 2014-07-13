@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Export Operations</title>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Export Operations</text></para>
+    </header>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="topiclink" href="Exporting_and_Merging" styleclass="Normal" translate="true">Exporting and Merging</link></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="topiclink" href="Template_File_Format" styleclass="Normal" translate="true">Template File Format</link></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="topiclink" href="Excel_Spreadsheet_Export" styleclass="Normal" translate="true">Excel Spreadsheet Export</link></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="topiclink" href="Google_Earth_KML_Export" styleclass="Normal" translate="true">Google Earth (KML) Export</link></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="topiclink" href="Converting_Images_to_NTI" styleclass="Normal" translate="true">Converting Images to NTI Format</link></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>

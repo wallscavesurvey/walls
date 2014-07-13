@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Excel Spreadsheet Export</title>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Excel Spreadsheet Export</text></para>
+    </header>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Within table views another export option, </text><text styleclass="Normal" style="font-style:italic;" translate="true">Export to Excel spreadsheet</text><text styleclass="Normal" style="font-style:normal;" translate="true">, is presented in the table&apos;s context menu. </text><text styleclass="Normal" translate="true">This can be useful when you don&apos;t want to distribute precise location data. Also, if the recipient&apos;s GIS software doesn&apos;t support memo fields, an XLS spreadsheet might be more useful than a shapefile since it can store up to 32K characters in a cell. The fixed-length character fields of typical shapefiles are limited to 254 characters.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><image src="Excel_export.png" scale="100.00%" styleclass="Image Caption"></image></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">As when exporting to a shapefile, only the selected (highlighted) rows will be included in the export, the number indicated in the dialog&apos;s title. So typically you&apos;ll first be right-clicking the table (any row) and choosing </text><text styleclass="Normal" style="font-style:italic;" translate="true">Select all</text><text styleclass="Normal" translate="true">. Again, you can sort the table and rearrange or exclude columns prior to invoking the dialog. But in this case there is no &quot;use table layout&quot; option; it will always be used.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">If you are exporting memo fields, the program will truncate the text when its length exceeds the limit you specify. In such cases you&apos;ll see a dialog like the following when the operation finishes:</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><image src="Excel_export_fin.png" scale="100.00%" styleclass="Image Caption"></image></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>

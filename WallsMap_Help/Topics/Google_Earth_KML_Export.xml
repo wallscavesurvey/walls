@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Google Earth (KML) Export</title>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Google Earth (KML) Export</text></para>
+    </header>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">In table views and in the Selected Points window, the &quot;Locate in Google Earth&quot; context menu item has a submenu item named &quot;Options.&quot; If you choose that instead of &quot;Fly direct&quot;, you can specify the attribute fields (if any) to be used for constructing the descriptions that appear in GE when the user left-clicks a placemark icon. The placemark symbols for multiple-point exports and single-point exports can be specified as two URLs via a preference setting. (See </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Google_Earth_KML_Launch_Option" styleclass="Normal" translate="true">Google Earth (KML) launch options</link><text styleclass="Normal" translate="true">.) The two screenshots below show the KML Options dialog followed by what might appear in Google Earth.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><image src="KML_export.png" scale="100.00%" styleclass="Image Caption"></image></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><image src="Inner_space_GE.png" scale="100.00%" styleclass="Image Caption"></image></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Note that in this example the COMMENTS field is included in the KML, which for this particular project would likely be a poor choice. A large report can cause too long of a delay after the click and before the description window appears. Also, the dialog itself doesn&apos;t yet provide a way to modify the descriptions. For now we can only choose the fields that will be included and preview the result.</text></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>

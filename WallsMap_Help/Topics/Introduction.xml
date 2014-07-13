@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Introduction</title>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Introduction</text></para>
+    </header>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">WallsMap is a tool for managing geographical data inventories, where text, images, and links to information are associated with sets of coordinates. It&apos;s often convenient to be able to operate on such data by browsing a map. Like other Geographic Information System (GIS) viewers, the program treats each map document as a set of overlapping data layers. Among its unusual features is the ability to open multiple maps, or layer sets, so that they can be viewed together in a synchronized fashion as shown here:</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><image src="Intro2.jpg" scale="100.00%" styleclass="Image Caption"></image></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The program also functions as an editor of vector data (shapefiles) and as a viewer of many kinds of graphics files, not just geographic imagery. A possibly unique feature is support for </text><text styleclass="Normal" style="font-style:italic;" translate="true">memo</text><text styleclass="Normal" translate="true"> fields in shapefiles. Memo fields provide a non-proprietary way to store large quantities of variable-length data, such as entire reports in rich text format. Clicking a memo field&apos;s button might invoke either the built-in text editor or a thumbnail-image browser that lets you manage sets of photos or scanned documents.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><image src="Intro1.png" scale="100.00%" styleclass="Image Caption"></image></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The program will also recognize and automatically update a set of specially-named fields for storing location data and created/updated timestamps. My intent with these features and those planned is to develop a tool for managing geographical databases suitable for many purposes, but one that non-GIS specialists can quickly learn to use.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">To begin, please review the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Getting_Started" styleclass="Normal" translate="true">Getting Started</link><text styleclass="Normal" translate="true"> section. Many features can be discovered by exploring the menus and dialogs using the mouse, but this overview is pretty much essential. Among the things easy to overlook are the several kinds of windows you can open and keep open while examining a map. Those windows are all resizable and can be moved to a second display.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">WallsMap is being actively developed, so any suggestions you can make will be appreciated.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">David McKenzie</text></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="mailto:davidmck@austin.rr.com" styleclass="Normal" translate="true">davidmck@austin.rr.com</link></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>

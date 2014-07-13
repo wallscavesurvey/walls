@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Setting Display Attributes</title>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Setting Display Attributes</text></para>
+    </header>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="topiclink" href="Symbols_for_Point_Features" styleclass="Normal" style="font-weight:normal;" translate="true">Symbols for Point Features</link></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="topiclink" href="Symbols_for_Polygon_or_Polylin" styleclass="Normal" style="font-weight:normal;" translate="true">Display of Polygons or Polylines</link></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="topiclink" href="Image_Opacity" styleclass="Normal" style="font-weight:normal;" translate="true">Image Opacity</link></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="topiclink" href="Scale_Ranges_for_Display" styleclass="Normal" style="font-weight:normal;" translate="true">Scale Ranges for Display</link></para>
+  </body>
+</topic>

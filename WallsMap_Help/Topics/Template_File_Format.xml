@@ -1,0 +1,411 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Template File Format</title>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Template File Format</text></para>
+    </header>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-style:normal;" translate="true">WallsMap</text><text styleclass="Normal" translate="true"> supports a specially-formatted text file, one with extension </text><text styleclass="Normal" style="font-weight:bold;" translate="true">.tmpshp</text><text styleclass="Normal" translate="true">, that can serve two purposes. First, if it exists as one of the shapefile&apos;s components (i.e., with the same base name), it can control how attributes are initialized, edited, and displayed. You can use it, for example, to dynamically initialize fields with location-dependent data, to specify alternative field values to be presented in drop-down lists, and to define text that appears when the mouse pointer hovers over a field name.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Second, if it&apos;s selected as the </text><text styleclass="Normal" style="font-style:italic;" translate="true">template</text><text styleclass="Normal" style="font-style:normal;" translate="true"> in an </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Exporting_and_Merging" styleclass="Normal" style="font-style:normal;" translate="true">export operation</link><text styleclass="Normal" style="font-style:normal;" translate="true">, </text><text styleclass="Normal" translate="true">it can determine the attribute table structure of the exported shapefile</text><text styleclass="Normal" style="font-style:italic;" translate="true">.</text><text styleclass="Normal" translate="true"> When it&apos;s used this way you can restructure a shapefile by changing the number and types of attribute fields. You can initialize fields with constants, or values that depend on location, such elevations and quadrangle names. You can also filter the records, selecting for output only the ones where one or more attribute fields have any of a specified set of values.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">For the time being you&apos;ll need to use a text editor to do any customization. To start the process, perform an ordinary shapefile export (without specifying a named template file) while enabling the option &quot;</text><text styleclass="Normal" style="font-style:italic;" translate="true">Force creation of template component</text><text styleclass="Normal" translate="true">.&quot; (See </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Exporting_and_Merging" styleclass="Normal" translate="true">Exporting and Merging</link><text styleclass="Normal" translate="true">.) You might also check the &quot;</text><text styleclass="Normal" style="font-style:italic;" translate="true">Initialize empty shapefile</text><text styleclass="Normal" translate="true">&quot; box, since you likely won&apos;t need the actual shapefile output. This operation will create a .</text><text styleclass="Normal" style="font-style:italic;" translate="true">tmpshp</text><text styleclass="Normal" translate="true"> file that reflects the existing structure, one that you can load into your text editor and change. Your edits must be compatible with the format described in this section.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">When a shapefile has a template component, you can review or edit it by right-clicking the shapefile&apos;s line in the Layers window and selecting &quot;</text><text styleclass="Normal" style="font-style:italic;" translate="true">Open &lt;name&gt;.tmpshp</text><text styleclass="Normal" translate="true">&quot; from the context menu. Before automatically launching your default text editor, the program informs you that any changes you make won&apos;t take effect until the shapefile (or project) is closed and reopened.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Subheader" translate="true">Components of a Field Definition</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The only lines in the file that are processed begin with a period, hence an attribute field definition would actually appear as shown in this generic description of a template directive:</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="1" colcount="8" style="width:auto; page-break-inside:avoid; background-color:#e4e4e4;">
+      <tr style="vertical-align:top">
+        <td style="width:48px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">.FLD</text></para>
+        </td>
+        <td style="width:53px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold; font-style:italic;" translate="true">name</text></para>
+        </td>
+        <td style="width:48px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold; font-style:italic;" translate="true">type</text></para>
+        </td>
+        <td style="width:161px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold; font-style:italic;" translate="true">fld_length</text><text styleclass="Normal" style="font-weight:bold;" translate="true">[.</text><text styleclass="Normal" style="font-weight:bold; font-style:italic;" translate="true">decimals</text><text styleclass="Normal" style="font-weight:bold;" translate="true">]</text></para>
+        </td>
+        <td style="width:112px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">[&lt;&lt; </text><text styleclass="Normal" style="font-weight:bold; font-style:italic;" translate="true">src_name</text><text styleclass="Normal" style="font-weight:bold;" translate="true">] </text></para>
+        </td>
+        <td style="width:154px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">[=(</text><text styleclass="Normal" style="font-weight:bold; font-style:italic;" translate="true">value1</text><text styleclass="Normal" style="font-weight:bold;" translate="true">|</text><text styleclass="Normal" style="font-weight:bold; font-style:italic;" translate="true">value2</text><text styleclass="Normal" style="font-weight:bold;" translate="true">|...)]</text></para>
+        </td>
+        <td style="width:52px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">[?(...)] </text></para>
+        </td>
+        <td style="width:152px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">[;</text><text styleclass="Normal" style="font-weight:bold; font-style:italic;" translate="true">comment</text><text styleclass="Normal" style="font-weight:bold;" translate="true">]</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">(In these descriptions, optional parts are enclosed in square brackets. Since the sequence of directive arguments are important for their interpretation, double-quotes must occasionally be used to prevent separators like commas and spaces from changing the argument count. A default setting can be represented by &quot;&quot; if other arguments follow it.)</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">There can be a maximum of 255 field definitions, each identified by the .FLD keyword. This limit and the others described below are based on the dBase table format adopted by ESRI, the originator of the shapefile format.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold; font-style:italic;" translate="true">name</text><text styleclass="Normal" translate="true"> is the field&apos;s name in the shapefile&apos;s DBF component. A legal name can be up to 10 characters long and have no embedded spaces. It should consist only of uppercase letters, digits, and underscores, with the first character being a letter. Some field names ending in an underscore (e.g., DATUM_) are given special treatment by the program.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold; font-style:italic;" translate="true">type</text><text styleclass="Normal" translate="true"> is a single character that indicates type of field, either N (number), F (float with exponent), L (logical: Y/N), D (date: yyyymmdd), C (fixed-length text), or M (variable-length text, or memo). Note that in general all field data is stored in the record as readable text, and the program won&apos;t reformat it for display purposes unless it&apos;s rich text in a memo field. </text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold; font-style:italic;" translate="true">fld_length</text><text styleclass="Normal" translate="true"> is the field&apos;s total length in characters. For N and F fields this number can have an appended period and count of displayed digits to the right of the decimal point. For example, specifying &quot;12.3&quot; would store the number -52.4 as &quot;_____-52.400&quot; in an N field and as &quot;_-5.240e+001&quot; in an F field (with &quot;_&quot; denoting a space). Although WallsMap uses exponential notation when filling F fields whenever possible, other programs may not. This shouldn&apos;t affect how the numbers are read and processed internally.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The maximum allowed </text><text styleclass="Normal" style="font-style:italic;" translate="true">fld_length</text><text styleclass="Normal" translate="true"> and </text><text styleclass="Normal" style="font-style:italic;" translate="true">decimals</text><text styleclass="Normal" translate="true"> components for N and F fields are 19.15 and 20.18, respectively. The maximum allowed length of type C fields is 254. Logical fields, date fields, and memo fields are forced to have lengths 1, 8, and 10, respectively. The record length, which is the sum of all field lengths plus one, cannot exceed 4000.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">&lt;&lt; </text><text styleclass="Normal" style="font-weight:bold; font-style:italic;" translate="true">src_name</text><text styleclass="Normal" translate="true"> specifies that the value for attribute &lt;name&gt; should be derived from a field named </text><text styleclass="Normal" style="font-style:italic;" translate="true">src_name</text><text styleclass="Normal" translate="true"> in the source shapefile of an export operation. Without it, the field is considered new and will normally be blank filled. Note that field types C and M and types N and F are compatible in the sense that one can serve as the source for the other. In all cases, depending on the specified field lengths, truncation of text or loss of numeric precision is a possibility. </text><text styleclass="Normal" style="font-style:italic;" translate="true">src_name</text><text styleclass="Normal" translate="true"> can also take the form described below under </text><text styleclass="Normal" style="font-style:italic;" translate="true">Creating a Record Number Field</text><text styleclass="Normal" translate="true">.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">=(</text><text styleclass="Normal" style="font-weight:bold; font-style:italic;" translate="true">value1</text><text styleclass="Normal" style="font-weight:bold;" translate="true">|</text><text styleclass="Normal" style="font-weight:bold; font-style:italic;" translate="true">value2</text><text styleclass="Normal" style="font-weight:bold;" translate="true">|...)</text><text styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true"> or </text><text styleclass="Normal" style="font-weight:bold;" translate="true">=!(</text><text styleclass="Normal" style="font-weight:bold; font-style:italic;" translate="true">value1</text><text styleclass="Normal" style="font-weight:bold;" translate="true">|</text><text styleclass="Normal" style="font-weight:bold; font-style:italic;" translate="true">value2</text><text styleclass="Normal" style="font-weight:bold;" translate="true">|...) </text><text styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true">immediately following </text><text styleclass="Normal" style="font-weight:normal; font-style:italic;" translate="true">src_name</text><text styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true"> specifies a set of one or more field values for use as a filter. In the first case, if any one of these values match the content of field </text><text styleclass="Normal" style="font-weight:normal; font-style:italic;" translate="true">src_name</text><text styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true"> in an exported shapefile, the corresponding record is included in the export. The expression &quot;=()&quot; specifies that a non-blank field content will be sufficient for inclusion. In the second case (=!(...)), the record is included if the field content fails to match any of the values. Although a selective export can be accomplished from a table view, selection via a template can be convenient if it&apos;s an operation that&apos;s done often. Also, a commonly-used template can be be named</text><text styleclass="Normal" style="font-weight:bold; font-style:normal;" translate="true"> &quot;</text><text styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true">Export_</text><text styleclass="Normal" style="font-weight:normal; font-style:italic;" translate="true">shapefile name</text><text styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true">.tmpshp&quot;, such that whenever you select it by browsing a folder&apos;s content, the </text><text styleclass="Normal" style="font-weight:normal; font-style:italic;" translate="true">Output file</text><text styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true"> box of the Export dialog is automatically filled with the desired output pathname -- that is, the template&apos;s pathname with &quot;Export_&quot; is removed.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">?(..)</text><text styleclass="Normal" style="font-weight:normal;" translate="true"> &#160;is </text><text styleclass="Normal" translate="true">an optional </text><text styleclass="Normal" style="font-style:italic;" translate="true">control expression</text><text styleclass="Normal" translate="true"> beginning with &quot;?(&quot; and ending with &quot;)&quot; that can override the blank filling of new fields. It can also define special field attributes recognized by WallsMap during editing operations as long as this file, with extension </text><text styleclass="Normal" style="font-style:italic;" translate="true">.tmpshp</text><text styleclass="Normal" translate="true">, is kept alongside the shapefile&apos;s other components.</text><text styleclass="Normal" style="font-weight:bold;" translate="true">&#32;</text><text styleclass="Normal" translate="true">Possibilities include displaying alternative choices in list boxes and retrieving location-dependent values (county names, elevations, etc.) from another layer in the project. The control expressions are described below under</text><text styleclass="Normal" style="font-style:italic;" translate="true"> Controlling a Field&apos;s Behavior</text><text styleclass="Normal" translate="true">.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">Note</text><text styleclass="Normal" translate="true">: The ?(..) </text><text styleclass="Normal" style="font-style:normal;" translate="true">control expression, when present, is the only part of a field definition that the program examines when the template is used as a shapefile component.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Subheader" translate="true">Creating a Record Number Field</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true">Programs that upload shapefile data to GPS receivers (or convert shapefiles to GPX files) normally require that you supply the name of a text field to be used as a waypoint identifier or name. This field must store values unique to each record, and this uniqueness must be preserved when the text is truncated to the maximum length supported by the receiver model. (For a </text><text styleclass="Normal" style="font-weight:normal; font-style:italic;" translate="true">Garmin GPSmap 60CSx</text><text styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true"> this limit is 14 characters.) The following definition, for example, will add such a field in an export operation:</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">.FLD LABEL &#160;C 30 &#160;&lt;&lt; |AK%03u.|NAME</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The text inside the bars on either side of the number format specification, &quot;%03u&quot;, and the source field name, &quot;NAME&quot;, are all optional ingredients. In this example, if record number 19 has value &quot;Cenote Agua Gudalupana&quot; for field NAME in the source shapefile, then &quot;AK019.Cenote Agua Gudalupana.&quot; will be stored in the LABEL field. If this record were uploaded to a </text><text styleclass="Normal" style="font-style:italic;" translate="true">Garmin </text><text styleclass="Normal" style="font-weight:normal; font-style:italic;" translate="true">60CSx</text><text styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true"> using the free program </text><link displaytype="text" defaultstyle="true" type="weblink" href="http://www.dnr.state.mn.us/mis/gis/DNRGPS/DNRGPS.html" target="_blank" styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true">DNRGPS</link><text styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true">, the shortened waypoint identifier derived from LABEL would be &quot;AK019.Cnt Ag G.&quot; A different program might simply truncate the text in LABEL, which is the case with Garmin&apos;s </text><text styleclass="Normal" style="font-weight:normal; font-style:italic;" translate="true">MapSource</text><text styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true"> software.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Subheader" translate="true">Controlling a Field&apos;s Behavior</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">When a .tmpshp file is opened as a shapefile component, the only parts of FLD definitions that matter are the field names and the contents of optional ?(...) expressions. By contrast, when a .tmpshp file is selected for an export operation, the ?(...) expressions are processed only when they don&apos;t follow a source field name specification. They will, however, be preserved in the .tmpshp component that&apos;s created for the exported shapefile, thereby passing on any special field behavior. For field definitions without a &lt;src_name&gt; they can specify how the fields should be initialized, both during export and when the shapefile is later appended to. This feature is likely to be expanded with more options, but here&apos;s what&apos;s currently implemented:</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">Initializing fields with a constant value</text></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true">Place the value, number or text, within a pair of vertical bars. In this example the source shapefile&apos;s record is ignored if the template is used in an export operation:</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true">.FLD STATE &#160;C &#160;40 &#160;?(|Texas|)</text></para>
+    <para styleclass="Normal"><anchor id="Location-dependent_init" styleclass="Normal"></anchor></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">Location-dependent Initialization</text></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true">If this is a point shapefile, you might want a field to be automatically filled with a value obtained by matching the point&apos;s location with features in another project layer. (This needn&apos;t be a visible layer). The following example causes the program, when initializing the COUNTY field, to search for a record in a </text><text styleclass="Normal" style="font-weight:normal; font-style:italic;" translate="true">polygon</text><text styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true"> shapefile, </text><text styleclass="Normal" style="font-weight:normal; font-style:italic;" translate="true">Texas_Counties.shp,</text><text styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true"> whose corresponding polygon contains the point. If one is found then that record&apos;s NAME field is used as the source; otherwise the field is initialized with </text><text styleclass="Normal" style="font-weight:normal; font-style:italic;" translate="true">Unknown</text><text styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true">. Note that when the template is a shapefile component the initialization occurs dynamically, both when a record is relocated and when a new record is created.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true">.FLD COUNTY &#160; C 14 &#160; &lt;&lt; COUNTY &#160;?(|Texas_Counties::NAME|Unknown|)</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true">The control expression of this example, however, is ignored when the template is used in an export operation and not as a shapefile component. In the former situation the value for COUNTY is copied from the COUNTY field of the source shapefile. If you instead wanted to initialize a new field with the export (or to ignore existing field values), you would omit the &quot;&lt;&lt; COUNTY&quot; portion of the definition.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">More than one polygon shapefile can be examined to retrieve an initialization value. For example, if used in an export template the following directive defines a new field with text values obtained from whichever shapefile record, if any, corresponds to a polygon enclosing the exported point. In this case, three geologic map shapefiles are examined in succession to determine a rock unit abbreviation. Since there is no trailing default value, say &quot;|Unknown|&quot;, the field is left blank when no such polygon is found.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal" style="margin-left:0px;"><text styleclass="Normal" translate="true">.FLD ROCK_CODE &#160;C 10 &#160;?(|EA_Geology::GEO_ABBREV|N_Bexar_Geology::GEOLOGY|GAT_250K::ROCKUNIT|)</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true">It&apos;s also possible to initialize a field with an elevation if a digital elevation model (DEM) image of the right format is included in the project. Currently the only supported DEM image type is a specially-configured NTI file, one with an associated file component (extension .NTE) storing the actual elevations. In the example below, the control expression tells WallsMap to find the topmost DEM image whose extent includes the point&apos;s location, then retreive the corresponding elevation in feet. (It could be meters.)</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true">.FLD ELEV_FT &#160; N 5.0 &#160;&lt;&lt; ELEV_FT &#160;?(|*.nti::feet|)</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:normal; font-style:normal;" translate="true">When location-dependent initialization is active outside of an export operation, any change of location (or record addition) will cause the affected fields to be reinitialized dynamically. The user can, however, make changes to those fields after the relocation provided they haven&apos;t been set read-only as described later in this topic. Currently dynamic initialization is only possible with fixed text (C) fields whereas memo fields can undergo location-based initialization during an export.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">Combo box display</text></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:normal;" translate="true">The control expression in the following field definition causes a drop-down list of alternatives to be shown whenever the user clicks the small button to the field&apos;s right:</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:normal;" translate="true">.FLD ROCK_TYPE &#160;C 30 &#160;&lt;&lt; ROCK_TYPE ?(|Carbonate|Gypsum|Granite|Sediments|Volcanic|,1)</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><image src="combo_edit.png" scale="100.00%" styleclass="Image Caption"></image></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">An optional integer, separated by a comma from the list of alternatives, specifies which one is to serve as the initial value in a new record. Here &quot;Carbonate&quot; is being specified as the default. If the integer is omitted, the field will initially be blank. In this example the user can also enter any text into the field without opening the list box. We can modify this behavior by ending the control expression with &quot;,RO&quot; to force the user to accept one of the alternatives. In that case the small button doesn&apos;t appear, the list box displaying only when the user clicks inside the field (or hits the Enter key).</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">Setting fields read-only</text></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:normal;" translate="true">Any field where no special behavior is being specified can be made read-only by ending the definition with &quot;?(RO).&quot; Values in those fields will be displayed in gray. This can be useful for key fields whose values are program generated. A field&apos;s read-only status can be overridden during sessions where the program was invoked with the &quot;-TS_OPT&quot; command line option. For details, see </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Name_for_Signing_Timestamps" styleclass="Normal" style="font-weight:normal;" translate="true">Name for Signing Timestamps</link><text styleclass="Normal" style="font-weight:normal;" translate="true">.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Subheader" translate="true">Important Note about Memo Fields</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">When type M (memo) fields are specified, a .DBT file containing the actual text will be created as one of the shapefile&apos;s set of components. An empty memo field requires just 10 bytes of space in the main table (DBF component) but a non-empty memo uses a multiple of 512 bytes in the DBT component.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Although WallsMap fully supports the display and editing of memo fields, as does mainstream database programs like </text><text styleclass="Normal" style="font-style:italic;" translate="true">Microsoft Access</text><text styleclass="Normal" translate="true"> and </text><text styleclass="Normal" style="font-style:italic;" translate="true">OpenOffice.org</text><text styleclass="Normal" translate="true">, typical behavior for a GIS viewer is to tolerate their presence in the table while ignoring the DBT file. ESRI&apos;s products have exhibited a range of behaviors, with recent versions of ArcMap simply refusing to open shapefiles with memo fields.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><anchor id="Special_Fields" styleclass="Subheader"></anchor><text styleclass="Subheader" translate="true">Special Field Names Recognized by WallsMap</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The following field subsets, whichever ones you specify, are automatically maintained by WallsMap assuming it has sufficient information. If you choose to use them, their sizes and types should be the same as those shown here. The values in these fields are always computed, never copied from a source. Nor can they be directly edited.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="8" colcount="5" style="width:auto; background-color:#e4e4e4;">
+      <tr style="vertical-align:top">
+        <td style="width:74px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">.FLD</text></para>
+        </td>
+        <td style="width:136px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">LATITUDE_</text></para>
+        </td>
+        <td style="width:43px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">N</text></para>
+        </td>
+        <td style="width:52px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">12.7</text></para>
+        </td>
+        <td style="width:469px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">; Degrees latitude</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:74px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">.FLD</text></para>
+        </td>
+        <td style="width:136px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">LONGITUDE_</text></para>
+        </td>
+        <td style="width:43px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">N</text></para>
+        </td>
+        <td style="width:52px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">12.7</text></para>
+        </td>
+        <td style="width:469px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">; Degrees longitude</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:74px;">
+        </td>
+        <td style="width:136px;">
+        </td>
+        <td style="width:43px;">
+        </td>
+        <td style="width:52px;">
+        </td>
+        <td style="width:469px;">
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:74px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">.FLD</text></para>
+        </td>
+        <td style="width:136px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">EASTING_</text></para>
+        </td>
+        <td style="width:43px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">N</text></para>
+        </td>
+        <td style="width:52px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">12.2</text></para>
+        </td>
+        <td style="width:469px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">; UTM easting (meters)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:74px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">.FLD</text></para>
+        </td>
+        <td style="width:136px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">NORTHING_</text></para>
+        </td>
+        <td style="width:43px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">N</text></para>
+        </td>
+        <td style="width:52px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">12.2</text></para>
+        </td>
+        <td style="width:469px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">; UTM northing (meters)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:74px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">.FLD</text></para>
+        </td>
+        <td style="width:136px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">ZONE_ </text></para>
+        </td>
+        <td style="width:43px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">C</text></para>
+        </td>
+        <td style="width:52px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">3</text></para>
+        </td>
+        <td style="width:469px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">; UTM Zone (e.g., 14N)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:74px;">
+        </td>
+        <td style="width:136px;">
+        </td>
+        <td style="width:43px;">
+        </td>
+        <td style="width:52px;">
+        </td>
+        <td style="width:469px;">
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:74px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">.FLD</text></para>
+        </td>
+        <td style="width:136px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">DATUM_</text></para>
+        </td>
+        <td style="width:43px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">C</text></para>
+        </td>
+        <td style="width:52px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">5</text></para>
+        </td>
+        <td style="width:469px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">; Datum (e.g., NAD83)</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The two optional fields below are also handled automatically during record updates. They store a 19-char timestamp, a space separator, and an editor&apos;s name or initials. For an export operation you must specify a field length in the range 25 to 50. If the same timestamp field exists in the source shapefile, it is always copied unless it is explicitly initialized with either </text><text styleclass="Normal" style="font-style:normal;" translate="true">?(|yyyy-mm-dd hh:mm:ss &lt;name&gt;|) </text><text styleclass="Normal" translate="true">or </text><text styleclass="Normal" style="font-style:normal;" translate="true">?(||)</text><text styleclass="Normal" translate="true"> following the field length. If it doesn&apos;t exist in the source, the field will be blank-filled unless you initialize it -- either explicitly or by entering a name in square brackets following the field length. The bracketed name will cause a timestamp to be generated at the time of export.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="2" colcount="5" style="background-color:#e4e4e4;">
+      <tr style="vertical-align:top">
+        <td style="width:73px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">.FLD</text></para>
+        </td>
+        <td style="width:138px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">CREATED_</text></para>
+        </td>
+        <td style="width:42px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">C</text></para>
+        </td>
+        <td style="width:53px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">45</text></para>
+        </td>
+        <td style="width:470px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">[exporter&apos;s name (25 chars max)] ; Created date/time/name</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:73px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">.FLD</text></para>
+        </td>
+        <td style="width:138px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">UPDATED_</text></para>
+        </td>
+        <td style="width:42px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">C</text></para>
+        </td>
+        <td style="width:53px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">45</text></para>
+        </td>
+        <td style="width:470px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">; Update date/time/name</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:normal;" translate="true">Unlike the location fields, the timestamp fields can be set to be directly editable during sessions where the program was invoked with the &quot;-TS_OPT&quot; command line option. The automatic updating of the UPDATED_ field is also suppressed when this setting is in effect. For more information, see </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Name_for_Signing_Timestamps" styleclass="Normal" style="font-weight:normal;" translate="true">Name for Signing Timestamps</link><text styleclass="Normal" style="font-weight:normal;" translate="true">.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Subheader" translate="true">Optional Directives for Specifying Label Field, Search Field, and Key Field</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">After the field definitions, several types of additional field properties can optionally be assigned:</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="2" colcount="4" style="width:auto; background-color:#e4e4e4;">
+      <tr style="vertical-align:top">
+        <td style="width:86px; height:22px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">.FLDLBL</text></para>
+        </td>
+        <td style="width:97px; height:22px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">&lt;field_name&gt;</text></para>
+        </td>
+        <td style="width:80px; height:22px;">
+        </td>
+        <td style="width:513px; height:22px;">
+          <para styleclass="Normal" style="text-indent:0px; margin-right:258px; margin-left:0px; tabstops:none;"></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:86px; height:23px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">.FLDSRCH</text></para>
+        </td>
+        <td style="width:97px; height:23px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">&lt;field 1&gt; &#160; &#160; &#160; </text></para>
+        </td>
+        <td style="width:80px; height:23px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">&lt;field 2&gt;</text></para>
+        </td>
+        <td style="width:513px; height:23px;">
+          <para styleclass="Normal" style="text-indent:0px; margin-right:0px; margin-left:0px; tabstops:none;"><text styleclass="Normal" style="font-weight:bold;" translate="true">...</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The .FLDLBL directive names a default field to be used for the record&apos;s label. Without this directive in a template, the first non-memo field is taken as the default label field when the shapefile is opened directly. If the user assigns a different field via the Symbols dialog, that assignment can only be saved in a project script. If the shapefile is opened as an existing layer during the loading of a project, the field specified in the project script (.NTL file) takes precedence over a template assignment.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The .FLDSRCH directive specifies a default set of fields to be examined in a text search operation. The default initial set consists of just the label field. Like the label field, the set of search fields is preserved in the project script.</text></para>
+    <para styleclass="Normal"><anchor id="FLDKEY_Info" styleclass="Normal"></anchor></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="1" colcount="4" style="width:auto; page-break-inside:avoid; background-color:#e4e4e4;">
+      <tr style="vertical-align:top">
+        <td style="width:72px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">.FLDKEY</text></para>
+        </td>
+        <td style="width:99px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">&lt;field_name&gt;</text></para>
+        </td>
+        <td style="width:89px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">&lt;sort_field&gt;</text></para>
+        </td>
+        <td style="width:640px;">
+          <para styleclass="Normal" style="text-indent:0px; margin-right:0px; margin-left:0px; tabstops:none;"><text styleclass="Normal" style="font-weight:bold;" translate="true">&lt;n&gt; &lt;lat_limit&gt; &lt;lon_limit&gt; [pfx_shp::pfx_id_fld,pfx_fld] [unk_sort_val unk_pfx] [n]</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">This directive is required if the shapefile is to be used as the reference shapefile in a compare operation. (See </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Submitting_a_Shapefile_Update" styleclass="Normal" translate="true">Submitting a Shapefile Update</link><text styleclass="Normal" translate="true"> and </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Processing_a_Shapefile_Update" styleclass="Normal" translate="true">Processing a Shapefile Update</link><text styleclass="Normal" translate="true">.) It&apos;s best explained with an example: (Note the required use of double-quotes.)</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">.FLDKEY TSSID COUNTY 1 32.2 -103.3 &quot;Texas_Counties::NAME,TSS_CODE&quot; &#160;Unknown UNK 10</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Here, the unique key field is TSSID, which in general can be of C or N (integer) type. The second argument, COUNTY, specifies that the compare log will sort the mismatched record list by </text><text styleclass="Normal" style="font-style:normal;" translate="true">label </text><text styleclass="Normal" translate="true">field values within COUNTY field values. It will also identify each item by &lt;</text><text styleclass="Normal" style="font-weight:normal; font-style:italic;" translate="true">sort field</text><text styleclass="Normal" translate="true">&gt;: &lt;</text><text styleclass="Normal" style="font-style:italic;" translate="true">label</text><text styleclass="Normal" translate="true">&gt;. In this example, the COUNTY values are also used for the generation of new keys as described below. This requires that any shapefile selected for comparison with the reference have COUNTY field as well as a TSSID field.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The next three arguments, &quot;1 32.2 -103.3&quot;, specify that features with coordinates (at or) north of latitude 32.2 and west of longitude -103.3 will be regarded as having the </text><text styleclass="Normal" style="font-style:normal;" translate="true">same location (that is, no location) </text><text styleclass="Normal" translate="true">for comparison purposes. Also, these are the coordinates assigned to all such unlocated features when an updated reference is being created. The digit &quot;1&quot; &#160;preceding the coordinates indicate that they define the northern and western (NW) boundaries of the valid region. Digits &quot;2&quot;, &quot;3&quot;, and &quot;4&quot; would indicate NE, SE, and SW, respectively. A preceding &quot;0&quot; would specify that all coordinates are to be considered valid.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">When creating an updated reference shapefile, the compare function can automatically generate keys for new records. Those keys can be either of two basic types, the first being a fixed-length string of characters followed by at least 4 digits filling the field. The TSS uses a 4-digit number prefixed with a 3-letter county code. As specified in this example, the function obtains the code by taking the record&apos;s COUNTY field value and searching for it in the NAME field of </text><text styleclass="Normal" style="font-style:italic;" translate="true">Texas_Counties.shp</text><text styleclass="Normal" translate="true">. The matched record in </text><text styleclass="Normal" style="font-style:italic;" translate="true">Texas_Counties</text><text styleclass="Normal" translate="true"> will then have a field named TSS_CODE containing the prefix. Since the length of this field is 3 and the length of field TSSID is 7, it&apos;s determined that the key is a 4-digit number with a 3-character prefix. If the highest-numbered key for a feature in Bandera Co. is BAN0292, the next key assigned to a feature in that county will be BAN0293.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The directive&apos;s last three arguments are optional. If the COUNTY field contains &quot;Unknown&quot;, the </text><text styleclass="Normal" style="font-style:italic;" translate="true">Texas_Counties</text><text styleclass="Normal" translate="true"> shapefile is bypassed and &quot;UNK&quot;, is taken as the key prefix. When the location of a new or relocated feature is outside the boundary of its designated county and at least 10 meters distant, a caution message is written to the compare log. This check of location occurs if </text><text styleclass="Normal" style="font-style:italic;" translate="true">Texas_Counties</text><text styleclass="Normal" translate="true"> is a polygon shapefile, one that&apos;s likely also being used for </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Template_File_Format" anchor="Location-dependent_init" styleclass="Normal" translate="true">location-dependent initialization</link><text styleclass="Normal" translate="true"> of the COUNTY field.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The second kind of key that can be auto-generated is an n-digit numeric string with an unchanging m-character prefix, the length of the field being m+n. If field length is 7 and m is 2, &quot;US00126&quot; is a valid key. While m can be 0, n must be at least 4. For this type of key, the prefix is specified explicitly:</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">.FLDKEY ID STATE 0 0 0 0 &quot;US&quot;</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">To specify pure integer keys, enter a pair of double-quotes (&quot;&quot;) as the last argument. If the field is of type C, leading zeros instead of spaces will be inserted to fill the field. Finally, if there are no arguments following the coordinates, the compare function won&apos;t assign new keys.</text></para>
+    <para styleclass="Normal"><anchor id="FLDIGNORE" styleclass="Normal"></anchor></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="1" colcount="3" style="width:auto; background-color:#e4e4e4;">
+      <tr style="vertical-align:top">
+        <td style="width:102px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">.FLDIGNORE</text></para>
+        </td>
+        <td style="width:113px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">&lt;field name&gt;</text></para>
+        </td>
+        <td style="width:396px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">[&quot;|&lt;shp_name&gt;::&lt;shp_field&gt;|&quot;]</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">This directive, of which there can be several, specifies a field to be ignored by default in a </text><text styleclass="Normal" style="font-style:italic;" translate="true">Compare with other layers</text><text styleclass="Normal" translate="true"> operation. </text><text styleclass="Normal" style="font-style:normal;" translate="true">An optional second argument can specify </text><text styleclass="Normal" translate="true">a polygon shapefile layer (and field) to use for initializing &lt;field name&gt; when an updated reference is being created by the compare function. See </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Processing_a_Shapefile_Update" anchor="Ignored_Fld_Init" styleclass="Normal" translate="true"> Initialization of Ignored Fields</link><text styleclass="Normal" translate="true"> under Processing a Shapefile Update.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Subheader" translate="true">Field Descriptions to Appear as Tooltips</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Finally, the file can have lines starting with .FLDDESC, each having this form:</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="1" colcount="3" style="width:auto; background-color:#e4e4e4;">
+      <tr style="vertical-align:top">
+        <td style="width:102px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">.FLDDESC</text></para>
+        </td>
+        <td style="width:113px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">&lt;field name&gt;</text></para>
+        </td>
+        <td style="width:396px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">&lt;Line of text documenting the field&apos;d content&gt;</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Whatever field descriptions you provide must appear after the field definitions, their order respect to each other being irrelevant. The program will display them as tooltips when the mouse pointer hovers over a field name. Note that the entire description, including keyword FLDDESC, must appear on one line. To force a line break within a tooltip, embed &quot;\n&quot; (without the quotes) within the single line of text.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>

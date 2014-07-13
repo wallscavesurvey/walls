@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Raster Image Opacity</title>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Raster Image Opacity</text></para>
+    </header>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">When an image layer is highlighted in the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Getting_Started" anchor="Layers_Window" styleclass="Normal" translate="true">Layers Window</link><text styleclass="Normal" translate="true">, an &quot;Opacity&quot; button replaces the &quot;Symbols&quot; button in the right panel. That opens a dialog for specifying both overall image opacity and a specific color to be treated as transparent. The dialog can also by opened by right-clicking an image in the map view and choosing </text><text styleclass="Normal" style="font-style:italic;" translate="true">Opacity..</text><text styleclass="Normal" translate="true">. from the pop-up menu. While the dialog is open you can scroll and zoom the map view as you make adjustments.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Making a digital elevation model (DEM) image partially transparent, say by choosing an overall opacity setting of 30%, can add an attractive shaded effect to a scanned topographic map just beneath it. Some examples of this are the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Available_Background_Imagery" anchor="DEM_and_DRG" styleclass="Normal" translate="true">topo/DEM file sets</link><text styleclass="Normal" translate="true"> you can download for the Texas Hill County.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Also, a transparent color can be chosen to hide the solid-color margins of tiled, partially-overlapping aerial photos that have been reprojected. An error tolerance for matching the transparent color can also be specified, which would likely be necessary if the images were lossy compressed. (The &quot;24-bit color images only&quot; restriction doesn&apos;t apply to 8-bit paletted images that have been JPEG2000-compressed to NTI format.)</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><image src="image_opacity.png" scale="100.00%" styleclass="Image Caption"></image></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">When the the </text><text styleclass="Normal" style="font-weight:bold;" translate="true">Preview</text><text styleclass="Normal" translate="true"> box is checked, the screen map will dynamically reflect your changes as you make adjustments. To actually change the layer&apos;s settings, however, you must click the </text><text styleclass="Normal" style="font-weight:bold;" translate="true">Accept</text><text styleclass="Normal" translate="true"> button before closing the dialog or invoking it for a different image. When adjusting opacity, you may want to uncheck the Preview box to suppress the dynamic map updating. Then, by toggling the checkbox, you can more easily compare the potential appearance with the one last accepted.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>

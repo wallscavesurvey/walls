@@ -1,0 +1,316 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Automatically Maintained Fields</title>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Automatically Maintained Fields</text></para>
+    </header>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The following 9 attribute fields can&apos;t be directly edited like the other fields. Either WallsMap or </text><text styleclass="Normal" style="font-style:italic;" translate="true">TSS-Update </text><text styleclass="Normal" style="font-style:normal;" translate="true">fills them automatically when appropriate. The location and timestamp fields have specific names ending in an underscore, which tells WallsMap to treat them in a special way. They can also be useful in non-TSS projects, although other GIS programs will treat them as ordinary fields. The TSSID field, on the other hand, is a normal field that has been set read-only in the shapefile&apos;s template component. (See </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Template_File_Format" styleclass="Normal" style="font-style:normal;" translate="true">Template File Format</link><text styleclass="Normal" style="font-style:normal;" translate="true">.) For newly-added records the TSSID field will remain blank until </text><text styleclass="Normal" style="font-style:italic;" translate="true">TSS-Update</text><text styleclass="Normal" style="font-style:normal;" translate="true"> processes the shapefile and assigns a new value. Once assigned, that value will not be reused, even if the record is eventually deleted.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">TSSID</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Unique TSS identifier assigned separately, blank for new shapefile records</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">7 chars</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Can also be blank if the county is unknown. The first three characters identify the county. </text><text styleclass="Normal" style="font-style:italic;" translate="true">TSS-Update</text><text styleclass="Normal" translate="true"> assigns the TSSID automatically when an updated shapefile is processed.</text></para>
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">At least this field should be included in shapefiles prepared to satisfy data requests.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">CREATED_</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">UTC timestamp with editor&apos;s name, filled automatically when a new record is saved</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">45 chars</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Formatted as &quot;yyyy-mm-dd hh:mm:ss name&quot;</text></para>
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">WallsMap prompts for the name if one hasn&apos;t been established for the session or saved as a program setting on the computer. Most records have &quot;TSS-Export&quot; as the editor&apos;s name since they were established prior to July 2009 when timestamping was implemented.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">UPDATED_</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">UTC timestamp with editor&apos;s name, filled automatically when either a new record or an edited record is saved</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">45 chars</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Formatted as &quot;yyyy-mm-dd hh:mm:ss name&quot;</text></para>
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">As for the CREATED_ field, WallsMap prompts for the name if one hasn&apos;t been established. Currently about 75% the database&apos;s records have blank UPDATED_ fields since they were added before timestamping was implemented in July 2009 and haven&apos;t been revised since.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">LATITUDE_</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:608px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Latitude in shapefile&apos;s native datum, maintained automatically</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+        </td>
+        <td style="width:64px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:608px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">11 chars (6 decimal places)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+        </td>
+        <td style="width:64px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:608px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">You change location via the map or by using the edit boxes at the top of the Selected Points dialog.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">LONGITUDE_</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Longitude in shapefile&apos;s native datum, maintained automatically</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">11 chars (6 decimal places)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Same as above</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">EASTING_</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">UTM easting in meters and in shapefile&apos;s native datum, maintained automatically</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">11 chars (2 decimal places)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">The shapefile&apos;s native coordinate system can be either Lat/Long or UTM</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">NORTHING_</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">UTM northing in meters and in shapefile&apos;s native datum, maintained automatically</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">11 chars (2 decimal places)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Same as above</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">ZONE_</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">UTM zone (13N, 14N, or 15N), maintained automatically</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">3 chars</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Same as above</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">DATUM_</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Shapefile&apos;s native datum, either NAD27 or WGS84 </text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">5 chars</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:123px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Normally the datum will be WGS84. The native datum can differ from that of the map being viewed. </text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>

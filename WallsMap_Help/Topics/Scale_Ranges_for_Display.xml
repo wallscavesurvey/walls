@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Scale Ranges for Display</title>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Scale Ranges for Display</text></para>
+    </header>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The Scale Ranges dialog is accessed via a button in the right panel of the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Getting_Started" anchor="Layers_Window" styleclass="Normal" translate="true">Layers</link><text styleclass="Normal" translate="true"> window. It allows you to specify, based on the map view&apos;s scale, when a selected layer is displayed and/or labeled. It&apos;s applicable to any kind of layer, except that the controls for labeling are only enabled for non-images.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Note that by entering a </text><text styleclass="Normal" style="font-style:italic;" translate="true">smaller</text><text styleclass="Normal" translate="true"> number in an edit box, you would be specifying a </text><text styleclass="Normal" style="font-style:italic;" translate="true">larger</text><text styleclass="Normal" translate="true"> scale (or corresponding zoom percentage) for the transition from labels to no labels. When setting this up you can use as a guide the current map scale that&apos;s reported in the dialog:</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><image src="scale_range.png" scale="100.00%" styleclass="Image Caption"></image></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Often, when scale ranges are specified for a shapefile, the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Symbols_for_Point_Features" styleclass="Normal" translate="true">Symbols</link><text styleclass="Normal" translate="true"> dialog will have a gray check mark in the &quot;Use Labels&quot; box at the top. This means that the &quot;Toggle label display&quot; button in the program&apos;s toolbar will have no effect on label display for this particular layer. It will be controlled only by scale range. For point shapefiles the situation is the same for marker display.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Scale range settings can also be applied to an entire folder of layers. If this dialog is invoked when a folder is selected in the Layers window, its settings are initialized to those of the first (topmost) layer in the branch. If you then select OK, with or without further adjustments, the settings will be applied to all layers in the branch and the map view will be updated as necessary.</text></para>
+  </body>
+</topic>

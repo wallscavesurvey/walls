@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Selection Based on Edited Status</title>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Selection Based on Edited Status</text></para>
+    </header>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">When a 2D point shapefile is opened as editable in WallsMap (the default mode), and changes to locations and/or attributes are actually made, the program operates on another file that should be considered part of the shapefile set. This file has extension </text><text styleclass="Normal" style="font-weight:bold;" translate="true">.DBE</text><text styleclass="Normal" translate="true"> and is basically a set of flags indicating which points have been added, deleted, relocated, or edited since the shapefile was created. (Or since the flags were last cleared, an operation that can be done for the shapefile or for individual points.) At any time, possibly in a different session, you can, via the menu option </text><text styleclass="Normal" style="font-style:italic;" translate="true">View | Select edited features</text><text styleclass="Normal" translate="true">, select and export points in accordance with their edited status. Also, the deleted points can be selected and individually restored.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><image src="Select_edited.jpg" scale="100.00%" styleclass="Image Caption"></image></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The DBE file is specific to WallsMap and will be ignored by other GIS software. Its main benefit is that you can review the set of edited points even when timestamp fields are absent.</text></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>

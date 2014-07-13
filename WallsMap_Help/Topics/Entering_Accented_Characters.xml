@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Entering Accented Characters</title>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Entering Accented Characters in Data Fields</text></para>
+    </header>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">A common subset of accented characters, á é í ó ú â ê î ô û ñ ü (both cases), can be entered in text boxes using key sequences compatible with WordPad, MS Word, and some other editors. For example, to produce é press and release the CTRL and &apos; keys together, then press the e key. The other characters are produced similarly, with either &apos;, ^, ~, or : being pressed with the CTRL key held down prior to pressing the key for the unaccented character. This should work in most dialogs as well as in the memo text editor.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">In all dialogs </text><text styleclass="Normal" style="font-style:italic;" translate="true">except</text><text styleclass="Normal" translate="true"> the memo text editor you can enter a copyright symbol, ©, by typing @ with CTRL pressed, then typing c. This might be useful, for example, when editing the Properties of a linked photo. (The text editor&apos;s behavior is currently controlled by a Windows component that doesn&apos;t recognize that particular shortcut.)</text></para>
+  </body>
+</topic>

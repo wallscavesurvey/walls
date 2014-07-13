@@ -1,0 +1,1720 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Database Field Descriptions</title>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Database Field Descriptions</text></para>
+    </header>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The </text><text styleclass="Normal" style="font-style:italic;" translate="true">editable</text><text styleclass="Normal" translate="true"> attribute fields in the WallsMap </text><text styleclass="Normal" style="font-style:italic;" translate="true">TSS_Data</text><text styleclass="Normal" translate="true"> project are listed below. The next topic, </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Automatic_Fields" styleclass="Normal" translate="true">Automatically Maintained Fields</link><text styleclass="Normal" translate="true">, describes ten additional fields that are displayed in gray and can&apos;t be directly edited.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The fields are listed in the order they currently appear in WallsMap, either as a form on the right side of the Selected Points window or as columns in an initially-opened table view (the table can be rearranged). The </text><text styleclass="Normal" style="font-weight:normal; font-style:italic;" translate="true">Tooltip</text><text styleclass="Normal" translate="true"> is what&apos;s displayed when the mouse pointer hovers over the field&apos;s name in the Selected Points window. (See top image in </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Editing_Records" styleclass="Normal" translate="true">Editing Records</link><text styleclass="Normal" translate="true">.) The </text><text styleclass="Normal" style="font-style:italic;" translate="true">Notes </text><text styleclass="Normal" style="font-style:normal;" translate="true">are important items of information that may not be obvious.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:125px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">NAME</text></para>
+        </td>
+        <td style="width:64px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:608px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Cave or feature&apos;s name (should be unique within county)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:125px;">
+        </td>
+        <td style="width:64px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:608px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">60 chars</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:125px;">
+        </td>
+        <td style="width:64px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:608px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Used for map labeling, and is one of two default fields for text searches. If the first character is an asterisk (*) then this record will be deleted from the master database when an update shapefile is processed. Our convention for records that locate one of several entrances to a cave system is to enter the system and entrance names separated by a comma. Example: &quot;Longhorn Caverns, Sam Bass Entrance&quot;</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">OTHER_NAME</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:608px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Alternate names separated by commas</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:608px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">200 chars</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:608px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">One of two default fields for text searches</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">COUNTY</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:608px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">County name (or &quot;Unknown&quot;)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:608px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">14 chars</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:608px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Filled automatically when a record is added (or relocated)</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">TYPE</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:602px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Karst feature types --</text></para>
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">Cave</text><text styleclass="Normal" translate="true">: A humanly passable subsurface cavity at least 5 meters in traverse length, where no dimension of the entrance exceeds the length.</text></para>
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">Sink</text><text styleclass="Normal" translate="true">: A closed depression or vertically oriented opening. Its dimensions are at least human-sized, but its subsurface extent does not fit the definition of a cave.</text></para>
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">Cavity</text><text styleclass="Normal" translate="true">: A karst cavity that does not fit the definition of a cave, sink, spring, or shelter.</text></para>
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">Shelter</text><text styleclass="Normal" translate="true">: A humanly enterable horizontal recess in a cliff face created by an overhang. Either the height from floor level of the overhang or its horizontal extent along the cliff face is larger than the maximum distance from its front edge to the back wall.</text></para>
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">Spring</text><text styleclass="Normal" translate="true">: A naturally occurring cavity or area from which water emerges.</text></para>
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">Entrance</text><text styleclass="Normal" translate="true">: An alternate cave entrance.</text></para>
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">Other</text><text styleclass="Normal" translate="true">: Geological or anthropomorphic features of significance that do not fit any of the above categories.</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:602px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">10 chars (above 7 alternatives only)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:602px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">For brevity, &quot;naturally occurring&quot; was removed from the first three definitions. Also see the Notes section under </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Karst_Feature_Categories" styleclass="Normal" translate="true">Karst Feature Categories</link><text styleclass="Normal" translate="true">.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">OTHER_TYPE</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">If type is &quot;Other&quot; or a special case, enter a descriptive term: Fossil spring, Well, Mine, Railroad tunnel, etc.</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">40 chars</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Can also be used to further characterize a cave, cavity, sink, etc.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">LENGTH_SRV</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Cave&apos;s surveyed length in meters. H or T can be appended to indicate a Horizontal or Traverse length as opposed to an unspecified type. Commas can separate multiple length types. &#160;Example: 5.5H, 10T</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">20 chars</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Corresponds to three numeric fields in TSS2000.MDB. A number without a T or H suffix specifies the &quot;Survlen-Unspecified&quot; field value in the MDB record. Leave blank if feature is unsurveyed.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">LENGTH_EXP</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Cave&apos;s explored length in meters. As with surveyed lengths, H or T can be appended to specify a Horizontal or Traverse explored length type.</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">20 chars</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Corresponds to three numeric fields in TSS2000.MDB. A number without a T or H suffix specifies the &quot;Explen-Unspecified&quot; field value in the MDB record. Can be left blank to indicate that the explored length is the same as the surveyed length.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">DEPTH_SRV</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Cave&apos;s surveyed vertical extent in meters</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px; height:17px;">
+        </td>
+        <td style="width:65px; height:17px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px; height:17px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">10-chars &#160;(integer or decimal number)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Leave blank if feature is unsurveyed.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">DEPTH_EXP</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Cave&apos;s explored vertical extent in meters</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">10-chars &#160;(integer or decimal number)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Can be left blank to indicate that the explored depth is the same as the surveyed depth.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">ELEV_FT</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Elevation in feet of the main or datum entrance</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">5-char integer</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">This field will be initialized automatically if an elevation model NTI layer covers the new (or relocated) feature&apos;s location.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">QUADRANGLE </text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:605px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">USGS 7.5&apos; quadrangle name</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:605px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">27 chars</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:605px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Filled automatically when a record is added (or relocated)</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">SYNOPSIS </text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Concise description of the cave or feature</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">memo (variable length text)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Normally no more than one line of text</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">COMMENTS </text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:605px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Detailed report, optionally including author, description, history, biology, geology, archaeology, paleontology, meteorology, conservation, and bibliography.</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:605px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">memo (variable length text)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:605px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Format varies, but can be a long report in rich text format, can paste from Word, etc.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">MAPS</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Links to scanned map images in folder ..\TSS Maps. (CTRL-left-click button to open editor instead of viewer.)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">memo storing specially-formatted links to image files</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">To add maps to an empty field, click the field&apos;s button to open the editor, then click &quot;Image Mode&quot; and follow instructions. By convention, map images are stored in folder </text><text styleclass="Normal" style="font-style:italic;" translate="true">TSS Maps</text><text styleclass="Normal" translate="true">, which is at the same level as the shapefile&apos;s folder, </text><text styleclass="Normal" style="font-style:italic;" translate="true">TSS_Data</text><text styleclass="Normal" translate="true">.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">PHOTOS</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Links to photographic images in folder ..\TSS Photos. (CTRL-left-click button to open editor instead of viewer.)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">memo storing specially-formatted links to image files</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Add links to photos the same way as described for the MAPS field. The image files should reside in folder </text><text styleclass="Normal" style="font-style:italic;" translate="true">TSS Photos</text><text styleclass="Normal" translate="true">, which is at the same level as the shapefile&apos;s folder,</text><text styleclass="Normal" style="font-style:italic;" translate="true">TSS_Data</text><text styleclass="Normal" translate="true">.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">FAUNA</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">James Reddell&apos;s TexBio fauna list</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">memo (specially formatted rich text)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">This field is not intended to be manually edited. From time to time it will be automatically filled by a program (</text><text styleclass="Normal" style="font-style:italic;" translate="true">BioExport</text><text styleclass="Normal" translate="true">) that processes James&apos;s TexBio files. Note that a species name is sometimes prefixed with one of these characters: $ - type locality, * - sight record, ? - very small specimen possibly representing an undescribed species</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">SOURCE</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Persons or references with information on this feature</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">memo (variable length text)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Normally this is the person who submitted the information for inclusion in the database.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">LOCATION</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Directions to the cave</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">memo (variable length text)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Can be a narrative description or a distance and direction to the nearest landmark.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">OWNER</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Owner&apos;s name and contact information</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">memo (variable length text)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Probably should also include an &quot;as-of&quot; date.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">MORE_INFO</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Additional information not normally part of comments. (Management info, survey data, news articles, etc.)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">memo (variable length text)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Note that memo fields can have active internet links as well as links to local documents, such as PDFs (maps or reports). You can enter these links via the text editor&apos;s right-click context menu: </text><text styleclass="Normal" style="font-style:italic;" translate="true">Insert | Link to local data file...</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">SPEC_INST</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Special instructions including hazards.</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">memo (variable length text)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">COORD_SRC</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Source of coordinates (name and/or method: USGS topo, DOQ, Google Earth, GPS, etc.)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">memo (variable length text)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">COORD_ERR</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Estimated horizontal position error in meters, such as EPE from GPS</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">6-chars (integer or decimal number)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Can be as large as 5000 meters if the area contains few caves and such an approximate location would be helpful. (A maximum hasn&apos;t been decided on.) A good GPS location will typically have an expected error of 3-5 meters.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">ENTRANCES</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Total number of entrances</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">3-char integer</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">ROCK_TYPE</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">One of the following rock categories (or a description) --</text></para>
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">Carbonate</text><text styleclass="Normal" translate="true">: limestone or dolomite</text></para>
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">Gypsum</text><text styleclass="Normal" translate="true">: gypsum, gypsite, selenite, or a similar rock</text></para>
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">Granite</text><text styleclass="Normal" translate="true">: granite boulders or talus, syenite, etc.</text></para>
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">Sediments</text><text styleclass="Normal" translate="true">: soil, silt, sand, caliche, clay, or similar material</text></para>
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">Volcanic</text><text styleclass="Normal" translate="true">: lava, rhyolite, tuff, volcanic breccia, or similar material</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">30-chars</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Although the above 5 choices appear in a drop-down list box, with &quot;Carbonate&quot; being the default for new records, we can enter any text in this field.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">EXP_STATUS</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:605px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Exploration status: Complete, Open passage, Dig, Blast, Sump, Dome climb, etc.</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:605px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">14-chars</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:605px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">REPORTED</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Date cave was first reported (yyyy-mm-dd)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">10-chars</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">DESTROYED</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Date cave was destroyed (yyyy-mm-dd)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">10-chars</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">AREA</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">TSS area (could be a ranch, hill, creek, or subdivision)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">memo (variable length text)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">GEAR</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Gear needed to explore cave</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">memo (variable length text)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">NEED</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:605px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Needs management, ecological or hydrogeological study, information for (or from) USFWS, BCCP, etc.</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:605px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">memo (variable length text)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:605px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">PR_CONTACT</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Who to contact in case of a data request</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">memo (variable length text)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">GEOLOGY</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Geologic formation, group, age, and other details.</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">memo (variable length text)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px; height:16px;">
+        </td>
+        <td style="width:65px; height:16px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px; height:16px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">STATUS</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Open, filled, gated, covered, closed, sensitive or proprietary controls on cave data, etc.</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">memo (variable length text)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">PROTECTION</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Proprietary conservation status information from Texas Nature Conservancy</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px; border-top:none;">
+        </td>
+        <td style="width:65px; border-top:none;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px; border-top:none;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">memo (variable length text)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Conservation easement information for this location provided by TNC. This field is filled automatically when updates are processed and shouldn&apos;t be manually edited.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table rowcount="3" colcount="3" style="width:800px; cell-padding:0px; cell-spacing:0px; page-break-inside:auto; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2; head-row-background-color:none; alt-row-background-color:none;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">RUMORED</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Cave is rumored or information is sketchy</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Yes/No (checkbox)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">AESTHETIC</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Cave is aesthetically significant (especially pretty)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Yes/No (checkbox)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">ARCHAEO</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Cave is archaeologically significant</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Yes/No (checkbox)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">BAD_AIR</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Cave has noticeably bad air</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Yes/No (checkbox)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">BATS</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Cave contains bats</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Yes/No (checkbox)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">BATS_EX</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Cave used to contains bats</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Yes/No (checkbox)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">BIOLOGICAL</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Cave is biologically significant</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Yes/No (checkbox)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">ENDANG_SP</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Cave is an endangered species locality</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Yes/No (checkbox)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">GEOLOGICAL</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Cave is geologically or mineralogically significant</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Yes/No (checkbox)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">HISTORICAL</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Cave is historically significant</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Yes/No (checkbox)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">HYDRO</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Cave is hydrologically significant</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Yes/No (checkbox)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">PALEO</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Cave is paleontologically significant</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Yes/No (checkbox)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">PRESERVE</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Cave is part of a managed preserve or park (show caves not included)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Yes/No (checkbox)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">PROPRIET</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Cave is proprietary, information cannot be given out without permission from the contact</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Yes/No (checkbox)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:607px;">
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">SURVEYED</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Has the cave been surveyed?</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Yes/No (checkbox)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Existence of a sketch map isn&apos;t sufficient.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">MAP_EXISTS</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Is there a map of the cave?</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Yes/No (checkbox)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Sketch maps can qualify.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">HAS_SPRING</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Cave is also a spring</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Yes/No (checkbox)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:607px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Applicable only to non-springs.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">This list continues with a set of 10 fields whose values are automatically maintained. (See </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Automatic_Fields" styleclass="Normal" translate="true">next topic</link><text styleclass="Normal" translate="true">.)</text></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>

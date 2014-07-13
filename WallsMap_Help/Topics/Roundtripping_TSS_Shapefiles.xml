@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Roundtripping TSS Shapefiles with MS Access</title>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Roundtripping TSS Shapefiles with MS Access</text></para>
+    </header>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The TSS-specific programs that moved shapefile data into and out of the TSSTEX table are still functional (as of Feb 2014) but will no longer be maintained. They are briefly described in the following two topics.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="topiclink" href="Exporting_shapefiles_from_TSS2" styleclass="Normal" translate="true">Exporting Shapefiles from TSS2000.MDB</link></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="topiclink" href="Updating_TSS2000.MDB_with_shap" styleclass="Normal" translate="true">TSS-Update: Updating TSS2000.MDB with Shapefiles</link></para>
+    <para styleclass="Heading1"><text styleclass="Heading1" translate="true">pdate: Updating TSS2000.MDB with shapefiles</text></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>

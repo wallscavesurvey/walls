@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Keeping the Database Current</title>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Keeping the Database Current</text></para>
+    </header>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">A </text><text styleclass="Normal" style="font-weight:bold;" translate="true">shapefile compare function</text><text styleclass="Normal" translate="true"> greatly simplifies database maintenance in a multi-user setting. Regional data managers can make improvements to downloaded snapshots of the database using WallsMap, periodically sending edited shapefiles and other file types to the person responsible for maintaining the master copy. The process at each end is described in the following topics:</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="topiclink" href="Submitting_a_Shapefile_Update" styleclass="Normal" translate="true">Submitting a Shapefile Update</link></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="topiclink" href="Processing_a_Shapefile_Update" styleclass="Normal" translate="true">Processing a Shapefile Update</link><text styleclass="Normal" translate="true">.</text></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>
