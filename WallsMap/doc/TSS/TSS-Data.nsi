@@ -3,8 +3,10 @@
 !include "LogicLib.nsh"
 !include "sections.nsh"
 
+;This nsi file normally located in \Work12\WallsMap\doc\TSS, with binaries in \Work12\bin\TSS
+!define BIN_DIR "\Work12\bin"
 !ifndef VERSION
-  !define VERSION '2014-06-10'
+  !define VERSION '2014-07-15'
 !endif
 
 !define WNDCLASS "WallsMapClass"
@@ -40,7 +42,7 @@ FunctionEnd
 
   ;Name and file
   Name "TSS_Data"
-  OutFile "TSS_Data_setup.exe"
+  OutFile "${BIN_DIR}\TSS_Data_setup.exe"
 
   ;Get default installation folder from registry if available
   InstallDirRegKey HKCU "Software\TSS_Data" ""
@@ -152,10 +154,10 @@ Section
  cont2:
   SetOutPath $EXEDIR
   SetOverwrite on
-  File unRAR32\unRAR32.exe
+  File "${BIN_DIR}\TSS\unRAR32\unRAR32.exe"
   SetOutPath $INSTDIR
   DetailPrint "Installing TSS_Data shapefiles..."
-  File /r TSS_Data
+  File /r "${BIN_DIR}\TSS\TSS_Data"
  finish:
 SectionEnd
 
