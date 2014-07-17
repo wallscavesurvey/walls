@@ -11,9 +11,6 @@ After installation, the Texas Public Caves project will be at this location:
 
 C:\Users\Public\WallsMap Projects\Texas Public Caves\Texas Public Caves.ntl
 
-(This is the path under Vista or Windows 7/8. Under Windows XP it will be in the
-C:\Program Files\WallsMap\Projects folder.)
-
 ==============
 Recent Changes
 
