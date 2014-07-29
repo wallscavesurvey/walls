@@ -1,0 +1,211 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#ifndef APSTUDIO_INVOKED
+#include "targetver.h"
+#endif
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#ifndef APSTUDIO_INVOKED\r\n"
+    "#include ""targetver.h""\r\n"
+    "#endif\r\n"
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#include ""res\\UpdateTSS.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""     // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 240, 71
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About TSS-Update"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    ICON            128,IDC_STATIC,14,14,20,20
+    LTEXT           "TSS-Update v2.00, Build 2014-07-22",IDC_STATIC,42,14,162,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2014, Texas Speleological Survey",IDC_STATIC,41,27,177,8
+    DEFPUSHBUTTON   "OK",IDOK,183,50,50,14,WS_GROUP
+END
+
+IDD_UPDATETSS_DIALOG DIALOGEX 0, 0, 343, 175
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "TSS-Update:  Store TSS Data in Access Database"
+FONT 8, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_PATHNAME_SHP,16,56,291,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BROWSE_SHP,310,56,17,12
+    CONTROL         "Save the statistics record for this run in the template, TSS_DB.mdb.",IDC_SAVE_STATS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,135,274,10
+    DEFPUSHBUTTON   "OK",IDOK,231,157,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,286,157,50,14
+    LTEXT           "This program scans a TSS DBF file, creating an MS Access database with data intended for publication on the TSS website. It's assumed that a compatible database named TSS_DB.mdb exists in the program's folder for use as a template.",IDC_STATIC,16,9,311,28
+    LTEXT           "DBF file with date ""yyyy-mm-dd"" embedded in its name :",IDC_STATIC,16,43,281,8
+    LTEXT           "The new MDB file, with four populated tables, will have the same location as the input DBF file and will be named TSS_DB_yyyy-mm-dd.mdb. Any existing file with that name will be replaced without warning.",IDC_STATIC,16,76,311,26
+    LTEXT           "A table in the TSS_DB template can have records with summary statistics compiled during prior runs. They will be copied to the output MDB along with an added record for this run. The other three tables in TSS_DB.mdb must be empty.",IDC_STATIC,16,104,311,26
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x21L
+#else
+ FILEFLAGS 0x20L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "Texas Speleological Survey"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "UpdateTSS.exe"
+            VALUE "LegalCopyright", "(c) 2008 David McKenzie, Austin TX"
+            VALUE "OriginalFilename", "UpdateTSS.exe"
+            VALUE "ProductName", "UpdateTSS"
+            VALUE "ProductVersion", "1.0.0.1"
+            VALUE "SpecialBuild", "2008-09-13"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 233
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 64
+    END
+
+    IDD_UPDATETSS_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 336
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 171
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\UpdateTSS.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDS_ABOUTBOX            "&About UpdateTSS..."
+    IDS_BROWSE_SHP          "Select path and name for DBF file"
+    IDS_SHP_FILES           "WallsMap compatible attribute table (*.dbf)"
+    IDS_ERR_FILERES         "Not enough memory or resouces to open file for reading or writing."
+END
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#include "res\UpdateTSS.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"     // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -6,8 +6,8 @@
 *.plg
 *.dsp
 *.suo
-*.user
 *.clw
+*.user
 *.sln.docstates
 
 # Build results
