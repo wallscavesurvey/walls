@@ -15,3 +15,4 @@ bool PutString(CDaoRecordset &rs,int nFld,LPCSTR s);
 void GetString(CString &s,CDaoRecordset &rs,int nFld);
 char *GetDateUTC8();
 bool GetBool(CDaoRecordset &rs,int nFld);
+BOOL GetTempFilePathWithExtension(CString &csPath,LPCSTR pExt);

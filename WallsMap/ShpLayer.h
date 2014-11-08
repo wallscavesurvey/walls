@@ -246,12 +246,13 @@ public:
 	virtual int CopyToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,double fScale);
 	virtual void AppendInfo(CString &s) const;
 	//void AppendCoordSystemOrg(CString &cs) const;
-	UINT SelectEditedShapes(UINT uFlags, BOOL bAddToSel, CFltRect *pRectView);
+	int SelectEditedShapes(UINT &count,UINT uFlags, BOOL bAddToSel, CFltRect *pRectView);
 	void ClearDBE();
 	BOOL SetLblFld(UINT fld);
 	BOOL CheckFldTypes(LPCSTR pathName,UINT uFlags);
 	void InitSrchFlds(UINT nLblFld);
 	BYTE & RecEditFlag(UINT uRec) {return (*m_vdbe)[uRec-1];}
+	void ChkEditDBF(UINT rec);
 	void SetSrchFlds(const std::vector<CString> &vcs);
 	BOOL GetSrchFlds(CString &fldnam) const;
 	static void Init();
@@ -379,6 +380,12 @@ public:
 	void ListFieldContent(LPCSTR pL,LPCSTR pR);
 	void ListMemoFields();
 	LPCSTR GetRecordLabel(LPSTR pLabel,UINT sizLabel,DWORD rec);
+	LPCSTR GetTitleLabel(CString &s,DWORD rec)
+	{
+		char label[80];
+		s.Format("%s:  %s",Title(),GetRecordLabel(label,80,rec));
+		return (LPCSTR)s;
+	}
 	void InitFlyToPt(CFltPoint &fpt,DWORD rec);
 	void OnLaunchGE(VEC_DWORD &vRec,CFltPoint *pfpt=NULL);
 	void OnLaunchWebMap(DWORD rec,CFltPoint *pfpt=NULL);
@@ -451,7 +458,7 @@ public:
 	{
 		return m_pdbfile->SaveAllowed(bEditing);
 	}
-	int SaveDiscardCancel(const EDITED_MEMO &memo,BOOL bForceClose);
+	int ConfirmSaveMemo(HWND hWnd, const EDITED_MEMO &memo,BOOL bForceClose);
 	//bool DiscardChgOK(const EDITED_MEMO &memo);
 	BOOL OpenLinkedDoc(LPCSTR pPath);
 	void UpdateImage(CImageList *pImageList);
@@ -525,6 +532,7 @@ private:
 	int CreateShp(LPSTR ebuf,LPCSTR shpPathName,VEC_DWORD &vRec,VEC_FLTPOINT &vFpt,const CShpDef &shpdef);
 	void LaunchGE(CString &kmlPath,VEC_DWORD &vRec,BOOL bFly,CFltPoint *pfpt=NULL);
 	UINT ParseNextFieldName(LPSTR &p0);
+	bool EditFlagsCleared();
 
 	LPBYTE Realloc_pbuf(UINT size)
 	{

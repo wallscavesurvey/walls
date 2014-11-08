@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">#Units Directive</title>
+  <keywords>
+    <keyword translate="true">#Units Directive</keyword>
+  </keywords>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">#Units Directive</text></para>
+    </header>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Each survey file should contain one or more </text><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">#Units</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> directives -- at least one on a line prior to the first defined survey vector. &#160;Since there are quite a few units options, most of which you&apos;ll rarely need, the #Units directive description is organized into separate topics:</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="_Units_General" styleclass="Normal" translate="true">#Units Directive - General Description</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Suffixes" styleclass="Normal" translate="true">Overriding Default Units with Special Formats</link></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">In the following topics the slash (/) character is used to separate the alternative versions of parameters and/or their settings. &#160;For example, &quot;A/AB = Degrees/Mils/Grads&quot; heads the section that describes unit assignments for both azimuths (A=...) and azimuth backsights (AB=...). &#160;Abbreviated forms, if allowed, are indicated by using lower case for the portion that can be omitted (e.g., O=... for Order=...).</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Vector_Type" styleclass="Normal" translate="true">Vector Type and Column Order (CT/RECT, Order=)</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Unit_Specifications" styleclass="Normal" translate="true">Measurement Units (Feet, Meters, D=,A=, V=, S=)</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Declinations" styleclass="Normal" translate="true">Declinations and Grid Corrections (DECL=, GRID=, RECT=)</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Instrument_Corrections" styleclass="Normal" translate="true">Instrument Corrections (INCA=, INCV=, etc.)</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Backsight_Types" styleclass="Normal" translate="true">Backsight Types and Tolerances (TYPEAB=, TYPEVB=)</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Saving_and_Restoring" styleclass="Normal" translate="true">Saving and Restoring Units Settings (RESET, SAVE, RESTORE)</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Seldom_Used" styleclass="Normal" translate="true">Advanced or Seldom Used Parameters  (LRUD=, CASE=, PREFIX=, TAPE=, UV=, FLAG=, $name=)</link></para>
+  </body>
+</topic>

@@ -1,0 +1,7 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">Attach/Detach Button</title>
+  <body>
+    <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">The </text><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">Attach/Detach</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> button performs the action indicated by its label, depending on the current state of the selected item. &#160;A line connecting an item to its parent indicates an attached state. &#160;Here, the book &quot;Silver Mine Cave&quot; is without the connecting line, so it is detached. &#160;The significance of this is discussed below.</text></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>

@@ -1165,11 +1165,11 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_CONTROLPARENT
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
+    LTEXT           "",IDC_ST_SELCOUNT,5,232,137,8
     CONTROL         "",IDC_DBFLIST,"SysListView32",LVS_REPORT | LVS_SHOWSELALWAYS | LVS_OWNERDATA | WS_TABSTOP,0,0,475,227
     CONTROL         "Allow edits",IDC_ALLOW_EDITS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,299,231,50,10
     PUSHBUTTON      "Reload",IDC_RELOAD,356,228,50,14
     DEFPUSHBUTTON   "Close",IDOK,413,228,50,14
-    LTEXT           "",IDC_ST_SELCOUNT,5,232,137,8
 END
 
 IDD_COLUMNS DIALOGEX 0, 0, 129, 313
@@ -1561,6 +1561,15 @@ BEGIN
     LTEXT           "Command arguments:",IDC_STATIC,5,98,76,8
 END
 
+IDD_COPYSELECTED DIALOGEX 0, 0, 265, 61
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Stop",IDCANCEL,208,40,50,14
+    LTEXT           "",IDC_ST_PROGRESS,25,34,178,8
+    CONTROL         "",IDC_PROGRESS,"msctls_progress32",PBS_SMOOTH | WS_BORDER,24,15,220,11
+END
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1954,6 +1963,14 @@ BEGIN
         RIGHTMARGIN, 363
         BOTTOMMARGIN, 127
     END
+
+    IDD_COPYSELECTED, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 258
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 54
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -2287,7 +2304,7 @@ BEGIN
     IDS_INSERT_FILELINK     "Select File for Opening via URL"
     IDS_SAVETOFILE          "File Path and Name for Saving Selected Text"
     IDP_AFXOLEINIT_FAILED   "Failed to initialize Object Linking and Embedding"
-    IDS_ABOUT_TITLE         "WallsMap v0.3, Build 2014-07-13 (%s)\nCopyright © 2014 David McKenzie, Austin TX."
+    IDS_ABOUT_TITLE         "WallsMap v0.3, Build 2014-10-16 (%s)\nCopyright © 2014 David McKenzie, Austin TX."
     IDS_WEBMAP_INFO         "Enter a URL for instructing your default browser to open a web mapping application at a specific location. Your entry must include ""<LAT>"" and ""<LON>"" (no quotes) as placeholders for the location's latitude and longitude in decimal degrees. Optionally include ""<NAM>"" for a label."
     IDS_FMT_PLACEMARK       "\t<Placemark>\r\n\t\t<name>%s</name>\r\n%s%s\r\n\t\t<styleUrl>#sn_W</styleUrl>\r\n\t\t<Point><coordinates>%.7f,%.7f,0</coordinates></Point>\r\n\t</Placemark>\r\n"
     IDS_FMT_LOOKAT          "%s<LookAt>\r\n%s<longitude>%.7f</longitude><latitude>%.7f</latitude>\r\n%s<altitude>0</altitude><range>%u</range><tilt>0</tilt><heading>0</heading>\r\n%s</LookAt>"

@@ -189,6 +189,7 @@
     <ClCompile Include="CompareDlg.cpp" />
     <ClCompile Include="CompareFcnDlg.cpp" />
     <ClCompile Include="CompareShp.cpp" />
+    <ClCompile Include="CopySelectedDlg.cpp" />
     <ClCompile Include="CustomTreeChildCtrl.cpp" />
     <ClCompile Include="DBGridDlg.cpp" />
     <ClCompile Include="DbtEditDlg.cpp" />
@@ -258,6 +259,10 @@
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="MapLayer.cpp" />
     <ClCompile Include="MemUsageDlg.cpp" />
+    <ClCompile Include="Modeless.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="MsgCheck.cpp" />
     <ClCompile Include="NiceSlider.cpp" />
     <ClCompile Include="NtiLayer.cpp" />
@@ -311,6 +316,7 @@
     <ClCompile Include="WebMapFmtDlg.cpp" />
     <ClCompile Include="windowpl.cpp" />
     <ClCompile Include="XComboList.cpp" />
+    <ClCompile Include="XMessageBox.cpp" />
     <ClCompile Include="zip.cpp" />
     <ClCompile Include="ZipDlg.cpp" />
   </ItemGroup>
@@ -328,6 +334,7 @@
     <ClInclude Include="ComboBoxNS.h" />
     <ClInclude Include="CompareDlg.h" />
     <ClInclude Include="CompareFcnDlg.h" />
+    <ClInclude Include="CopySelectedDlg.h" />
     <ClInclude Include="CustomTreeChildCtrl.h" />
     <ClInclude Include="d2dhdr.h" />
     <ClInclude Include="DlgExportXLS.h" />
@@ -349,7 +356,6 @@
     <ClInclude Include="..\inc\dbfile_shp.h" />
     <ClInclude Include="DBGridDlg.h" />
     <ClInclude Include="DbtEditDlg.h" />
-    <ClInclude Include="dbtfile.h" />
     <ClInclude Include="DIBWrapper.h" />
     <ClInclude Include="DlgExportImg.h" />
     <ClInclude Include="DlgOptionsGE.h" />
@@ -394,6 +400,10 @@
     <ClInclude Include="MapLayer.h" />
     <ClInclude Include="MemoEditDlg.h" />
     <ClInclude Include="MemUsageDlg.h" />
+    <ClInclude Include="Modeless.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="MsgCheck.h" />
     <ClInclude Include="NiceSlider.h" />
     <ClInclude Include="NtiLayer.h" />
@@ -444,6 +454,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </CustomBuildStep>
     <ClInclude Include="XComboList.h" />
+    <ClInclude Include="XMessageBox.h" />
     <ClInclude Include="zip.h" />
     <ClInclude Include="ZipDlg.h" />
   </ItemGroup>

@@ -103,8 +103,8 @@ void CAdvSearchDlg::DoDataExchange(CDataExchange* pDX)
 			s.Trim();
 			if(s.IsEmpty()) m_FindString.Empty();
 			else if(s.Compare(m_FindString) && (!m_phist_find || m_FindString.Compare(m_phist_find->GetFirstString()))) {
-				UINT id=CMsgBox(MB_YESNOCANCEL,
-					"Your target string has leading or trailing spaces. Should they be removed prior to the search?");
+				UINT id=AfxMessageBox("Your target string has leading or trailing spaces. "
+					"Should they be removed prior to the search?",MB_YESNOCANCEL);
 				if(id==IDYES){
 					m_cbFind.SetWindowText(m_FindString=s);
 				}

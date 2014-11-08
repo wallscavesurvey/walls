@@ -2,6 +2,10 @@
 #include "WallsMap.h"
 #include "mainfrm.h"
 #include "resource.h"
+#ifdef _USE_MODELESS
+#include "Modeless.h"
+#endif
+#include "XMessageBox.h"
 #include <string.h>
 #include <georef.h>
 
@@ -169,6 +173,19 @@ void CMsgBox(LPCSTR format,...)
   va_end(marker);
   AfxMessageBox(buf);
 }
+
+#ifdef _USE_MODELESS
+void ModelessOpen(LPCSTR pTitle,UINT nDelay,LPCSTR format, ...)
+{
+  char buf[256];
+  va_list marker;
+  va_start(marker,format);
+  _vsnprintf(buf,256,format,marker); buf[255]=0;
+  va_end(marker);
+  CModeless::m_pModeless=new CModeless(pTitle,buf,nDelay);
+  //Pause();
+}
+#endif
 
 char * GetIntStr(__int32 i)
 {
@@ -1424,6 +1441,39 @@ void Pause()
 	AfxGetApp()->OnIdle(0);   // updates user interface
 	AfxGetApp()->OnIdle(1);   // frees temporary objects 
 }
+
+int MsgYesNoCancelDlg(HWND hWnd, LPCSTR msg, LPCSTR title, LPCSTR pYes, LPCSTR pNo, LPCSTR pCancel)
+{
+		XMSGBOXPARAMS xmb;
+
+		xmb.bUseUserDefinedButtonCaptions = TRUE; 
+		_tcscpy(xmb.UserDefinedButtonCaptions.szYes, pYes); 
+		_tcscpy(xmb.UserDefinedButtonCaptions.szNo, pNo);
+		if(pCancel) _tcscpy(xmb.UserDefinedButtonCaptions.szCancel, pCancel);
+
+		return 0xFF & XMessageBox(hWnd, msg, title,
+			pCancel?(MB_YESNOCANCEL|MB_ICONQUESTION|MB_NORESOURCE):(MB_YESNO|MB_ICONQUESTION|MB_NORESOURCE), &xmb);
+}
+
+int MsgCheckDlg(HWND hWnd, UINT mb, LPCSTR msg, LPCSTR title, LPCSTR pDoNotAsk)
+{
+		XMSGBOXPARAMS xmb;
+
+		xmb.bUseUserDefinedButtonCaptions = TRUE; 
+		_tcscpy(xmb.UserDefinedButtonCaptions.szDoNotTellAgain, pDoNotAsk);
+
+		if(mb==MB_OK) mb |= (MB_ICONINFORMATION | MB_NOSOUND | MB_DONOTTELLAGAIN | MB_NORESOURCE);
+		else mb |= (MB_ICONQUESTION | MB_NOSOUND | MB_DONOTTELLAGAIN | MB_NORESOURCE);
+		int i=XMessageBox(hWnd, msg, title, mb, &xmb);
+		return ((i&0xFF)==IDOK)?(1+((i&MB_DONOTTELLAGAIN)!=0)):0;
+}
+
+bool MsgOkCancel(HWND hWnd, LPCSTR msg, LPCSTR title)
+{
+	int i=XMessageBox(hWnd, msg, title,MB_OKCANCEL | MB_NOSOUND | MB_ICONQUESTION | MB_NORESOURCE, NULL);
+	return (i&0xFF)==IDOK;
+}
+
 
 #ifdef _DEBUG
 BOOL SaveBitmapToFile(CBitmap *bitmap, CDC* pDC, LPCSTR lpFileName)

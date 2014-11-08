@@ -82,7 +82,7 @@ private:
 
 	LPCSTR FixPath(LPCSTR name, LPCSTR ext);
 	LPCSTR FixShpPath(LPCSTR ext) { return FixPath(m_shpName,ext); }
-	BOOL GetCsvRecord();
+	bool GetCsvRecord();
 	int InitShapefile();
 	void InitFldKey();
 	int GetCoordinates(double *pLat, double *pLon);

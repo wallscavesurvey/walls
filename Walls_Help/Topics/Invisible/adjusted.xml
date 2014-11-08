@@ -1,0 +1,6 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">adjusted</title>
+  <body>
+    <para styleclass="Notes"><text styleclass="Notes" style="font-weight:bold;" translate="true">Adjustment</text><text styleclass="Notes" translate="true"> is the surveyor&apos;s term for the resolution, or averaging, of conflicting measurement data. Cave surveyors call this closing loops.</text></para>
+  </body>
+</topic>

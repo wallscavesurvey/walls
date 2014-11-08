@@ -91,8 +91,8 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,286,157,50,14
     LTEXT           "This program scans a TSS DBF file, creating an MS Access database with data intended for publication on the TSS website. It's assumed that a compatible database named TSS_DB.mdb exists in the program's folder for use as a template.",IDC_STATIC,16,9,311,28
     LTEXT           "DBF file with date ""yyyy-mm-dd"" embedded in its name :",IDC_STATIC,16,43,281,8
-    LTEXT           "The new MDB file, with four populated tables, will have the same location as the input DBF file and will be named TSS_DB_yyyy-mm-dd.mdb. Any existing file with that name will be replaced without warning.",IDC_STATIC,16,76,311,26
-    LTEXT           "A table in the TSS_DB template can have records with summary statistics compiled during prior runs. They will be copied to the output MDB along with an added record for this run. The other three tables in TSS_DB.mdb must be empty.",IDC_STATIC,16,104,311,26
+    LTEXT           "The new MDB file, with three populated tables, will have the same location as the input DBF file and will be named TSS_DB_yyyy-mm-dd.mdb. Any existing file with that name will be replaced without warning.",IDC_STATIC,16,76,311,26
+    LTEXT           "A table in the TSS_DB template will have records with summary statistics compiled during prior runs. They will be copied to the output MDB along with an added record for this run. The other tables in TSS_DB.mdb must be empty.",IDC_STATIC,16,104,311,26
 END
 
 

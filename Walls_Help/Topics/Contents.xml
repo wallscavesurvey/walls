@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Main Contents Page</title>
+  <keywords>
+    <keyword translate="true">Contents</keyword>
+  </keywords>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" style="font-size:6pt; font-weight:normal;" translate="true">&#32;</text><text styleclass="Heading1" translate="true">Walls Project Editor</text></para>
+      <para styleclass="Heading1"><text style="font-family:Arial; font-size:11pt; font-weight:bold; color:#fff7ef;" translate="true">Tools for Cave Survey Data Management</text></para>
+      <para styleclass="Heading1"><text style="font-family:Arial; font-size:5pt; color:#fff7ef;" translate="true">&#32;</text></para>
+      <para styleclass="Heading1"><text style="font-family:Arial; font-size:11pt; font-weight:bold; color:#fff7ef;" translate="true">Version 2.0 B8 (2014-11-01)</text></para>
+    </header>
+    <para style="text-align:center; tabstops:24px left ;"></para>
+    <para styleclass="Normal"><text styleclass="Subheader" translate="true">Contents</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Introductory_Note" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Introduction</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">&#32;</text></para>
+    <para style="tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Recent_Changes" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Recent Changes</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">&#32;</text><text style="font-family:Arial; font-size:9pt; color:#7f0000;" translate="true">(Updated)</text></para>
+    <para style="tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="System_Requirements" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">System Recommendations</link></para>
+    <para style="tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="setup" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Setup and File Usage</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">&#32;</text><text style="font-family:Arial; font-size:9pt; color:#800000;" translate="true">(Updated)</text></para>
+    <para style="tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Limitations" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Limitations</link></para>
+    <para style="tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Acknowledgements" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">History and Acknowledgements</link></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text styleclass="Normal" style="font-weight:bold;" translate="true">Program Operation</text></para>
+    <para style="margin-left:27px; tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="project_tree" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Project Trees</link></para>
+    <para style="margin-left:27px; tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Survey_Text_Editor" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Survey Text Editor</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">&#32;</text></para>
+    <para style="margin-left:27px; tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Properties_Dialog" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Properties Dialog</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">&#32;</text><text style="font-family:Arial; font-size:9pt; color:#800000;" translate="true">(Updated)</text></para>
+    <para style="margin-left:27px; tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Review_Dialogs" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Review Dialogs</link></para>
+    <para style="margin-left:27px; tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="ScreenMapOperations" style="font-family:Arial; font-size:9pt; color:#007f00;" translate="true">Displayed Maps</link></para>
+    <para style="margin-left:27px; tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="SearchOperations" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Search Operations</link></para>
+    <para style="margin-left:27px; tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="VectorPropertiesWindow" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Vector Properties Window </link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Vector_and_Coordinate_Reports" styleclass="Normal" translate="true">Vector and Coordinate Reports</link></para>
+    <para style="margin-left:27px; tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Zip_Archives" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Creating Backup Archives</link></para>
+    <para style="margin-left:27px; tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="geographical_calculator" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Geographical Calculator</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">&#32;</text><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#800000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">(Updated)</text></para>
+    <para style="text-indent:-24px; margin-left:24px; tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text styleclass="Normal" style="font-weight:bold;" translate="true">Data Formats</text></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Format_of_Survey_Data" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Survey Data Format</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">&#32;</text><text style="font-family:Arial; font-size:9pt; color:#800000;" translate="true">(Updated)</text></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="SVG_Import_and_Export" styleclass="Normal" translate="true">Roundtripping SVG Maps</link><text styleclass="Normal" translate="true">&#32;</text><text styleclass="Normal" style="font-weight:normal; color:#800000;" translate="true">(Updated)</text></para>
+    <para style="text-indent:-24px; margin-left:24px; tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text styleclass="Normal" style="font-weight:bold;" translate="true">Import/Export Features</text></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Exporting_Maps" styleclass="Normal" translate="true">Exporting Maps as Metafiles (WMF and EMF)</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="ESRI_Shapefiles" styleclass="Normal" translate="true">Exporting ESRI Shapefiles (for ArcView® GIS, etc.)</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Export_3D" styleclass="Normal" translate="true">Exporting 3D VRML Files (WRL)</link><text styleclass="Normal" translate="true">&#32;</text><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#800000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">(Updated)</text></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="GPS_Download" styleclass="Normal" translate="true">Downloading GPS Data</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Import_Export" styleclass="Normal" translate="true">Other Supported Formats (SEF,  etc.)</link></para>
+    <para style="text-indent:-24px; margin-left:24px; tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text styleclass="Normal" style="font-weight:bold;" translate="true">Integrated Applications</text></para>
+    <para style="margin-left:27px; tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="SVG_Viewer" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Walls2D - SVG Map Viewer</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">&#32;</text></para>
+    <para style="margin-left:27px; tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Walls3D_Viewer" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Walls3D - VRML Viewer</link></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text styleclass="Normal" style="font-weight:bold;" translate="true">Background and Tutorials</text></para>
+    <para style="margin-left:27px; tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Terminology" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Network Terminology</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">&#32;</text></para>
+    <para style="margin-left:27px; tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Data_Screening_Overview" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Data Screening Tutorial</link></para>
+    <para style="margin-left:27px; tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Tips" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Easily Overlooked Features</link></para>
+    <para style="margin-left:27px; tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Advanced_Topics" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Advanced or Special Topics</link></para>
+    <para style="margin-left:27px; page-break-before:always; tabstops:24px left ;"></para>
+  </body>
+</topic>

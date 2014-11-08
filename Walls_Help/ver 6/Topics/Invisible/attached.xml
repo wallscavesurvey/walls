@@ -1,0 +1,6 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">attached</title>
+  <body>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">A project book or survey is </text><text styleclass="Normal" style="font-weight:bold;" translate="true">attached </text><text styleclass="Normal" translate="true">when there is a visible line connecting its icon to its parent&apos;s icon in the displayed </text><link displaytype="text" defaultstyle="true" type="topiclink" href="project_tree" styleclass="Normal" translate="true">project tree</link><text styleclass="Normal" translate="true">. &#160;A detached item is skipped (ignored) during the compilation of either its parent or an item closer to the tree&apos;s root. The </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Segment_Page" styleclass="Normal" translate="true">segment tree</link><text styleclass="Normal" translate="true"> also consists of branches which, when detached, represent compiled data excluded from maps and statistical summaries.</text></para>
+  </body>
+</topic>

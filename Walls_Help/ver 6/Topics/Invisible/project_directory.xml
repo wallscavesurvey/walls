@@ -1,0 +1,6 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">project directory</title>
+  <body>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The </text><text styleclass="Normal" style="font-weight:bold;" translate="true">project folder</text><text styleclass="Normal" translate="true"> is the DOS/Windows folder that contains the project script file (extension WPJ), which is the file you select when opening a Walls project. &#160;This folder, by default, will also contain the associated survey data files (extension SRV); however, the latter can actually reside anywhere depending on their path properties. &#160;Beneath the project folder is a work folder (with the same base name as the WPJ file) containing the workfiles generated for this project.</text></para>
+  </body>
+</topic>

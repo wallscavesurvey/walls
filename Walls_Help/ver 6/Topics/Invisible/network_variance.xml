@@ -1,0 +1,6 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">network variance</title>
+  <body>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The </text><text styleclass="Normal" style="font-weight:bold;" translate="true">network variance </text><text styleclass="Normal" translate="true">between two points in a survey is the theoretical error variance of the final estimated displacement between those points when the survey is subjected to a least-squares adjustment. &#160;For a survey consisting of a single traverse between the points, the network variance is simply the sum of variances assigned to vectors. &#160;For cases involving loops, the computation is more involved since a portion of the inverted &quot;normal coefficient&quot; matrix must be obtained. &#160;Network variances can be used with the UVE and loop count to obtain &quot;confidence intervals&quot; and statistics useful for data screening.</text></para>
+  </body>
+</topic>

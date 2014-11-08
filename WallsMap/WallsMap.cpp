@@ -410,6 +410,11 @@ int CWallsMapApp::ExitInstance()
 	CShpLayer::UnInit();
 	CMainFrame::SavePreferences();
 	CoUninitialize();
+#if 0
+#ifdef _DEBUG
+	_CrtDumpMemoryLeaks();
+#endif
+#endif
 	return CWinApp::ExitInstance(); // Saves MRU and returns the value from PostQuitMessage
 }
 
@@ -466,10 +471,12 @@ void CWallsMapApp::OnAppAbout()
 	else bLYRTiming=false;
 
 #elif defined(_USE_TM)
-	unsigned __int64 sum;
-	SUM_NTI_ALL(sum);
-	nti_tm[8] = sum;
-	CMsgBox("Times: Polylines=%.2f Polygons=%.2f TOTAL: %.2f",NTI_SECS(0), NTI_SECS(6), NTI_SECS(8));
+	//unsigned __int64 sum;
+	//SUM_NTI_ALL(sum);
+	//nti_tm[8] = sum;
+	//CMsgBox("Times: Polylines=%.2f Polygons=%.2f TOTAL: %.2f",NTI_SECS(0), NTI_SECS(6), NTI_SECS(8));
+	CMsgBox("Times: Go=%.2f AppendR=%.2f AppendB=%.2f FldLoop=%.2f Ext=%.2f memLoop=%.2f memFlush=%.2f TOTAL: %.2f",
+		NTI_SECS(0), NTI_SECS(1), NTI_SECS(2), NTI_SECS(3), NTI_SECS(4), NTI_SECS(5), NTI_SECS(6), NTI_SECS(8));
 	CLR_NTI_ALL();
 #else
 	CAboutDlg aboutDlg;

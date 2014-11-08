@@ -13,11 +13,13 @@
 #define new DEBUG_NEW
 #endif
 
-static LPCSTR pFldSep="\"|\"";
-//static LPCSTR pFldSep="\",\"";
+static LPCSTR pFldSep;
+static int nSep;
 
 #define NUM_DATUMS 3
 static LPCSTR datum_name[NUM_DATUMS]={"NAD27","WGS84","NAD27"};
+
+static bool bGetDMS=false;
 
 static UINT xlsline=0,numRecs=0;
 
@@ -207,7 +209,7 @@ int CXlsExportDlg::GetCoordinates(double *pLat, double *pLon)
 		bDefY=true;
 		*pLat=m_sd.latDflt;
 	}
-	else {
+	else if(bGetDMS) {
 		y=getDeg(y);
 		//y*=m_sd.v_fldScale[m_sd.iFldY];
 	}
@@ -216,7 +218,7 @@ int CXlsExportDlg::GetCoordinates(double *pLat, double *pLon)
 		bDefX=true;
 		*pLon=m_sd.lonDflt;
 	}
-	else {
+	else if(bGetDMS) {
 		x=-getDeg(x);
 		//x*=m_sd.v_fldScale[m_sd.iFldX];
 	}
@@ -262,39 +264,84 @@ int CXlsExportDlg::GetCoordinates(double *pLat, double *pLon)
 	if(iDatum==geo_NAD27_datum)
 		geo_FromToWGS84(false,pLat,pLon,geo_NAD27_datum);
 
-	return 1;
+	return 1; 
 }
 
-static int __inline _getStrFieldCount(CString &s)
+static bool _check_sep(LPCSTR p, LPCSTR pSep)
 {
-	int len=1;
-	for(int i=1; (i=s.Find(pFldSep,i))>=0; i+=3) len++;
-	return len;
+	int n=strlen(pSep);
+	for(int i=0;i<3;i++,p+=n)
+		if(!(p=strstr(p, pSep))) return false;
+	pFldSep=pSep;
+	nSep=n;
+	return true;
 }
 
-BOOL CXlsExportDlg::GetCsvRecord()
+static int _getFieldStructure(V_CSTRING &v_cs, LPCSTR p)
+{
+	if(!_check_sep(p, "\",\"") && !_check_sep(p,"\"|\"") && !_check_sep(p,"|") && 
+		!_check_sep(p, "\t") && !_check_sep(p, ",")) return 0;
+
+	if(nSep!=1) {
+		if(*p++ != '"') return 0; //skip past first quote
+	}
+	LPCSTR p0=p;
+	for(;p=strstr(p, pFldSep); p+=nSep, p0=p) {
+		v_cs.push_back(CString(p0, p-p0));
+	}
+	if(nSep==1) v_cs.push_back(CString(p0));
+	else {
+		int i=strlen(p0);
+		if(!i || p0[--i]!='"') return 0;
+		v_cs.push_back(CString(p0,i));
+	}
+	return v_cs.size();
+}
+
+static bool _stopMsg(LPCSTR ptyp)
+{
+	CMsgBox("Line %u: A quote (\") must %s a field value.",xlsline,ptyp);
+	return false;
+}
+
+bool CXlsExportDlg::GetCsvRecord()
 {
 	CString s;
-	if(!m_csvfile.ReadString(s) || s[0]!='"') return FALSE;
-
-	int f,nFlds=m_sd.numDbFlds;
-	while((f=_getStrFieldCount(s))<nFlds || f==nFlds && s[s.GetLength()-1]!='"') {
-		CString s0;
-		if(!m_csvfile.ReadString(s0)) return FALSE;
-		s+="\r\n"; s+=s0;
+	if(!m_csvfile.ReadString(s)) return false;
+	xlsline++;
+	LPCSTR p=s;
+	if(nSep!=1) {
+		if(*p!='"') {
+		  return _stopMsg("start");
+		}
+		while(p[strlen(p)-1]!='"') {
+			CString s0;
+			if(!m_csvfile.ReadString(s0)) {
+				return _stopMsg("end");
+			}
+			xlsline++;
+			s+="\r\n" + s0;
+			p=s;
+		}
 	}
-	int iLast=s.GetLength()-1;
-	if(f>nFlds || s[iLast]!='"') return -1;  //too many fields found! 
 
-	int i,iNext;
-	f=0;
-	for(i=1; f<nFlds && ((iNext=s.Find(pFldSep,i))>=0 || (f==nFlds-1 && (iNext=iLast)!=0)); i=iNext+3,f++) {
-
-		m_vcsv[f].SetString((LPCSTR)s+i,iNext-i);
+	LPCSTR p0=p;
+	int f=0;
+	for(;f<m_sd.numDbFlds-1 && (p=strstr(p, pFldSep)); p+=nSep, p0=p, f++) {
+		m_vcsv[f].SetString(p0,p-p0);
 		m_vcsv[f].Trim();
 	}
-	if(f!=nFlds) return -1;
-	return TRUE;
+	if(f==m_sd.numDbFlds-1) {
+		if(nSep==1) m_vcsv[f]=p0;
+		else {
+			int i=strlen(p0);
+			ASSERT(!i || p0[--i]=='"');
+			m_vcsv[f].SetString(p0,i);
+		}
+	}
+	while(f<m_sd.numDbFlds-1) m_vcsv[f].Empty();
+
+	return true;
 }
 
 void CXlsExportDlg::InitFldKey()
@@ -377,6 +424,8 @@ void CXlsExportDlg::DoDataExchange(CDataExchange* pDX)
 			return;
 		}
 
+		xlsline=0;
+
 		if(m_bXLS>1) {
 			if(!m_csvfile.Open(m_pathBuf, CFile::modeRead)) {
 				CMsgBox("File %s missing or can't be opened.", m_pdbName);
@@ -384,38 +433,24 @@ void CXlsExportDlg::DoDataExchange(CDataExchange* pDX)
 				pDX->Fail();
 				return;
 			}
-			CString s;
-			int iLast,nFlds=0;
-			//can fix this section, getStrFieldCount(), and GetCsvRecord() to not require quotes, use tabs, etc --
-			if(!m_csvfile.ReadString(s) || s[0]!='"')
-			   goto _noFlds;
-			iLast=s.GetLength()-1;
-			if(iLast<1)
-			   goto _noFlds;
-			char cLast=s[iLast];
-			if(cLast!='"')
-			   goto _noFlds;
-			nFlds=_getStrFieldCount(s);
-			if(!nFlds)
-			   goto _noFlds;
-			//now retrieve field names --
-			m_sd.v_srcNames.assign(nFlds, CString());
-			int iNext,f=0;
-			for(int i=1; f<nFlds && ((iNext=s.Find(pFldSep,i))>=0 || (f==nFlds-1 && (iNext=iLast)!=0)); i=iNext+3,f++) {
-				m_sd.v_srcNames[f].SetString((LPCSTR)s+i,iNext-i);
-				m_sd.v_srcNames[f].Trim();
-			}
-			ASSERT(f==nFlds);
-			m_sd.numDbFlds=nFlds;
 
-_noFlds:
-			if(!nFlds) {
-				CMsgBox("No field names found in first line of %s.",m_pdbName);
+			//determine field names and separator --
+			CString s;
+			m_sd.v_srcNames.clear();
+			if(!m_csvfile.ReadString(s) || !(m_sd.numDbFlds=_getFieldStructure(m_sd.v_srcNames, s))) {
+				CMsgBox("Fewer than 3 field names recognized in first line of %s.",m_pdbName);
 				m_csvfile.Close();
 				pDX->m_idLastControl=IDC_PATHNAME;
 				pDX->Fail();
 				return;
 			}
+			xlsline++;
+
+			if(!m_sd.Process(NULL,FixPath(m_shpName,".shpdef"))) {
+				EndDialog(IDCANCEL);
+				return;
+			}
+
 		}
 		else {
 			try
@@ -441,12 +476,11 @@ _noFlds:
 				pDX->Fail();
 				return;
 			}
-		}
-
-		if(!m_sd.Process((m_bXLS<2)?&m_rs:NULL,FixPath(m_shpName,".shpdef"))) {
-			CloseDB();
-			EndDialog(IDCANCEL);
-			return;
+			if(!m_sd.Process(&m_rs,FixPath(m_shpName,".shpdef"))) {
+				CloseDB();
+				EndDialog(IDCANCEL);
+				return;
+			}
 		}
 	
 		if(InitShapefile()) {
@@ -457,7 +491,7 @@ _noFlds:
 		}
 
 		UINT nLocErrors=0,nLocMissing=0,nTruncated=0;
-		xlsline=numRecs=0;
+		numRecs=0;
 
 		try {
 			BOOL bNotEOF;
@@ -468,7 +502,6 @@ _noFlds:
 			else bNotEOF=!m_rs.IsEOF();
 
 			while(bNotEOF>0) {
-				xlsline++;
 
 				if(m_sd.iFldKey>=0) InitFldKey();
 
@@ -485,7 +518,7 @@ _noFlds:
 
 				if(WriteShpRec(lat,lon)) {
 					CString msg;
-					msg.Format("Aborted: Error writing shapefile record %u.", xlsline);
+					msg.Format("Aborted: Error writing shapefile record %u.", numRecs+1);
 					WriteLog(msg);
 					AfxMessageBox(msg);
 					break;
@@ -541,8 +574,11 @@ _noFlds:
 				if(m_bXLS<2) {
 					m_rs.MoveNext();
 					bNotEOF=!m_rs.IsEOF();
+					if(!bNotEOF) xlsline++;
 				}
-				else bNotEOF=GetCsvRecord();
+				else {
+					bNotEOF=GetCsvRecord();
+				}
 			}
 			if(bNotEOF<0) {
 				CMsgBox("Reading terminated after %u records due an unrecognized line format.",numRecs);

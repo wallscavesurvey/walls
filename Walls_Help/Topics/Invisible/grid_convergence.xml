@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../helpproject.xsl" ?>
+<topic class="Popup" template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">grid convergence</title>
+  <body>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The </text><text styleclass="Normal" style="font-weight:bold;" translate="true">grid convergence</text><text styleclass="Normal" translate="true"> is the angle that must be added to a grid-relative direction to transform it into a true north-relative direction. For the UTM (Universal Transverse Mercator) grid, the maximum magnitude of the convergence ranges from 0 degrees at the equator to 3 degrees at the poles. When computing UTM coordinates, Walls uses the survey&apos;s assigned </text><link displaytype="text" defaultstyle="true" type="topiclink" href="geographical_reference" styleclass="Normal" translate="true">geographical reference</link><text styleclass="Normal" style="font-style:italic;" translate="true">&#32;</text><text styleclass="Normal" style="font-style:normal;" translate="true">location</text><text styleclass="Normal" translate="true"> to calculate grid convergence (unless an explicit &quot;GRID=&quot; correction is specified in the data).</text></para>
+  </body>
+</topic>

@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../helpproject.xsl" ?>
+<topic template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">SVG_AI_Note</title>
+  <body>
+    <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">Note for Illustrator Users:</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> In </text><text style="font-family:Arial; font-size:9pt; font-style:italic; color:#000000;" translate="true">non-adjustable</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> SVGs, all visible content is perfectly clipped to the new frame using an SVG construct that happens to be mishandled by Illustrator versions 10 and CS. These versions will reverse the Y-axis upon import. Versions CS2+ won&apos;t do this, but it has another problem in that objects only partially outside the clipping region are discarded. So for now at least, clipping regions can&apos;t be used in Illustrator documents intended for SVG roundtripping. When Walls creates a non-adjustable SVG, a clipping region is defined with a nested &lt;svg&gt; element. If you still want to bring the file into Illustrator a final time, say for printing, first use a text editor to remove the nesting. This is easily done by deleting two lines that are identified by comments in the SVG file.</text></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>

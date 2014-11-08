@@ -35,7 +35,7 @@ END_MESSAGE_MAP()
 CDBRecView::CDBRecView()
 {
 	// Init everything to zero
-	AFX_ZERO_INIT_OBJECT(CView);
+	//AFX_ZERO_INIT_OBJECT(CView);
 
 	m_lineOffset=m_lineTotal=0L;
 	m_nPrevSelectedRow = 0;

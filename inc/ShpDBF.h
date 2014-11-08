@@ -5,6 +5,11 @@
 //Used when sorting N and F fields (the dBase length limits are 19 and 20.
 #define SIZ_NFLD_BUF 24
 
+#define NUM_MAPINCRECS 100 //record slots to add when extending map view
+#define MAX_MAPVIEW (64*1024*1024)
+#define SIZ_CACHEBUF (4*1024)
+#define NUM_CACHEBUF 512 //2 MB cache
+
 #ifndef __A__DBF_H
 #pragma pack(1)
 typedef struct DBF_sHDR {
@@ -34,16 +39,16 @@ class CShpDBF :	public CDBFile
 public:
 	CShpDBF(void) : m_hFM(NULL), m_ptr(NULL), m_recptr(NULL), m_rec(0), m_pFld(NULL) {}
 
-	~CShpDBF(void)
+	virtual ~CShpDBF(void)
 	{
-		UnMapFile();
+		if(m_dbfno) Close();
 	}
 
 private:
 	bool Map();
 	void UnMapFile();
 	bool ChkAppend();
-	bool MapFile(UINT initrecs=0,UINT increcs=50);
+	int MapFile(BOOL bUseMap);
 
 public:
 	void SetRecIncrement(UINT nRecs) {m_increcs=nRecs;}
@@ -52,12 +57,13 @@ public:
 	int Close();
 	int CloseDel()
 	{
+	    m_maxrecs=0; 
 		UnMapFile();
 		return CDBFile::CloseDel();
 	}
 
 	int Open(const char* pszFileName,UINT mode=0);
-	int Create(const char* pszFileName,UINT numflds,DBF_FLDDEF *pFld,UINT initRecs);
+	int Create(const char* pszFileName,UINT numflds,DBF_FLDDEF *pFld);
 
 	bool IsMapped() {return m_ptr!=NULL;}
 	bool IsReadOnly() {return !m_bRW;}
@@ -82,8 +88,11 @@ public:
 
 	LPBYTE RecPtr(UINT rec)
 	{
-		ASSERT(m_tableptr);
-		return m_tableptr+(--rec)*m_sizrec;
+		if(IsMapped()) {
+			ASSERT(m_tableptr);
+			return m_tableptr+(--rec)*m_sizrec;
+		}
+		return dbf_Go(m_dbfno, rec)?NULL:(m_recptr=(LPBYTE)dbf_RecPtr(m_dbfno));
 	}
 
 	LPBYTE FldPtr(UINT rec,UINT nFld)
@@ -101,17 +110,23 @@ public:
 
 	int Flush(LPCVOID lpBase=0,DWORD dwBytes=0)
 	{
-		ASSERT(m_bRW && m_dbfp);
-		m_dbfp->FileChg=TRUE;
-		return (FlushViewOfFile(lpBase?lpBase:m_ptr,dwBytes) &&
-				FlushFileBuffers(m_handle))?0:ErrWrite;
+		if(IsMapped()) {
+			ASSERT(m_bRW && m_dbfp);
+			m_dbfp->FileChg=TRUE;
+			return (FlushViewOfFile(lpBase?lpBase:m_ptr,dwBytes) &&
+					FlushFileBuffers(m_handle))?0:ErrWrite;
+		}
+		return dbf_Flush(m_dbfno);
 	}
 
 	int FlushRec()
 	{
-		ASSERT(m_bRW && m_rec && m_dbfp);
-		m_dbfp->FileChg=TRUE;
-		return FlushViewOfFile(m_recptr,m_sizrec)?0:ErrWrite;
+		if(IsMapped()) {
+			ASSERT(m_bRW && m_rec && m_dbfp);
+			m_dbfp->FileChg=TRUE;
+			return FlushViewOfFile(m_recptr,m_sizrec)?0:ErrWrite;
+		}
+		return dbf_Flush(m_dbfno);
 	}
 
 	UINT SizHdr()
@@ -146,7 +161,14 @@ public:
 	int Go(DWORD rec)
 	{
 		if(!rec || rec>m_numrecs) return rec?ErrEOF:ErrArg;
-		m_recptr=m_tableptr+(rec-1)*m_sizrec;
+		if(IsMapped()) m_recptr=m_tableptr+(rec-1)*m_sizrec;
+		else {
+			if(dbf_Go(m_dbfno,rec)) {
+				m_recptr=NULL;
+				return dbf_errno;
+			}
+			m_recptr=(LPBYTE)dbf_RecPtr(m_dbfno);
+		}
 		m_rec=rec;
 		return 0;
 	}
@@ -175,7 +197,6 @@ public:
    int AppendBlank()
    {
 	   if(!ChkAppend()) return ErrFormat;
-	   memset(m_recptr,' ',m_sizrec);
 	   return 0; 
    }
    int AppendRec(LPVOID pRec)
@@ -185,9 +206,10 @@ public:
 	   return 0;
    }
 
-   int   PutRec(LPVOID pBuf)
+   int PutRec(LPVOID pBuf)
    {
 	   memcpy(m_recptr,pBuf,m_sizrec);
+	   if(!IsMapped()) dbf_Mark(m_dbfno);
 	   return 0;
    }
 

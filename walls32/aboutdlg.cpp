@@ -83,9 +83,7 @@ BOOL CAboutDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 	CString url=AfxGetApp()->GetProfileString("Tip","Url",NULL);
 	if(!url.IsEmpty()) {
-		if(!strstr(url,"davidmck") &&
-			!strstr(url,".txspeleologicalsurvey") &&
-		  !strstr(url,"/tnhc/")) m_textLink.SetLink(url);
+		if(!strstr(url,"davidmck") || !strstr(url,"www.utexas.edu/tmm/")) m_textLink.SetLink(url);
 	}
 	CenterWindow();
 	GetDlgItem(IDOK)->SetFocus();

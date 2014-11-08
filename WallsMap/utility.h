@@ -12,6 +12,10 @@ extern bool bLYRTiming;
 extern UINT nLayersSkipped;
 #endif
 
+#include "resource.h"
+#ifdef _USE_MODELESS
+#include "Modeless.h"
+#endif
 #include "GetElapsedSecs.h"
 
 #ifndef _FLTPOINT_H
@@ -151,6 +155,12 @@ bool	IsNumeric(LPCSTR p);
 LPSTR	LabelToValidFileName(LPCSTR pLabel,LPSTR pBuf,int sizBuf);
 void	LastErrorBox();
 BOOL	MakeFileDirectoryCurrent(LPCSTR pathname);
+#ifdef _USE_MODELESS
+void    ModelessOpen(LPCSTR title, UINT nDelay, LPCSTR format, ...);
+#endif
+int     MsgYesNoCancelDlg(HWND hWnd, LPCSTR msg, LPCSTR title, LPCSTR pYes, LPCSTR pNo, LPCSTR pCancel);
+int     MsgCheckDlg(HWND hWnd, UINT mb, LPCSTR msg, LPCSTR title, LPCSTR pDoNotAsk);
+bool    MsgOkCancel(HWND hWnd, LPCSTR msg, LPCSTR title);
 void	Pause();
 LPCSTR	ReplacePathExt(CString &path,LPCSTR pExt);
 LPCSTR ReplacePathName(CString &path,LPCSTR name);

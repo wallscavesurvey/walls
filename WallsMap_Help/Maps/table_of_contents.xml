@@ -62,9 +62,6 @@
     <topicref type="topic" id="401934529617832" build="ALL" modified="2010-01-15T09:47:02.985Z" icon="0" href="Exporting_and_Merging">
       <caption translate="true">Exporting and Merging</caption>
     </topicref>
-    <topicref type="topic" id="402083217904147" build="ALL" modified="2010-01-30T06:37:09.812Z" icon="0" href="Template_File_Format">
-      <caption translate="true">Template File Format</caption>
-    </topicref>
     <topicref type="topic" id="411108255410816" build="ALL" modified="2012-07-20T17:47:22.870Z" icon="0" href="Excel_Spreadsheet_Export">
       <caption translate="true">Excel Spreadsheet Export</caption>
     </topicref>
@@ -74,6 +71,9 @@
     <topicref type="topic" id="41538574529751" build="ALL" modified="2013-09-20T14:08:37.187Z" icon="0" href="Converting_Images_to_NTI">
       <caption translate="true">Converting Images to NTI Format</caption>
     </topicref>
+  </topicref>
+  <topicref type="topic" id="402083217904147" build="ALL" modified="2010-01-30T06:37:09.812Z" icon="0" href="Template_File_Format">
+    <caption translate="true">Template File Format</caption>
   </topicref>
   <topicref type="topic" id="403261607210764" build="ALL" modified="2014-02-23T13:11:26.184Z" icon="0" href="Keeping_the_Database_Current">
     <caption translate="true">Keeping the Database Current</caption>

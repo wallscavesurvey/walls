@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../helpproject.xsl" ?>
+<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">Other_items</title>
+  <body>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">A project tree item can have a type of </text><text styleclass="Normal" style="font-weight:bold;" translate="true">Other </text><text styleclass="Normal" translate="true">as one of its property settings. Like an item of type </text><text styleclass="Normal" style="font-weight:bold;" translate="true">Survey,</text><text styleclass="Normal" translate="true"> it represents a file, but the base name is not restricted to 8 characters in length nor is it necessarily unique for the project. Files of this type are always skipped during Compile operations, but like all project files they are included in the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Zip_Archives" styleclass="Normal" translate="true">ZIP backups</link><text styleclass="Normal" translate="true"> Walls creates. Also, some kinds of files, like SVGs, are given special treatment. You can specify what happens to items of type Other when their icons are double-clicked. See </text><link displaytype="text" defaultstyle="true" type="topiclink" href="General_Page" styleclass="Normal" style="font-style:normal;" translate="true">Properties: General Page</link><text styleclass="Normal" translate="true">.</text></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>

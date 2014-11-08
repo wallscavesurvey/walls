@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<topic template="Default" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Page Offsets and Legend Dialog</title>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Page Offsets and Legend Dialog</text></para>
+    </header>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><image src="PAGEOFF.bmp" scale="100.00%" style="font-family:Arial; font-size:9pt; color:#000000;"></image></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">This dialog is accessible from the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Page_Layout_Page" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Page Layout</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> dialog. Except for positioning the legend in metafiles, it applies only to maps sent to the printer. Like frame sizes, these settings are stored in the workfiles and are maintained separately for plans and profiles.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">By default, the view frame will be exactly centered in the printable area, which is not necessarily the center of the sheet depending on the printer model. Unchecking </text><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">Center frame in printable area</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> will let you reposition the top-left corner of the map frame on the rectangle defining the page&apos;s printable area (visible on the Page Layout grid). When this box is checked, as above, the grayed numbers show the offsets (or margins) required to center the frame in the area defined by the current printer settings.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">You can also specify an </text><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">Overlap</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">, a distance (in page units) that survey lines will be drawn outside the frame border. This might facilitate taping together adjacent pages when frame outlines and/or grid lines are not sufficient for that purpose.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">Legend Position</text></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Finally, you can choose which corner of the frame to print the legend text and whether or not it should be inside the frame, possibly obscuring plotted data. &#160;A &quot;no legend&quot; option is also available. The default setting is outside the frame at the lower left corner. The font used for the text is a general preference in the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Map_Format_Options" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Map Format Options</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> dialog (labeled &quot;Frame...&quot; in the Fonts section). It&apos;s likely that future releases of Walls will offer more legend-related options.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">With metafiles, the only relevant setting in this dialog is the quadrant selected for the legend (if you choose to display one). If one is drawn, it will be inside the frame regardless of the &quot;Inside frame&quot; setting.</text></para>
+    <para style="tabstops:24px left ;"></para>
+  </body>
+</topic>

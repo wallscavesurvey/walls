@@ -393,12 +393,12 @@ LPCSTR CShpLayer::XC_GetInitStr(CString &s,XCOMBODATA &xc,const CFltPoint &fpt,L
 			    //Dynamic init -- Old value is nonempty and potential new value is the default value (possibly empty)
 				if(!(xc.wFlgs&XC_NOPROMPT)) {
 					CString msg;
-					msg.Format("CAUTION: You're moving the point to a location outside the extents of the initialization layers. "
+					msg.Format("CAUTION: You're moving the point to a location outside the extents of the initialization layers.\n"
 						"Since field %s is non-empty, however, it won't be cleared or reinitialized. "
 						"You may want to edit it.",m_pdb->FldNamPtr(xc.nFld));
-					CMsgCheck dlg(IDD_MSGEXTENT,msg);
-					dlg.DoModal();
-					if(dlg.m_bNotAgain) xc.wFlgs|=XC_NOPROMPT;
+
+					if(MsgCheckDlg(NULL,MB_OK,msg,m_csTitle,"Don't caution me again for this field during this session")>1)
+						xc.wFlgs|=XC_NOPROMPT;
 				}
 				return NULL;
 			}
@@ -427,11 +427,11 @@ LPCSTR CShpLayer::XC_GetInitStr(CString &s,XCOMBODATA &xc,const CFltPoint &fpt,L
 				}
 				if(pOldPt && !pstr && elev==CNTERecord::NODATA && !(xc.wFlgs&XC_NOPROMPT) && !s2.IsEmpty() && ls.GetTopNteLayer(*pOldPt)) {
 					CString msg;
-					msg.Format("CAUTION Although the previous location is covered by an NTI elevation layer, the new "
+					msg.Format("CAUTION: Although the previous location is covered by an NTI elevation layer, the new\n"
 							"location is not. You may want to edit the unchanged value in field %s.",m_pdb->FldNamPtr(xc.nFld));
-					CMsgCheck dlg(IDD_MSGEXTENT,msg);
-					dlg.DoModal();
-					if(dlg.m_bNotAgain) xc.wFlgs|=XC_NOPROMPT;
+
+					if(MsgCheckDlg(NULL,MB_OK,msg,m_csTitle,"Don't caution me again for this field during this session")>1)
+						xc.wFlgs|=XC_NOPROMPT;
 				}
 			}
 		}
@@ -489,11 +489,8 @@ void CShpLayer::XC_FlushFields(UINT nRec)
 	}
 	if(foff) {
 		VERIFY(!m_pdb->FlushRec());
-		if(!m_bEditFlags) { //***added
-			m_pDoc->LayerSet().m_nShpsEdited++;
-		}
-		m_bEditFlags|=SHP_EDITDBF;
-		RecEditFlag(nRec)|=SHP_EDITDBF;
+		ChkEditDBF(nRec);
+		//Above may NOT have set m_pSelLayer->m_bEditFlags!
 	}
 }
 

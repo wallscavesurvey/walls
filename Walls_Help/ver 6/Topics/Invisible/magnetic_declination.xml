@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../helpproject.xsl" ?>
+<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">magnetic declination</title>
+  <body>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The </text><text styleclass="Normal" style="font-weight:bold;" translate="true">magnetic declination</text><text styleclass="Normal" translate="true"> is the angle (usually expressed in degrees) that is added to a compass bearing to transform it into a true north-relative direction. As a property of the Earth&apos;s changing magnetic field, its value varies with both time and location. The Walls data format allows you to specify declinations explicitly with the #Units parameter, </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Declinations" styleclass="Normal" translate="true">DECL</link><text styleclass="Normal" translate="true">, but you can also have the program automatically compute date-derived declinations based on a mathematical model. This requires that a data file have an assigned (or inherited) </text><text styleclass="Normal" style="font-style:italic;" translate="true">geographical reference</text><text styleclass="Normal" translate="true">.</text></para>
+  </body>
+</topic>

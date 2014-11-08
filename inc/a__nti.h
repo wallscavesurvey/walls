@@ -22,11 +22,7 @@
 #define NTI_FCNMASK ((1<<NTI_FCNBITS)-1)
 
 //Supported I/O functions --
-#ifdef _USE_LZMA
-enum {NTI_FCNNONE,NTI_FCNZLIB,NTI_FCNLOCO,NTI_FCNJP2K,NTI_FCNWEBP,NTI_FCNLZMA}; //etc.. lower 4 bits of fType parameter of nti_Create()
-#else
 enum {NTI_FCNNONE,NTI_FCNZLIB,NTI_FCNLOCO,NTI_FCNJP2K,NTI_FCNWEBP}; //etc.. lower 4 bits of fType parameter of nti_Create()
-#endif
 
 //One flag bit for encode/decode --
 #define NTI_FCNENCODE (1<<NTI_FCNBITS)

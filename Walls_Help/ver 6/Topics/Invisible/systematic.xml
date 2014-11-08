@@ -1,0 +1,6 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">systematic</title>
+  <body>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Measurement errors are </text><text styleclass="Normal" style="font-weight:bold;" translate="true">systematic </text><text styleclass="Normal" translate="true">when their average value is not zero, their effects tending to accumulate rather than cancel out. &#160;Measurements taken with a miscalibrated compass, for example, can exhibit systematic error when merged with data obtained with a different instrument.</text></para>
+  </body>
+</topic>

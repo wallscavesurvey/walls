@@ -669,22 +669,24 @@ BOOL CWallsMapDoc::OpenLayerSet(LPCTSTR lpszPathName)
 									CLayerSet::m_bOpenConflict=0;
 
 									if(!bSkipMissing) {
+										LPCSTR pProject=trx_Stpnam(lpszPathName);
 										CString msg;
-										msg.Format("This file is %s can't be opened. "
-											"Select OK to omit this layer, or CANCEL to abort opening %s.\n\n"
-											"NOTE: After opening the available layers you may want to protect the original "
-											"project file from overwriting by saving with a new name "
-											"(File -> Save As).",p,trx_Stpnam(lpszPathName));
-
-										CMsgCheck dlg(IDD_MSGCHECK,msg,trx_Stpnam(fpath),"Skip any remaining missing files.");
+										msg.Format("%s\n\nThis file is %s can't be opened. You can Skip this or the remaining\n"
+										    "missing layers, or Cancel to abort opening project %s.\n\n"
+											"NOTE: After opening the available layers you may want to protect the original\n"
+											"project file from overwriting by saving with a new name (File -> Save As).",
+											fpath,p,pProject);
 
 										MessageBeep(MB_ICONINFORMATION);
 
-										if(IDCANCEL==dlg.DoModal()) {
+										int i=MsgYesNoCancelDlg(NULL,msg,pProject,"Skip", "Skip All","Cancel");
+
+
+										if(i==IDCANCEL) {
 											m_pFileNTL->Close();
 											return FALSE;
 										}
-										if(dlg.m_bNotAgain) bSkipMissing=true;
+										if(i==IDNO) bSkipMissing=true;
 									}
 								}
 								SetChanged();
@@ -1025,7 +1027,7 @@ BOOL CWallsMapDoc::SaveLayerSet(BOOL bSaveAs /*=FALSE*/)
 
 	if(bSaveAs && m_pfiu) Release_fiu();
 
-    if(!bSaveAs && LayerSet().m_nShpsEdited)
+    if(!bSaveAs && LayerSet().HasEditedShapes())
 		LayerSet().SaveShapefiles();
 
 	if(hPropHook && IsSavingLayers() && pLayerSheet->GetDoc()==this) {
@@ -1137,7 +1139,7 @@ void CWallsMapDoc::OnFileSave()
 
 void CWallsMapDoc::OnUpdateFileSave(CCmdUI *pCmdUI)
 {
-	pCmdUI->Enable(!m_bReadOnly && (IsChanged() || m_layerset.m_nShpsEdited));
+	pCmdUI->Enable(!m_bReadOnly && (IsChanged() || m_layerset.HasEditedShapes()));
 }
 
 void CWallsMapDoc::OnFileSaveAs()
@@ -1154,7 +1156,7 @@ BOOL CWallsMapDoc::SaveModified()
 {
 	//if (IsModified()) return DoSave(m_strPathName);
 	if(m_bReadOnly) {
-		ASSERT(!m_layerset.m_nShpsEdited);
+		ASSERT(!m_layerset.HasEditedShapes());
 		return TRUE;
 	}
 
@@ -1179,7 +1181,7 @@ BOOL CWallsMapDoc::SaveModified()
 		app_pImageDlg->Destroy();
 	}
 
-	if(m_layerset.m_nShpsEdited) {
+	if(m_layerset.HasEditedShapes()) {
 		LayerSet().SaveShapefiles();
 	}
 
@@ -1444,28 +1446,22 @@ void CWallsMapDoc::OnViewDefault()
 bool CWallsMapDoc::SelectionLimited(UINT size)
 {
 	if(size>MAX_VEC_SHPREC_SIZE) {
-		CMsgBox("The number of points matched or chosen would exceed the capacity of "
-			"the Selected Points dialog, which has been set to %u.",
+		AfxMessageBox("The number of points matched or chosen would exceed the capacity of "
+			"the Selected Points dialog, which is 10000.",
 			MAX_VEC_SHPREC_SIZE);
 		return m_bSelectionLimited=true;
 	}
 	return false;
 }
 
-bool CWallsMapDoc::ReplaceVecShprec()
+void CWallsMapDoc::ReplaceVecShprec()
 {
-	if(SelectionLimited(CLayerSet::vec_shprec_srch.size())) {
-		ASSERT(0); //already checked
-		CLayerSet::Empty_shprec_srch();
-		return false;
-	}
 	ClearSelChangedFlags();
 	UnflagSelectedRecs();
 	m_vec_shprec.swap(CLayerSet::vec_shprec_srch);
 	CLayerSet::Empty_shprec_srch(); //free memory
 	FlagSelectedRecs();
 	RefreshTables();
-	return true;
 }
 
 void CWallsMapDoc::ClearVecShprec()
@@ -1542,7 +1538,7 @@ CShpLayer *CWallsMapDoc::FindShpLayer(LPCSTR pName,UINT *pFldNum,UINT *pFldPfx/*
 	for(PML pml=m_layerset.InitTreePML();pml;pml=m_layerset.NextTreePML()) {
 		if(pml->LayerType()==TYP_SHP && (pFldPfx || ((CShpLayer *)pml)->ShpType()==CShpLayer::SHP_POLYGON)) {
 
-			if(!_stricmp(buf,trx_Stpnam(pml->PathName()))) {
+			if(!_stricmp(buf,pml->FileName())) {
 				if(p) {
 				   if(!(*pFldNum=((CShpLayer *)pml)->m_pdb->FldNum(namFld)) || pfx && !(*pFldPfx=((CShpLayer *)pml)->m_pdb->FldNum(namPfx)))
 					   return NULL;

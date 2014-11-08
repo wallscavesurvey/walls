@@ -33,7 +33,7 @@ public:
 // Implementation
 private:
 	CString m_pathINI,m_pathMDB_tmp,m_pathMDB,m_pathDBF;
-	LPCSTR m_pNamTable;
+	LPCSTR m_pNamTable,m_pNamMDB;
 	BOOL m_bSaveStats;
 	CDaoDatabase m_db;
 	CDaoRecordset m_rs;
@@ -52,9 +52,9 @@ private:
 	BOOL ProcessTmp();
 	#endif
 
-	void AppendStats(CString &msg);
-	int ScanDBF(int *mdb_fldnum,int *mdb_fldsrc,int num_mdb_fields);
-	//void StoreRecFld(const FLD_DAT &fdat);
+	bool AppendStats(BOOL bLocal,CString &msg);
+	bool ScanDBF();
+	bool ScanCounties();
 
 	virtual BOOL OnInitDialog();
 

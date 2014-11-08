@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../../helpproject.xsl" ?>
+<topic template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">geographical reference</title>
+  <body>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Walls uses a </text><text styleclass="Normal" style="font-weight:bold;" translate="true">geographical reference</text><text styleclass="Normal" translate="true">, if one is assigned, to calculate</text><text styleclass="Normal" style="font-style:normal;" translate="true"> UTM (or UPS) </text><text styleclass="Normal" style="font-style:italic;" translate="true">grid convergence</text><text styleclass="Normal" translate="true"> and date-derived </text><text styleclass="Normal" style="font-style:italic;" translate="true">magnetic declination</text><text styleclass="Normal" translate="true"> during compilation. You establish a geographical reference via the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Geographical_Reference_Page" styleclass="Normal" translate="true">Geographical Reference page</link><text styleclass="Normal" translate="true"> of a project item&apos;s Properties dialog. From there you use the built-in geographical calculator to specify the &#160;coordinates, geodetic datum, and zone number (if UTM) for a position somewhere in the survey area. With the calculator you can verify that convergence and declination are not particularly sensitive to the exact position you choose for a typical cave survey.</text></para>
+  </body>
+</topic>

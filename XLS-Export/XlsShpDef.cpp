@@ -5,9 +5,9 @@
 #include "crack.h"
 #include "utility.h"
 
-enum {SHP_CFG_FLD=1,SHP_CFG_FLDKEY,SHP_CFG_LOCDFLT,SHP_CFG_LOCERR,SHP_CFG_LOCTLBR,SHP_CFG_LOCZONE};
+enum {SHP_CFG_FLD=1,SHP_CFG_FLDKEY,SHP_CFG_FLDSEP,SHP_CFG_LOCDFLT,SHP_CFG_LOCERR,SHP_CFG_LOCTLBR,SHP_CFG_LOCZONE};
 
-LPSTR shp_deftypes[]={"FLD","FLDKEY","LOCDFLT","LOCERR","LOCTLBR","LOCZONE"};
+LPSTR shp_deftypes[]={"FLD","FLDKEY","FLDSEP","LOCDFLT","LOCERR","LOCTLBR","LOCZONE"};
 #define SHP_CFG_NUMTYPES (sizeof(shp_deftypes)/sizeof(LPSTR))
 
 LPCSTR sLocflds[NUM_LOCFLDS]={"LATITUDE_","LONGITUDE_","EASTING_","NORTHING_","ZONE_","DATUM_","UPDATED_","CREATED_"};
@@ -76,6 +76,12 @@ BOOL CShpDef::Process(CDaoRecordset *pRS,LPCSTR pathName)
 				{
 					if(n<1) goto _badExit;
 					csFldKey=fdef.Argv(0);
+					break;
+				}
+				case SHP_CFG_FLDSEP:
+				{
+					if(n<1) goto _badExit;
+					trx_Stncc(sFldSep,fdef.Argv(0),4);
 					break;
 				}
 				case SHP_CFG_LOCDFLT:

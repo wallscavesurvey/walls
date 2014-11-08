@@ -19,11 +19,10 @@
 
 struct BADLINK
 {
-	BADLINK() : pBrok(0), szBrok(0) {}
-	BADLINK(LPCSTR p,UINT sz) : pBrok(p), szBrok(sz) {}
-	LPCSTR pBrok;
-	UINT szBrok;
+	BADLINK(LPCSTR pMemo,LPCSTR pLink,UINT szLink) : sBrok(pLink,szLink),nBrokOff(pLink-pMemo) {}
+	CString sBrok;
 	CString sRepl;
+	UINT nBrokOff;
 };
 
 typedef std::vector<BADLINK> VEC_BADLINK;
@@ -39,6 +38,7 @@ struct LINK_PARAMS {
 };
 
 class CFindDlgTbl;
+class CCopySelectedDlg;
 
 class CDBGridDlg : public CResizeDlg
 {
@@ -58,6 +58,7 @@ public:
 	BOOL BadLinkSearch(int fcn, LINK_PARAMS &lp);
 
 	DWORD NumRecs() {return m_nNumRecs;}
+	UINT m_nSelCount;
 
 	bool m_bRestoreLayout;
 	bool m_bExpandMemos;
@@ -97,6 +98,7 @@ public:
 	void RefreshTable(DWORD rec=0);
 	void InvalidateTable() {m_list.Invalidate(0);}
 	void SaveShpColumns(); //called from CShpLayer::InitShpDef()
+	void CopySelected(CShpLayer *pLayer,LPBYTE pSrcFlds,BOOL bConfirm);
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
@@ -112,10 +114,15 @@ private:
 	VEC_PXCOMBO *m_pvxc;
 	WCHAR	*m_pwchTip;
 	ULONG	m_wchTipSiz;
-	bool m_bRedrawOff;
-	bool m_bAllowPolyDel;
 	CFltRect m_extPolyOrg;
 	DWORD m_uPromptRec;
+	CString m_csCopyMsg;
+	LPBYTE m_sort_pfldbuf;
+	WORD m_sort_lenfldbuf;
+	CCopySelectedDlg *m_pCopySelectedDlg;
+
+	bool m_bRedrawOff;
+	bool m_bAllowPolyDel;
 
 	CFileDropTarget m_dropTarget;
 
@@ -187,7 +194,6 @@ private:
 	int m_nNumFlds;
 	int m_nNumCols;
 	DWORD m_nNumRecs,m_uDelCount;
-	UINT m_nSelCount;
 	int m_iColSort,m_iColSorted;
 	WORD m_wDigitWidth,m_wLinkTestFld;
 	bool m_bReloaded;
@@ -223,6 +229,7 @@ private:
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual void PostNcDestroy();
+
 
 	afx_msg void OnCopySelected(UINT id);
 	afx_msg void OnClose();

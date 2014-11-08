@@ -18,7 +18,7 @@ static char hdr[]="DBFV for WIN32 v2.01 Copyright 1997/2006 by David McKenzie";
 /*The library is assumed compiled with _DBF_TEST defined --*/
 #define _DBF_TEST
 
-#define MAX_NUMFLDS 70
+#define MAX_NUMFLDS 100
 #define MAX_FLDSIZE 256
 #define MAX_LINELEN 80
 #define MAX_NUMFLDS_STR "70"

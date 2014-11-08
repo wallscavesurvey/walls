@@ -370,8 +370,7 @@ BOOL CWallsApp::InitInstance()
 	#endif
 	strcpy(trx_Stpext(m_pszHelpFilePath),".chm");
 	if(_access(m_pszHelpFilePath,0)==-1) {
-		strcpy(trx_Stpext(m_pszHelpFilePath),".hlp");
-		m_bWinHelp=TRUE;
+		CMsgBox(MB_ICONINFORMATION,"NOTE: Online help is unavailable since %s is missing from the Walls program folder.", trx_Stpnam(m_pszHelpFilePath));
 	}
 #endif
 	

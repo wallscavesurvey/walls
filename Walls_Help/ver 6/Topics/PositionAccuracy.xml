@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<topic template="Default" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">GPS Position Accuracy Table</title>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">GPS Position Accuracy Table</text></para>
+    </header>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><image src="accuracy.bmp" scale="100.00%" style="font-family:&apos;MS Sans Serif&apos;; font-size:8pt; color:#000000;"></image></para>
+    <para style="margin-left:13px;"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">This table can be used to estimate one kind of position error statistic from another. To estimate a statistic on the top from a statistic on the left, multiply by the number in the cell where the corresponding column and row intersect. &quot;Vt&quot; in a label indicates that the statistic is the error of a single coordinate in length units, whether it be easting, northing, or elevation. &quot;Hz&quot; indicates that the statistic is the error in length units of a horizontal position. The percentages indicate the type of confidence region the length represents. These particular regions are often referred to as follows:</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><table rowcount="8" colcount="2" style="cell-padding:0px; cell-spacing:0px; border-width:0px; cell-border-width:0px;">
+      <tr style="vertical-align:top">
+        <td style="width:69px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Vt 50%</text></para>
+        </td>
+        <td style="width:441px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Median absolute error of a single coordinate.</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:69px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Vt 58%</text></para>
+        </td>
+        <td style="width:441px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Mean absolute error of a single coordinate.</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:69px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">Vt 68%</text></para>
+        </td>
+        <td style="width:441px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Root-Mean-Squared (RMS) error of a single coordinate (standard deviation).</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:69px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Vt 95%</text></para>
+        </td>
+        <td style="width:441px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">95% bound on size of a single coordinate&apos;s error.</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:69px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Hz 50%</text></para>
+        </td>
+        <td style="width:441px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Median horizontal position error, or Circular Error Probable (CEP).</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:69px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Hz 54%</text></para>
+        </td>
+        <td style="width:441px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Mean horizontal position error.</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:69px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">Hz 63%</text></para>
+        </td>
+        <td style="width:441px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Horizontal Root-Mean-Squared (RMS) error.</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:69px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Hz 95%</text></para>
+        </td>
+        <td style="width:441px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">95% bound on length of horizontal error.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Since the Walls data format allows point accuracies to be specified as RMS error (see </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Variance_Assignments" styleclass="Normal" translate="true">Variance Assignments</link><text styleclass="Normal" translate="true">), you might want to use the table to convert a different kind of accuracy estimate to the equivalent RMS error.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">For example, suppose you have a GPS location whose horizontal error is believed be less than 3 meters with 95% confidence. To convert this to an RMS error that can be used by Walls, you would multiply by 0.58, the number at the intersection of &#160;the &quot;Hz 63%&quot; column and &quot;Hz 95%&quot; row. The RMS error is therefore 0.58 x 3 = 1.74.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Another example: Suppose you have a location estimate where you believe the standard deviations of the two horizontal coordinate errors are each 10 feet. Since standard deviation of a single component corresponds to the &quot;Vt 68%&quot; row, we use that and the &quot;Hz 63%&quot; column to obtain RMS error = 1.41 x 10 = 14.1 feet.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The Hz values in the table are based on the Rayleigh distribution, a special case of the bivariate normal distribution where it&apos;s assumed that the two variables (coordinate errors in this case) are uncorrelated and have the same variance. These assumptions don&apos;t strictly hold, but they&apos;re commonly accepted in studies of GPS accuracy.</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">A detailed discussion of GPS receiver accuracy can be found at </text><link displaytype="text" defaultstyle="true" type="weblink" href="http://users.erols.com/dlwilson/gps.htm" target="_blank" styleclass="Normal" translate="true">David L. Wilson&apos;s GPS Accuracy Web Page</link><text styleclass="Normal" translate="true">.</text></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>

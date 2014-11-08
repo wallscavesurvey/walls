@@ -1,0 +1,6 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">project script file</title>
+  <body>
+    <para styleclass="Notes"><text styleclass="Notes" translate="true">The </text><text styleclass="Notes" style="font-weight:bold; font-style:normal;" translate="true">project script file</text><text styleclass="Notes" translate="true"> is a text file with extension </text><text styleclass="Notes" style="font-weight:bold;" translate="true">WPJ</text><text styleclass="Notes" translate="true"> that Walls automatically writes when you create or modify a project. &#160;It stores the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="project_tree" styleclass="Notes" translate="true">project tree</link><text styleclass="Notes" translate="true"> hierarchy, book and survey titles, file names, and other status information not contained in the SRV data files themselves. &#160;To open an existing project, you instruct Walls to open the corresponding WPJ file. &#160;Project scripts can be given long descriptive names like &quot;Caverns of Sonora.wpj&quot;.</text></para>
+  </body>
+</topic>

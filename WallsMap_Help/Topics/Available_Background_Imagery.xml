@@ -5,12 +5,12 @@
   <body>
     <header>
       <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Available Background Imagery</text></para>
-      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Updated 04/09/2014</text></para>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Updated 10/06/2014</text></para>
     </header>
     <para styleclass="Normal"></para>
     <para styleclass="Normal"><text styleclass="Normal" translate="true">The sample Texas project contains a layered set of shapefiles, but no raster image layers. You can use it in that condition, selecting individual points and launching Google Earth/Maps to explore the surrounding topography, towns, and roads. With the addition of image layers, however, you&apos;ll be able to view all your shapefile data against a background that&apos;s faster to display and possibly of higher quality. Also, when inspecting aerial photography to retrieve coordinates for a feature, you&apos;ll likely get a more reliable result using a USGS DOQ instead of Google&apos;s imagery. Google Earth&apos;s displayed coordinates, while typically accurate to within 6-10 meters, might be dozens of meters off. You can sometimes see this when examining GE imagery obtained in different years.</text></para>
     <para styleclass="Normal"></para>
-    <para styleclass="Normal"><text styleclass="Normal" translate="true">Like many GIS viewers, WallsMap imposes a restriction regarding raster imagery that&apos;s sometimes inconvenient: All raster files added to a single project must be georeferenced to the same coordinate system. That&apos;s because </text><text styleclass="Normal" style="font-style:italic;" translate="true">on-the-fly</text><text styleclass="Normal" translate="true"> reprojection of raster data can&apos;t be implemented very efficiently. It often makes more sense to convert the imagery you need just once, using other tools, rather than slow down the viewing process. Furthermore, at this stage of its development WallsMap recognizes only four combinations of geodetic datum and projection type: WGS84 (equivalently NAD83) or NAD27, and Lat/Long degrees or UTM meters. So images using other coordinate systems, such as Texas Sate Plane, have to be converted anyway.</text></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Like many GIS viewers, WallsMap imposes a restriction regarding raster imagery that&apos;s sometimes inconvenient: All raster files added to a single project must be georeferenced to the same coordinate system. That&apos;s because </text><text styleclass="Normal" style="font-style:italic;" translate="true">on-the-fly</text><text styleclass="Normal" translate="true"> reprojection of raster data can&apos;t be implemented very efficiently. It often makes more sense to convert the imagery you need just once, using other tools, rather than slow down the viewing process. Furthermore, at this stage in its development WallsMap recognizes only four combinations of geodetic datum and projection type: WGS84 (equivalently NAD83) or NAD27, and Lat/Long degrees or UTM meters. So images using other coordinate systems, such as Texas Sate Plane, have to be converted anyway.</text></para>
     <para styleclass="Normal"></para>
     <para styleclass="Normal"><text styleclass="Normal" translate="true">Shapefiles are more flexibly handled since their geometry can be efficiently converted to the required coordinate system during the display process. For example, if the first image you add to the Texas project is a UTM zone 14 DOQ downloaded from TNRIS, the entire set of shapefiles will be displayed as if they had been reprojected to UTM zone 14. (The outline of Texas will immediately acquire a noticeably different shape.) Thereafter, if you wanted to add a Lat/Long image, you would need to remove any UTM images first. The program can provide the necessary prompts because coordinate system info is stored in the image file&apos;s header.</text></para>
     <para styleclass="Normal"></para>
@@ -37,183 +37,218 @@
     <para styleclass="Normal"></para>
     <para styleclass="Normal"><image src="drg-dem_layers.png" scale="100.00%" styleclass="Image Caption"></image></para>
     <para styleclass="Normal"></para>
-    <list id="9" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">19 quads (El Paso)</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://texasspeleologicalsurvey.org/Walls/El_Paso-19.exe" target="_blank" styleclass="Normal" translate="true">El_Paso-19.exe</link><text styleclass="Normal" translate="true"> (50 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="9" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">57 quads (Hudspeth)</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://texasspeleologicalsurvey.org/Walls/Hudspeth-57.exe" target="_blank" styleclass="Normal" translate="true">Hudspeth-57.exe</link><text styleclass="Normal" translate="true"> (150 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="9" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">110 quads (Culberson, N Jeff Davis)</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://texasspeleologicalsurvey.org/Walls/Culberson-110.exe" target="_blank" styleclass="Normal" translate="true">Culberson-110.exe</link><text styleclass="Normal" translate="true"> (290 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="9" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">69 quads (Presidio, S Jeff Davis)</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://texasspeleologicalsurvey.org/Walls/Presidio-69.exe" target="_blank" styleclass="Normal" translate="true">Presidio-69.exe</link><text styleclass="Normal" translate="true"> (229 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="9" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">110 quads (Loving, Pecos, Reeves, Ward, Winkler)</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://texasspeleologicalsurvey.org/Walls/Pecos-Reeves-110.exe" target="_blank" styleclass="Normal" translate="true">Pecos-Reeves-110.exe</link><text styleclass="Normal" translate="true"> (205 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="9" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">118 quads (Brewster)</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://texasspeleologicalsurvey.org/Walls/Brewster-118.exe" target="_blank" styleclass="Normal" translate="true">Brewster-118.exe</link><text styleclass="Normal" translate="true"> (386 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="9" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">63 quads (Terrell, E Pecos )</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/Terrell-63.exe" target="_blank" styleclass="Normal" translate="true">Terrell-63.exe</link><text styleclass="Normal" translate="true"> (210 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="9" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">42 quads (Upton, E Crane, N Pecos)</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/Upton-42.exe" target="_blank" styleclass="Normal" translate="true">Upton-42.exe</link><text styleclass="Normal" translate="true"> (83 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="9" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">42 quads (Reagan, W Irion, N Crocket)</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/Irion-Reagan-42.exe" target="_blank" styleclass="Normal" translate="true">Irion-Reagan-42.exe</link><text styleclass="Normal" translate="true"> (90 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="9" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">42 quads (Tom Green, E Irion, N Schleicher)</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/Tom Green-42.exe" target="_blank" styleclass="Normal" translate="true">Tom Green-42.exe</link><text styleclass="Normal" translate="true"> (119 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="9" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">42 quads (Concho, McCulloch, N Menard)</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/McCulloch-42.exe" target="_blank" styleclass="Normal" translate="true">McCulloch-42.exe</link><text styleclass="Normal" translate="true"> (126 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="9" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">42 quads (San Saba, Mills, W Lampasas)</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/San_Saba-42.exe" target="_blank" styleclass="Normal" translate="true">San_Saba-42.exe</link><text styleclass="Normal" translate="true"> (135 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="9" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">42 quads (Bell, Coryell, E Lampasas)</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/E_Aquifer_Farnorth.exe" target="_blank" styleclass="Normal" translate="true">E_Aquifer_Farnorth.exe</link><text styleclass="Normal" translate="true"> (128 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="9" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">63 quads (Terrell, E Pecos )</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/Terrell-63.exe" target="_blank" styleclass="Normal" translate="true">Terrell-63.exe</link><text styleclass="Normal" translate="true"> (210 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="9" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">36 quads (Crockett, N Val Verde)</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/Crockett-36.exe" target="_blank" styleclass="Normal" translate="true">Crockett-36.exe</link><text styleclass="Normal" translate="true"> (147 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="9" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">42 quads (Sutton, S Schleicher)</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/Sutton-42.exe" target="_blank" styleclass="Normal" translate="true">Sutton-42.exe</link><text styleclass="Normal" translate="true"> (119 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="9" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">42 quads (Kimble, S Menard)</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/Kimble-42.exe" target="_blank" styleclass="Normal" translate="true">Kimble-42.exe</link><text styleclass="Normal" translate="true"> (127 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="9" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">42 quads (Gillespie, Llano, W Blanco, E Mason)</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/Gillespie-42.exe" target="_blank" styleclass="Normal" translate="true">Gillespie-42</link><text styleclass="Normal" translate="true"> (142 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="9" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">42 quads (Travis, N Hays, S Burnet, E Blanco, W Williamson)</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/E_Aquifer_North.exe" target="_blank" styleclass="Normal" translate="true">E_Aquifer_North.exe</link><text styleclass="Normal" translate="true"> (158 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="9" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">39 quads (S Val Verde)</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/Amistad_Area.exe" target="_blank" styleclass="Normal" translate="true">Amistad_Area.exe</link><text styleclass="Normal" translate="true"> (162 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="10" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="12" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">42 quads (S Edwards, N Kinney, W Real, NW Uvalde)</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/E_Aquifer_Farwest.exe" target="_blank" styleclass="Normal" translate="true">E_Aquifer_Farwest.exe</link><text styleclass="Normal" translate="true"> (149 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="13" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">42 quads (Bandera, S Kerr, NW Medina, E Real, NE Uvalde)</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/E_Aquifer_West.exe" target="_blank" styleclass="Normal" translate="true">E_Aquifer_West.exe</link><text styleclass="Normal" translate="true"> (102 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="12" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="14" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">36 quads (E Bandera, N Bexar, S Blanco, W Comal, Kendall, NE Medina)</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/E_Aquifer_Central.exe" target="_blank" styleclass="Normal" translate="true">E_Aquifer_Central.exe </link><text styleclass="Normal" translate="true">(151 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="13" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="15" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">16 quads (E Comal, S Hays)</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/E_Aquifer_Central-East.exe" target="_blank" styleclass="Normal" translate="true">E_Aquifer_Central-East.exe</link><text styleclass="Normal" translate="true"> (38 MB)</text></para>
     <para styleclass="Normal"></para>
-    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">Other Image Files Available for Download</text></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">Geologic Map Images with Associated Shapefiles</text></para>
     <para styleclass="Normal"></para>
-    <list id="14" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="16" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">Geologic Atlas of Texas (GAT)</text></li>
     </list>
-    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/gat.nti" target="_blank" styleclass="Normal" translate="true">gat.nti</link><text styleclass="Normal" translate="true"> (806 MB)</text></para>
-    <para styleclass="Normal"><text styleclass="Normal" translate="true">This image covers the entire state and was assembled from the 38 map sheets making up the </text><text styleclass="Normal" style="font-style:italic;" translate="true">Geologic Atlas of Texas</text><text styleclass="Normal" translate="true"> (GAT). A convenient web interface for viewing the 1:250,000 scale maps, including margin information, is provided by the </text><link displaytype="text" defaultstyle="true" type="weblink" href="http://www.twdb.state.tx.us/groundwater/aquifer/GAT/" target="_blank" styleclass="Normal" translate="true">Texas Water Development Board</link><text styleclass="Normal" translate="true">. A polygon shapefile for the GAT rock units is contained in this self-extracting archive: </text><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/GAT_250K.exe" target="_blank" styleclass="Normal" translate="true">GAT_250K.exe</link><text styleclass="Normal" translate="true"> (331 MB, or 607 MB after extraction). By adding it as an invisible project layer, you can set up a point shapefile to have a field dynamically initialized with rock unit codes (e.g., </text><text styleclass="Normal" style="font-style:italic;" translate="true">Ked</text><text styleclass="Normal" translate="true">) that depend on a point&apos;s location. (See </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Template_File_Format" anchor="Location-dependent_init" styleclass="Normal" style="font-style:normal;" translate="true">Location-dependent Initialization</link><text styleclass="Normal" translate="true"> in the Template File Format topic) The shapefile&apos;s attributes also include </text><text styleclass="Normal" style="font-style:italic;" translate="true">SHAPE_Area</text><text styleclass="Normal" translate="true">, from which interesting statistics might be derivable.</text></para>
     <para styleclass="Normal"></para>
-    <list id="14" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
-      <li styleclass="Normal"><text styleclass="Normal" translate="true">Maps from the Geological Database of Texas (GDOT)</text></li>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/GAT_250K.nti" target="_blank" styleclass="Normal" translate="true">GAT_250K.nti</link><text styleclass="Normal" translate="true"> (434 MB)</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">This image covers the entire state and was assembled from the 38 map sheets making up the </text><text styleclass="Normal" style="font-style:italic;" translate="true">Geologic Atlas of Texas</text><text styleclass="Normal" translate="true"> (GAT). A convenient web interface for viewing the 1:250,000 scale maps, including margin information, is provided by the </text><link displaytype="text" defaultstyle="true" type="weblink" href="http://www.twdb.state.tx.us/groundwater/aquifer/GAT/" target="_blank" styleclass="Normal" translate="true">Texas Water Development Board</link><text styleclass="Normal" translate="true">. A polygon shapefile, with the GAT rock codes and other attributes, is contained in this self-extracting archive:</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/GAT_250K.exe" target="_blank" styleclass="Normal" translate="true">GAT_250K.exe</link><text styleclass="Normal" translate="true"> (331 MB, or 607 MB after extraction).</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">By adding it as an invisible project layer, with </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Symbols_for_Polygon_or_Polylin" styleclass="Normal" style="font-style:normal;" translate="true">spatial indexing</link><text styleclass="Normal" translate="true"> enabled, you can set up a point shapefile to have a field dynamically initialized with codes like </text><text styleclass="Normal" style="font-style:italic;" translate="true">Ked</text><text styleclass="Normal" translate="true"> that depend on a point&apos;s location. (See </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Template_File_Format" anchor="Location-dependent_init" styleclass="Normal" style="font-style:normal;" translate="true">Location-dependent Initialization</link><text styleclass="Normal" translate="true"> in the Template File Format topic.)</text></para>
+    <para styleclass="Normal"></para>
+    <list id="16" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+      <li styleclass="Normal"><text styleclass="Normal" translate="true">Maps from the Geologic Database of Texas (GDOT)</text></li>
     </list>
-    <para styleclass="Normal"><text styleclass="Normal" translate="true">The following three image files were derived from an ESRI personal geodatabase obtained at the TNRIS website (see next section). This database contains not only the 1987-vintage GAT in vector form (from which the above shapefile was exported), but also vector versions of more recent, larger-scale geologic maps for specific regions of Texas. The entire content is summarized in </text><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/GDOT_Manual.doc" target="_blank" styleclass="Normal" translate="true">GDOT_Manual.doc</link><text styleclass="Normal" translate="true">. These particular maps are reported as having scale 1:24,000, which presumably means that the symbol and line sizes are set up to be comparable to those of a 7.5&apos; USGS topo sheet. The resolution if the NTI files is about 3.7 m per pixel, which approximates a scale of 1:14,000 at 96 ppi (or 1:44,000 at 300 ppi).</text></para>
     <para styleclass="Normal"></para>
-    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/GDOT_NewBraunfels_1997.nti" target="_blank" styleclass="Normal" translate="true">GDOT_NewBraunfels_1997.nti</link><text styleclass="Normal" translate="true"> (106 MB) </text></para>
-    <para styleclass="Normal"><text styleclass="Normal" translate="true">This map covers northern Bexar County, all of Comal County, and all but the northern third of Kendall County (32 7.5&apos; quadrangles).</text></para>
-    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/GDOT_Georgetown_1997-99.nti" target="_blank" styleclass="Normal" translate="true">GDOT_GeorgeTown_1997-99.nti</link><text styleclass="Normal" translate="true"> (50.7 MB)</text></para>
-    <para styleclass="Normal"><text styleclass="Normal" translate="true">This map covers most of the the western half of Williamson County and parts of adjacent counties (16 quadrangles).</text></para>
-    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/GDOT_DelRio_2001.nti" target="_blank" styleclass="Normal" translate="true">GDOT_DelRio_2001.nti</link><text styleclass="Normal" translate="true"> (26.3 MB)</text></para>
-    <para styleclass="Normal"><text styleclass="Normal" translate="true">This map covers the 9 quadrangles surrounding and including the Del Rio NE quadrangle in Val Verde County.</text></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/GDOT_(4_NTI-SHP_sets).exe" target="_blank" styleclass="Normal" translate="true">GDOT_(4_NTI-SHP_sets).exe</link><text styleclass="Normal" translate="true"> (161 MB)</text></para>
     <para styleclass="Normal"></para>
-    <list id="15" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">These four layer sets (NTI with corresponding shapefile) were derived from the </text><link displaytype="text" defaultstyle="true" type="weblink" href="http://tx.usgs.gov/GAT/index.html" target="_blank" styleclass="Normal" translate="true">Geologic Database of Texas</link><text styleclass="Normal" translate="true">, an ESRI personal geodatabase available at the </text><link displaytype="text" defaultstyle="true" type="weblink" href="http://www.tnris.org/get-data" target="_blank" styleclass="Normal" translate="true">TNRIS</link><text styleclass="Normal" translate="true"> website. &#160;In addition to the 1987-vintage GAT in vector form, the geodatabase contains several </text><link displaytype="text" defaultstyle="true" type="weblink" href="http://www.beg.utexas.edu/mainweb/services/GISdatabases.htm" target="_blank" styleclass="Normal" translate="true">GIS databases</link><text styleclass="Normal" translate="true"> published by the Texas Bureau of Economic Geology. The layers chosen for this archive cover four discontiguous regions, all but one mapped at scale 1:24,000.</text></para>
+    <para styleclass="Normal"></para>
+    <list id="17" type="ul" listtype="bullet" formatstring="&#183;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Symbol; font-size:11pt; color:#000000;">
+      <li styleclass="Normal"><text styleclass="Normal" style="font-weight:normal; font-style:italic;" translate="true">GDOT_Georgetown_1997-99</text><text styleclass="Normal" translate="true">: Most of the the western half of Williamson Co. and parts of adjacent counties (16 &#160;7.5&apos; quadrangles).</text></li>
+    </list>
+    <list id="18" type="ul" listtype="bullet" formatstring="&#183;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Symbol; font-size:11pt; color:#000000;">
+      <li styleclass="Normal"><text styleclass="Normal" style="font-weight:normal; font-style:italic;" translate="true">GDOT_Austin_2002</text><text styleclass="Normal" translate="true">: Central Travis County (about ten 7.5&apos; quadrangles), mapped at scale 1:62,500.</text></li>
+      <li styleclass="Normal"><text styleclass="Normal" style="font-weight:normal; font-style:italic;" translate="true">GDOT_NewBraunfels_1997</text><text styleclass="Normal" translate="true">: Northern Bexar Co., all of Comal Co., and all but the northern third of Kendall Co. (32 7.5&apos; quadrangles).</text></li>
+      <li styleclass="Normal"><text styleclass="Normal" style="font-weight:normal; font-style:italic;" translate="true">GDOT_DelRio_2001</text><text styleclass="Normal" translate="true">: An area surrounding Amistad Dam, Del Rio, and Laughlin AFB in Val Verde Co. (9 7.5&apos; quadrangles).</text></li>
+    </list>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">As with the statewide GAT, these layers and the ones from USGS below can be used for automatic field initialization, with the GAT shapefile used as the fall-back. The NTI images, when present in a project, can be toggled on as needed to view the surrounding surface geology.</text></para>
+    <para styleclass="Normal"></para>
+    <list id="19" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+      <li styleclass="Normal"><text styleclass="Normal" translate="true">Geologic Maps and Shapefiles Derived from USGS Publications</text></li>
+    </list>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/USGS_Texas_Geology_(4_NTI-SHP_sets).exe" target="_blank" styleclass="Normal" translate="true">USGS_Texas_Geology_(4_NTI-SHP_sets).exe</link><text styleclass="Normal" translate="true"> (82.2 MB)</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The PDF-derived NTI images and shapefiles in this archive incorporate data from recent USGS reports:</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-style:italic;" translate="true">Map Showing Geology and Hydrostratigraphy of the Edwards Aquifer Catchment Area, Northern Bexar County, South-Central Texas</text></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://pubs.usgs.gov/of/2009/1008/" target="_blank" styleclass="Normal" translate="true">http://pubs.usgs.gov/of/2009/1008/</link></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-style:italic;" translate="true">Geologic Map of the Edwards Aquifer Recharge Zone, South-Central Texas</text></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://pubs.usgs.gov/sim/2005/2873" target="_blank" styleclass="Normal" translate="true">http://pubs.usgs.gov/sim/2005/2873</link></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-style:italic;" translate="true">Geologic Map of the Edwards Aquifer and Related Rocks in Northeastern Kinney and Southernmost Edwards Counties, South-Central Texas</text></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://pubs.usgs.gov/sim/3105/" target="_blank" styleclass="Normal" translate="true">http://pubs.usgs.gov/sim/3105/</link></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-style:italic;" translate="true">Geologic Map of Big Bend National Park, Texas</text></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://pubs.usgs.gov/sim/3142/" target="_blank" styleclass="Normal" translate="true">http://pubs.usgs.gov/sim/3142/</link></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">Miscellaneous High-Resolution Imagery</text></para>
+    <para styleclass="Normal"></para>
+    <list id="19" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">Government Canyon State Natural Area</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/GCSNA_15cm_2010.nti" target="_blank" styleclass="Normal" translate="true">GCSNA_15cm_2010.nti</link><text styleclass="Normal" translate="true"> (285 MB, expands to 409 MB when opened)</text></para>
     <para styleclass="Normal"><text styleclass="Normal" translate="true">This 15-cm resolution aerial &#160;image covers a 7.5 km by 9 km rectangle in NW Bexar County. It was extracted using the USGS National Map Viewer, converted from UTM to a Lat/Long, and exported as an NTI file using 3% JPEG2000 compression. Metadata lists Jan 2010 as the acquisition date.</text></para>
     <para styleclass="Normal"></para>
-    <list id="16" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="20" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">Spring Branch Area</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/Spring Branch_15cm_2010.nti" target="_blank" styleclass="Normal" translate="true">Spring Branch_15cm_2010.nti</link><text styleclass="Normal" translate="true"> (125 MB)</text></para>
     <para styleclass="Normal"><text styleclass="Normal" translate="true">This image covers a 3 km by 4.5 km section of the Spring Branch karst area in Comal and Kendall counties. Its top-right edge is aligned with the northern boundary of the San Antonio area 0.15-m imagery acquired during Jan-May of 2010. (See map of boundary below.) Its top-left corner and far left edge (about 20%) had to be constructed from 1-meter imagery of the same time period.</text></para>
     <para styleclass="Normal"></para>
-    <list id="9" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">Honey Creek State Natural Area</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/Honey Creek_15cm_2010.nti" target="_blank" styleclass="Normal" translate="true">Honey Creek_15cm_2010.nti</link><text styleclass="Normal" translate="true"> (212 MB, expands to 308 MB when opened)</text></para>
     <para styleclass="Normal"><text styleclass="Normal" translate="true">Another 15-cm resolution image covering a 9 km by 6 km region on the border between Kendall and Comal counties. It encompasses the known extent of Honey Creek Cave, the longest cave in Texas.</text></para>
     <para styleclass="Normal"></para>
-    <list id="15" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="19" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">Cedar Park Cave Area</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/CedarPark_15cm_2009.nti" target="_blank" styleclass="Normal" translate="true">CedarPark_15cm_2009.nti</link><text styleclass="Normal" translate="true"> (151 MB)</text></para>
     <para styleclass="Normal" style="margin-left:0px;"><text styleclass="Normal" translate="true">This 5.5 km x 4.4 km area encompasses several </text><link displaytype="text" defaultstyle="true" type="weblink" href="http://texascaves.org/preserves.html" target="_blank" styleclass="Normal" translate="true">cave preserves</link><text styleclass="Normal" translate="true"> in southern Williamson County. The area contains numerous caves despite it being densely developed.</text></para>
     <para styleclass="Normal"></para>
-    <list id="9" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">Lake Belton Area of Ft Hood</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://www.txspeleologicalsurvey.org/Walls/images/Ft_Hood_Lake_Belton.nti" target="_blank" styleclass="Normal" translate="true">Ft_Hood_Lake_Belton.nti</link><text styleclass="Normal" translate="true"> (346 MB, expands to 492 MB when opened)</text></para>
     <para styleclass="Normal"><text styleclass="Normal" translate="true">This is an attractive 0.3-meter resolution aerial photo covering NW Ft Hood and most of Lake Belton.</text></para>
     <para styleclass="Normal"></para>
-    <list id="9" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">Amistad Lake Area Landsat</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/Amistad_Lake_Area_Landsat.nti" target="_blank" styleclass="Normal" translate="true">Amistad_Lake_Area_Landsat.nti</link><text styleclass="Normal" translate="true"> (2.4 MB)</text></para>
     <para styleclass="Normal"><text styleclass="Normal" translate="true">This is a 26.8 meter/pixel, USGS Landsat image covering southern Val Verde County. It&apos;s of higher quality than the one for all of Texas (below) and shows a dramatically lower lake level.</text></para>
     <para styleclass="Normal"></para>
-    <list id="17" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
+    <list id="21" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">Landsat 7 image of Texas</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://www.txspeleologicalsurvey.org/Walls/images/texas_landsat.nti" target="_blank" styleclass="Normal" translate="true">texas_landsat.nti</link><text styleclass="Normal" translate="true"> &#160;(377 MB, expands to 541 MB when opened)</text></para>

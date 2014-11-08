@@ -35,7 +35,7 @@ bool CDbtEditDlg::DenyClose(BOOL bForceClose /*=FALSE*/)
 {
 	if(!HasEditedText()) return false;
 
-	int id=m_pShp->SaveDiscardCancel(m_memo,bForceClose);
+	int id=m_pShp->ConfirmSaveMemo(m_hWnd,m_memo,bForceClose);
 
 	if(id==IDYES) {
 		if(m_pShp->SaveAllowed(1)) SaveEditedText();

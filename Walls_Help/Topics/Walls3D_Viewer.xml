@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Walls3D VRML Viewer</title>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Walls3D - VRML Viewer</text></para>
+    </header>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left,126px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">The 3D file export option of Walls produces standard VRML v1.0 text files (extension WRL) that represent your surveys as multicolored, 3-dimensional wireframe models. LRUD and wall shot &#160;dimension lines, along with the &quot;point cloud&quot; formed by their endpoints, are also optionally represented. &#160;A simple VRML viewer program, </text><text style="font-family:Arial; font-size:9pt; font-style:italic; color:#000000;" translate="true">Walls3D.exe</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">, is part of the Walls installation and will be present in the same folder as Walls. It requires an OpenGL-capable video system, something all computers running Windows have these days. If you wish, you can configure Walls to use a different program for displaying the VRML files you generate. (Use the menu item, Options | 3D File Viewer.) By default, Walls will launch Walls3D when it&apos;s appropriate. See </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Export_3D" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Exporting VRML files</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> for more information.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Although there is no help file, you should have little trouble using the toolbar buttons, mouse, and keyboard to explore different 3D views of the wire-frame. Simple instructions appear on a status pane at the bottom of the program&apos;s window. An often overlooked feature is the program&apos;s ability to view multiple VRML files at once. Opening new files will add panes to a tiled set of 3D views that can be independently manipulated.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left,126px left ;"></para>
+  </body>
+</topic>

@@ -1,0 +1,6 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">unbiased</title>
+  <body>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">An </text><text styleclass="Normal" style="font-weight:bold;" translate="true">unbiased </text><text styleclass="Normal" translate="true">estimate, or measurement, is one in which the expected value of the error (which can be positive or negative) is zero. &#160;By definition, measurements affected by </text><text styleclass="Normal" style="font-style:italic;" translate="true">systematic error</text><text styleclass="Normal" translate="true"> are biased.</text></para>
+  </body>
+</topic>

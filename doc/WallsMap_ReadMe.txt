@@ -1,4 +1,4 @@
-WallsMap v0.3 Build 2014-07-13 Notes
+WallsMap v0.3 Build 2014-10-16 Notes
 ====================================
 
 This WallsMap installation contains a preliminary GIS project named Texas Public
@@ -14,6 +14,44 @@ C:\Users\Public\WallsMap Projects\Texas Public Caves\Texas Public Caves.ntl
 ==============
 Recent Changes
 
+* Build 10/16/2014
+
+1) Miscellaneous improvements, some for appearance sake and others for data
+safety. For example, message boxes requesting user confirmation were changed
+to have more descriptive button labels, with "Yes No Cancel" mostly avoided.
+
+* Build 10/01/2014
+
+1) The Help file's Available Background Imagery section has links to several more
+Texas geologic map layers derived from USGS publications. There are two layers for
+each region studied: a shapefile that can be used for location-based field
+initialization (say of geologic unit codes), and an NTI image of the complete
+geologic map. There are now 9 such datasets, including the statewide GAT.
+
+2)The functions for reading and exporting shapefiles can more efficiently handle
+component file sizes approaching or exceeding the official ESRI limit of 2 GB.
+Concatenating large files via the "copy to layer" function is many times faster.
+
+3) To help protect against abnormal program or computer shutdowns, edited
+coordinates are committed to disk as soon as the corresponding record in the
+Selected Points dialog ceases to be highlighted with fields displayed. Until
+now, only edited attribute fields were handled this way.
+
+4) A bug was fixed that in some cases prevented the "Find broken image links"
+function (accessed via a table view's context menu) from working properly when
+the option to actually repair the links was chosen.
+
+* Build 08/20/2014
+
+1)Selected Points window enhancement: When records with the same field structure
+are switched between, the vertical scroll position of the field display is
+preserved, making data comparisons much easier when there are many fields.
+
+2) A bug in the shapefile compare function caused revisions in outdated records
+to be applied when the "Create updated reference" option is selected. Normally a
+reviewed update shapefile won't have such records when it's used to create a new
+database snapshot.
+
 * Build 07/13/2014
 
 1) When creating an update archive, the compare function could on rare occasions
@@ -22,14 +60,14 @@ improvements were made to the program and help file.
 
 * Build 06/20/2014
 
-1) Automatic field intialization for new or relocated point features can now occur
+1) Automatic field initialization for new or relocated point features can now occur
 when the point is covered by any one of several polygon shapefiles -- for example,
 a set of geologic map layers when the field contains a geologic unit name or
 abbreviation. Previously only a single polygon layer could be used to initialize a
 given field. In the Help file see Export Operations | Template File Format |
 Controlling a Field's Behavior | Location-dependent Initialization.
 
-2) Location-dependent intitialization now works as expected for unlocated features.
+2) Location-dependent initialization now works as expected for unlocated features.
 
 * Build 05/05/2014
 
@@ -38,7 +76,7 @@ found in the Available Background Imagery section of the help file. This extends
 the seamless coverage to all of Far West Texas (1177 quadrangles total).
 
 2) In maintaining the TSS database we've often needed to reconcile changes made by
-different contibutors to reports in memo fields. To make this easier the text
+different contributors to reports in memo fields. To make this easier the text
 editor has new options that allow quick side-by-side comparisons of memo field
 text. For details, see the new section, "Editing Memo Field Content", under
 "Searching and Editing Shapefiles | Editing Records" in the Help file.
@@ -52,7 +90,7 @@ option set at 5.
 
 4) Miscellaneous improvements and minor bug fixes. Attempting to launch the program
 with a project that's already open in another program instance will activate that
-instance intead of opening an empty application window and displaying an annoying
+instance instead of opening an empty application window and displaying an annoying
 message.
 
 * Build 03/29/2014
@@ -103,7 +141,7 @@ quality NTI files of similar or smaller size.
 * Build 09/05/2013
 
 1) GPS tracking is enabled in this build. Establish a connection via a real or
-virtual COMM port by seleting "GPS" -> GPS Port Connection from the program's main
+virtual COMM port by selecting "GPS" -> GPS Port Connection from the program's main
 menu. A small dialog window then remains open (possibly minimized) to allow a GPS
 placemark and track line to appear on georeferenced map views. There are options to
 customize the marker and line styles and to save the logged track as a shapefile.
@@ -186,7 +224,7 @@ is found.
 
 2) Fixed issues related to the handling of deleted records in 2D polyline and
 polygon shapefiles. Undeletion and deletion is now allowed in table views, with
-the map and layer exent (if displayed) updated dynamically.
+the map and layer extent (if displayed) updated dynamically.
 
 * Build 11/15/2012
 
@@ -414,7 +452,7 @@ retrieve new coordinates. An application named Gmap4, for example, can display
 relief-shaded USGS 7.5' topographic maps in addition to Google's standard map
 types. The web site accessed and type of map initially shown are determined by a
 Preferences menu setting labeled "URL for web map navigation." The help file has
-more informtion about it under "Configuration Settings."
+more information about it under "Configuration Settings."
 
 2) Miscellaneous fixes: Field descriptions display as tooltips on table header;
 Linked local files, not just images, are tested for validity and included in

@@ -21,10 +21,10 @@ enum {SHPD_UTMEAST=1,SHPD_UTMNORTH=2,SHPD_UTMZONE=4,SHPD_UTMFLAGS=7};
 class CShpDef
 {
 public:
-	CShpDef(void): numFlds(0),numSrcFlds(0),numMemoFlds(0),
+	CShpDef(void) : numFlds(0), numSrcFlds(0), numMemoFlds(0),
 	iTypXY(-1), iFldZone(-1), iFldX(-1), iFldY(-1), iFldKey(-1), iDatum(-1), uFlags(0),
 	latMax(90),latMin(-90),lonMax(180),lonMin(-180),latDflt(0),latErr(0),
-	lonDflt(0),lonErr(0),zoneMin(1),zoneMax(60),iZoneDflt(0) {}
+	lonDflt(0),lonErr(0),zoneMin(1),zoneMax(60),iZoneDflt(0) { sFldSep[0]=0;}
 	~CShpDef(void);
 
 	BOOL Process(CDaoRecordset *pRS, LPCSTR pathName);
@@ -38,6 +38,7 @@ public:
 	double latMax,lonMin,latMin,lonMax; //TL and BR coordinates of allowed region
 	double latDflt,lonDflt;
 	double latErr,lonErr;
+	char sFldSep[4];      // single char or "|", ",", etc.
 	int zoneMin,zoneMax;
 	int iDatum;
 	int iTypXY;          //0 if lat/lon, 1 if UTM

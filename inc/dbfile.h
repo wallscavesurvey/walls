@@ -61,7 +61,9 @@ protected:
 // Constructors
 public:
    CDBFile() {m_dbfno=0;};
-   virtual ~CDBFile() { if(m_dbfno) dbf_Close(m_dbfno);}
+   virtual ~CDBFile() {
+	   if(m_dbfno) dbf_Close(m_dbfno);
+   }
    
 // Operations 
    int Open(const char* pszFileName,UINT mode=0) {

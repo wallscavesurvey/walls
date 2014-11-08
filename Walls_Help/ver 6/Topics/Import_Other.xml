@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<topic template="Default" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Converting Other Data Formats</title>
+  <keywords>
+    <keyword translate="true">Importing Other Data Formats</keyword>
+  </keywords>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Converting Other Data Formats</text></para>
+    </header>
+    <para styleclass="Normal"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">In addition to the built-in </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Import_SEF" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">SEF import</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> feature, there are other ways you can bring survey data into Walls. The native formats of several other cave mapping programs can be converted to the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="survey_data_files" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">SRV format</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> with separate command line utilities. These programs are either packaged with Walls or are available upon request. For the most part, they were created to import data for a few specific projects and have not been extensively tested.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">With each of the following programs, you can submit the DOS command without arguments to display available options:</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <list id="1" type="ul" listtype="bullet" formatstring="·" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" style="text-indent:-13px; margin-left:13px; tabstops:13px left ; font-family:Symbol; font-size:9pt; color:#000000;">
+      <li style="text-indent:-13px; margin-left:13px; tabstops:13px left ;"><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">CMP2SRV.EXE</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> will convert the data files used by Bob Thrun&apos;s </text><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">CMAP</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> program. &#160;Normally it reads one CMAP file and additionally any &quot;included&quot; files to create a single SRV file. &#160;Used a different way, it can generate multiple SRV files and an associated project script. &#160;The names of included files can optionally define </text><link displaytype="text" defaultstyle="true" type="topiclink" href="segment_attributes" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">segments.</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> &#160;In the output, comments prefixed with &quot;;!&quot; will flag measurements whose units had to be changed. &#160;This utility was developed before the Walls data format supported quadrant-style bearings and the different taping methods.</text></li>
+    </list>
+    <para styleclass="Normal"></para>
+    <list id="1" type="ul" listtype="bullet" formatstring="·" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" style="text-indent:-13px; margin-left:13px; tabstops:13px left ; font-family:Symbol; font-size:9pt; color:#000000;">
+      <li style="text-indent:-13px; margin-left:13px; tabstops:13px left ;"><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">CSS2SRV.EXE</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> will convert files having the CSS format as documented by Larry Fish for his </text><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">COMPASS</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> program. Only DAT files, not MAK files, are processed. Survey names within a data file can be defined as segments, as can the year or year/month. &#160;Also, measurement data are converted back to their original type and units so that the resulting SRV files match what would appear in the COMPASS editor. This utility at least supports the version of CSS current as of Spring 1999. Recent Walls distributions have included CSS2SRV.EXE and a documentation file, CSS2SRV.TXT.</text></li>
+    </list>
+    <para styleclass="Normal"></para>
+    <list id="1" type="ul" listtype="bullet" formatstring="·" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" style="text-indent:-13px; margin-left:13px; tabstops:13px left ; font-family:Symbol; font-size:9pt; color:#000000;">
+      <li style="text-indent:-13px; margin-left:13px; tabstops:13px left ;"><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">CV2SRV.EXE</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> will convert &quot;vector&quot; report files generated by CVREPORT.EXE, a program accompanying John Fogarty&apos;s </text><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">CaveView</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">. Before creating the report, the format options should be set to exclude headings, margins, and page numbers.</text></li>
+    </list>
+    <para styleclass="Normal"></para>
+    <list id="1" type="ul" listtype="bullet" formatstring="·" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" style="text-indent:-13px; margin-left:13px; tabstops:13px left ; font-family:Symbol; font-size:9pt; color:#000000;">
+      <li style="text-indent:-13px; margin-left:13px; tabstops:13px left ;"><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">ELL2SRV.EXE</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> will convert data files generated by the </text><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">Ellipse</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> export feature of John Fogarty&apos;s </text><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">CaveView</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">. &#160;It will process all files matching a given file spec (e.g., *.ELI) to create a corresponding set of SRV files. Unfortunately, at least one version of CaveView omits &quot;height corrections&quot; from the exported Ellipse data. &#160;Therefore, if the original data contains height corrections, utility CV2SRV (see above) should be used instead.</text></li>
+    </list>
+    <para styleclass="Normal"></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="text-indent:-24px; margin-left:24px; tabstops:24px left ;"></para>
+    <para style="text-indent:-24px; margin-left:24px; tabstops:24px left ;"></para>
+    <para style="text-indent:-24px; margin-left:24px; tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"></para>
+  </body>
+</topic>

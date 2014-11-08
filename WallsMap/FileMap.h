@@ -28,7 +28,7 @@ public:
 
 	bool IsOpen() const {return m_hFile!=CFile::hFileNull;} 
 
-	bool MapFile()
+	bool MapCFile()
 	{
 		m_hFM=CreateFileMapping(
 			m_hFile,		//handle
@@ -54,10 +54,10 @@ public:
 		return true;
 	}
 
-	void UnmapFile()
+	void UnmapCFile()
 	{
 		if(m_ptr) {
-			//if(m_bRW) VERIFY(Flush()); //causes assert if no updates!
+			VERIFY(FlushViewOfFile(m_ptr,0));
 			VERIFY(UnmapViewOfFile(m_ptr));
 			m_ptr=NULL;
 		}

@@ -1,0 +1,6 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">strings</title>
+  <body>
+    <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">Strings</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> are traverses whose intermediate stations (if any) are the junctions of just two vectors, while the end stations (if not the same) are each the junction of some number of vectors other than two. &#160;This was apparently the meaning intended by </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Schmidt" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Schmidt and Schelling</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> in their 1970 article on loop closing.</text></para>
+  </body>
+</topic>

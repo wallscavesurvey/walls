@@ -63,7 +63,7 @@
           <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
         </td>
         <td style="width:608px;">
-          <para styleclass="Normal"><text styleclass="Normal" translate="true">200 chars</text></para>
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">254 chars</text></para>
         </td>
       </tr>
       <tr style="vertical-align:top">
@@ -136,7 +136,7 @@
           <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
         </td>
         <td style="width:602px;">
-          <para styleclass="Normal"><text styleclass="Normal" translate="true">10 chars (above 7 alternatives only)</text></para>
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">10 chars (one of the above 7 alternatives, with possibly a question mark appended)</text></para>
         </td>
       </tr>
       <tr style="vertical-align:top">
@@ -146,7 +146,7 @@
           <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
         </td>
         <td style="width:602px;">
-          <para styleclass="Normal"><text styleclass="Normal" translate="true">For brevity, &quot;naturally occurring&quot; was removed from the first three definitions. Also see the Notes section under </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Karst_Feature_Categories" styleclass="Normal" translate="true">Karst Feature Categories</link><text styleclass="Normal" translate="true">.</text></para>
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">For features whose type is unknown or unspecified, it&apos;s OK to append a question mark to the most likely type. The type will then &quot;Undefined&quot; when compiling statistics for the TSS website. Also see the Notes section under </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Karst_Feature_Categories" styleclass="Normal" translate="true">Karst Feature Categories</link><text styleclass="Normal" translate="true">.</text></para>
         </td>
       </tr>
     </table></para>
@@ -169,7 +169,7 @@
           <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
         </td>
         <td style="width:606px;">
-          <para styleclass="Normal"><text styleclass="Normal" translate="true">40 chars</text></para>
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">30 chars</text></para>
         </td>
       </tr>
       <tr style="vertical-align:top">
@@ -835,13 +835,47 @@
         </td>
       </tr>
       <tr style="vertical-align:top">
+        <td style="width:124px; height:40px;">
+        </td>
+        <td style="width:65px; height:40px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
+        </td>
+        <td style="width:606px; height:40px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Although the above 5 choices appear in a drop-down list box, with &quot;Carbonate&quot; being the default for new records, we can enter any text in this field.</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para styleclass="Normal"><table styleclass="Default" rowcount="3" colcount="3" style="width:800px; border-width:0px; border-spacing:0px; border-collapse:collapse; cell-border-width:1px; border-color:#000000; border-style:solid; background-color:#d2d2d2;">
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+          <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">ROCK_CODE</text></para>
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Tooltip:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Geologic unit abbreviation maintained automatically by searching a series of polygon shapefiles in a specified order, ending with the statewide GAT_250K.</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:124px;">
+        </td>
+        <td style="width:65px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">Type:</text></para>
+        </td>
+        <td style="width:606px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">20-chars</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
         <td style="width:124px;">
         </td>
         <td style="width:65px;">
           <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
         </td>
         <td style="width:606px;">
-          <para styleclass="Normal"><text styleclass="Normal" translate="true">Although the above 5 choices appear in a drop-down list box, with &quot;Carbonate&quot; being the default for new records, we can enter any text in this field.</text></para>
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">The program dynamically assigns a code when a point is added or relocated. The set of</text></para>
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">geologic shapefiles searched for is specified in the .tmpshp file. Since those shapefiles can be absent or out-of-date, the codes are sometimes &quot;refreshed&quot; by the database manager.</text></para>
         </td>
       </tr>
     </table></para>
@@ -868,12 +902,12 @@
         </td>
       </tr>
       <tr style="vertical-align:top">
-        <td style="width:124px;">
+        <td style="width:124px; height:19px;">
         </td>
-        <td style="width:65px;">
+        <td style="width:65px; height:19px;">
           <para styleclass="Normal"><text styleclass="Normal" translate="true">Notes:</text></para>
         </td>
-        <td style="width:605px;">
+        <td style="width:605px; height:19px;">
         </td>
       </tr>
     </table></para>

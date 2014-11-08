@@ -21,6 +21,7 @@
 #include "KmlDef.h"
 #include "DlgExportXLS.h"
 #include "WebMapFmtDlg.h"
+#include "CopySelectedDlg.h"
 
 CDBGridDlg::CDBGridDlg(CShpLayer *pShp,VEC_DWORD *pvRec,CWnd* pParent /*=NULL*/)
 	: CResizeDlg(CDBGridDlg::IDD, pParent)
@@ -43,6 +44,8 @@ CDBGridDlg::CDBGridDlg(CShpLayer *pShp,VEC_DWORD *pvRec,CWnd* pParent /*=NULL*/)
 	, m_bRestoreLayout(false)
 	, m_bAllowPolyDel(false)
 	, m_bExpandMemos(true) //just for now
+	, m_sort_pfldbuf(NULL)
+	, m_sort_lenfldbuf(0)
 {
 	if(pShp->ShpType()!=CShpLayer::SHP_POINT)
 		VERIFY(pShp->Init_ppoly());
@@ -65,6 +68,7 @@ CDBGridDlg::~CDBGridDlg()
 	m_pdbfile->pDBGridDlg=NULL;
 	delete m_pvxc;
 	free(m_pwchTip);
+	free(m_sort_pfldbuf);
 }
 
 void CDBGridDlg::OnClose() 
@@ -750,11 +754,9 @@ void CDBGridDlg::OnEndEditField(NMHDR* pNMHDR, LRESULT* pResult)
 			return;
 		}
 		if(m_pShp->ShpTypeOrg()==CShpLayer::SHP_POINT) {
-			(*m_pShp->m_vdbe)[rec-1]|=SHP_EDITDBF;
-			if(!m_pShp->m_bEditFlags) { //***added
-				m_pShp->m_pDoc->LayerSet().m_nShpsEdited++;
-			}
-			m_pShp->m_bEditFlags|=SHP_EDITDBF;
+			m_pShp->ChkEditDBF(rec);
+			//Above may NOT have set m_pSelLayer->m_bEditFlags!
+
 			if(nCol==m_pShp->m_nLblFld && m_pShp->IsRecSelected(rec)) {
 				ASSERT(app_pShowDlg);
 				if(app_pShowDlg) app_pShowDlg->InvalidateTree();
@@ -863,11 +865,8 @@ LRESULT CDBGridDlg::OnListClick(WPARAM wParam, LPARAM lParam)
 				return 0;
 			}
 			if(m_pShp->ShpTypeOrg()==CShpLayer::SHP_POINT) {
-				(*m_pShp->m_vdbe)[nRec-1]|=SHP_EDITDBF;
-				if(!m_pShp->m_bEditFlags) { //***added
-					m_pShp->m_pDoc->LayerSet().m_nShpsEdited++;
-				}
-				m_pShp->m_bEditFlags|=SHP_EDITDBF;
+				m_pShp->ChkEditDBF(nRec);
+				//Above may NOT have set m_pSelLayer->m_bEditFlags!
 			}
 		}
 	}
@@ -892,10 +891,11 @@ LRESULT CDBGridDlg::OnListDblClick(WPARAM wParam, LPARAM lParam)
 */
 
 static CShpDBF *sort_pdb;
-int sort_fldoff;
+static int sort_fldoff;
 static char sort_fldtyp;
 static bool sort_ascending;
 static WORD sort_fldlen;
+static LPBYTE sort_pfldbuf;
 
 static int __inline IsNumericPfx(LPCSTR p)
 {
@@ -914,14 +914,18 @@ static int __inline IsNumericPfx(LPCSTR p)
 		else if(*p=='/') break;
 	}
 	//return (n==sort_fldlen || *p==' ' || )?n:0; // require space separator
-	return n;
+	return (n<32)?n:0;
 }
 
 static bool sort_compare(DWORD w0,DWORD w1)
 {
 	w0 &= 0x7FFFFFFF; w1 &= 0x7FFFFFFF;
+
 	LPCSTR p0=(LPCSTR)sort_pdb->RecPtr(w0)+sort_fldoff;
+	if(!sort_pdb->IsMapped()) p0=(LPCSTR)memcpy(sort_pfldbuf,p0,sort_fldlen);
+
 	LPCSTR p1=(LPCSTR)sort_pdb->RecPtr(w1)+sort_fldoff;
+
 	char fbuf[32];
 	double f0,f1;
 
@@ -1100,6 +1104,12 @@ void CDBGridDlg::SortColumn(bool bAscending)
 			if(fld.fdec!=0 || fld.flen>=9 || sort_fldtyp=='F') sort_fldtyp=0; //use atof()
 		}
 		else if(sort_fldtyp!='M') sort_fldtyp='C';
+
+		if(!sort_pdb->IsMapped()) {
+		   if(m_sort_lenfldbuf<sort_fldlen)
+			   VERIFY(m_sort_pfldbuf=(LPBYTE)realloc(m_sort_pfldbuf, m_sort_lenfldbuf=sort_fldlen));
+		   sort_pfldbuf=m_sort_pfldbuf;
+		}
 
 		std::stable_sort(m_vRecno.begin(),m_vRecno.end(),sort_compare);
 	}
@@ -1337,15 +1347,14 @@ void CDBGridDlg::OpenMemo(DWORD nRec, UINT nFld)
 
 	if(app_pShowDlg && app_pShowDlg->IsRecOpen(m_pShp,nRec)) {
 		if(m_uPromptRec!=nRec && !m_pShp->m_bDupEditPrompt && m_pShp->IsEditable() && !m_pShp->IsFldReadOnly(nFld)) {
-			char label[80];
-			CMsgCheck dlg(IDD_MSGEXTENT,
-				"NOTE: This record is also the highlighted item in the Selected Points window. "
-				"While that's the case, any changes you make to a memo field are provisional and "
+			CString s;
+			if(MsgCheckDlg(m_hWnd,MB_OK,
+				"NOTE: This record is also the highlighted item in the Selected Points window.\n"
+				"While that's the case, any changes you make to a memo field are provisional and\n"
 				"won't affect the table display until edits made to the record are committed.",
-				m_pShp->GetRecordLabel(label,80,nRec),
-				"Don't display this again for this shapefile.");
-			dlg.DoModal();
-			if(dlg.m_bNotAgain) m_pShp->m_bDupEditPrompt=true;
+				m_pShp->GetTitleLabel(s,nRec),
+				"Don't display this again for this shapefile."))
+				m_pShp->m_bDupEditPrompt=true;
 			m_uPromptRec=nRec;
 		}
 		app_pShowDlg->OpenMemo(nFld);
@@ -1510,11 +1519,7 @@ void CDBGridDlg::AddToSelected(bool bReplace)
 		CShpLayer::Sort_Vec_ShpRec(CLayerSet::vec_shprec_srch);
 	}
 
-	//This only prints message if size is exceeded --
-	if(!pDoc->ReplaceVecShprec()) {
-		ASSERT(0); //already tested capacity!
-		return;
-	}
+	pDoc->ReplaceVecShprec();
 
 	//The above has reset selected record flags and refreshed table.
 
@@ -1995,12 +2000,10 @@ static bool CheckExistence(CShpLayer *pShp,VEC_BADLINK &vBL)
 {
 	//return false if the full replacement path is bad OR (the replacement path is good AND the broken path is good)!
 	char fullpath[MAX_PATH];
-	CString badRelPath;
 	bool bRet=true;
 	for(VEC_BADLINK::const_iterator it=vBL.begin();it!=vBL.end();it++)
 	{
-		badRelPath.SetString(it->pBrok,it->szBrok);
-		pShp->GetFullFromRelative(fullpath,badRelPath);
+		pShp->GetFullFromRelative(fullpath,it->sBrok);
 		if(!_access(fullpath,0)) {
 			bRet=false;
 		}
@@ -2013,12 +2016,22 @@ static bool CheckExistence(CShpLayer *pShp,VEC_BADLINK &vBL)
 }
 #endif
 
-static UINT GetBadPathnames(int fcn,LINK_PARAMS &lp,LPCSTR pShpPath,LPSTR pStart)
-{
+static UINT GetBadPathnames(int fcn,LINK_PARAMS &lp,LPCSTR pShpPath,LPCSTR pMemo)
+{   
+	//Count or retrieve bad links in string pMemo.
+	//Called only from BadLinkSearch(int fcn, LINK_PARAMS &lp) --
+	//
+	//if(!fcn) return count only;
+	//if(fcn==-2) index for log file only
+	//else push_back BADLINKs in lp.vBL
+
+	//lp.nLinkPos incremented for each link found, return count of bad links
+
+	bool bLocal=!CDBTData::IsTextIMG(pMemo);
 	char fpath[_MAX_PATH];
 	UINT count=0;
-	LPSTR pEnd;
-	bool bLocal=(*pStart=='<');
+	LPCSTR pEnd;
+	LPCSTR pStart=pMemo;
 
 	try {
 		while(true) {
@@ -2039,24 +2052,28 @@ static UINT GetBadPathnames(int fcn,LINK_PARAMS &lp,LPCSTR pShpPath,LPSTR pStart
 				if(!pEnd) pEnd=pStart+strlen(pStart);
 			}
 			if(pEnd-pStart<_MAX_PATH) {
-				//valid link was found and tested --
+				//Link was found --
 				lp.nLinkPos++; //total links
 				CString path;
 				path.SetString(pStart,pEnd-pStart);
 				path.Replace('/','\\');
 				if(!GetFullFromRelative(fpath,path,pShpPath) || _access(fpath,0)) {
+				    //Bad link found --
 					count++;
-						//save path as stored in memo (normally a relative path)
 					if(fcn) {
 						if(fcn==-2) {
 							//update log index --
 							char keybuf[256];
-							VERIFY(0==CDBGridDlg::m_trx.InsertKey(trx_Stccp(keybuf,path)));
+							VERIFY(0==CDBGridDlg::m_trx.InsertKey(trx_Stncp(keybuf,path,256)));
 						}
 						else {
-							lp.vBL.push_back(BADLINK(pStart,pEnd-pStart));
+							//save path as stored in memo (normally a relative path),
+							//along with its relative position in memo  --
+							ASSERT(fcn==1 || fcn==-1);
+							lp.vBL.push_back(BADLINK(pMemo,pStart,pEnd-pStart));
 						}
 					}
+					//else only counting
 				}
 			}
 
@@ -2073,13 +2090,14 @@ static UINT GetBadPathnames(int fcn,LINK_PARAMS &lp,LPCSTR pShpPath,LPSTR pStart
 
 BOOL CDBGridDlg::BadLinkSearch(int fcn, LINK_PARAMS &lp)
 {
-	//fcn=-1 -
-	//fcn=0  - return total broken links (lp.nNew will have link total, lp.nRow=row of first bad link)
-	//fcn=1  - find next row with bad links and rtn count, return 1st link in (CString *)lParam
-	//fcn=2  - 
+	//fcn=-1 - lp.nRow=0, called when Select All button pressed
+	//fcn=-2 - lp.nRow=0, called from OnBnClickedCreateLog()
+	//fcn=0  - lp.nRow=0, return total broken links (lp.nNew will have link total, lp.nRow=row of first bad link)
+	//fcn=1  - lp.nRow++,  find next row with bad links and return count
+	//fcn=2  - lp.nNew=links to update, should return TRUE, lp.nNew=0 after call
 
-	static LPSTR pMemo=0;
-	static UINT dbtrec=0;
+	LPCSTR pMemo;
+	UINT dbtrec;
 
 	if(fcn<2) {
 		lp.vBL.clear();
@@ -2093,13 +2111,6 @@ BOOL CDBGridDlg::BadLinkSearch(int fcn, LINK_PARAMS &lp)
 
 			UINT uDataLen=0; //get complete memo
 			if(!dbtrec || !(pMemo=m_pdbfile->dbt.GetText(&uDataLen,dbtrec))) continue;
-
-			if(!CDBTData::IsTextIMG(pMemo)) {
-				//Skip if no local file links --
-				if(!(pMemo=strstr(pMemo,CShpLayer::lpstrFile_pfx)))
-					continue;
-				//contains "<file://"
-			}
 
 			if(!fcn) lp.nNew++; //count of total records with links
 
@@ -2122,40 +2133,40 @@ BOOL CDBGridDlg::BadLinkSearch(int fcn, LINK_PARAMS &lp)
 		ASSERT(!badcount || fcn<=0);
 		return badcount;
 	}
-	else {
-		ASSERT(fcn==2);
 
-		#ifdef _DEBUG
-		if(!CheckExistence(m_pShp,lp.vBL)) {
-			return FALSE;
-		}
-		#endif
+	ASSERT(fcn==2);
 
-		ASSERT(lp.nNew && lp.nRec==m_pdb->Position());
-		ASSERT(dbtrec==CDBTFile::RecNo((LPCSTR)m_pdb->FldPtr(lp.nFld)));
-		ASSERT(pMemo);
-		CString sMemo,sPart;
-		LPCSTR p0=pMemo;
-		for(VEC_BADLINK::const_iterator it=lp.vBL.begin();it!=lp.vBL.end();it++) {
-			if(it->sRepl.IsEmpty()) continue;
-			sPart.SetString(p0,it->pBrok-p0);
-			sMemo+=sPart;
-			sMemo+=it->sRepl;
-			p0=it->pBrok+it->szBrok;
-		}
-		sMemo+=p0;
-		VERIFY(!m_pdb->Go(lp.nRec));
-		EDITED_MEMO memo;
-		memo.bChg=1;
-		memo.recNo=dbtrec;
-		memo.recCnt=EDITED_MEMO::GetRecCnt(lp.vBLszMemo); //originally set to zero with comment "not used"!
-		memo.pData=(LPSTR)(LPCSTR)sMemo;
-		CDBTFile::SetRecNo((LPSTR)m_pdb->FldPtr(lp.nFld),m_pdbfile->dbt.PutText(memo));
-		m_pdbfile->dbt.FlushHdr();
-		return TRUE;
+	#ifdef _DEBUG
+	if(!CheckExistence(m_pShp,lp.vBL)) {
+		return FALSE;
 	}
+	#endif
 
-	return FALSE;
+	ASSERT(lp.nNew && lp.nRec==m_pdb->Position());
+	dbtrec=CDBTFile::RecNo((LPCSTR)m_pdb->FldPtr(lp.nFld));
+	UINT uDataLen=0; //get complete memo
+	if(!dbtrec || !(pMemo=m_pdbfile->dbt.GetText(&uDataLen,dbtrec))) {
+		ASSERT(0); //should be impossible
+		return FALSE;
+	}
+	CString sMemo,sPart;
+	LPCSTR p0=pMemo;
+	for(VEC_BADLINK::const_iterator it=lp.vBL.begin();it!=lp.vBL.end();it++) {
+		if(it->sRepl.IsEmpty()) continue;
+		sPart.SetString(p0,pMemo+it->nBrokOff-p0);
+		sMemo+=sPart;
+		sMemo+=it->sRepl;
+		p0=pMemo+it->nBrokOff+it->sBrok.GetLength();
+	}
+	sMemo+=p0;
+	VERIFY(!m_pdb->Go(lp.nRec));
+	EDITED_MEMO memo;
+	memo.bChg=1;
+	memo.recNo=dbtrec;
+	memo.recCnt=EDITED_MEMO::GetRecCnt(lp.vBLszMemo); //originally set to zero with comment "not used"!
+	memo.pData=(LPSTR)(LPCSTR)sMemo;
+	CDBTFile::SetRecNo((LPSTR)m_pdb->FldPtr(lp.nFld),m_pdbfile->dbt.PutText(memo));
+	return m_pdbfile->dbt.FlushHdr(); //error msg if false
 }
 
 void CDBGridDlg::OnLinkTest()
@@ -2172,34 +2183,6 @@ void CDBGridDlg::OnLinkTest()
 		//ASSERT(!IsFlagged(m_vRecno));
 		SetListRedraw(1);
 	}
-
-	/*
-	if(!CheckShowDlg()) return;
-
-	if(app_pShowDlg && app_pShowDlg->NumSelected()==1 && m_pShp->IsRecSelected(dlg.m_lp.nRec)) {
-		//should alse select item
-		app_pShowDlg->BringWindowToTop();
-		return;
-	}
-
-	ASSERT(!CLayerSet::vec_shprec_srch.size());
-	CLayerSet::vec_shprec_srch.clear();
-	CLayerSet::vec_shprec_srch.push_back(SHPREC(m_pShp,dlg.m_lp.nRec));
-
-	//This only prints message if size is exceeded --
-	if(!m_pShp->m_pDoc->ReplaceVecShprec()) {
-		ASSERT(0); //already tested capacity!
-		return;
-	}
-
-	//The above has reset selected record flags and refreshed table.
-
-	if(!app_pShowDlg)
-		app_pShowDlg=new CShowShapeDlg(m_pShp->m_pDoc);
-	else
-		app_pShowDlg->ReInit(m_pShp->m_pDoc);
-  */
-
 }
 
 bool CDBGridDlg::IsPtOpen(DWORD rec)
@@ -2309,39 +2292,15 @@ void CDBGridDlg::OnUndeleteRecords()
 	DeleteRecords(false);
 }
 
-void CDBGridDlg::OnCopySelected(UINT id)
+void CDBGridDlg::CopySelected(CShpLayer *pLayer,LPBYTE pSrcFlds,BOOL bConfirm)
 {
-	ASSERT(id<ID_APPENDLAYER_N);
-
-	CShpLayer *pLayer=(CShpLayer *)CLayerSet::vAppendLayers[id-ID_APPENDLAYER_0];
-	ASSERT(pLayer);
-
-	if(pLayer->m_bDragExportPrompt) {
-		CString msg;
-		msg.Format("\n\nAre you sure you want to append %u record%s to %s?",
-			m_nSelCount,(m_nSelCount>1)?"s":"",pLayer->Title());
-		CMsgCheck dlg(IDD_MSGCHECK,msg);
-		if(IDOK!=dlg.DoModal()) return;
-		pLayer->m_bDragExportPrompt=(dlg.m_bNotAgain==FALSE);
-	}
-
-	ASSERT(pLayer->CanAppendShpLayer(m_pShp));
-
-	BYTE bSrcFlds[256];
-	LPBYTE pSrcFlds=NULL;
-	BOOL bConfirm=0; //0,1,2
-	if(!pLayer->m_pdb->FieldsMatch(m_pdb)) {
-		if(!(bConfirm=pLayer->ConfirmAppendShp(m_pShp,pSrcFlds=bSrcFlds)))
-			return;
-	}
-
 	BeginWaitCursor();
-	bool bWaiting=true;
 	bool bUpdateLocFlds=pLayer->HasLocFlds() &&
 		(bConfirm>1 || !pLayer->IsSameProjection(m_pShp));
 
 	UINT nCopied=0;
 	TRUNC_DATA td;
+	m_csCopyMsg.Empty();
 
 	POSITION pos = m_list.GetFirstSelectedItemPosition();
 	while(pos)	{
@@ -2357,20 +2316,19 @@ void CDBGridDlg::OnCopySelected(UINT id)
 		}
 		ASSERT(rec==pLayer->m_nNumRecs && rec==pLayer->m_pdb->NumRecs());
 		nCopied++;
+		if(!(nCopied%100) && m_pCopySelectedDlg) {
+			if(!m_pCopySelectedDlg->ShowCopyProgress(nCopied)) break;
+		}
 	}
+	VERIFY(!pLayer->m_pdb->Flush());
 
-	if(pLayer->m_pdb->Flush()) {
-		EndWaitCursor();
-		bWaiting=false;
-		AfxMessageBox("Error updating DBF component. Disk may be full!");
-	}
-	else {
-		pLayer->m_bEditFlags|=SHP_EDITADD;
-		pLayer->SaveShp();
-		pLayer->UpdateSizeStr();
-		if(hPropHook && pLayer->m_pDoc==pLayerSheet->GetDoc())
-			pLayerSheet->RefreshListItem(pLayer);
-	}
+	if(pLayer->HasMemos())
+	  VERIFY(pLayer->m_pdbfile->dbt.FlushHdr());
+	pLayer->m_bEditFlags|=SHP_EDITADD;
+	pLayer->SaveShp();
+	pLayer->UpdateSizeStr();
+	if(hPropHook && pLayer->m_pDoc==pLayerSheet->GetDoc())
+		pLayerSheet->RefreshListItem(pLayer);
 	pLayer->m_pDoc->LayerSet().UpdateExtent();
 	pLayer->m_pDoc->RefreshViews(); //required for new points to be selectable
 
@@ -2378,15 +2336,50 @@ void CDBGridDlg::OnCopySelected(UINT id)
 	if(pLayer->m_pdbfile->nUsers>1)
 		pLayer->UpdateDocsWithPoint(pLayer->m_nNumRecs);
 
-	if(bWaiting) {
-		EndWaitCursor();
-		CString s;
-		if(td.count) {
-			s.Format("\n\nCAUTION: %u field values were truncated, the first being field %s of record %u.",
-				td.count,pLayer->m_pdb->FldNamPtr(td.fld),td.rec);
-		}
-		CMsgBox("%u item%s successfully copied to %s.%s",nCopied,(nCopied==1)?"":"s",pLayer->Title(),(LPCSTR)s);
+	EndWaitCursor();
+
+	m_csCopyMsg.Format("%u item%s successfully copied to %s.",nCopied,(nCopied==1)?"":"s",pLayer->Title());
+	if(td.count) {
+		m_csCopyMsg.AppendFormat("\n\nCAUTION: %u field values were truncated, the first being field %s of record %u.",
+			td.count,pLayer->m_pdb->FldNamPtr(td.fld),td.rec);
 	}
+}
+
+void CDBGridDlg::OnCopySelected(UINT id)
+{
+	ASSERT(id<ID_APPENDLAYER_N);
+
+	CShpLayer *pLayer=(CShpLayer *)CLayerSet::vAppendLayers[id-ID_APPENDLAYER_0];
+	ASSERT(pLayer);
+
+	if(pLayer->m_bDragExportPrompt) {
+		CString msg;
+		msg.Format("Are you sure you want to append %u record%s to %s?",m_nSelCount,(m_nSelCount>1)?"s":"",pLayer->Title());
+		int i=MsgCheckDlg(m_hWnd,MB_OKCANCEL,msg,m_pShp->Title(),"Don't ask me this again for this target");
+		if(!i) return;
+		pLayer->m_bDragExportPrompt=(i==1);
+	}
+
+	ASSERT(pLayer->CanAppendShpLayer(m_pShp));
+
+	BYTE bSrcFlds[256];
+	LPBYTE pSrcFlds=NULL;
+	BOOL bConfirm=0; //0,1,2
+	if(!pLayer->m_pdb->FieldsMatch(m_pdb)) {
+		if(!(bConfirm=pLayer->ConfirmAppendShp(m_pShp,pSrcFlds=bSrcFlds)))
+			return;
+	}
+
+	if(m_nSelCount>=5000) {
+		CCopySelectedDlg dlg(pLayer,pSrcFlds,bConfirm,m_nSelCount,this);
+		m_pCopySelectedDlg=&dlg;
+		dlg.DoModal();
+	}
+	else {
+		m_pCopySelectedDlg=NULL;
+		CopySelected(pLayer, pSrcFlds, bConfirm);
+	}
+	if(!m_csCopyMsg.IsEmpty()) AfxMessageBox(m_csCopyMsg);
 }
 
 LRESULT CDBGridDlg::OnCommandHelp(WPARAM wNone, LPARAM lParam)

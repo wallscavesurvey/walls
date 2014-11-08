@@ -2481,15 +2481,11 @@ void CWallsMapView::EditShape(int x,int cx,int y,int cy)
 
 	ASSERT(nPts==vec_shprec.size());
 
-	if(pDoc->ReplaceVecShprec()) {
-		//also resets selected record flags
-		if(!app_pShowDlg)
-			VERIFY(app_pShowDlg==new CShowShapeDlg(pDoc));
-		else app_pShowDlg->ReInit(pDoc);
-	}
-	else {
-		ASSERT(0);
-	}
+	pDoc->ReplaceVecShprec();
+	//also resets selected record flags
+	if(!app_pShowDlg)
+		VERIFY(app_pShowDlg==new CShowShapeDlg(pDoc));
+	else app_pShowDlg->ReInit(pDoc);
 }
 
 void CWallsMapView::OnEditShape()
@@ -2519,9 +2515,6 @@ void CWallsMapView::OnFindlabel()
 	CAdvSearchDlg dlg(pDoc,AfxGetMainWnd());
 
 	if(IDOK==dlg.DoModal()) {
-
-		//pDoc->ReplaceVecShprec();
-
 		if(!app_pShowDlg) {
 			VERIFY(app_pShowDlg==new CShowShapeDlg(pDoc));
 		}

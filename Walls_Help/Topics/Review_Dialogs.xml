@@ -1,0 +1,44 @@
+﻿<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Review Dialogs</title>
+  <keywords>
+    <keyword translate="true">Review Dialogs</keyword>
+  </keywords>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Review Dialogs</text></para>
+    </header>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">The review dialog is a series of tabbed pages that allow you to examine the compiled results of any portion of your project. &#160;It is made active immediately after a compilation, or whenever the </text><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">Review</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> button is clicked while a previously compiled project tree branch is selected.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">The </text><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">Geometry</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> page allows examination of those parts of the network relevant to data screening: &#160;connected components, loop systems within a component, and traverses within a loop system.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">The </text><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">Traverse</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> page</text><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">&#32;</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">lists the vectors in a selected traverse along with suggested corrections and other statistics. Like the Geometry page, it is most useful during data screening.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">The </text><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">Map</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> page has a &quot;preview map&quot; that highlights the selected system and traverse. &#160;Here you can zoom to an area of interest and rapidly generate maps for the screen and printer. For more precise scaling, the Scale and Position dialog can be invoked.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">The </text><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">Page Layout</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> page displays an image of the map that will be printed at the current view and printer settings. &#160;It also displays the contents of adjacent view frames and allows you to generate multi-page plots.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">The </text><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">Segments</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> page is used to assign map attributes for selected portions of the data, such as vector coloring. &#160;Manipulation of the segment tree also allows you to specify portions to be excluded from maps, statistical summaries, coordinate listings, and several kinds of exported data.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">Please Note:</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> The kind of length unit (feet or meters) displayed on these pages and in related dialogs is in most cases determined by a property setting for the compiled branch at the time the Review dialog window is opened. &#160;The default units are meters. &#160;(See </text><link displaytype="text" defaultstyle="true" type="topiclink" href="General_Page" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Properties: General Page</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">.)</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">For more information, please review the following topics in turn:</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Geometry_page" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Geometry Page</link></para>
+    <para style="tabstops:24px left ;"><tab /><link displaytype="text" defaultstyle="true" type="topiclink" href="TraverseChainBehavior" style="font-family:Arial; font-size:9pt; color:#007f00;" translate="true">Floating Traverse Chains</link></para>
+    <para style="tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Traverse_page" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Traverse Page</link></para>
+    <para style="tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Map_Page" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Map Page</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Position_and_Scale_dialog" styleclass="Normal" translate="true">Scale and Position Dialog</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Grid_Intervals" styleclass="Normal" translate="true">Grid Intervals Dialog</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Style_of_Wall_Drawing" styleclass="Normal" translate="true">Passage Display Options Dialog</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Map_Format_Options" styleclass="Normal" translate="true">Map Format Options Dialog</link></para>
+    <para style="tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Page_Layout_Page" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Page Layout Page</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Page_Offsets_Dialog" styleclass="Normal" translate="true">Page Offsets Dialog</link></para>
+    <para style="text-indent:-24px; margin-left:24px; tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Segment_Page" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Segments Page</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Color_dialog" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Color Selection Palettes</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">&#32;</text></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Color_Gradients" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Color Gradient Dialog</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Adjusted_Totals" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Adjusted Totals Dialog</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Flag_and_Marker_Symbols" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Flag and Marker Symbols</link></para>
+    <para style="tabstops:24px left ;"></para>
+  </body>
+</topic>

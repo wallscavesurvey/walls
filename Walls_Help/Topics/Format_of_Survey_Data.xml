@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Survey Data Format</title>
+  <keywords>
+    <keyword translate="true">Format of Survey Data</keyword>
+  </keywords>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Survey Data Format</text></para>
+    </header>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">The following topics cover the Walls data file format. &#160;(For a description of the text editor you&apos;ll normally use to enter data, see </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Survey_Text_Editor" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Survey Text Editor</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">.) The </text><link displaytype="text" defaultstyle="true" type="topiclink" href="project_script_file" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">project script files</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">, which connect data files in a hierarchical relationship, are not described here in detail since the program maintains them automatically. &#160;New users will want to examine these topics in sequence by using the browse buttons (&quot;&lt;&lt;&quot; and &quot;&gt;&gt;&quot;) at the top of this window.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="SRV_Files" styleclass="Normal" translate="true">SRV Files - Overview</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Vector_Data_Lines" styleclass="Normal" translate="true">Vector Data Lines</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Units_Directive" styleclass="Normal" translate="true">#Units Directive</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="SEG_Directives" styleclass="Normal" translate="true">#Segment Directive</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="FIX_Directive" styleclass="Normal" translate="true">#FIX Directive</link><text styleclass="Normal" style="font-weight:normal;" translate="true">&#32;</text><text styleclass="Normal" style="font-weight:normal; color:#800000;" translate="true">(Updated)</text></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Prefix_Directive" styleclass="Normal" translate="true">#Prefix Directive</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="_Note_Directive" styleclass="Normal" translate="true">#Note Directive</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Flag_Directive." styleclass="Normal" translate="true">#Flag and #Symbol Directives</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="_DATE_Directive" styleclass="Normal" translate="true">#DATE Directive</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Block_Comments" styleclass="Normal" translate="true">Block Comments (#[ and #])</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Variance_Assignments" styleclass="Normal" translate="true">Variance Assignments</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="DefiningandUsingMacros" styleclass="Normal" translate="true">Defining and Using Macros</link></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"></para>
+  </body>
+</topic>

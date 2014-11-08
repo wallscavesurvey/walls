@@ -298,7 +298,7 @@ bool CImageViewDlg::DenyClose(BOOL bForceClose /*=FALSE*/)
 {
 	if(!m_bChanged) return false;
 
-	int id=m_pShp->SaveDiscardCancel(m_memo,bForceClose);
+	int id=m_pShp->ConfirmSaveMemo(m_hWnd,m_memo,bForceClose);
 
 	if(id==IDYES) {
 		//save
@@ -960,8 +960,8 @@ void CImageViewDlg::OnOK()
 		bool bZoom=false,bNew=false;
 		if(id>=0) {
 			//exists as layer at tree position id
-			int i=CMsgBox(MB_YESNOCANCEL,"This file already exists as a layer. "
-				"Do you want to zoom to its image? Select NO to open it as a separate document.");
+			int i=AfxMessageBox("This file already exists as a layer. "
+				"Do you want to zoom to its image? Select NO to open it as a separate document.",MB_YESNOCANCEL);
 			if(i==IDCANCEL) {
 				goto _exit;
 			}
@@ -1039,8 +1039,9 @@ void CImageViewDlg::OnCancel()
 {
 	if(m_bChanged) {
 		CString title;
-		int id=CMsgBox(MB_ICONQUESTION|MB_YESNOCANCEL,"%s\n\nYou've made changes to the image collection. "
-			"Do you want to save the changes before exiting?",m_pShp->GetMemoTitle(title,m_memo));
+		CString msg;
+		msg.Format("%s\n\nYou've made changes to the image collection.  Save them before exiting?",m_pShp->GetMemoTitle(title,m_memo));
+		int id=MsgYesNoCancelDlg(m_hWnd,msg,m_pShp->Title(),"Save","Discard Changes","Continue Editing");
 		if(id==IDCANCEL) return;
 		if(id==IDYES && m_pShp->SaveAllowed(1))
 			SaveImageData();

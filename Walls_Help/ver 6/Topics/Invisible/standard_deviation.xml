@@ -1,0 +1,6 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">standard deviation</title>
+  <body>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The </text><text styleclass="Normal" style="font-weight:bold;" translate="true">standard deviation</text><text styleclass="Normal" translate="true"> is the square root of either the theoretical </text><text styleclass="Normal" style="font-style:italic;" translate="true">variance</text><text styleclass="Normal" translate="true">, or the </text><text styleclass="Normal" style="font-style:italic;" translate="true">sample variance</text><text styleclass="Normal" translate="true">, in which case it measures the degree of scatter in a set of observed values about their mean. &#160;Since it has the same units as that of an observation, it is often used as an indicator of instrument or measurement precision. &#160;In a normal (bell curve) distribution, about 68% of the values lie within one standard deviation of the mean.</text></para>
+  </body>
+</topic>

@@ -8,6 +8,7 @@
 #include "PromptPath.h"
 #include "filecfg.h"
 #include <trx_str.h>
+#include <trxfile.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -23,6 +24,10 @@ static LPCSTR dbf_fldname[] =
 	"QUADRANGLE",
 	"DEPTH_SRV",
 	"LENGTH_SRV",
+#ifdef _USE_EXP
+	"DEPTH_EXP",
+	"LENGTH_EXP",
+#endif
 	"AESTHETIC",
 	"ARCHAEO",
 	"BAD_AIR",
@@ -54,6 +59,10 @@ enum {
 	f_quadrangle,
 	f_depth,
 	f_length,
+#ifdef _USE_EXP
+	f_depth_exp,
+	f_length_exp,
+#endif
 	f_aesthetic,
 	f_archeological,
 	f_bad_air,
@@ -72,212 +81,136 @@ enum {
 	f_longitude
 };
 
-
-//MDB All Types Fields --
+//MDB tss_longdeep fields --
 enum {
-	F_TSSID_A,
-	F_TSS_NAME_A,
-	F_OTHER_NAME_A,
-	F_TYPE_A,
-	F_COUNTY_A,
-	F_QUADRANGLE_A,
-	F_DEPTH_A,
-	F_LENGTH_A,
-	F_LENGTH_TYPE_A,
-	F_AESTHETIC_A,
-	F_ARCHEOLOGICAL_A,
-	F_BAD_AIR_A,
-	F_BIOLOGICAL_A,
-	F_ENDANGERED_SP_A,
-	F_GEOLOGICAL_A,
-	F_HISTORICAL_A,
-	F_HYDROLOGICAL_A,
-	F_PALEONTOLOGICAL_A,
-	F_RUMORED_A,
-	F_MAPPED_A,
-	F_PHOTOGRAPHED_A,
-	F_LOCATED_A,
-	F_LATITUDE_A,
-	F_LONGITUDE_A
+	F_LONG_DEEP_ID,
+	F_LD_TSSID,
+	F_LD_CAVE_NAME,
+	F_LD_CAVE_COUNTY,
+	F_LD_CAVE_LENGTH,
+	F_LD_LENGTH_TYPE,
+	F_LD_CAVE_DEPTH
 };
 
-static LPCSTR mdb_fldnameA[]={
-	"TSSID",
-	"TSS_Name",
-	"Other_Name",
-	"Type",
-	"County",
-	"Quadrangle",
-	"Depth",
-	"Length",
-	"Length_Type",
-	"Aesthetic",
-	"Archeological",
-	"Bad_Air",
-	"Bats",
-	"Biological",
-	"Endangered_Sp",
-	"Geological",
-	"Historical",
-	"Hydrological",
-	"Paleontological",
-	"Rumored",
-	"Mapped",
-	"Photographed",
-	"Located",
-	"Latitude",
-	"Longitude"
+static LPCSTR mdb_fldnameLD[]={
+	"longdeep_id",
+	"ld_tssid",
+	"ld_cave_name",
+	"ld_cave_county",
+	"ld_cave_length",
+	"ld_cave_length_type",
+	"ld_cave_depth"
 };
 
-#define NUM_MDB_FIELDS_A (sizeof(mdb_fldnameA)/sizeof(LPCSTR))
-static int mdb_fldnumA[NUM_MDB_FIELDS_A];
-static int mdb_fldsrcA[NUM_MDB_FIELDS_A] = {
-	f_tssid,
-	f_name,
-	f_other_name,
-	f_type,
-	f_county,
-	f_quadrangle,
-	f_depth,
-	f_length,
-	-1,
-	f_aesthetic,
-	f_archeological,
-	f_bad_air,
-	f_bats,
-	f_biological,
-	f_endangered_sp,
-	f_geological,
-	f_historical,
-	f_hydrological,
-	f_paleontological,
-	f_rumored,
-	f_maps,
-	f_photos,
-	-2,
-	f_latitude,
-	f_longitude
-};
+#define NUM_MDB_FIELDS_LD (sizeof(mdb_fldnameLD)/sizeof(LPCSTR))
+static int mdb_fldnumLD[NUM_MDB_FIELDS_LD];
 
-//Statistics fields --
+//MDB tss_county_totals fields --
 enum {
-	F_DB_DATE_S,
-	F_DB_RECORDS_S,
-	F_CAVES_S,
-	F_SINKS_CAVITIES_S,
-	F_SHELTERS_S,
-	F_SPRINGS_S,
-	F_UNDEFINED_S,
-	F_RUMORED_S,
-	F_AESTHETIC_S,
-	F_ARCHEOLOGICAL_S,
-	F_BAD_AIR_S,
-	F_BATS_S,
-	F_BIOLOGICAL_S,
-	F_ENDANGERED_SP_S,
-	F_GEOLOGICAL_S,
-	F_HISTORICAL_S,
-	F_HYDROLOGICAL_S,
-	F_PALEONTOLOGICAL_S,
-	F_COUNTIES_S,
-	F_LOCATED_S,
-	F_TOPO_ONLY_S,
-	F_UNLOCATED_S,
-	F_MAPPED_S,
-	F_PHOTOGRAPHED_S
+	F_CT_COUNTY_TOTALS_ID,
+	F_CT_COUNTY_NAME,
+	F_CT_CAVE_COUNT,
+	F_CT_SINK_FEATURE_COUNT,
+	F_CT_SHELTER_COUNT,
+	F_CT_SPRING_COUNT,
+	F_CT_UNDEFINED_COUNT,
+	F_CT_COUNTY_TOTAL
+};
+
+static LPCSTR mdb_fldnameCT[]={
+	"county_totals_id",
+	"county_name",
+	"cave_count",
+	"sink_feature_count",
+	"shelter_count",
+	"spring_count",
+	"undefined_count",
+	"county_total"
+};
+
+#define NUM_MDB_FIELDS_CT (sizeof(mdb_fldnameCT)/sizeof(LPCSTR))
+static int mdb_fldnumCT[NUM_MDB_FIELDS_CT];
+
+//tss_statistics fields --
+enum {
+	F_ST_STATISTICS_ID,
+	F_ST_DATABASE_DATE,
+	F_ST_DATABASE_RECORDS,
+	F_ST_CAVE_COUNT,
+	F_ST_SINK_FEATURE_COUNT,
+	F_ST_SHELTER_COUNT,
+	F_ST_SPRING_COUNT,
+	F_ST_UNDEFINED_COUNT,
+	F_ST_RUMORED_COUNT,
+	F_ST_AESTHETIC_COUNT,
+	F_ST_ARCHEOLOGICAL_COUNT,
+	F_ST_BAD_AIR_COUNT,
+	F_ST_BAT_CAVE_COUNT,
+	F_ST_BIOLOGICAL_COUNT,
+	F_ST_ENDANGERED_COUNT,
+	F_ST_GEOLOGICAL_COUNT,
+	F_ST_HISTORICAL_COUNT,
+	F_ST_HYDROLOGICAL_COUNT,
+	F_ST_PALEONTOLOGICAL_COUNT,
+	F_ST_COUNTY_COUNT,
+	F_ST_LOCATION_COUNT,
+	F_ST_TOPOGRAPHIC_ONLY,
+	F_ST_LOST_CAVE_COUNT,
+	F_ST_MAPPED_COUNT,
+	F_ST_PHOTOGRAPHED_COUNT
 };
 
 static LPCSTR mdb_fldnameS[]={
-	"DB_Date",
-	"DB_Records",
-	"Caves",
-	"Sinks_Cavities",
-	"Shelters",
-	"Springs",
-	"Undefined",
-	"Rumored",
-	"Aesthetic",
-	"Archeological",
-	"Bad_Air",
-	"Bats",
-	"Biological",
-	"Endangered_Sp",
-	"Geological",
-	"Historical",
-	"Hydrological",
-	"Paleontological",
-	"Counties",
-	"Located",
-	"Topo_Only",
-	"Unlocated",
-	"Mapped",
-	"Photographed"
+	"statistics_id",
+	"database_date",
+	"database_records",
+	"cave_count",
+	"sink_feature_count",
+	"shelter_count",
+	"spring_count",
+	"undefined_count",
+	"rumored_count",
+	"aesthetic_count",
+	"archeological_count",
+	"bad_air_count",
+	"bat_cave_count",
+	"biological_count",
+	"endangered_count",
+	"geological_count",
+	"historical_count",
+	"hydrological_count",
+	"paleontological_count",
+	"county_count",
+	"location_count",
+	"topographic_only_count",
+	"lost_cave_count",
+	"mapped_count",
+	"photographed_count"
 };
 
 #define NUM_MDB_FIELDS_S (sizeof(mdb_fldnameS)/sizeof(LPCSTR))
 static int mdb_fldnumS[NUM_MDB_FIELDS_S];
 static long mdb_stats[NUM_MDB_FIELDS_S];
 
-//Deep_caves and long_caves fields --
-enum {
-	F_TSSID_D,
-	F_TSS_NAME_D,
-	F_COUNTY_D,
-	F_DEPTH_D,
-	F_LENGTH_D,
-	F_LENGTH_TYPE_D
-};
-
-static LPCSTR mdb_fldnameD[]={
-	"TSSID",
-	"TSS_Name",
-	"County",
-	"Depth",
-	"Length",
-	"Length_Type"
-};
-
-#define NUM_MDB_FIELDS_D (sizeof(mdb_fldnameD)/sizeof(LPCSTR))
-static int mdb_fldnumD[NUM_MDB_FIELDS_D];
-static int mdb_fldsrcD[NUM_MDB_FIELDS_D]={f_tssid,f_name,f_county,f_depth,f_length,-1};
-
+static UINT num_dbfRecs;
 static int num_mdb_flds;
 static LPCSTR *mdb_fldname;
 static int *mdb_fldnum;
-static int *mdb_fldsrc;
 static char pDateStr[]="yyyy_mm_dd";
 
-struct TYP_DREC {
-	TYP_DREC(float id0, float id1, UINT trec) : d0(id0), d1(id1), rec(trec) {}
-	float d0,d1;
-	UINT rec;
+static int nLongDeep=0,nDeep=0,nLong=0,nDeleted=0;
+
+struct CNTY_DATA {
+	void Clear() {nCaves=nSinks=nShelters=nSprings=nUndefined=0;}
+	WORD nCaves;
+	WORD nSinks;
+	WORD nShelters;
+	WORD nSprings;
+	WORD nUndefined;
 };
 
-/*
-struct TYP_DREC {
-	TYP_DREC(int id0, int id1, UINT trec) : d0(id0), d1(id1), rec(trec) {}
-	int d0,d1;
-	UINT rec;
-};
-*/
-
-typedef std::vector<TYP_DREC> VEC_DREC;
-typedef VEC_DREC::iterator IT_VEC_DREC;
-static VEC_DREC vDepth,vLength;
-static DWORD bufCounty[256],numCounties;
-static LPCSTR pCounty;
-static VEC_CSTR vCounty;
-static int nAll_types=0,nDeep=0,nLong=0,nDeleted=0;
-
-static int CALLBACK seq_fcn(int i)
-{
-	return _stricmp(pCounty,vCounty[i]);
-}
-
-static bool comp_drec(TYP_DREC &dr0,TYP_DREC &dr1)
-{
-	return dr1.d0<dr0.d0 || (dr1.d0==dr0.d0 && dr1.d1<dr0.d1);
-}
+static CTRXFile trx_cnty;
+static char keybuf[256];
 
 #ifdef _USE_TEMPLATE
 #define MAX_TEMPLATES	30
@@ -287,7 +220,6 @@ static int nTemplates=0,nMemoTrunc=0;
 static LPCSTR spaces=":                                                           ";
 #define LEFT_MGN 25
 
-static char keybuf[256];
 
 struct MDB_FLD {
 	CString fnam;
@@ -428,7 +360,7 @@ void CUpdateTSSDlg::DoDataExchange(CDataExchange* pDX)
 			return;
 		}
 		if(_access(m_pathDBF, 4)) {
-			CMsgBox("File %s in absent or protected.", (LPCSTR)m_pathDBF);
+			CMsgBox("File %s is absent or protected.", (LPCSTR)m_pathDBF);
 			pDX->Fail();
 			return;
 		}
@@ -437,6 +369,7 @@ void CUpdateTSSDlg::DoDataExchange(CDataExchange* pDX)
 		m_pathMDB+="TSS_DB_";
 		m_pathMDB+=pDateStr;
 		m_pathMDB+=".mdb";
+		m_pNamMDB=trx_Stpnam(m_pathMDB);
 	}
 }
 
@@ -541,7 +474,10 @@ void CUpdateTSSDlg::CloseDBF()
 		m_dbf.Close();
 	}
 	CDBFile::FreeDefaultCache();
+	trx_cnty.CloseDel(/*bDelCache=TRUE*/);
 }
+
+
 
 BOOL CUpdateTSSDlg::OpenDBF()
 {
@@ -551,15 +487,25 @@ BOOL CUpdateTSSDlg::OpenDBF()
 	}
 
 	if(m_dbf.Open(m_pathDBF,CDBFile::ReadOnly)) {
-		CMsgBox("File %s: Open failure - %s.",trx_Stpnam(m_pathDBF),m_dbf.Errstr(dbf_errno));
+		CMsgBox("File %s: Open failure - %s.",trx_Stpnam(m_pathDBF),m_dbf.Errstr());
 		CloseDBF(); //only frees cache
 		return FALSE;
 	}
+	num_dbfRecs=m_dbf.NumRecs();
+
+	CString sTemp;
+	if(!GetTempFilePathWithExtension(sTemp,"trx") || trx_cnty.Create(sTemp,sizeof(CNTY_DATA)) ||
+		   trx_cnty.AllocCache(32/*,makedef=TRUE*/)) {
+		CMsgBox("Failed to created temporary index: ",CTRXFile::Errstr());
+		goto _errExit;
+	}
+	trx_cnty.SetUnique();
+	trx_cnty.SetExact();
 
 	//Check for field IDs --
 	for(int f=0;f<NUM_DBF_FIELDS;f++) {
 		if(!(dbf_fldnum[f]=m_dbf.FldNum(dbf_fldname[f]))) {
-			CMsgBox("Required field %s not present in DBF.",dbf_fldname[f]);
+			CMsgBox("Expected field %s not present in DBF.",dbf_fldname[f]);
 			goto _errExit;
 		}
 		dbf_fldtyp[f]=m_dbf.FldTyp(dbf_fldnum[f]);
@@ -574,7 +520,7 @@ BOOL CUpdateTSSDlg::OpenDBF()
 	return TRUE;
 
 _errExit:
-	CloseDBF();  //only frees cache
+	CloseDBF(); //only frees cache
 	return FALSE;
 
 }
@@ -594,29 +540,26 @@ BOOL CUpdateTSSDlg::GetRequiredFlds()
 	num_mdb_flds=-2;
 
 	switch(m_pNamTable[4]) {
-		case 'a':
-			num_mdb_flds=NUM_MDB_FIELDS_A;
-			mdb_fldname=mdb_fldnameA;
-			mdb_fldnum=mdb_fldnumA;
-			mdb_fldsrc=mdb_fldsrcA;
+		case 'l':
+			num_mdb_flds=NUM_MDB_FIELDS_LD;
+			mdb_fldname=mdb_fldnameLD;
+			mdb_fldnum=mdb_fldnumLD;
 			break;
-		case 'd' :
-		case 'l' :
-			num_mdb_flds=NUM_MDB_FIELDS_D;
-			mdb_fldname=mdb_fldnameD;
-			mdb_fldnum=mdb_fldnumD;
-			mdb_fldsrc=mdb_fldsrcD;
+		case 'c':
+			num_mdb_flds=NUM_MDB_FIELDS_CT;
+			mdb_fldname=mdb_fldnameCT;
+			mdb_fldnum=mdb_fldnumCT;
 			break;
 		case 's':
 			num_mdb_flds=NUM_MDB_FIELDS_S;
 			mdb_fldname=mdb_fldnameS;
 			mdb_fldnum=mdb_fldnumS;
-			mdb_fldsrc=NULL;
 			break;
+		default: ASSERT(0);
 	}
 
-	if(m_rs.GetFieldCount()!=num_mdb_flds+1) {
-		CMsgBox("Table %s in template MDB does not have the required set of %u fields.",m_pNamTable,num_mdb_flds+1);
+	if(m_rs.GetFieldCount()!=num_mdb_flds) {
+		CMsgBox("Table %s in template MDB does not have the required set of %u fields.",m_pNamTable,num_mdb_flds);
 		goto _eret;
 	}
 
@@ -628,7 +571,7 @@ BOOL CUpdateTSSDlg::GetRequiredFlds()
 			CMsgBox("Table %s in template MDB is missing field %s.",m_pNamTable,mdb_fldname[n]);
 			goto _eret;
 		}
-		ASSERT(info.m_nOrdinalPosition>=1 && info.m_nOrdinalPosition<=num_mdb_flds);
+		ASSERT(info.m_nOrdinalPosition>=0 && info.m_nOrdinalPosition<num_mdb_flds);
 
 		mdb_fldnum[n]=info.m_nOrdinalPosition;
 	}
@@ -653,9 +596,9 @@ BOOL CUpdateTSSDlg::OpenMDB_Table()
 	}
 	catch (CDaoException* e)
 	{
-		// Assume failure is becauase we couldn't find the file
+		// Assume failure is becauase we couldn't find the table
 		e->Delete();
-		CMsgBox("Failure opening table %s in MDB.",m_pNamTable);
+		CMsgBox("Failure opening table %s in %s.",m_pNamTable,m_pNamMDB);
 		return FALSE;
 	}
 	if(!GetRequiredFlds()) {
@@ -895,306 +838,404 @@ static double ParseLength(CString &s, CString &sTyp)
 	return d;
 }
 
-static void SetStatFields(CDaoRecordset &m_rs)
+static bool SetStatFields(CDaoRecordset &m_rs)
 {
-	for(int col=0; col<NUM_MDB_FIELDS_S; col++) {
-		if(!col) {
-			mdb_stats[F_DB_RECORDS_S]=nAll_types;
-			m_rs.SetFieldValue(mdb_fldnum[0],pDateStr);
-			continue;
+	mdb_stats[F_ST_COUNTY_COUNT]=trx_cnty.NumRecs();
+	mdb_stats[F_ST_DATABASE_RECORDS]=num_dbfRecs;
+	m_rs.SetFieldValue(mdb_fldnum[F_ST_DATABASE_DATE],pDateStr);
+	int col=1;
+	try {
+	    for(; col<NUM_MDB_FIELDS_S; col++) {
+			if(col!=F_ST_DATABASE_DATE)
+				m_rs.SetFieldValue(mdb_fldnum[col], mdb_stats[col]);
 		}
-		m_rs.SetFieldValue(mdb_fldnumS[col], mdb_stats[col]);
+		m_rs.Update();
 	}
+	catch(CDaoException* e) {
+		CString s;
+		if(col<NUM_MDB_FIELDS_S) s.Format(" field %s of",mdb_fldname[col]);
+		CMsgBox("Error updating%s table tss_statistics: %s",(LPCSTR)s,(LPCSTR)e->m_pErrorInfo->m_strDescription);
+		e->Delete();
+		return false;
+	}
+	return true;
 }
 
-void CUpdateTSSDlg::AppendStats(CString &msg)
+bool CUpdateTSSDlg::AppendStats(BOOL bLocal,CString &msg)
 {
 	try
 	{
+		if(bLocal) {
+			m_pNamMDB=trx_Stpnam(m_pathMDB_tmp);
+			m_db.Open(m_pathMDB_tmp,TRUE,FALSE,""); //(path,exclusive,readonly,type));
+			m_rs.m_pDatabase=&m_db;
+		}
+
+		if(!OpenMDB_Table()) {
+			return false;
+		}
+
 		int iMatch=-1;
 		CString csDate;
-		m_db.Open(m_pathMDB_tmp,TRUE,FALSE,""); //(path,exclusive,readonly,type));
-		m_rs.m_pDatabase=&m_db;
-		m_rs.Open(dbOpenTable,"[tss_statistics]");
 		if(!m_rs.IsBOF()) {
 			m_rs.MoveLast();
-			GetString(csDate,m_rs,1);
-			if((iMatch=csDate.Compare(pDateStr))>1) {
-				msg.AppendFormat("\n\nCan't update statistics table in TSS_DB.mdb since the last record, dated %s, is newer than %s.",
-					(LPCSTR)csDate,pDateStr);
+			GetString(csDate,m_rs,F_ST_DATABASE_DATE);
+			if((iMatch=csDate.Compare(pDateStr))>0) {
+				msg.AppendFormat("\n\nCan't update table %s in %s since the last record that was appended, dated %s, is newer than %s.",
+					m_pNamTable,m_pNamMDB,(LPCSTR)csDate,pDateStr);
 				goto _ret;
 			}
 		}
 		else csDate="None";
-		msg.AppendFormat("\n\nConfirm: %s statistics record dated %s %s %s? (Prior record: %s)",
-			iMatch?"Copy":"Update",pDateStr, iMatch?"in":"to",trx_Stpnam(m_pathMDB_tmp),(LPCSTR)csDate);
-		if(IDYES==CMsgBox(MB_YESNO, msg)) {
+		bool bSet=true;
+		if(bLocal) {
+			CString s;
+			if(iMatch) s.Format(" (Prior record: %s)",(LPCSTR)csDate);
+			msg.AppendFormat("\n\nConfirm: %s record dated %s %s template's tss_statistics table?%s",
+				iMatch?"Copy":"Update",pDateStr, iMatch?"to":"in",(LPCSTR)s);
+	
+			bSet=(IDYES==CMsgBox(MB_YESNO, msg));
 			msg.Empty();
-			if(iMatch) m_rs.AddNew();
+		}
+		if(bSet) {
+		    if(iMatch) m_rs.AddNew();
 			else m_rs.Edit();
-			SetStatFields(m_rs);
-			m_rs.Update();
-			CMsgBox("Statistics record number %u successfully %s.",m_rs.GetRecordCount(),iMatch?"appended":"updated");
+			if(!SetStatFields(m_rs)) return false; //calls m_rs.Update() if successful
+			//if(bLocal) CMsgBox("Record dated %s successfully %s.", pDateStr, iMatch?"appended":"updated");
 		}
 		CloseMDB();
-		return;
+		return true;
 	}
 	catch (CDaoException* e)
 	{
-		AfxMessageBox(e->m_pErrorInfo->m_strDescription);
-		e->Delete();
 		if(!msg.IsEmpty()) msg+="\n\n";
-		msg.AppendFormat("No update possible: Can't open or update table tss_statistics in %s.",trx_Stpnam(m_pathMDB_tmp));
+		msg.AppendFormat("Can't open or update table tss_statistics in %s: %s.",
+			m_pNamMDB, (LPCSTR)e->m_pErrorInfo->m_strDescription);
+		e->Delete();
 	}
 
 _ret:
 	if(!msg.IsEmpty()) AfxMessageBox(msg);
-	CloseMDB();
+	return false;
 }
 
-int CUpdateTSSDlg::ScanDBF(int *mdb_fldnum,int *mdb_fldsrc,int num_mdb_fields)
+static LPCSTR FixCountyName()
 {
-    char cTyp=m_pNamTable[4];
+	_strlwr(trx_Stxpc(keybuf));
+	bool bsp=true;
+	for(LPSTR p=keybuf; *p; p++) {
+		if(*p==' ') bsp=true;
+		else {
+			if(bsp) *p=_toupper(*p);
+			bsp=false;
+		}
+	}
+	return keybuf;
+}
 
-	UINT nRecs=m_dbf.NumRecs();
+bool CUpdateTSSDlg::ScanCounties()
+{
+	CNTY_DATA cData;
+	CString errmsg("Error scanning county index.");
+	int e=trx_cnty.First();
+	try {
+		while(!e) {
+			if(trx_cnty.Get(&cData,sizeof(cData),keybuf))
+				goto _eret;
+			long total=0;
+			m_rs.AddNew();
+			m_rs.SetFieldValue(F_CT_COUNTY_NAME,FixCountyName());
+			m_rs.SetFieldValue(F_CT_CAVE_COUNT,(long)cData.nCaves); total+=cData.nCaves;
+			m_rs.SetFieldValue(F_CT_SINK_FEATURE_COUNT,(long)cData.nSinks); total+=cData.nSinks;
+			m_rs.SetFieldValue(F_CT_SHELTER_COUNT,(long)cData.nShelters); total+=cData.nShelters;
+			m_rs.SetFieldValue(F_CT_SPRING_COUNT,(long)cData.nSprings); total+=cData.nSprings;
+			m_rs.SetFieldValue(F_CT_UNDEFINED_COUNT,(long)cData.nUndefined); total+=cData.nUndefined;
+			m_rs.SetFieldValue(F_CT_COUNTY_TOTAL,total);
+			m_rs.Update();
+			e=trx_cnty.Next();
+		}
+		if(e!=CTRXFile::ErrEOF) {
+			goto _eret;
+		}
+	}
+	catch(CDaoException* e) {
+		errmsg.Format("Error appending to %s: %s.",m_pNamTable,(LPCSTR)e->m_pErrorInfo->m_strDescription);
+		e->Delete();
+		goto _eret;
+	}
+	return true;
+
+_eret:
+	AfxMessageBox(errmsg);
+	return false;
+}
+
+static bool IndexCounty(CString &csName,CNTY_DATA &cData)
+{
+	csName.MakeUpper();
+	if(csName.Compare("UNKNOWN")) {
+		trx_Stccp(keybuf, csName);
+		if(!trx_cnty.Find(keybuf)) {
+			CNTY_DATA data;
+			if(trx_cnty.GetRec(&data,sizeof(cData)))
+				return false;
+			data.nCaves+=cData.nCaves;
+			data.nSinks+=cData.nSinks;
+			data.nShelters+=cData.nShelters;
+			data.nSprings+=cData.nSprings;
+			data.nUndefined+=cData.nUndefined;
+			if(trx_cnty.PutRec(&data))
+				return false;
+		}
+		else if(trx_errno==CTRXFile::ErrMatch || trx_errno==CTRXFile::ErrEOF) {
+			if(trx_cnty.InsertKey(&cData,keybuf))
+				return false;
+		}
+		else return false;
+	}
+	return true;
+}
+
+#ifdef _USE_EXP
+struct DLX {
+	DLX(const CString &_name, double _d, double _dx) : name(_name), d(_d), dx(_dx) {}
+	CString name;
+	double d;
+	double dx;
+};
+
+typedef std::vector<DLX> VEC_DLX;
+typedef VEC_DLX::iterator IT_DLX;
+static VEC_DLX v_deep,v_long,v_longx,v_deepx;
+
+static FILE *fp;
+static bool compare_dlx(DLX &d0,DLX &d1)
+{
+	return d0.dx>d1.dx;
+}
+
+void ListCaves(VEC_DLX &v,LPCSTR msg)
+{
+	char spc[80];
+	memset(spc, '-',62);
+	spc[62]=0;
+	fprintf(fp, "\n%s\n%s\n",msg,spc);
+	std::sort(v.begin(),v.end(),compare_dlx);
+	for(IT_DLX it=v.begin(); it!=v.end(); it++) {
+		int len=36-it->name.GetLength();
+		if(len>0) memset(spc, ' ',len);	else len=0;
+		spc[len]=0;
+		fprintf(fp,"%s:%s Srv:%5.0f m  Exp:%5.0f m\n",(LPCSTR)it->name,spc,it->d,it->dx);
+	}
+}
+#endif
+
+bool CUpdateTSSDlg::ScanDBF()
+{
 	CString csVal,errmsg;
-
 	UINT nAppended=0;
-	UINT rec=0;
-	IT_VEC_DREC itdr;
-	VEC_DREC *pDR;
+	UINT rec;
 	CString csLenTyp;
+	CNTY_DATA cData;
+
 	double dLength,dDepth;
-	bool bHasQuad,bLocated;
+	bool bIncluded,bLocated;
 
-	#if 0
-	UINT maxflen=0,maxfrec=0;
-	#endif
+	for(rec=1;rec<=num_dbfRecs;rec++) {
 
-	while(1) {
+		if(m_dbf.Go(rec)) goto _errF;
+		if(m_dbf.IsDeleted()) continue;
+		cData.Clear();
 
-		if(cTyp=='a') {
-			if(!rec) {
-				ASSERT(!vCounty.size());
-				numCounties=0;
-				trx_Bininit(bufCounty,&numCounties,seq_fcn);
+		if(*(char *)m_dbf.FldPtr(dbf_fldnum[f_rumored])=='Y') {
+			mdb_stats[F_ST_RUMORED_COUNT]++;
+			continue;
+		}
+		bIncluded=false;
+		m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[f_type]);
+		if(!csVal.Compare("Cave")) {
+			mdb_stats[F_ST_CAVE_COUNT]++;
+			cData.nCaves++;
+			m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[f_length]);
+			csLenTyp.Empty();
+			dLength=ParseLength(csVal, csLenTyp);
+			m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[f_depth]);
+			dDepth=atof(csVal);
+			bIncluded=dLength>=300.0 || dDepth>=30.0;
+			if(bIncluded) {
+				nLongDeep++;
+				if(dLength>=300.0) {
+					nLong++;
+					#ifdef _USE_EXP
+					m_dbf.GetTrimmedFldStr(csVal, dbf_fldnum[f_length_exp]);
+					double d=atof(csVal);
+					if(d>dLength) {
+						m_dbf.GetTrimmedFldStr(csVal, dbf_fldnum[f_name]);
+						v_long.push_back(DLX(csVal,dLength,d));
+					}
+					#endif
+				}
+				if(dDepth>=30.0) {
+					nDeep++;
+					#ifdef _USE_EXP
+					m_dbf.GetTrimmedFldStr(csVal, dbf_fldnum[f_depth_exp]);
+					double d=atof(csVal);
+					if(d>dDepth) {
+						m_dbf.GetTrimmedFldStr(csVal, dbf_fldnum[f_name]);
+						v_deep.push_back(DLX(csVal,dDepth,d));
+					}
+					#endif
+				}
 			}
-			if(++rec>nRecs) break;
-			#if 0
-			if(rec==10097) {
-				int jj=0;
+			#ifdef _USE_EXP
+			else {
+				m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[f_length_exp]);
+				double d=atof(csVal);
+				if(d>=300.0) {
+						m_dbf.GetTrimmedFldStr(csVal, dbf_fldnum[f_name]);
+						v_longx.push_back(DLX(csVal,dLength,d));
+				}
+				m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[f_depth_exp]);
+				d=atof(csVal);
+				if(d>=30.0) {
+					m_dbf.GetTrimmedFldStr(csVal, dbf_fldnum[f_name]);
+					v_deepx.push_back(DLX(csVal,dDepth,d));
+				}
 			}
 			#endif
-			if(m_dbf.Go(rec)) goto _errF;
-			if(m_dbf.IsDeleted()) continue;
-			m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[f_type]);
-			if(!csVal.Compare("Cave")) mdb_stats[F_CAVES_S]++;
-			else if(!csVal.Compare("Sink")||!csVal.Compare("Cavity")) mdb_stats[F_SINKS_CAVITIES_S]++;
-			else if(!csVal.Compare("Shelter")) mdb_stats[F_SHELTERS_S]++;
-			else if(!csVal.Compare("Spring")) mdb_stats[F_SPRINGS_S]++;
-			else if(csVal.Find('?')>0) mdb_stats[F_UNDEFINED_S]++;
+		}
+		else {
+			if(!csVal.Compare("Sink")||!csVal.Compare("Cavity")) {
+				mdb_stats[F_ST_SINK_FEATURE_COUNT]++;
+				cData.nSinks++;
+			}
+			else if(!csVal.Compare("Shelter")) {
+				mdb_stats[F_ST_SHELTER_COUNT]++;
+				cData.nShelters++;
+			}
+			else if(!csVal.Compare("Spring")) {
+				mdb_stats[F_ST_SPRING_COUNT]++;
+				cData.nSprings++;
+			}
+			else if(csVal.Find('?')>0) {
+				mdb_stats[F_ST_UNDEFINED_COUNT]++;
+				cData.nUndefined++;
+			}
 			else continue;
-
-			if(*(char *)m_dbf.FldPtr(dbf_fldnum[f_has_spring])=='Y')
-				mdb_stats[F_SPRINGS_S]++;
-
-			m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[f_latitude]);
-			double dLat=atof(csVal);
-			m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[f_longitude]);
-			double dLon=atof(csVal);
-			bHasQuad=bLocated=true;
-			if(dLat>=32.2 && dLon<=-103.3) {
-				bLocated=false;
-			}
-		}
-		else if(cTyp!='s') {
-			if(!rec) {
-				//sort vDepth or vLength vectors --
-				pDR=(cTyp=='d')?&vDepth:&vLength;
-				std::sort(pDR->begin(),pDR->end(),comp_drec);
-				itdr=pDR->begin();
-				if(itdr==pDR->end()) break;
-			}
-			else {
-				if(++itdr==pDR->end()) break;
-			}
-			rec=itdr->rec;
-			if(m_dbf.Go(rec)) goto _errF;
 		}
 
+		if(!cData.nSprings && *(char *)m_dbf.FldPtr(dbf_fldnum[f_has_spring])=='Y') {
+			mdb_stats[F_ST_SPRING_COUNT]++;
+			cData.nSprings++;
+		}
+
+		m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[f_county]);
+		if(!IndexCounty(csVal,cData))
+			goto _errTrx;
+
+		m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[f_latitude]);
+		double dLat=atof(csVal);
+		m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[f_longitude]);
+		bLocated=(dLat<32.2 && atof(csVal)>-103.3);
+		if(bLocated) mdb_stats[F_ST_LOCATION_COUNT]++;
+		else {
+			m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[f_quadrangle]);
+			if(!csVal.IsEmpty() && csVal.CompareNoCase("Unknown")) mdb_stats[F_ST_TOPOGRAPHIC_ONLY]++;
+			else mdb_stats[F_ST_LOST_CAVE_COUNT]++;
+		}
+
+		//Now  scan relevant fields in m_dbf to accumulate additional statistics.
+		//If this a long or deep cave (bIncluded) also append new record to ld_longdeep table in m_db.
 		try {
-			m_rs.AddNew();
+			if(bIncluded) {
+				m_rs.AddNew();
+			}
 
-			if(cTyp=='s') {
-				SetStatFields(m_rs);
+			for(UINT f=0; f<NUM_DBF_FIELDS; f++) {
+				UINT fn=dbf_fldnum[f];
+				char fTyp=m_dbf.FldTyp(fn);
+
+				if(bIncluded) {
+					if(fTyp=='C') {
+						//Only four C fields in appended record --
+						if(f==f_length) {
+							if(dLength>0.0) {
+								m_rs.SetFieldValue(mdb_fldnum[F_LD_CAVE_LENGTH],dLength);
+								m_rs.SetFieldValue(mdb_fldnum[F_LD_LENGTH_TYPE],(LPCSTR)csLenTyp);
+							}
+						}
+						else if(f==f_depth) {
+							if(dDepth>0.0) {
+								m_rs.SetFieldValue(mdb_fldnum[F_LD_CAVE_DEPTH],dDepth);
+							}
+						}
+						else if(f==f_name || f==f_county || f==f_tssid) {
+							m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[f]);
+							m_rs.SetFieldValue(mdb_fldnum[(f==f_name)?F_LD_CAVE_NAME:((f==f_tssid)?F_LD_TSSID:F_LD_CAVE_COUNTY)], (LPCSTR)csVal);
+						}
+						continue;
+					}
+				}
+				//Whether appended or not, accumulate stats for two M fields and 11 L fields --
+				if(fTyp=='M') {
+					ASSERT(f==f_maps || f==f_photos);
+					if(*(LPCSTR)m_dbf.FldPtr(fn)!=' ') {
+						if(f==f_maps) mdb_stats[F_ST_MAPPED_COUNT]++;
+						else if(f==f_photos) mdb_stats[F_ST_PHOTOGRAPHED_COUNT]++;
+					}
+				}
+				else if(fTyp=='L') {
+					LPCSTR pL=(LPCSTR)m_dbf.FldPtr(fn);
+					if(*pL=='Y' || *pL=='T') {
+						switch(f) {
+							case f_rumored : mdb_stats[F_ST_RUMORED_COUNT]++; break;
+							case f_aesthetic : mdb_stats[F_ST_AESTHETIC_COUNT]++; break;
+							case f_archeological : mdb_stats[F_ST_ARCHEOLOGICAL_COUNT]++; break;
+							case f_bad_air : mdb_stats[F_ST_BAD_AIR_COUNT]++; break;
+							case f_bats : mdb_stats[F_ST_BAT_CAVE_COUNT]++; break;
+							case f_biological : mdb_stats[F_ST_BIOLOGICAL_COUNT]++; break;
+							case f_endangered_sp : mdb_stats[F_ST_ENDANGERED_COUNT]++; break;
+							case f_geological : mdb_stats[F_ST_GEOLOGICAL_COUNT]++; break;
+							case f_historical : mdb_stats[F_ST_HISTORICAL_COUNT]++; break;
+							case f_hydrological : mdb_stats[F_ST_HYDROLOGICAL_COUNT]++; break;
+							case f_paleontological : mdb_stats[F_ST_PALEONTOLOGICAL_COUNT]++; break;
+							case f_has_spring : break; //already handled
+							default: ASSERT(0);
+						}
+					}
+				} //L
+			} //f loop
+
+			if(bIncluded) {
 				m_rs.Update();
 				nAppended++;
-				break;
 			}
-
-			dDepth=dLength=0.0;
-			csLenTyp.Empty();
-
-			for(int col=0; col<num_mdb_fields; col++) {
-				int enSrc=mdb_fldsrc[col];
-				if(enSrc<0) {
-					if(enSrc==-1) {
-						if(!csLenTyp.IsEmpty()) {
-							m_rs.SetFieldValue(mdb_fldnum[col],(LPCSTR)csLenTyp);
-						}
-					}
-					else {
-						ASSERT(enSrc==-2);
-						if(bLocated) mdb_stats[F_LOCATED_S]++;
-						else if(bHasQuad) mdb_stats[F_TOPO_ONLY_S]++;
-						else mdb_stats[F_UNLOCATED_S]++;
-						m_rs.SetFieldValue(mdb_fldnum[col],COleVariant((short)bLocated,VT_BOOL));
-					}
-					continue;
-				}
-				
-				m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[enSrc]);
-				if(csVal.IsEmpty()) {
-					//check if required such as f_tssid, f_name, f_typ --
-					if(enSrc==f_tssid || enSrc==f_name || enSrc==f_type) {
-						errmsg.Format("DBF record %u: Fields TSSID, NAME, and TYPE must all be non-empty.",rec);
-						goto _ret;
-					}
-
-					if(dbf_fldtyp[enSrc]=='M') {
-						ASSERT(cTyp=='a' && (enSrc==f_maps || enSrc==f_photos));
-						m_rs.SetFieldValue(mdb_fldnum[col],COleVariant((short)false,VT_BOOL));
-						continue;
-					}
-
-					//(f_county and f_quadrangle can be unknown or blank)
-					if(cTyp=='a' && enSrc==f_quadrangle && !bLocated) {
-						csVal="Unknown";
-					}
-					else {
-						continue;
-					}
-				}
-				switch (dbf_fldtyp[enSrc]) {
-					case 'C':
-						if(enSrc==f_length) {
-							dLength=ParseLength(csVal,csLenTyp);
-							if(dLength>0.0) {
-								//m_rs.SetFieldValue(mdb_fldnum[col],(cTyp=='a')?dLength:(double)int(dLength+0.5));
-								m_rs.SetFieldValue(mdb_fldnum[col],dLength);
-							}
-							continue;
-						}
-						if(enSrc==f_depth) {
-							dDepth=atof(csVal);
-							if(dDepth>0.0) {
-								//m_rs.SetFieldValue(mdb_fldnum[col], (cTyp=='a')?dDepth:(double)int(dDepth+0.5));
-								m_rs.SetFieldValue(mdb_fldnum[col],dDepth);
-							}
-							continue;
-						}
-						if(cTyp=='a' && enSrc==f_quadrangle && !bLocated &&	!csVal.CompareNoCase("Unknown")) {
-							bHasQuad=false;
-						}
-
-						#if 0
-						if(enSrc==f_other_name) {
-							UINT ll=csVal.GetLength();
-							if(rec==6512 || rec==6748 || rec==2002) {
-								ll=0;
-							}
-							else if(maxflen<ll) {
-								maxflen=ll;
-								maxfrec=rec;
-							}
-						}
-						#endif
-
-						m_rs.SetFieldValue(mdb_fldnum[col],(LPCSTR)csVal);
-						csVal.MakeUpper();
-						if(cTyp=='a' && enSrc==f_county) {
-							csVal.MakeUpper();
-							if(csVal.Compare("UNKNOWN")) {
-								pCounty=(LPCSTR)csVal;
-								trx_Binsert(vCounty.size(),TRX_DUP_NONE);
-								if(!trx_binMatch) {
-									vCounty.push_back(csVal);
-								}
-							}
-						}
-						continue;
-
-					case 'N':
-						ASSERT(cTyp=='a' && (enSrc==f_latitude || enSrc==f_longitude));
-						if(bLocated) m_rs.SetFieldValue(mdb_fldnum[col], atof(csVal));
-						continue;
-
-					case 'M' :
-						ASSERT(cTyp=='a' && (enSrc==f_maps || enSrc==f_photos));
-						m_rs.SetFieldValue(mdb_fldnum[col],COleVariant((short)true,VT_BOOL));
-						if(enSrc==f_maps) mdb_stats[F_MAPPED_S]++;
-						else mdb_stats[F_PHOTOGRAPHED_S]++;
-						continue;
-				
-					case 'L':
-					    {
-						  ASSERT(cTyp=='a'); //for now
-						  short b=(*(LPCSTR)csVal=='Y' || *(LPCSTR)csVal=='T')?1:0;
-						  m_rs.SetFieldValue(mdb_fldnum[col],COleVariant(b,VT_BOOL));
-						  if(b && cTyp=='a') {
-							  switch(enSrc) {
-								  case f_rumored : mdb_stats[F_RUMORED_S]++; break;
-								  case f_aesthetic : mdb_stats[F_AESTHETIC_S]++; break;
-								  case f_archeological : mdb_stats[F_ARCHEOLOGICAL_S]++; break;
-								  case f_bad_air : mdb_stats[F_BAD_AIR_S]++; break;
-								  case f_bats : mdb_stats[F_BATS_S]++; break;
-								  case f_biological : mdb_stats[F_BIOLOGICAL_S]++; break;
-								  case f_endangered_sp : mdb_stats[F_ENDANGERED_SP_S]++; break;
-								  case f_geological : mdb_stats[F_GEOLOGICAL_S]++; break;
-								  case f_historical : mdb_stats[F_HISTORICAL_S]++; break;
-								  case f_hydrological : mdb_stats[F_HYDROLOGICAL_S]++; break;
-								  case f_paleontological : mdb_stats[F_PALEONTOLOGICAL_S]++; break;
-								  default: ASSERT(0);
-							  }
-						  } //true
-					    } //L
-				} //dbf_FldTyp
-			} //col loop
-
-			if(cTyp=='a') {
-				/*
-				if(dLength>=300.0) vLength.push_back(TYP_DREC(int(dLength+0.5), int(dDepth+0.5), rec));
-				if(dDepth>=30.0) vDepth.push_back(TYP_DREC(int(dDepth+0.5), int(dLength+0.5), rec));
-				*/
-				if(dLength>=300.0) vLength.push_back(TYP_DREC(float(dLength), float(dDepth), rec));
-				if(dDepth>=30.0) vDepth.push_back(TYP_DREC(float(dDepth), float(dLength), rec));
-			}
-			m_rs.Update();
-			nAppended++;
 		}
 		catch (CDaoException* e)
 		{
-			e->ReportError();
+			errmsg.Format("Error updating %s (%u recs appended): %s", m_pNamTable, nAppended, (LPCSTR)e->m_pErrorInfo->m_strDescription);
 			e->Delete();
-			goto _appErr;
+			goto _ret;
 		}
 
 	} //rec loop
 
-	if(cTyp=='a') {
-		#if 0
-			UINT jj=maxflen;
-			jj=maxfrec;
-		#endif
-		ASSERT(numCounties==vCounty.size());
-		mdb_stats[F_COUNTIES_S]=numCounties;
-		vCounty.clear(); //not needed
-	}
-	return nAppended;
+	#ifdef _USE_EXP
+	if(!(fp=fopen("SRV_EXP.txt", "w"))) return true;
 
-_appErr:
-	errmsg.Format("Table %s append failure: %u records actually appended",
-			m_pNamTable,nAppended);
+	ListCaves(v_long,"Lengths of Long Caves with Explored Length > Surveyed Length");
+	ListCaves(v_longx,"Lengths of Unlisted Caves with Explored Length >= 300 m");
+
+	ListCaves(v_deep,"Depths of Deep Caves with Explored Depth > Surveyed Depth");
+	ListCaves(v_deepx,"Depths of Unlisted Caves with Explored Depth >= 30");
+
+	fclose(fp);
+	#endif
+
+	return true;
+
+_errTrx:
+	errmsg.Format("County indexing failure (dbf record %u): %s",rec,CTRXFile::Errstr());
 	goto _ret;
 
 _errF:
@@ -1202,7 +1243,7 @@ _errF:
 
 _ret:
 	if(!errmsg.IsEmpty()) CMsgBox("Aborted -- %s.",(LPCSTR)errmsg);
-	return -1;
+	return false;
 }
 
 void CUpdateTSSDlg::OnBnClickedOk()
@@ -1226,43 +1267,39 @@ void CUpdateTSSDlg::OnBnClickedOk()
 	}
 	#endif
 	
-	nAll_types=nDeep=nLong=0;
+	nLongDeep=nDeep=nLong=0;
 	
 	BeginWaitCursor();
 
-	m_pNamTable="tss_all_types";
-	if(!OpenMDB_Table() || 0>(nAll_types=ScanDBF(mdb_fldnumA,mdb_fldsrcA,NUM_MDB_FIELDS_A)))
+	m_pNamTable="tss_longdeep";
+	if(!OpenMDB_Table() || !ScanDBF())
 		goto _exitErr;
 
-	m_pNamTable="tss_deep_caves";
-	if(!OpenMDB_Table() || 0>(nDeep=ScanDBF(mdb_fldnumD,mdb_fldsrcD,NUM_MDB_FIELDS_D)))
+	m_pNamTable="tss_county_totals";
+	if(!OpenMDB_Table() || !ScanCounties())
 		goto _exitErr;
 
-	m_pNamTable="tss_long_caves";
-	if(!OpenMDB_Table() || 0>(nLong=ScanDBF(mdb_fldnumD,mdb_fldsrcD,NUM_MDB_FIELDS_D)))
-		goto _exitErr;
-
+	//Finally append (or update last) one record to MDB and local statisics table --
 	m_pNamTable="tss_statistics";
-	if(!OpenMDB_Table() || 1!=ScanDBF(mdb_fldnumS,NULL,NUM_MDB_FIELDS_S))
+	if(!AppendStats(FALSE,msg) || (m_bSaveStats && !AppendStats(TRUE,msg)))
 		goto _exitErr;
 
 	EndWaitCursor();
+	trx_cnty.CloseDel();
 	CloseMDB();
 	CloseDBF();
 
 	::WritePrivateProfileString("input","dbfpath",m_pathDBF,m_pathINI);
 
-	msg.Format("File %s successfully written.\n\nRecord counts: %u (all_types), %u (deep caves), %u (long caves).",
-		trx_Stpnam(m_pathMDB),nAll_types,nDeep,nLong);
+	CMsgBox("File %s successfully written.\n\nRecords in table tss_longdeep: %u (%u long caves, %u deep caves)",
+		trx_Stpnam(m_pathMDB),nLongDeep,nLong,nDeep);
 
-	if(m_bSaveStats) {
-		AppendStats(msg);
-	}
-	else CMsgBox(msg);
 	EndDialog(IDOK);
+	return;
 
 _exitErr:
 	EndWaitCursor();
+	trx_cnty.CloseDel();
 	CloseMDB();
 	CloseDBF();
 	EndDialog(IDCANCEL);

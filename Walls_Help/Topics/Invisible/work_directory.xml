@@ -1,0 +1,7 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">work directory</title>
+  <body>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">A particular project&apos;s </text><text styleclass="Normal" style="font-weight:bold;" translate="true">work folder </text><text styleclass="Normal" translate="true">is a DOS/Windows subfolder beneath whatever folder contains the project script file, &lt;name&gt;.WPJ. &#160;The work folder is named &lt;name&gt; and is automatically created, if necessary, whenever any item of the project tree is compiled. &#160;It contains no critical information, only </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Workfiles_Created_by_Walls" styleclass="Normal" translate="true">workfiles</link><text styleclass="Normal" translate="true"> that are easily recreated.</text></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>

@@ -1,4 +1,4 @@
-// XMessageBox.h  Version 1.5
+// XMessageBox.h  Version 1.10
 //
 // This software is released into the public domain.  You are free to use it
 // in any way you like, except that you may not sell this source code.
@@ -11,36 +11,6 @@
 
 #ifndef XMESSAGEBOX_H
 #define XMESSAGEBOX_H
-
-//***DMcK --
-#define XMESSAGEBOX_DO_NOT_USE_RESOURCES
-#define XMESSAGEBOX_DO_NOT_USE_BUTTONSTRINGS
-
-///////////////////////////////////////////////////////////////////////////////
-//
-// If you want to save the state of "Do Not Ask/Tell" checkbox to profile (ini)
-// file instead of registry, uncomment the following line:
-//
-//#define XMESSAGEBOX_USE_PROFILE_FILE
-
-///////////////////////////////////////////////////////////////////////////////
-//
-// If you do not want automatic saving of "Do Not Ask/Tell" checkbox, 
-// uncomment the following line:
-//
-#define XMESSAGEBOX_DO_NOT_SAVE_CHECKBOX
-
-///////////////////////////////////////////////////////////////////////////////
-//
-// If you have chosen to automatically save "Do Not Ask/Tell" checkbox to ini:
-//
-// Normally the lpszModule and nLine data are encoded, since it might not be
-// desirable to allow users to be able to see the path and module name of
-// your source file.  If you do not want encoding of "Do Not Ask/Tell" module
-// info in the registry (or ini file), uncomment the following line:
-//
-//#define XMESSAGEBOX_DO_NOT_ENCODE
-
 
 // MessageBox() Flags
 /*
@@ -71,6 +41,7 @@
 
 #define MB_DEFBUTTON5				0x00000400L
 #define MB_DEFBUTTON6				0x00000500L
+
 // Dialog Box Command IDs
 /*
 #define IDOK                1
@@ -164,15 +135,15 @@ struct XMSGBOXPARAMS
 		dwOptions                     = 0;
 		lpszModule                    = NULL;
 		nLine                         = 0;
-//***DMcK
-#ifndef XMESSAGEBOX_DO_NOT_USE_BUTTONSTRINGS
-		bUseUserDefinedButtonCaptions = FALSE;	//+++1.5
-		memset(&UserDefinedButtonCaptions, 0, sizeof(UserDefinedButtonCaptions));	//+++1.5
-#endif
+		bUseUserDefinedButtonCaptions = FALSE;			//+++1.5
+		crText                        = CLR_INVALID;	//+++1.8
+		crBackground                  = CLR_INVALID;	//+++1.8
+
 		memset(szIcon, 0, sizeof(szIcon));
 		memset(szCustomButtons, 0, sizeof(szCustomButtons));
 		memset(szReportButtonCaption, 0, sizeof(szReportButtonCaption));
 		memset(szCompanyName, 0, sizeof(szCompanyName));
+		memset(&UserDefinedButtonCaptions, 0, sizeof(UserDefinedButtonCaptions));	//+++1.5
 	}
 
 	UINT		nIdHelp;						// help context ID for message;
@@ -186,10 +157,18 @@ struct XMSGBOXPARAMS
 												// nDisabledSeconds, all buttons
 												// will be enabled
 	int			x, y;							// initial x,y screen coordinates
-	enum
+	enum										// these are bit flags for dwOptions
 	{
-		None                = 0x0000,
-		RightJustifyButtons = 0x0001,
+		None				= 0x0000,
+		RightJustifyButtons	= 0x0001,			// causes buttons to be right-justified
+		VistaStyle			= 0x0002,			// setting this option bit will cause the 
+												// message background to be painted with 
+												// the current window color (typically 
+												// white), and the buttons to be 
+												// right-justified.    +++1.8
+		Narrow				= 0x0004			// uses a narrow width for message box -
+												// SM_CXSCREEN / 3
+
 	};
 	DWORD		dwOptions;						// options flags
 	HINSTANCE	hInstanceStrings;				// if specified, will be used to
@@ -197,48 +176,47 @@ struct XMSGBOXPARAMS
 	HINSTANCE	hInstanceIcon;					// if specified, will be used to
 												// load custom icon
 	UINT		nIdIcon;						// custom icon resource id
-	TCHAR		szIcon[MAX_PATH];				// custom icon name
+	TCHAR		szIcon[1];				// custom icon name
 	UINT		nIdCustomButtons;				// custom buttons resource id
-	TCHAR		szCustomButtons[MAX_PATH];		// custom buttons string
+	TCHAR		szCustomButtons[1];		// custom buttons string
 	UINT		nIdReportButtonCaption;			// report button resource id
-	TCHAR		szReportButtonCaption[MAX_PATH];// report button string
-	TCHAR		szCompanyName[MAX_PATH];		// used when saving checkbox state in registry
+	TCHAR		szReportButtonCaption[1];// report button string
+	TCHAR		szCompanyName[1];		// used when saving checkbox state in registry
 	LPCTSTR		lpszModule;						// module name (for saving DoNotAsk state)
 	int			nLine;							// line number (for saving DoNotAsk state)
 	DWORD		dwReportUserData;				// data sent to report callback function
 	XMESSAGEBOX_REPORT_FUNCTION lpReportFunc;	// report function
+	COLORREF	crText;							// message text color		+++1.8
+	COLORREF	crBackground;					// message background color	+++1.8
 
-//***DMcK --
-#ifndef XMESSAGEBOX_DO_NOT_USE_BUTTONSTRINGS
 	//-[UK
 	// For not loading from resource but passing directly,
 	// Use the following code.
 	struct CUserDefinedButtonCaptions
 	{
-		TCHAR	szAbort				[MAX_PATH];
+		TCHAR	szAbort				[1];
 		TCHAR	szCancel			[MAX_PATH];
-		TCHAR	szContinue			[MAX_PATH];
-		TCHAR	szDoNotAskAgain		[MAX_PATH];
+		TCHAR	szContinue			[1];
+		TCHAR	szDoNotAskAgain		[1];
 		TCHAR	szDoNotTellAgain	[MAX_PATH];
-		TCHAR	szDoNotShowAgain	[MAX_PATH];
-		TCHAR	szHelp				[MAX_PATH];
-		TCHAR	szIgnore			[MAX_PATH];
-		TCHAR	szIgnoreAll			[MAX_PATH];
-		TCHAR	szNo				[MAX_PATH];
-		TCHAR	szNoToAll			[MAX_PATH];
-		TCHAR	szOK				[MAX_PATH];
-		TCHAR	szReport			[MAX_PATH];
-		TCHAR	szRetry				[MAX_PATH];
-		TCHAR	szSkip				[MAX_PATH];
-		TCHAR	szSkipAll			[MAX_PATH];
-		TCHAR	szTryAgain			[MAX_PATH];
-		TCHAR	szYes				[MAX_PATH];
-		TCHAR	szYesToAll			[MAX_PATH];
+		TCHAR	szDoNotShowAgain	[1];
+		TCHAR	szHelp				[1];
+		TCHAR	szIgnore			[1];
+		TCHAR	szIgnoreAll			[1];
+		TCHAR	szNo				[32];
+		TCHAR	szNoToAll			[1];
+		TCHAR	szOK				[32];
+		TCHAR	szReport			[1];
+		TCHAR	szRetry				[1];
+		TCHAR	szSkip				[1];
+		TCHAR	szSkipAll			[1];
+		TCHAR	szTryAgain			[1];
+		TCHAR	szYes				[32];
+		TCHAR	szYesToAll			[1];
 	};
 	BOOL						bUseUserDefinedButtonCaptions;	//+++1.5
 	CUserDefinedButtonCaptions	UserDefinedButtonCaptions;		//+++1.5
 	//-]UK
-#endif
 };
 
 int XMessageBox(HWND hwnd, 
@@ -246,6 +224,11 @@ int XMessageBox(HWND hwnd,
 				LPCTSTR lpszCaption = NULL, 
 				UINT nStyle = MB_OK | MB_ICONEXCLAMATION,
 				XMSGBOXPARAMS * pXMB = NULL);
+
+
+DWORD XMessageBoxGetCheckBox(LPCTSTR lpszCompanyName, LPCTSTR lpszModule, int nLine);
+
+DWORD XMessageBoxGetCheckBox(XMSGBOXPARAMS& xmb);
 
 
 #endif //XMESSAGEBOX_H

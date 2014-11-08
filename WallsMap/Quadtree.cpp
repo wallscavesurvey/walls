@@ -335,7 +335,7 @@ _retry:
 		}
 	}
 	catch(...) {
-		CMsgBox("Failed to create spatial index for %s.",trx_Stpnam(pShp->PathName()));
+		CMsgBox("Failed to create spatial index for %s.",pShp->FileName());
 		return 0;
 	}
 	pShp->m_uQTnodes=m_numNodes;
@@ -390,7 +390,7 @@ void CQuadTree::QT_TestPoints(LPCSTR ptShpName)
 	
 	CMsgBox("Layer %s (%u recs) tested against %s (%u recs) --\n\nTime=%.2f, Tree_depth=%u, Range_tests/pt=%.2f, Poly_tests/pt=%.2f, Hits=%u, Misses=%u, "
 		"Bad_hits=%d, Nodes=%u of %u, Parts/poly=%.2f, NodeSpc=%uK of %uK, PtSpc=%uK",
-		trx_Stpnam(pShp->PathName()), nRecs, trx_Stpnam(m_pShp->PathName()),m_pShp->m_nNumRecs, TIMER_SECS(), m_maxLvl,
+		pShp->FileName(), nRecs, m_pShp->FileName(),m_pShp->m_nNumRecs, TIMER_SECS(), m_maxLvl,
 		(double)nTests/nRecs, (double)nPolyTests/nRecs, nFound, nMissed, nBadHits,
 		m_numNodes,m_maxNodes,(double)m_numParts/m_pShp->m_nNumRecs,(m_numNodes*28+512)/1024,
 		(m_maxNodes*28+512)/1024,(m_numParts*4+512)/1024);

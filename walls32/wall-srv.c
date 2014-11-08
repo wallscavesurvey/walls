@@ -1,5 +1,5 @@
-/*WALL-SRV.C -- DLL for Survey file compilation */
-/*Also used to generate wallexp.dll, in which case project settings define _EXP*/
+/*WALL-SRV.C -- Survey file compilation */
+/*Also used to generate wallexp.lib, in which case project settings define _EXP*/
 
 #include "wall-srv.h"
 

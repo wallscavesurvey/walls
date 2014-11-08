@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<topic class="popup" template="Popup" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">measure tool</title>
+  <body>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">When a map window is active in Walls (display or preview), the </text><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">distance measuring </text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">tool can toggled on and off via a right-click context menu or toolbar button. When the tool is enabled, the mouse cursor will resemble the toolbar icon and consist of a tiny cross above a white ruler. Left-dragging the mouse will draw a line &quot;rubber band&quot; style on the map, causing the corresponding distance and azimuth to appear on the status bar in place of the coordinates that are normally displayed. For profiles, only the vertical separation distance is shown.</text></para>
+  </body>
+</topic>

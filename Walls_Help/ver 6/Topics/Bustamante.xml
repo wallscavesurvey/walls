@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<topic template="Default" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Missing Measurement Problem</title>
+  <keywords>
+    <keyword translate="true">Bustamante</keyword>
+  </keywords>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">The Missing Measurement Problem</text></para>
+    </header>
+    <para styleclass="Normal"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">The Mexican cave </text><text style="font-family:Arial; font-size:9pt; font-style:italic; color:#000000;" translate="true">Gruta de Bustamante</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> is primarily a 100+ meter wide passage whose floor is a steep slope of huge boulders -- some almost house-sized. &#160;A detailed survey in progress, conducted by Jan and Orion Knox, consists of many measurements between station flags placed prominently on boulders throughout the passage. &#160;For this kind of project the surveyors might reasonably ask: &quot;If we take numerous azimuth and inclination measurements between the stations </text><text style="font-family:Arial; font-size:9pt; font-style:italic; color:#000000;" translate="true">without</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> measuring most of the corresponding distances, will Walls be able to handle the data and produce an optimal adjustment?&quot;</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">The short answer is: Not very elegantly. &#160;The only recourse for now is to substitute approximate values for the missing distances (such as those obtained in a compilation in which the corresponding vectors are </text><link displaytype="text" defaultstyle="true" type="topiclink" href="float" styleclass="Normal" translate="true">floated</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">) and run Walls in an iterative fashion, obtaining new approximations with each run. &#160;The iterations would stop when further changes to the dummy values would not significantly improve consistency by lowering the UVEs.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">The same problem can arise when specific measurements recorded in fieldbooks are either undecipherable or so obviously far off as to be worthless. Ideally, the remaining </text><text style="font-family:Arial; font-size:9pt; font-style:italic; color:#000000;" translate="true">good</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> measurements that make up a shot would still be given appropriate weight in a least-squares adjustment -- assuming loops are present, of course.</text></para>
+  </body>
+</topic>

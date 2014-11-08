@@ -1,0 +1,6 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">articulation points</title>
+  <body>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">A station that is the junction of vectors belonging to two different loop systems is an </text><text styleclass="Normal" style="font-weight:bold;" translate="true">articulation point</text><text styleclass="Normal" translate="true">. &#160;It is not necessarily a traverse endpoint in either of the two systems.</text></para>
+  </body>
+</topic>

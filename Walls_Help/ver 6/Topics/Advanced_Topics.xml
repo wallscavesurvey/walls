@@ -1,0 +1,25 @@
+﻿<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Advanced or Special Topics</title>
+  <keywords>
+    <keyword translate="true">Advanced Topics</keyword>
+  </keywords>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Advanced or Special Topics</text></para>
+    </header>
+    <para styleclass="Normal"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">One or more of these topics may be of interest to you, especially if you are active in the design of Walls or similar software. &#160;The topics are not necessarily related, and none of the information is needed for effective use of the program.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="margin-left:27px; tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Workfiles_Created_by_Walls" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Workfiles Created by Walls</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">&#32;</text></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Adjustment_Model" styleclass="Normal" translate="true">Choice of Mathematical Model</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="LongTraverses" styleclass="Normal" translate="true">Error Propagation in Long Traverses</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="PositionAccuracy" styleclass="Normal" translate="true">GPS Position Accuracy Table</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Statistical_Formulas" styleclass="Normal" translate="true">Statistical Formulas</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Lot_Survey" styleclass="Normal" translate="true">Tree Survey Example</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Bustamante" styleclass="Normal" translate="true">The Missing Measurement Problem</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="station_to_station" styleclass="Normal" translate="true">Height Measurement Pitfalls</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="CommandLine" styleclass="Normal" translate="true">Accessing Walls from Other Applications</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="RegularExpressions" styleclass="Normal" translate="true">Regular Expression Searches</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="TraverseChainBehavior" styleclass="Normal" translate="true">Floating Traverse Chains</link></para>
+  </body>
+</topic>

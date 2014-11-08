@@ -19,6 +19,7 @@
 #include "DBGridDlg.h"
 #include "MsgCheck.h"
 #include "AdvSearchDlg.h"
+#include "CopySelectedDlg.h"
 
 //Globals --
 CShowShapeDlg * app_pShowDlg=NULL;
@@ -573,8 +574,10 @@ void CShowShapeDlg::OnSelChangedTree(NMHDR* pNMHDR, LRESULT* pResult)
 
 	bool bSelectingNew=false;
 
-	CShpLayer *pLastLayer=(m_uSelRec && m_pSelLayer->IsGridDlgOpen())?m_pSelLayer:NULL;
+	CShpLayer *pLastLayer=m_uSelRec?m_pSelLayer:NULL;
 	DWORD uLastRec=m_uSelRec;
+
+	int nTopIndex= uLastRec?m_FieldList.GetTopIndex():0;
 
 	VERIFY(m_hSelItem=m_PointTree.GetSelectedItem());
 	m_hSelRoot=m_PointTree.GetParentItem(m_hSelItem);
@@ -603,7 +606,16 @@ void CShowShapeDlg::OnSelChangedTree(NMHDR* pNMHDR, LRESULT* pResult)
 			ClearFields();
 			VERIFY(m_FieldList.GetHeaderCtrl()->SetItem(1,&hdi));
 		}
+
 		m_FieldList.SetItemCount(nFlds); //Also redraws items
+
+		if(nTopIndex && (pLastLayer==m_pSelLayer ||
+			pLastLayer->m_pdb->FieldsMatch(m_pSelLayer->m_pdb))) {
+			//restore top index --
+			m_FieldList.EnsureVisible(m_FieldList.GetItemCount()-1,0); // Scroll down to the bottom
+			m_FieldList.EnsureVisible(nTopIndex,0); // scroll back up just enough to show said item on top
+		}
+
 		RefreshSelCoordinates();
 		RefreshRecNo(m_uSelRec);
 		m_vdbeBegin=m_pSelLayer->IsEditable()?SelEditFlag():0;
@@ -648,7 +660,8 @@ void CShowShapeDlg::OnSelChangedTree(NMHDR* pNMHDR, LRESULT* pResult)
 		if(m_pDoc->m_bMarkSelected) m_pDoc->RepaintViews();
 	}
 
-	if(pLastLayer) pLastLayer->m_pdbfile->pDBGridDlg->RefreshTable(uLastRec);
+	if(pLastLayer && pLastLayer->IsGridDlgOpen())
+		pLastLayer->m_pdbfile->pDBGridDlg->RefreshTable(uLastRec);
 	if(m_uSelRec && m_pSelLayer->IsGridDlgOpen()) 
 		m_pSelLayer->m_pdbfile->pDBGridDlg->RefreshTable(m_uSelRec);
 }
@@ -939,6 +952,11 @@ LPBYTE CShowShapeDlg::LoadEditBuf()
 	return m_pEditBuf;
 }
 
+static void UpdateErrorMsg(CShpLayer *pLayer)
+{
+	CMsgBox("Failure updating %s.dbf. Disk may be full!",pLayer->Title());
+}
+
 void CShowShapeDlg::FlushEdits()
 {
 	ASSERT(m_hSelRoot && m_pSelLayer && m_pSelLayer->IsEditable());
@@ -975,15 +993,10 @@ void CShowShapeDlg::FlushEdits()
 		ASSERT(m_uSelRec==pdb->NumRecs()+1);
 		ASSERT((m_vdbeBegin&(SHP_EDITSHP|SHP_EDITDBF|SHP_EDITADD))==(SHP_EDITSHP|SHP_EDITDBF|SHP_EDITADD));
 		m_bEditDBF|=2; //label has changed;
-		if(!m_pSelLayer->m_bEditFlags) {
-			m_pDoc->LayerSet().m_nShpsEdited++;
-		}
 		m_pSelLayer->m_bEditFlags|=m_vdbeBegin;
 		if((e=pdb->AppendRec(m_pEditBuf)) || (e=pdb->FlushRec()) || !m_pSelLayer->SaveShp()) {
-			if(e) {
-				bDlgOpened=true;
-				AfxMessageBox("Cannot append to DBF. Disk may be full!");
-			}
+			bDlgOpened=true;
+			if(e) UpdateErrorMsg(m_pSelLayer);
 			//Cancel addition, etc!!!
 		}
 		else {
@@ -997,17 +1010,20 @@ void CShowShapeDlg::FlushEdits()
 	}
 	else {
 		ASSERT(m_uSelRec<=pdb->NumRecs());
-		if(!(e=pdb->Go(m_uSelRec)) && !(e=pdb->PutRec(m_pEditBuf)) && !(e=pdb->FlushRec())) {
-			if(!m_pSelLayer->m_bEditFlags) {
-				m_pDoc->LayerSet().m_nShpsEdited++;
+		ASSERT(m_pEditBuf || (SelEditFlag()&SHP_EDITSHP)!=0);
+		if(m_pEditBuf) {
+			if(!(e=pdb->Go(m_uSelRec)) && !(e=pdb->PutRec(m_pEditBuf)) && !(e=pdb->FlushRec())) {
+				m_pSelLayer->ChkEditDBF(m_uSelRec); 
+				//Above may NOT have set m_pSelLayer->m_bEditFlags!
 			}
-			m_pSelLayer->m_bEditFlags|=SHP_EDITDBF;
-			SelEditFlag()|=SHP_EDITDBF;
+			else {
+				bDlgOpened=true;
+				UpdateErrorMsg(m_pSelLayer);
+			}
 		}
-		if(e) {
-			bDlgOpened=true;
-			AfxMessageBox("Cannot update DBF. Can't write to disk!");
-		}
+		//may need to rewrite DBE --
+		if(m_pSelLayer->m_bEditFlags)
+			m_pSelLayer->SaveShp();
 	}
 
 	m_pEditBuf=NULL;
@@ -1030,13 +1046,6 @@ bool CShowShapeDlg::IsFieldEmpty(UINT nFld)
 {
 	CShpDBF *pdb=m_pSelLayer->m_pdb;
 	return CShpDBF::IsFldBlank(m_pSelLayer->m_pdbfile->pbuf+pdb->FldOffset(nFld),pdb->FldLen(nFld));
-}
-
-bool CShowShapeDlg::IsFieldEdited(UINT nFld)
-{
-	CShpDBF *pdb=m_pSelLayer->m_pdb;
-	UINT fldOff=pdb->FldOffset(nFld);
-	return (!m_uTemplateRec || pdb->Go(m_uTemplateRec) || memcmp(m_pSelLayer->m_pdbfile->pbuf+fldOff,(LPBYTE)pdb->RecPtr()+fldOff,pdb->FldLen(nFld)));
 }
 
 bool CShowShapeDlg::DiscardShpEditsOK()
@@ -1070,13 +1079,14 @@ BOOL CShowShapeDlg::CancelSelChange()
 		//if(!IsDBFEdited()) bCancel=true;
 		if(!bCancel && IsFieldEmpty(m_pSelLayer->m_nLblFld)) {  //(!IsDBFEdited() || !IsLabelEdited())) {
 			bDlgOpened=true;
-			int idret=CMsgBox(MB_YESNOCANCEL,
-				"A new point record is pending but the label field, %s, is empty. Save new record anyway?\n\n"
-				"Select YES to save, NO to continue editing, or CANCEL to discard the point.",
+			CString s;
+			s.Format("A new point record is pending but the label field, %s, is empty. Save record anyway?",
 				m_pSelLayer->m_pdb->FldNamPtr(m_pSelLayer->m_nLblFld));
 
-				if(idret==IDCANCEL) bCancel=true;
-				else if(idret==IDNO) m_bConflict=bContinue=true;
+			int idret=MsgYesNoCancelDlg(m_hWnd, s, m_pSelLayer->m_csTitle,"Save", "Discard", "Continue Editing");
+
+			if(idret==IDNO) bCancel=true;
+			else if(idret==IDCANCEL) m_bConflict=bContinue=true;
 		}
 
 		if(bCancel) {
@@ -1101,8 +1111,16 @@ BOOL CShowShapeDlg::CancelSelChange()
 			m_PointTree.SetFocus();
 	}
 
-	if(m_bEditDBF || HasNewLocFlds()) {
-		bool bLabelEdited=IsFieldEdited(m_pSelLayer->m_nLblFld);
+	if(m_bEditDBF || IsAddingRec() || HasNewLocFlds()) {
+		bool bLabelEdited = m_pNewShpRec!=NULL;
+		if(!bLabelEdited && m_pEditBuf) {
+			CShpDBF *pdb=m_pSelLayer->m_pdb;
+			if(!pdb->Go(m_uSelRec)) {
+				UINT nFld=m_pSelLayer->m_nLblFld;
+				UINT fldOff=pdb->FldOffset(nFld);
+				bLabelEdited=memcmp(m_pEditBuf+fldOff, (LPBYTE)pdb->RecPtr()+fldOff, pdb->FldLen(nFld))!=0;
+			}
+		}
 		FlushEdits();
 		if(bLabelEdited) {
 			if(app_pDbtEditDlg && app_pDbtEditDlg->IsRecOpen(m_pSelLayer,m_uSelRec)) {
@@ -1708,6 +1726,7 @@ void CShowShapeDlg::CancelAddition()
 {
 	ASSERT(m_pNewShpRec && m_pSelLayer && m_uSelRec && m_uSelRec==m_pSelLayer->m_pdb->NumRecs()+1);
 
+	m_uSelRec=0;
 	m_pNewShpRec=NULL;
 	m_bEditDBF=0;
 	m_bEditShp=false;
@@ -1787,7 +1806,6 @@ LRESULT CShowShapeDlg::OnEditChange(WPARAM wParam, LPARAM lParam)
 void CShowShapeDlg::OnClearEdited()
 {
 	ASSERT(m_uSelRec && m_pSelLayer->IsEditable());
-	bool bPriorChanges=m_pSelLayer->m_bEditFlags!=0;
 	if(m_bEditDBF) {
 		if(IDOK!=CMsgBox(MB_OKCANCEL,
 			"Record edits are pending for %s.\nPress OK to save the changes before clearing the edited flag, "
@@ -1800,11 +1818,9 @@ void CShowShapeDlg::OnClearEdited()
 		FlushEdits();
 	}
 
-	if(!bPriorChanges) {
-		m_pDoc->LayerSet().m_nShpsEdited++;
-	}
 	m_pSelLayer->m_bEditFlags|=SHP_EDITCLR; //Indicates only that we've done some flag clearing
-	SelEditFlag()=(m_vdbeBegin&=SHP_EDITDEL);
+	//SelEditFlag()=(m_vdbeBegin&=SHP_EDITDEL);
+	SelEditFlag()&=~(SHP_EDITADD|SHP_EDITLOC|SHP_EDITDBF);
 	m_PointTree.Invalidate();
 }
 
@@ -1991,10 +2007,6 @@ void CShowShapeDlg::ApplyChangedPoint(const CFltPoint &fpt)
 	CFltPoint fptOld=m_pSelLayer->m_fpt[m_uSelRec-1]; //needed if initializing based on location
 	m_pSelLayer->m_fpt[m_uSelRec-1]=fpt;
 
-	//Flag changed...
-	if(!m_pSelLayer->m_bEditFlags) {
-		m_pDoc->LayerSet().m_nShpsEdited++;
-	}
 	m_pSelLayer->m_bEditFlags|=SHP_EDITSHP;
 	SelEditFlag()|=(SHP_EDITSHP|SHP_EDITLOC);
 
@@ -2067,8 +2079,9 @@ void CShowShapeDlg::OnBnClickedUndoRelocate()
 	if(!m_vec_relocate.size()) {
 		m_PointTree.SetFocus();
 		Disable(IDC_UNDORELOCATE);
-		if(!(m_vdbeBegin&SHP_EDITSHP)) {
-			SelEditFlag()&=~(SHP_EDITSHP|SHP_EDITLOC);
+		if(!(m_vdbeBegin&SHP_EDITLOC)) {
+			//point wasn't previously relocated --
+			SelEditFlag()&=~SHP_EDITLOC;
 			m_PointTree.Invalidate();
 		}
 	}
@@ -2081,7 +2094,6 @@ void CShowShapeDlg::AddShape(CFltPoint &fpt,CShpLayer *pLayer)
 	//currently selected item, possibly a root item. Otherwise the dialog
 	//should be empty of data and freshly initialized.
 
-	m_uTemplateRec=0;
 	m_pNewShpRec=NULL;
 
 	try {
@@ -2102,7 +2114,6 @@ void CShowShapeDlg::AddShape(CFltPoint &fpt,CShpLayer *pLayer)
 
 		if(m_hSelRoot) {
 			ASSERT(m_uSelRec);
-			m_uTemplateRec=m_uSelRec;
 			//Creates similar record with provisional label
 			if(!(it->rec=m_pSelLayer->InitEditBuf(fpt,/*pLayer?0:*/m_uSelRec))) goto _resize;
 			tvi.hParent=m_hSelRoot;
@@ -2359,52 +2370,22 @@ void CShowShapeDlg::OnOptionsGE()
 	GE_Export(true);
 }
 
-UINT CShowShapeDlg::CopySelectedItem(CShpLayer *pDropLayer,HTREEITEM *phDropItem)
+int CShowShapeDlg::CopySelected(CShpLayer *pDropLayer,LPBYTE pSrcFlds,BOOL bConfirm,HTREEITEM *phDropItem /*=NULL*/)
 {
-	//phDropItem!=NULL we'll be rearranging the tree by changing the parent shapefile of
-	//the dragged item.
+	BeginWaitCursor();
 
 	UINT uRec=0,nCopied=0;
 
-	ASSERT(pDropLayer && pDropLayer->IsProjected()==(pDropLayer->Zone()!=0));
-
-	if(!pDropLayer) return 0;
-
-	if(pDropLayer->m_bDragExportPrompt) {
-		int count=m_hSelRoot?1:GetChildCount(m_hSelItem);
-		CString s,msg("Are you sure you want to append the ");
-		if(m_hSelRoot) s.Format("record for %s",GetTreeLabel(m_hSelItem));
-		else s.Format("%u item%s selected in %s",count,(count>1)?"s":"",m_pSelLayer->Title());
-		msg+=s;
-		s.Format(" to %s?\n\nNOTE: The copied record%s will ",pDropLayer->Title(),(count>1)?"s":"");
-		msg+=s;
-		if(phDropItem) msg+="be removed from the selected set but not deleted.";
-		else {
-			s.Format("remain selected so you can delete %s to accomplish a move rather than a copy.",(count>1)?"them":"it");
-			msg+=s;
-		}
-		CMsgCheck dlg(IDD_MSGCHECK,msg);
-		if(IDOK!=dlg.DoModal()) return -1;
-		pDropLayer->m_bDragExportPrompt=(dlg.m_bNotAgain==FALSE);
-	}
-
-	ASSERT(pDropLayer->CanAppendShpLayer(m_pSelLayer));
-
-	BYTE bSrcFlds[256];
-	LPBYTE pSrcFlds=NULL;
-	BOOL bConfirm=0; //0,1,2
-	if(!pDropLayer->m_pdb->FieldsMatch(m_pSelLayer->m_pdb)) {
-		if(!(bConfirm=pDropLayer->ConfirmAppendShp(m_pSelLayer,pSrcFlds=bSrcFlds)))
-			return -1;
-	}
-
-	BeginWaitCursor();
-	bool bWaiting=true;
-
+	#ifdef _DEBUG
+	UINT nToCopy=m_hSelRoot?1:GetChildCount(m_hSelItem);
+	UINT nDropChildCount=0;
+	HTREEITEM hDropParent=NULL;
 	if(phDropItem) {
-		m_PointTree.SetRedraw(FALSE);
-		m_bDroppingItem=true;
+		hDropParent=m_PointTree.GetParentItem(*phDropItem);
+		if(!hDropParent) hDropParent=*phDropItem;
+		nDropChildCount=GetChildCount(hDropParent);
 	}
+	#endif
 
 	HTREEITEM hDragItem=m_hSelItem;
 	if(!m_hSelRoot)
@@ -2414,7 +2395,9 @@ UINT CShowShapeDlg::CopySelectedItem(CShpLayer *pDropLayer,HTREEITEM *phDropItem
 
 	bool bUpdateLocFlds=pDropLayer->HasLocFlds() && 
 		(bConfirm>1 || !pDropLayer->IsSameProjection(m_pSelLayer));
+
 	TRUNC_DATA td;
+	m_csCopyMsg.Empty();
 
 	while(TRUE) {
 		UINT uRecOld=(*m_vec_shprec)[m_PointTree.GetItemData(hDragItem)].rec;
@@ -2426,6 +2409,7 @@ UINT CShowShapeDlg::CopySelectedItem(CShpLayer *pDropLayer,HTREEITEM *phDropItem
 		}
 		ASSERT(uRec==pDropLayer->m_nNumRecs && uRec==pDropLayer->m_pdb->NumRecs());
 		if(phDropItem) {
+			nCopied++; //avoid assert only
 			m_pSelLayer->SetRecUnselected(uRecOld);
 			pDropLayer->SetRecSelected(m_uSelRec=uRec);
 			SHPREC &shprec=(*m_vec_shprec)[m_PointTree.GetItemData(hDragItem)];
@@ -2437,39 +2421,104 @@ UINT CShowShapeDlg::CopySelectedItem(CShpLayer *pDropLayer,HTREEITEM *phDropItem
 		}
 		else {
 			nCopied++;
+			if(!(nCopied%100) && m_pCopySelectedDlg) {
+				if(!m_pCopySelectedDlg->ShowCopyProgress(nCopied)) break;
+			}
 			if(m_hSelRoot || !(hDragItem=m_PointTree.GetNextItem(hDragItem, TVGN_NEXT)))
 				break;
 		}
 	}
 
-	if(pDropLayer->m_pdb->Flush()) {
-		EndWaitCursor();
-		bWaiting=false;
-		AfxMessageBox("Error updating DBF component. Disk may be full!");
-	}
-	else {
-		pDropLayer->m_bEditFlags|=SHP_EDITADD;
-		pDropLayer->SaveShp();
-		pDropLayer->UpdateSizeStr();
-		if(hPropHook && m_pDoc==pLayerSheet->GetDoc())
-			pLayerSheet->RefreshListItem(pDropLayer);
-	}
-	m_pDoc->LayerSet().UpdateExtent();
+	ASSERT(nCopied==nToCopy);
+	ASSERT(!nDropChildCount || GetChildCount(hDropParent)==nCopied+nDropChildCount);
 
+	VERIFY(!pDropLayer->m_pdb->Flush());
+
+	if(pDropLayer->HasMemos())
+	  VERIFY(pDropLayer->m_pdbfile->dbt.FlushHdr());
+
+	pDropLayer->m_bEditFlags|=SHP_EDITADD;
+	pDropLayer->SaveShp();
+	pDropLayer->UpdateSizeStr();
+	if(hPropHook && m_pDoc==pLayerSheet->GetDoc())
+		pLayerSheet->RefreshListItem(pDropLayer);
+	m_pDoc->LayerSet().UpdateExtent();
 	m_pDoc->RefreshViews(); //required for new points to be selectable
 
 	//Refresh other document views that contain this layer unconditionally  --
 	if(pDropLayer->m_pdbfile->nUsers>1)
 		pDropLayer->UpdateDocsWithPoint(pDropLayer->m_nNumRecs);
 
-	if(bWaiting)
-		EndWaitCursor();
+	EndWaitCursor();
+
+	if(!phDropItem)
+		m_csCopyMsg.Format("%u item%s successfully copied to %s.",nCopied,(nCopied==1)?"":"s",pDropLayer->Title());
 
 	if(td.count) {
-		CMsgBox("CAUTION: %u field values were truncated, the first being field %s of record %u.",
+		m_csCopyMsg.AppendFormat("CAUTION: %u field values were truncated, the first being field %s of record %u.",
 			td.count,pDropLayer->m_pdb->FldNamPtr(td.fld),td.rec);
 	}
 	return phDropItem?uRec:nCopied;
+}
+
+UINT CShowShapeDlg::CopySelectedItem(CShpLayer *pDropLayer,HTREEITEM *phDropItem)
+{
+	//phDropItem!=NULL we'll be rearranging the tree by changing the parent shapefile of
+	//the dragged item.
+
+	ASSERT(pDropLayer && pDropLayer->IsProjected()==(pDropLayer->Zone()!=0));
+
+	if(!pDropLayer) return 0;
+
+	int count=m_hSelRoot?1:GetChildCount(m_hSelItem);
+
+	if(pDropLayer->m_bDragExportPrompt) {
+		CString msg;
+		if(count==1) {
+			HTREEITEM h=m_hSelRoot?m_hSelItem:m_PointTree.GetChildItem(m_hSelItem);
+			ASSERT(h);
+			msg.Format("%s\nAppend this record",GetTreeLabel(h));
+		}
+		else {
+			msg.Format("Append %u record%s in %s", count, (count>1)?"s":"", m_pSelLayer->Title());
+		}
+		msg.AppendFormat(" to %s?\n\nNOTE: The copied record%s will ",pDropLayer->Title(),(count>1)?"s":"");
+
+		if(phDropItem) msg+="be removed from the selected set but not deleted.";
+		else {
+			msg.AppendFormat("stay selected so you can delete %s to complete a move.",(count>1)?"them":"it");
+		}
+		int i=MsgCheckDlg(m_hWnd,MB_OKCANCEL,(LPCSTR)msg,m_pSelLayer->Title(),"Don't ask this again for this target");
+		if(!i) return -1;
+		pDropLayer->m_bDragExportPrompt=(i==1);
+	}
+
+	ASSERT(pDropLayer->CanAppendShpLayer(m_pSelLayer));
+
+	BYTE bSrcFlds[256];
+	LPBYTE pSrcFlds=NULL;
+	BOOL bConfirm=0; //0,1,2
+	if(!pDropLayer->m_pdb->FieldsMatch(m_pSelLayer->m_pdb)) {
+		if(!(bConfirm=pDropLayer->ConfirmAppendShp(m_pSelLayer,pSrcFlds=bSrcFlds)))
+			return -1;
+	}
+	if(phDropItem) {
+		m_PointTree.SetRedraw(FALSE);
+		m_bDroppingItem=true;
+	}
+
+	if(count>=5000) {
+		CCopySelectedDlg dlg(pDropLayer,pSrcFlds,bConfirm,count,this);
+		m_pCopySelectedDlg=&dlg;
+		dlg.DoModal();
+	}
+	else {
+		m_pCopySelectedDlg=NULL;
+		count=CopySelected(pDropLayer, pSrcFlds, bConfirm, phDropItem);
+	}
+	if(!m_csCopyMsg.IsEmpty()) AfxMessageBox(m_csCopyMsg);
+
+	return count;
 }
 
 void CShowShapeDlg::OnExportTreeItems(UINT id)
@@ -2482,14 +2531,17 @@ void CShowShapeDlg::OnExportTreeItems(UINT id)
 	CShpLayer *pLayer=(CShpLayer *)CLayerSet::vAppendLayers[id-ID_APPENDLAYER_0];
 	ASSERT(pLayer);
 
-	UINT nCopied=CopySelectedItem(pLayer,NULL);
-	if(nCopied!=(UINT)-1)
-		CMsgBox("%u item%s successfully copied to %s.",nCopied,(nCopied==1)?"":"s",pLayer->Title());
+	CopySelectedItem(pLayer,NULL);
 }
 
 void CShowShapeDlg::OnDropTreeItem(HTREEITEM hDropItem)
 {
 	ASSERT(IsSelMovable() && IsSelDroppable(hDropItem));
+
+	#ifdef _DEBUG
+	UINT numSelected=NumSelected(); //shouldn't change
+	ASSERT(numSelected>1);
+	#endif
 
 	HTREEITEM hDropRoot=m_PointTree.GetParentItem(hDropItem);
 
@@ -2512,6 +2564,7 @@ void CShowShapeDlg::OnDropTreeItem(HTREEITEM hDropItem)
 
 		if(!m_hSelRoot || !m_PointTree.GetChildItem(m_hSelRoot)) {
 			VERIFY(m_PointTree.DeleteItem(m_hSelRoot?m_hSelRoot:m_hSelItem));
+			m_uLayerTotal--; //bug fixed -- this was omitted (10/16/2014)
 		}
 
 		//The selected layer now has fewer items selected --
@@ -2519,11 +2572,9 @@ void CShowShapeDlg::OnDropTreeItem(HTREEITEM hDropItem)
 			m_pSelLayer->m_pdbfile->pDBGridDlg->InvalidateTable();
 
 		if(m_hSelRoot) {
-			if(uRec) {
-				m_hSelItem=hDropItem;
-				m_hSelRoot=hDropRoot;
-				m_pSelLayer=pDropLayer;
-			}
+			m_hSelItem=hDropItem;
+			m_hSelRoot=hDropRoot;
+			m_pSelLayer=pDropLayer;
 		}
 		else {
 			m_uSelRec=0;
@@ -2538,6 +2589,8 @@ void CShowShapeDlg::OnDropTreeItem(HTREEITEM hDropItem)
 		m_hSelItem=m_PointTree.MoveItem(m_hSelItem,hDropItem);
 		//m_pSelLayer, m_uRelRec, m_hSelRoot unchanged
 	}
+
+	ASSERT(numSelected==NumSelected());
 
 	// select the last item we inserted
 	VERIFY(m_PointTree.SelectItem(m_hSelItem));
@@ -2571,7 +2624,6 @@ LRESULT CShowShapeDlg::OnAdvancedSrch(WPARAM fcn,LPARAM)
 		dlg.m_FindString=text;
 
 	if(IDOK==dlg.DoModal()) {
-		//m_pDoc->ReplaceVecShprec();
 		ReInit(m_pDoc);
 	}
 	return TRUE;
@@ -2615,7 +2667,7 @@ void CShowShapeDlg::OnBnClickedFindbylabel()
 	BeginWaitCursor();
 	m_pDoc->InitVecShpopt(false);
 	if(!m_pDoc->FindByLabel(text,0)) {
-		VERIFY(m_pDoc->ReplaceVecShprec()); //empty selection
+		m_pDoc->ReplaceVecShprec();
 		EndWaitCursor();
 		ShowNoMatches();
 	}

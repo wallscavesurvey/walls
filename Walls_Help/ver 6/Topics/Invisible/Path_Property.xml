@@ -1,0 +1,7 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">Path Property</title>
+  <body>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">A project tree item&apos;s </text><text styleclass="Normal" style="font-weight:bold;" translate="true">path property</text><text styleclass="Normal" translate="true"> establishes the drive and directory (folder) on your system containing the associated survey data file. If the specified path is relative (i.e., not prefixed with a backslash or a drive letter and colon) then the path is interpreted as relative to that of the parent book node. A book node&apos;s path property establishes the default data path for its children. For more details, see the Path property description under the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="General_Page" styleclass="Normal" style="font-style:normal;" translate="true">Properties:General Page</link><text styleclass="Normal" translate="true"> topic.</text></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>

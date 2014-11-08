@@ -1,0 +1,6 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">sample variance</title>
+  <body>
+    <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">A</text><text style="font-family:Arial; font-size:9pt; font-style:italic; color:#000000;" translate="true">&#32;</text><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">sample variance</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> is the sum of squared deviations from the mean of two or more samples from the same population, divided by the number of samples less one. &#160;Its expected value (theoretical mean) is the </text><text style="font-family:Arial; font-size:9pt; font-style:italic; color:#000000;" translate="true">population variance</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">. &#160;The square root of the sample variance is the </text><text style="font-family:Arial; font-size:9pt; font-style:italic; color:#000000;" translate="true">sample standard deviation</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">.</text></para>
+  </body>
+</topic>

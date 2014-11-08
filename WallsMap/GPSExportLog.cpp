@@ -160,7 +160,7 @@ int GPSExportLog(LPCSTR shpName)
 	CShpDBF db;
 	LPSTR pExt=trx_Stpext(strcpy(ebuf,shpName));
 	strcpy(pExt,SHP_EXT_DBF);
-	if(db.Create(ebuf,GPS_NUMFLDS,gpsFldDef,nOutRecs))
+	if(db.Create(ebuf,GPS_NUMFLDS,gpsFldDef))
 		goto _failDBF;
 
 	GPS_DBFREC rec;

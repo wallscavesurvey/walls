@@ -495,12 +495,21 @@ void CLayerSet::ComputeExtent()
 	GetExtent(&m_extent,FALSE); //Compute for all layers
 }
 
-void CLayerSet::SaveShapefiles()
+bool CLayerSet::HasEditedShapes()
 {
-	m_nShpsEdited=0;
 	for(PML pml=InitPML();pml;pml=NextPML()) {
 		if(pml->LayerType()==TYP_SHP && ((CShpLayer *)pml)->m_bEditFlags) {
-			if(!((CShpLayer *)pml)->SaveShp()) m_nShpsEdited++;
+			return true;
+		}
+	}
+	return false;
+}
+
+void CLayerSet::SaveShapefiles()
+{
+	for(PML pml=InitPML();pml;pml=NextPML()) {
+		if(pml->LayerType()==TYP_SHP && ((CShpLayer *)pml)->m_bEditFlags) {
+			((CShpLayer *)pml)->SaveShp();
 		}
 	}
 }
@@ -1249,7 +1258,8 @@ bool CLayerSet::FindByLabel(const CString &text,WORD wFlags)
 			InitLayerIndices();
 			CShpLayer::Sort_Vec_ShpRec(vec_shprec_srch);
 		}
-		return m_pDoc->ReplaceVecShprec();
+		m_pDoc->ReplaceVecShprec();
+		return true;
 	}
 
 	if(ftyp==FTYP_ADDMATCHED || ftyp==FTYP_ADDUNMATCHED) {
@@ -1259,10 +1269,15 @@ bool CLayerSet::FindByLabel(const CString &text,WORD wFlags)
 	return false; //caller will optionally clear the existing selection
 }
 
-UINT CLayerSet::SelectEditedShapes(UINT uFlags,BOOL bAddToSel,CFltRect *pRectView)
+int CLayerSet::SelectEditedShapes(UINT uFlags,BOOL bAddToSel,CFltRect *pRectView)
 {
 	UINT count=0;
 
+	ASSERT(!vec_shprec_srch.size());
+	vec_shprec_srch.clear();
+	if(bAddToSel) vec_shprec_srch.reserve(app_pShowDlg->NumSelected());
+
+	/*
 	if(bAddToSel) {
 		ASSERT(!vec_shprec_srch.size());
 		vec_shprec_srch.clear();
@@ -1272,44 +1287,45 @@ UINT CLayerSet::SelectEditedShapes(UINT uFlags,BOOL bAddToSel,CFltRect *pRectVie
 	else {
 		//clear m_pDoc->m_vec_shprec prior to first push_back --
 		m_pDoc->ClearSelChangedFlags(); //prepare for UnflagSelectedRecs() within pShp->SelectEditedShapes
+		//clear and fill m_pDoc->m_vec_shprec
 		bAddToSel=2;
 	}
+	*/
 
 	for(it_Layer p=m_layers.begin();p!=m_layers.end();++p) {
 		if((*p)->LayerType()==TYP_SHP) {
 			CShpLayer *pShp=(CShpLayer *)(*p);
 			//don't check layer's current extent when looking for deletions --
 			//if(pShp->IsEditable() && pShp->IsVisible() && ((uFlags&SHP_EDITDEL) || !pRectView || pRectView->IntersectWith(pShp->m_extent))) {
+
 			if(pShp->ShpType()==CShpLayer::SHP_POINT && pShp->IsVisible()) {
 				if((uFlags&SHP_EDITDEL) || !pRectView || extentOverlap(*pRectView,pShp->m_extent)) {
-					count+=pShp->SelectEditedShapes(uFlags,bAddToSel,pRectView);
-					if(count && bAddToSel>1) bAddToSel=0;
+				    //add to CLayerSet::vec_shprec_srch --
+					if(pShp->SelectEditedShapes(count, uFlags, bAddToSel, pRectView)<0) {
+						count=-1;
+						break;
+					}
 				}
 			}
 		}
 	}
 
-	if(bAddToSel>1) {
-		ASSERT(!count);
-		bAddToSel=0;
-	}
+	if(count>0) {
 
-	if(count) {
-		VEC_SHPREC &vec_shprec=bAddToSel?vec_shprec_srch:m_pDoc->m_vec_shprec;
-		if(vec_shprec.size()>1) {
-			InitLayerIndices(); //for sorting result
-			CShpLayer::Sort_Vec_ShpRec(vec_shprec);
-		}
 		if(bAddToSel) {
-			if(!m_pDoc->ReplaceVecShprec()) count=-1;
-			//also freed memory in vec_shprec_srch
+			ASSERT(app_pShowDlg->NumSelected()==m_pDoc->m_vec_shprec.size() && m_pDoc->m_vec_shprec.size());
+			//also add records already selected prior to sort --
+			vec_shprec_srch.insert(vec_shprec_srch.end(), m_pDoc->m_vec_shprec.begin(), m_pDoc->m_vec_shprec.end());
 		}
-		else {
-			m_pDoc->FlagSelectedRecs();
-			m_pDoc->RefreshTables();
+		if(vec_shprec_srch.size()>1) {
+			InitLayerIndices(); //for sorting result
+			CShpLayer::Sort_Vec_ShpRec(vec_shprec_srch);
 		}
+
+		//replace m_pDoc->m_vec_shprec with vec_shprec_srch and free memory --
+		m_pDoc->ReplaceVecShprec();
 	}
-	else if(bAddToSel) {
+	else if(bAddToSel || count==0) {
 		Empty_shprec_srch();
 	}
 

@@ -97,8 +97,10 @@ static apfcn_i _dbf_AppendUsrRec(DBF_NO dbf,int c)
   _DBFP->FileSizChg=TRUE;
 
   if(!_DBFP->Cf.Csh) {
+	/*
     if(dos_Transfer(1,_DBFP->Cf.Handle,usrp->U_Rec,
       _DBFP->Cf.Offset+new_recoff,_DBFP->H.SizRec)) return dbf_errno=DBF_ErrSpace;
+	*/
 	if(bShared) memcpy(usrp->U_Rec+_DBFP->H.SizRec,usrp->U_Rec,_DBFP->H.SizRec);
   }
   else if(_dbf_AddCshRec(_DBFP)) return dbf_errno;

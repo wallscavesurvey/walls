@@ -1,0 +1,6 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">review</title>
+  <body>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">When the workfiles are up-to-date for a selected (highlighted) item in the project tree window, the item&apos;s icon (folder, book, or page) will be colored blue instead of red. Also, the top left button in the window will be labeled </text><text styleclass="Normal" style="font-weight:bold;" translate="true">Review </text><text styleclass="Normal" translate="true">instead of </text><text styleclass="Normal" style="font-weight:bold;" translate="true">Compile</text><text styleclass="Normal" translate="true">. Clicking it will open a set of tabbed displays showing the results of that item&apos;s compilation. For a more detailed description see </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Review_Dialogs" styleclass="Normal" style="font-style:normal;" translate="true">Review Dialog</link><text styleclass="Normal" translate="true">.</text></para>
+  </body>
+</topic>

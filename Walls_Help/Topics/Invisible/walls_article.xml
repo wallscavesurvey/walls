@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<topic class="popup" template="Popup" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">walls_article</title>
+  <body>
+    <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; font-style:italic; color:#000000;" translate="true">Computer-Drawn Passage Walls</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">, AMCS Activities Newsletter, No. 11, p.86, December 1980 - The method described in this article for morphing cave passage outlines is very similar to what&apos;s implemented in Walls. The main difference is that nearby survey vectors, instead of being determined automatically, are explicitly chosen by the artist as features are being drawn. Also, the morphing algorithm tends to preserve relative distances to vectors, not absolute distances.</text></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>

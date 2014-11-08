@@ -1,0 +1,6 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">CorelDraw</title>
+  <body>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Unlike Adobe Illustrator, </text><text styleclass="Normal" style="font-weight:bold;" translate="true">CorelDraw 12</text><text styleclass="Normal" translate="true"> could export files with </text><text styleclass="Normal" translate="true">SVG font</text><text styleclass="Normal" translate="true"> definitions, a potentially useful feature for GIS applications. Unfortunately, I found enough differences between Illustrator&apos;s and CorelDraw&apos;s SVG support that getting Walls to work with the latter would have required more effort than it&apos;s worth. (No support of </text><text styleclass="Normal" translate="true">entity references</text><text styleclass="Normal" translate="true">, for example.) Besides that, Corel&apos;s development and promotion of their SVG technology apparently ended after a company reorganization in early 2004. I have not investigated Coreldraw X1, however.</text></para>
+  </body>
+</topic>

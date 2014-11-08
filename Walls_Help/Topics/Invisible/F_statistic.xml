@@ -1,0 +1,7 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">F-statistic</title>
+  <body>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">An </text><text styleclass="Normal" style="font-weight:bold;" translate="true">F-ratio</text><text styleclass="Normal" translate="true"> measures the disagreement between a given observation and a larger set of potentially conflicting data. &#160;A value greater than one indicates that overall consistency will improve if the observation is discarded. &#160;A value less than one means it would worsen. &#160;In the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Geometry_page" styleclass="Normal" translate="true">Geometry page</link><text styleclass="Normal" translate="true">, a loop system&apos;s traverses are ranked by their horizontal and vertical component F-ratios, allowing us to focus attention on the &quot;worst&quot; traverses when screening for data errors. &#160;For more information, see </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Statistical_Formulas" styleclass="Normal" style="font-style:normal;" translate="true">Statistical Formulas</link><text styleclass="Normal" style="font-style:normal;" translate="true">.</text></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>

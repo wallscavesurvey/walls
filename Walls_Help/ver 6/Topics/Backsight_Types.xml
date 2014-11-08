@@ -1,0 +1,38 @@
+﻿<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Backsight Types and Tolerances</title>
+  <keywords>
+    <keyword translate="true">Backsight Types</keyword>
+  </keywords>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Backsight Types and Tolerances</text></para>
+    </header>
+    <para style="tabstops:24px left ;"></para>
+    <para styleclass="Normal"><text styleclass="Subheader" translate="true">TYPEAB / TYPEVB = Corrected / Normal [,&lt;degree tolerance&gt;] [,X]</text></para>
+    <para styleclass="Normal"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">The azimuth and vertical angle fields on compass and tape (CT) data lines can optionally contain backsight versions of the measurements. &#160;During processing, the FS/BS values are simply averaged after the appropriate units conversions and instrument corrections are applied. &#160;For example, you could have vectors defined as follows:</text></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">...</text></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">S1</text><tab /><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">S2</text><tab /><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">30</text><tab /><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">100/282</text><tab /><tab /><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">/-16 &#160;;no forward inclination</text></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">S2</text><tab /><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">S3</text><tab /><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">15.5</text><tab /><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">355/181</text><tab /><tab /><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">6/-5</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">With the program&apos;s defaults in effect -- that is, with &quot;TYPEAB=N,5&quot; and &quot;TYPEVB=N,5&quot; -- the program will detect a FS/BS mismatch. &#160;That&apos;s because the difference between 355 and the reverse of 181 is more than 5 , the default tolerance in degrees.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Since apparently some cave surveyors prefer to record &quot;corrected&quot; backsights, the program also allows you to define the same vectors as follows:</text></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">...</text></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">#Units TypeAB=C,6 TypeVB=C</text></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">S1</text><tab /><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">S2</text><tab /><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">30</text><tab /><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">100/102</text><tab /><tab /><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">/16</text></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">S2</text><tab /><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">S3</text><tab /><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">15.5</text><tab /><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">355/1</text><tab /><tab /><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">6/5</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">This changes the backsight type of both azimuths and inclinations from Normal to Corrected, and increases the AB tolerance to six degrees so that the second vector passes the test.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#800000;" translate="true">Update: </text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> Another option in the handling of backsights is to to use them only as a check against blunders. If a trailing &quot;,X&quot; is present in the arguments for TYPEAB or TYPEVB then no averaging will occur; the foresight alone will be used in determining the vector&apos;s orientation. Use of this option requires that the other arguments be present also, such as in TypeAB=N,5,X.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Whether or not averaging is suppressed, FS/BS mismatches are treated as non-fatal errors during the compilation of raw data. The program generates a log of such errors (if any exist) and prompts you to inspect it in an editor window when compilation is complete. The first item on each line is a hot link to the appropriate survey file and line. A toolbar button, with the image of a clipboard marked with a red &quot;E&quot;, allows you to open the error log for an item&apos;s most recent compilation.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>

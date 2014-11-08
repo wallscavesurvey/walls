@@ -511,7 +511,6 @@ public:
 		, m_bShpLayers(false)
 		, m_bSelectedSetFlagged(true)
 		, m_bChanged(0)
-		, m_nShpsEdited(0)
 		, m_pLayerMaxImagePixelsPerGeoUnit(NULL)
 		, m_fMaxImagePixelsPerGeoUnit(1.0)
 		, m_pImageList(NULL)
@@ -592,7 +591,7 @@ public:
 	void UpdateExtent() {GetExtent(&m_extent,FALSE);}
 	void SaveShapefiles(); //Return number not successfully saved
 	bool FindByLabel(const CString &text,WORD wFlags);
-	UINT SelectEditedShapes(UINT uFlags,BOOL bAddToSel,CFltRect *pRectView);
+	int SelectEditedShapes(UINT uFlags,BOOL bAddToSel,CFltRect *pRectView);
 
 	void InitLayerIndices();
 	void UnflagSelectedRecs();
@@ -608,6 +607,7 @@ public:
 	void AddNtiLayer(CString &path);
 
 	bool IsGeoRefSupported() const {return NADZON_OK(m_iNad,m_iZone);} 
+	bool HasEditedShapes();
 
 	bool ExtentOverlap(const CFltRect &ext)
 	{
@@ -758,7 +758,6 @@ public:
 	static double m_fExportScaleRatio;
 	static CLayerSet *m_pLsetImgSource;
 
-	UINT m_nShpsEdited;
 	CMapLayer *m_pLayerMaxImagePixelsPerGeoUnit;
 	double m_fMaxImagePixelsPerGeoUnit;
 	CPropStatus m_PropStatus;

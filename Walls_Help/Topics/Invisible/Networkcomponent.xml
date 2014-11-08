@@ -1,0 +1,6 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">connected component</title>
+  <body>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">When a project item is compiled in Walls, the resulting </text><text styleclass="Normal" style="font-weight:bold;" translate="true">connected components</text><text styleclass="Normal" translate="true"> are listed on the Geometry page of the Review dialog. Each component is a largest subset of data in which any two stations are connected by one or more traverses (or by references to a common datum). Hanging surveys, for example, result in more than one component. The maps displayed on the Map and Page Layout pages show only the component that&apos;s currently selected. See </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Terminology" styleclass="Normal" style="font-style:normal;" translate="true">Network Terminology</link><text styleclass="Normal" style="font-style:normal;" translate="true">.</text></para>
+  </body>
+</topic>

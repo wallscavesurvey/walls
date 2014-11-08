@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Overriding Default Units with Special Formats</title>
+  <keywords>
+    <keyword translate="true">Suffixes</keyword>
+  </keywords>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Overriding Default Units with Special Formats</text></para>
+    </header>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">The #Units directive can be used to change the </text><text style="font-family:Arial; font-size:9pt; font-style:italic; color:#000000;" translate="true">default</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> units for both the length and angular quantities present in your data files -- that is, whether a distance measurement entered simply as &#160;&quot;10&quot;, for example, &#160;will be interpreted as 10 feet instead of 10 meters. &#160;It is possible, however, to override the defaults with specially formatted values. &#160;Perhaps the easiest way to document this is by way of example:</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">Lengths (distances, heights, tape corrections, etc.)</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="margin-left:48px; tabstops:24px left ;"><table styleclass="Default" rowcount="4" colcount="3">
+      <tr style="vertical-align:top">
+        <td style="width:84px;">
+          <para style="tabstops:24px left ;"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">-.5m</text></para>
+        </td>
+        <td style="width:50px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">=</text></para>
+        </td>
+        <td style="width:354px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">-.5 meters</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:84px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">10.5f</text></para>
+        </td>
+        <td style="width:50px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">=</text></para>
+        </td>
+        <td style="width:354px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">10.5 feet</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:84px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">10i6.5</text></para>
+        </td>
+        <td style="width:50px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">=</text></para>
+        </td>
+        <td style="width:354px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">10 feet, 6.5 inches</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:84px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">i6</text></para>
+        </td>
+        <td style="width:50px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">=</text></para>
+        </td>
+        <td style="width:354px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">6 inches</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">Angles (azimuths, inclinations, declinations, compass/clinometer corrections, etc.)</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="margin-left:48px; tabstops:24px left ;"><table styleclass="Default" rowcount="10" colcount="3">
+      <tr style="vertical-align:top">
+        <td style="width:84px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">45d</text></para>
+        </td>
+        <td style="width:50px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">=</text></para>
+        </td>
+        <td style="width:355px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">45 degrees</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:84px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">800m</text></para>
+        </td>
+        <td style="width:50px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">=</text></para>
+        </td>
+        <td style="width:355px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">800 mils (360d=6400m)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:84px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">100.5g</text></para>
+        </td>
+        <td style="width:50px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">=</text></para>
+        </td>
+        <td style="width:355px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">100.5 grads (360d=400g)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:84px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">-5p</text></para>
+        </td>
+        <td style="width:50px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">=</text></para>
+        </td>
+        <td style="width:355px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">-5% grade (45d=100p, 2.8624d=5p) (inclinations only)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:84px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">15:10:30</text></para>
+        </td>
+        <td style="width:50px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">=</text></para>
+        </td>
+        <td style="width:355px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">15 degrees, 10 minutes, 30 seconds</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:84px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">:50</text></para>
+        </td>
+        <td style="width:50px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">=</text></para>
+        </td>
+        <td style="width:355px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">50 minutes</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:84px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">N50.5W</text></para>
+        </td>
+        <td style="width:50px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">=</text></para>
+        </td>
+        <td style="width:355px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">North 50.5 degrees West (=309.5d)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:84px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">S:15.5E</text></para>
+        </td>
+        <td style="width:50px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">=</text></para>
+        </td>
+        <td style="width:355px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">South 15.5 minutes East</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:84px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">320d/N41W</text></para>
+        </td>
+        <td style="width:50px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">=</text></para>
+        </td>
+        <td style="width:355px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">foresight/backsight pair (=319.5d)</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:84px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">/-20</text></para>
+        </td>
+        <td style="width:50px;">
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">=</text></para>
+        </td>
+        <td style="width:355px;">
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">isolated back-inclination</text><tab /><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">(default units)</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Note that a measurement (or FS/BS pair) is always entered as a </text><text style="font-family:Arial; font-size:9pt; font-style:italic; color:#000000;" translate="true">single token;</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> there is no space between any of the separate components. &#160;An entry like &quot;10 f&quot; instead of &quot;10f&quot;, for example, will trigger an error message during compilation. &#160;Character case, however, doesn&apos;t matter; &quot;10.5F&quot; is equivalent to &quot;10.5f&quot;. &#160;The context will determine whether or not certain formats are acceptable. &#160;A quadrant-style bearing like N10E, for example, would not be accepted as an inclination. &#160;Neither would a number outside the range -90 to 90 (after conversion to degrees). &#160;There are, in fact, many forms that could</text><text style="font-family:Arial; font-size:9pt; font-style:italic; color:#000000;" translate="true">&#32;</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">technically be interpreted as legitimate values (365d, N-10W, 30.5:20, 10.0i6, etc.) but are instead viewed by the program as possible data entry errors. Even a sign (plus or minus) on a distance or azimuth is considered suspect. &#160;All such unlikely forms will generate an error message.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Finally, a special token, a sequence of two or more successive minus signs (e.g., &quot;---&quot;), can be used where appropriate to indicate that an actual measurement was not taken and that certain assumptions can be made regarding its absence during processing. &#160;Examples might include inclinations in a water passage (assumed zero), azimuths of pure vertical shots, missing LRUD distances, and absent foresights or backsights. &#160;If not followed by other line items, </text><text style="font-family:Arial; font-size:9pt; font-style:italic; color:#000000;" translate="true">blank</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> fields can sometimes serve the same purpose.</text></para>
+    <para style="tabstops:24px left ;"><tab /></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>

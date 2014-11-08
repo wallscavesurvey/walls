@@ -1,0 +1,27 @@
+﻿<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">#Units Directive Syntax</title>
+  <keywords>
+    <keyword translate="true">#Units - General</keyword>
+  </keywords>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">#Units Directive - General Description</text></para>
+    </header>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">The #Units directive tells Walls how to interpret the data that follows. &#160;Although there are many different options that you can include on a #Units directive line, you&apos;ll typically be specifying only a few while accepting default settings for the others. &#160;For example, if length measurements are in meters, the magnetic declination is 6.5 degrees, and the column order (after the From and To names) is Distance, Azimuth, and Vertical angle, the #Units directive at the beginning of your data file could look like this:</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">#Units Meters Order=DAV Decl=6.5</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">or, alternatively, like this:</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">#Units Decl=6.5</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">since meters is the default length unit and DAV (Distance, Azimuth, Vertical) is the default column order for the primary measurements.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">When a #Units directive line is encountered, the new parameter settings take hold and remain in effect until they are </text><text style="font-family:Arial; font-size:9pt; font-style:italic; color:#000000;" translate="true">individually</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> overridden by settings in a subsequent #Units directive, or if they are explicitly reset to the default state via the RESET keyword. &#160;Ordinarily, only the settings that change need to be respecified.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para styleclass="Normal"><text styleclass="Subheader" translate="true">The Compile Options Property Setting</text></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">In addition to using the #Units directive to describe data characteristics, you can also make use of the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Compile_Options_Page" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Compile Options</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> page of the &#160;Properties Dialog for project tree branches. &#160;These settings are stored in the WPJ file. &#160;Ideally, the SRV files should be self-contained, but sometimes it&apos;s convenient to be able to make global assignments (name prefixes, declinations, etc.) or to experiment with instrument corrections without having to edit numerous data files. &#160;When you use this feature, you should be aware that the Compile Options settings are processed by Walls in the order of a </text><text style="font-family:Arial; font-size:9pt; font-style:italic; color:#000000;" translate="true">complete</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> project tree traversal from the root (folder icon). &#160;This has exactly the same effect as a corresponding sequence of #Units directives inserted at the beginning of a survey data file. &#160;(The attached/detached state of branches is ignored in this traversal.)</text></para>
+    <para style="tabstops:24px left ;"></para>
+  </body>
+</topic>

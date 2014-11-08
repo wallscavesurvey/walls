@@ -1,0 +1,6 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">drag</title>
+  <body>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">A</text><text styleclass="Normal" style="font-weight:bold;" translate="true"> drag-and-drop</text><text styleclass="Normal" translate="true"> operation consists of &#160;these steps: &#160;1) Move the mouse cursor to the screen object representing something to be moved or copied. &#160;2) Hold down the left mouse button while moving the cursor (whose shape usually changes) to the object representing the destination. &#160;3) Finally, release the mouse button. &#160;If the CTRL key is held down during steps 2) and 3), it is a copy operation; otherwise, it is a move operation. &#160;When applied to project trees, drag-and-drop operations can also be performed with the right mouse button. &#160;This invokes a menu of choices (move, copy, etc.) when the button is released.</text></para>
+  </body>
+</topic>

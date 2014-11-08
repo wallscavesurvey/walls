@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Setup and File Usage</title>
+  <keywords>
+    <keyword translate="true">testing</keyword>
+  </keywords>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Setup and File Usage</text></para>
+    </header>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><text styleclass="Subheader" translate="true">Distributed Program Files</text></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">The software is organized so that no setup program is needed for installation. &#160;No essential part of the package resides in Windows system folders or in the registry. &#160;All that&apos;s required is a folder (e.g., C:\WALLS) for storing the executable files, the help files, and several optional support DLLs, all of which are contained in the distribution archive. The basic package is comprised of the following files:</text></para>
+    <para styleclass="Normal"></para>
+    <para styleclass="Normal"><table rowcount="2" colcount="2" style="width:auto; cell-padding:0px; cell-spacing:0px; page-break-inside:auto; border-width:0px; border-spacing:0px; cell-border-width:0px; border-style:none; background-color:none; head-row-background-color:none; alt-row-background-color:none;">
+      <tr style="vertical-align:top">
+        <td style="width:118px; height:21px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">Program Module</text></para>
+        </td>
+        <td style="width:301px; height:21px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">Description</text></para>
+        </td>
+      </tr>
+      <tr>
+        <td style="width:118px; height:126px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Walls32.EXE</text></para>
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Walls32.CHM</text></para>
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Wallsef.DLL</text></para>
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Wallexp.DLL</text></para>
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Wallshp.DLL</text></para>
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Wallsvg.DLL</text></para>
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">Wallgps.DLL</text></para>
+        </td>
+        <td style="width:301px; height:126px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Main executable</text></para>
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Help file </text></para>
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">SEF import module</text></para>
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">SEF export module</text></para>
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">ESRI shapefile export module</text><tab /></para>
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">SVG import/export module</text></para>
+          <para styleclass="Normal"><text styleclass="Font Style" style="font-family:Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none; text-transform:none; vertical-align:baseline; color:#000000; background-color:transparent; letter-spacing:normal; letter-scaling:100%;" translate="true">GPS receiver download module</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para style="tabstops:24px left ;"><text styleclass="Subheader" translate="true">Additional Programs Available for Use with Walls</text></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Currently, two executable programs (EXE files) are distributed with Walls. While they can be run independently, they are designed to be launched from Walls whenever certain kinds of data are exported. </text><link displaytype="text" defaultstyle="true" type="topiclink" href="SVG_Viewer" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Walls2D.exe</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> is an SVG map viewer and </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Walls3D_Viewer" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Walls3D.exe</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> is a viewer for VRML wireframe models. Finally, apart from the SEF import/export capability integrated into Walls, several DOS utilities for converting data from other surveying programs to the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="survey_data_files" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">SRV format</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> are also available. For more information on these, see </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Import_Other" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Converting Other Data Formats</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para styleclass="Normal"><text styleclass="Subheader" translate="true">Project Data Files</text></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">You will be creating separate project folders (e.g., C:\CAVES\HUAUTLA) for the projects you intend to work with, whether they be single caves or areas of many caves. &#160;Depending on </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Path_Property" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">path property</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> settings, the survey data files (default extension SRV) don&apos;t have to be stored in the same folder as their associated </text><link displaytype="text" defaultstyle="true" type="topiclink" href="project_script_file" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">project script</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> files (extension WPJ). However, it will make management of the project easier if data files are kept in subdirectories beneath the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="project_directory" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">project directory</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">. This makes </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Zip_Archives" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">archiving</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> the project easier and also simplifies drag-and-drop transfers between different project trees. &#160;(See </text><link displaytype="text" defaultstyle="true" type="topiclink" href="project_tree" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Project Trees</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">.) &#160;It&apos;s simply a matter of preference whether one should work with a large complex project tree or with a smaller number of simpler ones, or both.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><link displaytype="text" defaultstyle="true" type="topiclink" href="long_filenames" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Long names</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> for both folders and project script files are supported. For example, you might create a project file named &quot;Hackberry Cave.wpj&quot;. &#160;SRV data files, however, must have names no longer than eight characters (excluding the extension). Walls will enforce this restriction whenever you create a new data file. Note that project items of type </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Other_items" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Other</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> can have long file names.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">This is all you really need to be aware of. &#160;Walls will automatically create a separate </text><link displaytype="text" defaultstyle="true" type="topiclink" href="work_directory" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">work folder</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> beneath the project folder for the required </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Workfiles_Created_by_Walls" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">databases</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> as soon as you compile any portion of a project. This work folder has the same name as the project script file, but without the extension WPJ.</text></para>
+    <para style="tabstops:24px left ;"></para>
+  </body>
+</topic>

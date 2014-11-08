@@ -1,0 +1,7 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">New Item Button</title>
+  <body>
+    <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">The </text><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">New Item</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> button is clicked whenever a new book or new survey is to be located, as a child, immediately beneath the selected item in the project tree, at which time the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Properties_Dialog" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">New Item Dialog</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> opens. &#160;There you will specify the item&apos;s properties, such as its title and whether or not it is to be a survey instead of a book. This button is disabled when the selected item happens to be a survey.</text></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>

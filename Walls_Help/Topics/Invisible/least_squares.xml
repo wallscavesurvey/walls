@@ -1,0 +1,6 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">least-squares</title>
+  <body>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">The familiar concept of </text><text styleclass="Normal" style="font-style:italic;" translate="true">average</text><text styleclass="Normal" translate="true"> generalizes to the case when observations are not just similar estimates of a single unknown quantity, but are in fact dissimilar functions of possibly many unknown quantities (e.g. the coordinates of survey stations). &#160;The average, in this case, is the </text><text styleclass="Normal" style="font-weight:bold;" translate="true">least-squares</text><text styleclass="Normal" translate="true"> estimate of the unknowns, where the sum of squares of all implied corrections to the observations is minimized. &#160;If the observations can first be transformed and scaled in such a way that they are approximately linear functions of the unknowns, all with the same </text><text styleclass="Normal" style="font-style:italic;" translate="true">variance</text><text styleclass="Normal" translate="true">, then the least-squares estimate is attractive theoretically.</text></para>
+  </body>
+</topic>

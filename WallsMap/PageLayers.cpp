@@ -370,7 +370,7 @@ LRESULT CPageLayers::OnRClickItem(WPARAM item,LPARAM point)
 
 			if(pShp->m_pdbfile->bHaveTmpshp) { //HasXFlds()) {
 				CString s;
-				s.Format("Open %s",trx_Stpnam(pShp->PathName()));
+				s.Format("Open %s",pShp->FileName());
 				s.Truncate(s.ReverseFind('.'));
 				s+=SHP_EXT_TMPSHP;
 				VERIFY(pPopup->AppendMenu(MF_STRING,ID_APPENDLAYER_N,(LPCSTR)s));
@@ -552,11 +552,7 @@ void CPageLayers::OnBnClickedLayerDel()
 		}
 
 		if(((CShpLayer *)pLayer)->m_bEditFlags) {
-			ASSERT(m_pDoc->LayerSet().m_nShpsEdited); //**** this failed after working with exported layers added to project
-			//if(id==IDYES) {
-				((CShpLayer *)pLayer)->SaveShp();
-			//}
-			if(m_pDoc->LayerSet().m_nShpsEdited) m_pDoc->LayerSet().m_nShpsEdited--;
+			((CShpLayer *)pLayer)->SaveShp();
 		}
 		//CWallsMapView::SyncStop(); --why?
 	}
@@ -583,29 +579,29 @@ void CPageLayers::OnCloseAndDelete()
 	if(ptl->LayerType()==TYP_NTI) {
 		path=((CNtiLayer *)ptl)->PathName();
 		bool bHasNte=((CNtiLayer *)ptl)->HasNTERecord();
-		   
-		if(IDOK!=CMsgBox(MB_OKCANCEL,"CAUTION: Are you sure you want to delete %s after "
-			"it's removed as a layer?%s",trx_Stpnam(path),bHasNte?" (The .nte file component will also be deleted.)":"")) return;
-		OnBnClickedLayerDel();
-		if(_unlink(path))
-			AfxMessageBox("The file is read-only or in use by another process. Although the layer was closed, no files were deleted.");
-		else if(bHasNte) {
-			VERIFY(!_unlink(ReplacePathExt(path,".nte")));
+		CString msg;
+		msg.Format("CAUTION:\n\nAre you sure you want to delete %s after "
+			"it's removed as a layer?",trx_Stpnam(path));
+		if(bHasNte) msg+="\n(The .nte file component will also be deleted.)";
+		if(MsgOkCancel(m_hWnd, msg, "Confirm Deletion of Disk Files")) {
+			OnBnClickedLayerDel();
+			if(_unlink(path))
+				AfxMessageBox("The file is read-only or in use by another process. Although the layer was closed, no files were deleted.");
+			else if(bHasNte) {
+				VERIFY(!_unlink(ReplacePathExt(path,".nte")));
+			}
 		}
 	}
 	else {
-
 		CShpLayer *pShp=(CShpLayer *)ptl;
-
 		ASSERT(pShp->m_pdbfile->nUsers==1);
 
-		path.Format("CAUTION: Are you sure you want to delete the file components of %s after "
-			"it's removed as a layer? (Components with extensions .shp, .shx, .dbf, .dbt, .prj, "
+		path.Format("CAUTION:\n\nAre you sure you want to delete the file components of %s after "
+			"it's removed as a layer?\n(Components with extensions .shp, .shx, .dbf, .dbt, .prj, "
 			".dbe, .tmpshp, .qpj, .sbn, and .sbx will be deleted if they exist.)",trx_Stpnam(pShp->PathName()));
 
-		CMsgCheck dlg(IDD_MSGCHECK,path,"Confirm Deletion of Disk Files","");
-
-		if(IDOK!=dlg.DoModal()) return;
+		if(!MsgOkCancel(m_hWnd,path,"Confirm Deletion of Disk Files"))
+			return;
 
 		path=pShp->PathName(); //save path
 		OnBnClickedLayerDel();
@@ -968,14 +964,13 @@ void CPageLayers::OnOpenXC()
 	CShpLayer *pShp=(CShpLayer *)m_pDoc->SelectedLayerPtr();
 	ASSERT(pShp->LayerType()==TYP_SHP);
 	if(!bNopenXCPrompt) {
-		CMsgCheck dlg(IDD_MSGEXTENT,
-			"NOTE: If you make changes to the template file, particularly the expressions \"?(...)\" that "
-			"control how fields are edited or initialized, you'll need to close and reopen the project "
-			"before they can take effect.",
-			trx_Stpnam(pShp->PathName()),
-			"Don't display this again during this session.");
-		dlg.DoModal();
-		if(dlg.m_bNotAgain) bNopenXCPrompt=true;
+		if(MsgCheckDlg(m_hWnd,MB_OK,
+		    "NOTE: If you make changes to the template file, particularly the\n"
+		    "expressions \"?(...)\" that control how fields are edited or initialized,\n"
+			"you'll need to close and reopen the project before they can take effect.",
+			pShp->m_csTitle,
+			"Don't display this again during this session."))
+			bNopenXCPrompt=true;
 	}
 	CString s(pShp->PathName());
 	s.Truncate(s.ReverseFind('.'));

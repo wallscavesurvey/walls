@@ -16,60 +16,91 @@ content="text/html; charset=iso-8859-1">
 and the database files contain proprietary information and should not be distributed outside this group.</font></p>
 
 <hr>
-<p><font size="4"><strong>WallsMap (TSS Edition)</strong> &nbsp;(Build date: <font color="#990000"><strong>2014-07-13</strong></font>)
+<p><font size="4"><strong>WallsMap (TSS Edition)</strong> &nbsp;(Build date: <font color="#990000"><strong>2014-10-01</strong></font>)
 &nbsp;&nbsp;<a href="WallsMap_ReadMe.txt">Release Notes</a></font></p>
 <p><font size="4"><a href="WallsMap-TSS_setup.exe">WallsMap-TSS_setup.exe</a> (6 MB)</font></p>
 
 <p><font size="4"><strong>Note:</strong> This WallsMap release requires graphics technology available only in recent versions of
 Microsoft Windows (Vista/7/8+). Windows XP is no longer supported.
 
-<p><font size="4">Download and install this edition of WallsMap prior to installing the database.
-You can access this page for subsequent updates using a link in the program's About box. The TSS edition is the same as the one publicly
-distributed except that the setup doesn't contain the <i>Texas Public Caves</i> project. Also, the About box link will lead you here
-instead of to a <a href=" http://www.texasspeleologicalsurvey.org/Walls/WallsMap-TX.htm">download page</a> on the TSS website.
+<p><font size="4">Please download and install the latest WallsMap release prior to updating the database.
+You can access this page for subsequent updates using a link in the program's About box. The TSS edition
+is the same as the one publicly distributed except that the setup doesn't contain the <i>Texas Public Caves</i>
+project. Also, the About box link will lead you here instead of to a
+<a href="http://www.texasspeleologicalsurvey.org/software/wallsmap/wallsmap.php">download page</a>
+on the TSS website.
 </p><p>
-A PDF version of the help file is also available and will be updated with each new build:
+A PDF version of the help file is also avail.able and will be updated with each new build:
 <a href="WallsMap.pdf">WallsMap.pdf</a> (6.2 MB)</font></p>
 <hr>
-<p><font size="4"><strong>TSS Database Setup</strong> &nbsp;(Release date: <font color="#990000"><strong>2014-07-15</strong></font>)</font></p>
+<p><font size="4"><strong>TSS Database Setup</strong> &nbsp;(Release date: <font color="#990000"><strong>2014-10-06</strong></font>)</font></p>
 
 <p><font size="4"><font color="#990000"><strong>Important Notes!</strong></font>
 <UL>
 <LI>
-<p>Since release (2014-06-10) the database contains a new attribute field, ROCK_CODE, positioned adjacent
-to ROCK_TYPE. It contains a geologic unit abbreviation extracted from four or five geologic map shapefiles,
-and like COUNTY, QUADRANGLE, and ELEV_FT is set up to be maintained automatically as locations are revised.
-This feature requires that you install WallsMap build 2014-06-11 or later (preferably the latest).
-The first four shapefiles, which cover the Edwards Aquifer and Big Bend regions, are included in the project setup.
-Optionally you can download a 331 MB archive, <a href="http://davidmck.fmnetdesign.com/GAT_250K.exe">GAT_250K.exe</a>,
-containing a statewide geologic map shapefile. Adding that as a project layer, with <i>spatial indexing enabled</i>,
-will allow efficient initialization of ROCK_CODE for points outside those regions. These shapefiles only need to
-be present as layers. Visibility should normally be turned off.</p>
+<p>
+This release contains an updated <b>OSM_Roads</b> shapefile and four new geologic map layers.
+The project script (NTL file) now links to nine, non-visible geology shapefiles, all of which having been
+set up for dynamic initialization of the ROCK_CODE field. Also, linked alongside each shapefile is an
+<b>NTI image</b> for the corresponding geologic map, complete with collar information in some
+cases. You'll be notified if these layers are missing when the project opens upon Setup completion.
+Descriptions and download links for the geology files can be found in the WallsMap Help file, but
+you can satisfy the new links by simply downloading the following archives, then moving the extracted
+NTI files into the <i>..\TSS_NTI\Geology</i> folder. The shapefiles, however, are already in the project
+setup and will be installed in folder <i>..\TSS_Data\Geology</i>.
+</p><p>
+<a href="http://davidmck.fmnetdesign.com/GDOT_(4_NTI-SHP_sets).exe">
+GDOT_(4_NTI-SHP_sets).exe</a> (161 MB),
+<a href="http://davidmck.fmnetdesign.com/USGS_Texas_Geology-(4_NTI-SHP_sets).exe">USGS_Texas_Geology-(4_NTI-SHP_sets).exe</a> (82.2MB)
+</p><p>
+The project also assumes that <a href="http://davidmck.fmnetdesign.com/GAT_250K.exe">GAT_250K.shp</a> (331 MB)
+and <a href="http://davidmck.fmnetdesign.com/GAT_250K.nti">GAT_250K.nti</a> (433 MB) are both located in folder <i>..\TSS_NTI\Geology</i>. Note that the GAT image is much smaller than the 806 MB <i>gat.nti</i> you may already have. This new version has simply been recompressed with new parameters, the quality loss being hardly noticeable given what I started with. I would like to create it again with better original scans.
+</p><p>When retrieving ROCK_CODE values, the GAT shapefile is used as the fall-back when feature locations aren't covered
+by the regional geology shapefiles. In case they are, priority is determined by the search order that's specified in
+the <i>.tmpshp</i> file of each category shapefile. For now, we're simply giving consideration to publication date when
+more than one geologic map covers a region. You may decide we need to change the search order, which is now indicated by the ordering of those layers in the project tree.
+</p><p>
+When a new database snapshot is created by the database manager, all the ROCK_CODE field values
+are subject to being "refreshed." This has been done in the latest release, which comes with new geology shapefiles.
+In fact, our practice now is to always reinitialize this field for new records and for records whose locations
+have changed. (Same as what's done for the PROTECTION field.) Therefore, if you believe the dynamically generated code is
+incorrect for a feature you're adding or relocating, it doesn't help to manually override it. Instead,
+you can note this map discrepancy in the GEOLOGY field.
+</p>
 </LI>
 <LI>
-<p>In accordance with the practice we've adopted recently, this release contains a new read-only database snapshot, a shapefile
-named <i>TSS All Types_2014-07-15</i>. At any time after you've made changes to any of the five category shapefiles
-(<i>TSS Caves</i>, <i>TSS Shelters</i>, etc.), WallsMap's <i>Compare with other layers</i> function can use it to prepare
-an update archive for submission to the database maintainer (currently Travis Scott and/or David McKenzie). If you've edited
-records in the database since your last submission, please prepare a new update using your current snapshot before
-installing this release. See <i>Submitting a Shapefile Update</i> in online help.</p>
-</LI>
- <LI>
-Starting with the 2014-05-05 project release, the NTL file contains a new section of DRG/DEM layers
-in a folder named "Far West Texas." The download links for these files are in the <i>Available
-Background Imagery</i> section of the online help.
+<p>Another project change is removal of the read-only status of the TYPE field. This modification
+of the .tmpshp file allows one to enter in the edit box something other than one of the
+drop-down menu choices, which is still either <b>Cave</b>, <b>Sink</b>, <b>Cavity</b>, <b>Shelter</b>, <b>Spring</b>, <b>Entrance</b>, or <b>Other</b>.
+The only purpose of this change is to keep the traditional <b>Undefined</b> category, shown in TSS website
+statistics, where the actual feature type isn't known or was never specified. To indicate this, WallsMap
+has displayed a value like "Cave?" in the  record's TYPE field. Here, "Cave" would have been simply a guess,
+based on feature name alone, made by a program when the record was originally exported from Access. This allowed placement of the record in a specific category shapefile, perhaps one that would likely
+be appropriate. Now we humans can make such a TYPE assignment, which is to append a question mark to one
+of the menu choices while avoiding other kinds of edits.
+</p>
 </LI>
 </UL>
 </font></p>
 
 <p><font size="4">
-<a href="TSS_Data_setup.exe">TSS_Data_setup.exe</a> &nbsp;(Size: <b>175</b> MB)<br>
-Shapefile records: TSS All Types_2014-07-15: <b>13187</b>, TSS Caves: <b>5804</b>,
-TSS Sinks and Cavities: <b>3454</b>,<br>TSS Shelters: <b>713</b>, TSS Springs: <b>2930</b>, TSS Other: <b>196</b></p>
-<p><a href="TSS_Maps.101">TSS_Maps.101</a> &nbsp;(Size: <b>184</b> MB,  Maps: <b>2796</b>,  Recs: <b>2397</b>)<br>
-<a href="TSS_Photos.101">TSS_Photos.101</a> &nbsp;(Size: <b>293</b> MB,  Photos: <b>2952</b>,  Recs: <b>1198</b>)<br>
+<a href="TSS_Data_setup.exe">TSS_Data_setup.exe</a> &nbsp;(Size: <b>164</b> MB)<br>
+Shapefile records: TSS All Types_2014-10-06: <b>13378</b>, TSS Caves: <b>5907</b>,
+TSS Sinks and Cavities: <b>3590</b>,<br>TSS Shelters: <b>722</b>, TSS Springs: <b>2963</b>, TSS Other: <b>196</b></p>
+<p><a href="TSS_Maps.101">TSS_Maps.101</a> &nbsp;(Size: <b>190</b> MB,  Maps: <b>2864</b>,  Recs: <b>2437</b>)<br>
+<a href="TSS_Photos.101">TSS_Photos.101</a> &nbsp;(Size: <b>306</b> MB,  Photos: <b>3090</b>,  Recs: <b>1248</b>)<br>
 </font></p>
 
+<p>A more detailed summary of database status can be found on the TSS website:
+<a href="http://www.texasspeleologicalsurvey.org/deeplong/longcaves.php">Texas Long Caves</a>,
+<a href="http://www.texasspeleologicalsurvey.org/deeplong/deepcaves.php">Texas Deep Caves</a>,
+<a href="http://www.texasspeleologicalsurvey.org/deeplong/countytotals.php">Karst Totals by County</a>, and
+<a href="http://www.texasspeleologicalsurvey.org/deeplong/statistics.php">Texas Database Statistics</a>.
+</p>
+
+<hr>
+<p><font size="4"><strong>Instructions</strong></font>
+</p>
 <p><font size="4">Download all three files to the same location (e.g., Desktop) and run the
 executable, <i>TSS_Data_setup.exe</i>, which in turn processes the two .101 files if they are found. You'll be prompted for the destination folder of
 the extracted data &#150; that is, the parent of the three project folders: <i>TSS_Data</i>, <i>TSS Maps</i>,
@@ -86,11 +117,19 @@ shapefiles (<i>TSS Caves</i>, <i>TSS Shelters</i>, etc.) will be replaced, but t
 need to move (or rename by exporting) those existing files if they contain edits that haven't
 yet been submitted.</font></p>
 
-<p><font size="4">A project file named <i>TSS_Data_2014-07-15.ntl</i> will also be
+<p><font size="4">As with previous releases, the project contains a new database snapshot, a read-only shapefile
+named <i>TSS All Types_2014-10-06</i>. At any time after you've made changes to any of the five category shapefiles
+(<i>TSS Caves</i>, <i>TSS Shelters</i>, etc.), WallsMap's <i>Compare with other layers</i> function can use it to prepare
+an update archive for submission to the database maintainer (currently Travis Scott and/or David McKenzie). If you've edited
+records in the database since your last submission, please prepare a new update using your current snapshot before
+installing this release. See <i>Submitting a Shapefile Update</i> in online help.</font></p>
+
+<p><font size="4">A project file named <i>TSS_Data_2014-10-06.ntl</i> will also be
 installed in <i>TSS_Data</i> and lanched when setup finishes. Your previous NTL file, however,
 will still be available and you may well want to continue using it provided you add
-<i>TSS All Types_2014-07-15.shp</i> as a layer. The difference is that it will now be linked
+<i>TSS All Types_2014-10-06.shp</i> as a layer. The difference is that it will now be linked
 to shapefile layers that are up to date.</font></p>
+
 
 <p><font nt size="4">If upon opening the project WallsMap displays a message box warning you that
 a layer file couldn't be found, it's likely because you haven't installed some of the DEM/DRG

@@ -4,7 +4,7 @@
 !define BIN_DIR "\Work12\bin"
 !define PRODUCT_VERSION "0.3"
 !define PRODUCT_PUBLISHER "David McKenzie"
-!define PRODUCT_WEB_SITE "http://www.texasspeleologicalsurvey.org/Walls/WallsMap-TX.htm"
+!define PRODUCT_WEB_SITE "http://www.texasspeleologicalsurvey.org/software/wallsmap/wallsmap.php"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\WallsMap.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
@@ -13,7 +13,7 @@
 !include "MUI2.nsh"
 
 !ifndef BUILD_DATE
-  !define BUILD_DATE '2014-07-13'
+  !define BUILD_DATE '2014-11-01'
 !endif
 
 !define WNDCLASS "WallsMapClass"

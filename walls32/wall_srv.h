@@ -1,4 +1,4 @@
-//WALL-SRV.DLL functions --
+//wall-srv.c function declarations --
 
 #ifndef __WALL_SRV_H
 #define __WALL_SRV_H 

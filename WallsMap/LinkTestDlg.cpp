@@ -87,8 +87,6 @@ BOOL CLinkTestDlg::OnInitDialog()
 	ASSERT(ix!=CB_ERR && ix==m_cbLookIn.FindStringExact(0,m_pdb->FldNamPtr(m_nFld)));
 	VERIFY(m_cbLookIn.SetCurSel(ix)!=CB_ERR);
 
-	m_lp.nFld=m_nFld;
-
 	InitStartMsg();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -224,13 +222,16 @@ void CLinkTestDlg::OnFindNext()
 	}
 
 	if(m_lp.nLinkPos==m_lp.vBL.size()) {
-		//Let's update database --
 		if(m_lp.nNew) {
+			//Update database --
 			VERIFY(Search(2));
 			m_lp.nNew=0;
 		}
+
+		//Find next record with bad links, filling m_lp.vBL with links and offsets --
 		m_lp.nRow++;
 		if(!Search(1)) {
+		    //No more bad links found --
 			if(m_bReplaceAll) {
 				m_bReplaceAll=false;
 				EndWaitCursor();
@@ -257,22 +258,9 @@ void CLinkTestDlg::OnFindNext()
 	//handle the next bad link --
 	m_nCount++;
 
-/*
-#ifdef _DEBUG
-	CString ss;
-	int sz=m_lp.vBL.size();
-	for(int i=0;i<sz;i++) {
-		BADLINK &b=m_lp.vBL[i];
-		ss.SetString(b.pBrok,b.szBrok);
-	}
-#endif
-*/
+	ASSERT(m_lp.vBL[m_lp.nLinkPos].sRepl.IsEmpty());
 
-	BADLINK &bl=m_lp.vBL[m_lp.nLinkPos++];
-
-	m_sBrokenText.SetString(bl.pBrok,bl.szBrok);
-
-	ASSERT(bl.sRepl.IsEmpty());
+	m_sBrokenText=m_lp.vBL[m_lp.nLinkPos++].sBrok;
 
 	if(m_pShp->IsEditable() && FindReplacement()) {
 		if(m_bReplaceAll) {
@@ -322,7 +310,9 @@ void CLinkTestDlg::InitStartMsg()
 	Enable(IDC_CREATE_LOG,0);
 	Enable(IDOK,0);
 	Enable(IDC_BROWSE,0);
-	m_nFixed=m_nCount=m_lp.nRow=m_lp.nLinkPos=m_lp.nNew=0;
+	m_nFixed=m_nCount=0;
+	
+	m_lp.nRow=m_lp.nLinkPos=m_lp.nNew=0;
 	
 	m_lp.nFld=m_nFld;
 
@@ -476,8 +466,8 @@ void CLinkTestDlg::StoreUnmatchedPrefixes(LPCSTR p0,LPCSTR p1)
 	LPCSTR pp0=trx_Stpnam(p0);
 	LPCSTR pp1=trx_Stpnam(p1);
 
-	int matches=p0-pp0;
-	if(matches==(p1-pp1) && !memcmp(p0,p1,matches))
+	int matches=pp0-p0;
+	if(matches==(pp1-p1) && !memcmp(p0,p1,matches))
 		return;
 
 	for(matches=0;pp0>p0 && pp1>p1 && pp0[-1]==pp1[-1];pp0--,pp1--) {

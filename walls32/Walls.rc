@@ -495,9 +495,9 @@ BEGIN
     PUSHBUTTON      "Change Link",IDC_UPDATELINK,111,91,55,12
     DEFPUSHBUTTON   "OK",IDOK,173,91,55,12
     ICON            IDR_MAINFRAME,IDC_STATIC,7,14,20,20
-    CTEXT           "\nWALLS Project Editor -- Beta Version 2.0 B8\nBuild 2014-05-26\nCopyright © 2014 by David McKenzie (davidmck@austin.rr.com)",IDC_STATIC,32,7,219,38,SS_SUNKEN
+    CTEXT           "\nWALLS Project Editor -- Beta Version 2.0 B8\nBuild 2014-11-01\nCopyright © 2014 by David McKenzie (davidmck@austin.rr.com)",IDC_STATIC,32,7,219,38,SS_SUNKEN
     LTEXT           "This version of Walls may be freely distributed. Click on the link below\nto obtain information on new releases and related software.",IDC_STATIC,19,52,238,18,NOT WS_GROUP
-    LTEXT           "http://www.utexas.edu/tmm/sponsored_sites/tss/Walls/tsswalls.htm",IDC_WALLSURL,19,73,248,11
+    LTEXT           "http://texasspeleologicalsurvey.org/software/walls/tsswalls.php",IDC_WALLSURL,19,73,248,11
 END
 
 IDD_PRJSELECT DIALOG 0, 0, 179, 11

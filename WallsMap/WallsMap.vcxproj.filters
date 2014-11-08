@@ -387,6 +387,15 @@
     <ClCompile Include="CompareFcnDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CopySelectedDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Modeless.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XMessageBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FontComboBox.h">
@@ -423,9 +432,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DbtEditDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dbtfile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DIBWrapper.h">
@@ -759,6 +765,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CompareFcnDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CopySelectedDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Modeless.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XMessageBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -181,3 +181,25 @@ void GetString(CString &s, CDaoRecordset &rs, int nFld)
 		s.Trim();
 	}
 }
+
+BOOL GetTempFilePathWithExtension(CString &csPath,LPCSTR pExt)
+ {
+   UUID uuid;
+   unsigned char* sTemp;
+   HRESULT hr = UuidCreateSequential(&uuid);
+   if (hr != RPC_S_OK) return FALSE;
+   hr = UuidToString(&uuid, &sTemp);
+   if (hr != RPC_S_OK) return FALSE;
+   CString sUUID(sTemp);
+   sUUID.Remove('-');
+   RpcStringFree(&sTemp);
+
+   TCHAR pszPath[MAX_PATH];
+   if(!::GetTempPath(MAX_PATH,pszPath)) return FALSE;
+   csPath.Format("%s%s.%s",pszPath,(LPCSTR)sUUID,pExt);
+   if(csPath.GetLength()>MAX_PATH) {
+	   csPath.Empty();
+	   return FALSE;
+   }
+   return TRUE;
+}

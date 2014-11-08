@@ -1,0 +1,6 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">variance</title>
+  <body>
+    <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">Variance</text><text styleclass="Normal" translate="true"> is the expected squared deviation from the mean of a random variable. &#160;Its square root is the </text><text styleclass="Normal" style="font-style:italic;" translate="true">standard deviation</text><text styleclass="Normal" translate="true">. &#160;If an observation is subject to error, but is assumed to be an </text><text styleclass="Normal" style="font-style:italic;" translate="true">unbiased</text><text styleclass="Normal" translate="true"> estimate of an unknown quantity, then its variance is just the expected squared error. &#160;Assumptions about variances are relevant when weighting redundant observations to obtain </text><text styleclass="Normal" style="font-style:italic;" translate="true">least-squares</text><text styleclass="Normal" translate="true"> estimates.</text></para>
+  </body>
+</topic>

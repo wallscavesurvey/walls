@@ -5,7 +5,7 @@
 #include "WallsMapDoc.h"
 #include "WallsMapView.h"
 #include "ShpLayer.h"
-//#include "NtiLayer.h"
+#include "XMessageBox.h"
 #include "UpdatedDlg.h"
 #include "DbtEditDlg.h"
 //#include "PolyGonClip.h"
@@ -23,6 +23,7 @@
 #include "GEDefaultsDlg.h"
 #include "LayerSetSheet.h"
 #include "QuadTree.h"
+//#include "modeless.h"
 
 #ifdef _USE_TRX
 #include <trxfile.h>
@@ -318,6 +319,8 @@ UINT CShpLayer::m_uLabelSize=8;
 
 VEC_SHPOPT vec_shpopt; //global used for text searches only
 
+static bool bFromZip=false; //affects AddMemoLink() operation when called from GetMemoLinks() (used only when creating zip)
+
 void CShpLayer::CancelMemoMsg(EDITED_MEMO &memo)
 {
 	CString title;
@@ -435,7 +438,6 @@ void CShpLayer::Init()
 
 void CShpLayer::UnInit()
 {
-	//VERIFY(::DeleteObject(m_hBrushBkg));
 	//CShpDBF::FreeDefaultCache();
 	ASSERT(!dbf_defCache);
 	free(m_pRecBuf);
@@ -620,7 +622,7 @@ BOOL CShpLayer::OpenDBE(LPSTR pathName,UINT uFlags)
 			else {
 				bAssigned=true;
 				for(VEC_BYTE::iterator it=m_vdbe->begin();it!=m_vdbe->end();it++)
-					(*it)&=~(SHP_EDITDEL|SHP_SELECTED|SHP_EDITLOC); //will set delete flags based on shp compoment
+					(*it)&=~(SHP_EDITDEL|SHP_SELECTED|SHP_EDITSHP); //will set delete flags based on shp compoment
 			}
 		}
 	}
@@ -639,20 +641,17 @@ BOOL CShpLayer::OpenDBE(LPSTR pathName,UINT uFlags)
 void CShpLayer::ClearDBE()
 {
 	//Called only when user clears edit flags --
+	ASSERT((m_bEditFlags&~SHP_EDITCLR)==0);
 	ASSERT(IsEditable() && ShpTypeOrg()==SHP_POINT);
-	if(!m_nNumRecs) return;
-	bool bPriorChanges=m_bEditFlags!=0;
+
 	char buf[MAX_PATH];
 	strcpy(trx_Stpext(strcpy(buf,PathName())),SHP_EXT_DBE);
 	_unlink(buf);
 	{
 		LPBYTE pdbe=&(*m_vdbe)[0];
-		for(UINT i=0;i<m_nNumRecs;i++,pdbe++) *pdbe&=(SHP_EDITDEL|SHP_SELECTED);
+		for(UINT i=0;i<m_nNumRecs;i++,pdbe++) *pdbe&=(SHP_EDITDEL|SHP_SELECTED);  //keep deleted and selected flags!
 	}
-	m_bEditFlags|=SHP_EDITCLR; //Indicates only that we've done some flag clearing
-	if(!bPriorChanges) {
-		m_pDoc->LayerSet().m_nShpsEdited++;
-	}
+	m_bEditFlags&=~SHP_EDITCLR; //No need to update dbe until there are more edits
 }
 
 int	CShpLayer::DbfileIndex(LPCSTR pathName)
@@ -760,8 +759,17 @@ BOOL CShpLayer::OpenDBF(LPSTR pathName,int shpTyp,UINT uFlags)
 	bool bReadOnly=(uFlags&NTL_FLG_EDITABLE)==0;
 	bool bPoly=(shpTyp!=SHP_POINT && shpTyp!=SHP_POINTZ && shpTyp!=SHP_POINTM);
 
-	if(m_pdb->Open(pathName,bReadOnly?(CShpDBF::ReadOnly|CShpDBF::ForceOpen):(CShpDBF::ReadWrite|CShpDBF::ForceOpen))) {
-		ASSERT(dbf_errno==DBF_ErrShare || dbf_errno==DBF_ErrReadOnly);
+	int e=m_pdb->Open(pathName,bReadOnly?(CShpDBF::ReadOnly|CShpDBF::ForceOpen):(CShpDBF::ReadWrite|CShpDBF::ForceOpen));
+	if(e) {
+		if(e!=DBF_ErrShare && e!=DBF_ErrReadOnly) {
+			//bad format or no memory? --
+			CMsgBox("File: %s\n\nOpen failure - %s.",trx_Stpnam(pathName),m_pdb->Errstr(e));
+			if(uFlags&NTL_FLG_LAYERSET)
+					CLayerSet::m_bOpenConflict=-1;
+			m_pdbfile=NULL;
+			return FALSE;
+		}
+
 		if(!bReadOnly && !m_pdb->Open(pathName,CShpDBF::ReadOnly|CShpDBF::ForceOpen)) {
 			uFlags&=~NTL_FLG_EDITABLE;
 			bReadOnly=true;
@@ -773,7 +781,7 @@ BOOL CShpLayer::OpenDBF(LPSTR pathName,int shpTyp,UINT uFlags)
 			if(uFlags&NTL_FLG_LAYERSET)
 					CLayerSet::m_bOpenConflict=1; //share conflict
 			else
-				CMsgBox("File %s: Not opened - %s",trx_Stpnam(pathName),m_pdb->Errstr(dbf_errno));
+				CMsgBox("File: %s\n\nOpen failure - %s.", trx_Stpnam(pathName), m_pdb->Errstr(e));
 			m_pdbfile=NULL;
 			return FALSE;
 		}
@@ -1366,6 +1374,16 @@ void CShpLayer::InitShpHdr(SHP_MAIN_HDR &hdr,int typ,UINT sizData,const CFltRect
 	}
 }
 
+bool CShpLayer::EditFlagsCleared()
+{
+	//we've only cleared editflags for a few individual records
+	LPBYTE pdbe=&(*m_vdbe)[0];
+	for(UINT i=0; i<m_nNumRecs; i++, pdbe++) 
+		if(*pdbe&(SHP_EDITDEL|SHP_EDITDBF|SHP_EDITLOC|SHP_EDITADD)) return false;
+	return true;
+}
+
+
 BOOL CShpLayer::SaveShp()
 {
 	ASSERT(IsEditable() && m_bEditFlags && m_nNumRecs==m_pdb->NumRecs());
@@ -1374,10 +1392,11 @@ BOOL CShpLayer::SaveShp()
 	char *pMsg=eMsg;
 	*pMsg=0;
 
-	SHP_MAIN_HDR hdr;
 
 	if(m_bEditFlags&(SHP_EDITSHP|SHP_EDITADD|SHP_EDITDEL)) {
 		ASSERT(m_nNumRecs && IsShpEditable());
+
+		SHP_MAIN_HDR hdr;
 
 		//modify only changed locations to avoid changes due only to CRS conversions
 		CFile cfShp;
@@ -1405,7 +1424,7 @@ BOOL CShpLayer::SaveShp()
 			UINT offset=sizeof(hdr);
 
 			for(it_fltpt it=m_fpt.begin();it!=m_fpt.end();it++,pdbe++,nOutRecs++,offset+=sizeof(rec)) {
-				if(*pdbe&SHP_EDITLOC) {
+				if(*pdbe&SHP_EDITSHP) {
 					rec.recNumber=FlipBytes(nOutRecs);
 					if(*pdbe&SHP_EDITDEL) {
 						rec.shpType=SHP_NULL;
@@ -1419,7 +1438,7 @@ BOOL CShpLayer::SaveShp()
 
 					cfShp.Seek(offset,CFile::begin);
 					cfShp.Write(&rec,sizeof(rec));
-					*pdbe&=~SHP_EDITLOC;
+					*pdbe&=~SHP_EDITSHP;
 				}
 			}
 			cfShp.Close();
@@ -1429,14 +1448,9 @@ BOOL CShpLayer::SaveShp()
 			pMsg="Error updating SHP component";
 			goto _fail;
 		}
-	}
-
-	if(m_bEditFlags&(SHP_EDITDBF|SHP_EDITADD|SHP_EDITDEL)) {
-		ASSERT(m_nNumRecs && m_pdbfile->pbuf);
-
-		CSafeMirrorFile cfShp;
 
 		if(m_bEditFlags&SHP_EDITADD) {
+			CSafeMirrorFile cfShp;
 			if(!FileCreate(cfShp,eMsg,m_pathName,SHP_EXT_SHX))
 				goto _fail;
 			SHX_REC shxRec;
@@ -1459,10 +1473,19 @@ BOOL CShpLayer::SaveShp()
 				pMsg="Error writing SHX component";
 				goto _fail;
 			}
-			m_bEditFlags&=~SHP_EDITADD;
 		}
+	}
 
-		{
+	if(m_bEditFlags&(SHP_EDITSHP|SHP_EDITDBF|SHP_EDITADD|SHP_EDITDEL|SHP_EDITCLR)) {
+		ASSERT(m_nNumRecs && m_pdbfile->pbuf);
+
+		if(m_bEditFlags==SHP_EDITCLR && EditFlagsCleared()) {
+			ClearDBE();
+		}
+		else {
+
+			CSafeMirrorFile cfShp;
+
 			if(!FileCreate(cfShp,eMsg,PathName(),SHP_EXT_DBE))
 				goto _fail;
 
@@ -1481,12 +1504,12 @@ BOOL CShpLayer::SaveShp()
 		}
 	}
 
-	m_bEditFlags&=~(SHP_EDITDBF|SHP_EDITSHP|SHP_EDITADD|SHP_EDITDEL);
+	m_bEditFlags&=~(SHP_EDITDBF|SHP_EDITSHP|SHP_EDITADD|SHP_EDITDEL|SHP_EDITCLR);
 	return TRUE;
 
 _fail:
 	CString errstr;
-	errstr.Format("Error updating %s --\n\n%s.",trx_Stpnam(PathName()),pMsg);
+	errstr.Format("Error updating %s --\n\n%s.",FileName(),pMsg);
 	AfxMessageBox(errstr);
 	return FALSE;
 }
@@ -1549,7 +1572,7 @@ SHP_POLY_DATA * CShpLayer::Init_ppoly()
 			cf.Seek(nextOff,CFile::begin);
 			if(cf.Read(&sRec,sizeof(SHP_POLY_REC))<sizeof(SHP_POLY_REC)) {
 				if(m_nNumRecs==m_pdbfile->db.NumRecs()) //message not shown earlier
-					CMsgBox("CAUTION: File %s is truncated. Only %u of %u poly%ss could be read.",trx_Stpnam(PathName()),
+					CMsgBox("CAUTION: File %s is truncated. Only %u of %u poly%ss could be read.",FileName(),
 						rec,m_nNumRecs,(ShpType()==SHP_POLYLINE)?"line":"gon");
 				m_nNumRecs=rec;
 				rec=m_pdbfile->db.NumRecs();
@@ -1751,22 +1774,18 @@ void CShpLayer::GetTooltip(UINT rec,LPSTR text)
 static bool vec_ptnode_pred(const MAP_PTNODE_PTR &pn1,const MAP_PTNODE_PTR &pn2)
 {
 	if(pn1->pLayer==pn2->pLayer) {
-		//compare label fields --
-		CShpDBF *pdb1=pn1->pLayer->m_pdb;
-		ASSERT(pdb1->IsMapped());
-		UINT fld1=pn1->pLayer->m_nLblFld;
-		UINT len1=pdb1->FldLen(fld1);
-
-		CShpDBF *pdb2=pn2->pLayer->m_pdb;
-		ASSERT(pdb2->IsMapped());
-		UINT fld2=pn2->pLayer->m_nLblFld;
-		UINT len2=pdb2->FldLen(fld2);
-
-		int iComp=_memicmp(pdb1->FldPtr(pn1->rec,fld1),
-			pdb2->FldPtr(pn2->rec,fld2),min(len1,len2));
-		return iComp?(iComp<0):(len1<len2);
+		//compare labels --
+		BYTE buf1[256];
+		CShpDBF *pdb=pn1->pLayer->m_pdb;
+		UINT fld=pn1->pLayer->m_nLblFld;
+		UINT len=pdb->FldLen(fld);
+		PBYTE pLbl1=pdb->FldPtr(pn1->rec,fld);
+		if(!pdb->IsMapped()) {
+			pLbl1=(PBYTE)memcpy(buf1,pLbl1,len);
+		}
+		return _memicmp(pLbl1,pdb->FldPtr(pn2->rec,fld),len)<0;
 	}
-	//return trx_Strcmpc(pn1->pLayer->Title(),pn2->pLayer->Title())<0;
+	//compare order in layerset --
 	return pn1->pLayer->m_nLayerIndex>pn2->pLayer->m_nLayerIndex;
 }
 
@@ -1778,23 +1797,16 @@ void CShpLayer::Sort_Vec_ptNode(VEC_PTNODE &vec_pn)
 static bool vec_shprec_pred(const SHPREC &pShp1,const SHPREC &pShp2)
 {
 	if(pShp1.pShp==pShp2.pShp) {
-		//compare label fields --
-		CShpDBF *pdb1=pShp1.pShp->m_pdb;
-		ASSERT(pdb1->IsMapped());
-		UINT fld1=pShp1.pShp->m_nLblFld;
-		UINT len1=pdb1->FldLen(fld1);
-
-		CShpDBF *pdb2=pShp2.pShp->m_pdb;
-		ASSERT(pdb2->IsMapped());
-		UINT fld2=pShp2.pShp->m_nLblFld;
-		UINT len2=pdb2->FldLen(fld2);
-
-		int iComp=_memicmp(
-			pdb1->FldPtr(pShp1.rec,fld1),
-			pdb2->FldPtr(pShp2.rec,fld2),
-			min(len1,len2));
-
-		return iComp?(iComp<0):(len1<len2);
+		//compare labels --
+		BYTE buf1[256];
+		CShpDBF *pdb=pShp1.pShp->m_pdb;
+		UINT fld=pShp1.pShp->m_nLblFld;
+		UINT len=pdb->FldLen(fld);
+		PBYTE pLbl1=pdb->FldPtr(pShp1.rec,fld);
+		if(!pdb->IsMapped()) {
+			pLbl1=(PBYTE)memcpy(buf1,pLbl1,len);
+		}
+		return _memicmp(pLbl1,pdb->FldPtr(pShp2.rec,fld),len)<0;
 	}
 
 	return pShp1.pShp->m_nLayerIndex>pShp2.pShp->m_nLayerIndex;
@@ -1939,44 +1951,36 @@ BOOL CShpLayer::GetMatches(VEC_BYTE *pvSrchFlds,LPCSTR target,WORD wFlags,const 
 	return bRet;
 }
 
-UINT CShpLayer::SelectEditedShapes(UINT uFlags,BOOL bAddToSel,CFltRect *pRectView)
+int CShpLayer::SelectEditedShapes(UINT &nMatches,UINT uFlags,BOOL bAddToSel,CFltRect *pRectView)
 {
 	if(!m_nNumRecs) return 0;
 
 	SHPREC sRec(this,0);
 	LPBYTE pdbe=&m_pdbfile->vdbe[0];
 
-	bool bClearNeeded=false;
-	if(bAddToSel==2) {
-		bAddToSel=0;
-		bClearNeeded=true;
-	}
-
-	VEC_SHPREC &vec_shprec=bAddToSel?CLayerSet::vec_shprec_srch:m_pDoc->m_vec_shprec;
-	UINT nMatches=0;
-
+	UINT maxMatches=MAX_VEC_SHPREC_SIZE;
+	if(bAddToSel) maxMatches-=app_pShowDlg->NumSelected();
+    
 	for(UINT rec=0;rec<m_nNumRecs;rec++) {
 		BYTE flag=*pdbe++;
 		if(flag&SHP_EDITDEL) {
 			//If this record was deleted, include it only
 			//if deleted records were requested
-			flag&=~(SHP_EDITSHP|SHP_EDITADD|SHP_EDITDBF);
+			flag&=~(SHP_EDITLOC|SHP_EDITADD|SHP_EDITDBF);
 		}
 		if(flag&SHP_EDITADD) {
 			//Same for added records
-			flag&=~(SHP_EDITSHP|SHP_EDITDBF);
+			flag&=~(SHP_EDITLOC|SHP_EDITDBF);
 		}
 		if(!((BYTE)uFlags&flag) || (bAddToSel && (flag&SHP_SELECTED))) continue;
 
 		if(!pRectView || pRectView->IsPtInside(m_fpt[rec])) {
 			sRec.rec=rec+1;
-			if(bClearNeeded) {
-				bClearNeeded=false;
-				m_pDoc->UnflagSelectedRecs();
-				vec_shprec.clear();
+			if(nMatches>=maxMatches) {
+				return -1;
 			}
-			vec_shprec.push_back(sRec);
 			nMatches++;
+			CLayerSet::vec_shprec_srch.push_back(sRec);
 		}
 	}
 	return nMatches;
@@ -2094,7 +2098,7 @@ DWORD CShpLayer::InitEditBuf(CFltPoint &fpt,DWORD rec)
 
 	try {
 		m_fpt.push_back(fpt);
-		m_vdbe->push_back((BYTE)(SHP_EDITSHP|SHP_EDITDBF|SHP_EDITADD|SHP_SELECTED|SHP_EDITLOC)); 
+		m_vdbe->push_back((BYTE)(SHP_EDITSHP|SHP_EDITDBF|SHP_EDITADD|SHP_SELECTED)); 
 	}
 	catch(...) {
 		//unlikely lack of memory
@@ -2951,7 +2955,7 @@ BOOL CShpLayer::ExportShapes(LPCSTR shpName,CShpDef &shpdef,VEC_DWORD &vRec)
 	}
 
 	strcpy(pExt,SHP_EXT_DBF);
-	if(db.Create(ebuf,nFlds,(DBF_FLDDEF *)&shpdef.v_fldDef[0],nOutRecs))
+	if(db.Create(ebuf,nFlds,(DBF_FLDDEF *)&shpdef.v_fldDef[0]))
 		goto _failDBF;
 
 	bool  bUseViewCoord=(shpdef.uFlags&SHPD_USEVIEWCOORD)!=0;
@@ -3210,8 +3214,8 @@ BOOL CShpLayer::ExportShapes(LPCSTR shpName,CShpDef &shpdef,VEC_DWORD &vRec)
 					StoreDouble(d,pFld->F_Len,pFld->F_Dec,pDst);
 				}
 			}
-		}
-	}
+		} //field loop
+	} //record loop
 
 #ifdef _USE_TRX
 	if(bUsingIndex)
@@ -3373,12 +3377,13 @@ UINT CShpLayer::CopyShpRec(CShpLayer *pSrcLayer,UINT uSrcRec,BYTE *pFldSrc,bool 
 		m_fpt.push_back(pSrcLayer->m_fpt[uSrcRec-1]);
 		ASSERT(m_fpt.size()==m_nNumRecs+1);
 
-		m_vdbe->push_back(bDeleted?(SHP_EDITLOC+SHP_EDITDEL):SHP_EDITLOC); //shp revision needed
+		m_vdbe->push_back(bDeleted?(SHP_EDITSHP+SHP_EDITDEL):(SHP_EDITSHP)); //shp revision needed
 		if(bDeleted) m_uDelCount++;
 
 		ASSERT(m_vdbe->size()==m_nNumRecs+1);
 
 		pSrcLayer->m_pdb->Go(uSrcRec);
+
 		ASSERT((*pSrcLayer->m_pdb->RecPtr()=='*')==bDeleted);
 
 		bool bHasMemos;
@@ -3542,7 +3547,6 @@ UINT CShpLayer::CopyShpRec(CShpLayer *pSrcLayer,UINT uSrcRec,BYTE *pFldSrc,bool 
 					CDBTFile::SetRecNo((LPSTR)m_pdb->FldPtr(e),dbtRec);
 				}
 			}
-			if(!dbt.FlushHdr()) throw 0;
 		}
 	}
 	catch(...) {
@@ -3641,24 +3645,14 @@ void CShpLayer::ShowTimestamps(UINT rec)
 }
 */
 
-int CShpLayer::SaveDiscardCancel(const EDITED_MEMO &memo,BOOL bForceClose)
+int CShpLayer::ConfirmSaveMemo(HWND hWnd, const EDITED_MEMO &memo,BOOL bForceClose)
 {
-	UINT mbtyp;
 	CString title,s;
 	
-	s.Format("%s\n\nYou've edited this memo's content and the changes haven't been saved. "
-			  "Select YES to save, NO to discard changes",GetMemoTitle(title,memo));
-	if(bForceClose) {
-		//Discard or save
-		s.AppendChar('.');
-		mbtyp=MB_YESNO;
-	}
-	else {
-		//Discard, save, or continue --
-		s+=", or CANCEL to continue editing.";
-		mbtyp=MB_YESNOCANCEL;
-	}
-	return AfxMessageBox(s,mbtyp);
+	s.Format("%s\n\nYou've edited the content of this memo field.  Save changes before exiting?",
+			  GetMemoTitle(title,memo));
+
+	return MsgYesNoCancelDlg(hWnd,s,m_csTitle,"Save", "Discard Changes", bForceClose?NULL:"Continue Editing");
 }
 
 /*
@@ -4035,6 +4029,15 @@ UINT CShpLayer::GetFieldValue(CString &s,int nFld)
 	return len;
 }
 
+void CShpLayer::ChkEditDBF(UINT rec)
+{
+	BYTE &eflg=RecEditFlag(rec);
+	if(!(eflg&SHP_EDITDBF)) {
+		eflg|=SHP_EDITDBF;
+		m_bEditFlags|=SHP_EDITDBF; //will at least need to rewrite DBE file when shapefile is closed
+	}
+}
+
 LPCSTR CShpLayer::GetMemoTitle(CString &title,const EDITED_MEMO &memo)
 {
 	CString label;
@@ -4062,6 +4065,8 @@ void CShpLayer::SaveEditedMemo(EDITED_MEMO &memo,CString &csData)
 		//Not a selected record --
 		ASSERT(memo.uRec && memo.recNo!=INT_MAX);
 		ASSERT(m_pdbfile->dbt.IsOpen());
+		//ModelessOpen(m_csTitle,1000,"Saving memo %s of record %u ...", m_pdb->FldNamPtr(memo.fld),memo.uRec);
+
 		VERIFY(!m_pdb->Go(memo.uRec)); //Prepare for flushRec()!
 		CDBTFile::SetRecNo((LPSTR)m_pdb->FldPtr(memo.fld),m_pdbfile->dbt.PutText(memo));
 		m_pdbfile->dbt.FlushHdr();
@@ -4070,17 +4075,15 @@ void CShpLayer::SaveEditedMemo(EDITED_MEMO &memo,CString &csData)
 			ASSERT(SHP_DBFILE::bEditorPrompted);
 			UpdateTimestamp(m_pdb->RecPtr(),FALSE); //not creating
 		}
-
+		
 		VERIFY(!m_pdb->FlushRec());
+		//ModelessClose();
 
 		if(IsGridDlgOpen()) 
 			m_pdbfile->pDBGridDlg->RefreshTable(memo.uRec);
 
-		if(!m_bEditFlags) { //***added
-			m_pDoc->LayerSet().m_nShpsEdited++;
-		}
-		m_bEditFlags|=SHP_EDITDBF;
-		RecEditFlag(memo.uRec)|=SHP_EDITDBF;
+		ChkEditDBF(memo.uRec);
+		//Above may NOT have set m_pSelLayer->m_bEditFlags!
 	}
 }
 
@@ -4094,7 +4097,11 @@ void CShpLayer::UpdateSizeStr()
 
 int CShpLayer::AddMemoLink(LPCSTR fpath,VEC_CSTR &vlinks,SEQ_DATA &s,LPCSTR pRootDir,int rootLen)
 {
-	if((int)strlen(fpath)<rootLen || _memicmp(fpath,pRootDir,rootLen)) return 1;
+	int iRet=0;
+	if((int)strlen(fpath)<rootLen || _memicmp(fpath, pRootDir, rootLen)) {
+		if(bFromZip) return 1;
+		iRet=1;
+	}
 	ASSERT(vlinks.size()==s.seq_len);
 	if(s.seq_siz<=s.seq_len) {
 		ASSERT((s.seq_siz==0)==(s.seq_buf==0));
@@ -4105,7 +4112,7 @@ int CShpLayer::AddMemoLink(LPCSTR fpath,VEC_CSTR &vlinks,SEQ_DATA &s,LPCSTR pRoo
 	if(!trx_binMatch) {
 		vlinks.push_back(CString(fpath+rootLen));
 	}
-	return 0;
+	return iRet;
 }
 
 int CShpLayer::GetFieldMemoLinks(LPSTR pStart,LPSTR fpath,VEC_CSTR &vlinks,SEQ_DATA &s,LPCSTR pRootDir,int rootLen,VEC_CSTR *pvBadLinks /*=NULL*/)
@@ -4187,7 +4194,9 @@ int CShpLayer::GetMemoLinks(VEC_CSTR &vlinks,SEQ_DATA &s,LPCSTR pRootDir,int roo
 					ASSERT(0);
 					continue;
 				}
+				bFromZip=true;
 				nBadDirCount+=GetFieldMemoLinks(pStart,fpath,vlinks,s,pRootDir,rootLen);
+				bFromZip=false;
 			}
 		}
 	}
@@ -4237,7 +4246,7 @@ bool CShpLayer::ToggleDelete(DWORD rec)
 
 		*m_pdb->RecPtr()=bDelete?'*':' ';
 
-		eflg |= SHP_EDITLOC; //shp record needs revision
+		eflg |= SHP_EDITSHP; //shp record needs revision
 		if(bDelete) {
 			m_uDelCount++;
 			eflg|=SHP_EDITDEL;

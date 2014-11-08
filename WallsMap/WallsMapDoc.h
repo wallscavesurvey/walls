@@ -285,7 +285,7 @@ public:
 	bool InitVecShpopt(bool bAdv) {return m_layerset.InitVecShpopt(bAdv);}
 	void ClearSelChangedFlags() {m_layerset.ClearSelChangedFlags();}
 	void RefreshTables() {m_layerset.RefreshTables();}
-	bool ReplaceVecShprec();
+	void ReplaceVecShprec();
 	void ClearVecShprec();
 	BOOL WriteNTL(CFileCfg *pFile,const CString &csPathName,BOOL bIncHidden=TRUE,BOOL bShpsOnly=FALSE);
 	static bool HasZipContent(PTL pFolder, BOOL bIncHidden, BOOL bShpsOnly);

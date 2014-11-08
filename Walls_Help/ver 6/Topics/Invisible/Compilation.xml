@@ -1,0 +1,6 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">compilation</title>
+  <body>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">When the </text><text styleclass="Normal" style="font-weight:bold;" translate="true">Compile</text><text styleclass="Normal" translate="true"> button at the top of a </text><link displaytype="text" defaultstyle="true" type="topiclink" href="project_tree" styleclass="Normal" translate="true">project window</link><text styleclass="Normal" translate="true"> is clicked, Walls processes as a group all of the </text><text styleclass="Normal" style="font-style:italic;" translate="true">attached </text><text styleclass="Normal" translate="true">surveys in the selected tree branch. &#160;This consists of reading in and interpreting the SRV data files, adjusting and analyzing the result, and producing a </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Workfiles_Created_by_Walls" styleclass="Normal" translate="true">database</link><text styleclass="Normal" translate="true"> to be used in the review &#160;process.</text></para>
+  </body>
+</topic>

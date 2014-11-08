@@ -1,0 +1,7 @@
+﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
+  <title translate="true">Properties Button</title>
+  <body>
+    <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">The </text><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">Properties </text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">button opens a dialog that allows you to change the selected item&apos;s title and file name (if any), what kind of item it is, and other settings affecting how it&apos;s treated during compilation. &#160;See the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Properties_Dialog" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Properties Dialog</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> topic.</text></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>

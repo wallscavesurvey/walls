@@ -19,6 +19,8 @@
 typedef std::vector<EDITED_MEMO> VecMemo;
 typedef VecMemo::iterator it_vMemo;
 
+class CCopySelectedDlg;
+
 class CShowShapeDlg : public CResizeDlg
 {
 	DECLARE_DYNAMIC(CShowShapeDlg)
@@ -27,6 +29,8 @@ class CShowShapeDlg : public CResizeDlg
 
 	CSSplitter	m_SplitterPane;
 	CWallsMapDoc *m_pDoc;
+	CCopySelectedDlg *m_pCopySelectedDlg;
+
 
 	VEC_SHPREC	*m_vec_shprec;
 	SHPREC		*m_pNewShpRec;
@@ -38,8 +42,9 @@ class CShowShapeDlg : public CResizeDlg
 
 	HTREEITEM	m_hSelRoot,m_hSelItem;
 	CShpLayer	*m_pSelLayer;
-	UINT		m_uSelRec,m_uTemplateRec;
+	UINT		m_uSelRec;
 	LPBYTE		m_pEditBuf;
+	CString m_csCopyMsg;
 
 	BYTE m_vdbeBegin;
 	bool m_bEditShp;
@@ -75,6 +80,7 @@ public:
 	UINT GetDbtRec(int nFld);
 	bool IsEmpty() {return m_hSelItem==NULL;}
 	void OpenMemo(UINT nFld);
+	int CopySelected(CShpLayer *pLayer,LPBYTE pSrcFlds,BOOL bConfirm,HTREEITEM *phDropItem=NULL);
 
 	HTREEITEM IsLayerSelected(CShpLayer *pShp) const;
 	void UpdateLayerTitle(CShpLayer *pShp);
@@ -150,7 +156,9 @@ public:
 		m_vMemo.clear();
 	}
 
-	UINT NumSelected() {return m_PointTree.GetCount()-m_uLayerTotal;}
+	UINT NumSelected() {
+		return m_PointTree.GetCount()-m_uLayerTotal;
+	}
 
 	void ShowNoMatches();
 	void FillPointTree();
@@ -171,7 +179,6 @@ private:
 	ULONG	m_wchTipSiz;
 
 	static CRect m_rectSaved;
-	bool IsFieldEdited(UINT nFld);
 	bool IsFieldEmpty(UINT nFld);
 	void NoSearchableMsg();
 	void GE_Export(bool bOptions);
@@ -217,7 +224,10 @@ private:
 
 	bool HasNewLocFlds()
 	{
-		if(!m_pSelLayer || !IsAddingRec() && !m_vec_relocate.size()) return false;
+		ASSERT(!m_vec_relocate.size() || !m_uSelRec || (SelEditFlag()&SHP_EDITSHP));
+
+		if(!m_pSelLayer || !m_uSelRec || !IsAddingRec() && !m_vec_relocate.size() && !(SelEditFlag()&SHP_EDITSHP))
+			return false;
 		return m_pSelLayer->HasLocFlds();
 	}
 

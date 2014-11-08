@@ -988,11 +988,12 @@ int CShpLayer::CompareNewRecs()
 			if(!m_pdb->Go(rec)) {
 				sTemp.SetString((LPCSTR)m_pdb->FldPtr(fKey),lenKey);
 				sTemp.Trim(); //could be empty!
-				writelognote(N_CAUTION,"The %s%s%s field value%s that of a record in the reference: %s.",
+				writelognote(N_CAUTION,"The %s%s%s field value%s that of a record in the reference%s%s.",
 					fPrefix?m_pdb->FldNamPtr(fPrefix):"",
 					fPrefix?" and ":"",
 					m_pdb->FldNamPtr(fLabel),
 					fPrefix?"s match":" matches",
+					sTemp.IsEmpty()?"": ": ",
 					(LPCSTR)sTemp);
 			}
 			else {
@@ -1692,7 +1693,7 @@ int CShpLayer::InitTrxkey(LPCSTR *ppMsg)
 	UINT nFldKey,nFldPfx;
 	pShpPfx=m_pDoc->FindShpLayer(m_pKeyGenerator,&nFldKey,&nFldPfx);
 	if(!pShpPfx || pShpPfx->m_pdb->FldLen(nFldPfx)+4 >lenKey) {
-		*ppMsg="Key prefix shapefile is missing or doesn't qualify.";
+		*ppMsg="Key prefix shapefile is missing from project or doesn't qualify.";
 		return -1;
 	}
 	ASSERT(nFldKey && nFldPfx);
@@ -1829,7 +1830,7 @@ int CShpLayer::ExportUpdateDbf(LPSTR pathBuf,CString &pathName,int iFlags)
 	}
 
 	strcpy(pExt,SHP_EXT_DBF);
-	if(db.Create(pathBuf,nFlds,m_pdb->m_pFld,nOutRecs))
+	if(db.Create(pathBuf,nFlds,m_pdb->m_pFld))
 		goto _failDBF;
 
 	nOutRecs=0;
@@ -1874,6 +1875,7 @@ int CShpLayer::ExportUpdateDbf(LPSTR pathBuf,CString &pathName,int iFlags)
 		if(bBlankRefKey || c_Trx.Find(keybuf)) {
 			//key not found in revised set --
 			if(!(iFlags&4)) continue;
+_copyRef:
 			//updating reference so copy reference record while updating memo fields --
 			trxrec.pShp=this;
 			trxrec.rec=m_pdb->Position();
@@ -1890,6 +1892,7 @@ int CShpLayer::ExportUpdateDbf(LPSTR pathBuf,CString &pathName,int iFlags)
 		if(trxrec.rec&0x20000000) continue; //removed
 		if(!(trxrec.rec&0x40000000)) {
 			if(!(iFlags&4)) continue;
+			goto _copyRef;
 		}
 		ASSERT(trxrec.rec&0x1FFFFFFF);
 

@@ -30,7 +30,7 @@ private:
 	BOOL m_bEditAdd;
 	BOOL m_bEditDBF;
 	BOOL m_bEditDel;
-	BOOL m_bEditSHP;
+	BOOL m_bEditLoc;
 	bool m_bAddEnabled;
 public:
 	virtual BOOL OnInitDialog();

@@ -178,6 +178,7 @@
 #define IDD_EXPORT_NTI_ADV2             263
 #define IDD_DIALOG2                     266
 #define IDD_FLDS_IGNORED                266
+#define IDD_COPYSELECTED                268
 #define IDC_PATHNAME                    377
 #define IDC_PATH_SHPDEF                 378
 #define IDC_RANGE                       378
@@ -548,6 +549,7 @@
 #define IDC_ST_DEPTH                    1209
 #define IDC_BROWSE_SRC                  1213
 #define IDC_ST_TXTCOMP                  1214
+#define IDC_PROGRESS1                   1216
 #define ID_Menu                         32771
 #define ID_SORTASCENDING_SORTDESCENDING 32771
 #define ID_VIEW_ZOOMIN                  32772
@@ -840,9 +842,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        268
+#define _APS_NEXT_RESOURCE_VALUE        269
 #define _APS_NEXT_COMMAND_VALUE         33277
-#define _APS_NEXT_CONTROL_VALUE         1215
+#define _APS_NEXT_CONTROL_VALUE         1217
 #define _APS_NEXT_SYMED_VALUE           182
 #endif
 #endif

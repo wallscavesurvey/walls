@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<topic class="popup" template="Popup" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">SVG_Units_note</title>
+  <body>
+    <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">When </text><text style="font-family:Arial; font-size:9pt; font-style:italic; color:#000000;" translate="true">Illustrator 10 </text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">writes an SVG file, the kind of units used for page coordinates is not actually specified in the file although it is clearly points (1/72 in). The SVG 1.0 specification states that when units aren&apos;t specified, </text><text style="font-family:Arial; font-size:9pt; font-style:italic; color:#000000;" translate="true">pixels</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> are to be assumed. Illustrator&apos;s failure to override the default is a minor bug since other programs that need to interpret units unambiguously will often assume 96 pixels per inch, not 72 pixels per inch. </text><text style="font-family:Arial; font-size:9pt; font-style:italic; color:#000000;" translate="true">CorelDraw 11</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">, for example, will misinterpret the intended size of Illustrator&apos;s SVGs. Point units are explicitly specified in SVGs exported from Walls.</text></para>
+  </body>
+</topic>

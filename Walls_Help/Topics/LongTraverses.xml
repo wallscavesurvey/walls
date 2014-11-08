@@ -1,0 +1,119 @@
+﻿<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">Error Propagation in Long Traverses</title>
+  <body>
+    <header>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Error Propagation in Long Traverses</text></para>
+    </header>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">There is a good reason why the longest traverses in a project often have the worst statistics (large </text><link displaytype="text" defaultstyle="true" type="topiclink" href="F_statistic" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">F-Ratios</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">). It is simply that the statistical model used in a least-squares adjustment assumes that </text><link displaytype="text" defaultstyle="true" type="topiclink" href="systematic" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">systematic error</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> has been eliminated. Realistically, in most compass-and-tape (CT) traverses longer than a few hundred meters, the uncertainty in compass calibration plays</text><text styleclass="Normal" style="font-size:10pt;" translate="true"> a larger role than random errors of measurement. Suppose, for example, that the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="standard_deviation" styleclass="Normal" style="font-size:10pt;" translate="true">standard deviation</link><text styleclass="Normal" style="font-size:10pt;" translate="true"> (SD) of the </text><text styleclass="Normal" style="font-size:10pt; font-style:italic;" translate="true">error</text><text styleclass="Normal" style="font-size:10pt;" translate="true"> in a true north-relative instrument calibration is only a tenth of a degree. This would have to be considered a very good calibration. Nevertheless, in an east-west traverse with this instrument, the SD of the error in northing would grow with traverse length as follows:</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><table rowcount="7" colcount="4" style="width:auto; cell-padding:0px; cell-spacing:0px; page-break-inside:auto; border-width:0px; border-spacing:0px; cell-border-width:0px; border-style:none; background-color:none; head-row-background-color:none; alt-row-background-color:none;">
+      <tr style="vertical-align:top">
+        <td style="width:110px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">Length in Meters</text></para>
+        </td>
+        <td style="width:129px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">Systematic Error SD</text></para>
+        </td>
+        <td style="width:114px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">Random Error SD</text></para>
+        </td>
+        <td style="width:94px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">Total Error SD</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:110px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">50</text></para>
+        </td>
+        <td style="width:129px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">0.09</text></para>
+        </td>
+        <td style="width:114px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">0.39</text></para>
+        </td>
+        <td style="width:94px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">0.40</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:110px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">100</text></para>
+        </td>
+        <td style="width:129px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">0.17</text></para>
+        </td>
+        <td style="width:114px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">0.55</text></para>
+        </td>
+        <td style="width:94px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">0.58</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:110px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">500</text></para>
+        </td>
+        <td style="width:129px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">0.87</text></para>
+        </td>
+        <td style="width:114px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">1.23</text></para>
+        </td>
+        <td style="width:94px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">1.51</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:110px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">1000</text></para>
+        </td>
+        <td style="width:129px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">1.75</text></para>
+        </td>
+        <td style="width:114px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">1.74</text></para>
+        </td>
+        <td style="width:94px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">2.47</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:110px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">1500</text></para>
+        </td>
+        <td style="width:129px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">2.62</text></para>
+        </td>
+        <td style="width:114px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">2.14</text></para>
+        </td>
+        <td style="width:94px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">3.38</text></para>
+        </td>
+      </tr>
+      <tr style="vertical-align:top">
+        <td style="width:110px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">2000</text></para>
+        </td>
+        <td style="width:129px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">3.49</text></para>
+        </td>
+        <td style="width:114px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">2.47</text></para>
+        </td>
+        <td style="width:94px;">
+          <para styleclass="Normal"><text style="font-family:Arial; font-size:10pt; color:#000000;" translate="true">4.28</text></para>
+        </td>
+      </tr>
+    </table></para>
+    <para style="tabstops:24px left ;"><text styleclass="Normal" style="font-size:10pt;" translate="true">This assumes that random error behaves in accordance with the Walls default assumptions (UVE = 1.0), and that there are no blunders. (The numbers in the second column were obtained by multiplying the length by the sine of 0.1 degrees.) In most cave surveys the uncertainty in instrument calibration and/or magnetic declination is several times larger than 0.1 degree, in which case the</text><text styleclass="Normal" style="font-size:10pt; font-style:italic;" translate="true">&#32;</text><text styleclass="Normal" style="font-size:10pt;" translate="true">growth of systematic error with distance is larger than what the table shows by the same factor. Even if the traverse meanders somewhat, the effect of random measurement error grows in proportion to the square-root of traverse length, while that of systematic error grows linearly with east-west extent.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text styleclass="Normal" style="font-size:10pt;" translate="true">Because systematic error can&apos;t be eliminated completely in CT surveys, the default </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Variance_Assignments" styleclass="Normal" style="font-size:10pt;" translate="true">variance assignment</link><text styleclass="Normal" style="font-size:10pt;" translate="true"> can be a poor approximation when it&apos;s applied to very long traverses. Statistics will sometimes show this when a project contains widely separated GPS locations connected by CT surveys. One way to help remedy the situation is to override the default variances of specific traverses. You can do this with the </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Seldom_Used" anchor="UV Parameter" styleclass="Normal" style="font-size:10pt;" translate="true">UV parameter</link><text styleclass="Normal" style="font-size:10pt;" translate="true"> on a #units directive. For example, if the assumptions of the above table were applicable, a 1-km traverse would exhibit the same total error SD (2.47) as Walls would assume by default for a 2-km traverse. To correct for this you would apply &quot;UVH=2&quot; to the vectors in the 1-km traverse, causing the horizontal components to be assigned twice their normal variance. The program currently provides no way to favor one horizontal component over the other in a variance override. (See </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Adjustment_Model" styleclass="Normal" style="font-size:10pt;" translate="true">Choice of Mathematical Model</link><text styleclass="Normal" style="font-size:10pt;" translate="true">.)</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text styleclass="Normal" style="font-size:10pt;" translate="true">Another possible strategy, one that I recommend in any case if you have very good GPS locations that are well separated, is to try reducing the effects of systematic error by deriving plausible compass corrections that are consistent with those locations (smallest UVE). The </text><link displaytype="text" defaultstyle="true" type="topiclink" href="DefiningandUsingMacros" styleclass="Normal" style="font-size:10pt;" translate="true">macro feature</link><text styleclass="Normal" style="font-size:10pt;" translate="true"> can help with this task.</text></para>
+    <para style="tabstops:24px left ;"></para>
+    <para style="tabstops:24px left ;"><text styleclass="Normal" translate="true">Determining proper weights in an average requires both craft and common sense. Weight should correspond inversely to error variance, but the latter is rarely known with any confidence. What we can usually hope for in cave surveying is that our assumptions about measurement error won&apos;t in themselves limit the accuracy of our results to a practically significant degree.</text></para>
+    <para styleclass="Normal"></para>
+  </body>
+</topic>
