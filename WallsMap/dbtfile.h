@@ -23,8 +23,8 @@ struct EDITED_MEMO
 	static UINT GetRecCnt(UINT uDataLen)
 	{
 		//count of contiguous record in DBT
-		//required for a length of data -- allows for 0x1a,0x1a termination
-		return uDataLen?((uDataLen+513)/512):0;
+		//required for a length of data -- allows for single 0x1a termination
+		return uDataLen?((uDataLen+512)/512):0;
 	}
 
 	UINT uRec; //dbf record number

@@ -22,6 +22,7 @@
 #include "DlgExportXLS.h"
 #include "WebMapFmtDlg.h"
 #include "CopySelectedDlg.h"
+#include "TableFillDlg.h"
 
 CDBGridDlg::CDBGridDlg(CShpLayer *pShp,VEC_DWORD *pvRec,CWnd* pParent /*=NULL*/)
 	: CResizeDlg(CDBGridDlg::IDD, pParent)
@@ -158,6 +159,7 @@ BEGIN_MESSAGE_MAP(CDBGridDlg, CResizeDlg)
 	ON_COMMAND(ID_UNDELETE_RECORDS, &CDBGridDlg::OnUndeleteRecords)
 	ON_COMMAND_RANGE(ID_APPENDLAYER_0,ID_APPENDLAYER_N,OnCopySelected)
 	ON_MESSAGE(WM_COMMANDHELP,OnCommandHelp)
+	ON_COMMAND(ID_TABLE_FILL, &CDBGridDlg::OnTableFill)
 END_MESSAGE_MAP()
 
 
@@ -1247,7 +1249,7 @@ LRESULT CDBGridDlg::OnListContextMenu(WPARAM wParam, LPARAM lParam)
 		if(menu.LoadMenu(IDR_SORTMENU)) {
 			CMenu* pPopup = menu.GetSubMenu(0);
 			ASSERT(pPopup != NULL);
-			m_wLinkTestFld=0;
+			m_wLinkTestFld=m_wTableFillFld=0;
 			m_iColSort=((CHeaderCtrl *)pWnd)->HitTest(&hInfo);
 			if(m_iColSort>=0) {
 				if(m_iColSort==m_iColSorted) {
@@ -1255,14 +1257,17 @@ LRESULT CDBGridDlg::OnListContextMenu(WPARAM wParam, LPARAM lParam)
 					pPopup->CheckMenuItem(ID_SORTDESCENDING,(!m_bAscending)?(MF_CHECKED|MF_BYCOMMAND):(MF_UNCHECKED|MF_BYCOMMAND));
 				}
 				if(m_iColSort) {
-					if(m_pdb->FldTyp(m_iColSort)=='M') m_wLinkTestFld=(WORD)m_iColSort;
+					if(m_pdb->FldTyp(m_iColSort)=='M') m_wTableFillFld=m_wLinkTestFld=(WORD)m_iColSort;
+					else if(m_pdb->FldTyp(m_iColSort)=='C' || m_pdb->FldTyp(m_iColSort)=='L') m_wTableFillFld=(WORD)m_iColSort;
+					if(!m_bAllowEdits || !bIgnoreEditTS && IsFldReadonly(m_wTableFillFld))
+						m_wTableFillFld=0;
 				}
 				else
 					pPopup->ModifyMenu(ID_EDIT_FIND,MF_BYCOMMAND,ID_EDIT_FIND,"Find deleted...");
 			}
 			if(!m_wLinkTestFld) pPopup->DeleteMenu(ID_LINKTEST,MF_BYCOMMAND);
-			//else if(!m_pShp->IsEditable())
-				//pPopup->EnableMenuItem(ID_LINKTEST,MF_BYCOMMAND|MF_DISABLED|MF_GRAYED);
+			if(!m_wTableFillFld) pPopup->DeleteMenu(ID_TABLE_FILL, MF_BYCOMMAND);
+			else if(m_nSelCount<=1) pPopup->EnableMenuItem(ID_TABLE_FILL,MF_BYCOMMAND|MF_DISABLED|MF_GRAYED);
 
 			VERIFY(pPopup->TrackPopupMenu(TPM_LEFTALIGN|TPM_RIGHTBUTTON,point.x,point.y,this));
 		}
@@ -2382,8 +2387,126 @@ void CDBGridDlg::OnCopySelected(UINT id)
 	if(!m_csCopyMsg.IsEmpty()) AfxMessageBox(m_csCopyMsg);
 }
 
+void CDBGridDlg::OnTableFill()
+{
+	CString msg;
+	ASSERT(m_wTableFillFld);
+	CTableFillDlg dlg(m_wTableFillFld,this);
+
+	if(IDOK!=dlg.DoModal())
+		return;
+
+	if(m_pShp->m_bFillPrompt) {
+		CString msg;
+		msg.Format("Confirm that you want replace the content of field %s in %u records.\n"
+			"Note that this operation will overwrite existing data and can't be undone.",
+			m_pdb->FldNamPtr(m_wTableFillFld),m_nSelCount);
+		if(m_pShp->m_pdbfile->HasTimestamp(1) && !bIgnoreEditTS)
+			msg+="\nThis will also revise the UPDATED timestamps.";
+
+		int i=MsgCheckDlg(m_hWnd,MB_OKCANCEL,msg,m_pShp->Title(),"Don't require confirmation again with this shapefile");
+		if(!i) return;
+		m_pShp->m_bFillPrompt=(i==1);
+	}
+	BeginWaitCursor();
+	char fldbuf[256];
+	UINT nFilled=0,uOpenRec=0;
+	char fTyp=m_pdb->FldTyp(m_wTableFillFld);
+	WORD fLen=m_pdb->FldLen(m_wTableFillFld);
+	UINT fLenData=dlg.m_csFillText.GetLength();
+	BYTE fillBool=(fTyp=='L' && dlg.m_bYesNo==0)?'Y':'N';
+	if(fTyp=='C') {
+		memset(fldbuf,' ',fLen);
+		memcpy(fldbuf,dlg.m_csFillText,fLenData);
+	}
+	POSITION pos = m_list.GetFirstSelectedItemPosition();
+	while (pos)	{
+	  int nItem = m_list.GetNextSelectedItem(pos);
+	  if(!m_iColSorted && !m_bAscending) {
+		  nItem=m_nNumRecs-nItem-1;
+	  }
+	  UINT rec=m_vRecno[nItem];
+	  if(app_pShowDlg && app_pShowDlg->IsRecOpen(m_pShp, rec)) {
+		  uOpenRec++;
+		  continue;
+	  }
+	  if(fTyp=='M') {
+		  if(app_pDbtEditDlg && app_pDbtEditDlg->IsMemoOpen(m_pShp, rec, m_wTableFillFld) ||
+			  app_pImageDlg && app_pImageDlg->IsMemoOpen(m_pShp, rec, m_wTableFillFld)) {
+			  uOpenRec++;
+			  continue;
+		  }
+	  }
+	  if(!m_pdb->Go(rec)) {
+	      bool bEdited=false;
+		  LPBYTE p=m_pdb->FldPtr(m_wTableFillFld);
+		  switch(fTyp) {
+			  case 'L' :
+				  if(*p!=fillBool) {
+					  *p=fillBool;
+					  bEdited=true;
+				  }
+				  break;
+			  case 'C' :
+				  if(memcmp(fldbuf, p, fLen)) {
+					  memcpy(p,fldbuf,fLen);
+					  bEdited=true;
+				  }
+			      break;
+			  case 'M':
+				  {
+				    EDITED_MEMO memo;
+					memo.recNo=CDBTFile::RecNo((LPCSTR)p);
+					if(memo.recNo) {
+					    //need to compare dlg.m_csFillText with existing memo
+						UINT oldLen=0; //get complete memo
+						// oldLen needed for recCnt even if fLenData==0 (will add to free blocks in dbt) --
+						LPSTR pMemo=m_pdbfile->dbt.GetText(&oldLen,memo.recNo);
+						if(!(pMemo)) {
+							ASSERT(0); //should be impossible
+							break;
+						}
+						if(oldLen==fLenData && !memcmp(pMemo,dlg.m_csFillText,fLenData))
+						   break;
+						memo.recCnt=EDITED_MEMO::GetRecCnt(oldLen);
+					}
+					else if(!fLenData)
+						break;
+					memo.pData=(LPSTR)(LPCSTR)dlg.m_csFillText;
+					CDBTFile::SetRecNo((LPSTR)p,m_pdbfile->dbt.PutText(memo));
+					m_pdbfile->dbt.FlushHdr();
+					bEdited=true;
+				  }
+				  break;
+		  }
+		  if(bEdited) {
+			  nFilled++;
+			  m_pdb->FlushRec();
+			  m_pShp->ChkEditDBF(rec);
+			  if(m_pShp->m_pdbfile->HasTimestamp(1)) {
+				  ASSERT(SHP_DBFILE::bEditorPrompted);
+				  m_pShp->UpdateTimestamp(m_pdb->RecPtr(),FALSE);
+			  }
+		  }
+	  }
+	}
+	if(nFilled) {
+		m_list.Invalidate(); //seems to refresh list before message
+	}
+
+	msg.Format("%u of %u selected %s revised.",nFilled,m_nSelCount,
+		(fTyp=='M')?"memo fields successfully":"records");
+	if(uOpenRec)
+		msg.AppendFormat("\n\nNOTE: %u records open in other dialogs were skipped.",uOpenRec);
+
+	EndWaitCursor();
+
+	AfxMessageBox(msg);
+}
+
 LRESULT CDBGridDlg::OnCommandHelp(WPARAM wNone, LPARAM lParam)
 {
 	AfxGetApp()->WinHelp(1016);
 	return TRUE;
 }
+

@@ -3,11 +3,6 @@
 #include <ShpDBF.h>
 #include "shplayer.h"
 
-#ifdef _USE_REPLACE
-	bool _bReplace;
-	UINT _bRepCount,_bRepRecs;
-#endif
-
 CDBTData CDBTFile::dbt_data;
 
 BOOL CDBTFile::Open(LPSTR pathName,UINT flags,CFileException *pEx /*=NULL*/)
@@ -143,7 +138,7 @@ void CDBTFile::AddToFree(const DBT_FREEREC &frec)
 	if(it!=itb && itb->recNo+itb->recCnt==frec.recNo) {
 		//no insertion -- add records to itb==(it-1)
 		itb->recCnt+=frec.recCnt;
-		//if contiguous, also add next block's records and errase it --
+		//if contiguous, also add next block's records and erase it --
 		if(it!=ite && frec.recNo+frec.recCnt==it->recNo) {
 			itb->recCnt+=it->recCnt;
 			m_vFree.erase(it);
@@ -203,12 +198,11 @@ UINT CDBTFile::PutText(EDITED_MEMO &memo)
 			return 0;
 		}
 
-		UINT newCnt=(newLen+513)/512; //records required
+		UINT newCnt=(newLen+512)/512; //records required
 
 		if(!dbt_data.AllocMin(newCnt*512)) return 0;
 
 		memcpy(dbt_data.pData,memo.pData,newLen);
-		dbt_data.pData[newLen++]=0x1A;
 		dbt_data.pData[newLen++]=0x1A;
 		memset(dbt_data.pData+newLen,0,newCnt*512-newLen);
 
@@ -351,65 +345,9 @@ LPCSTR dbt_GetMemoHdr(LPCSTR src,UINT maxHdrLen)
 	return dbt_memoHdr;
 }
 
-/*
-int CDBTFile::GetToolTip(LPVOID pvText80,UINT siztip,BOOL bWide,UINT recNo)
-{
-	char src[256];
-
-	if(!*GetTextSample(src,256,recNo))
-		return 0;
-
-	if(CDBTData::IsTextRTF(src))
-		CDBTFile::StripRTF(src,FALSE); //Discard prefix
-
-	LPSTR p;
-
-	if(!(p=strchr(src,'\r')) && !(p=strchr(src,'\n')))
-		p=src+strlen(src);
-
-	if((UINT)(p-src)>=siztip) {
-		p=strcpy(src+(siztip-4),"...");
-	}
-	else {
-		while(p>src && xisspace(p[-1])) p--;
-		while(p>src && !isgraph(p[-1])) p--;
-		*p=0;
-	}
-	for(p=src;*p;p++) if(*p=='\t') *p=' ';
-	int len=p-src; //chars in string
-	if(len) {
-		ASSERT(len<80);
-		if(bWide) {
-			_mbstowcsz((WCHAR *)pvText80,src,len+1);
-			ASSERT((((WCHAR *)pvText80))[len]==0);
-		}
-		else
-			memcpy((LPSTR)pvText80,src,len+1);
-	}
-	return len;
-}
-*/
-#ifdef _USE_REPLACE
-void BufReplace(LPSTR buf,LPSTR pOld,LPSTR pNew)
-{
-	CString s;
-	LPSTR p=(LPSTR)memchr(buf,0x1A,512);
-	if(!p) return;
-	s.SetString(buf,p-buf);
-	if(s.GetLength()>=(int)strlen(pOld)) {
-		_bRepRecs++;
-		_bRepCount+=s.Replace(pOld,pNew);
-		memcpy(buf,(LPCSTR)s,s.GetLength());
-	}
-}
-#endif
-
 UINT CDBTFile::AppendCopy(CDBTFile &dbt,UINT recNo)
 {
 	BYTE buf[512];
-#ifdef _USE_REPLACE
-	bool bRep=false;
-#endif
 	try {
 		if(!InitFree()) throw 0;
 		Seek(m_uNextRec*512,CFile::begin);
@@ -418,12 +356,6 @@ UINT CDBTFile::AppendCopy(CDBTFile &dbt,UINT recNo)
 		do {
 			if(dbt.Read(buf,512)!=512)
 				throw 0;
-#ifdef _USE_REPLACE
-			if(!bRep && _bReplace) {
-				bRep=true;
-				BufReplace((LPSTR)buf,".tif\r",".png\r");
-			}
-#endif
 			Write(buf,512);
 			m_uNextRec++;
 		}
@@ -440,12 +372,11 @@ UINT CDBTFile::PutTextField(LPCSTR text,UINT len)
 {
 	//write a single-record memo --
 	BYTE buf[512];
-	ASSERT(len<=510);
-	if(len>510) len=510;
+	ASSERT(len<=511);
+	if(len>511) len=511;
 	while(len && xisspace((BYTE)text[len-1])) len--;
 	if(!len) return 0;
 	memcpy(buf,text,len);
-	buf[len++]=0x1A;
 	buf[len++]=0x1A;
 	memset(buf+len,0,512-len);
 	try {

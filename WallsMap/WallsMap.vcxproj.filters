@@ -378,9 +378,6 @@
     <ClCompile Include="FldsIgnoreDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FileIsInUse.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Quadtree.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -395,6 +392,12 @@
     </ClCompile>
     <ClCompile Include="XMessageBox.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TableFillDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FileIsInUse.cpp">
+      <Filter>Resource Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -776,6 +779,9 @@
     <ClInclude Include="XMessageBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TableFillDlg.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\bitmap1.bmp">
@@ -823,9 +829,6 @@
     <None Include="res\bmp00003.bmp">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="res\checkbox.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="res\FOLDER_OPEN.ico">
       <Filter>Resource Files</Filter>
     </None>
@@ -846,6 +849,9 @@
     </None>
     <None Include="res\White-20x18.bmp">
       <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\checkbox.bmp">
+      <Filter>Header Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

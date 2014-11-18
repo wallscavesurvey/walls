@@ -1,4 +1,4 @@
-WallsMap v0.3 Build 2014-10-16 Notes
+WallsMap v0.3 Build 2014-11-14 Notes
 ====================================
 
 This WallsMap installation contains a preliminary GIS project named Texas Public
@@ -14,9 +14,15 @@ C:\Users\Public\WallsMap Projects\Texas Public Caves\Texas Public Caves.ntl
 ==============
 Recent Changes
 
-* Build 10/16/2014
+* Build 11/14/2014
 
-1) Miscellaneous improvements, some for appearance sake and others for data
+1) It's now possible to quickly initialize a field in a selected set of shapefile
+records by right-clicking the field's label in a table view and selecting
+"Fill field..." The operation can be used to fill a memo field with data
+common to numerous records, such as owner information, coordinate source, etc.
+It also works with logical (Yes/No) and fixed-length character fields.
+
+2) Miscellaneous improvements, some for appearance sake and others for data
 safety. For example, message boxes requesting user confirmation were changed
 to have more descriptive button labels, with "Yes No Cancel" mostly avoided.
 
@@ -28,7 +34,7 @@ each region studied: a shapefile that can be used for location-based field
 initialization (say of geologic unit codes), and an NTI image of the complete
 geologic map. There are now 9 such datasets, including the statewide GAT.
 
-2)The functions for reading and exporting shapefiles can more efficiently handle
+2) The functions for reading and exporting shapefiles can more efficiently handle
 component file sizes approaching or exceeding the official ESRI limit of 2 GB.
 Concatenating large files via the "copy to layer" function is many times faster.
 

@@ -195,7 +195,7 @@ private:
 	int m_nNumCols;
 	DWORD m_nNumRecs,m_uDelCount;
 	int m_iColSort,m_iColSorted;
-	WORD m_wDigitWidth,m_wLinkTestFld;
+	WORD m_wDigitWidth,m_wLinkTestFld,m_wTableFillFld;
 	bool m_bReloaded;
 	bool m_bAscending;
 	bool m_bAllowEdits;
@@ -271,7 +271,7 @@ private:
 	afx_msg void OnExportXLS();
 	afx_msg void OnInvertselection();
 	afx_msg void OnLinkTest();
-public:
+	afx_msg void OnTableFill();
 	afx_msg void OnDeleteRecords();
 	afx_msg void OnUndeleteRecords();
 };

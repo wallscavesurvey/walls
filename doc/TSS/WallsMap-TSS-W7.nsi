@@ -14,7 +14,7 @@
 
 
 !ifndef BUILD_DATE
-  !define BUILD_DATE '2014-10-16'
+  !define BUILD_DATE '2014-11-14'
 !endif
 
 !define WNDCLASS "WallsMapClass"

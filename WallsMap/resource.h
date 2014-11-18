@@ -179,6 +179,7 @@
 #define IDD_DIALOG2                     266
 #define IDD_FLDS_IGNORED                266
 #define IDD_COPYSELECTED                268
+#define IDD_TABLE_FILL                  269
 #define IDC_PATHNAME                    377
 #define IDC_PATH_SHPDEF                 378
 #define IDC_RANGE                       378
@@ -226,6 +227,7 @@
 #define IDC_MAX_CHARS                   1001
 #define IDC_SHP_KEY                     1001
 #define IDC_ARGUMENTS                   1001
+#define IDC_FILLTEXT                    1001
 #define IDC_ADVANCED                    1002
 #define IDC_EDIT_DETAILS                1002
 #define IDC_EDIT_NORTH                  1002
@@ -550,6 +552,11 @@
 #define IDC_BROWSE_SRC                  1213
 #define IDC_ST_TXTCOMP                  1214
 #define IDC_PROGRESS1                   1216
+#define IDC_ST_FIELD                    1218
+#define IDC_ST_CAUTION                  1222
+#define IDC_YES                         1223
+#define IDC_FALSE                       1224
+#define IDC_ST_SETLOGICAL               1225
 #define ID_Menu                         32771
 #define ID_SORTASCENDING_SORTDESCENDING 32771
 #define ID_VIEW_ZOOMIN                  32772
@@ -808,6 +815,7 @@
 #define ID_VIEW_GPSTRACKINGOPTIONSFORVIEW 33269
 #define ID__REPLACEWITHFILE             33275
 #define ID__COMPAREWITHFILE             33276
+#define ID_TABLE_FILL                   33279
 #define ID_APPENDLAYER_0                34000
 #define ID_APPENDLAYER_1                34001
 #define ID_APPENDLAYER_2                34002
@@ -842,9 +850,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        269
-#define _APS_NEXT_COMMAND_VALUE         33277
-#define _APS_NEXT_CONTROL_VALUE         1217
+#define _APS_NEXT_RESOURCE_VALUE        270
+#define _APS_NEXT_COMMAND_VALUE         33280
+#define _APS_NEXT_CONTROL_VALUE         1226
 #define _APS_NEXT_SYMED_VALUE           182
 #endif
 #endif

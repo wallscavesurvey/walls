@@ -333,7 +333,7 @@ public:
 	BYTE KeyFld() {return m_pdbfile->keyfld;}
 
 	//void ShowTimestamps(UINT rec);
-	void UpdateTimestamp(LPBYTE pRecBuf,BOOL bUpdating);
+	void UpdateTimestamp(LPBYTE pRecBuf,BOOL bCreating);
 	static void GetTimestampString(CString &s,LPCSTR pName);
 
 	int GetLocFldTyp(UINT fNum) {return m_pdbfile->GetLocFldTyp(fNum);}
@@ -510,6 +510,7 @@ public:
 	BYTE m_bEditFlags;
 	bool m_bConverted;
 	bool m_bDragExportPrompt;
+	bool m_bFillPrompt;
 	bool m_bDupEditPrompt;
 	bool m_bSelChanged;
 

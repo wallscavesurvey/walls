@@ -677,6 +677,7 @@ int CShpLayer::CompareUpdates(BOOL bIncludeAll)
     iSizeLinkedFiles=0;
 	nNotFound=nFound=nUnchanged=nOutdated=nChanged=nRevised=nRemoved=0;
 
+	UINT nTimestampChgOnly=0;
 	pShpR=NULL;
 	TRXREC trxrec;
 	CString pathR;
@@ -783,6 +784,11 @@ int CShpLayer::CompareUpdates(BOOL bIncludeAll)
 
 			int iCreated=CheckTS(fCreated,fcCreated,false);
 			iUpdated=CheckTS(fUpdated,fcUpdated,nFieldsListed!=0);
+
+			if(iUpdated && !iCreated && !nFieldsListed && !bOutdated) {
+				nFieldsListed++;
+				nTimestampChgOnly++; //for caution message
+			}
 			
 			if(iCreated) {
 				nFieldsListed++;
@@ -826,6 +832,13 @@ _putRec:
 		}
 		e=c_Trxref.Next();
 	}
+
+	if(nTimestampChgOnly) {
+		barln();
+		nCautions++;
+		writelog("*** CAUTION: There were %u cases where the only difference was a newer UPDATED timestamp. Such revisions are accepted.", nTimestampChgOnly);
+	}
+
 	if(e==CTRXFile::ErrEOF) e=0;
 	return e;
 }
@@ -1288,6 +1301,7 @@ _getOrphans:
 				}
 			}
 		}
+
 		barln();
 		clrpfx(4); //(PFX_LEN-9) = (13-9)
 		writelog("TOTALS - Reference records: %u, Records in selected set: %u, Records compared: %u\r\n"

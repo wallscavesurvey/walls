@@ -5,10 +5,8 @@
 #include "WallsMapDoc.h"
 #include "WallsMapView.h"
 #include "ShpLayer.h"
-#include "XMessageBox.h"
 #include "UpdatedDlg.h"
 #include "DbtEditDlg.h"
-//#include "PolyGonClip.h"
 #include "ColorPopup.h"
 #include "TabCombo.h"
 #include <georef.h>
@@ -485,7 +483,7 @@ void CShpLayer::SetGEDefaults()
 CShpLayer::CShpLayer()
 {
 	m_pdbfile=NULL;
-	m_bTrans=m_bDragExportPrompt=true;
+	m_bTrans=m_bDragExportPrompt=m_bFillPrompt=true;
 	m_bConverted=m_bSearchExcluded=m_bDupEditPrompt=false;
 	m_pvSrchFlds=&m_vSrchFlds;
 	m_bEditFlags=0;
@@ -2977,10 +2975,6 @@ BOOL CShpLayer::ExportShapes(LPCSTR shpName,CShpDef &shpdef,VEC_DWORD &vRec)
 		}
 	}
 
-	#ifdef _USE_REPLACE
-		_bRepCount=_bRepRecs=0;
-	#endif
-	
     UINT nTruncRec,nTruncCnt=0;
 	LPCSTR pTruncFld;
 
@@ -3071,10 +3065,6 @@ BOOL CShpLayer::ExportShapes(LPCSTR shpName,CShpDef &shpdef,VEC_DWORD &vRec)
 					UINT dbtRec;
 					if(m_pdb->FldTyp(fSrc)=='M') {
 						if((dbtRec=CDBTFile::RecNo(pSrc))) {
-#ifdef _USE_REPLACE
-							LPCSTR pnamf=m_pdb->FldNamPtr(fSrc);
-							_bReplace=(nF==14);
-#endif
 							if((dbtRec=dbt.AppendCopy(m_pdbfile->dbt,dbtRec))==(UINT)-1)
 								goto _failDBT;
 						}
@@ -3256,11 +3246,6 @@ BOOL CShpLayer::ExportShapes(LPCSTR shpName,CShpDef &shpdef,VEC_DWORD &vRec)
 
 		AfxMessageBox(msg);
 
-	#ifdef _USE_REPLACE
-		if(_bRepRecs) {
-			CMsgBox("Note: %u \".tif\" strings replaced in %u records.",_bRepCount,_bRepRecs);
-		}
-	#endif
 		if(NADZON_OK(iNad,iZone)) {
 			strcpy(ebuf+strlen(ebuf),SHP_EXT_PRJ);
 			WritePrjFile(ebuf,(iNad==1 && m_bWGS84)?0:iNad,iZone);
@@ -3610,41 +3595,6 @@ void CShpLayer::UpdateTimestamp(LPBYTE pRecBuf,BOOL bCreating)
 	if(fu) StoreRecText(s,pRecBuf,fu); 
 }
 
-/*
-void CShpLayer::ShowTimestamps(UINT rec)
-{
-	WORD f=0;
-	char ts_buf[64];
-	f=m_pdbfile->locFldNum[(bUpdating&1)?LF_UPDATED:LF_CREATED];
-	if(!f && !(bUpdating&1)) {
-		bUpdating--;
-		f=m_pdbfile->locFldNum[LF_UPDATED];
-	}
-	if(!f) return;
-	struct tm tm_utc;
-	__time64_t ltime;
-	//retrieve the existing timestamp from record buffer
-	ASSERT(pRecBuf);
-	UINT len_ts=m_pdb->GetBufferFld(pRecBuf,f,ts_buf,64);
-	//2008-09-10 08:58:00 David McKenzie
-	memset(&tm_utc,0,sizeof(tm_utc)); tm_utc.tm_mday++;
-	if(len_ts>=19 && ts_buf[4]=='-' && ts_buf[7]=='-' && ts_buf[13]==':' && ts_buf[16]==':') {
-		if(len_ts>20) {
-		  csName.SetString(ts_buf+20,len_ts-20);
-		}
-		for(int i=4;i<20;i+=3) ts_buf[i]=0;
-		tm_utc.tm_year=atoi(ts_buf)-1900;
-		tm_utc.tm_mon=atoi(ts_buf+5)-1;
-		tm_utc.tm_mday=atoi(ts_buf+8)-1900;
-		tm_utc.tm_hour=atoi(ts_buf+11);
-		tm_utc.tm_min=atoi(ts_buf+14);
-		tm_utc.tm_sec=atoi(ts_buf+17);
-		ltime=_mkgmtime64(&tm_utc);
-	}
-	else ltime=-1;
-}
-*/
-
 int CShpLayer::ConfirmSaveMemo(HWND hWnd, const EDITED_MEMO &memo,BOOL bForceClose)
 {
 	CString title,s;
@@ -3654,16 +3604,6 @@ int CShpLayer::ConfirmSaveMemo(HWND hWnd, const EDITED_MEMO &memo,BOOL bForceClo
 
 	return MsgYesNoCancelDlg(hWnd,s,m_csTitle,"Save", "Discard Changes", bForceClose?NULL:"Continue Editing");
 }
-
-/*
-bool CShpLayer::DiscardChgOK(const EDITED_MEMO &memo)
-{
-	CString title;
-	return IDYES==CMsgBox(MB_YESNO,"%s\n\nYou're currently editing this memo field and changes are pending. "
-			"Do you want to discard the changes and reload the original content?",
-			GetMemoTitle(title,memo));
-}
-*/
 
 bool CShpLayer::IsMemoOpen(DWORD nRec,UINT nFld)
 {
