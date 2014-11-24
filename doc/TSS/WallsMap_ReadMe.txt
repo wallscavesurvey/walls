@@ -1,4 +1,4 @@
-WallsMap (TSS edition) v0.3 Build 2014-11-14 Notes
+WallsMap (TSS edition) v0.3 Build 2014-11-23 Notes
 ==================================================
 
 This TSS edition of the WallsMap setup is the same as the publicly available
@@ -10,13 +10,13 @@ and the complete TSS karst database.
 ==============
 Recent Changes
 
-* Build 11/14/2014
+* Build 11/23/2014
 
-1) It's now possible to quickly initialize a field in a selected set of shapefile
-records by right-clicking the field's label in a table view and selecting
-"Fill field..." The operation can be used to fill a memo field with data
-common to numerous records, such as owner information, coordinate source, etc.
-It also works with logical (Yes/No) and fixed-length character fields.
+1) With use of a new "Fill field..." feature, it's possible to quickly initialize
+a field in multiple shapefile records with the same information. The field type
+can be logical (Yes/No), fixed-length character, or memo (with rich text
+supported). You can access the pop-up menu with this function by selecting records
+in a table view, then right-clicking the field's label in the header.
 
 2) Miscellaneous improvements, some for appearance sake and others for data
 safety. For example, message boxes requesting user confirmation were changed

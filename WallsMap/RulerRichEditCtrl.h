@@ -9,6 +9,8 @@
 
 #include "ids.h"
 
+class CTableFillDlg;
+
 /////////////////////////////////////////////////////////////////////////////
 // Helper structs
 
@@ -94,6 +96,9 @@ public:
 	CRichEditCtrl& GetRichEditCtrl( ) {return m_rtf;}
 
 // Implementation
+
+	CTableFillDlg *m_pTableFillDlg;
+
 	CString GetRTF();
 	void GetRTF(CString *pStr);
 	void SetRTF( const CString& rtf );
@@ -134,6 +139,7 @@ public:
 	void SetBackgroundColor(COLORREF color) {m_rtf.SetBackgroundColor(FALSE,color);}
 
 	afx_msg void OnFormatRTF();
+	afx_msg void OnEditPaste(); //needed by TableFillDlg()
 
 protected:
 
@@ -165,7 +171,6 @@ protected:
 	afx_msg void OnEditRedo();
 	afx_msg void OnEditCut();
 	afx_msg void OnEditCopy();
-	afx_msg void OnEditPaste();
 	afx_msg void OnEditSelectAll();
 	//afx_msg void OnShowToolbar();
 	afx_msg void OnShowRuler();

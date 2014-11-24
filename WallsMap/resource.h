@@ -147,6 +147,7 @@
 #define IDD_UPDATED                     212
 #define IDR_TABLE_CONTEXT               213
 #define IDD_FINDDLGTBL                  214
+#define IDR_FILL_CONTEXT                214
 #define IDD_MSGCHECK                    216
 #define IDD_EDITIMAGE                   217
 #define IDB_DRAGINFO                    220
@@ -396,6 +397,7 @@
 #define IDC_RESTORE_DFLT                1092
 #define IDC_SEL_IGNORED                 1092
 #define IDC_TXTCOMP                     1092
+#define IDC_SELECT_ALL                  1092
 #define IDC_EDIT_SHP                    1093
 #define IDC_ST_FULLRES2                 1093
 #define IDC_NEXT                        1093
@@ -551,12 +553,14 @@
 #define IDC_ST_DEPTH                    1209
 #define IDC_BROWSE_SRC                  1213
 #define IDC_ST_TXTCOMP                  1214
+#define IDC_EDIT_PASTE                  1214
 #define IDC_PROGRESS1                   1216
 #define IDC_ST_FIELD                    1218
 #define IDC_ST_CAUTION                  1222
 #define IDC_YES                         1223
 #define IDC_FALSE                       1224
 #define IDC_ST_SETLOGICAL               1225
+#define IDC_SCROLLBAR1                  1226
 #define ID_Menu                         32771
 #define ID_SORTASCENDING_SORTDESCENDING 32771
 #define ID_VIEW_ZOOMIN                  32772
@@ -850,9 +854,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        270
-#define _APS_NEXT_COMMAND_VALUE         33280
-#define _APS_NEXT_CONTROL_VALUE         1226
+#define _APS_NEXT_RESOURCE_VALUE        273
+#define _APS_NEXT_COMMAND_VALUE         33283
+#define _APS_NEXT_CONTROL_VALUE         1227
 #define _APS_NEXT_SYMED_VALUE           182
 #endif
 #endif

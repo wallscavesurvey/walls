@@ -1474,6 +1474,10 @@ bool MsgOkCancel(HWND hWnd, LPCSTR msg, LPCSTR title)
 	return (i&0xFF)==IDOK;
 }
 
+void MsgInfo(HWND hWnd, LPCSTR msg, LPCSTR title)
+{
+	XMessageBox(hWnd, msg, title, MB_NOSOUND | MB_ICONINFORMATION | MB_NORESOURCE, NULL);
+}
 
 #ifdef _DEBUG
 BOOL SaveBitmapToFile(CBitmap *bitmap, CDC* pDC, LPCSTR lpFileName)

@@ -1259,16 +1259,16 @@ LRESULT CDBGridDlg::OnListContextMenu(WPARAM wParam, LPARAM lParam)
 				if(m_iColSort) {
 					if(m_pdb->FldTyp(m_iColSort)=='M') m_wTableFillFld=m_wLinkTestFld=(WORD)m_iColSort;
 					else if(m_pdb->FldTyp(m_iColSort)=='C' || m_pdb->FldTyp(m_iColSort)=='L') m_wTableFillFld=(WORD)m_iColSort;
-					if(!m_bAllowEdits || !bIgnoreEditTS && IsFldReadonly(m_wTableFillFld))
-						m_wTableFillFld=0;
 				}
 				else
 					pPopup->ModifyMenu(ID_EDIT_FIND,MF_BYCOMMAND,ID_EDIT_FIND,"Find deleted...");
 			}
 			if(!m_wLinkTestFld) pPopup->DeleteMenu(ID_LINKTEST,MF_BYCOMMAND);
 			if(!m_wTableFillFld) pPopup->DeleteMenu(ID_TABLE_FILL, MF_BYCOMMAND);
-			else if(m_nSelCount<=1) pPopup->EnableMenuItem(ID_TABLE_FILL,MF_BYCOMMAND|MF_DISABLED|MF_GRAYED);
-
+			else {
+				if((!m_bAllowEdits || (!bIgnoreEditTS && IsFldReadonly(m_wTableFillFld))))
+					pPopup->EnableMenuItem(ID_TABLE_FILL, MF_BYCOMMAND|MF_DISABLED|MF_GRAYED);
+			}
 			VERIFY(pPopup->TrackPopupMenu(TPM_LEFTALIGN|TPM_RIGHTBUTTON,point.x,point.y,this));
 		}
 	}
@@ -2401,8 +2401,8 @@ void CDBGridDlg::OnTableFill()
 		msg.Format("Confirm that you want replace the content of field %s in %u records.\n"
 			"Note that this operation will overwrite existing data and can't be undone.",
 			m_pdb->FldNamPtr(m_wTableFillFld),m_nSelCount);
-		if(m_pShp->m_pdbfile->HasTimestamp(1) && !bIgnoreEditTS)
-			msg+="\nThis will also revise the UPDATED timestamps.";
+		if(m_pShp->m_pdbfile->HasTimestamp(1))
+			msg.AppendFormat("\nThis will %s revise the UPDATED timestamps.", bIgnoreEditTS?"NOT":"also");
 
 		int i=MsgCheckDlg(m_hWnd,MB_OKCANCEL,msg,m_pShp->Title(),"Don't require confirmation again with this shapefile");
 		if(!i) return;
@@ -2419,14 +2419,15 @@ void CDBGridDlg::OnTableFill()
 		memset(fldbuf,' ',fLen);
 		memcpy(fldbuf,dlg.m_csFillText,fLenData);
 	}
+
 	POSITION pos = m_list.GetFirstSelectedItemPosition();
 	while (pos)	{
-	  int nItem = m_list.GetNextSelectedItem(pos);
+	  int nItem=m_list.GetNextSelectedItem(pos);
 	  if(!m_iColSorted && !m_bAscending) {
 		  nItem=m_nNumRecs-nItem-1;
 	  }
 	  UINT rec=m_vRecno[nItem];
-	  if(app_pShowDlg && app_pShowDlg->IsRecOpen(m_pShp, rec)) {
+	  if(m_pShp->IsRecDeleted(rec) || app_pShowDlg && app_pShowDlg->IsRecOpen(m_pShp, rec)) {
 		  uOpenRec++;
 		  continue;
 	  }
@@ -2489,19 +2490,22 @@ void CDBGridDlg::OnTableFill()
 			  }
 		  }
 	  }
-	}
+	} //pos
+
 	if(nFilled) {
-		m_list.Invalidate(); //seems to refresh list before message
+		m_list.Invalidate(0);
 	}
 
 	msg.Format("%u of %u selected %s revised.",nFilled,m_nSelCount,
 		(fTyp=='M')?"memo fields successfully":"records");
 	if(uOpenRec)
-		msg.AppendFormat("\n\nNOTE: %u records open in other dialogs were skipped.",uOpenRec);
+		msg.AppendFormat("\n\nNOTE: %u records either deleted or open in other dialogs were skipped.",uOpenRec);
 
 	EndWaitCursor();
+	//AfxMessageBox(msg);
+	MsgInfo(m_hWnd,msg,m_pShp->Title());
+	m_list.SetFocus();
 
-	AfxMessageBox(msg);
 }
 
 LRESULT CDBGridDlg::OnCommandHelp(WPARAM wNone, LPARAM lParam)

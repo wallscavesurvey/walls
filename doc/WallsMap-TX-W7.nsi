@@ -13,7 +13,7 @@
 !include "MUI2.nsh"
 
 !ifndef BUILD_DATE
-  !define BUILD_DATE '2014-11-01'
+  !define BUILD_DATE '2014-11-23'
 !endif
 
 !define WNDCLASS "WallsMapClass"

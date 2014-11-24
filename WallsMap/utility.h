@@ -158,9 +158,10 @@ BOOL	MakeFileDirectoryCurrent(LPCSTR pathname);
 #ifdef _USE_MODELESS
 void    ModelessOpen(LPCSTR title, UINT nDelay, LPCSTR format, ...);
 #endif
-int     MsgYesNoCancelDlg(HWND hWnd, LPCSTR msg, LPCSTR title, LPCSTR pYes, LPCSTR pNo, LPCSTR pCancel);
 int     MsgCheckDlg(HWND hWnd, UINT mb, LPCSTR msg, LPCSTR title, LPCSTR pDoNotAsk);
+void    MsgInfo(HWND hWnd, LPCSTR msg, LPCSTR title);
 bool    MsgOkCancel(HWND hWnd, LPCSTR msg, LPCSTR title);
+int     MsgYesNoCancelDlg(HWND hWnd, LPCSTR msg, LPCSTR title, LPCSTR pYes, LPCSTR pNo, LPCSTR pCancel);
 void	Pause();
 LPCSTR	ReplacePathExt(CString &path,LPCSTR pExt);
 LPCSTR ReplacePathName(CString &path,LPCSTR name);

@@ -55,6 +55,7 @@
 #include "TextFile.h"
 //includes rulerricheditctrl.h --
 #include "dbteditdlg.h"
+#include "TableFillDlg.h"
 
 extern const UINT WM_SWITCH_EDITMODE;
 
@@ -175,6 +176,7 @@ CRulerRichEditCtrl::CRulerRichEditCtrl() : m_pen( PS_DOT, 0, RGB( 0, 0, 0 ) )
 	m_movingtab = -1;
 	m_pFindDlg = NULL;
 	m_richEditModule = LoadLibrary (_T("Riched20.dll"));
+	m_pTableFillDlg=NULL;
 }
 
 CRulerRichEditCtrl::~CRulerRichEditCtrl()
@@ -2016,9 +2018,29 @@ void CRulerRichEditCtrl::OnContextMenu(CWnd* pWnd, CPoint pt)
 	m_rtf.GetWindowRect(&rect);
 	if(!rect.PtInRect(pt)) return;
 	CMenu menu;
-	if(menu.LoadMenu(IDR_RTF_CONTEXT)) {
-		CMenu* pPopup = menu.GetSubMenu(0);
-		ASSERT(pPopup != NULL);
+	if(!menu.LoadMenu(m_pTableFillDlg?IDR_FILL_CONTEXT:IDR_RTF_CONTEXT)) return;
+	CMenu* pPopup = menu.GetSubMenu(0);
+	ASSERT(pPopup != NULL);
+
+	if(m_pTableFillDlg) {
+		if(!m_rtf.CanPaste())
+			pPopup->EnableMenuItem(ID_EDIT_PASTE,MF_BYCOMMAND|MF_DISABLED|MF_GRAYED);
+
+		if(!m_rtf.CanUndo())
+			pPopup->EnableMenuItem(ID_EDIT_UNDO,MF_BYCOMMAND|MF_DISABLED|MF_GRAYED);
+		if(!m_rtf.CanRedo())
+			pPopup->EnableMenuItem(ID_EDIT_REDO,MF_BYCOMMAND|MF_DISABLED|MF_GRAYED);
+		if(m_pTableFillDlg->m_bMemo) {
+			pPopup->CheckMenuItem(ID_FORMAT_PLAIN,(!m_bFormatRTF)?(MF_CHECKED|MF_BYCOMMAND):(MF_UNCHECKED|MF_BYCOMMAND));
+			pPopup->CheckMenuItem(ID_FORMAT_RTF,m_bFormatRTF?(MF_CHECKED|MF_BYCOMMAND):(MF_UNCHECKED|MF_BYCOMMAND));
+		}
+		else {
+			pPopup->DeleteMenu(ID_FORMAT_PLAIN,MF_BYCOMMAND);
+			pPopup->DeleteMenu(ID_FORMAT_RTF,MF_BYCOMMAND);
+			pPopup->DeleteMenu(pPopup->GetMenuItemCount()-1,MF_BYPOSITION);
+		}
+	}
+	else {
 		if(m_readOnly || !m_rtf.CanPaste())
 			pPopup->EnableMenuItem(ID_EDIT_PASTE,MF_BYCOMMAND|MF_DISABLED|MF_GRAYED);
 
@@ -2061,8 +2083,8 @@ void CRulerRichEditCtrl::OnContextMenu(CWnd* pWnd, CPoint pt)
 				//pPopup->DeleteMenu(pPopup->GetMenuItemCount()-1,MF_BYPOSITION);
 			}
 		}
-		pPopup->TrackPopupMenu(TPM_LEFTALIGN|TPM_RIGHTBUTTON,pt.x,pt.y,this);
 	}
+	pPopup->TrackPopupMenu(TPM_LEFTALIGN|TPM_RIGHTBUTTON,pt.x,pt.y,this);
 }
 
 void CRulerRichEditCtrl::OnEditCut()
@@ -2101,7 +2123,7 @@ void CRulerRichEditCtrl::OnEditPaste()
 
   // if(!m_bFormatRTF && !GetTextLength() && ::IsClipboardFormatAvailable(uCF_RTF)) {
    if(!m_bFormatRTF) {
-	   if(::IsClipboardFormatAvailable(uCF_RTF)) {
+	   if((!m_pTableFillDlg || m_pTableFillDlg->m_bMemo) && ::IsClipboardFormatAvailable(uCF_RTF)) {
 		   UINT id=AfxMessageBox(IDS_RTF_PASTE,MB_YESNOCANCEL);
 		   if(id==IDCANCEL) return;
 		   if(id==IDYES) {

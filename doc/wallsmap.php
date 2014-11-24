@@ -210,7 +210,7 @@
 
 <p class="hd1"><img height=32 src="images/icon1.bmp" alt="program icon" width=32 border=0> <I>WallsMap</I> - GIS Viewer and Shapefile Editor</p>
             
-<p class="hd3">Version 0.3 Build 2014-10-01</p>
+<p class="hd3">Version 0.3 Build 2014-11-23</p>
 
 <p>WallsMap is a tool for managing geographical data inventories, where text, images, and links to information are associated
 with sets of coordinates. Like other Geographic Information System (GIS) viewers, the program treats each map document as a set

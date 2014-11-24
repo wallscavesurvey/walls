@@ -100,6 +100,8 @@ public:
 	void SaveShpColumns(); //called from CShpLayer::InitShpDef()
 	void CopySelected(CShpLayer *pLayer,LPBYTE pSrcFlds,BOOL bConfirm);
 
+	afx_msg void OnSelectAll();
+
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
@@ -264,7 +266,6 @@ private:
 	afx_msg void OnOptionsWebMap();
 	afx_msg void OnLaunchGE();
 	afx_msg void OnOptionsGE();
-	afx_msg void OnSelectAll();
 	afx_msg void OnRemoveFromTable();
 	afx_msg void OnMovetoTop();
 	afx_msg void OnExportShapes();
