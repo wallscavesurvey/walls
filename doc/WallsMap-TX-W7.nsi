@@ -2,6 +2,7 @@
 !define PRODUCT_NAME "WallsMap"
 ;This nsi file normally located in \Work12\WallsMap\doc, with binaries in \Work12\bin
 !define BIN_DIR "\Work12\bin"
+!define DOC_DIR "\Work12\trx\doc"
 !define PRODUCT_VERSION "0.3"
 !define PRODUCT_PUBLISHER "David McKenzie"
 !define PRODUCT_WEB_SITE "http://www.texasspeleologicalsurvey.org/software/wallsmap/wallsmap.php"
@@ -106,7 +107,7 @@ Section "MainSection" SEC01
   File "${BIN_DIR}\WallsMap.exe"
   File "${BIN_DIR}\WallsMap_sid.dll"
   File "${BIN_DIR}\WallsMap.chm"
-  File "WallsMap_ReadMe.txt"
+  File "${DOC_DIR}\WallsMap_ReadMe.txt"
   SetOutPath "$DATA"
   File /r "${BIN_DIR}\Public_caves\*.*"
 ; Shortcuts

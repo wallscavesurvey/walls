@@ -2,6 +2,7 @@
 !define PRODUCT_NAME "WallsMap"
 ;This nsi file normally located in \Work12\WallsMap\doc\TSS, with binaries in \Work12\bin
 !define BIN_DIR "\Work12\bin"
+!define DOC_DIR "\Work12\trx\doc\tss"
 !define PRODUCT_VERSION "0.3"
 !define PRODUCT_PUBLISHER "David McKenzie"
 !define PRODUCT_WEB_SITE "http://davidmck.fmnetdesign.com/WallsMap-TSS.htm"
@@ -14,7 +15,7 @@
 
 
 !ifndef BUILD_DATE
-  !define BUILD_DATE '2014-11-23'
+  !define BUILD_DATE '2014-12-11'
 !endif
 
 !define WNDCLASS "WallsMapClass"
@@ -104,7 +105,7 @@ Section "MainSection" SEC01
   File "${BIN_DIR}\WallsMap.exe"
   File "${BIN_DIR}\WallsMap_sid.dll"
   File "${BIN_DIR}\WallsMap.chm"
-  File "WallsMap_ReadMe.txt"
+  File "${DOC_DIR}\WallsMap_ReadMe.txt"
 
 ; Shortcuts
   CreateShortCut "$DESKTOP\WallsMap.lnk" "$INSTDIR\WallsMap.exe"

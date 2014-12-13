@@ -76,10 +76,15 @@ void CDBTFile::AppendFree()
 {
 	//Called only when editable shapefile is closed or explicitly saved --
 	ASSERT(!(m_uFlags&(F_EXTENDED|F_TRUNCATED|F_WRITTEN)));
+
 	if(!(m_uFlags&F_INITFREE)) return;
 	m_uFlags=0;
 
 	if(!m_uNextRec || !IsOpen()) return;
+
+#ifdef _DEBUG
+ULONGLONG uLen=CFile::GetLength();
+#endif
 
 	ASSERT(CFile::GetLength()==m_uNextRec*512UL); //*** triggered after copy to layer /w no source memos, but memos then edited
 	UINT nRecs=m_vFree.size();
@@ -114,6 +119,9 @@ static bool free_comp(const DBT_FREEREC &frec1,const DBT_FREEREC &frec2)
 
 void CDBTFile::AddToFree(const DBT_FREEREC &frec)
 {
+   //Adds set of contiguous blocks to m_vFree.
+   //Assumes m_uNextRec*512 is file length
+   //Might reduce m_uNextRec and set F_TRUNCATE (4), but doesn't write to file
 	ASSERT(frec.recNo && frec.recCnt);
 
 	if(!m_vFree.size()) {
@@ -131,10 +139,17 @@ void CDBTFile::AddToFree(const DBT_FREEREC &frec)
 	it_free itb=m_vFree.begin();
 	it_free ite=m_vFree.end();
 	it_free it=std::lower_bound(itb,ite,frec,free_comp);
-	//if it!=ite, it==position of first block with it->recNo >= frec.recNo (won't be equal)
-	ASSERT(it==ite || (it->recNo>frec.recNo && (it==itb || (it-1)->recNo<frec.recNo)));
+	//if it!=ite, it==position of first block with it->recNo >= frec.recNo (shouldn't be equal!)
+	ASSERT(it==ite || (it->recNo>=frec.recNo && (it==itb || (it-1)->recNo+(it-1)->recCnt<=frec.recNo)));
 
-	if(it>itb) itb=it-1; //will insert at or immediately after itb
+	if(it!=ite && it->recNo==frec.recNo) {
+		ASSERT(0);
+		//Already in free list?!
+		if(it->recCnt>frec.recCnt) it->recCnt=frec.recCnt;
+		return;
+	}
+
+	if(it>itb) itb=it-1; //will insert at it (immediately after itb)
 	if(it!=itb && itb->recNo+itb->recCnt==frec.recNo) {
 		//no insertion -- add records to itb==(it-1)
 		itb->recCnt+=frec.recCnt;
@@ -475,14 +490,17 @@ BOOL CDBTFile::CheckFree()
 		return (it0->recNo && it0->recCnt && it0->recNo+it0->recCnt<m_uNextRec);
 }
 
-BOOL CDBTFile::InitFree()
+BOOL CDBTFile::InitFree(BOOL bTesting /*=0*/)
 {
+	//Called when attempting to update a memo field (bTesting==0),
+	//or to prepare for TestMemos() (bTesting==1)
+
 	if(m_uFlags&F_INITFREE)
-		return m_uNextRec>0;
+		return m_uNextRec>0; //next available record no. should be >= 1.
 
 	ASSERT(!m_vFree.size() && !(m_uFlags&(F_EXTENDED|F_TRUNCATED)));
 
-	m_uFlags|=F_INITFREE;
+	if(!bTesting) m_uFlags|=F_INITFREE;
 	m_uNextRec=0;
 
 	try {
@@ -500,6 +518,13 @@ BOOL CDBTFile::InitFree()
 		Seek(m_uNextRec*512-sizeof(DBT_FREEREC),CFile::begin);
 		Read(&freeRec,sizeof(DBT_FREEREC));
 
+		/* freeRec=={recNo=0xFEFEFEFE,recCnt!=0} is last 8 bytes of file if there is a free list.
+           If so, this record plus the free list itself occupies 8 x (freeRec.recCnt+1) bytes at EOF.
+           Or nFreeRecBlks = (freeRec.recCnt+1)*8 + 511)/512 blocks at EOF.
+		   We'll move this list into RAM and truncate the file, then fix header so
+		   that first 4 bytes (m_uNextRec) will actually point to next assigned data block.
+        */
+
 		UINT nFreeRecBlks=0;
 		if(freeRec.recNo!=0xFEFEFEFE || !freeRec.recCnt ||
 			(nFreeRecBlks=((freeRec.recCnt+1)*sizeof(DBT_FREEREC)+511)/512)>m_uNextRec-1) {
@@ -514,16 +539,22 @@ BOOL CDBTFile::InitFree()
 			throw 0;
 
 		m_uNextRec-=nFreeRecBlks;
-		SeekToBegin();
-		Write(&m_uNextRec,sizeof(UINT));
-		SetLength(m_uNextRec*512);
+		if(!bTesting) {
+			//Remove file version of free block index by truncation, then set length in header to new length in blocks.
+			//Premature file closure will cause loss of free block index -- potentially restorable wasted space.
+			SeekToBegin();
+			Write(&m_uNextRec,sizeof(UINT));
+			SetLength(m_uNextRec*512);
+		}
 	}
 	catch(CFileException e) {
 		//Bad DBT format --
-		CMsgBox("CAUTION: File %s doesn't have the correct format. Some memo field updates "
-			"will not actually be saved! Repair format by exporting shapefile.",(LPCSTR)GetFileName());
+		CMsgBox("CAUTION: Memo fields can't be updated because file %s is corrupted. "
+		        "You can try repairing the shapefile by exporting it.",(LPCSTR)GetFileName());
 		if(m_vFree.size())
 			std::vector<DBT_FREEREC>().swap(m_vFree);
+
+		m_uFlags&=~F_INITFREE;
 		m_uNextRec=0;
 	}
 

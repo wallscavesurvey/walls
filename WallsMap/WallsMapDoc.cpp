@@ -759,7 +759,7 @@ void CWallsMapDoc::OnFileProperties()
 {
 	//CDlgProperties dlg(this);
 	//dlg.DoModal();
-	ASSERT(!hPropHook);
+	if(hPropHook) return;
 	CLayerSetSheet *pDlg;
 	try {
 		pDlg=new CLayerSetSheet(this,NULL,GetPropStatus().nTab);

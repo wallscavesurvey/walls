@@ -875,7 +875,7 @@
         </td>
         <td style="width:606px;">
           <para styleclass="Normal"><text styleclass="Normal" translate="true">The program dynamically assigns a code when a point is added or relocated. The set of</text></para>
-          <para styleclass="Normal"><text styleclass="Normal" translate="true">geologic shapefiles searched for is specified in the .tmpshp file. Since those shapefiles can be absent or out-of-date, the codes are sometimes &quot;refreshed&quot; by the database manager.</text></para>
+          <para styleclass="Normal"><text styleclass="Normal" translate="true">geologic shapefiles searched for is specified in the .tmpshp file. Since those shapefiles can be absent or out-of-date, this field is routinely reinitialized by the database manager.</text></para>
         </td>
       </tr>
     </table></para>

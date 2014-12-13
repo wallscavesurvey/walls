@@ -263,7 +263,14 @@ BOOL CLayerSet::OpenLayer(LPCSTR lpszPathName,LPCSTR lpszTitle,UINT uFlags,int p
 			*/
 			if(pLayer->Open(lpszPathName,uFlags)) {
 				pLayer->SetTitle(lpszTitle);
-				if(typ==TYP_SHP) ((CShpLayer *)pLayer)->FixTitle();
+				if(typ==TYP_SHP) {
+					CShpLayer *pShp=(CShpLayer *)pLayer;
+					pShp->FixTitle();
+					if(uFlags&NTL_FLG_TESTMEMOS) {
+						if(pShp->HasMemos()) pShp->TestMemos(TRUE);
+						else pShp->m_uFlags&=~NTL_FLG_TESTMEMOS;
+					}
+				}
 				else {
 					ASSERT(pLayer->m_nImage==2);
 					pLayer->m_uFlags&=~NTL_FLG_EDITABLE;
@@ -781,7 +788,7 @@ int CLayerSet::CopyToDIB(CDIBWrapper *pDestDIB,const CFltRect &rectGeo,double fS
 	//			2			- All data was copied.
 
 	if(!ExtentOverlap(rectGeo)) {
-		ASSERT(0);
+		//ASSERT(0); //sometimes happens!
 		return 0;
 	}
 

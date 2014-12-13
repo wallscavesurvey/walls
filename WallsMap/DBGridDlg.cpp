@@ -1257,13 +1257,19 @@ LRESULT CDBGridDlg::OnListContextMenu(WPARAM wParam, LPARAM lParam)
 					pPopup->CheckMenuItem(ID_SORTDESCENDING,(!m_bAscending)?(MF_CHECKED|MF_BYCOMMAND):(MF_UNCHECKED|MF_BYCOMMAND));
 				}
 				if(m_iColSort) {
-					if(m_pdb->FldTyp(m_iColSort)=='M') m_wTableFillFld=m_wLinkTestFld=(WORD)m_iColSort;
+					if(m_pdb->FldTyp(m_iColSort)=='M') {
+						m_wTableFillFld=m_wLinkTestFld=(WORD)m_iColSort;
+					}
 					else if(m_pdb->FldTyp(m_iColSort)=='C' || m_pdb->FldTyp(m_iColSort)=='L') m_wTableFillFld=(WORD)m_iColSort;
 				}
 				else
 					pPopup->ModifyMenu(ID_EDIT_FIND,MF_BYCOMMAND,ID_EDIT_FIND,"Find deleted...");
 			}
-			if(!m_wLinkTestFld) pPopup->DeleteMenu(ID_LINKTEST,MF_BYCOMMAND);
+			if(!m_wLinkTestFld) {
+				pPopup->DeleteMenu(6, MF_BYPOSITION);
+				pPopup->DeleteMenu(ID_LINKTEST, MF_BYCOMMAND);
+			}
+
 			if(!m_wTableFillFld) pPopup->DeleteMenu(ID_TABLE_FILL, MF_BYCOMMAND);
 			else {
 				if((!m_bAllowEdits || (!bIgnoreEditTS && IsFldReadonly(m_wTableFillFld))))
@@ -2427,7 +2433,7 @@ void CDBGridDlg::OnTableFill()
 		  nItem=m_nNumRecs-nItem-1;
 	  }
 	  UINT rec=m_vRecno[nItem];
-	  if(m_pShp->IsRecDeleted(rec) || app_pShowDlg && app_pShowDlg->IsRecOpen(m_pShp, rec)) {
+	  if(app_pShowDlg && app_pShowDlg->IsRecOpen(m_pShp, rec)) {
 		  uOpenRec++;
 		  continue;
 	  }
@@ -2499,7 +2505,7 @@ void CDBGridDlg::OnTableFill()
 	msg.Format("%u of %u selected %s revised.",nFilled,m_nSelCount,
 		(fTyp=='M')?"memo fields successfully":"records");
 	if(uOpenRec)
-		msg.AppendFormat("\n\nNOTE: %u records either deleted or open in other dialogs were skipped.",uOpenRec);
+		msg.AppendFormat("\n\nNOTE: %u records open in other dialogs were skipped.",uOpenRec);
 
 	EndWaitCursor();
 	//AfxMessageBox(msg);
@@ -2513,4 +2519,3 @@ LRESULT CDBGridDlg::OnCommandHelp(WPARAM wNone, LPARAM lParam)
 	AfxGetApp()->WinHelp(1016);
 	return TRUE;
 }
-

@@ -159,7 +159,7 @@ BOOL	MakeFileDirectoryCurrent(LPCSTR pathname);
 void    ModelessOpen(LPCSTR title, UINT nDelay, LPCSTR format, ...);
 #endif
 int     MsgCheckDlg(HWND hWnd, UINT mb, LPCSTR msg, LPCSTR title, LPCSTR pDoNotAsk);
-void    MsgInfo(HWND hWnd, LPCSTR msg, LPCSTR title);
+void    MsgInfo(HWND hWnd, LPCSTR msg, LPCSTR title, UINT style=0);
 bool    MsgOkCancel(HWND hWnd, LPCSTR msg, LPCSTR title);
 int     MsgYesNoCancelDlg(HWND hWnd, LPCSTR msg, LPCSTR title, LPCSTR pYes, LPCSTR pNo, LPCSTR pCancel);
 void	Pause();

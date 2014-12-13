@@ -43,7 +43,7 @@ CLayerSetSheet::CLayerSetSheet(CWallsMapDoc *pDoc, CWnd* pParentWnd, UINT iSelec
 
 CLayerSetSheet::~CLayerSetSheet()
 {
-	ASSERT(!hPropHook);
+	hPropHook=FALSE;
 	pLayerSheet=NULL;
 }
 

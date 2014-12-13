@@ -81,6 +81,8 @@ BEGIN_MESSAGE_MAP(CPageLayers, CLayerSetPage)
 	ON_COMMAND(ID_LAYERS_BELOW, &CPageLayers::OnLayersBelow)
 	ON_COMMAND(ID_LAYERS_WITHIN, &CPageLayers::OnLayersWithin)
 	ON_COMMAND(ID_COMPARE_SHP, &CPageLayers::OnCompareShp)
+	ON_COMMAND(ID_TEST_MEMOS, &CPageLayers::OnTestMemos)
+
 END_MESSAGE_MAP()
 
 void CPageLayers::DoDataExchange(CDataExchange* pDX)
@@ -363,6 +365,10 @@ LRESULT CPageLayers::OnRClickItem(WPARAM item,LPARAM point)
 
 			if(!pShp->IsEditable() || pShp->ShpTypeOrg()!=CShpLayer::SHP_POINT)
 					pPopup->DeleteMenu(ID_CLEAR_EDITFLAGS,MF_BYCOMMAND);
+
+			if(pShp->HasMemos()) {
+				VERIFY(pPopup->AppendMenu(MF_STRING,ID_TEST_MEMOS,"Test memo field integrity"));
+			}
 
 			if(pShp->KeyFld() && (!pShp->HasLocFlds() || m_pDoc->LayerSet().IsGeoWgs84())) {
 				VERIFY(pPopup->AppendMenu(MF_STRING,ID_COMPARE_SHP,"Compare with other layers..."));
@@ -1219,4 +1225,11 @@ void CPageLayers::OnCompareShp()
 	c_Trxlinks.CloseDel();
 	c_Trxref.CloseDel();
 	c_Trx.CloseDel();
+}
+
+void CPageLayers::OnTestMemos()
+{
+	CShpLayer *pShp=(CShpLayer *)m_pDoc->SelectedLayerPtr();
+	ASSERT(pShp->LayerType()==TYP_SHP && pShp->HasMemos());
+	pShp->TestMemos();
 }

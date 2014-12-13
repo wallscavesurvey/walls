@@ -29,10 +29,11 @@ CImageViewDlg * app_pImageDlg=NULL;
 static LPCSTR validExt[]=
 {
 	".jpg",
+	".png",
+	".jpeg",
 	".tif",
 	".bmp",
 	".gif",
-	".png",
 	".nti",
 	".tiff",
 	".webp"
@@ -649,7 +650,7 @@ BOOL CImageViewDlg::InitImageData()
 					"by opening a table view and selecting \"Find broken image links\" in the header's context menu";
 
 		CMsgBox(MB_ICONINFORMATION,
-			"%s\n\nNOTE: %u (of %u) linked image files could not be found. One such file is\n\n"
+			"%s\n\nNOTE: %u (of %u) linked image files are missing, inaccessible, or of an unsupported type. One such file is\n\n"
 			"%s\n\nTo view the links click the image field's button while pressing the CTRL key. %s.",
 			m_pShp->GetMemoTitle(title,m_memo),m_nBadLinks,nLinks,(LPCSTR)badPath,pmsg);
 

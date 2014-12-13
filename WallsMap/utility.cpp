@@ -1474,9 +1474,10 @@ bool MsgOkCancel(HWND hWnd, LPCSTR msg, LPCSTR title)
 	return (i&0xFF)==IDOK;
 }
 
-void MsgInfo(HWND hWnd, LPCSTR msg, LPCSTR title)
+void MsgInfo(HWND hWnd, LPCSTR msg, LPCSTR title, UINT style /*= MB_NOSOUND | MB_ICONINFORMATION*/)
 {
-	XMessageBox(hWnd, msg, title, MB_NOSOUND | MB_ICONINFORMATION | MB_NORESOURCE, NULL);
+	if(!style) style = (MB_NOSOUND | MB_ICONINFORMATION);
+	XMessageBox(hWnd, msg, title, style | MB_NORESOURCE, NULL);
 }
 
 #ifdef _DEBUG

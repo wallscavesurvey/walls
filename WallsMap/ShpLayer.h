@@ -351,6 +351,7 @@ public:
 	}
 
 	bool IsGridDlgOpen();
+	void TestMemos(BOOL bOnLoad=FALSE);
 
 	BOOL SaveShp();
 	BOOL SetEditable();
@@ -513,7 +514,6 @@ public:
 	bool m_bFillPrompt;
 	bool m_bDupEditPrompt;
 	bool m_bSelChanged;
-
 	bool m_bSearchExcluded;
 	VEC_BYTE *m_pvSrchFlds;
 	VEC_BYTE m_vSrchFlds;

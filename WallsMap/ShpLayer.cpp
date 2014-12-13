@@ -560,6 +560,7 @@ void CShpLayer::CloseDBF()
 			//Database records were updated
 			SaveShp();
 		}
+		ASSERT(HasMemos()==m_pdbfile->dbt.IsOpen());
 		m_pdbfile->dbt.AppendFree();
 		m_pdbfile->pShpEditor=NULL;
 		if(m_pdbfile->nUsers>1) {
@@ -814,6 +815,7 @@ BOOL CShpLayer::OpenDBF(LPSTR pathName,int shpTyp,UINT uFlags)
 		if(!dbt.Open(pathName,bReadOnly?(CFile::modeRead|CFile::shareDenyNone):(CFile::modeReadWrite|CFile::shareDenyWrite)))
 			goto _fail;
 	}
+
 	if(!bPoly && m_nNumRecs && !OpenDBE(pathName,uFlags))
 		goto _fail;
 
@@ -1232,11 +1234,13 @@ BOOL CShpLayer::Open(LPCTSTR lpszPathName,UINT uFlags)
 #ifdef _DEBUG
 		if(extraShpDels || extraDbfDels) {
 			*trx_Stpext(pathbuf)=0;
-			CString s;
-			if(extraDbfDels) s.Format("\n\nFlagged recs: %s",(LPCSTR)sBadDeletes);
-			CMsgBox("%s.shp --\n\nCAUTION: There were %u unmatched .shp deletions and %u unmatched .dbf deletions. "
-				"In cases of mismatch the status of the delete flag in the .dbf will be ignored.%s",
-				pathbuf,extraShpDels,extraDbfDels,(LPCSTR)s);
+			CString msg;
+			msg.Format("%s.shp\n\nNOTE: There were %u unmatched .shp deletions and %u unmatched .dbf deletions.\n"
+				"In cases of mismatch the status of the delete flag in the .dbf will be ignored.",
+				pathbuf,extraShpDels,extraDbfDels);
+
+			if(extraDbfDels) msg.AppendFormat("\n\nFlagged recs: %s",(LPCSTR)sBadDeletes);
+			MsgInfo(0, msg, "Format Note (Debug Only)");
 		}
 #endif
 
@@ -4240,3 +4244,207 @@ bool CShpLayer::check_overwrite(LPCSTR pathName)
 	}
 	return true;
 }
+
+void CShpLayer::TestMemos(BOOL bOnLoad /*=FALSE*/)
+{
+	CDBTFile &dbt=m_pdbfile->dbt;
+	ASSERT(dbt.IsOpen());
+
+	bool bFreeInit=(dbt.m_uFlags&CDBTFile::F_INITFREE)!=0;
+	bool bWasteSaved=false,bCorrupt=false;
+
+	if(!bFreeInit) {
+		//Only initialize dbt.m_uNextRec and dbt.m_vFree, don't truncate file and write m_uNextRec to header!
+		if(!dbt.InitFree(TRUE)) return;
+	}
+
+	if(!bOnLoad) AfxGetMainWnd()->BeginWaitCursor();
+
+	UINT nFreeBlks=0,nBadFld=0,nBadRec=0,nBadFreeRec=0,nDelBlks=0,nDeleted=0,nNewFree=0,nWasted=0;
+
+	VEC_FREE vFree; //for recovered free blocks
+	VEC_BYTE vBlkFlgs;
+	VEC_BYTE vF;
+	VEC_INT vBadRec;
+	CString s;
+
+	for(BYTE f=m_pdb->NumFlds(); f>=1; f--) {
+		if(m_pdb->FldTyp(f)=='M') vF.push_back(f);
+	}
+	vBlkFlgs.assign(dbt.m_uNextRec-1,0);
+	if(dbt.m_vFree.size()) {
+		//flag all free blocks in dbt with 255 --
+		for(it_free it=dbt.m_vFree.begin(); it!=dbt.m_vFree.end(); it++) {
+			memset(&vBlkFlgs[0]+it->recNo-1,255,it->recCnt);
+			ASSERT(it->recCnt>0);
+			nFreeBlks+=it->recCnt;
+		}
+		ASSERT(nFreeBlks<=vBlkFlgs.size());
+	}
+
+	//flag all used blocks on dbt with 1 while counting conflicts --
+	for(DWORD rec=1; rec<=m_pdb->NumRecs(); rec++) {
+		if(m_pdb->Go(rec)) {
+			s.AppendFormat("\nFailure accessing DBF record %u.",rec);
+			goto _ret;
+		}
+		bool bBadRec=false,bBadFreeRec=false;
+		UINT recBlks=0; //total blocks used
+		for(it_byte it=vF.begin(); it<vF.end(); it++) {
+			int dbtrec=CDBTFile::RecNo((LPCSTR)m_pdb->FldPtr(*it));
+			if(!dbtrec) continue;
+			UINT len=0;
+			dbt.GetText(&len,dbtrec);
+			ASSERT(len); //length of data, not counting 0x1A terminator
+			//convert to block count --
+			len=(len+512)/512; //blocks used by memo, allow for 0x1A at end of data
+			recBlks+=len;
+			LPBYTE pBlk=&vBlkFlgs[0]+dbtrec-1; //flag pos of first block of this memo
+			BYTE bConflict=0;
+			for(UINT b=0; b<len; b++) {
+				if(pBlk[b]==1) {
+					//block is in use!
+					bConflict =1;
+					break;
+				}
+				if(pBlk[b]==255) bConflict=255;
+			}
+			if(bConflict==1) {
+				//fatal conflict with block used by another memo, either in this rec or another rec
+				nBadFld++;
+				bBadRec=true;
+			}
+			else if(bConflict==255) {
+				//at least some blocks of this memo are on free list, rest used only by this memo (so far)
+				bBadFreeRec=true;
+			}
+			memset(pBlk,1,len); //assign ownership if blocks to this memo
+		} //fld loop
+
+		if(m_pdb->IsDeleted()) {
+			nDeleted++;
+			nDelBlks+=recBlks;
+		}
+
+		if(bBadRec) {
+			nBadRec++;
+			vBadRec.push_back(rec);
+		}
+		else if(bBadFreeRec) {
+			//only conflicts with free block enountered with this record
+			nBadFreeRec++;
+		}
+	} //rec loop
+
+	bCorrupt= nBadFreeRec || nBadRec;
+
+	if(nBadRec) {
+		s.AppendFormat("\nThere are records (%u) whose ownership of DBT file space conflicts with that\n"
+			             "of earlier numbered records. Although you can repair the format with an export,\n"
+						 "it's likely that some memo fields will have wrong or duplicated data.\n"
+					     "Record numbers:", nBadRec);
+		UINT nListed=0;
+		for(it_int it=vBadRec.begin(); it!=vBadRec.end(); it++) {
+			if(nListed==10) {
+				s.AppendFormat(" (%u more)", vBadRec.size()-nListed);
+				break;
+			}
+			nListed++;
+			s.AppendFormat(" %u",*it);
+		}
+		s+=".\n";
+	}
+	else if(nBadFreeRec)
+		s.AppendFormat("\nThere are no conflicts, but %u records are using memory on the free block list.\n"
+		                 "Prior to any edits you should repair the format with an export, then compare\n"
+						 "the exported shapefile with a backup if one exists.\n",nBadFreeRec);
+
+	if(bCorrupt) s+=   "\nYou shouldn't be seeing this. If you think the file corruption was caused by the\n"
+		               "program, please report it as a bug!";
+
+	//Now check for permanently wasted space --
+
+	else {
+		for(it_byte it=vBlkFlgs.begin(); it!=vBlkFlgs.end(); it++) {
+			if(!*it) {
+				if(bWasteSaved) {
+					it_byte ite=it+1;
+					while(ite!=vBlkFlgs.end() && !*ite) ite++;
+					vFree.push_back(DBT_FREEREC(1+it-vBlkFlgs.begin(),ite-it));
+					nWasted+=ite-it;
+					it=ite-1;
+				}
+				else nWasted++;
+			}
+		}
+		bWasteSaved=nWasted && IsEditable();
+
+		if(!bOnLoad || nWasted) {
+
+			if(nWasted)
+				s.AppendFormat("\nAlthough harmless, there are %u 512-byte blocks of unusable file space, likely due to\nan abnormal program shutdown. "
+				"To make this space available, %s.\n",nWasted,bWasteSaved?"check the box below":"run this test with\nthe shapefile editable");
+
+			if(nFreeBlks)
+				s.AppendFormat("\nThere are%s %u %sblocks of reusable file space on the free list.",nWasted?" also":"",nFreeBlks,nWasted?"":"512-byte ");
+			else s+="\nThe free block list is empty.";
+
+			if(nDelBlks)
+				s.AppendFormat("\nThe %u deleted records are using %u blocks of file space.",nDeleted,nDelBlks);
+
+			UINT nUnused=nWasted+nFreeBlks+nDelBlks; //reduction in size due to an export assuming no conflicts
+			if(nUnused)
+				s.AppendFormat("\nIf exported, DBT file size, now %.1f KB, will be %u x 512b = %.1f KB smaller.",
+					(double)(dbt.m_uNextRec*512)/1024, nUnused, (double)(nUnused*512)/1024);
+		}
+	}
+
+	if(bOnLoad) s+="\n\nNOTE: To avoid this integrity test with each project load, you can uncheck that\n"
+			            "option in the shapefile's Symbols dialog.";
+	else if(!(m_uFlags&NTL_FLG_TESTMEMOS))
+			    s+= "\n\nNOTE: To check integrity with each project load, you can enable that option in\n"
+						"the shapefile's Symbols dialog. You'll be notified only if a repair is needed.";
+
+	if(!bOnLoad) AfxGetMainWnd()->EndWaitCursor();
+
+	if(!bOnLoad || bCorrupt || nWasted) {
+		CString msg,title;
+
+		title=bCorrupt?"corrupted":"internally consistent";
+		if(!bCorrupt && nWasted) title+=", but contains wasted space"; 
+
+		msg.Format("Layer: %s\n\nThe DBT component is %s!\n%s",Title(),(LPCSTR)title,(LPCSTR)s);
+		title.Format("Status of %s",(LPCSTR)dbt.GetFileName());
+
+		if(!bWasteSaved) {
+			MsgInfo(NULL,msg,title,bCorrupt?MB_ICONEXCLAMATION:0);
+		}
+		else {
+			if(MsgCheckDlg(NULL, MB_OK, msg, title, "Recover wasted DBT file space")>1) {
+				//Let's add the vFree[] items to the free list --
+				for(it_free it=vFree.begin(); it!=vFree.end();it++)
+						dbt.AddToFree(*it); //alters m_vFree, might reduce m_uNextRec and set F_TRUNCATE (4), but doesn't write to file
+
+				//let's insure file is flushed and in F_INITFREE state --
+				dbt.SeekToBegin();
+				dbt.Write(&dbt.m_uNextRec,sizeof(UINT));
+				dbt.SetLength(dbt.m_uNextRec*512);
+				dbt.Flush();
+				dbt.m_uFlags=CDBTFile::F_INITFREE;
+				bFreeInit=true;
+			}
+		}
+	}
+
+_ret:
+	if(!bFreeInit) {
+		//file has not been modified
+		ASSERT(!(dbt.m_uFlags&CDBTFile::F_INITFREE));
+		dbt.m_uNextRec=0;
+		if(dbt.m_vFree.size()) {
+			//delete it since it was used for this function only (could be R/O)
+			std::vector<DBT_FREEREC>().swap(dbt.m_vFree);
+		}
+	}
+}
+

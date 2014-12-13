@@ -462,6 +462,7 @@
 #define IDC_OPENFILE                    1143
 #define IDC_OPEN_EXPORTED               1143
 #define IDC_USE_INDEX                   1143
+#define IDC_TEST_MEMOS                  1143
 #define IDC_ST_DENOM                    1144
 #define IDC                             1145
 #define IDC_ST_RATIO_BOX                1145
@@ -820,6 +821,8 @@
 #define ID__REPLACEWITHFILE             33275
 #define ID__COMPAREWITHFILE             33276
 #define ID_TABLE_FILL                   33279
+#define ID__TESTMEMOFIELDINTEGRITY      33283
+#define ID_TEST_MEMOS                   33284
 #define ID_APPENDLAYER_0                34000
 #define ID_APPENDLAYER_1                34001
 #define ID_APPENDLAYER_2                34002
@@ -855,7 +858,7 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        273
-#define _APS_NEXT_COMMAND_VALUE         33283
+#define _APS_NEXT_COMMAND_VALUE         33285
 #define _APS_NEXT_CONTROL_VALUE         1227
 #define _APS_NEXT_SYMED_VALUE           182
 #endif

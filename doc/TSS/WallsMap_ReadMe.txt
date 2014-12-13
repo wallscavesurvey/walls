@@ -1,4 +1,4 @@
-WallsMap (TSS edition) v0.3 Build 2014-11-23 Notes
+WallsMap (TSS edition) v0.3 Build 2014-12-11 Notes
 ==================================================
 
 This TSS edition of the WallsMap setup is the same as the publicly available
@@ -10,7 +10,18 @@ and the complete TSS karst database.
 ==============
 Recent Changes
 
-* Build 11/23/2014
+* Build 12/11/2014
+
+1) A "Test memo field integity" option was added to the Layers window context
+menu. It checks that the data blocks pointed to in the shapefile's DBT component
+are all accessible and with no conficts in usage. It will also restore the list of
+reusable freed blocks in case it was lost due to an abnormal program shutdown.
+Such shutdowns are normally harmless, but till now they could produce inaccessible
+areas of the file, removed only with an export. For shapefiles you routinely edit,
+you should enable an option in the Symbols dialog that causes this test to be done
+automatically upon project load.
+
+* Build 12/03/2014
 
 1) With use of a new "Fill field..." feature, it's possible to quickly initialize
 a field in multiple shapefile records with the same information. The field type
@@ -21,6 +32,8 @@ in a table view, then right-clicking the field's label in the header.
 2) Miscellaneous improvements, some for appearance sake and others for data
 safety. For example, message boxes requesting user confirmation were changed
 to have more descriptive button labels, with "Yes No Cancel" mostly avoided.
+
+3) Help file corrections and additions.
 
 * Build 10/01/2014
 

@@ -110,6 +110,7 @@ public:
 	afx_msg void OnLayersAbove();
 	afx_msg void OnLayersBelow();
 	afx_msg void OnLayersWithin();
+	afx_msg void OnTestMemos();
 };
 
 

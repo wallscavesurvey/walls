@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XInclude" xmlns:xml="http://www.w3.org/XML/1998/namespace" elementFormDefault="unqualified" attributeFormDefault="unqualified">
-	<xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/XML/1998/namespace"/>
+	<xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/03/xml.xsd"/>
 	<xs:element name="helpproject">
 		<xs:complexType>
 			<xs:sequence>
@@ -845,6 +845,7 @@
 		<xs:attribute name="padding" type="xs:integer"/>
 		<xs:attribute name="styleclass" type="xs:string"/>
 		<xs:attribute name="style" type="xs:string"/>
+		<xs:attribute name="translate" type="xs:boolean"/>
 	</xs:complexType>
 	<xs:complexType name="topicref.class" mixed="true">
 		<xs:annotation>

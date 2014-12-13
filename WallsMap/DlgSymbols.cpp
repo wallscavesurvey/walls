@@ -15,6 +15,7 @@ CDlgSymbols::CDlgSymbols(CWallsMapDoc *pDoc,CShpLayer *pShp,CWnd* pParent /*=NUL
 	: CDialog(CDlgSymbols::IDD, pParent),m_pDoc(pDoc),m_pShp(pShp)
 {
 	m_bInitFlag=true;
+	m_bTestMemos=(m_pShp->m_uFlags&NTL_FLG_TESTMEMOS)!=0;
 	m_bSelectable=(m_pShp->m_uFlags&NTL_FLG_NONSELECTABLE)==0;
 	m_bSelectableSrch=!m_pShp->IsSearchExcluded();
 	m_bShowLabels=(m_pShp->m_uFlags&NTL_FLG_LABELS)!=0;
@@ -59,11 +60,12 @@ void CDlgSymbols::UpdateMap()
 
 	#define NTL_FLG_NEEDREFRESH (NTL_FLG_LABELS|NTL_FLG_SHOWLABELS|NTL_FLG_MARKERS|NTL_FLG_SHOWMARKERS|NTL_FLG_NONSELECTABLE)
 
-	UINT uFlags=m_pShp->m_uFlags&~(NTL_FLG_NEEDREFRESH|NTL_FLG_SEARCHEXCLUDED|NTL_FLG_NONSELECTABLE);
+	UINT uFlags=m_pShp->m_uFlags&~(NTL_FLG_NEEDREFRESH|NTL_FLG_SEARCHEXCLUDED|NTL_FLG_NONSELECTABLE|NTL_FLG_TESTMEMOS);
 	uFlags |= (m_bShowLabels!=0)*NTL_FLG_LABELS+(m_bShowLabels==2)*NTL_FLG_SHOWLABELS +
 			  (m_bShowMarkers!=0)*NTL_FLG_MARKERS+(m_bShowMarkers==2)*NTL_FLG_SHOWMARKERS +
 			  (m_bSelectable==FALSE)*NTL_FLG_NONSELECTABLE +
-			  (m_bSelectableSrch==FALSE)*NTL_FLG_SEARCHEXCLUDED;
+			  (m_bSelectableSrch==FALSE)*NTL_FLG_SEARCHEXCLUDED +
+			  (m_bTestMemos!=0)*NTL_FLG_TESTMEMOS;
 
 	if(!bMarkerChanged && (uFlags&NTL_FLG_MARKERS)!=(m_pShp->m_uFlags&NTL_FLG_MARKERS)) {
 		bMarkerChanged=true;
@@ -110,13 +112,13 @@ void CDlgSymbols::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_SHOWMARKERS, m_bShowMarkers);
 	DDX_Check(pDX, IDC_DOT_CENTER, m_bDotCenter);
 	DDX_Control(pDX, IDC_COLORFRM, m_rectSym);
-	DDX_Control(pDX,IDC_FGCOLOR, m_BtnMrk);
-	DDX_Control(pDX,IDC_BKGCOLOR, m_BtnBkg);
-	DDX_Control(pDX,IDC_LBLCOLOR, m_BtnLbl);
+	DDX_Control(pDX, IDC_FGCOLOR, m_BtnMrk);
+	DDX_Control(pDX, IDC_BKGCOLOR, m_BtnBkg);
+	DDX_Control(pDX, IDC_LBLCOLOR, m_BtnLbl);
 	DDX_Control(pDX, IDC_BKGNDCOLOR, m_BtnBkgnd);
 	DDX_Control(pDX, IDC_LIST1, m_list1);
 	DDX_Control(pDX, IDC_LIST2, m_list2);
-
+	DDX_Check(pDX, IDC_TEST_MEMOS, m_bTestMemos);
 	DDX_Control(pDX, IDC_OPACITY_SYM2, m_sliderSym);
 	DDX_Slider(pDX, IDC_OPACITY_SYM2, m_mstyle.iOpacitySym);
 
@@ -233,6 +235,8 @@ BOOL CDlgSymbols::OnInitDialog()
 
 	GetDlgItem(IDC_MSIZE)->SetWindowTextA(GetIntStr(m_mstyle.wSize));
 	GetDlgItem(IDC_MLINEW)->SetWindowTextA(GetFloatStr(m_mstyle.fLineWidth,1));
+	GetDlgItem(IDC_TEST_MEMOS)->EnableWindow(m_pShp->HasMemos());
+
 	m_bInitFlag=false;
 
 	return TRUE;  // return TRUE unless you set the focus to a control

@@ -475,8 +475,8 @@ BEGIN
     BEGIN
         MENUITEM "Column visibility...",        ID_CHKCOLUMNS
         MENUITEM "Find...",                     ID_EDIT_FIND
-        MENUITEM "Find broken image links...",  33183
         MENUITEM "Fill field...",               ID_TABLE_FILL
+        MENUITEM "Find broken image links...",  33183
         MENUITEM SEPARATOR
         MENUITEM "Sort Ascending",              ID_SORTASCENDING
         MENUITEM "Sort Descending",             ID_SORTDESCENDING
@@ -743,10 +743,12 @@ BEGIN
     COMBOBOX        IDC_LBLFIELD,230,58,78,102,CBS_DROPDOWNLIST | WS_VSCROLL | WS_GROUP | WS_TABSTOP
     PUSHBUTTON      "Font...",IDC_LBLFONT,188,79,47,14
     CONTROL         "        ",IDC_LBLCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,275,79,39,14
-    LISTBOX         IDC_LIST1,176,132,68,50,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    LISTBOX         IDC_LIST2,264,132,68,50,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      ">",IDC_MOVERIGHT,247,143,14,12,BS_CENTER
-    PUSHBUTTON      "<",IDC_MOVELEFT,247,159,14,12,BS_CENTER
+    LISTBOX         IDC_LIST1,176,128,68,50,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_LIST2,264,128,68,50,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      ">",IDC_MOVERIGHT,247,139,14,12,BS_CENTER
+    PUSHBUTTON      "<",IDC_MOVELEFT,247,155,14,12,BS_CENTER
+    CONTROL         "Check memo field integrity upon load",IDC_TEST_MEMOS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,190,186,133,11
     PUSHBUTTON      "Apply",IDC_APPLY,174,201,50,14
     DEFPUSHBUTTON   "OK",IDOK,231,201,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,288,201,50,14
@@ -762,9 +764,9 @@ BEGIN
     LTEXT           "Text Field for Labels:",IDC_STATIC,188,56,38,17
     LTEXT           "Line Width:",IDC_STATIC,16,127,28,18
     LTEXT           "Grayed checks prevents toggling symbols off.\nAn assigned scale range can also affect labeling.",IDC_STATIC,177,22,160,17
-    CTEXT           "Not Searched",IDC_STATIC,175,123,70,8
-    CTEXT           "Searched",IDC_STATIC,268,123,62,8
-    GROUPBOX        "Default Fields for Text Searches",IDC_STATIC,169,110,169,78,BS_CENTER
+    CTEXT           "Not Searched",IDC_STATIC,175,119,70,8
+    CTEXT           "Searched",IDC_STATIC,268,119,62,8
+    GROUPBOX        "Default Fields for Text Searches",IDC_STATIC,169,106,169,78,BS_CENTER
     LTEXT           "Opacity:",IDC_ST_INTOPACITY,16,91,29,11
     LTEXT           "Static",IDC_ST_OPACITY_SYM,89,80,26,8
     CONTROL         "",IDC_OPACITY_SYM2,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,44,88,114,17
@@ -2349,7 +2351,7 @@ BEGIN
     IDS_INSERT_FILELINK     "Select File for Opening via URL"
     IDS_SAVETOFILE          "File Path and Name for Saving Selected Text"
     IDP_AFXOLEINIT_FAILED   "Failed to initialize Object Linking and Embedding"
-    IDS_ABOUT_TITLE         "WallsMap v0.3, Build 2014-11-23 (%s)\nCopyright © 2014 David McKenzie, Austin TX."
+    IDS_ABOUT_TITLE         "WallsMap v0.3, Build 2014-12-12 (%s)\nCopyright © 2014 David McKenzie, Austin TX."
     IDS_WEBMAP_INFO         "Enter a URL for instructing your default browser to open a web mapping application at a specific location. Your entry must include ""<LAT>"" and ""<LON>"" (no quotes) as placeholders for the location's latitude and longitude in decimal degrees. Optionally include ""<NAM>"" for a label."
     IDS_FMT_PLACEMARK       "\t<Placemark>\r\n\t\t<name>%s</name>\r\n%s%s\r\n\t\t<styleUrl>#sn_W</styleUrl>\r\n\t\t<Point><coordinates>%.7f,%.7f,0</coordinates></Point>\r\n\t</Placemark>\r\n"
     IDS_FMT_LOOKAT          "%s<LookAt>\r\n%s<longitude>%.7f</longitude><latitude>%.7f</latitude>\r\n%s<altitude>0</altitude><range>%u</range><tilt>0</tilt><heading>0</heading>\r\n%s</LookAt>"

@@ -93,6 +93,9 @@ struct DBT_FREEREC {
 	UINT recCnt; //# of contiguous blocks
 };
 
+typedef std::vector<DBT_FREEREC> VEC_FREE;
+typedef VEC_FREE::iterator it_free;
+
 LPCSTR dbt_GetMemoHdr(LPCSTR src,UINT maxHdrLen);
 
 class CDBTFile : public CFile {
@@ -107,7 +110,7 @@ public:
 	void AppendFree();
 	BOOL FlushHdr();
 	bool IsOpen() {return m_hFile!=CFile::hFileNull;}
-	BOOL InitFree();
+	BOOL InitFree(BOOL bTesting=0);
 	void AddToFree(const DBT_FREEREC &frec);
 	BOOL CheckFree();
 	static int RecNo(LPCSTR p10);
@@ -132,7 +135,6 @@ public:
 	static CDBTData dbt_data;
 	DWORD m_uNextRec; //will be >1 after any appends
 	UINT m_uFlags;
-	std::vector<DBT_FREEREC> m_vFree;
-	typedef std::vector<DBT_FREEREC>::iterator it_free;
+	VEC_FREE m_vFree;
 };
 #endif

@@ -47,20 +47,26 @@
     <topicref type="topic" id="411105763516625" build="ALL" modified="2012-07-20T21:21:54.399Z" icon="0" href="Sellection_by_Text_Search">
       <caption translate="true">Selection by Text Search</caption>
     </topicref>
+    <topicref type="topic" id="401934739773703" build="ALL" modified="2012-07-20T22:47:23.703Z" icon="0" href="Selection_by_Edited_Status">
+      <caption translate="true">Selection Based on Edited Status</caption>
+    </topicref>
     <topicref type="topic" id="401932671093573" build="ALL" modified="2012-07-20T22:44:19.193Z" icon="0" href="Editing_Records">
       <caption translate="true">Editing Records</caption>
     </topicref>
+    <topicref type="topic" id="417672469247021" build="ALL" modified="2014-12-02T14:35:42.033Z" icon="0" href="Comparing_Memo_Field_Text">
+      <caption translate="true">Comparing Memo Field Text</caption>
+    </topicref>
     <topicref type="topic" id="411039323795078" build="ALL" modified="2012-07-14T10:47:35.078Z" icon="0" href="Entering_Accented_Characters">
       <caption translate="true">Entering Accented Characters</caption>
-    </topicref>
-    <topicref type="topic" id="401934739773703" build="ALL" modified="2012-07-20T22:47:23.703Z" icon="0" href="Selection_by_Edited_Status">
-      <caption translate="true">Selection Based on Edited Status</caption>
     </topicref>
   </topicref>
   <topicref type="topic" id="411108470767842" build="ALL" modified="2012-07-20T22:49:06.806Z" icon="0" href="Export_Operations">
     <caption translate="true">Export Operations</caption>
     <topicref type="topic" id="401934529617832" build="ALL" modified="2010-01-15T09:47:02.985Z" icon="0" href="Exporting_and_Merging">
       <caption translate="true">Exporting and Merging</caption>
+    </topicref>
+    <topicref type="topic" id="402083217904147" build="ALL" modified="2010-01-30T06:37:09.812Z" icon="0" href="Template_File_Format">
+      <caption translate="true">Template File Format</caption>
     </topicref>
     <topicref type="topic" id="411108255410816" build="ALL" modified="2012-07-20T17:47:22.870Z" icon="0" href="Excel_Spreadsheet_Export">
       <caption translate="true">Excel Spreadsheet Export</caption>
@@ -72,9 +78,6 @@
       <caption translate="true">Converting Images to NTI Format</caption>
     </topicref>
   </topicref>
-  <topicref type="topic" id="402083217904147" build="ALL" modified="2010-01-30T06:37:09.812Z" icon="0" href="Template_File_Format">
-    <caption translate="true">Template File Format</caption>
-  </topicref>
   <topicref type="topic" id="403261607210764" build="ALL" modified="2014-02-23T13:11:26.184Z" icon="0" href="Keeping_the_Database_Current">
     <caption translate="true">Keeping the Database Current</caption>
     <topicref type="topic" id="403204814770335" build="ALL" modified="2010-05-28T05:50:20.251Z" icon="0" href="Submitting_a_Shapefile_Update">
@@ -82,9 +85,6 @@
     </topicref>
     <topicref type="topic" id="41688746555625" build="ALL" modified="2014-02-18T08:27:54.637Z" icon="0" href="Processing_a_Shapefile_Update">
       <caption translate="true">Processing a Shapefile Update</caption>
-      <topicref type="topic" id="417672469247021" build="ALL" modified="2014-05-08T09:37:06.525Z" icon="0" href="Running_Compare_Utility">
-        <caption translate="true">Running the Compare Utility</caption>
-      </topicref>
     </topicref>
   </topicref>
   <topicref type="topic" id="402946715938245" build="ALL" modified="2012-07-16T07:36:59.377Z" icon="0" href="Texas_Speological_Survey_Proje">
@@ -100,15 +100,6 @@
     </topicref>
     <topicref type="topic" id="401935290373809" build="ALL" modified="2010-04-23T18:01:34.358Z" icon="0" href="Automatic_Fields">
       <caption translate="true">Automatically Maintained Fields</caption>
-    </topicref>
-    <topicref type="topic" id="416909574393842" modified="2014-02-21T07:21:20.742Z" icon="0" href="Roundtripping_TSS_Shapefiles">
-      <caption translate="true">Roundtripping TSS Shapefiles with MS Access</caption>
-      <topicref type="topic" id="401935763675074" modified="2014-02-21T07:46:59.328Z" icon="0" href="Exporting_shapefiles_from_TSS2">
-        <caption translate="true">Exporting Shapefiles from TSS2000.MDB</caption>
-      </topicref>
-      <topicref type="topic" id="401934709678414" modified="2014-02-21T07:46:53.264Z" icon="0" href="Updating_TSS2000.MDB_with_shap">
-        <caption translate="true">Updating TSS2000.MDB with Shapefiles</caption>
-      </topicref>
     </topicref>
   </topicref>
 </map>

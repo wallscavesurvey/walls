@@ -67,6 +67,7 @@ private:
 	BOOL m_bSelectableSrch;
 	BOOL m_bShowLabels;
 	BOOL m_bShowMarkers;
+	BOOL m_bTestMemos;
 
 	CListBox m_list1;
 	CListBox m_list2;

@@ -16,7 +16,7 @@
           <export-task name="Publish as CHM" format="CHM">
             <task-config-group name="settings">
               <task-config-value name="outputfile">..\..\bin\WallsMap.chm</task-config-value>
-              <task-config-value name="skin">C:\Program Files (x86)\EC Software\HelpAndManual6\Templates\HTML Skins\Integrated IFrames - Fancy Wood Style.hmskin</task-config-value>
+              <task-config-value name="skin">..\..\..\Program Files (x86)\EC Software\HelpAndManual6\Templates\HTML Skins\Integrated IFrames - Fancy Wood Style.hmskin</task-config-value>
               <task-config-value name="deletetemp">1</task-config-value>
               <task-config-value name="make0include">CHM</task-config-value>
               <task-config-value name="make0status">*</task-config-value>
@@ -112,14 +112,14 @@
     <config-group name="user">
       <config-group name="david">
         <config-group name="project">
-          <config-value name="lastexport">4</config-value>
+          <config-value name="lastexport">0</config-value>
         </config-group>
       </config-group>
     </config-group>
     <config-group name="chm">
       <config-value name="outputfile">..\..\bin\WallsMap.chm</config-value>
       <config-value name="deletetemp">1</config-value>
-      <config-value name="skin">C:\Program Files (x86)\EC Software\HelpAndManual6\Templates\HTML Skins\Integrated IFrames - Fancy Wood Style.hmskin</config-value>
+      <config-value name="skin">..\..\..\Program Files (x86)\EC Software\HelpAndManual6\Templates\HTML Skins\Integrated IFrames - Fancy Wood Style.hmskin</config-value>
     </config-group>
     <config-group name="html">
       <config-value name="topiceditor">1</config-value>
@@ -283,9 +283,6 @@
     <file href="Topics/*.xml" build="ALL" filetype="topic">
       <file-mod href="Contents_2_2.xml"/>
       <file-mod href="Contents_2.xml"/>
-      <file-mod href="Roundtripping_TSS_Shapefiles.xml"/>
-      <file-mod href="Updating_TSS2000.MDB_with_shap.xml"/>
-      <file-mod href="Exporting_shapefiles_from_TSS2.xml"/>
     </file>
     <file href="Baggage/*.*" build="ALL" filetype="baggage"/>
   </project-files>
