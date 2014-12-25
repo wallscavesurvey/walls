@@ -62,24 +62,68 @@ CXlsExportDlg::CXlsExportDlg(int argc, char **argv, CWnd* pParent /*=NULL*/)
 	, m_nLogMsgs(0)
 	, m_bLogFailed(FALSE)
 	, m_fbLog(2048)
+	, m_bLatLon(TRUE)
+	, m_psd(NULL)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
+	VERIFY(::GetModuleFileName(NULL, m_szModule, MAX_PATH-4));
+	strcpy(trx_Stpext(m_szModule),".ini");
+	*m_szSourcePath=*m_szShpdefPath=*m_szShpPath=0;
+
 	if(m_argc>1) {
-		m_dbPath=m_argv[1];
+		int len;
+		if(!(len=GetFullPathName(m_argv[1],MAX_PATH,m_szSourcePath,&m_pSourceName)) || len==MAX_PATH-1) *m_szSourcePath=0;
 		if(m_argc>2) {
 			m_tableName=m_argv[2];
-			if(m_argc>3) m_shpName=m_argv[3];
-			else m_shpName=m_tableName;
-		}
-		else {
-			LPCSTR pExt=trx_Stpext(m_dbPath);
-			UINT len=trx_Stpnam(m_dbPath)-(LPCSTR)m_dbPath;
-			m_tableName.SetString((LPCSTR)m_dbPath+len, pExt-(LPCSTR)m_dbPath-len);
-			m_shpName=m_tableName;
+			if(m_argc>3) {
+				if(!(len=GetFullPathName(m_argv[3],MAX_PATH-7, m_szShpdefPath, &m_pShpdefName)) || len==MAX_PATH-1) *m_szShpdefPath=0;
+				else strcpy(trx_Stpext(m_szShpdefPath),".shpdef");
+				if(m_argc>4) {
+					if(!(len=GetFullPathName(m_argv[4],MAX_PATH, m_szShpPath, &m_pShpName)) || len==MAX_PATH-1) *m_szShpPath=0;
+					else strcpy(trx_Stpext(m_szShpPath),".shp");
+					if(m_argc>5 && !stricmp(m_argv[5], "UTM")) m_bLatLon=FALSE;
+				}
+				else if(*m_szShpdefPath) {
+					strcpy(m_szShpPath,m_szShpdefPath);
+					strcpy(trx_Stpext(m_szShpPath),".shp");
+				}
+			}
 		}
 	}
+	else {
+		::GetPrivateProfileString("Paths","Source","",m_szSourcePath,_MAX_PATH,m_szModule);
+		if(*m_szSourcePath) {
+			char table[80];
+			::GetPrivateProfileString("Paths","Table","",table,80,m_szModule);
+			m_tableName=table;
+			::GetPrivateProfileString("Paths","Shpdef","",m_szShpdefPath,_MAX_PATH,m_szModule);
+			::GetPrivateProfileString("Paths","Output","",m_szShpPath,_MAX_PATH,m_szModule);
+			m_bLatLon=::GetPrivateProfileInt("Paths","UTM",0,m_szModule)==0;
+		}
+	}
+	m_sourcePath=m_szSourcePath;
+	m_shpdefPath=m_szShpdefPath;
+	m_shpPath=m_szShpPath;
 }
+
+void CXlsExportDlg:: SaveOptions()
+{
+	::WritePrivateProfileString("Paths","Source",m_szSourcePath,m_szModule);
+	::WritePrivateProfileString("Paths","Table",m_tableName,m_szModule);
+	::WritePrivateProfileString("Paths","Shpdef",m_szShpdefPath,m_szModule);
+	::WritePrivateProfileString("Paths","Output",m_szShpPath,m_szModule);
+	::WritePrivateProfileString("Paths","UTM",m_bLatLon?NULL:"1",m_szModule);
+}
+
+BEGIN_MESSAGE_MAP(CXlsExportDlg, CDialog)
+	ON_WM_SYSCOMMAND()
+	ON_WM_PAINT()
+	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_BROWSE, OnBnClickedBrowse)
+	ON_BN_CLICKED(IDC_BROWSE_TMP, &CXlsExportDlg::OnBnClickedBrowseShpdef)
+	ON_BN_CLICKED(IDC_BROWSE_SHP, &CXlsExportDlg::OnBnClickedBrowseShp)
+END_MESSAGE_MAP()
 
 void CDECL CXlsExportDlg::WriteLog(const char *format,...)
 {
@@ -93,7 +137,9 @@ void CDECL CXlsExportDlg::WriteLog(const char *format,...)
 
 	  if((m_bLogFailed=m_fbLog.OpenFail(csLogPath,CFile::modeCreate|CFile::modeReadWrite|CFile::shareExclusive)))
 		  return;
-	  len=_snprintf(buf,255,"Export Log - Source: %s, Table: %s\r\nShapefile: %s\r\n\r\n",m_pdbName,(LPCSTR)m_tableName,FixPath(m_shpName,".shp"));
+	  CString s;
+	  if(m_bXLS<2) s.Format(", Table: %s",(LPCSTR)m_tableName);
+	  len=_snprintf(buf,255,"Export Log - Source: %s%s\r\nShapefile: %s\r\n\r\n",m_pSourceName,(LPCSTR)s,m_pShpName);
 	  m_fbLog.Write(buf,len);
   }
 
@@ -103,7 +149,9 @@ void CDECL CXlsExportDlg::WriteLog(const char *format,...)
   va_start(marker,format);
   //NOTE: Does the 2nd argument include the terminating NULL?
   //      The return value definitely does NOT.
-  len=_snprintf(buf,255,"%s%7u: ",(LPCSTR)m_fldKeyVal,numRecs+1); //also should show xlsline id reford is skipped
+  CString key;
+  if(!m_fldKeyVal.IsEmpty()) key.Format(", Key: %s", (LPCSTR)m_fldKeyVal);
+  len=_snprintf(buf,255,"Rec:%7u%s - ",numRecs+1,key); //also should show xlsline id reford is skipped
   m_fbLog.Write(buf,len);
   if((len=_vsnprintf(buf,255,format,marker))<0) len=254;
   m_fbLog.Write(buf,len);
@@ -119,10 +167,9 @@ static BOOL GetMemoFld(LPSTR pDest,CString &cs)
 	return TRUE;
 }
 
-LPCSTR CXlsExportDlg::FixPath(LPCSTR name, LPCSTR ext)
+LPCSTR CXlsExportDlg::FixShpPath(LPCSTR ext)
 {
 	m_pathBuf.Truncate(m_nPathLen);
-	m_pathBuf+=name;
 	m_pathBuf+=ext;
 	return m_pathBuf;
 }
@@ -140,9 +187,15 @@ static double getDeg(double y)
 
 int CXlsExportDlg::StoreFldData(int f)
 {
-	DBF_FLDDEF &fd=m_sd.v_fldDef[f];
-	int fSrc=m_sd.v_srcIdx[f];
-	if(fSrc<0) return 0;
+	DBF_FLDDEF &fd=m_psd->v_fldDef[f];
+	int fSrc=m_psd->v_srcIdx[f];
+	if(fSrc<0) {
+		LPCSTR pDefault=(LPCSTR)m_psd->v_srcDflt[f];
+		if(*pDefault) {
+			StoreText(f,pDefault);
+		}
+		return 0;
+	}
 	char buf[256];
 	int iRet=0,len=0;
 	switch(fd.F_Typ) {
@@ -168,7 +221,7 @@ int CXlsExportDlg::StoreFldData(int f)
 					len=GetDbText(buf, fSrc, fd.F_Len); //len = actual data length
 				}
 				if(!len) {
-					len=strlen(strcpy(buf, m_sd.v_srcDflt[f]));
+					len=strlen(strcpy(buf, m_psd->v_srcDflt[f]));
 				}
 				if(len>fd.F_Len) {
 					iRet=fd.F_Len-len;
@@ -201,70 +254,111 @@ int CXlsExportDlg::StoreFldData(int f)
 	return iRet;
 }
 
-int CXlsExportDlg::GetCoordinates(double *pLat, double *pLon)
+int CXlsExportDlg::GetCoordinates(double *pLat, double *pLon, double *pEast, double *pNorth,  int *pZone)
 {
 	bool bDefX=false,bDefY=false;
-	double y=GetDbDouble(m_sd.v_srcIdx[m_sd.iFldY]);
+	double y=GetDbDouble(m_psd->v_srcIdx[m_psd->iFldY]);
 	if(!y) {
 		bDefY=true;
-		*pLat=m_sd.latDflt;
+		*pLat=m_psd->latDflt;
 	}
 	else if(bGetDMS) {
 		y=getDeg(y);
-		//y*=m_sd.v_fldScale[m_sd.iFldY];
+		//y*=m_psd->v_fldScale[m_psd->iFldY];
 	}
-	double x=GetDbDouble(m_sd.v_srcIdx[m_sd.iFldX]);
+	double x=GetDbDouble(m_psd->v_srcIdx[m_psd->iFldX]);
 	if(!x) {
 		bDefX=true;
-		*pLon=m_sd.lonDflt;
+		*pLon=m_psd->lonDflt;
 	}
 	else if(bGetDMS) {
 		x=-getDeg(x);
-		//x*=m_sd.v_fldScale[m_sd.iFldX];
+		//x*=m_psd->v_fldScale[m_psd->iFldX];
 	}
+
+	int e=0;
 
 	if(bDefX!=bDefY) {
-	   int dec=m_sd.iTypXY?2:6;
-	   WriteLog("Partial coordinate set: %s=%.*f %s=%.*f.",
-	      m_sd.v_fldDef[m_sd.iFldX].F_Nam, dec, x, m_sd.v_fldDef[m_sd.iFldY].F_Nam, dec, y);
-	   *pLon=m_sd.lonErr; *pLat=m_sd.latErr;
-	   return -1;
+	   int dec=m_psd->iTypXY?2:6;
+	   WriteLog("Partial coordinate set: %s = %.*f, %s = %.*f",
+	      m_psd->v_fldDef[m_psd->iFldX].F_Nam, dec, x, m_psd->v_fldDef[m_psd->iFldY].F_Nam, dec, y);
+	   *pLat=m_psd->latErr;
+	   *pLon=m_psd->lonErr; 
+	   e=-1;
+	   goto _fix;
 	}
 
-	if(bDefX) return 0; //default location acceptable id both coordinates missing
+	if(bDefX) {
+		*pLat=m_psd->latDflt;
+		*pLon=m_psd->lonDflt;
+		*pZone=0;
+		geo_LatLon2UTM(*pLat, *pLon, pZone, pEast, pNorth, m_iDatum);
+		return 1; //default location acceptable if both coordinates missing
+	}
 
-	int iDatum=(m_sd.iFldDatum>=0 && !strcmp(m_sd.v_srcDflt[m_sd.iFldDatum],"NAD27"))?geo_NAD27_datum:geo_WGS84_datum;
+	*pZone=m_psd->iZoneDflt;
 
-	if(m_sd.iTypXY) {
-	    //have utm coordinates
-		int iZone=(m_sd.iFldZone>=0 && m_sd.v_srcIdx[m_sd.iFldZone]>=0)?GetDbLong(m_sd.v_srcIdx[m_sd.iFldZone]):0;
-		if(!iZone) iZone=m_sd.iZoneDflt;
-		if(!iZone || iZone<m_sd.zoneMin || iZone>m_sd.zoneMax) { 
-			WriteLog("Bad or missing UTM zone (%d). EASTING_=%.2f _NORTHING_=%.2f.",iZone,x,y);
-			*pLon=m_sd.lonErr; *pLat=m_sd.latErr;
-			return -1;
+	if(!m_bLatLon) {
+		//creating UTM shapefile, in which case a fixed zone is specified in shpdef
+		//whether or not UTM coordinates are being read --
+		ASSERT(*pZone);
+	}
+	else {
+		//creating lat/long shapefile -- we can either be reading Lat/Long,
+		//in which case zone is always calculated, or reading UTM, in which case
+		//zone is either initialized or read from source.
+		
+		//This condition tested when shpdef was processed --
+		ASSERT(!m_psd->iTypXY || *pZone || m_psd->iFldZone>=0 && m_psd->v_srcIdx[m_psd->iFldZone]>=0);
+
+		if(m_psd->iTypXY && !*pZone) {
+			*pZone=GetDbLong(m_psd->v_srcIdx[m_psd->iFldZone]);
+			if(!*pZone || *pZone<m_psd->zoneMin || *pZone>m_psd->zoneMax) { 
+				*pLat=m_psd->latErr;
+				*pLon=m_psd->lonErr;
+				WriteLog("Bad or missing UTM zone (%d): %.2fE, %.2fN",*pZone,x,y);
+				e=-1;
+				goto _fix;
+			}
 		}
-		geo_UTM2LatLon(iZone, x, y, pLat, pLon, iDatum);
-		if(*pLat<m_sd.latMin || *pLat>m_sd.latMax || *pLon<m_sd.lonMin || *pLon>m_sd.lonMax) {
-			*pLon=m_sd.lonErr; *pLat=m_sd.latErr;
-			WriteLog("Location out of range: EASTING_=%.2f _NORTHING_=%.2f ZONE_=%u.",x,y,iZone);
-			return -1;
+	}
+
+	if(m_psd->iTypXY) {
+	    //x,y are utm coordinates read from source --
+
+		geo_UTM2LatLon(*pZone, x, y, pLat, pLon, m_iDatum);
+		if(*pLat<m_psd->latMin || *pLat>m_psd->latMax || *pLon<m_psd->lonMin || *pLon>m_psd->lonMax) {
+			*pLat=m_psd->latErr;
+			*pLon=m_psd->lonErr; 
+			WriteLog("Location out of range: % .2fE, %.2fN, %u%c",x,y,abs(*pZone),(*pZone>0)?'N':'S');
+			e=-2;
+		}
+		else {
+			*pEast=x;
+			*pNorth=y;
 		}
 	}
 	else {
-		*pLat=y; *pLon=x;
-		if(*pLat<m_sd.latMin || *pLat>m_sd.latMax || *pLon<m_sd.lonMin || *pLon>m_sd.lonMax) {
-			*pLon=m_sd.lonErr; *pLat=m_sd.latErr;
-			WriteLog("Location out of range: LATITUDE_=%.6f LONGITUDE_=%.6f. Error location used",y,x);
-			return -1;
+		if(y<m_psd->latMin || y>m_psd->latMax || x<m_psd->lonMin ||x>m_psd->lonMax) {
+			*pLat=m_psd->latErr;
+			*pLon=m_psd->lonErr; 
+			WriteLog("Location out of range: %.6f %.6f",y,x);
+			e=-2;
+		}
+		else {
+			*pLat=y;
+			*pLon=x;
+			geo_LatLon2UTM(y, x, pZone, pEast, pNorth, m_iDatum);
 		}
 	}
 
-	//We're using the assigned location, converting to lat/lon, WGS84 --
-	if(iDatum==geo_NAD27_datum)
-		geo_FromToWGS84(false,pLat,pLon,geo_NAD27_datum);
+_fix:
+	if(e) {
+		*pZone=0;
+		geo_LatLon2UTM(*pLat, *pLon, pZone, pEast, pNorth, m_iDatum);
+	}
 
-	return 1; 
+	return e; 
 }
 
 static bool _check_sep(LPCSTR p, LPCSTR pSep)
@@ -304,34 +398,64 @@ static bool _stopMsg(LPCSTR ptyp)
 	return false;
 }
 
+static int _sepCount(LPCSTR p)
+{
+	int n=0;
+	while(*p && (p=strstr(p,pFldSep))) {
+		n++;
+		p+=nSep;
+	}
+	return n;
+}
+
 bool CXlsExportDlg::GetCsvRecord()
 {
 	CString s;
+#ifdef _DEBUG
+	if(xlsline>=108) {
+		int jj=0;
+	}
+#endif
 	if(!m_csvfile.ReadString(s)) return false;
 	xlsline++;
-	LPCSTR p=s;
+	LPCSTR p0,p=s;
 	if(nSep!=1) {
 		if(*p!='"') {
 		  return _stopMsg("start");
 		}
-		while(p[strlen(p)-1]!='"') {
+		while(true) {
+			p0=p+strlen(p)-1;
+			if(*p0=='"' && (p0[-1]!=',' || p0[-2]!='"')) {
+				//count fields --
+				int n=_sepCount(s);
+				if(n >= m_psd->numDbFlds-1) {
+					if(n==m_psd->numDbFlds) {
+						CMsgBox("Line %u, Rec %u: Too many field separators (%u) in data record.",xlsline,numRecs,n);
+						return false;
+					}
+					break;
+				}
+			}
 			CString s0;
 			if(!m_csvfile.ReadString(s0)) {
 				return _stopMsg("end");
 			}
 			xlsline++;
-			s+="\r\n" + s0;
+			//if(*p0=='"')
+			s+="\r\n"; //required?
+			s+=s0;
 			p=s;
 		}
+		p++;
 	}
 
-	LPCSTR p0=p;
+	p0=p;
 	int f=0;
-	for(;f<m_sd.numDbFlds-1 && (p=strstr(p, pFldSep)); p+=nSep, p0=p, f++) {
+	for(;f<m_psd->numDbFlds-1 && (p=strstr(p, pFldSep)); p+=nSep, p0=p, f++) {
 		m_vcsv[f].SetString(p0,p-p0);
 		m_vcsv[f].Trim();
 	}
-	if(f==m_sd.numDbFlds-1) {
+	if(f==m_psd->numDbFlds-1) {
 		if(nSep==1) m_vcsv[f]=p0;
 		else {
 			int i=strlen(p0);
@@ -339,15 +463,15 @@ bool CXlsExportDlg::GetCsvRecord()
 			m_vcsv[f].SetString(p0,i);
 		}
 	}
-	while(f<m_sd.numDbFlds-1) m_vcsv[f].Empty();
+	while(f<m_psd->numDbFlds-1) m_vcsv[f++].Empty();
 
 	return true;
 }
 
 void CXlsExportDlg::InitFldKey()
 {
-	int f=m_sd.v_srcIdx[m_sd.iFldKey];
-	DBF_FLDDEF &fd=m_sd.v_fldDef[m_sd.iFldKey];
+	int f=m_psd->v_srcIdx[m_psd->iFldKey];
+	DBF_FLDDEF &fd=m_psd->v_fldDef[m_psd->iFldKey];
 	if(m_bXLS==2) {
 		m_fldKeyVal=m_vcsv[f];
 	}
@@ -367,30 +491,34 @@ void CXlsExportDlg::InitFldKey()
 void CXlsExportDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_SHAPENAME, m_shpName);
-	DDV_MaxChars(pDX, m_shpName, 50);
+	DDX_Text(pDX, IDC_PATHNAME, m_sourcePath);
+	DDV_MaxChars(pDX, m_sourcePath, _MAX_PATH);
 	DDX_Text(pDX, IDC_TABLENAME, m_tableName);
 	DDV_MaxChars(pDX, m_tableName, 50);
-	DDX_Text(pDX, IDC_PATHNAME, m_dbPath);
-	DDV_MaxChars(pDX, m_dbPath, 260);
+	DDX_Text(pDX, IDC_TMPNAME, m_shpdefPath);
+	DDV_MaxChars(pDX, m_shpdefPath, _MAX_PATH);
+	DDX_Text(pDX, IDC_SHPNAME, m_shpPath);
+	DDV_MaxChars(pDX, m_shpPath, _MAX_PATH);
+	DDX_Radio(pDX, IDC_UTM, m_bLatLon);
 
 	if(pDX->m_bSaveAndValidate) {
 		CWaitCursor wait;
 
-		m_dbPath.Trim();
-		if(m_dbPath.IsEmpty()) {
+		m_sourcePath.Trim();
+		if(m_sourcePath.IsEmpty()) {
 			pDX->m_idLastControl=IDC_PATHNAME;
 			AfxMessageBox("A source pathname is required.");
 			pDX->Fail();
 			return;
 		}
 
-		m_nPathLen=trx_Stpext(m_dbPath)-(LPCSTR)m_dbPath;
-		LPCSTR pExt=(LPCSTR)m_dbPath+m_nPathLen;
-		m_bXLS=!_stricmp(pExt,".xls") || !_stricmp(pExt,".xlsx");
+		::GetFullPathName(m_sourcePath,MAX_PATH,m_szSourcePath,&m_pSourceName);
 
-		if(!m_bXLS && _stricmp(pExt,".mdb")) {
-			if(!_stricmp(pExt,".csv")) m_bXLS=2;
+		LPSTR pExt=trx_Stpext(m_szSourcePath);
+		m_bXLS=!_stricmp(pExt, ".xls") || !_stricmp(pExt, ".xlsx");
+
+		if(!m_bXLS && _stricmp(pExt, ".mdb")) {
+			if(!_stricmp(pExt, ".csv")) m_bXLS=2;
 			else {
 				pDX->m_idLastControl=IDC_PATHNAME;
 				AfxMessageBox("Source extension must be one of .xls, .mdb, and .csv.");
@@ -399,17 +527,14 @@ void CXlsExportDlg::DoDataExchange(CDataExchange* pDX)
 			}
 		}
 
-		m_pdbName=trx_Stpnam(m_dbPath);
-		m_pathBuf=dos_FullPath(m_dbPath,NULL);
-		m_nPathLen=trx_Stpnam(m_pathBuf)-(LPCSTR)m_pathBuf;
-
-		if(_access(m_pathBuf, 4)) {
+		if(_access(m_szSourcePath, 4)) {
 			pDX->m_idLastControl=IDC_PATHNAME;
-			CMsgBox("Source file %s is absent or inaccessible.",m_pdbName);
+			CMsgBox("Source file %s is absent or inaccessible.", m_pSourceName);
 			pDX->Fail();
 			return;
 		}
 
+		m_tableName.Trim();
 		if(m_bXLS<2 && m_tableName.IsEmpty()) {
 			pDX->m_idLastControl=IDC_TABLENAME;
 			AfxMessageBox("A table or sheet name is required.");
@@ -417,37 +542,90 @@ void CXlsExportDlg::DoDataExchange(CDataExchange* pDX)
 			return;
 		}
 
-		if(m_shpName.IsEmpty()) {
-			pDX->m_idLastControl=IDC_SHAPENAME;
-			AfxMessageBox("A shapefile base name is required.");
+		m_shpdefPath.Trim();
+		if(m_shpdefPath.IsEmpty() || stricmp(trx_Stpext(m_shpdefPath), ".shpdef")) {
+			pDX->m_idLastControl=IDC_TMPNAME;
+			AfxMessageBox("A template file with extension .shpdef must be secified.");
 			pDX->Fail();
 			return;
 		}
 
+		::GetFullPathName(m_shpdefPath,MAX_PATH,m_szShpdefPath,&m_pShpdefName);
+
+		if(_access(m_szShpdefPath, 4)) {
+			pDX->m_idLastControl=IDC_TMPNAME;
+			CMsgBox("Template file %s is absent or inaccessible.", m_pShpdefName);
+			pDX->Fail();
+			return;
+		}
+
+		m_shpPath.Trim();
+		if(m_shpPath.IsEmpty()) {
+			pDX->m_idLastControl=IDC_SHPNAME;
+			AfxMessageBox("An output shapefile pathname is required.");
+			pDX->Fail();
+			return;
+		}
+
+		::GetFullPathName(m_shpPath,MAX_PATH,m_szShpPath,&m_pShpName);
+		pExt=trx_Stpext(m_szShpPath);
+		strcpy(pExt,".shp");
+		m_nPathLen=pExt-m_szShpPath;
+		m_pathBuf=m_szShpPath;
+		FixShpPath(".dbf");
+
+		if(!_access(m_pathBuf,0)) {
+			//file exists --
+		    bool ok=false;
+			//dbf exists
+			if(CheckAccess(m_pathBuf,4)) {
+			    //not accesible for reaf/write --
+				CMsgBox("%s is protected and can't be overwritten.",m_pShpName);
+			}
+			else if(IDYES==CMsgBox(MB_YESNO, "%s already exists.\nDo you want to overwrite it?", m_pShpName)) {
+				ok=true;
+			}
+			if(!ok) {
+				pDX->m_idLastControl=IDC_SHPNAME;
+				pDX->Fail();
+				return;
+			}
+		}
+
+		ASSERT(!m_psd);
+
 		xlsline=0;
 
 		if(m_bXLS>1) {
-			if(!m_csvfile.Open(m_pathBuf, CFile::modeRead)) {
-				CMsgBox("File %s missing or can't be opened.", m_pdbName);
+			if(!m_csvfile.Open(m_szSourcePath, CFile::modeRead)) {
+				CMsgBox("File %s missing or can't be opened.", m_pSourceName);
 				pDX->m_idLastControl=IDC_PATHNAME;
 				pDX->Fail();
 				return;
 			}
 
+			m_psd=new CShpDef();
+
 			//determine field names and separator --
 			CString s;
-			m_sd.v_srcNames.clear();
-			if(!m_csvfile.ReadString(s) || !(m_sd.numDbFlds=_getFieldStructure(m_sd.v_srcNames, s))) {
-				CMsgBox("Fewer than 3 field names recognized in first line of %s.",m_pdbName);
+			if(!m_csvfile.ReadString(s) || !(m_psd->numDbFlds=_getFieldStructure(m_psd->v_srcNames, s))) {
+				delete m_psd;
+				m_psd=NULL;
 				m_csvfile.Close();
+				CMsgBox("Fewer than 3 field names recognized in first line of %s.", m_pSourceName);
 				pDX->m_idLastControl=IDC_PATHNAME;
 				pDX->Fail();
 				return;
 			}
 			xlsline++;
 
-			if(!m_sd.Process(NULL,FixPath(m_shpName,".shpdef"))) {
-				EndDialog(IDCANCEL);
+			SaveOptions();
+			if(!m_psd->Process(NULL, m_szShpdefPath, m_bLatLon)) {
+				delete m_psd;
+				m_psd=NULL;
+				m_csvfile.Close();
+				pDX->m_idLastControl=IDC_TMPNAME;
+				pDX->Fail();
 				return;
 			}
 
@@ -455,98 +633,123 @@ void CXlsExportDlg::DoDataExchange(CDataExchange* pDX)
 		else {
 			try
 			{
-				m_database.Open(m_pathBuf,TRUE,TRUE,m_bXLS?"Excel 5.0":"");
+				m_database.Open(m_szSourcePath, TRUE, TRUE, m_bXLS?"Excel 5.0":"");
 				ASSERT(m_database.IsOpen());
 				CString table;
-				table.Format("[%s%s]",(LPCSTR)m_tableName,m_bXLS?"$":"");
+				table.Format("[%s%s]", (LPCSTR)m_tableName, m_bXLS?"$":"");
 				m_rs.m_pDatabase=&m_database;
-				m_rs.Open(dbOpenTable,table,dbReadOnly);
-				m_sd.numDbFlds=m_rs.GetFieldCount();
+				m_rs.Open(dbOpenTable, table, dbReadOnly);
+
+				m_psd=new CShpDef();
+				m_psd->numDbFlds=m_rs.GetFieldCount();
 			}
-			catch (CDaoException* e)
+			catch(CDaoException* e)
 			{
 				e->Delete();
 				CString s;
 				BOOL bOpen=m_database.IsOpen();
-				if(bOpen) s.Format("Unable to open table \"%s\" in %s.",(LPCSTR)m_tableName,m_pdbName);
-				else s.Format("Unable to access source: %s",m_pdbName);
+				if(bOpen) s.Format("Unable to open table \"%s\" in %s.", (LPCSTR)m_tableName, m_pSourceName);
+				else s.Format("Unable to access source: %s", m_pSourceName);
 				if(m_rs.IsOpen()) m_rs.Close();
+				if(m_psd) {
+					delete m_psd;
+					m_psd=NULL;
+				}
 				AfxMessageBox(s);
 				pDX->m_idLastControl=IDC_PATHNAME;
 				pDX->Fail();
 				return;
 			}
-			if(!m_sd.Process(&m_rs,FixPath(m_shpName,".shpdef"))) {
+
+			SaveOptions();
+			if(!m_psd->Process(&m_rs, m_szShpdefPath, m_bLatLon)) {
 				CloseDB();
-				EndDialog(IDCANCEL);
+				delete m_psd;
+				m_psd=NULL;
+				pDX->m_idLastControl=IDC_TMPNAME;
+				pDX->Fail();
 				return;
 			}
 		}
-	
+
 		if(InitShapefile()) {
+			//shouldn't happen since DBF is available for writing --
 			CloseDB();
-			AfxMessageBox("Error initializing shapefile");
+			delete m_psd; //done in constructor
+			m_psd=NULL;
+			CMsgBox("Error initializing %s.",m_pShpName);
 			EndDialog(IDCANCEL);
 			return;
 		}
 
-		UINT nLocErrors=0,nLocMissing=0,nTruncated=0;
+		{
+			LPCSTR pd=(m_psd->iFldDatum>=0)?m_psd->v_srcDflt[m_psd->iFldDatum]:"WGS84";
+			if(!strcmp(pd,"NAD83")) m_iDatum=geo_NAD83_datum;
+			else if(!strcmp(pd,"NAD27")) m_iDatum=geo_NAD27_datum;
+			else m_iDatum=geo_WGS84_datum;
+		}
+
+		UINT nLocErrors=0, nLocMissing=0, nLocErrRange=0, nTruncated=0;
 		numRecs=0;
 
 		try {
 			BOOL bNotEOF;
 			if(m_bXLS>1) {
-				m_vcsv.assign(m_sd.numDbFlds,CString());
-			    bNotEOF=GetCsvRecord();
+				m_vcsv.assign(m_psd->numDbFlds, CString());
+				bNotEOF=GetCsvRecord();
 			}
 			else bNotEOF=!m_rs.IsEOF();
 
 			while(bNotEOF>0) {
 
-				if(m_sd.iFldKey>=0) InitFldKey();
+				if(m_psd->iFldKey>=0) InitFldKey();
 
-				double lat,lon,east,north;
-				int zone=GetCoordinates(&lat,&lon);
-				if(zone<=0) {
-					if(zone<0) nLocErrors++;
-					else nLocMissing++;
-				}
-				if(m_sd.uFlags&SHPD_UTMFLAGS) {
-					zone=0;
-					geo_LatLon2UTM(lat,lon,&zone,&east,&north,geo_WGS84_datum);
+				double lat, lon, east, north;
+				int zone=0;
+				int e=GetCoordinates(&lat, &lon, &east, &north, &zone);
+
+				if(e) {
+					if(e==1) nLocMissing++;
+					else if(e==-1) nLocErrors++;
+					else if(e==-2) nLocErrRange++;
 				}
 
-				if(WriteShpRec(lat,lon)) {
+				if(m_bLatLon) {
+					e=WriteShpRec(lon,lat);
+				}
+				else {
+					e=WriteShpRec(east,north);
+				}
+
+				if(e) {
 					CString msg;
-					msg.Format("Aborted: Error writing shapefile record %u.", numRecs+1);
+					msg.Format("Aborted: Error writing shp record %u.", numRecs+1);
 					WriteLog(msg);
 					AfxMessageBox(msg);
 					break;
 				}
 
-				for(int f=0; f<m_sd.numFlds; f++) {
-					DBF_FLDDEF &fd=m_sd.v_fldDef[f];
-					int n=m_sd.GetLocFldTyp(fd.F_Nam)-1;
-					if(n>=LF_LAT && n<=LF_DATUM) {
+				for(int f=0; f<m_psd->numFlds; f++) {
+					DBF_FLDDEF &fd=m_psd->v_fldDef[f];
+					int n=m_psd->GetLocFldTyp(fd.F_Nam)-1;
+					if(n>=LF_LAT && n<=LF_ZONE) {
 						//Store already-computed location data --
 						switch(n) {
 							case LF_LAT: StoreDouble(fd, f, lat);
-							break;
+								break;
 							case LF_LON: StoreDouble(fd, f, lon);
-							break;
+								break;
 							case LF_EAST: StoreDouble(fd, f, east);
-							break;
+								break;
 							case LF_NORTH: StoreDouble(fd, f, north);
-							break;
+								break;
 							case LF_ZONE:
 							{
-							CString s;
-							s.Format("%02u%c", (zone<0)?-zone:zone, (zone<0)?'S':'N');
-							StoreText(f, (LPCSTR)s);
-							break;
+								CString s;
+								s.Format("%02u%c", (zone<0)?-zone:zone, (zone<0)?'S':'N');
+								StoreText(f, (LPCSTR)s);
+								break;
 							}
-							case LF_DATUM: StoreText(f, "WGS84");
-							break;
 						}
 						continue;
 					}
@@ -557,10 +760,10 @@ void CXlsExportDlg::DoDataExchange(CDataExchange* pDX)
 					if(len<0) {
 						CString msg;
 						if(fd.F_Typ=='C') {
-							msg.Format("Character data in field %s (length %u) truncated to %u.", fd.F_Nam, fd.F_Len-len, fd.F_Len );
+							msg.Format("Character data in field %s (length %u) truncated to %u.", fd.F_Nam, fd.F_Len-len, fd.F_Len);
 						}
 						else if(fd.F_Typ=='M') {
-							msg.Format("Field %s memo (length %u) couldn't be stored.", fd.F_Nam,fd.F_Len);
+							msg.Format("Field %s memo (length %u) couldn't be stored.", fd.F_Nam, fd.F_Len);
 						}
 						else {
 							msg.Format("Numeric data in field %s truncated and may be corrupt.", fd.F_Nam);
@@ -581,7 +784,7 @@ void CXlsExportDlg::DoDataExchange(CDataExchange* pDX)
 				}
 			}
 			if(bNotEOF<0) {
-				CMsgBox("Reading terminated after %u records due an unrecognized line format.",numRecs);
+				CMsgBox("Reading terminated after %u records due an unrecognized line format.", numRecs);
 			}
 		}
 		catch(CDaoException* e)
@@ -598,8 +801,8 @@ void CXlsExportDlg::DoDataExchange(CDataExchange* pDX)
 			else {
 				CString msg, msg2;
 
-				msg.Format("Shapefile with %u records created.\nLocations missing: %u, Location errors: %u, Truncated fields: %u",
-				 numRecs,nLocMissing,nLocErrors,nTruncated);
+				msg.Format("Shapefile with %u records created.\nLocations missing: %u, Locations out-of-range: %u,\nPartial (bad) locations: %u, Truncated fields: %u",
+					numRecs, nLocMissing, nLocErrRange, nLocErrors, nTruncated);
 
 				if(m_nLogMsgs) {
 					msg2.Format("\n\nNOTE: %u diagnostic messages were written to %s.",
@@ -613,6 +816,10 @@ void CXlsExportDlg::DoDataExchange(CDataExchange* pDX)
 			DeleteFiles();
 			AfxMessageBox("No shapefile created.");
 		}
+
+		delete m_psd;
+		m_psd=NULL;
+
 		if(m_fbLog.IsOpen()) {
 			m_fbLog.Close();
 			if((int)::ShellExecute(NULL, "Open", csLogPath, NULL, NULL, SW_NORMAL)<=32) {
@@ -621,14 +828,6 @@ void CXlsExportDlg::DoDataExchange(CDataExchange* pDX)
 		}
 	}
 }
-
-BEGIN_MESSAGE_MAP(CXlsExportDlg, CDialog)
-	ON_WM_SYSCOMMAND()
-	ON_WM_PAINT()
-	ON_WM_QUERYDRAGICON()
-	ON_BN_CLICKED(IDC_BROWSE, OnBnClickedBrowse)
-END_MESSAGE_MAP()
-
 
 // CXlsExportDlg message handlers
 
@@ -713,18 +912,50 @@ HCURSOR CXlsExportDlg::OnQueryDragIcon()
 void CXlsExportDlg::OnBnClickedBrowse()
 {
 	CString strFilter;
-	if(!AddFilter(strFilter,IDS_XLS_FILES) || !AddFilter(strFilter,IDS_MDB_FILES) || !AddFilter(strFilter,IDS_CSV_FILES)) return;
-	CString s(m_dbPath);
-	if(DoPromptPathName(s,OFN_OVERWRITEPROMPT,3,strFilter,TRUE,IDS_XLS_EXPORT,".xls")) {
-		bool bSkip=false;
+	if(!AddFilter(strFilter,IDS_ALL_FILES) || !AddFilter(strFilter,IDS_XLS_FILES) || !AddFilter(strFilter,IDS_MDB_FILES) || !AddFilter(strFilter,IDS_CSV_FILES)) return;
+	CString s;
+	if(DoPromptPathName(s,OFN_FILEMUSTEXIST,3,strFilter,TRUE,IDS_XLS_EXPORT,".xls")) {
 		LPCSTR p=trx_Stpext(s);
-		if(stricmp(p, ".xls") && stricmp(p, ".xlsx") && stricmp(p, ".mdb") && !(!stricmp(p, ".csv") && (bSkip=true))) {
+		if(stricmp(p, ".xls") && stricmp(p,".xlsx") && stricmp(p, ".csv") && stricmp(p, ".mdb")) {
 			s.Truncate(p-(LPCSTR)s);
 			s+=".xls";
+			p=trx_Stpext(s);
 		}
+		char typ=_toupper(p[1]);
 		GetDlgItem(IDC_PATHNAME)->SetWindowText(s);
-		s.Truncate(s.GetLength()-4); 
-		GetDlgItem(IDC_SHAPENAME)->SetWindowText(p=trx_Stpnam(s));
-		GetDlgItem(IDC_TABLENAME)->SetWindowText(bSkip?"":p);
+		if(_toupper(p[1])!='M') GetDlgItem(IDC_TABLENAME)->SetWindowText((typ=='X')?"Sheet1":"");
+	}
+}
+
+
+void CXlsExportDlg::OnBnClickedBrowseShpdef()
+{
+	CString strFilter;
+	if(!AddFilter(strFilter,IDS_SHPDEF_FILES)) return;
+	CString s;
+	if(DoPromptPathName(s,OFN_FILEMUSTEXIST,1,strFilter,TRUE,IDS_SEL_SHPDEF,".shpdef")) {
+		LPCSTR p=trx_Stpext(s);
+		if(stricmp(p,".shpdef")) {
+			s.Truncate(p-(LPCSTR)s);
+			s+=".shpdef";
+			p=trx_Stpext(s);
+		}
+		GetDlgItem(IDC_TMPNAME)->SetWindowText(s);
+	}
+}
+
+void CXlsExportDlg::OnBnClickedBrowseShp()
+{
+	CString strFilter;
+	if(!AddFilter(strFilter,IDS_SHP_FILES)) return;
+	CString s;
+	if(DoPromptPathName(s,OFN_HIDEREADONLY,1,strFilter,TRUE,IDS_SHP_FILES,".shp")) {
+		LPCSTR p=trx_Stpext(s);
+		if(stricmp(p,".shp")) {
+			s.Truncate(p-(LPCSTR)s);
+			s+=".shp";
+			p=trx_Stpext(s);
+		}
+		GetDlgItem(IDC_SHPNAME)->SetWindowText(s);
 	}
 }

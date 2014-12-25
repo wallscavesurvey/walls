@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "resource.h"
 #include <trx_str.h>
+#include <georef.h>
 #include "XlsExportDlg.h"
 
 //=======================================================
@@ -108,25 +109,21 @@ static BOOL dbt_WriteHdr(void)
 UINT dbt_AppendRec(LPCSTR pData)
 {
 	//Assumes dbt_nextRec stores current number of 512-byte blocks including header block.
-	UINT len=strlen(pData)+2;
+	UINT len=strlen(pData)+1;
 	UINT recPos=dbt_nextRec;
 	try {
 		dbt.SeekToEnd(); //should be unnecessary
 		while(len) {
 			memset(dbt_hdr,0,512);
-			if(len>2) {
-				UINT sizData=len-2;
+			if(len>1) {
+				UINT sizData=len-1;
 				if(sizData>512) sizData=512;
 				memcpy(dbt_hdr,pData,sizData);
 				pData+=sizData;
 				len-=sizData;
-				while(len && sizData<512) {
-					dbt_hdr[sizData++]=0x1A;
-					len--;
-				}
 			}
 			else {
-				while(len) dbt_hdr[--len]=0x1A;
+				dbt_hdr[--len]=0x1A;
 			}
 			dbt.Write(dbt_hdr,512);
 			dbt_nextRec++;
@@ -223,17 +220,19 @@ static void InitBox(SHP_BOX *box)
 	box->xmax=box->ymax=-DBL_MAX;
 }
 
-void CXlsExportDlg::WritePrjFile(bool bNad83,int utm_zone)
+void CXlsExportDlg::WritePrjFile(BOOL bNad,int utm_zone)
 {
+	//bNad=0 (wgs84), 1 (nad83), 2 (nad27)
 	try {
 		CFile file(FixShpPath(".prj"),CFile::modeCreate|CFile::modeWrite);
 		CString s;
 		if(!utm_zone) {
-			s.LoadString(bNad83?IDS_PRJ_WGS84:IDS_PRJ_NAD27);
+			s.LoadString(bNad?((bNad==1)?IDS_PRJ_NAD83:IDS_PRJ_NAD27):IDS_PRJ_WGS84);
 		}
 		else {
-			s.Format((bNad83?IDS_PRJ_WGS84UTM:IDS_PRJ_NAD27UTM),utm_zone,
-				(utm_zone==14)?99:((utm_zone<14)?105:93));
+			s.Format(bNad?((bNad==1)?IDS_PRJ_NAD83UTM:IDS_PRJ_NAD27UTM):IDS_PRJ_WGS84UTM,
+				abs(utm_zone), (utm_zone<0)?'S':'N',
+				(utm_zone<0)?10000000:0,-183+utm_zone*6);
 		}
 		file.Write((LPCSTR)s,s.GetLength());
 		file.Close();
@@ -284,7 +283,7 @@ int CXlsExportDlg::CloseFiles(void)
 	fpS=fpX=NULL;
 	db_created=false;
 
-	WritePrjFile(true,0);
+	WritePrjFile((m_iDatum!=geo_WGS84_datum)?((m_iDatum!=geo_NAD27_datum)?1:2):0,m_bLatLon?0:m_psd->iZoneDflt);
 
 	return 0;
 
@@ -335,7 +334,7 @@ int CXlsExportDlg::InitShapefile()
 	x_opened=true;
 	if(fwrite(&main_hdr,sizeof(SHP_MAIN_HDR),1,fpX)!=1) goto _errWrite;
 
-    if(dbf_Create(&db,FixShpPath(".dbf"),DBF_ReadWrite,m_sd.numFlds,&m_sd.v_fldDef[0]))
+    if(dbf_Create(&db,FixShpPath(".dbf"),DBF_ReadWrite,m_psd->numFlds,&m_psd->v_fldDef[0]))
 		goto _errCreate;
 	db_created=db_opened=true;
 	if(dbf_AllocCache(db,SHP_DBF_BUFRECS*dbf_SizRec(db),SHP_DBF_NUMBUFS,TRUE))
@@ -360,14 +359,14 @@ _errWrite:
 	return errexit(SHP_ERR_WRITE,err_typ);
 }
 
-int CXlsExportDlg::WriteShpRec(double fLat,double fLon)
+int CXlsExportDlg::WriteShpRec(double x,double y)
 {
 	numrecs++;
 	pt_rec.recno=SWAPLONG(numrecs);
 	shx_rec.offset=SWAPLONG(offset);
     offset+=sizeof(SHP_PT_REC)/2;
 
-	UpdateBoxPt(&main_hdr.xy_box,pt_rec.x=fLon,pt_rec.y=fLat);
+	UpdateBoxPt(&main_hdr.xy_box,pt_rec.x=x,pt_rec.y=y);
 
 	if(fwrite(&pt_rec,sizeof(SHP_PT_REC),1,fpS)!=1) return errexit(SHP_ERR_WRITE,ERR_SHP);
 	if(fwrite(&shx_rec,sizeof(SHX_REC),1,fpX)!=1) return errexit(SHP_ERR_WRITE,ERR_SHX);

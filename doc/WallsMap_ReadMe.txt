@@ -1,4 +1,4 @@
-WallsMap v0.3 Build 2014-12-11 Notes
+WallsMap v0.3 Build 2014-12-12 Notes
 ====================================
 
 This WallsMap installation contains a preliminary GIS project named Texas Public
@@ -14,16 +14,15 @@ C:\Users\Public\WallsMap Projects\Texas Public Caves\Texas Public Caves.ntl
 ==============
 Recent Changes
 
-* Build 12/11/2014
+* Build 12/12/2014
 
-1) A "Test memo field integity" option was added to the Layers window context
-menu. It checks that the data blocks pointed to in the shapefile's DBT component
-are all accessible and with no conficts in usage. It will also restore the list of
-reusable freed blocks in case it was lost due to an abnormal program shutdown.
-Such shutdowns are normally harmless, but till now they could produce inaccessible
-areas of the file, removed only with an export. For shapefiles you routinely edit,
-you should enable an option in the Symbols dialog that causes this test to be done
-automatically upon project load.
+1) A "Test memo field integity" option in the Layers context menu checks that all
+data blocks pointed to in the shapefile's DBT component are accessible. It also
+restores the file's list of reusable freed blocks in case it was lost due to an
+abnormal program shutdown. With previous builds, such a loss would leave regions
+of the file innaccessible and removable only with an export. For shapefiles you
+routinely edit, you should enable an option in the Symbols dialog to automatically
+perform this test upon project load.
 
 * Build 11/23/2014
 

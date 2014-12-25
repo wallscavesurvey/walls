@@ -6,7 +6,7 @@
 ;This nsi file normally located in \Work12\WallsMap\doc\TSS, with binaries in \Work12\bin\TSS
 !define BIN_DIR "\Work12\bin"
 !ifndef VERSION
-  !define VERSION '2014-12-11'
+  !define VERSION '2014-12-14'
 !endif
 
 !define WNDCLASS "WallsMapClass"

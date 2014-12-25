@@ -80,22 +80,33 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,178,7,50,16,WS_GROUP
 END
 
-IDD_EXPORT_DIALOG DIALOGEX 0, 0, 341, 130
+IDD_EXPORT_DIALOG DIALOGEX 0, 0, 393, 190
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
 CAPTION "XLS-Export: Create Shapefile from Table Data"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
-    EDITTEXT        IDC_PATHNAME,88,35,211,13,ES_AUTOHSCROLL
-    PUSHBUTTON      "...",IDC_BROWSE,303,35,17,12
-    DEFPUSHBUTTON   "OK",IDOK,224,110,50,16
-    PUSHBUTTON      "Cancel",IDCANCEL,283,110,50,16
-    LTEXT           "This program creates a shapefile from data contained in either an Excel speadsheet (.xls) or an Access database (.mdb).  A template file (.shpdef) specifies the field correspondence.",IDC_STATIC,17,9,308,21
-    LTEXT           "Shapefile/template\nbase name:",IDC_STATIC,17,84,65,16
-    LTEXT           "Source pathname:\n(.mdb or .xls)",IDC_STATIC,18,34,65,16
-    LTEXT           "Table or sheet\nname:",IDC_STATIC,18,60,65,16
-    EDITTEXT        IDC_TABLENAME,87,60,114,13,ES_AUTOHSCROLL
-    EDITTEXT        IDC_SHAPENAME,87,84,114,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PATHNAME,93,63,261,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BROWSE,360,63,17,12
+    EDITTEXT        IDC_TABLENAME,93,88,127,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TMPNAME,93,112,261,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BROWSE_SHP,360,137,17,12
+    EDITTEXT        IDC_SHPNAME,93,137,261,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BROWSE_TMP,359,113,17,12
+    CONTROL         "UTM",IDC_UTM,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,80,163,27,10
+    CONTROL         "Lat/Long",IDC_LATLONG,"Button",BS_AUTORADIOBUTTON,112,163,40,10
+    CONTROL         "Overwrite an existing shapefile\nwithout prompting",IDC_OVERWRITE,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | NOT WS_VISIBLE | WS_TABSTOP,179,158,122,19
+    DEFPUSHBUTTON   "Export",IDOK,280,170,50,16
+    PUSHBUTTON      "Exit",IDCANCEL,335,170,50,16
+    LTEXT           "This program creates a shapefile from data contained in either an Excel speadsheet (.xls), an Access database (.mdb), or a text file (.csv).  A template file (.shpdef) specifies the field correspondence.",IDC_STATIC,29,14,330,19
+    LTEXT           "Source pathname:\n(.xls, .mdb, or .csv)",IDC_STATIC,16,62,73,16
+    LTEXT           "Table or sheet name:\n(required if not csv)",IDC_STATIC,16,88,73,16
+    LTEXT           "Template file:\n(.shpdef)",IDC_STATIC,15,112,73,16
+    LTEXT           "Shapefile's\ncoordinate type:",IDC_STATIC,16,159,56,19
+    LTEXT           "Output shapefile:",IDC_STATIC,16,138,65,11
+    GROUPBOX        "",IDC_STATIC,17,5,358,46
+    LTEXT           "For template format and other details, see the WallsMap documentation.",IDC_STATIC,30,36,337,11
 END
 
 IDD_RANGE DIALOGEX 0, 0, 249, 129
@@ -175,9 +186,9 @@ BEGIN
     IDD_EXPORT_DIALOG, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 333
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 126
+        RIGHTMARGIN, 385
+        TOPMARGIN, 1
+        BOTTOMMARGIN, 186
     END
 
     IDD_RANGE, DIALOG
@@ -202,10 +213,11 @@ BEGIN
     IDS_SHP_FILES           "ESRI Shapefiles (*.shp)"
     IDS_XLS_EXPORT          "Select File with Data to Process"
     IDS_ERR_FILERES         "Not enough memory or resouces to open file for reading or writing."
-    IDS_PRJ_WGS84UTM        "PROJCS[""WGS_1984_UTM_Zone_%dN"",GEOGCS[""GCS_WGS_1984"",DATUM[""D_WGS_1984"",SPHEROID[""WGS_1984"",6378137.0,298.257223563]],PRIMEM[""Greenwich"",0.0],UNIT[""Degree"",0.0174532925199433]],PROJECTION[""Transverse_Mercator""],PARAMETER[""False_Easting"",500000.0],PARAMETER[""False_Northing"",0.0],PARAMETER[""Central_Meridian"",-%d.0],PARAMETER[""Scale_Factor"",0.9996],PARAMETER[""Latitude_Of_Origin"",0.0],UNIT[""Meter"",1.0]]"
+    IDS_PRJ_WGS84UTM        "PROJCS[""WGS_1984_UTM_Zone_%d%c"",GEOGCS[""GCS_WGS_1984"",DATUM[""D_WGS_1984"",SPHEROID[""WGS_1984"",6378137.0,298.257223563]],PRIMEM[""Greenwich"",0.0],UNIT[""Degree"",0.0174532925199433]],PROJECTION[""Transverse_Mercator""],PARAMETER[""False_Easting"",500000],PARAMETER[""False_Northing"",%d],PARAMETER[""Central_Meridian"",%d],PARAMETER[""Scale_Factor"",0.9996],PARAMETER[""Latitude_Of_Origin"",0.0],UNIT[""Meter"",1.0]]"
     IDS_PRJ_WGS84           "GEOGCS[""GCS_WGS_1984"",DATUM[""D_WGS_1984"",SPHEROID[""WGS_1984"",6378137.0,298.257223563]],PRIMEM[""Greenwich"",0.0],UNIT[""Degree"",0.0174532925199433]]"
     IDS_PRJ_NAD27           "GEOGCS[""GCS_North_American_1927"",DATUM[""D_North_American_1927"",SPHEROID[""Clarke_1866"",6378206.4,294.9786982]],PRIMEM[""Greenwich"",0.0],UNIT[""Degree"",0.0174532925199433]]"
-    IDS_PRJ_NAD27UTM        "PROJCS[""NAD_1927_UTM_Zone_%dN"",GEOGCS[""GCS_North_American_1927"",DATUM[""D_North_American_1927"",SPHEROID[""Clarke_1866"",6378206.4,294.9786982]],PRIMEM[""Greenwich"",0.0],UNIT[""Degree"",0.0174532925199433]],PROJECTION[""Transverse_Mercator""],PARAMETER[""False_Easting"",500000.0],PARAMETER[""False_Northing"",0.0],PARAMETER[""Central_Meridian"",-%d.0],PARAMETER[""Scale_Factor"",0.9996],PARAMETER[""Latitude_Of_Origin"",0.0],UNIT[""Meter"",1.0]]"
+    IDS_PRJ_NAD27UTM        "PROJCS[""NAD_1927_UTM_Zone_%d%c"",GEOGCS[""GCS_North_American_1927"",DATUM[""D_North_American_1927"",SPHEROID[""Clarke_1866"",6378206.4,294.9786982]],PRIMEM[""Greenwich"",0.0],UNIT[""Degree"",0.0174532925199433]],PROJECTION[""Transverse_Mercator""],PARAMETER[""False_Easting"",500000],PARAMETER[""False_Northing"",%d],PARAMETER[""Central_Meridian"",%d],PARAMETER[""Scale_Factor"",0.9996],PARAMETER[""Latitude_Of_Origin"",0.0],UNIT[""Meter"",1.0]]"
+    IDS_SHPDEF_FILES        "SHP export template (*.shpdef)"
     IDS_XLS_FILES           "Excel Workbook (*.xls)"
     IDS_MDB_FILES           "Access Database (*.mdb)"
 END
@@ -213,6 +225,11 @@ END
 STRINGTABLE
 BEGIN
     IDS_CSV_FILES           "Comma-sep text (*.csv)"
+    IDS_SEL_SHPDEF          "Select Template File for Creating Shapefile"
+    IDS_SEL_SHP             "Pathname of Exported Shapefile"
+    IDS_ALL_FILES           "Supported Types (*.xls;*.mdb;*.csv)"
+    IDS_PRJ_NAD83           "GEOGCS[""GCS_North_American_1983"",DATUM[""D_North_American_1983"",SPHEROID[""GRS_1980"",6378137.0,298.257222101]],PRIMEM[""Greenwich"",0.0],UNIT[""Degree"",0.0174532925199433]]"
+    IDS_PRJ_NAD83UTM        "PROJCS[""NAD_1983_UTM_Zone_%d%c"",GEOGCS[""GCS_North_American_1983"",DATUM[""D_North_American_1983"",SPHEROID[""GRS_1980"",6378137.0,298.257222101]],PRIMEM[""Greenwich"",0.0],UNIT[""Degree"",0.0174532925199433]],PROJECTION[""Transverse_Mercator""],PARAMETER[""False_Easting"",500000],PARAMETER[""False_Northing"",%d],PARAMETER[""Central_Meridian"",%d],PARAMETER[""Scale_Factor"",0.9996],PARAMETER[""Latitude_Of_Origin"",0.0],UNIT[""Meter"",1.0]]"
 END
 
 #endif    // English (United States) resources

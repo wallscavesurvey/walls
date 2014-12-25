@@ -1,10 +1,50 @@
 #include "stdafx.h"
 #include "crack.h"
+#include "XlsExport.h"
 #include "utility.h"
 
 static __inline bool isspc(char c)
 {
 	return c==' ' || c=='\\';
+}
+
+//Function : CheckAccess( LPCTSTR fname, int mode)
+//			 Note: Workaround for bug in _access()
+//Returns  : 0 when the access is present, -1 when access is not available
+//Desc     : This function can be used as a substitue for _access. The paramters are the same as in _access()
+//fname - file/directory whose access is to be checked
+//mode - mode to be checked, pass the code corresponding to the access test required.
+// 0 - Test existence
+// 2 - Write access
+// 4 - Read access
+// 6 - Read & Write access.
+//
+int CheckAccess(LPCTSTR fname, int mode)
+{
+         DWORD dwAccess;
+         if (mode == 0)
+             return _access(fname, mode);   //access would do when we want to check the existence alone.
+
+         if (mode == 2)
+             dwAccess = GENERIC_WRITE;
+         else if (mode == 4)
+             dwAccess = GENERIC_READ;
+         else if (mode == 6)
+             dwAccess = GENERIC_READ  | GENERIC_WRITE;
+
+         HANDLE hFile = 0;
+         hFile = CreateFile(fname,
+                 dwAccess,
+                 FILE_SHARE_READ|FILE_SHARE_WRITE,       // share for reading and writing
+                 NULL,                                   // no security
+                 OPEN_EXISTING,                          // existing file only
+                 FILE_ATTRIBUTE_NORMAL | FILE_FLAG_BACKUP_SEMANTICS,
+                 NULL);                                  // no attr. template
+
+         if (hFile == INVALID_HANDLE_VALUE)
+             { return(-1); }
+         CloseHandle(hFile);
+         return(0);
 }
 
 void CMsgBox(LPCSTR format,...)
@@ -16,6 +56,30 @@ void CMsgBox(LPCSTR format,...)
   _vsnprintf(buf,512,format,marker); buf[511]=0;
   va_end(marker);
   AfxMessageBox(buf);
+}
+
+int CMsgBox(UINT nType,LPCSTR format,...)
+{
+  static char BASED_CODE LoadErrorMsg[]="Out of workspace.";
+  char buf[1024];
+
+  va_list marker;
+  va_start(marker,format);
+  _vsnprintf(buf,1024,format,marker); buf[1023]=0;
+  va_end(marker);
+  
+  TRY {
+      //May try to create temporary objects?
+	  //nType=(UINT)XMessageBox(NULL,buf,title,nType);
+	  nType=(UINT)CWinApp::ShowAppMessageBox(&theApp,buf,nType,0);
+  }
+  CATCH_ALL(e) {
+  	  nType= 0;
+  }
+  END_CATCH_ALL
+  
+  if(!nType) ::MessageBox(NULL,LoadErrorMsg,NULL,MB_ICONEXCLAMATION|MB_OK);
+  return (int)nType;
 }
 
 long GetLong(CDaoRecordset &rs,int nFld)
@@ -163,14 +227,19 @@ bool GetBool(CDaoRecordset &rs,int nFld)
 {
 	COleVariant var;
 	rs.GetFieldValue(nFld,var);
-	return (var.vt==VT_BOOL)?(V_BOOL(&var)!=0):false;
+	if(var.vt==VT_BOOL) return (V_BOOL(&var)!=0);
+	if(var.vt==VT_BSTR) {
+		 CString s(CCrack::strVARIANT(var));
+	     s.Trim();
+		 if(!s.IsEmpty()) {
+			 s.MakeUpper();
+			 if(!s.Compare("TRUE") || !s.Compare("YES")) return true;
+		 }
+	}
+	return false;
 }
 
 void GetBoolStr(LPSTR s,CDaoRecordset &rs,int nFld)
 {
-	COleVariant var;
-	rs.GetFieldValue(nFld,var);
-	if(V_BOOL(&var)) strcpy(s,"Y");
-	else *s=0;
+	strcpy(s, GetBool(rs, nFld)?"Y":"N");
 }
-

@@ -547,7 +547,7 @@ BOOL CDBTFile::InitFree(BOOL bTesting /*=0*/)
 			SetLength(m_uNextRec*512);
 		}
 	}
-	catch(CFileException e) {
+	catch(...) {
 		//Bad DBT format --
 		CMsgBox("CAUTION: Memo fields can't be updated because file %s is corrupted. "
 		        "You can try repairing the shapefile by exporting it.",(LPCSTR)GetFileName());

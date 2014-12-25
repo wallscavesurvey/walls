@@ -16,9 +16,15 @@
 #define IDS_PRJ_NAD27                   107
 #define IDS_PRJ_NAD27UTM                108
 #define IDS_RTF_HEADER                  109
+#define IDS_SHPDEF_FILES                109
 #define IDS_XLS_FILES                   110
 #define IDS_MDB_FILES                   111
 #define IDS_CSV_FILES                   112
+#define IDS_SEL_SHPDEF                  113
+#define IDS_SEL_SHP                     114
+#define IDS_ALL_FILES                   115
+#define IDS_PRJ_NAD83                   116
+#define IDS_PRJ_NAD83UTM                117
 #define IDR_MAINFRAME                   128
 #define IDD_RANGE                       130
 #define IDC_CAVES                       1000
@@ -37,9 +43,15 @@
 #define IDC_TABLENAME                   1008
 #define IDC_SPRINGS                     1009
 #define IDC_SHAPENAME                   1009
+#define IDC_TMPNAME                     1009
 #define IDC_FEATURES                    1010
+#define IDC_LATLONG                     1010
 #define IDC_FEATURES2                   1011
 #define IDC_OTHER                       1011
+#define IDC_SHPNAME                     1011
+#define IDC_BROWSE_SHP                  1012
+#define IDC_BROWSE_TMP                  1013
+#define IDC_OVERWRITE                   1014
 
 // Next default values for new objects
 // 
@@ -47,7 +59,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        129
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1005
+#define _APS_NEXT_CONTROL_VALUE         1015
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -16,6 +16,7 @@ CDlgSymbolsPoly::CDlgSymbolsPoly(CWallsMapDoc *pDoc,CShpLayer *pLayer,CWnd* pPar
 	, m_bUseIndex(FALSE)
 {
 	m_bInitFlag=true;
+	m_bTestMemos=(m_pLayer->m_uFlags&NTL_FLG_TESTMEMOS)!=0;
 	m_bShowLabels=(m_pLayer->m_uFlags&NTL_FLG_LABELS)!=0;
 	if(m_bShowLabels && (m_pLayer->m_uFlags&NTL_FLG_SHOWLABELS))
 		m_bShowLabels++;
@@ -38,8 +39,8 @@ CDlgSymbolsPoly::~CDlgSymbolsPoly()
 void CDlgSymbolsPoly::UpdateMap()
 {
 	bool bMarkerChanged=memcmp(&m_pLayer->m_mstyle,&m_mstyle,sizeof(SHP_MRK_STYLE))!=0;
-	UINT uFlags=(m_pLayer->m_uFlags&~(NTL_FLG_LABELS+NTL_FLG_SHOWLABELS));
-	uFlags |= (m_bShowLabels!=0)*NTL_FLG_LABELS+(m_bShowLabels==2)*NTL_FLG_SHOWLABELS;
+	UINT uFlags=(m_pLayer->m_uFlags&~(NTL_FLG_LABELS|NTL_FLG_SHOWLABELS|NTL_FLG_TESTMEMOS));
+	uFlags |= (m_bShowLabels!=0)*NTL_FLG_LABELS+(m_bShowLabels==2)*NTL_FLG_SHOWLABELS+(m_bTestMemos!=0)*NTL_FLG_TESTMEMOS;
 
 	bool bChanged=bMarkerChanged ||
 		memcmp(&m_pLayer->m_font,&m_font,sizeof(CLogFont))!=0 ||
@@ -79,6 +80,7 @@ void CDlgSymbolsPoly::DoDataExchange(CDataExchange* pDX)
 	DDX_Slider(pDX, IDC_OPACITY_VEC, m_iOpacityVec);
 	DDX_Check(pDX, IDC_ANTIALIAS, m_bAntialias);
 	DDX_Check(pDX, IDC_USE_INDEX, m_bUseIndex);
+	DDX_Check(pDX, IDC_TEST_MEMOS2, m_bTestMemos);
 
 	if(pDX->m_bSaveAndValidate) {
 		if((BYTE)m_bUseIndex!=m_pLayer->m_bQTusing || (BYTE)m_uIdxDepth!=m_pLayer->m_bQTdepth) {
@@ -190,6 +192,8 @@ BOOL CDlgSymbolsPoly::OnInitDialog()
 		Enable(IDC_ST_OPACITY_SYM,FALSE);
 		Enable(IDC_OPACITY_SYM,FALSE);
 	}
+
+	GetDlgItem(IDC_TEST_MEMOS2)->EnableWindow(m_pLayer->HasMemos());
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 }

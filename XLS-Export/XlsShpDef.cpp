@@ -45,12 +45,12 @@ static bool TypesCompatible(int srcTyp,char cDst)
 			return cDst=='N' || cDst=='F';
 		case dbText:
 		case dbMemo:
-			return cDst=='C' || cDst=='M';
+			return cDst=='C' || cDst=='M' || (cDst=='L' && srcTyp==dbText);
 	}
 	return false;
 }
 
-BOOL CShpDef::Process(CDaoRecordset *pRS,LPCSTR pathName)
+BOOL CShpDef::Process(CDaoRecordset *pRS,LPCSTR pathName,BOOL bLatLon)
 {
 	CFileCfg fdef(shp_deftypes,SHP_CFG_NUMTYPES);
 	if(!fdef.Open(pathName,CFile::modeRead)) {
@@ -66,10 +66,13 @@ BOOL CShpDef::Process(CDaoRecordset *pRS,LPCSTR pathName)
 	int typ;
 
 	while((typ=fdef.GetLine())>0 || typ==CFG_ERR_KEYWORD) {
+	    
 		if(fdef.Argc()<2) goto _badExit;
+		LPSTR pp=strchr(fdef.Argv(1),';');
+		if(pp)
+		 *pp=0;
 
 		if(typ!=SHP_CFG_FLD) {
-			LPCSTR pp=fdef.Argv(1);
 			int n=fdef.GetArgv(fdef.Argv(1));
 			switch(typ) {
 				case SHP_CFG_FLDKEY:
@@ -195,7 +198,7 @@ BOOL CShpDef::Process(CDaoRecordset *pRS,LPCSTR pathName)
 
 		if(n>=LF_LAT && n<=LF_DATUM) {
 			if(srcFld || pDefault) {
-				//coordinates require a src field or a default
+				//a coordinate-related field is either neing specified or read from source --
 				bool bConflict=false;
 				if(pDefault && n!=LF_ZONE && n!=LF_DATUM) {
 					errMsg="Default coordinates must be assigned with a .LOCDFLT directive";
@@ -235,8 +238,12 @@ BOOL CShpDef::Process(CDaoRecordset *pRS,LPCSTR pathName)
 						if(pDefault) {
 							iZoneDflt=atoi(pDefault);
 							if(!iZoneDflt || abs(iZoneDflt)>60) {
-								errMsg="Bad default zone number specified";
+								errMsg="Bad zone number specified";
 								goto _badExit;
+							}
+							if(iZoneDflt>0) {
+								LPCSTR p=strchr(pDefault, 'S');
+								if(p && p-pDefault<=2) iZoneDflt=-iZoneDflt;
 							}
 						}
 						break;
@@ -245,7 +252,7 @@ BOOL CShpDef::Process(CDaoRecordset *pRS,LPCSTR pathName)
 					{
 						iFldDatum=numFlds;
 						if(!pDefault || strcmp(pDefault, "WGS84") && strcmp(pDefault, "NAD83") && strcmp(pDefault, "NAD27")) {
-							errMsg="Field DATUM_, if specified, must be assigned either WGS84, NAD83, or NAD27";
+							errMsg="Field DATUM_, if initialized, must be assigned either WGS84, NAD83, or NAD27";
 							goto _badExit;
 						}
 						break;
@@ -261,6 +268,7 @@ BOOL CShpDef::Process(CDaoRecordset *pRS,LPCSTR pathName)
 				else if(n==LF_NORTH) uFlags|=SHPD_UTMNORTH;
 				else uFlags|=SHPD_UTMZONE;
 			}
+			else if(n==LF_DATUM) pDefault="WGS84";
 		}
 		else if(n>0) {
 			//must be a timestamp fld
@@ -323,7 +331,11 @@ BOOL CShpDef::Process(CDaoRecordset *pRS,LPCSTR pathName)
 			}
 
 			srcIdx=n-1;
-			if(pRS && !TypesCompatible(fi.m_nType,fld.F_Typ) && strcmp(fld.F_Nam,"ZONE_")) {
+			if(!strcmp(fld.F_Nam, "DATUM_")) {
+				errMsg="DATUM_ can be in itialized, but not read from source";
+				goto _badExit;
+			}
+			if(pRS && !TypesCompatible(fi.m_nType,fld.F_Typ)) {
 					errMsg.Format("Field %s - data type %s in source isn't compatible with type %c",
 						fld.F_Nam,CCrack::strFieldType(fi.m_nType),fld.F_Typ);
 					goto _badExit;
@@ -346,23 +358,33 @@ BOOL CShpDef::Process(CDaoRecordset *pRS,LPCSTR pathName)
 	fdef.Close();
 
 	if(!numFlds) {
-		AfxMessageBox("No fields were defined in the template.");
-		return FALSE;
+		errMsg="No fields were defined in the template";
+		goto _tmpError;
 	}
 
 	if(!numSrcFlds) {
-		AfxMessageBox("No source fields were specified or found in the template.");
-		return FALSE;
+		errMsg="No source fields were specified or found in the template";
+		goto _tmpError;
 	}
 
-	if(iTypXY<0 || iFldX<0 || iFldY<0 || iTypXY==1 && iFldZone<0) {
-		AfxMessageBox("Fields in template are insufficient for determining coordinates.");
-		return FALSE;
+	if(iTypXY<0 || iFldX<0 || iFldY<0) {
+		errMsg="Fields in template are insufficient for determining coordinates";
+		goto _tmpError;
 	}
 
-	if((uFlags&SHPD_UTMFLAGS) && uFlags!=SHPD_UTMFLAGS) {
-		AfxMessageBox("Fields EASTING_, NORTHING_, and ZONE_ are all required if UTM is used.");
-		return FALSE;
+	if((uFlags&SHPD_UTMFLAGS) && (uFlags&SHPD_UTMFLAGS)!=SHPD_UTMFLAGS) {
+		errMsg="Fields EASTING_, NORTHING_, and ZONE_ are all required if any UTM fields are defined";
+		goto _tmpError;
+	}
+
+	if(!bLatLon && !iZoneDflt) {
+		errMsg="A UTM shapefile requires that the ZONE_ field be initialized to a specific zone";
+		goto _tmpError;
+	}
+
+	if(iTypXY && !iZoneDflt && (iFldZone<0 || v_srcIdx[iFldZone]<0)) {
+		errMsg="When UTM coordinates are read from source, a UTM zone nust be read or initialized";
+		goto _tmpError;
 	}
 
 	if(!csFldKey.IsEmpty()) {
@@ -374,11 +396,14 @@ BOOL CShpDef::Process(CDaoRecordset *pRS,LPCSTR pathName)
 			}
 		}
 	}
-
 	return TRUE;
 
+_tmpError:
+	CMsgBox("Error in template %s:\n\n%s.",trx_Stpnam(pathName),(LPCSTR)errMsg);
+	return FALSE;
+
 _badExit:
-	CMsgBox("Template scan aborted. File %s, Line %u:\n%s.",trx_Stpnam(pathName),fdef.LineCount(),(LPCSTR)errMsg);
+	CMsgBox("Error in template %s, Line %u:\n\n%s.",trx_Stpnam(pathName),fdef.LineCount(),(LPCSTR)errMsg);
 	fdef.Close();
 	return FALSE;
 }

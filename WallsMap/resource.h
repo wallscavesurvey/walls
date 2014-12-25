@@ -464,6 +464,7 @@
 #define IDC_USE_INDEX                   1143
 #define IDC_TEST_MEMOS                  1143
 #define IDC_ST_DENOM                    1144
+#define IDC_TEST_MEMOS2                 1144
 #define IDC                             1145
 #define IDC_ST_RATIO_BOX                1145
 #define IDC_CHECK2                      1146

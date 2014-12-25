@@ -4362,9 +4362,11 @@ void CShpLayer::TestMemos(BOOL bOnLoad /*=FALSE*/)
 	if(bCorrupt) s+=   "\nYou shouldn't be seeing this. If you think the file corruption was caused by the\n"
 		               "program, please report it as a bug!";
 
-	//Now check for permanently wasted space --
-
 	else {
+
+		//Check for permanently wasted space --
+
+		bWasteSaved=IsEditable();
 		for(it_byte it=vBlkFlgs.begin(); it!=vBlkFlgs.end(); it++) {
 			if(!*it) {
 				if(bWasteSaved) {
@@ -4377,7 +4379,7 @@ void CShpLayer::TestMemos(BOOL bOnLoad /*=FALSE*/)
 				else nWasted++;
 			}
 		}
-		bWasteSaved=nWasted && IsEditable();
+		if(!nWasted) bWasteSaved=false;
 
 		if(!bOnLoad || nWasted) {
 

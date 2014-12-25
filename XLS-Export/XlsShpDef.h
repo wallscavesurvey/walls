@@ -24,10 +24,10 @@ public:
 	CShpDef(void) : numFlds(0), numSrcFlds(0), numMemoFlds(0),
 	iTypXY(-1), iFldZone(-1), iFldX(-1), iFldY(-1), iFldKey(-1), iDatum(-1), uFlags(0),
 	latMax(90),latMin(-90),lonMax(180),lonMin(-180),latDflt(0),latErr(0),
-	lonDflt(0),lonErr(0),zoneMin(1),zoneMax(60),iZoneDflt(0) { sFldSep[0]=0;}
+	lonDflt(0),lonErr(0),zoneMin(-60),zoneMax(60),iZoneDflt(0) { sFldSep[0]=0;}
 	~CShpDef(void);
 
-	BOOL Process(CDaoRecordset *pRS, LPCSTR pathName);
+	BOOL Process(CDaoRecordset *pRS, LPCSTR pathName, BOOL bLatLon);
 	static int GetLocFldTyp(LPCSTR pNam);
 
 	V_DOUBLE  v_fldScale;

@@ -4,7 +4,8 @@
 #ifndef __TRX_TYPE_H
 #include <trx_type.h>
 #endif
-
+int CheckAccess(LPCTSTR fname, int mode);
+int CMsgBox(UINT nType,LPCSTR format,...);
 void CMsgBox(LPCSTR format,...);
 LPSTR GetFullPath(LPCSTR pathName,LPCSTR defExt);
 long GetLong(CDaoRecordset &rs,int nFld);

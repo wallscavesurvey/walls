@@ -48,6 +48,7 @@ public:
 
 private:
 	BOOL m_bShowLabels;
+	BOOL m_bTestMemos;
 	BOOL m_bUseIndex;
 	UINT m_uIdxDepth;
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);

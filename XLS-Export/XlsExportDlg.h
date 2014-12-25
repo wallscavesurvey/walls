@@ -20,6 +20,8 @@ class CXlsExportDlg : public CDialog
 public:
 	CXlsExportDlg(int argc, char **argv, CWnd* pParent = NULL);
 
+	~CXlsExportDlg() {if(m_psd) delete m_psd;}
+
 // Dialog Data
 	enum { IDD = IDD_EXPORT_DIALOG };
 
@@ -27,23 +29,28 @@ public:
 
 private:
 	UINT m_nLogMsgs;
-	CString m_dbPath;
-	CString m_shpName;
-	CString m_tableName;
 	CString m_pathBuf;
 	CString m_fldKeyVal;
+	CString m_tableName,m_sourcePath,m_shpdefPath,m_shpPath;
 	UINT m_nPathLen;
-	LPCSTR m_pdbName;
 
-	CShpDef m_shpdef;
+	char m_szModule[_MAX_PATH];
+	char m_szSourcePath[_MAX_PATH];
+	char m_szShpdefPath[_MAX_PATH];
+	char m_szShpPath[_MAX_PATH];
+
+	LPSTR m_pSourceName,m_pShpdefName,m_pShpName;
+
+	CShpDef *m_psd;
 	CDaoDatabase m_database;
 	CDaoRecordset m_rs;
 	CStdioFile m_csvfile;
 	V_CSTRING m_vcsv;
 
+	BOOL m_bLatLon;
 	BOOL m_bXLS;
+	int m_iDatum;
 	
-	CShpDef m_sd;
 	CFileBuffer m_fbLog;
 	BOOL m_bLogFailed;
 	HICON m_hIcon;
@@ -80,21 +87,21 @@ private:
 		else GetBoolCharVal(pBuf,*(LPCSTR)m_vcsv[fSrc]);
 	}
 
-	LPCSTR FixPath(LPCSTR name, LPCSTR ext);
-	LPCSTR FixShpPath(LPCSTR ext) { return FixPath(m_shpName,ext); }
+	LPCSTR FixShpPath(LPCSTR ext);
 	bool GetCsvRecord();
 	int InitShapefile();
 	void InitFldKey();
-	int GetCoordinates(double *pLat, double *pLon);
+	int GetCoordinates(double *pLat, double *pLon, double *pEast, double *pNorth, int *pZone);
 	int StoreFldData(int f);
-	int WriteShpRec(double fLat,double fLon); //also appends blank record to dbf
+	int WriteShpRec(double x,double y); //also appends blank record to dbf
 	static int StoreDouble(DBF_FLDDEF &fd, int fld, double d);
 	static void StoreText(int fld,LPCSTR p);
-	void WritePrjFile(bool bNad83, int utm_zone);
+	void WritePrjFile(BOOL bNad83, int utm_zone);
 	void WriteLog(const char *format,...);
 	int errexit(int e,int typ);
 	void DeleteFiles();
 	int CloseFiles();
+	void SaveOptions();
 
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	virtual BOOL OnInitDialog();
@@ -108,4 +115,6 @@ private:
 public:
 	int m_argc;
 	char **m_argv;
+	afx_msg void OnBnClickedBrowseShpdef();
+	afx_msg void OnBnClickedBrowseShp();
 };

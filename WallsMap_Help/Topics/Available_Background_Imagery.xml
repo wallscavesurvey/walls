@@ -5,7 +5,7 @@
   <body>
     <header>
       <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Available Background Imagery</text></para>
-      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Updated 10/06/2014</text></para>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Updated 12/12/2014</text></para>
     </header>
     <para styleclass="Normal"></para>
     <para styleclass="Normal"><text styleclass="Normal" translate="true">The sample Texas project contains a layered set of shapefiles, but no raster image layers. You can use it in that condition, selecting individual points and launching Google Earth/Maps to explore the surrounding topography, towns, and roads. With the addition of image layers, however, you&apos;ll be able to view all your shapefile data against a background that&apos;s faster to display and possibly of higher quality. Also, when inspecting aerial photography to retrieve coordinates for a feature, you&apos;ll likely get a more reliable result using a USGS DOQ instead of Google&apos;s imagery. Google Earth&apos;s displayed coordinates, while typically accurate to within 6-10 meters, might be dozens of meters off. You can sometimes see this when examining GE imagery obtained in different years.</text></para>
@@ -23,7 +23,7 @@
     <para styleclass="Normal"><anchor id="DEM_and_DRG" styleclass="Normal"></anchor></para>
     <para styleclass="Normal"><text styleclass="Normal" style="font-weight:bold;" translate="true">DEM and DRG Layers for the Texas Hill Country</text></para>
     <para styleclass="Normal"></para>
-    <para styleclass="Normal"><text styleclass="Normal" translate="true">Use the links in this section to obtain image data for 23 rectangular regions covering a total of </text><text styleclass="Normal" style="font-weight:normal;" translate="true">1177</text><text styleclass="Normal" translate="true"> USGS 7.5&apos; quadrangles in Texas. You can choose which of these layers to download and add to your project, but the program&apos;s performance shouldn&apos;t suffer noticeably if you include them all. The self-extracting archives each contain a single NTI image made up of tiled topographic maps (DRGs), along with a 1/3 arc-second digital elevation model (DEM) layer covering the same region. The original image quality of the scanned USGS topos downloaded from </text><link displaytype="text" defaultstyle="true" type="weblink" href="http://data.tnris.org/datadownload/download.jsp" target="_blank" styleclass="Normal" translate="true">TNRIS</link><text styleclass="Normal" translate="true"> is preserved. (At full resolution the compression method is lossless).</text></para>
+    <para styleclass="Normal"><text styleclass="Normal" translate="true">Use the links in this section to obtain image data for 23 rectangular regions covering a total of </text><text styleclass="Normal" style="font-weight:normal;" translate="true">1177</text><text styleclass="Normal" translate="true"> USGS 7.5&apos; quadrangles in Texas. You can choose which of these layers to download and add to your project, but the program&apos;s performance shouldn&apos;t suffer noticeably if you include them all. The self-extracting archives each contain a single NTI image made up of tiled topographic maps (DRGs), along with a 1/3 arc-second digital elevation model (DEM) layer covering the same region. The original image quality of the scanned USGS topos downloaded from </text><link displaytype="text" defaultstyle="true" type="weblink" href="http://www.tnris.org" target="_blank" styleclass="Normal" translate="true">TNRIS</link><text styleclass="Normal" translate="true"> is preserved. (At full resolution the compression method is lossless).</text></para>
     <para styleclass="Normal"></para>
     <para styleclass="Normal"><text styleclass="Normal" translate="true">The DEM layer is comprised of two files: an NTI image that you explicitly add to the project and an optional NTE file that the program will automatically access to retrieve elevations. When made partially transparent the NTI component can add an attractive 3D shading to an underlying topographic map image. (See screenshot below.) The NTE component, if present, allows elevations to be shown on the status line as you move the mouse cursor over its area of coverage. (You can choose feet or meter units for the display.) Another benefit is that elevation fields for new or relocated shapefile records are automatically initialized if that option was specified in the shapefile&apos;s template component. (See </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Template_File_Format" anchor="Location-dependent_init" styleclass="Normal" translate="true">Location-dependent Initialization</link><text styleclass="Normal" translate="true">.) The availability of elevations won&apos;t depend on the DEM layer&apos;s visibility setting or its position in the Layers window; only its existence in the project is necessary. With a DEM present and the topos visible, for example, you can see how well the displayed elevations match the contour lines.</text></para>
     <para styleclass="Normal"></para>
@@ -40,32 +40,32 @@
     <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">19 quads (El Paso)</text></li>
     </list>
-    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://texasspeleologicalsurvey.org/Walls/El_Paso-19.exe" target="_blank" styleclass="Normal" translate="true">El_Paso-19.exe</link><text styleclass="Normal" translate="true"> (50 MB)</text></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/El_Paso-19.exe" target="_blank" styleclass="Normal" translate="true">El_Paso-19.exe</link><text styleclass="Normal" translate="true"> (50 MB)</text></para>
     <para styleclass="Normal"></para>
     <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">57 quads (Hudspeth)</text></li>
     </list>
-    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://texasspeleologicalsurvey.org/Walls/Hudspeth-57.exe" target="_blank" styleclass="Normal" translate="true">Hudspeth-57.exe</link><text styleclass="Normal" translate="true"> (150 MB)</text></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/Hudspeth-57.exe" target="_blank" styleclass="Normal" translate="true">Hudspeth-57.exe</link><text styleclass="Normal" translate="true"> (150 MB)</text></para>
     <para styleclass="Normal"></para>
     <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">110 quads (Culberson, N Jeff Davis)</text></li>
     </list>
-    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://texasspeleologicalsurvey.org/Walls/Culberson-110.exe" target="_blank" styleclass="Normal" translate="true">Culberson-110.exe</link><text styleclass="Normal" translate="true"> (290 MB)</text></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/Culberson-110.exe" target="_blank" styleclass="Normal" translate="true">Culberson-110.exe</link><text styleclass="Normal" translate="true"> (290 MB)</text></para>
     <para styleclass="Normal"></para>
     <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">69 quads (Presidio, S Jeff Davis)</text></li>
     </list>
-    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://texasspeleologicalsurvey.org/Walls/Presidio-69.exe" target="_blank" styleclass="Normal" translate="true">Presidio-69.exe</link><text styleclass="Normal" translate="true"> (229 MB)</text></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/Presidio-69.exe" target="_blank" styleclass="Normal" translate="true">Presidio-69.exe</link><text styleclass="Normal" translate="true"> (229 MB)</text></para>
     <para styleclass="Normal"></para>
     <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">110 quads (Loving, Pecos, Reeves, Ward, Winkler)</text></li>
     </list>
-    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://texasspeleologicalsurvey.org/Walls/Pecos-Reeves-110.exe" target="_blank" styleclass="Normal" translate="true">Pecos-Reeves-110.exe</link><text styleclass="Normal" translate="true"> (205 MB)</text></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/Pecos-Reeves-110.exe" target="_blank" styleclass="Normal" translate="true">Pecos-Reeves-110.exe</link><text styleclass="Normal" translate="true"> (205 MB)</text></para>
     <para styleclass="Normal"></para>
     <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">118 quads (Brewster)</text></li>
     </list>
-    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://texasspeleologicalsurvey.org/Walls/Brewster-118.exe" target="_blank" styleclass="Normal" translate="true">Brewster-118.exe</link><text styleclass="Normal" translate="true"> (386 MB)</text></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/Brewster-118.exe" target="_blank" styleclass="Normal" translate="true">Brewster-118.exe</link><text styleclass="Normal" translate="true"> (386 MB)</text></para>
     <para styleclass="Normal"></para>
     <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">63 quads (Terrell, E Pecos )</text></li>
@@ -101,11 +101,6 @@
       <li styleclass="Normal"><text styleclass="Normal" translate="true">42 quads (Bell, Coryell, E Lampasas)</text></li>
     </list>
     <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/E_Aquifer_Farnorth.exe" target="_blank" styleclass="Normal" translate="true">E_Aquifer_Farnorth.exe</link><text styleclass="Normal" translate="true"> (128 MB)</text></para>
-    <para styleclass="Normal"></para>
-    <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
-      <li styleclass="Normal"><text styleclass="Normal" translate="true">63 quads (Terrell, E Pecos )</text></li>
-    </list>
-    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/Terrell-63.exe" target="_blank" styleclass="Normal" translate="true">Terrell-63.exe</link><text styleclass="Normal" translate="true"> (210 MB)</text></para>
     <para styleclass="Normal"></para>
     <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">36 quads (Crockett, N Val Verde)</text></li>
@@ -239,7 +234,7 @@
     <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">Lake Belton Area of Ft Hood</text></li>
     </list>
-    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://www.txspeleologicalsurvey.org/Walls/images/Ft_Hood_Lake_Belton.nti" target="_blank" styleclass="Normal" translate="true">Ft_Hood_Lake_Belton.nti</link><text styleclass="Normal" translate="true"> (346 MB, expands to 492 MB when opened)</text></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/Ft_Hood_Lake_Belton.nti" target="_blank" styleclass="Normal" translate="true">Ft_Hood_Lake_Belton.nti</link><text styleclass="Normal" translate="true"> (346 MB, expands to 492 MB when opened)</text></para>
     <para styleclass="Normal"><text styleclass="Normal" translate="true">This is an attractive 0.3-meter resolution aerial photo covering NW Ft Hood and most of Lake Belton.</text></para>
     <para styleclass="Normal"></para>
     <list id="11" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
@@ -251,7 +246,7 @@
     <list id="21" type="ul" listtype="bullet" formatstring="&#216;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" styleclass="Normal" style="font-family:Wingdings; font-size:11pt; color:#000000;">
       <li styleclass="Normal"><text styleclass="Normal" translate="true">Landsat 7 image of Texas</text></li>
     </list>
-    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://www.txspeleologicalsurvey.org/Walls/images/texas_landsat.nti" target="_blank" styleclass="Normal" translate="true">texas_landsat.nti</link><text styleclass="Normal" translate="true"> &#160;(377 MB, expands to 541 MB when opened)</text></para>
+    <para styleclass="Normal"><link displaytype="text" defaultstyle="true" type="weblink" href="http://davidmck.fmnetdesign.com/texas_landsat.nti" target="_blank" styleclass="Normal" translate="true">texas_landsat.nti</link><text styleclass="Normal" translate="true"> &#160;(266 MB, expands to 377 MB when opened)</text></para>
     <para styleclass="Normal"><text styleclass="Normal" translate="true">This image was created earlier than April 2006. It&apos;s an attractive background but perhaps less useful now that more recent and higher quality imagery can be easily accessed via Google Earth and web mapping sites using the program&apos;s &quot;fly to&quot; feature. Like the other files in this section, it would need to be removed prior to adding a downloaded UTM image.</text></para>
     <para styleclass="Normal"></para>
     <para styleclass="Normal"><text styleclass="Subheader" translate="true">Texas Natural Resources Information System (TNRIS)</text></para>

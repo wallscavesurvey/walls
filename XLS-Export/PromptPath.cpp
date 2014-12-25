@@ -24,8 +24,7 @@ BOOL AddFilter(CString &filter,int nIDS)
     return TRUE;
 }    
 
-BOOL DoPromptPathName(CString& pathName,DWORD lFlags,
-   int numFilters,CString &strFilter,BOOL bOpen,UINT ids_Title,char *defExt)
+BOOL DoPromptPathName(CString& pathName,DWORD lFlags,int numFilters,CString &strFilter,BOOL bOpen,UINT ids_Title,LPCSTR defExt)
 {
 	CFileDialog dlgFile(bOpen);  //TRUE for open rather than save
 
@@ -33,17 +32,24 @@ BOOL DoPromptPathName(CString& pathName,DWORD lFlags,
 	VERIFY(title.LoadString(ids_Title));
 	
 	char namebuf[_MAX_PATH];
-	
-	size_t len=strlen(strcpy(namebuf,trx_Stpnam(pathName)));
-	char *path=namebuf+len+1;
-	memcpy(path,(LPCSTR)pathName,len=pathName.GetLength()-len);
-	path[len]=0;
+	char pathbuf[_MAX_PATH];
 
-	if(*path) path[--len]=0;
-	else 
-	  _getcwd(path,_MAX_PATH-(int)strlen(namebuf)-1);
-	
-	dlgFile.m_ofn.lpstrInitialDir=path; //no trailing slash
+	strcpy(namebuf,trx_Stpnam(pathName));
+	strcpy(pathbuf,pathName);
+	*trx_Stpnam(pathbuf)=0;
+	if(*pathbuf) {
+		size_t len=strlen(pathbuf);
+		ASSERT(pathbuf[len-1]=='\\' || pathbuf[len-1]=='/');
+		pathbuf[len-1]=0;
+		//lFlags|=OFN_NOCHANGEDIR;
+	}
+	/*
+	else {
+	  _getcwd(pathbuf,_MAX_PATH);
+	}
+	*/
+
+	dlgFile.m_ofn.lpstrInitialDir=pathbuf; //no trailing slash
 
 	dlgFile.m_ofn.Flags |= (lFlags|OFN_ENABLESIZING);
 	if(!(lFlags&OFN_OVERWRITEPROMPT)) dlgFile.m_ofn.Flags&=~OFN_OVERWRITEPROMPT;
