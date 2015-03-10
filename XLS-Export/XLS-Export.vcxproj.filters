@@ -45,6 +45,9 @@
     <ClCompile Include="XlsShpfile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="XMessageBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="crack.h">
@@ -77,11 +80,11 @@
     <ClInclude Include="XlsShpDef.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="XMessageBox.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\XlsExport.ico">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="res\XlsExport.rc2">
       <Filter>Resource Files</Filter>
     </None>
@@ -94,5 +97,19 @@
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="res\XlsExport.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\2014122607153623_easyicon_net_48.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\gears.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\20141227100734892_easyicon_net_48.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\gears-48.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

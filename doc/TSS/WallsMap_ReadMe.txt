@@ -1,4 +1,4 @@
-WallsMap (TSS edition) v0.3 Build 2014-12-12 Notes
+WallsMap (TSS edition) v0.3 Build 2015-03-09 Notes
 ==================================================
 
 This TSS edition of the WallsMap setup is the same as the publicly available
@@ -10,9 +10,33 @@ and the complete TSS karst database.
 ==============
 Recent Changes
 
-* Build 12/12/2014
+* Build 03/09/2015
 
-1) A "Test memo field integity" option in the Layers context menu checks that all
+1) Improvements were made to GPS-related functions related to port connectivity
+and tracking. When tracking is in progress, with the GPS placemark displayed, the
+map view's right-click context menu has an option to add (and select for editing)
+a shapefile record with the current GPS position addigned.
+
+2) Miscellaneous enhancements and fixes: When left-dragging with the distance
+measuring tool, the distance and azimuth are displayed next to the mouse cursor
+instead of on the status line. The algorithm for choosing the initial color
+assignments for added shapefile layers was improved. In a table view, the Find
+dialog that's accessed via the header's context menu has an option to *not* ignore
+RTF markup codes (e.g., font assignments) during a search. Network pathnames are
+no longer added to the recently-opened files list. The handling of point shapefile
+records recognized as "unlocated" was fixed or improved in several functions.
+
+* Build 01/12/2015
+
+1) To assist with shapefile editing, a "Replace..." function exists alongside the
+"Fill field..." function in a table header's context menu. It requires careful use
+since it's a "non-prompted" search-and-replace that can affect many records when
+invoked for a specific field, which can be of type memo or fixed-length text.
+
+2) Miscellaneous improvements, particularly to the Compare function which now
+supports management of databases using UTM coordinates.
+
+3) A "Test memo field integity" option in the Layers context menu checks that all
 data blocks pointed to in the shapefile's DBT component are accessible. It also
 restores the file's list of reusable freed blocks in case it was lost due to an
 abnormal program shutdown. With previous builds, such a loss would leave regions

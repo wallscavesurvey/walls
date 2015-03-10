@@ -46,7 +46,7 @@ private:
 	CDaoRecordset m_rs;
 	CStdioFile m_csvfile;
 	V_CSTRING m_vcsv;
-
+	BOOL m_bMinFldLen;
 	BOOL m_bLatLon;
 	BOOL m_bXLS;
 	int m_iDatum;
@@ -57,7 +57,7 @@ private:
 
 	void CloseDB()
 	{
-		if(m_bXLS<2) {
+		if(m_bXLS<=1) {
 			m_rs.Close();
 			m_database.Close();
 		}
@@ -66,29 +66,37 @@ private:
 
 	double GetDbDouble(int f)
 	{
-		return (m_bXLS<2)?GetDouble(m_rs,f):atof(m_vcsv[f]);
+		return (m_bXLS<=1)?GetDouble(m_rs,f):atof(m_vcsv[f]);
 	}
 
 	long GetDbLong(int f)
 	{
-		return (m_bXLS<2)?GetLong(m_rs,f):atoi(m_vcsv[f]);
+		return (m_bXLS<=1)?GetLong(m_rs,f):atoi(m_vcsv[f]);
 	}
 
 	int GetDbText(LPSTR pBuf, int fSrc, int fLen)
 	{
-		if(m_bXLS<2) return GetText(pBuf, m_rs, fSrc, fLen);
+		if(m_bXLS<=1) return GetText(pBuf, m_rs, fSrc, fLen);
 		trx_Stncc(pBuf,m_vcsv[fSrc],fLen+1);
 		return m_vcsv[fSrc].GetLength();
 	}
 
 	void GetDbBoolStr(LPSTR pBuf, int fSrc)
 	{
-		if(m_bXLS<2) GetBoolStr(pBuf, m_rs, fSrc);
+		if(m_bXLS<=1) GetBoolStr(pBuf, m_rs, fSrc);
 		else GetBoolCharVal(pBuf,*(LPCSTR)m_vcsv[fSrc]);
 	}
 
+	void GetDbDateStr(LPSTR pBuf, int fSrc)
+	{
+		if(m_bXLS<2) GetDateStr(pBuf, m_rs, fSrc);
+		else strcpy(pBuf,(LPCSTR)m_vcsv[fSrc]);
+	}
+
+	bool AdjustFldLen();
+	void SetDataLen(int f);
 	LPCSTR FixShpPath(LPCSTR ext);
-	bool GetCsvRecord();
+	int GetCsvRecord();
 	int InitShapefile();
 	void InitFldKey();
 	int GetCoordinates(double *pLat, double *pLon, double *pEast, double *pNorth, int *pZone);
@@ -106,7 +114,6 @@ private:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	virtual BOOL OnInitDialog();
 
-	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	afx_msg void OnBnClickedBrowse();
@@ -117,4 +124,5 @@ public:
 	char **m_argv;
 	afx_msg void OnBnClickedBrowseShpdef();
 	afx_msg void OnBnClickedBrowseShp();
+	afx_msg void OnBnClickedEditTmp();
 };

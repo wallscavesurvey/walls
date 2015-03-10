@@ -146,9 +146,9 @@ struct SHP_DBFILE { //size=84
 };
 
 #define SHP_LABEL_SIZE 80
+#define SHP_EXT_DBF	CShpLayer::shp_ext[CShpLayer::EXT_DBF]
 #define SHP_EXT_SHP	CShpLayer::shp_ext[CShpLayer::EXT_SHP]
 #define SHP_EXT_SHX	CShpLayer::shp_ext[CShpLayer::EXT_SHX]
-#define SHP_EXT_DBF	CShpLayer::shp_ext[CShpLayer::EXT_DBF]
 #define SHP_EXT_DBT	CShpLayer::shp_ext[CShpLayer::EXT_DBT]
 #define SHP_EXT_DBE	CShpLayer::shp_ext[CShpLayer::EXT_DBE]
 #define SHP_EXT_PRJ	CShpLayer::shp_ext[CShpLayer::EXT_PRJ]
@@ -214,7 +214,7 @@ class CShpLayer : public CMapLayer
 {
 public:
 	enum {MARKER_MAXLINEW=15,MARKER_MAXSIZE=61};
-	enum {EXT_SHP,EXT_SHX,EXT_DBF,EXT_DBT,EXT_DBE,EXT_PRJ,EXT_TMPSHP,EXT_QPJ,EXT_SBN,EXT_SBX,EXT_COUNT};
+	enum {EXT_SHP,EXT_DBF,EXT_SHX,EXT_DBT,EXT_DBE,EXT_PRJ,EXT_TMPSHP,EXT_QPJ,EXT_SBN,EXT_SBX,EXT_COUNT};
 	static const LPCSTR shp_ext[EXT_COUNT];
 	static const LPCSTR lpstrFile_pfx;
 	enum e_shp {
@@ -259,7 +259,7 @@ public:
 	static void UnInit();
 	static void SetGEDefaults();
 	static int	DbfileIndex(LPCSTR pathName);
-	static void DeleteComponents(LPCSTR pathName);
+	static bool DeleteComponents(LPCSTR pathName);
 	static bool check_overwrite(LPCSTR pathName);
 	static BOOL FileCreate(CSafeMirrorFile &cf,LPSTR ebuf,LPCSTR pathName,LPCSTR pExt);
 	static void InitShpHdr(SHP_MAIN_HDR &hdr,int typ,UINT sizData,const CFltRect &extent,const CFltRect *pextz);
@@ -378,6 +378,7 @@ public:
 
 	bool IsNotLocated(double lat,double lon);
 	bool IsNotLocated(const CFltPoint &fpt) {return IsNotLocated(fpt.y,fpt.x);}
+	bool ChkNotLocated(CFltPoint &fpt);
 	void ListFieldContent(LPCSTR pL,LPCSTR pR);
 	void ListMemoFields();
 	LPCSTR GetRecordLabel(LPSTR pLabel,UINT sizLabel,DWORD rec);
@@ -395,7 +396,7 @@ public:
 	bool InitDescGE(CString &text,DWORD rec,VEC_BYTE &vFld,BOOL bSkipEmpty);
 
 	int  ConvertPointsTo(CFltPoint *pFpt,int iNad,int iZone,UINT cnt);
-	//void ConvertPointFrom(CFltPoint &fpt,int iNad,int iZone);
+	void ConvertPointsFrom(CFltPoint *pFpt,int iNad,int iZone,UINT iCount);
 	void ConvertPointsFromOrg(CFltPoint *pt,int iCnt);
 
 	BOOL ConvertProjection(int iNad,int iZone,BOOL bUpdateViews);
@@ -543,10 +544,6 @@ private:
 	COLORREF &MainColor()
 	{
 		return (ShpType()==SHP_POINT)?m_mstyle.crBkg:m_mstyle.crMrk;
-	}
-	int MainColorStartIdx()
-	{
-		return (ShpType()==SHP_POINT)?16:31;  //red vs light blue
 	}
 	void SetShapeClr();
 	void SetShapeClr(COLORREF clr)

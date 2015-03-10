@@ -170,10 +170,6 @@ void CThumbListCtrl::DrawBar(bool bBlack)
 		off-=16;
 	}
 	rect.OffsetRect(off,0);
-#ifdef _DEBUG
-	int jj=(rect.Width()/2-1);
-	//ASSERT((rect.Width()/2-1)==57);
-#endif
 	rect.InflateRect(-(rect.Width()/2-1),-4); //-57,-4 (works fine)
 
 	CDC *pDC=GetDC();

@@ -42,13 +42,15 @@ CGPSPortSettingDlg::CGPSPortSettingDlg(CWnd* pParent /*=NULL*/)
 	, m_bRecordingGPS((m_wFlags&GPS_FLG_AUTORECORD)!=0)
 	, m_bLogPaused(false)
 	, m_bLogStatusChg(false)
+	, m_bTimerSet(false)
+	, m_tmTimer(0)
 {
 	m_pSerial=NULL;
 	m_iBaud=CMainFrame::m_iBaudDef;
 	m_nPort=CMainFrame::m_nPortDef;
 	m_pMF=GetMF();
-
-	VERIFY(Create(CGPSPortSettingDlg::IDD,pParent));
+	ASSERT(!pGPSDlg);
+	Create(CGPSPortSettingDlg::IDD,pParent);
 }
 
 CGPSPortSettingDlg::~CGPSPortSettingDlg()
@@ -62,14 +64,18 @@ CGPSPortSettingDlg::~CGPSPortSettingDlg()
 
 void CGPSPortSettingDlg::OnClose() 
 {
-	//X icon at top-right
-	if(ConfirmClearLog()) DestroyWindow(); //CDialog::OnCancel(); ?
+	//X icon at top-right or from OnBnClickedCancel()
+	if(ConfirmClearLog()) {
+		if(m_tmTimer) KillTimer(m_tmTimer); //needed?
+		DestroyWindow(); //CDialog::OnCancel(); ?
+	}
 }
 
 void CGPSPortSettingDlg::PostNcDestroy() 
 {
-	ASSERT(pGPSDlg==this);
+
 	if(m_bPortOpened) {
+		ASSERT(pGPSDlg==this);
 		m_bHavePos=m_bHaveGPS=false;
 		m_pMF->EnableGPSTracking();
 		m_pSerial->Close();
@@ -81,6 +87,7 @@ void CGPSPortSettingDlg::PostNcDestroy()
 		}
 	}
 	delete this;
+	pGPSDlg=NULL;
 }
 
 void CGPSPortSettingDlg::OnCancel() 
@@ -95,6 +102,7 @@ void CGPSPortSettingDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BAUD, m_cbBaud);
 
 	if(!pDX->m_bSaveAndValidate) {
+		ASSERT(!pGPSDlg);
 		char buf[256]; //must be >128 to see GPSGate ports bizVSerial1 and bizVSerial2
 		CString s;
 		int iSel=-1,iInitSel=-1;
@@ -125,6 +133,7 @@ void CGPSPortSettingDlg::DoDataExchange(CDataExchange* pDX)
 			}
 			iInitSel=0;
 		}
+		pGPSDlg=this;
 		m_cbPort.SetCurSel(iInitSel);
 		m_cbPort.GetLBText(iInitSel,s);
 		m_nPort=atoi(s);
@@ -152,6 +161,7 @@ BEGIN_MESSAGE_MAP(CGPSPortSettingDlg, CDialog)
 	ON_WM_SYSCOMMAND()
 	ON_WM_CTLCOLOR()
 	ON_WM_CLOSE()
+	ON_WM_TIMER()
 	ON_WM_WINDOWPOSCHANGED()
 	ON_MESSAGE(WM_APP,OnWindowDisplayed)
 	ON_CBN_SELCHANGE(IDC_PORT,OnPortChange)
@@ -257,6 +267,11 @@ void CGPSPortSettingDlg::OnBnClickedTest()
 		Enable(IDC_TEST,0);
 		Enable(IDC_COPYLOC,0);
 		SetStatusText("Closing port...");
+		if(m_tmTimer) {
+			KillTimer(m_tmTimer);
+			m_tmTimer=0;
+		}
+		m_bTimerSet=false;
 		m_bHavePos=m_bHaveGPS=false;
 		m_pMF->EnableGPSTracking();
 		m_pSerial->Close();
@@ -299,6 +314,11 @@ void CGPSPortSettingDlg::OnBnClickedTest()
 		Enable(IDC_TEST,1);
 		SetText(IDC_TEST,"Close Port");
 		SetStatusText("Waiting for data...");
+		if(m_tmTimer) {
+			KillTimer(m_tmTimer);
+			m_tmTimer=0;
+		}
+		m_bTimerSet=false;
 	}
 	else {
 		EndWaitCursor();
@@ -405,7 +425,13 @@ LRESULT CGPSPortSettingDlg::OnSerialMsg (WPARAM wParam, LPARAM lParam)
 					m_gps=*(GPS_POSITION *)lParam;
 					ReleaseMutex(m_pSerial->ghMutex);
 					bool bHavePos=((m_gps.wFlags&(GPS_FPOS|GPS_FQUAL))==(GPS_FPOS|GPS_FQUAL)) && m_gps.bQual>0;
-					if(bHavePos) {
+					if(bHavePos && !m_bTimerSet) {
+						// Check timer - last position must have been received at least one second ago!
+						//if(m_bTimerSet) break;
+						if(m_tmTimer) KillTimer(m_tmTimer);
+						m_tmTimer=SetTimer(999,1000,NULL);
+						m_bTimerSet=true;
+
 						if(!m_bHavePos) {
 							ASSERT(vptGPS.empty());
 							if(!m_bMarkerInitialized)
@@ -562,7 +588,7 @@ _retry:
 
 	ReplacePathExt(newPath,".shp");
 
-	if(!CShpLayer::check_overwrite(newPath))
+	if(!CShpLayer::check_overwrite(newPath) || !CShpLayer::DeleteComponents(newPath))
 		goto _retry;
 
 	int recs=GPSExportLog(newPath);
@@ -586,4 +612,13 @@ _retry:
 void CGPSPortSettingDlg::OnBnClickedCancel()
 {
 	OnClose();
+}
+
+void CGPSPortSettingDlg::OnTimer(UINT nIDEvent)
+{
+   if(nIDEvent==999) {
+	   m_bTimerSet=false;
+   }
+   else 
+	   CDialog::OnTimer(nIDEvent);
 }

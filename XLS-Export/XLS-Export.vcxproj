@@ -51,7 +51,10 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(WorkBIN)\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName)</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Table2Shp</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <TargetName>Table2Shp</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Midl>
@@ -76,7 +79,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>libgeorefd.lib;trx_filed.lib;dbf_filed.lib;trx_cshd.lib;trx_strd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libgeorefd.lib;trx_filed.lib;dbf_filed.lib;trx_cshd.lib;trx_strd.lib;Rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -106,7 +109,7 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
-      <AdditionalDependencies>libgeoref.lib;trx_file.lib;dbf_file.lib;trx_csh.lib;trx_str.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libgeoref.lib;trx_file.lib;dbf_file.lib;trx_csh.lib;trx_str.lib;Rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
@@ -117,6 +120,12 @@
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <PostBuildEvent>
+      <Command>call copy_to_install.bat</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copy exe to \Table2Shp subfolders</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="crack.cpp" />
@@ -132,6 +141,7 @@
     <ClCompile Include="XlsExportDlg.cpp" />
     <ClCompile Include="XlsShpDef.cpp" />
     <ClCompile Include="XlsShpfile.cpp" />
+    <ClCompile Include="XMessageBox.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="crack.h" />
@@ -144,9 +154,9 @@
     <ClInclude Include="XlsExport.h" />
     <ClInclude Include="XlsExportDlg.h" />
     <ClInclude Include="XlsShpDef.h" />
+    <ClInclude Include="XMessageBox.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\XlsExport.ico" />
     <None Include="res\XlsExport.rc2" />
     <None Include="ReadMe.txt" />
   </ItemGroup>
@@ -155,6 +165,12 @@
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="res\XlsExport.manifest" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\2014122607153623_easyicon_net_48.ico" />
+    <Image Include="res\20141227100734892_easyicon_net_48.bmp" />
+    <Image Include="res\gears-48.ico" />
+    <Image Include="res\gears.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

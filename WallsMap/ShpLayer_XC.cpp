@@ -186,26 +186,36 @@ void CShpLayer::XC_GetFldOptions(LPSTR pathName)
 
 			char line[1088]; //TYPE uses 1066
 			int len;
+			int nLines=0;
 
 			while((len=fdef.ReadLine(line,1088))>=0) {
+				nLines++;
 				if(*line!='.' || len>=1087 || _memicmp(line+1,"FLD",3))
 					continue;
 
 				UINT f;
 				LPSTR p,p0;
 				for(p=line+4;*p && !isspace(*p);p++); //skip past keyword
+				if(*p) *p++=0;
 				while(isspace(*p)) p++;
 				p0=p;
 
 				if(!*p) continue;
 
-				if(!(f=ParseNextFieldName(p0)))
-					continue; //all valid lines have a field name as the first argument (ignore if non-existent)
-
 				char ctyp=line[4];
+
+				if(!(f=ParseNextFieldName(p0))) {
+					if(!strchr("DdIt",ctyp))
+					CMsgBox("%s,  Line %u\n\nCAUTION: Directive %s ignored. First argument must be an existing field.",
+						trx_Stpnam(pathName), nLines, line+1);
+
+					continue; //all valid lines have a field name as the first argument (ignore if non-existent)
+				}
+
 				int e=0;
 
-				if(isspace(ctyp)) {
+				if(!ctyp) {
+					//Field definition --
 					LPSTR pc=strchr(p0,';');
 					if(pc) *pc=0;
 					if(!(pc=strstr(p0,"?(")) || !(p=strchr(pc,')')))
@@ -357,14 +367,21 @@ static void GetVariableFldStr(CShpLayer *pShp,CString &s, UINT nFld)
 	else pShp->m_pdb->GetTrimmedFldStr(s,nFld);
 }
 
-LPCSTR CShpLayer::XC_GetInitStr(CString &s,XCOMBODATA &xc,const CFltPoint &fpt,LPBYTE pRec,CFltPoint *pOldPt/*=0*/)
+LPCSTR CShpLayer::XC_GetInitStr(CString &s,XCOMBODATA &xc,const CFltPoint &fpt,LPBYTE pRec/*=0*/,CFltPoint *pOldPt/*=0*/)
 {
+	//fpt is from m_fpt[] array --
 	//pOldPt != NULL implies we are relocating an existing record. We need to compare with existing value
 	//and avoid reinitialization if inappropriate.
 	LPCSTR pstr=NULL;
 
 	if(xc.wFlgs&(XC_INITPOLY|XC_INITELEV)) {
 		CString s2;
+		CFltPoint latlon(fpt); //for testing if located
+		if(m_iZone) {
+			geo_UTM2LatLon(latlon,m_iZone,geo_WGS84_datum);
+		}
+		bool bNoloc=IsNotLocated(latlon);
+
 		if(pOldPt) {
 			ASSERT(pRec);
 			//Will compare with current value upon successful search--
@@ -377,7 +394,8 @@ LPCSTR CShpLayer::XC_GetInitStr(CString &s,XCOMBODATA &xc,const CFltPoint &fpt,L
 			CShpLayer *pShp;
 			UINT iMax=xc.sa.size()-1;
 			if(iMax>0 && !strstr(xc.sa[iMax], "::")) iMax--;
-			if(!IsNotLocated(fpt)) {
+
+			if(!bNoloc) {
 				for(UINT i=0; i<=iMax; i++) {
 					pShp=m_pDoc->FindShpLayer(xc.sa[i],&fldNum);
 					if(pShp && pShp->ShpType()==CShpLayer::SHP_POLYGON) {
@@ -412,7 +430,7 @@ LPCSTR CShpLayer::XC_GetInitStr(CString &s,XCOMBODATA &xc,const CFltPoint &fpt,L
 			CImageLayer *pL;
 			if(ls.HasNteLayers()) {
 				int elev=CNTERecord::NODATA;
-				if(!IsNotLocated(fpt) && (pL=ls.GetTopNteLayer(fpt)) && (elev=((CNtiLayer *)pL)->GetBestElev(fpt))!=CNTERecord::NODATA) {
+				if(!bNoloc && (pL=ls.GetTopNteLayer(fpt)) && (elev=((CNtiLayer *)pL)->GetBestElev(fpt))!=CNTERecord::NODATA) {
 					if(xc.wFlgs&XC_METERS) {
 						s.Format("%.1f",elev*0.3048);
 						if(!pOldPt || atof(s)!=atof(s2))

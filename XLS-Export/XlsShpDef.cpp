@@ -43,6 +43,8 @@ static bool TypesCompatible(int srcTyp,char cDst)
 		case dbDouble:
 		case dbDecimal:  ; //16-byte fixed point: VT_DECIMAL
 			return cDst=='N' || cDst=='F';
+		case dbDate:
+			return cDst=='D' || cDst=='C';
 		case dbText:
 		case dbMemo:
 			return cDst=='C' || cDst=='M' || (cDst=='L' && srcTyp==dbText);
@@ -368,7 +370,7 @@ BOOL CShpDef::Process(CDaoRecordset *pRS,LPCSTR pathName,BOOL bLatLon)
 	}
 
 	if(iTypXY<0 || iFldX<0 || iFldY<0) {
-		errMsg="Fields in template are insufficient for determining coordinates";
+		errMsg="The fields defined in the template are insufficient for determining coordinates";
 		goto _tmpError;
 	}
 
@@ -377,13 +379,15 @@ BOOL CShpDef::Process(CDaoRecordset *pRS,LPCSTR pathName,BOOL bLatLon)
 		goto _tmpError;
 	}
 
-	if(!bLatLon && !iZoneDflt) {
-		errMsg="A UTM shapefile requires that the ZONE_ field be initialized to a specific zone";
+	if(!bLatLon && !iZoneDflt && iTypXY) {
+		errMsg="A UTM shapefile requires that the ZONE_ field be initialized, or that Lat/Long coordinates "
+		"be read from the table (allowing zone to be computed from the first record)";
 		goto _tmpError;
 	}
 
+
 	if(iTypXY && !iZoneDflt && (iFldZone<0 || v_srcIdx[iFldZone]<0)) {
-		errMsg="When UTM coordinates are read from source, a UTM zone nust be read or initialized";
+		errMsg="If UTM coordinates are to be read from the table, the ZONE_ field nust also be read or initialized";
 		goto _tmpError;
 	}
 

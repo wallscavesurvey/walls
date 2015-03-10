@@ -84,6 +84,7 @@ public:
 
 	HTREEITEM IsLayerSelected(CShpLayer *pShp) const;
 	void UpdateLayerTitle(CShpLayer *pShp);
+	void UpdateCoordFormat();
 	
 	bool IsRecOpen(CShpLayer *pShp,DWORD nRec) const
 	{

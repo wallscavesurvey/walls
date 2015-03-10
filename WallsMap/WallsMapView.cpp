@@ -167,8 +167,13 @@ bool CWallsMapView::m_bTestPoint=false;
 
 static GEODATA GD;
 
+static TOOLINFO g_toolItem;
+static HWND g_hwndTrackingTT;
+
 static int nad27=GF_NAD27();
 static int wgs84=GF_WGS84();
+static bool bHaveGpsPos;
+static CFltPoint fptGpsPos;
 
 // CWallsMapView construction/destruction
 
@@ -1066,6 +1071,11 @@ void CWallsMapView::OnLButtonUp(UINT nFlags, CPoint point)
 	}
 	else if(m_uAction&CWallsMapDoc::ACTION_MEASURE) {
 		RefreshMeasure();
+		if(g_hwndTrackingTT) {
+			::SendMessage(g_hwndTrackingTT,TTM_TRACKACTIVATE, (WPARAM)FALSE, (LPARAM)&g_toolItem);
+			::DestroyWindow(g_hwndTrackingTT);
+			g_hwndTrackingTT = NULL;
+		}
 	}
 
 	if(m_bSync) {
@@ -1116,15 +1126,10 @@ void CWallsMapView::OnUpdateStatusBar(CCmdUI* pCmdUI,int id)
 
 		case STAT_SIZE:
 			if(IsPointerValid()) {
-				if(m_uAction&CWallsMapDoc::ACTION_MEASURE) {
-					int dy=m_ptDrag.y-m_ptMeasure.y,dx=m_ptMeasure.x-m_ptDrag.x;
-					double d=atan2((double)dx,(double)dy)*(180/M_PI);
-					if(d<0.0) d+=360.0;
-					cs.Format("Az: %.1f°",d);
-					break;
-				}
+
+				CPoint pt((m_uAction&CWallsMapDoc::ACTION_MEASURE)?m_ptMeasure:m_ptDrag);
 				CFltPoint ptGeo;
-				ClientPtToGeoPt(m_ptDrag,ptGeo);
+				ClientPtToGeoPt(pt,ptGeo);
 				CImageLayer *pLayer=GetTopNteLayer(ptGeo);
 				if(pLayer) {
 					int elev=((CNtiLayer *)pLayer)->GetApproxElev(ptGeo);
@@ -1146,60 +1151,123 @@ void CWallsMapView::OnUpdateStatusBar(CCmdUI* pCmdUI,int id)
 			{
 				if(!IsPointerValid()) break;
 
+				CPoint pt((m_uAction&CWallsMapDoc::ACTION_MEASURE)?m_ptMeasure:m_ptDrag);
+				CFltPoint ptGeo0;
+				ClientPtToGeoPt(pt,ptGeo0);
 				CWallsMapDoc *pDoc=GetDocument();
 				bool bTrans=pDoc->IsTransformed();
-				CFltPoint ptGeo0;
-				ClientPtToGeoPt(m_ptDrag,ptGeo0);
-
-				if(m_uAction&CWallsMapDoc::ACTION_MEASURE) {
-					if(id!=STAT_DEG || bTrans && (!pDoc->IsGeoRefSupported() || !pDoc->IsValidGeoPt(ptGeo0))) break;
-					double dist;
-					CFltPoint ptGeo;
-					ClientPtToGeoPt(m_ptMeasure,ptGeo);
-					if(!bTrans || pDoc->IsProjected()) {
-						ptGeo0.x-=ptGeo.x;
-						ptGeo0.y-=ptGeo.y;
-						dist=sqrt(ptGeo0.x*ptGeo0.x+ptGeo0.y*ptGeo0.y);
+				if(bTrans && pDoc->IsGeoRefSupported()) {
+					if(!pDoc->IsValidGeoPt(ptGeo0)) break;
+					if(id==STAT_XY) {
+						int zone=pDoc->IsDatumToggled()?pDoc->GetUTMOtherDatum(ptGeo0):pDoc->GetUTMCoordinates(ptGeo0);
+						if(zone)
+							cs.Format("UTM  %.1f E  %.1f N  %u%c",ptGeo0.x,ptGeo0.y,abs(zone),(zone>0)?'N':'S');
 					}
 					else {
-						dist=1000*MetricDistance(ptGeo0.y,ptGeo0.x,ptGeo.y,ptGeo.x);
-					}
-					if(!bTrans) cs.Format("Dist: %.0f pixels",dist);
-					else {
-						if(pDoc->IsFeetUnits()) {
-							dist*=(1/0.3048);
-							if(dist>5280.0) cs.Format("Dist: %.1f miles",dist/5280);
-							else cs.Format("Dist: %.1f feet",dist);
-						}
-						else {
-							if(dist>=10000) cs.Format("Dist: %.1f km",dist/1000);
-							else cs.Format("Dist: %.1f meters",dist);
-						}
+						if(pDoc->IsDatumToggled()) pDoc->LayerSet().GetDEGOtherDatum(ptGeo0);
+						else pDoc->GetDEGCoordinates(ptGeo0);
+						if(fabs(ptGeo0.y)<90.0 && fabs(ptGeo0.x)<=180.0)
+							cs.Format("%.5f%c %c  %.5f%c %c",fabs(ptGeo0.y),0xB0,
+								(ptGeo0.y<0)?'S':'N',fabs(ptGeo0.x),0xB0,(ptGeo0.x<0)?'W':'E');
 					}
 				}
-				else {
-					if(bTrans && pDoc->IsGeoRefSupported()) {
-						if(!pDoc->IsValidGeoPt(ptGeo0)) break;
-						if(id==STAT_XY) {
-							int zone=pDoc->IsDatumToggled()?pDoc->GetUTMOtherDatum(ptGeo0):pDoc->GetUTMCoordinates(ptGeo0);
-							if(zone)
-								cs.Format("UTM  %.1f E  %.1f N  %u%c",ptGeo0.x,ptGeo0.y,abs(zone),(zone>0)?'N':'S');
-						}
-						else {
-							if(pDoc->IsDatumToggled()) pDoc->LayerSet().GetDEGOtherDatum(ptGeo0);
-							else pDoc->GetDEGCoordinates(ptGeo0);
-							if(fabs(ptGeo0.y)<90.0 && fabs(ptGeo0.x)<=180.0)
-								cs.Format("%.5f%c %c  %.5f%c %c",fabs(ptGeo0.y),0xB0,
-									(ptGeo0.y<0)?'S':'N',fabs(ptGeo0.x),0xB0,(ptGeo0.x<0)?'W':'E');
-						}
-					}
-					else if(id==STAT_DEG)
-						cs.Format("%.1f x %.1f",ptGeo0.x,ptGeo0.y);
-				}
+				else if(id==STAT_DEG)
+					cs.Format("%.1f x %.1f",ptGeo0.x,ptGeo0.y);
 			}
 			break;
 	}
 	pCmdUI->SetText(cs);
+}
+
+static HWND CreateTrackingToolTip(HWND hWnd)
+{
+    // Create a tooltip.
+    HWND hwndTT = CreateWindowEx(WS_EX_TOPMOST, TOOLTIPS_CLASS, NULL, 
+                                 WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP, 
+                                 CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, 
+                                 hWnd, NULL, NULL, NULL);
+
+    if (!hwndTT)
+    {
+      return NULL;
+    }
+
+    // Set up the tool information. In this case, the "tool" is the entire parent window.
+    
+    g_toolItem.cbSize   = sizeof(TOOLINFO);
+    g_toolItem.uFlags   = TTF_IDISHWND | TTF_TRACK | TTF_ABSOLUTE;
+    g_toolItem.hwnd     = hWnd;
+    g_toolItem.hinst    = NULL;
+    g_toolItem.lpszText = "0,0";
+    g_toolItem.uId      = (UINT_PTR)hWnd;
+    
+    GetClientRect (hWnd, &g_toolItem.rect);
+
+    // Associate the tooltip with the tool window.
+    
+    SendMessage(hwndTT, TTM_ADDTOOL, 0, (LPARAM) (LPTOOLINFO) &g_toolItem);	
+    
+    return hwndTT;
+}
+
+double CWallsMapView::GetDragAz()
+{
+	int dy=m_ptDrag.y-m_ptMeasure.y,dx=m_ptMeasure.x-m_ptDrag.x;
+	double d=atan2((double)dx,(double)dy)*(180/M_PI);
+	if(d<0.0) d+=360.0;
+	return d;
+}
+
+void CWallsMapView::GetDragDistAz(CString &cs)
+{
+	CWallsMapDoc *pDoc=GetDocument();
+	bool bTrans=pDoc->IsTransformed();
+	CFltPoint ptGeo0;
+	ClientPtToGeoPt(m_ptDrag,ptGeo0);
+
+	if(!bTrans || pDoc->IsGeoRefSupported() && pDoc->IsValidGeoPt(ptGeo0)) {
+		double dist;
+		CFltPoint ptGeo;
+		ClientPtToGeoPt(m_ptMeasure,ptGeo);
+		if(!bTrans || pDoc->IsProjected()) {
+			ptGeo0.x-=ptGeo.x;
+			ptGeo0.y-=ptGeo.y;
+			dist=sqrt(ptGeo0.x*ptGeo0.x+ptGeo0.y*ptGeo0.y);
+		}
+		else {
+			dist=1000*MetricDistance(ptGeo0.y,ptGeo0.x,ptGeo.y,ptGeo.x);
+		}
+
+		LPCSTR pu;
+		UINT dec=0;
+
+		if(!bTrans) {
+			pu="px";
+			if(dist<100) dec=1;
+		}
+		else {
+			if(pDoc->IsFeetUnits()) {
+				dist/=0.3048;
+				if(dist>=5280.0) {
+					dist/=5280;
+					pu="mi";
+				}
+				else pu="ft";
+			}
+			else {
+				if(dist>=1000) {
+					dist/=1000;
+					pu="km";
+				}
+				else pu="m";
+			}
+			dec=(dist<10)?2:1;
+		}
+		char fmt[8];
+		sprintf(fmt,"%%.%uf %s, ",dec,pu);
+		cs.Format(fmt,dist);
+	}
+	cs.AppendFormat("%.1f°",GetDragAz());
 }
 
 void CWallsMapView::OnMouseMove(UINT nFlags, CPoint point)
@@ -1243,9 +1311,26 @@ void CWallsMapView::OnMouseMove(UINT nFlags, CPoint point)
 		ASSERT(m_bMeasuring);
 		if(m_wndTooltip)
 			DestroyTooltip();
+
+		BOOL bMoved=(m_ptMeasure!=point);
+
 		RefreshMeasure();
 		m_ptMeasure=point;
 		RefreshMeasure();
+
+		if(!g_hwndTrackingTT && (g_hwndTrackingTT=CreateTrackingToolTip(m_hWnd))) {
+			// Activate the tooltip.
+			::SendMessage(g_hwndTrackingTT,TTM_TRACKACTIVATE, (WPARAM)TRUE, (LPARAM)&g_toolItem);
+		}
+		if(bMoved && g_hwndTrackingTT) {
+			CString s;
+			GetDragDistAz(s);
+			g_toolItem.lpszText = s.GetBuffer();
+			::SendMessage(g_hwndTrackingTT,TTM_SETTOOLINFO, 0, (LPARAM)&g_toolItem);
+            // Position the tooltip. The coordinates are adjusted so that the tooltip does not overlap the mouse pointer.
+			ClientToScreen(&point);
+			::SendMessage(g_hwndTrackingTT,TTM_TRACKPOSITION, 0, (LPARAM)MAKELONG(point.x + 10, point.y - 20));
+		}
 	}
 	else {
 		m_ptDrag=point;
@@ -1902,7 +1987,8 @@ _refit:
 		fScale=client.bottom/geoSize.y;
 	}
 
-	if(bVisible!=2 && fScale>MaxImagePixelsPerGeoUnit())
+	//if(bVisible!=2 && fScale>MaxImagePixelsPerGeoUnit())
+	if(!bVisible && fScale>MaxImagePixelsPerGeoUnit())
 		fScale=MaxImagePixelsPerGeoUnit();
 
 	if(bVisible==1) {
@@ -2082,9 +2168,17 @@ void CWallsMapView::OnRButtonUp(UINT nFlags, CPoint point)
 		bool bTrans=GetDocument()->IsTransformed();
 		bool bValid=bTrans && GetDocument()->IsValidGeoPt(ptGeo);
 
-		if(!pGPSDlg || !pGPSDlg->HavePos()) {
+		bHaveGpsPos=pGPSDlg && pGPSDlg->HavePos();
+
+		if(!bHaveGpsPos) {
 			DelMenuItem(pPopup,12,5);
 		}
+		else if(m_bTrackingGPS && !vptGPS.empty()) {
+			//save current GPS coordinates --
+			fptGpsPos=vptGPS.back();
+			GetDocument()->GetConvertedGPSPoint(fptGpsPos);
+		}
+		else bHaveGpsPos=false;
 
 		if(!bValid || !GetDocument()->IsGeoRefSupported()) {
 			//delete divider, GE, and web mapping section
@@ -2144,7 +2238,7 @@ void CWallsMapView::OnRButtonUp(UINT nFlags, CPoint point)
 				if(!npos)
 					pPopup->InsertMenu(0,MF_BYPOSITION,MF_SEPARATOR);
 				if(CLayerSet::vAppendLayers.size()==1) {
-					s.Format("Add new point to %s",CLayerSet::vAppendLayers[0]->Title());
+					s.Format("Add %s point to %s",bHaveGpsPos?"GPS":"new",CLayerSet::vAppendLayers[0]->Title());
 					pPopup->InsertMenu(npos++,MF_BYPOSITION,ID_APPENDLAYER_0,s);
 				}
 				else {
@@ -2156,7 +2250,8 @@ void CWallsMapView::OnRButtonUp(UINT nFlags, CPoint point)
 							if(*p!=pLayer)
 								VERIFY(AppendMenu(hPopup,MF_STRING,id,(LPCTSTR)(*p)->Title()));
 						}
-						pPopup->InsertMenu(npos++,MF_BYPOSITION|MF_POPUP,(UINT_PTR)hPopup,"Add new point to layer...");
+						s.Format("Add %s point to layer...",bHaveGpsPos?"GPS":"new");
+						pPopup->InsertMenu(npos++,MF_BYPOSITION|MF_POPUP,(UINT_PTR)hPopup,s);
 					}
 				}
 			}
@@ -2185,6 +2280,7 @@ void CWallsMapView::OnRButtonUp(UINT nFlags, CPoint point)
 		}
 		m_ptPopup=point;
 		ClientToScreen(&point);
+
 		VERIFY(pPopup->TrackPopupMenu(TPM_LEFTALIGN|TPM_RIGHTBUTTON,point.x,point.y,GetParentFrame()));
 		m_bTracking=false;
 		//if(m_bSync)	TrackMouse(m_hWnd);
@@ -2569,7 +2665,13 @@ void CWallsMapView::OnAddShape(UINT id)
 
 	CWallsMapDoc *pDoc=GetDocument();
 	CFltPoint fpt;
-	ClientPtToGeoPt(m_ptPopup,fpt);
+
+	if(bHaveGpsPos && id<ID_APPENDLAYER_N) {
+		fpt=fptGpsPos;
+	}
+	else {
+		ClientPtToGeoPt(m_ptPopup,fpt);
+	}
 
 	if(pLayer->m_iZoneOrg) {
 		int zone=pDoc->LayerSet().m_iZone;

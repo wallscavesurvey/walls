@@ -30,6 +30,8 @@ extern UINT nLayersSkipped;
 #include "LogFont.h"
 #endif
 
+#define WORD_SEPARATORS " ,.!?:;\r\n\t'\"()/\\<>[]{}|-+="
+
 #define LEN_TIMESTAMP 19
 
 #define SWAPWORD(x) MAKEWORD(HIBYTE(x), LOBYTE(x))

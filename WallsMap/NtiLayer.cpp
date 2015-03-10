@@ -507,10 +507,6 @@ int CNtiLayer::CopyToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,double fSc
 	CFltPoint fpt(crImage.left,crImage.top);
 	ImgPtToGeoPt(fpt,lvl);
 
-	if(!geoExt.IsPtInside(fpt)) {
-		int jj=0;
-	}
-
 	//fScale=Screen pixels/geo-units in destination --
 	int destOffX=_rnd(fScale*(fpt.x-geoExt.l)); 
 	if(destOffX<0) destOffX=0;

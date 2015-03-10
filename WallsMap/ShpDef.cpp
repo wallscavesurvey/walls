@@ -26,6 +26,18 @@ CShpDef::~CShpDef(void)
 	}
 }
 
+bool CShpDef::GetReplArgs(UINT f,LPSTR p)
+{
+	LPSTR pe;
+	if(*p++!='R' || *p++!='(' || !(pe=strstr(p,"\")]")))
+		return false;
+	*pe=0;
+	if(*p++!='"' || !(pe=strstr(p,"\",\""))) return false;
+	*pe=0; pe+=3;
+	v_repl_fcn.push_back(REPL_FCN(f,p,pe));
+	return true;
+}
+
 BOOL CShpDef::Process(CShpLayer *pShp,LPCSTR pathName)
 {
 	m_pFdef=new CFileCfg(shp_deftypes,SHP_CFG_NUMTYPES,46,2048);
@@ -95,16 +107,23 @@ BOOL CShpDef::Process(CShpLayer *pShp,LPCSTR pathName)
 				*p=0;
 			}
 		}
+		
+		LPSTR pReplFcn=NULL;
 
 		if(pSrcFld) {
 			pSrcFld+=2;
 			while(isspace(*pSrcFld)) pSrcFld++;
-			for(p=pSrcFld; *p && !isspace(*p) && *p!='='; p++);
+			for(p=pSrcFld; *p && !isspace(*p) && *p!='=' && *p!='['; p++);
 			if(*p==' ') {
 				*p++=0;
 				while(isspace(*p)) p++;
 			}
-			if(*p=='=') {
+			if(*p=='[') {
+				*p++=0;
+				pReplFcn=p;
+				uFlags|=SHPD_REPL;
+			}
+			else if(*p=='=') {
 				WORD bNeg=0;
 				*p++=0;
 				while(isspace(*p)) p++;
@@ -129,7 +148,6 @@ BOOL CShpDef::Process(CShpLayer *pShp,LPCSTR pathName)
 				uFlags|=SHPD_FILTER;
 			}
 		}
-
 
 		double scale=1.0;
 		int n=m_pFdef->GetArgv(pParams);
@@ -249,6 +267,7 @@ BOOL CShpDef::Process(CShpLayer *pShp,LPCSTR pathName)
 			}
 #endif
 			if(!n) {
+			    //source field specified --
 				p=strchr(pSrcFld,'*');
 				if(p) {
 					*p++=0;
@@ -266,7 +285,12 @@ BOOL CShpDef::Process(CShpLayer *pShp,LPCSTR pathName)
 						errMsg.Format("Source field %s %s",pSrcFld,n?"has the wrong type":"was not found");
 						goto _badExit;
 				}
+				if(pReplFcn && !GetReplArgs(numFlds, pReplFcn)) {
+					errMsg="Invalid format for replace function";
+					goto _badExit;
+				}
 				numSrcFlds++;
+
 				/*
 				if(!cUnitsConv) {
 					if(fld.F_Typ!='N' || !strchr("MmFf",cUnitsConv)) {
@@ -388,7 +412,7 @@ BOOL CShpDef::Write(CShpLayer *pShp,CSafeMirrorFile &cf) const
 		#define pEND_LEN 35
 
 		for(int i=0;i<numFlds;i++,pFld++) {
-			if(pFld->F_Typ=='N') flen.Format("%u.%u",pFld->F_Len,pFld->F_Dec);
+			if(pFld->F_Typ=='N' || pFld->F_Typ=='F') flen.Format("%u.%u",pFld->F_Len,pFld->F_Dec);
 			else flen.Format("%u",pFld->F_Len);
 			if(SHP_DBFILE::GetLocFldTyp(pFld->F_Nam))
 				fld.Format(".FLD %-11s%c %-5s\r\n",pFld->F_Nam,pFld->F_Typ,(LPCSTR)flen);

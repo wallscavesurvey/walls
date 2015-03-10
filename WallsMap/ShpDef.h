@@ -28,6 +28,19 @@ struct FILTER
 
 typedef std::vector<FILTER> V_FILTER;
 typedef V_FILTER::iterator it_filter;
+
+struct REPL_FCN
+{
+	REPL_FCN() : fld(0) {};
+	REPL_FCN(UINT f,LPCSTR pOld,LPCSTR pNew) : fld(f), sOld(pOld), sNew(pNew) {};
+	UINT fld;
+	CString sOld;
+	CString sNew;
+};
+
+typedef std::vector<REPL_FCN> V_REPL_FCN;
+typedef V_REPL_FCN::iterator it_repl_fcn;
+
 typedef std::vector<DBF_FLDDEF> V_FLDDEF;
 typedef std::vector<int> V_FLDIDX;
 typedef std::vector<double> V_FLDSCALE;
@@ -37,7 +50,7 @@ class CShpLayer;
 class CFileCfg;
 
 enum {SHPD_USEVIEWCOORD=1,SHPD_RETAINDELETED=2,SHPD_EXCLUDEMEMOS=4,SHPD_INITEMPTY=8,
-	SHPD_GENTEMPLATE=16,SHPD_INITFLDS=32,SHPD_DESCFLDS=64,SHPD_ISCONVERTING=128,SHPD_MAKE2D=256,SHPD_COMBOFLDS=512,SHPD_FILTER=1024};
+	SHPD_GENTEMPLATE=16,SHPD_INITFLDS=32,SHPD_DESCFLDS=64,SHPD_ISCONVERTING=128,SHPD_MAKE2D=256,SHPD_COMBOFLDS=512,SHPD_FILTER=1024,SHPD_REPL=2048};
 
 class CShpDef
 {
@@ -54,6 +67,7 @@ public:
 	VEC_XCOMBO v_xc;
 	VEC_LPSTR v_fldCombo;
 	V_FILTER v_filter;
+	V_REPL_FCN v_repl_fcn;
 	V_FLDDEF v_fldDef;
 	V_FLDIDX v_fldIdx; //source field number if positive
 	CString csTimestamps[2];
@@ -64,4 +78,6 @@ public:
 	int numLocFlds;
 	int numMemoFlds;
 	UINT uFlags;
+private:
+	bool GetReplArgs(UINT f,LPSTR p);
 };

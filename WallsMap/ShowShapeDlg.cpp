@@ -560,6 +560,19 @@ void CShowShapeDlg::SetCoordFormat()
 	SetCoordLabels();
 }
 
+void CShowShapeDlg::UpdateCoordFormat()
+{
+	if(m_hSelRoot) {
+		int cnt=m_vec_relocate.size();
+		if(cnt) m_pSelLayer->ConvertPointsFrom(&m_vec_relocate[0],m_iNadDoc,m_iZoneDoc,cnt);
+		SetCoordFormat();
+		RefreshSelCoordinates();
+		Disable(IDC_RESTORE);
+		Disable(IDC_RELOCATE);
+	}
+	else SetCoordFormat();
+}
+
 void CShowShapeDlg::OnSelChangingTree(NMHDR* pNMHDR, LRESULT* pResult) 
 {
 	*pResult = m_bDroppingItem==false && m_pSelLayer && CancelSelChange();
@@ -1028,6 +1041,8 @@ void CShowShapeDlg::FlushEdits()
 
 	m_pEditBuf=NULL;
 	m_PointTree.Invalidate();
+
+	Disable(IDC_RESETATTR);
 
 	if( (m_bEditDBF&2) && m_pSelLayer->IsVisible() && (m_pSelLayer->Visibility(m_uSelRec)&2)) {
 		m_pDoc->RefreshViews();
@@ -1736,6 +1751,8 @@ void CShowShapeDlg::CancelAddition()
 	m_pSelLayer->m_vdbe->resize(--m_pSelLayer->m_nNumRecs);
 	m_pSelLayer->m_fpt.resize(m_pSelLayer->m_nNumRecs);
 	m_pSelLayer->UpdateShpExtent();
+	if(!m_pSelLayer->m_nNumRecs)
+		m_pSelLayer->m_bEditFlags&=~SHP_EDITSHP;
 	SetText(IDC_RESETATTR,"Reset Attr");
 	Disable(IDC_RESETATTR);
 	RemoveSelection();
@@ -2477,7 +2494,7 @@ UINT CShowShapeDlg::CopySelectedItem(CShpLayer *pDropLayer,HTREEITEM *phDropItem
 		if(count==1) {
 			HTREEITEM h=m_hSelRoot?m_hSelItem:m_PointTree.GetChildItem(m_hSelItem);
 			ASSERT(h);
-			msg.Format("%s\nAppend this record",GetTreeLabel(h));
+			msg.Format("%s\n%sppend this record",GetTreeLabel(h),m_pEditBuf?"Commit edits and a":"A");
 		}
 		else {
 			msg.Format("Append %u record%s in %s", count, (count>1)?"s":"", m_pSelLayer->Title());
@@ -2492,6 +2509,9 @@ UINT CShowShapeDlg::CopySelectedItem(CShpLayer *pDropLayer,HTREEITEM *phDropItem
 		if(!i) return -1;
 		pDropLayer->m_bDragExportPrompt=(i==1);
 	}
+
+	if(CancelSelChange())
+		return -1;
 
 	ASSERT(pDropLayer->CanAppendShpLayer(m_pSelLayer));
 
@@ -2523,15 +2543,14 @@ UINT CShowShapeDlg::CopySelectedItem(CShpLayer *pDropLayer,HTREEITEM *phDropItem
 
 void CShowShapeDlg::OnExportTreeItems(UINT id)
 {
-	if(CancelSelChange())
-		return;
+	//if(CancelSelChange())	return;
 
 	ASSERT(id<ID_APPENDLAYER_N);
 
 	CShpLayer *pLayer=(CShpLayer *)CLayerSet::vAppendLayers[id-ID_APPENDLAYER_0];
 	ASSERT(pLayer);
 
-	CopySelectedItem(pLayer,NULL);
+	CopySelectedItem(pLayer,NULL); //CancelSelChange() called after prompt
 }
 
 void CShowShapeDlg::OnDropTreeItem(HTREEITEM hDropItem)

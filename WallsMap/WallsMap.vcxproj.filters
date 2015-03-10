@@ -399,6 +399,9 @@
     <ClCompile Include="FileIsInUse.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="TableReplDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FontComboBox.h">
@@ -782,6 +785,9 @@
     <ClInclude Include="TableFillDlg.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="TableReplDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\bitmap1.bmp">
@@ -833,9 +839,6 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="res\icon2.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\ico00001.ico">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="res\folderclose.ico">

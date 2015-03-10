@@ -303,6 +303,7 @@
     <ClCompile Include="StdioFileEx.cpp" />
     <ClCompile Include="TabCombo.cpp" />
     <ClCompile Include="TableFillDlg.cpp" />
+    <ClCompile Include="TableReplDlg.cpp" />
     <ClCompile Include="TextFile.cpp" />
     <ClCompile Include="ThreadJob.cpp" />
     <ClCompile Include="ThumbListCtrl.cpp" />
@@ -439,6 +440,7 @@
     <ClInclude Include="StdGrfx.h" />
     <ClInclude Include="TabCombo.h" />
     <ClInclude Include="TableFillDlg.h" />
+    <ClInclude Include="TableReplDlg.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="ThreadJob.h" />
     <ClInclude Include="ThumbListCtrl.h" />
@@ -478,7 +480,6 @@
     <None Include="res\folderopen.ico" />
     <None Include="res\folders-img.bmp" />
     <None Include="res\FOLDER_OPEN.ico" />
-    <None Include="res\ico00001.ico" />
     <None Include="res\icon1.ico" />
     <None Include="res\icon2.ico" />
     <None Include="res\measure.cur" />

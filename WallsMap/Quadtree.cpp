@@ -375,11 +375,17 @@ void CQuadTree::QT_TestPoints(LPCSTR ptShpName)
 			}
 		    #endif
 		}
-		else if(!pShp->IsNotLocated(pShp->m_fpt[i])) {
-			CString sname;
-			pShp->m_pdb->Go(i+1);
-			pShp->m_pdb->GetTrimmedFldStr(sname, 53); //TSSID
-			nMissed++;
+		else {
+			CFltPoint latlon(pShp->m_fpt[i]);
+			if(pShp->m_iZone) {
+				geo_UTM2LatLon(latlon,pShp->m_iZone,geo_WGS84_datum);
+			}
+			if(!pShp->IsNotLocated(latlon)) {
+				CString sname;
+				pShp->m_pdb->Go(i+1);
+				pShp->m_pdb->GetTrimmedFldStr(sname, 53); //TSSID
+				nMissed++;
+			}
 		}
 		#else
 		nMissed+=(rec==0);

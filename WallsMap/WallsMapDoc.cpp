@@ -947,9 +947,6 @@ BOOL CWallsMapDoc::WriteNTL(CFileCfg *pFile,const CString &csPathName,BOOL bIncH
 				if(bShp) {
 					const CShpLayer &shp=(const CShpLayer &)layer;
 					SHP_MRK_STYLE const &mstyleS=shp.m_mstyle;
-					if(*shp.Title()=='T') {
-						int jj=0;
-					}
 					SHP_MRK_STYLE mstyle;
 					CLogFont font;
 					if(memcmp(&shp.m_mstyle,&mstyle,sizeof(mstyle))) {
@@ -1532,8 +1529,8 @@ CShpLayer *CWallsMapDoc::FindShpLayer(LPCSTR pName,UINT *pFldNum,UINT *pFldPfx/*
 		else return NULL;
 	}
 
-	if(_stricmp(CShpLayer::shp_ext[0],trx_Stpext(buf)))
-		strcat(buf,CShpLayer::shp_ext[0]);
+	if(_stricmp(SHP_EXT_SHP,trx_Stpext(buf)))
+		strcat(buf,SHP_EXT_SHP);
 
 	for(PML pml=m_layerset.InitTreePML();pml;pml=m_layerset.NextTreePML()) {
 		if(pml->LayerType()==TYP_SHP && (pFldPfx || ((CShpLayer *)pml)->ShpType()==CShpLayer::SHP_POLYGON)) {

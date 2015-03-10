@@ -34,7 +34,9 @@ BYTE *dbg_ptr=0;
 char * CShpLayer::new_point_str="<new point>";
 //#define LEN_NEW_POINT_STR 11 //in header
 
-const LPCSTR CShpLayer::shp_ext[CShpLayer::EXT_COUNT]={".shp",".shx",".dbf",".dbt",".dbe",".prj",".tmpshp",".qpj",".sbn",".sbx"};
+//enum {EXT_DBF,EXT_SHP,EXT_SHX,EXT_DBT,EXT_DBE,EXT_PRJ,EXT_TMPSHP,EXT_QPJ,EXT_SBN,EXT_SBX,EXT_COUNT};
+
+const LPCSTR CShpLayer::shp_ext[CShpLayer::EXT_COUNT]={".shp",".dbf",".shx",".dbt",".dbe",".prj",".tmpshp",".qpj",".sbn",".sbx"};
 const LPCSTR CShpLayer::lpstrFile_pfx="<file://";
 
 bool CShpLayer::m_bSelectedMarkerChg=false;
@@ -432,6 +434,7 @@ void CShpLayer::Init()
 
 	s = theApp.GetProfileString(szPreferences,szHighMrk,NULL);
 	m_mstyle_h.ReadProfileStr(s);
+	srand((UINT)time(NULL)); //for selection of symbol color when a shapefile is first added as a layer
 }
 
 void CShpLayer::UnInit()
@@ -683,7 +686,6 @@ BOOL CShpLayer::OpenDBF(LPSTR pathName,int shpTyp,UINT uFlags)
 		m_nNumRecs=m_pdb->NumRecs();
 		m_iNad=m_iNadOrg=m_pdbfile->iNad;
 		m_iZone=m_iZoneOrg=m_pdbfile->iZone;
-		//ASSERT(m_iZone!=-99 && m_iZone!=99); //could be zero
 		m_bProjected=m_iZone!=0;
 
 		if(!(m_nLblFld=m_pdbfile->lblfld))
@@ -1677,20 +1679,16 @@ int CShpLayer::ConvertPointsTo(CFltPoint *pfpt,int iNad,int iZone,UINT iCount)
 		return iZone;
 }
 
-/*
-void CShpLayer::ConvertPointFrom(CFltPoint &fpt,int iNad,int iZone)
+void CShpLayer::ConvertPointsFrom(CFltPoint *pFpt,int iNad,int iZone,UINT iCount)
 {
-	int zone=m_iZone;
-	GetConvertedPoint(fpt,m_iNad,zone?&zone:NULL,iNad,iZone);
-	ASSERT(m_iZone==(INT8)zone);
-
+	int iNadSave=m_iNad;
 	m_iNad=iNad;
+	int iZoneSave=m_iZone;
 	m_iZone=iZone;
-	ConvertPointsTo(&fpt,iNadSave,iZoneSave,1);
+	ConvertPointsTo(pFpt,iNadSave,iZoneSave,iCount);
 	m_iNad=iNadSave;
 	m_iZone=iZoneSave;
 }
-*/
 
 void CShpLayer::ConvertPointsFromOrg(CFltPoint *pt,int iCnt)
 {
@@ -1711,12 +1709,6 @@ BOOL CShpLayer::ConvertProjection(int iNad,int iZone,BOOL bUpdateViews)
 
 	ASSERT(NADZON_OK(m_iNad,m_iZone));
 	ASSERT(NADZON_OK(iNad,iZone));
-	/*
-	if(!m_iNad) {
-		m_iNad=iNad;
-		if(m_iZone==iZone) return bUpdateViews;
-	}
-	*/
 
 	if(m_nNumRecs) {
 		if(ShpType()==SHP_POINT) {
@@ -1726,9 +1718,14 @@ BOOL CShpLayer::ConvertProjection(int iNad,int iZone,BOOL bUpdateViews)
 		}
 		else {
 			ConvertPointsTo(&m_extent.tl,iNad,iZone,2);
-			if(m_ext.size())
+			if(m_ext.size()) {
 				//convert extents
 				ConvertPointsTo(&m_ext[0].tl,iNad,iZone,2*m_ext.size());
+				if(m_pQT) {
+					delete m_pQT; m_pQT=NULL;
+					AllocateQT();
+				}
+			}
 		}
 		
 		if(bUpdateViews) {
@@ -1819,6 +1816,11 @@ void CShpLayer::Sort_Vec_ShpRec(VEC_SHPREC &vec_shprec)
 	std::sort(vec_shprec.begin(),vec_shprec.end(),vec_shprec_pred);
 }
 
+static bool __inline isdelim(char c)
+{
+	return strchr(WORD_SEPARATORS,c)!=NULL;
+}
+
 int CShpLayer::FindInRecord(VEC_BYTE *pvSrchFlds,LPCSTR target,int lenTarget,WORD wFlags)
 {
 	//returns number of first field containing target, or zero.
@@ -1843,7 +1845,7 @@ int CShpLayer::FindInRecord(VEC_BYTE *pvSrchFlds,LPCSTR target,int lenTarget,WOR
 			UINT len=0; //no length limit!
 			pBuf=m_pdbfile->dbt.GetText(&len,dbtrec);
 
-			if(len && CDBTData::IsTextRTF(pBuf)) {
+			if(len && !(wFlags&F_MATCHRTF) && CDBTData::IsTextRTF(pBuf)) {
 				len=CDBTFile::StripRTF(pBuf,FALSE); //emiminate '{' prefix also
 			}
 			if(!pBuf || len<(UINT)lenTarget) continue;
@@ -1865,9 +1867,9 @@ int CShpLayer::FindInRecord(VEC_BYTE *pvSrchFlds,LPCSTR target,int lenTarget,WOR
 		LPCSTR p=pBuf;
 		while(p=strstr(p,target)) {
 			if(wFlags&F_MATCHWHOLEWORD) {
-				if(p>pBuf && !strchr(WORD_SEPARATORS,p[-1]) || !strchr(WORD_SEPARATORS,*(p+lenTarget))) {
+				if(p>pBuf && !isdelim(p[-1]) || !isdelim(*(p+lenTarget))) {
 					p+=lenTarget;
-					while(*p && strchr(WORD_SEPARATORS,*p)) p++;
+					//while(*p && isdelim(*p)) p++;
 					if(!*p) break;
 					continue;
 				}
@@ -1990,19 +1992,30 @@ int CShpLayer::SelectEditedShapes(UINT &nMatches,UINT uFlags,BOOL bAddToSel,CFlt
 
 void CShpLayer::SetShapeClr()
 {
-	int idx=MainColorStartIdx();
-	int nLayers=m_pDoc->NumLayers();
-	COLORREF clr=CColorPopup::m_crColors[idx].crColor;
-	for(int tries=CColorPopup::m_nNumColors;tries;tries--) {
-		int n=0;
-		for(;n<nLayers;n++) {
-			PTL pLayer=m_pDoc->LayerPtr(n);
-			if(pLayer->LayerType()==TYP_SHP && ((CShpLayer *)pLayer)->ShpType()==ShpType() &&
-				((CShpLayer *)pLayer)->MainColor()==clr) break;
+	COLORREF clr;
+	bool bPt=ShpType()==SHP_POINT;
+	int n,nLayers=m_pDoc->NumLayers();
+	VEC_DWORD vc; //colors in use
+	vc.reserve(nLayers);
+	for(n=0;n<nLayers;n++) {
+		PTL pLayer=m_pDoc->LayerPtr(n);
+		if(pLayer->LayerType()==TYP_SHP && bPt==(((CShpLayer *)pLayer)->ShpType()==SHP_POINT)) {
+			clr=((CShpLayer *)pLayer)->MainColor();
+			if(std::find(vc.begin(), vc.end(), clr)==vc.end()) vc.push_back(clr);
 		}
-		if(n==nLayers) break;
-		if(++idx>=CColorPopup::m_nNumColors) idx=0;
-		clr=CColorPopup::m_crColors[idx].crColor;
+	}
+	int idx=bPt?16:31;  //red for points, light gray for polys
+	int nColors=CColorPopup::m_nNumColors-2; //exclude first (black) and last (white)
+	for(n=nColors;n;n--) {
+        clr=CColorPopup::m_crColors[idx].crColor;
+		if(std::find(vc.begin(), vc.end(), clr)==vc.end())
+			break;
+		//try next available color --
+		if(++idx>nColors) idx=1; //skip black (idx==0)
+	}
+	if(!n) {
+		//all colors are in use
+		clr=CColorPopup::m_crColors[rand()%nColors + 1].crColor;
 	}
 	MainColor()=clr;
 }
@@ -2306,16 +2319,24 @@ BOOL CShpLayer::OpenLinkedDoc(LPCSTR pPath)
 }
 
 
-void CShpLayer::DeleteComponents(LPCSTR pathName)
+bool CShpLayer::DeleteComponents(LPCSTR pathName)
 {
 	//Delete all shapefile components --
 	char pathBuf[MAX_PATH];
-
 	LPSTR pExt=trx_Stpext(strcpy(pathBuf,pathName));
+
+	strcpy(pExt,SHP_EXT_DBF);
+	if(_unlink(pathBuf)==-1 && errno==EACCES) {
+		CMsgBox("%s --\n\nThis shapefile is protected by another program (or instance of WallsMap) can't be overwritten.",pathName);
+		return false;
+	}
+
 	for(int i=0;i<CShpLayer::EXT_COUNT;i++) {
+		if(i==CShpLayer::EXT_DBF) continue;
 		strcpy(pExt,CShpLayer::shp_ext[i]);
 		_unlink(pathBuf);
 	}
+	return true;
 }
 
 void CShpLayer::WritePrjFile(LPCSTR pathName,int iNad,int iZone)
@@ -2555,12 +2576,6 @@ int CShpLayer::CreateShp(LPSTR ebuf,LPCSTR shpPathName,VEC_DWORD &vRec,VEC_FLTPO
 					CFltPoint fpt=m_fpt[rec];
 					if(!bUseViewCoord && m_bConverted)
 						ConvertPointsTo(&fpt,m_iNadOrg,m_iZoneOrg,1);
-#if 0
-					if(IsNotLocated(fpt)) {
-						fpt.y=m_pdbfile->noloc_lat;
-						fpt.x=m_pdbfile->noloc_lon;
-					}
-#endif
 					vFpt.push_back(fpt);
 					if(!bDeleted) UpdateExtent(extent,fpt);
 					if(bWrite3D && m_pdbfile->bTypeZ) {
@@ -2635,6 +2650,7 @@ int CShpLayer::CreateShp(LPSTR ebuf,LPCSTR shpPathName,VEC_DWORD &vRec,VEC_FLTPO
 				nOutRecs++;
 				CFltRect ext(m_ext[(vRec[n]&~0x80000000)-1]);
 				if(!bUseViewCoord && m_bConverted) {
+					//convert output extent to original crs --
 					ConvertPointsTo(&ext.tl,m_iNadOrg,m_iZoneOrg,2);
 				}
 #ifdef _USE_XFORM
@@ -2764,12 +2780,6 @@ int CShpLayer::CreateShp(LPSTR ebuf,LPCSTR shpPathName,VEC_DWORD &vRec,VEC_FLTPO
 					}
 				}
 				shpRec.fpt=vFpt[n]; //was nOutRecs++
-#if 0
-					if(IsNotLocated(shpRec.fpt)) {
-						shpRec.fpt.y=m_pdbfile->noloc_lat;
-						shpRec.fpt.x=m_pdbfile->noloc_lon;
-					}
-#endif
 				cfShp.Write(&shpRec,sizRecHdr);
 				offset+=sizRecHdr;
 				nOutRecs++;
@@ -3041,6 +3051,15 @@ BOOL CShpLayer::ExportShapes(LPCSTR shpName,CShpDef &shpdef,VEC_DWORD &vRec)
 				//Copying from source database --
 				int fSrc=*pIdx;
 				VERIFY(pSrc=(LPCSTR)m_pdb->FldPtr(fSrc));
+
+				REPL_FCN *pRepl=NULL;
+				for(it_repl_fcn it=shpdef.v_repl_fcn.begin(); it!=shpdef.v_repl_fcn.end(); it++) {
+					if(nF==it->fld) {
+					   pRepl=&*it;
+					   break;
+					}
+				}
+
 				int lenSrc=m_pdb->FldLen(fSrc);
 
 #ifdef _DEBUG
@@ -3069,8 +3088,24 @@ BOOL CShpLayer::ExportShapes(LPCSTR shpName,CShpDef &shpdef,VEC_DWORD &vRec)
 					UINT dbtRec;
 					if(m_pdb->FldTyp(fSrc)=='M') {
 						if((dbtRec=CDBTFile::RecNo(pSrc))) {
-							if((dbtRec=dbt.AppendCopy(m_pdbfile->dbt,dbtRec))==(UINT)-1)
-								goto _failDBT;
+							if(pRepl) {
+								//Replace text in memo --
+								UINT len=0;
+								LPCSTR p=m_pdbfile->dbt.GetText(&len,dbtRec);
+								if(strstr(p,pRepl->sOld)) {
+									CString s(p);
+									s.Replace(pRepl->sOld,pRepl->sNew);
+									EDITED_MEMO memo;
+									memo.pData=(LPSTR)(LPCSTR)s;
+									if(!(dbtRec=dbt.PutText(memo)))
+									  goto _failDBT;
+								}
+								else pRepl=NULL;
+							}
+							if(!pRepl) {
+								if((dbtRec=dbt.AppendCopy(m_pdbfile->dbt,dbtRec))==(UINT)-1)
+									goto _failDBT;
+							}
 						}
 					}
 					else {
@@ -3251,9 +3286,16 @@ BOOL CShpLayer::ExportShapes(LPCSTR shpName,CShpDef &shpdef,VEC_DWORD &vRec)
 		AfxMessageBox(msg);
 
 		if(NADZON_OK(iNad,iZone)) {
-			strcpy(ebuf+strlen(ebuf),SHP_EXT_PRJ);
+			strcpy(pExt,SHP_EXT_PRJ);
 			WritePrjFile(ebuf,(iNad==1 && m_bWGS84)?0:iNad,iZone);
 		}
+
+		if(ShpType()==SHP_POINT && HasXCFlds()) {
+			strcpy(pExt,SHP_EXT_DBE);
+			CFile file(ebuf,CFile::modeCreate|CFile::modeWrite);
+			file.Close();
+		}
+
 		if(bSwitched) {
 			m_iNad=iNadSav;
 			m_iZone=iZoneSav;

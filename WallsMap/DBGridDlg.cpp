@@ -23,6 +23,7 @@
 #include "WebMapFmtDlg.h"
 #include "CopySelectedDlg.h"
 #include "TableFillDlg.h"
+#include "TableReplDlg.h"
 
 CDBGridDlg::CDBGridDlg(CShpLayer *pShp,VEC_DWORD *pvRec,CWnd* pParent /*=NULL*/)
 	: CResizeDlg(CDBGridDlg::IDD, pParent)
@@ -159,7 +160,8 @@ BEGIN_MESSAGE_MAP(CDBGridDlg, CResizeDlg)
 	ON_COMMAND(ID_UNDELETE_RECORDS, &CDBGridDlg::OnUndeleteRecords)
 	ON_COMMAND_RANGE(ID_APPENDLAYER_0,ID_APPENDLAYER_N,OnCopySelected)
 	ON_MESSAGE(WM_COMMANDHELP,OnCommandHelp)
-	ON_COMMAND(ID_TABLE_FILL, &CDBGridDlg::OnTableFill)
+	ON_COMMAND(ID_TABLE_FILL, OnTableFill)
+	ON_COMMAND(ID_TABLE_REPL, OnTableRepl)
 END_MESSAGE_MAP()
 
 
@@ -1270,11 +1272,19 @@ LRESULT CDBGridDlg::OnListContextMenu(WPARAM wParam, LPARAM lParam)
 				pPopup->DeleteMenu(ID_LINKTEST, MF_BYCOMMAND);
 			}
 
-			if(!m_wTableFillFld) pPopup->DeleteMenu(ID_TABLE_FILL, MF_BYCOMMAND);
-			else {
-				if((!m_bAllowEdits || (!bIgnoreEditTS && IsFldReadonly(m_wTableFillFld))))
-					pPopup->EnableMenuItem(ID_TABLE_FILL, MF_BYCOMMAND|MF_DISABLED|MF_GRAYED);
+			if(!m_wTableFillFld) {
+				pPopup->DeleteMenu(ID_TABLE_REPL, MF_BYCOMMAND);
+				pPopup->DeleteMenu(ID_TABLE_FILL, MF_BYCOMMAND);
 			}
+			else {
+				if((!m_bAllowEdits || (!bIgnoreEditTS && IsFldReadonly(m_wTableFillFld)))) {
+					pPopup->EnableMenuItem(ID_TABLE_REPL, MF_BYCOMMAND|MF_DISABLED|MF_GRAYED);
+					pPopup->EnableMenuItem(ID_TABLE_FILL, MF_BYCOMMAND|MF_DISABLED|MF_GRAYED);
+				}
+				//only support repl for C and M fields for now --
+				if(m_pdb->FldTyp(m_iColSort)=='L') pPopup->DeleteMenu(ID_TABLE_REPL, MF_BYCOMMAND);
+			}
+
 			VERIFY(pPopup->TrackPopupMenu(TPM_LEFTALIGN|TPM_RIGHTBUTTON,point.x,point.y,this));
 		}
 	}
@@ -1364,8 +1374,8 @@ void CDBGridDlg::OpenMemo(DWORD nRec, UINT nFld)
 				"While that's the case, any changes you make to a memo field are provisional and\n"
 				"won't affect the table display until edits made to the record are committed.",
 				m_pShp->GetTitleLabel(s,nRec),
-				"Don't display this again for this shapefile."))
-				m_pShp->m_bDupEditPrompt=true;
+				"Don't display this again for this shapefile.")) m_pShp->m_bDupEditPrompt=true;
+
 			m_uPromptRec=nRec;
 		}
 		app_pShowDlg->OpenMemo(nFld);
@@ -1801,6 +1811,9 @@ LRESULT CDBGridDlg::OnFindDlgMessage(WPARAM wParam, LPARAM lParam)
 		if(m_pFindDlg->SearchDown()) m_wFlags&=~F_SEARCHUP;
 		else m_wFlags|=F_SEARCHUP;
 
+		if(m_pFindDlg->m_bSearchRTF) m_wFlags|=F_MATCHRTF;
+		else m_wFlags&=~F_MATCHRTF;
+
 		if(!bDel) {
  			if(m_pFindDlg->MatchCase()) m_wFlags|=F_MATCHCASE;
 			else m_wFlags&=~F_MATCHCASE;
@@ -2075,7 +2088,8 @@ static UINT GetBadPathnames(int fcn,LINK_PARAMS &lp,LPCSTR pShpPath,LPCSTR pMemo
 						if(fcn==-2) {
 							//update log index --
 							char keybuf[256];
-							VERIFY(0==CDBGridDlg::m_trx.InsertKey(trx_Stncp(keybuf,path,256)));
+							int e=CDBGridDlg::m_trx.InsertKey(trx_Stncp(keybuf,path,256));
+							ASSERT(!e || e==CTRXFile::ErrDup);
 						}
 						else {
 							//save path as stored in memo (normally a relative path),
@@ -2368,7 +2382,7 @@ void CDBGridDlg::OnCopySelected(UINT id)
 		msg.Format("Are you sure you want to append %u record%s to %s?",m_nSelCount,(m_nSelCount>1)?"s":"",pLayer->Title());
 		int i=MsgCheckDlg(m_hWnd,MB_OKCANCEL,msg,m_pShp->Title(),"Don't ask me this again for this target");
 		if(!i) return;
-		pLayer->m_bDragExportPrompt=(i==1);
+		pLayer->m_bDragExportPrompt=(i==1); //if 2, don't ask again
 	}
 
 	ASSERT(pLayer->CanAppendShpLayer(m_pShp));
@@ -2393,27 +2407,30 @@ void CDBGridDlg::OnCopySelected(UINT id)
 	if(!m_csCopyMsg.IsEmpty()) AfxMessageBox(m_csCopyMsg);
 }
 
+bool CDBGridDlg::ConfirmFillRepl()
+{
+	if(m_pShp->m_bFillPrompt) {
+		CString msg;
+		msg.Format("Confirm that you want to revise field %s in %u%s records without prompting.",
+			m_pdb->FldNamPtr(m_wTableFillFld),m_nSelCount,(m_nSelCount>=50)?" (!)":"");
+		if(m_pShp->m_pdbfile->HasTimestamp(1))
+			msg.AppendFormat("\nThis operation will %s revise the UPDATED timestamps.", bIgnoreEditTS?"NOT":"also");
+
+		int i=MsgCheckDlg(m_hWnd,MB_OKCANCEL,msg,m_pShp->Title(),"Don't require confirmation again with this shapefile");
+		if(!i) return false;
+		m_pShp->m_bFillPrompt=(i==1); //if 2, don't prompt again
+	}
+	return true;
+}
+
 void CDBGridDlg::OnTableFill()
 {
 	CString msg;
 	ASSERT(m_wTableFillFld);
 	CTableFillDlg dlg(m_wTableFillFld,this);
 
-	if(IDOK!=dlg.DoModal())
-		return;
+	if(IDOK!=dlg.DoModal() || !ConfirmFillRepl()) return;
 
-	if(m_pShp->m_bFillPrompt) {
-		CString msg;
-		msg.Format("Confirm that you want replace the content of field %s in %u records.\n"
-			"Note that this operation will overwrite existing data and can't be undone.",
-			m_pdb->FldNamPtr(m_wTableFillFld),m_nSelCount);
-		if(m_pShp->m_pdbfile->HasTimestamp(1))
-			msg.AppendFormat("\nThis will %s revise the UPDATED timestamps.", bIgnoreEditTS?"NOT":"also");
-
-		int i=MsgCheckDlg(m_hWnd,MB_OKCANCEL,msg,m_pShp->Title(),"Don't require confirmation again with this shapefile");
-		if(!i) return;
-		m_pShp->m_bFillPrompt=(i==1);
-	}
 	BeginWaitCursor();
 	char fldbuf[256];
 	UINT nFilled=0,uOpenRec=0;
@@ -2510,6 +2527,222 @@ void CDBGridDlg::OnTableFill()
 	EndWaitCursor();
 	//AfxMessageBox(msg);
 	MsgInfo(m_hWnd,msg,m_pShp->Title());
+	m_list.SetFocus();
+
+}
+
+static bool __inline isdelim(char c)
+{
+	return strchr(WORD_SEPARATORS,c)!=NULL;
+}
+
+static int ReplaceStr(CString &s, LPCSTR psu, LPCSTR pOld, LPCSTR pNew, BOOL bMatchWord,int lenMax)
+{
+	//If psu!=0, it points to an upper case version of s that we must scan for matches,
+	//otherwise if !bMatchWord we can perform a simple replacement and check the length;
+
+	int nRepl=0;
+	int lenS=s.GetLength();
+	int lenOld=strlen(pOld);
+	int lenNew=strlen(pNew);
+	int incLen=lenNew-lenOld;
+	VEC_INT vOff;
+
+	if(!psu && !bMatchWord) {
+		nRepl=s.Replace(pOld,pNew);
+		return (lenS+nRepl*incLen>lenMax)?0:nRepl;
+	}
+
+	if(!psu) {
+		//Don't ignore case and operate directly on string.
+		//First, save offsets of valid matches assuming bulding from left --
+		for(int i=0; (i=s.Find(pOld, i))>=0;i+=lenOld) {
+			if((!i || isdelim(s[i-1])) && ((lenS==i+lenOld) || isdelim(s[i+lenOld]))) {
+				vOff.push_back(i);
+				nRepl++;
+			}
+		}
+	}
+	else {
+		//ignoring case - determine replacement offsets using uppercase version
+		for(LPCSTR p=psu; p=strstr(p, pOld); p+=lenOld) {
+			if(!bMatchWord || ((p==psu || isdelim(p[-1])) && (!p[lenOld] || isdelim(p[lenOld])))) {
+				vOff.push_back(p-psu);
+				nRepl++;
+			}
+		}
+	}
+
+	if(!nRepl) return 0;
+	if(lenS+nRepl*incLen>lenMax) return -1;
+
+	LPSTR pDst0=s.GetBuffer(lenS+((incLen>0)?(nRepl*incLen):0)+1);
+	LPSTR pSrc0=pDst0;
+
+	if(incLen>0) {
+		//one data shift to right is required
+		pSrc0=(LPSTR)memmove(pSrc0+nRepl*incLen,pSrc0,lenS+1);
+	}
+
+	nRepl=0;
+	for(it_int it=vOff.begin();it!=vOff.end();it++,nRepl++) {
+		if(incLen) {
+			//first, restore gap following last replacement
+			int lenGap=nRepl?(*it-*(it-1)-lenOld):*it;
+			LPSTR pSrc=pSrc0+*it-lenGap;
+			LPSTR pDst=pDst0+*it-lenGap+nRepl*incLen;
+			memcpy(pDst,pSrc,lenGap);
+			memcpy(pDst+lenGap,pNew,lenNew);
+			if(it+1==vOff.end()) {
+				strcpy(pDst+lenGap+lenNew,pSrc+lenGap+lenOld);
+			}
+		}
+		else {
+			memcpy(pDst0+*it, pNew, lenNew);
+		};
+	}
+
+	s.ReleaseBuffer();
+
+	return nRepl;
+}
+
+void CDBGridDlg::OnTableRepl()
+{
+	CString s;
+	ASSERT(m_wTableFillFld);
+	CTableReplDlg dlg(m_wTableFillFld,this);
+
+	if(IDOK!=dlg.DoModal() || !ConfirmFillRepl()) return;
+	
+	BeginWaitCursor();
+
+	UINT nRecUpdates=0,nReplacements=0,nOpenRec=0,nOverflow=0;
+	char fTyp=m_pdb->FldTyp(m_wTableFillFld);
+	WORD fLen=m_pdb->FldLen(m_wTableFillFld);
+
+	LPCSTR pOldStr=(LPCSTR)dlg.m_csFindWhat;
+	LPCSTR pNewStr=(LPCSTR)dlg.m_csReplWith;
+	LPCSTR psu=NULL; //pointer to uppercase copy of field value if needed
+
+	UINT lenNew=strlen(pNewStr);
+	UINT lenOld=strlen(pOldStr);
+
+	POSITION pos = m_list.GetFirstSelectedItemPosition();
+	while (pos)	{
+	  int nItem=m_list.GetNextSelectedItem(pos);
+	  if(!m_iColSorted && !m_bAscending) {
+		  nItem=m_nNumRecs-nItem-1;
+	  }
+	  UINT rec=m_vRecno[nItem];
+	  if(app_pShowDlg && app_pShowDlg->IsRecOpen(m_pShp, rec)) {
+		  nOpenRec++;
+		  continue;
+	  }
+	  if(fTyp=='M') {
+		  if(app_pDbtEditDlg && app_pDbtEditDlg->IsMemoOpen(m_pShp, rec, m_wTableFillFld) ||
+			  app_pImageDlg && app_pImageDlg->IsMemoOpen(m_pShp, rec, m_wTableFillFld)) {
+			  nOpenRec++;
+			  continue;
+		  }
+	  }
+	  if(!m_pdb->Go(rec)) {
+		  int nRepl=0;
+		  LPSTR p=(LPSTR)m_pdb->FldPtr(m_wTableFillFld);
+		  switch(fTyp) {
+			  case 'C' :
+				  s.SetString(p,fLen);
+				  s.TrimRight();
+				  if(!lenOld) {
+					  if(!s.IsEmpty()) continue;
+					  memcpy(p,pNewStr,lenNew);
+					  nRepl=1;
+				  }
+				  else {
+					  CString su;
+					  if((int)lenOld>s.GetLength())
+						  continue; //no possible match
+					  if(!dlg.m_bMatchCase) {
+						  su=s;
+						  su.MakeUpper();
+						  psu=(LPCSTR)su;
+					  }
+					  nRepl=ReplaceStr(s,psu,pOldStr,pNewStr,dlg.m_bMatchWord,fLen);
+					  if(nRepl<=0) {
+						  if(nRepl<0) nOverflow++;
+						  continue;
+					  }
+					  memset(p,' ',fLen);
+					  memcpy(p,(LPCSTR)s,s.GetLength());
+				  }
+			      break;
+
+			  case 'M':
+			  {
+					EDITED_MEMO memo;
+					memo.recNo=CDBTFile::RecNo((LPCSTR)p);
+					if(memo.recNo) {
+						if(!lenOld) continue; //only modify empty memos if "find what" empty
+						UINT lenData=0; //get complete memo
+						psu=m_pdbfile->dbt.GetText(&lenData, memo.recNo);
+						if(lenOld>lenData)
+							continue;
+						s=psu;
+						if(!dlg.m_bMatchCase) _strupr((LPSTR)psu);
+						else psu=NULL;
+						nRepl=ReplaceStr(s, psu, pOldStr, pNewStr, dlg.m_bMatchWord, lenData+64*1024);
+						if(nRepl<=0) {
+							if(nRepl<0) nOverflow++;
+							continue;
+						}
+						memo.recCnt=EDITED_MEMO::GetRecCnt(lenData);
+						memo.pData=(LPSTR)(LPCSTR)s;
+					}
+					else {
+						//existing memo is empty - modify only if lenOld==0 
+						if(lenOld) continue;
+						ASSERT(lenNew);
+						memo.pData=(LPSTR)pNewStr;
+						nRepl=1;
+					}
+					
+					CDBTFile::SetRecNo((LPSTR)p,m_pdbfile->dbt.PutText(memo));
+					m_pdbfile->dbt.FlushHdr();
+					break;
+			  }
+		  } //switch(fTyp)
+
+		  if(nRepl>0) {
+			  nRecUpdates++;
+			  nReplacements+=nRepl;
+			  m_pdb->FlushRec();
+			  m_pShp->ChkEditDBF(rec);
+			  if(m_pShp->m_pdbfile->HasTimestamp(1)) {
+				  ASSERT(SHP_DBFILE::bEditorPrompted);
+				  m_pShp->UpdateTimestamp(m_pdb->RecPtr(),FALSE);
+			  }
+		  }
+	  } //Go()
+	} //while(pos)
+
+	if(nRecUpdates) {
+		m_list.Invalidate(0);
+	}
+
+	s.Format("%u of %u selected records revised ", nRecUpdates, m_nSelCount);
+	if(nRecUpdates) s.AppendFormat("with %u replacements.",nReplacements);
+	else s+="(No matches found.)";
+
+	if(nOpenRec || nOverflow) {
+		s+="\n\nCAUTION: ";
+		if(nOpenRec) s.AppendFormat("%u records open in other dialogs were not examined. ", nOpenRec);
+		if(nOverflow) {
+			s.AppendFormat("%u records were left unchanged to avoid exceeding the field length.");
+		}
+	}
+
+	EndWaitCursor();
+	MsgInfo(m_hWnd,s,m_pShp->Title());
 	m_list.SetFocus();
 
 }

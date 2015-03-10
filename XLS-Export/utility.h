@@ -20,6 +20,13 @@ BOOL GetVarText(LPSTR dst,CDaoRecordset &rs,int nFld,int nLen);
 BOOL GetBoolCharVal(LPSTR dst,char c);
 bool GetBool(CDaoRecordset &rs,int nFld);
 void GetBoolStr(LPSTR s,CDaoRecordset &rs,int nFld);
+void GetDateStr(LPSTR p,CDaoRecordset &rs,int nFld);
+BOOL GetTempFilePathWithExtension(CString &csPath,LPCSTR pExt);
+int     MsgCheckDlg(HWND hWnd, UINT mb, LPCSTR msg, LPCSTR title, LPCSTR pDoNotAsk);
+int    MsgInfo(HWND hWnd, LPCSTR msg, LPCSTR title, UINT style=0);
+bool    MsgOkCancel(HWND hWnd, LPCSTR msg, LPCSTR title);
+int     MsgYesNoCancelDlg(HWND hWnd, LPCSTR msg, LPCSTR title, LPCSTR pYes, LPCSTR pNo, LPCSTR pCancel);
+void OpenFileAsText(LPCSTR file);
 #endif
 
 

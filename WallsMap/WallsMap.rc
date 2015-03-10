@@ -161,6 +161,7 @@ BEGIN
         MENUITEM "Marker for selected points...", ID_SETSELECTEDMARKER
         MENUITEM SEPARATOR
         MENUITEM "&Text editor preferences...", 33095
+        MENUITEM "&Name for signing timestamps...", ID_PREF_EDITORNAME
         MENUITEM "URL for web map navigation...", ID_WEBMAP_FORMAT
         MENUITEM "&Google Earth (KML) launch options...", ID_PREFERENCES_GE
     END
@@ -475,6 +476,7 @@ BEGIN
     BEGIN
         MENUITEM "Column visibility...",        ID_CHKCOLUMNS
         MENUITEM "Find...",                     ID_EDIT_FIND
+        MENUITEM "Replace...",                  ID_TABLE_REPL
         MENUITEM "Fill field...",               ID_TABLE_FILL
         MENUITEM "Find broken image links...",  33183
         MENUITEM SEPARATOR
@@ -607,9 +609,10 @@ FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     EDITTEXT        1152,43,6,167,12,ES_AUTOHSCROLL | WS_GROUP
     COMBOBOX        IDC_LOOKIN,43,26,66,40,CBS_DROPDOWNLIST | WS_TABSTOP
-    CONTROL         "Search memos",IDC_SEARCH_MEMOS,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,117,27,68,10
-    CONTROL         "Match &whole word only",1040,"Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,4,60,100,12
-    CONTROL         "Match &case and accents",1041,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,4,76,88,12
+    CONTROL         "Search memos",IDC_SEARCH_MEMOS,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,117,28,68,10
+    CONTROL         "Match &whole word only",1040,"Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,6,47,97,10
+    CONTROL         "Match &case and accents",1041,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,6,63,97,10
+    CONTROL         "Search RTF markup",IDC_SEARCH_RTF,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,6,79,97,10
     CONTROL         "&Up",1056,"Button",BS_AUTORADIOBUTTON | WS_GROUP,111,72,25,12
     CONTROL         "&Down",1057,"Button",BS_AUTORADIOBUTTON,138,72,35,12
     DEFPUSHBUTTON   "&Find Next",IDOK,221,5,50,14,WS_GROUP
@@ -1611,6 +1614,26 @@ BEGIN
     LTEXT           "Records selected for revision:",IDC_STATIC,12,9,95,8
 END
 
+IDD_TABLE_REPL DIALOGEX 0, 0, 317, 148
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Select All",IDC_SELECT_ALL,138,7,39,12,BS_FLAT | NOT WS_VISIBLE
+    EDITTEXT        IDC_FIND_WHAT,7,36,303,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_REPL_WITH,7,67,303,14,ES_AUTOHSCROLL
+    CONTROL         "Match case",IDC_MATCH_CASE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,105,54,10
+    CONTROL         "Match whole word",IDC_MATCH_WORD,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,72,105,74,10
+    CONTROL         "Extended  ( \\n, \\t, \\xhh )",IDC_EXTENDED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,150,105,106,10
+    DEFPUSHBUTTON   "OK",IDOK,203,131,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,260,131,50,14
+    GROUPBOX        "Find options",IDC_STATIC,7,90,303,37
+    LTEXT           "Records selected for revision:",IDC_STATIC,8,9,95,8
+    LTEXT           "Find what:",IDC_STATIC,9,27,59,8
+    LTEXT           "Replace with:",IDC_STATIC,7,57,59,8
+    LTEXT           "1234567",IDC_ST_FIELD,107,9,28,8
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -2020,6 +2043,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 133
     END
+
+    IDD_TABLE_REPL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 310
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 145
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -2353,7 +2384,7 @@ BEGIN
     IDS_INSERT_FILELINK     "Select File for Opening via URL"
     IDS_SAVETOFILE          "File Path and Name for Saving Selected Text"
     IDP_AFXOLEINIT_FAILED   "Failed to initialize Object Linking and Embedding"
-    IDS_ABOUT_TITLE         "WallsMap v0.3, Build 2014-12-12 (%s)\nCopyright © 2014 David McKenzie, Austin TX."
+    IDS_ABOUT_TITLE         "WallsMap v0.3, Build 2015-03-09 (%s)\nCopyright © 2015 David McKenzie, Austin TX."
     IDS_WEBMAP_INFO         "Enter a URL for instructing your default browser to open a web mapping application at a specific location. Your entry must include ""<LAT>"" and ""<LON>"" (no quotes) as placeholders for the location's latitude and longitude in decimal degrees. Optionally include ""<NAM>"" for a label."
     IDS_FMT_PLACEMARK       "\t<Placemark>\r\n\t\t<name>%s</name>\r\n%s%s\r\n\t\t<styleUrl>#sn_W</styleUrl>\r\n\t\t<Point><coordinates>%.7f,%.7f,0</coordinates></Point>\r\n\t</Placemark>\r\n"
     IDS_FMT_LOOKAT          "%s<LookAt>\r\n%s<longitude>%.7f</longitude><latitude>%.7f</latitude>\r\n%s<altitude>0</altitude><range>%u</range><tilt>0</tilt><heading>0</heading>\r\n%s</LookAt>"

@@ -778,7 +778,7 @@ int main(int argc,char **argv)
   }
   
   if(!c) {
-    printf("CSS2SRV v2.2 - Convert Files from Compass to Walls 2.0 B8 Format\n"
+    printf("CSS2SRV v2.2 - Convert Files from Compass to Walls 2.0 Format\n"
 		   "\n"
            "USAGE: css2srv [-s] [-u] [-c] [-p <wpj_file>] <filespec[.DAT]> [...]\n"
 		   "\n"

@@ -168,7 +168,7 @@ void CMagDlg::DisplayDECL(BOOL bValid)
 
 	if(m_MD.modnum>0) {
 		CString s;
-		s.Format("%.2f",m_MD.decl);
+		s.Format("%.3f",m_MD.decl);
 		SetText(IDC_DECLINATION,s);
 		s.Format("%.0f nT",mag_HorzIntensity);
 		SetText(IDC_INTENSITY,s);

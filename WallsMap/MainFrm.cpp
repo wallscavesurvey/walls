@@ -924,7 +924,9 @@ void CMainFrame::OnGPSPortSetting()
 		}
 		else pGPSDlg->BringWindowToTop();
 	}
-	else pGPSDlg=new CGPSPortSettingDlg(GetDesktopWindow());
+	else {
+		CGPSPortSettingDlg *p=new CGPSPortSettingDlg(GetDesktopWindow());
+	}
 }
 
 void CMainFrame::OnGpsOptions()

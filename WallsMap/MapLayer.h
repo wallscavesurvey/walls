@@ -566,6 +566,7 @@ public:
 	void RefreshTables();
 
 	bool IsGeoWgs84() {return m_iZone==0 && m_iNad==1;}
+	bool IsWgs84() { return abs(m_iZone)<=60 && m_iNad==1;}
 	int NumLayers() const {return (int)m_layers.size();}
 
 	PML MapLayerPtr(int iPos) {return (PML)m_layers.rbegin()[iPos];}

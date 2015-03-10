@@ -425,18 +425,19 @@ void CShpLayer::ListMemoFields()
 
 bool CShpLayer::IsNotLocated(double lat,double lon)
 {
+	#define MAX_NOERR 0.0000005 
 	bool b=false;
 	double latx=m_pdbfile->noloc_lat;
 	double lonx=m_pdbfile->noloc_lon;
 	switch(m_pdbfile->noloc_dir) {
 		case 0 : break;
-		case 1 : b=(lat>=latx && lon<=lonx);
+		case 1 : b=(lat>=latx-MAX_NOERR && lon<=lonx+MAX_NOERR);
 			     break;
-		case 2 : b=(lat>=latx && lon>=lonx);
+		case 2 : b=(lat>=latx-MAX_NOERR && lon>=lonx-MAX_NOERR);
 			     break;
-		case 3 : b=(lat<=latx && lon<=lonx);
+		case 3 : b=(lat<=latx+MAX_NOERR && lon<=lonx+MAX_NOERR);
 			     break;
-		case 4 : b=(lat<=latx && lon>=lonx);
+		case 4 : b=(lat<=latx+MAX_NOERR && lon>=lonx-MAX_NOERR);
 			     break;
 	}
 	return b;
@@ -498,6 +499,11 @@ bool CShpLayer::CompareLocs(bool bChangedPfx)
 	CString sLocL,sLocR;
 	CFltPoint fptL=m_fpt[pdbL->Position()-1];
 	CFltPoint fptR=pShpR->m_fpt[pdbR->Position()-1];
+
+	if(m_iZone) {
+		geo_UTM2LatLon(fptL,m_iZone,geo_WGS84_datum);
+		geo_UTM2LatLon(fptR,m_iZone,geo_WGS84_datum);
+	}
 
 	bool bNolocL=IsNotLocated(fptL);
 	bool bNolocR=IsNotLocated(fptR);
@@ -706,7 +712,8 @@ int CShpLayer::CompareUpdates(BOOL bIncludeAll)
 
 			if(trxrec.rec&0xE0000000) {
 				//same record accessed earlier in loop, implying duplicate key in reference!
-				sprintf(pPathbuf, "Aborted: Key %s in reference is duplicated!",trx_Stxpc(pKeybuf));
+				pathR=trx_Stxpc(pKeybuf); pathR.Trim();
+				sprintf(pPathbuf, "Aborted: Key %s in reference is duplicated!",(LPCSTR)pathR);
 				pErrIdx=pPathbuf;
 				return -1;
 			}
@@ -955,6 +962,7 @@ int CShpLayer::CompareNewRecs()
 		{
 			clrpfx(8);
 			CFltPoint fptR=pShpR->m_fpt[pdbR->Position()-1];
+			if(m_iZone) geo_UTM2LatLon(fptR, m_iZone, geo_WGS84_datum);
 
 			if(IsNotLocated(fptR)) {
 				writelog("LAT/LONG%s||\r\n", pfx);
@@ -1127,9 +1135,10 @@ int CShpLayer::CompareShp(CString &csPathName, CString &summary, VEC_COMPSHP &vC
 								sTemp+='\n';
 								sTemp+=pShpR->LayerPath(pathL);
 							}
+							pathL=trx_Stxpc(keybuf); pathL.TrimRight();
 							pathR.Format("Compare aborted - A duplicated key value, \"%s\", was found in the following shapefile%s:\n\n"
 								"%s\n\nThe selected set must collectively have unique (or empty) key values.",
-								trx_Stxpc(keybuf),p,(LPCSTR)sTemp);
+								(LPCSTR)pathL,p,(LPCSTR)sTemp);
 							pErrIdx=pathR;
 						}
 						goto _errExit;
@@ -1166,8 +1175,11 @@ int CShpLayer::CompareShp(CString &csPathName, CString &summary, VEC_COMPSHP &vC
 	UINT trxrefRecs=c_Trxref.NumRecs();
 
 	if(!trxrefRecs) {
-		pErrIdx="Compare aborted: Reference contains no records with keys.";
-		goto _errExit;
+		sTemp.Format("Reference %s contains no records with non-empty keys. Select OK to proceed anyway.", FileName());
+		if(IDOK!=MsgOkCancel(NULL, sTemp, NULL)) {
+			pErrIdx=NULL;
+			goto _errExit;
+		}
 	}
 
 	if(!GetTempFilePathWithExtension(sTemp,"trx") || c_Trxlinks.Create(sTemp,sizeof(CShpLayer *))) {
@@ -1362,7 +1374,7 @@ _getOrphans:
 
 _errExit:
 	if(IsLogOpen()) flog.Close();
-	AfxMessageBox(pErrIdx);
+	if(pErrIdx) AfxMessageBox(pErrIdx);
 
 	if(seq_vlinksR.size()) {
 		VEC_CSTR().swap(seq_vlinksR);
@@ -1371,6 +1383,27 @@ _errExit:
 		VEC_CSTR().swap(seq_vlinksL);
 	}
 	return -1;
+}
+
+bool CShpLayer::ChkNotLocated(CFltPoint &fpt)
+{
+	bool bNoloc=false;
+	if(m_iZone) {
+		CFltPoint latlon(fpt);
+		geo_UTM2LatLon(latlon, m_iZone, geo_WGS84_datum);
+		bNoloc=IsNotLocated(latlon);
+	}
+	else bNoloc=IsNotLocated(fpt);
+
+	if(bNoloc) {
+		fpt.y=m_pdbfile->noloc_lat;
+		fpt.x=m_pdbfile->noloc_lon;
+		if(m_iZone) {
+			int zone=m_iZone;
+			geo_LatLon2UTM(fpt, &zone, geo_WGS84_datum);
+		}
+	}
+	return bNoloc;
 }
 
 int CShpLayer::ExportUpdateShp(LPSTR pathBuf,CString &pathName,int iFlags)
@@ -1412,10 +1445,7 @@ int CShpLayer::ExportUpdateShp(LPSTR pathBuf,CString &pathName,int iFlags)
 		}
 		nRecs++;
 		CFltPoint fpt=trxrec.pShp->m_fpt[(trxrec.rec&0x1FFFFFFF)-1];
-		if(IsNotLocated(fpt)) {
-			fpt.y=m_pdbfile->noloc_lat;
-			fpt.x=m_pdbfile->noloc_lon;
-		}
+		ChkNotLocated(fpt); //normalize if unlocated
 		UpdateExtent(extent,fpt);
 	}
 
@@ -1479,10 +1509,7 @@ int CShpLayer::ExportUpdateShp(LPSTR pathBuf,CString &pathName,int iFlags)
 			cfShpx.Write(&shxRec,sizeof(shxRec));
 			shpRec.recNumber=FlipBytes(nOutRecs+1);
 			shpRec.fpt=trxrec.pShp->m_fpt[(trxrec.rec&0x1FFFFFFF)-1];
-			if(IsNotLocated(shpRec.fpt)) {
-				shpRec.fpt.y=m_pdbfile->noloc_lat;
-				shpRec.fpt.x=m_pdbfile->noloc_lon;
-			}
+			ChkNotLocated(shpRec.fpt); //normalize if unlocated
 			cfShp.Write(&shpRec,sizeof(SHP_POINT_REC));
 			offset+=sizeof(SHP_POINT_REC);
 			nOutRecs++;
@@ -1495,10 +1522,7 @@ int CShpLayer::ExportUpdateShp(LPSTR pathBuf,CString &pathName,int iFlags)
 			cfShpx.Write(&shxRec,sizeof(shxRec));
 			shpRec.recNumber=FlipBytes(nOutRecs+1);
 			shpRec.fpt=trxrec.pShp->m_fpt[(trxrec.rec&0x1FFFFFFF)-1];
-			if(IsNotLocated(shpRec.fpt)) {
-				shpRec.fpt.y=m_pdbfile->noloc_lat;
-				shpRec.fpt.x=m_pdbfile->noloc_lon;
-			}
+			ChkNotLocated(shpRec.fpt); //normalize if unlocated
 			cfShp.Write(&shpRec,sizeof(SHP_POINT_REC));
 			offset+=sizeof(SHP_POINT_REC);
 			nOutRecs++;
@@ -1548,6 +1572,9 @@ int CShpLayer::AppendUpdateRec(CShpDBF &db,CDBTFile *pdbt,TRXREC &trxrec,int iFl
 		
 	CShpLayer *pShp=trxrec.pShp;
 	CFltPoint fpt=pShp->m_fpt[(trxrec.rec&0x1FFFFFFF)-1];
+	if(m_iZone) {
+		geo_UTM2LatLon(fpt,m_iZone,geo_WGS84_datum);
+	}
 
 	WORD *pcFld=trxrec.pcFld;
 	CShpDBF &srcDb=*pShp->m_pdb;
@@ -1585,10 +1612,18 @@ int CShpLayer::AppendUpdateRec(CShpDBF &db,CDBTFile *pdbt,TRXREC &trxrec,int iFl
 								memset(pDst,' ',dstFd.F_Len);
 								break;
 							}
-							if(!bNew && (!iLocDif || iLocDif<0 && !(iLocDif=LocationsDiffer(fpt, m_fpt[m_pdb->Position()-1]))))
-							    break; //fix if memo field
+							if(!bNew) {
+								if(!iLocDif) break;
+							    if(iLocDif<0) {
+									CFltPoint latlon(m_fpt[m_pdb->Position()-1]);
+									if(m_iZone) geo_UTM2LatLon(latlon,m_iZone,geo_WGS84_datum);
+								    if(!(iLocDif=LocationsDiffer(fpt, latlon)))
+							          break; //fix if memo field
+								}
+							}
 						}
 						CString s;
+						fpt=pShp->m_fpt[(trxrec.rec&0x1FFFFFFF)-1];
 						LPCSTR p=XC_GetInitStr(s, *it, fpt);
 						if(p && *p) {
 							VERIFY(XC_PutInitStr(p,&dstFd,(LPBYTE)pDst,pdbt));
@@ -1679,6 +1714,9 @@ int CShpLayer::AppendUpdateRec(CShpDBF &db,CDBTFile *pdbt,TRXREC &trxrec,int iFl
 	//Normalize coordinates -- for now, done for all records, including if pShp==this
 	if(fLat && fLon) {
 		CFltPoint fpt(pShp->m_fpt[srcDb.Position()-1]);
+		if(m_iZone) {
+			geo_UTM2LatLon(fpt,m_iZone,geo_WGS84_datum);
+		}
 		if(IsNotLocated(fpt)) {
 			fpt.y=m_pdbfile->noloc_lat;
 			fpt.x=m_pdbfile->noloc_lon;
@@ -1686,7 +1724,7 @@ int CShpLayer::AppendUpdateRec(CShpDBF &db,CDBTFile *pdbt,TRXREC &trxrec,int iFl
 		FillNumericFld(fpt.y, db.m_pFld[fLat-1], db.FldPtr(fLat));
 		FillNumericFld(fpt.x, db.m_pFld[fLon-1], db.FldPtr(fLon));
 		if(fEast && fNorth && fZone) {
-			int iZone=0;
+			int iZone=m_iZone;
 			VERIFY(geo_LatLon2UTM(fpt, &iZone, geo_WGS84_datum));
 			FillNumericFld(fpt.y, db.m_pFld[fNorth-1], db.FldPtr(fNorth));
 			FillNumericFld(fpt.x, db.m_pFld[fEast-1], db.FldPtr(fEast));
@@ -1755,8 +1793,7 @@ int CShpLayer::InitTrxkey(LPCSTR *ppMsg)
 
 		if(c_Trxkey.InsertKey(&count, pKeybuf)) {
 			if(c_Trxkey.Errno()==CTRXFile::ErrDup) {
-				*ppMsg="Prefix shapefile has a duplicate key.";
-				goto _fail;
+				continue;
 			}
 		    goto _fail0;
 		}

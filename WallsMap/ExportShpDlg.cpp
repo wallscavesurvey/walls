@@ -124,6 +124,15 @@ void CExportShpDlg::DoDataExchange(CDataExchange* pDX)
 			return;
 		}
 		SetText(IDC_PATHNAME,p);
+
+		//static fcn -- delete any supported components plus .qpj (also called after an export failure) --
+		if(!CShpLayer::DeleteComponents(p)) {
+			pDX->m_idLastControl=IDC_PATHNAME;
+			pDX->m_bEditLastControl=TRUE;
+			pDX->Fail();
+			return;
+		}
+	
 		m_pathName=p;
 
 		m_tempName.Trim();
@@ -195,9 +204,6 @@ void CExportShpDlg::DoDataExchange(CDataExchange* pDX)
 			pDX->Fail();
 			return;
 		}
-
-		//static fcn -- delete any supported components plus .qpj (also called after an export failure) --
-		CShpLayer::DeleteComponents(m_pathName);
 
 		if(m_bInitEmpty) m_vRec.clear();
 		//Output pathName is now full, valid, and any existing components have been deleted --

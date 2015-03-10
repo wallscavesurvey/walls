@@ -224,7 +224,7 @@ void CFileBuffer::ReportException(const char* pszPathName, CFileException* e,
 			break;
 		
 		case CFileException::badSeek:
-		case CFileException::generic:
+		case CFileException::genericException:
 		case CFileException::tooManyOpenFiles:
 		case CFileException::invalidFile:
 		case CFileException::hardIO:

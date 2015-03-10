@@ -3,7 +3,6 @@
 // Used by XlsExport.rc
 //
 #define IDM_ABOUTBOX                    0x0010
-#define IDD_ABOUTBOX                    100
 #define IDS_ABOUTBOX                    101
 #define IDD_TSSTRAVIS_DIALOG            102
 #define IDS_SHP_FILES                   102
@@ -25,8 +24,9 @@
 #define IDS_ALL_FILES                   115
 #define IDS_PRJ_NAD83                   116
 #define IDS_PRJ_NAD83UTM                117
-#define IDR_MAINFRAME                   128
 #define IDD_RANGE                       130
+#define IDR_MAINFRAME                   140
+#define IDB_BITMAP1                     143
 #define IDC_CAVES                       1000
 #define IDC_WGS84                       1001
 #define IDC_UTM                         1002
@@ -51,15 +51,16 @@
 #define IDC_SHPNAME                     1011
 #define IDC_BROWSE_SHP                  1012
 #define IDC_BROWSE_TMP                  1013
-#define IDC_OVERWRITE                   1014
+#define IDC_EDIT_TMP                    1015
+#define IDC_MIN_CLEN                    1016
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        129
+#define _APS_NEXT_RESOURCE_VALUE        147
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1015
+#define _APS_NEXT_CONTROL_VALUE         1017
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

@@ -17,18 +17,12 @@ public:
 	//virtual void OnOK();
 	bool m_bSelectAll;
 	bool m_bSearchMemos;
+	bool m_bSearchRTF;
 	bool m_bHasMemos;
 
 	LPCSTR m_pName;
 	BYTE m_fTyp;
 	int m_iCol;
-
-	/*
-	void SetSearchMemos(bool bCheck)
-	{
-		((CButton *)GetDlgItem(IDC_SEARCH_MEMOS))->SetCheck(bCheck?BST_CHECKED:BST_UNCHECKED);
-	}
-	*/
 
 	void SetColumnData(LPCSTR pNam,int iCol,BYTE fTyp);
 

@@ -57,56 +57,38 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Icon
-//
-
-// Icon with lowest ID value placed first to ensure application icon
-// remains consistent on all systems.
-IDR_MAINFRAME           ICON                    "res\\XlsExport.ico"
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // Dialog
 //
 
-IDD_ABOUTBOX DIALOGEX 0, 0, 235, 55
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "About XlsExport"
-FONT 8, "MS Shell Dlg", 0, 0, 0x1
-BEGIN
-    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
-    LTEXT           "XlsExport Version 1.0",IDC_STATIC,40,10,119,8,SS_NOPREFIX
-    LTEXT           "Copyright (C) 2006",IDC_STATIC,40,25,119,8
-    DEFPUSHBUTTON   "OK",IDOK,178,7,50,16,WS_GROUP
-END
-
-IDD_EXPORT_DIALOG DIALOGEX 0, 0, 393, 190
+IDD_EXPORT_DIALOG DIALOGEX 0, 0, 393, 194
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "XLS-Export: Create Shapefile from Table Data"
+CAPTION 
+"Table2Shp v1.0 Build 2014-12-25 © David McKenzie, Texas Speleological Survey"
 FONT 8, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
-    EDITTEXT        IDC_PATHNAME,93,63,261,13,ES_AUTOHSCROLL
-    PUSHBUTTON      "...",IDC_BROWSE,360,63,17,12
-    EDITTEXT        IDC_TABLENAME,93,88,127,13,ES_AUTOHSCROLL
-    EDITTEXT        IDC_TMPNAME,93,112,261,13,ES_AUTOHSCROLL
-    PUSHBUTTON      "...",IDC_BROWSE_SHP,360,137,17,12
-    EDITTEXT        IDC_SHPNAME,93,137,261,13,ES_AUTOHSCROLL
-    PUSHBUTTON      "...",IDC_BROWSE_TMP,359,113,17,12
-    CONTROL         "UTM",IDC_UTM,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,80,163,27,10
-    CONTROL         "Lat/Long",IDC_LATLONG,"Button",BS_AUTORADIOBUTTON,112,163,40,10
-    CONTROL         "Overwrite an existing shapefile\nwithout prompting",IDC_OVERWRITE,
-                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | NOT WS_VISIBLE | WS_TABSTOP,179,158,122,19
-    DEFPUSHBUTTON   "Export",IDOK,280,170,50,16
-    PUSHBUTTON      "Exit",IDCANCEL,335,170,50,16
-    LTEXT           "This program creates a shapefile from data contained in either an Excel speadsheet (.xls), an Access database (.mdb), or a text file (.csv).  A template file (.shpdef) specifies the field correspondence.",IDC_STATIC,29,14,330,19
-    LTEXT           "Source pathname:\n(.xls, .mdb, or .csv)",IDC_STATIC,16,62,73,16
-    LTEXT           "Table or sheet name:\n(required if not csv)",IDC_STATIC,16,88,73,16
-    LTEXT           "Template file:\n(.shpdef)",IDC_STATIC,15,112,73,16
-    LTEXT           "Shapefile's\ncoordinate type:",IDC_STATIC,16,159,56,19
-    LTEXT           "Output shapefile:",IDC_STATIC,16,138,65,11
-    GROUPBOX        "",IDC_STATIC,17,5,358,46
-    LTEXT           "For template format and other details, see the WallsMap documentation.",IDC_STATIC,30,36,337,11
+    EDITTEXT        IDC_PATHNAME,93,66,261,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BROWSE,360,66,17,12
+    EDITTEXT        IDC_TABLENAME,93,91,127,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "Edit Template",IDC_EDIT_TMP,321,91,56,14,0,WS_EX_ACCEPTFILES
+    EDITTEXT        IDC_TMPNAME,93,115,261,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BROWSE_TMP,360,116,17,12
+    EDITTEXT        IDC_SHPNAME,93,140,261,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_BROWSE_SHP,360,140,17,12
+    CONTROL         "UTM",IDC_UTM,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,115,164,27,10
+    CONTROL         "Lat/Long",IDC_LATLONG,"Button",BS_AUTORADIOBUTTON,147,164,40,10
+    CONTROL         "Minimize lengths\nof C fields",IDC_MIN_CLEN,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,204,160,69,19
+    DEFPUSHBUTTON   "Export",IDOK,280,174,50,16
+    PUSHBUTTON      "Exit",IDCANCEL,335,174,50,16
+    LTEXT           "This program exports a shapefile from data contained in either an Excel speadsheet (.xls), an Access database (.mdb), or a text file (.csv,.txt).  A template file (.shpdef) specifies the field correspondence.",IDC_STATIC,47,17,338,21
+    LTEXT           "Source pathname:",IDC_STATIC,16,67,73,10
+    LTEXT           "Table or sheet name:\n(required if not text)",IDC_STATIC,16,91,73,16
+    LTEXT           "Template file:\n(.shpdef)",IDC_STATIC,15,115,73,16
+    LTEXT           "Shapefile's coordinate type:",IDC_STATIC,16,164,91,12
+    LTEXT           "Output shapefile:",IDC_STATIC,16,142,65,11
+    GROUPBOX        "",IDC_STATIC,7,5,378,52
+    LTEXT           "For help with the template format and other details, see the examples supplied with the program.",IDC_STATIC,48,38,328,11
+    CONTROL         IDB_BITMAP1,IDC_STATIC,"Static",SS_BITMAP,11,16,32,30
 END
 
 IDD_RANGE DIALOGEX 0, 0, 249, 129
@@ -153,9 +135,9 @@ BEGIN
             VALUE "CompanyName", "TODO: <Company name>"
             VALUE "FileDescription", "TODO: <File description>"
             VALUE "FileVersion", "1.0.0.1"
-            VALUE "InternalName", "XlsExport.exe"
+            VALUE "InternalName", "Table2Shp.exe"
             VALUE "LegalCopyright", "TODO: (c) <Company name>.  All rights reserved."
-            VALUE "OriginalFilename", "XlsExport.exe"
+            VALUE "OriginalFilename", "Table2Shp.exe"
             VALUE "ProductName", "TODO: <Product name>"
             VALUE "ProductVersion", "1.0.0.1"
         END
@@ -175,20 +157,12 @@ END
 #ifdef APSTUDIO_INVOKED
 GUIDELINES DESIGNINFO
 BEGIN
-    IDD_ABOUTBOX, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 228
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 48
-    END
-
     IDD_EXPORT_DIALOG, DIALOG
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 385
         TOPMARGIN, 1
-        BOTTOMMARGIN, 186
+        BOTTOMMARGIN, 190
     END
 
     IDD_RANGE, DIALOG
@@ -201,6 +175,22 @@ BEGIN
 END
 #endif    // APSTUDIO_INVOKED
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\gears.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BITMAP1             BITMAP                  "res\\20141227100734892_easyicon_net_48.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -218,16 +208,16 @@ BEGIN
     IDS_PRJ_NAD27           "GEOGCS[""GCS_North_American_1927"",DATUM[""D_North_American_1927"",SPHEROID[""Clarke_1866"",6378206.4,294.9786982]],PRIMEM[""Greenwich"",0.0],UNIT[""Degree"",0.0174532925199433]]"
     IDS_PRJ_NAD27UTM        "PROJCS[""NAD_1927_UTM_Zone_%d%c"",GEOGCS[""GCS_North_American_1927"",DATUM[""D_North_American_1927"",SPHEROID[""Clarke_1866"",6378206.4,294.9786982]],PRIMEM[""Greenwich"",0.0],UNIT[""Degree"",0.0174532925199433]],PROJECTION[""Transverse_Mercator""],PARAMETER[""False_Easting"",500000],PARAMETER[""False_Northing"",%d],PARAMETER[""Central_Meridian"",%d],PARAMETER[""Scale_Factor"",0.9996],PARAMETER[""Latitude_Of_Origin"",0.0],UNIT[""Meter"",1.0]]"
     IDS_SHPDEF_FILES        "SHP export template (*.shpdef)"
-    IDS_XLS_FILES           "Excel Workbook (*.xls)"
-    IDS_MDB_FILES           "Access Database (*.mdb)"
+    IDS_XLS_FILES           "MS Excel 2003-97 worksheet (*.xls)"
+    IDS_MDB_FILES           "Access database (*.mdb)"
 END
 
 STRINGTABLE
 BEGIN
-    IDS_CSV_FILES           "Comma-sep text (*.csv)"
+    IDS_CSV_FILES           "Text files (*.csv;*.txt)"
     IDS_SEL_SHPDEF          "Select Template File for Creating Shapefile"
     IDS_SEL_SHP             "Pathname of Exported Shapefile"
-    IDS_ALL_FILES           "Supported Types (*.xls;*.mdb;*.csv)"
+    IDS_ALL_FILES           "Supported types (*.xls;*.mdb;*.csv;*.txt)"
     IDS_PRJ_NAD83           "GEOGCS[""GCS_North_American_1983"",DATUM[""D_North_American_1983"",SPHEROID[""GRS_1980"",6378137.0,298.257222101]],PRIMEM[""Greenwich"",0.0],UNIT[""Degree"",0.0174532925199433]]"
     IDS_PRJ_NAD83UTM        "PROJCS[""NAD_1983_UTM_Zone_%d%c"",GEOGCS[""GCS_North_American_1983"",DATUM[""D_North_American_1983"",SPHEROID[""GRS_1980"",6378137.0,298.257222101]],PRIMEM[""Greenwich"",0.0],UNIT[""Degree"",0.0174532925199433]],PROJECTION[""Transverse_Mercator""],PARAMETER[""False_Easting"",500000],PARAMETER[""False_Northing"",%d],PARAMETER[""Central_Meridian"",%d],PARAMETER[""Scale_Factor"",0.9996],PARAMETER[""Latitude_Of_Origin"",0.0],UNIT[""Meter"",1.0]]"
 END

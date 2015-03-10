@@ -279,6 +279,8 @@ private:
 	}
 	void DrawSyncCursor();
 	void RefreshMeasure();
+	double GetDragAz();
+	void GetDragDistAz(CString &cs);
 	BOOL ClearDIB(int width,int height);
 	void UpdateDIB(const CFltPoint &ptGeoCtr,double newScale);
 	void UpdateViewsAtPoint(const CPoint &point,LPARAM lHint);

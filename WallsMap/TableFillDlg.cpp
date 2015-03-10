@@ -136,5 +136,6 @@ void CTableFillDlg::OnBnClickedSelectAll()
 	CString s;
 	s.Format("%u", m_pGDlg->m_nSelCount);
 	GetDlgItem(IDC_ST_FIELD)->SetWindowText(s);
-	m_rtf.GetRichEditCtrl().SetFocus();
+	if(m_fTyp!='L') m_rtf.GetRichEditCtrl().SetFocus();
+	else GetDlgItem(IDC_YES)->SetFocus();
 }

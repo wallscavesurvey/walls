@@ -423,6 +423,8 @@ BOOL CLayerSet::InsertLayer(CMapLayer *pLayer,UINT uFlags,int pos /*=-1*/,int po
 			return FALSE;
 		}
 
+		bool bUpdateShowDlg=false;
+
 		if(InitPML() && NextPML() && 
 				(m_iZone!=pLayer->m_iZone || m_iNad!=pLayer->m_iNad)) {
 
@@ -452,6 +454,7 @@ BOOL CLayerSet::InsertLayer(CMapLayer *pLayer,UINT uFlags,int pos /*=-1*/,int po
 					if(pml!=pLayer && pml->LayerType()==TYP_SHP)
 						bUpdateViews=((CShpLayer *)pml)->ConvertProjection(m_iNad,m_iZone,bUpdateViews);
 				}
+				bUpdateShowDlg=(app_pShowDlg && app_pShowDlg->m_pDoc==m_pDoc);
 			}
 		}
 
@@ -459,6 +462,7 @@ BOOL CLayerSet::InsertLayer(CMapLayer *pLayer,UINT uFlags,int pos /*=-1*/,int po
 			((CShpLayer *)pLayer)->UpdateImage(m_pImageList);
 
 		ComputeExtent();
+		if(bUpdateShowDlg) app_pShowDlg->UpdateCoordFormat();
 		return bPos;
 	}
 	return FALSE;

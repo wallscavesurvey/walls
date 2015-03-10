@@ -190,7 +190,6 @@ void CPageLayers::UpdateTree()
 	m_Tree.m_bDestroyingTree=1;
 	//m_Tree.SelectItem(NULL);
 	m_Tree.DeleteAllItems();
-	int jj=0;
 	rit_Layer itend=lset.EndLayerRit();
 	HTREEITEM hParent=TVI_ROOT;
 	UINT uLevel=0;
@@ -370,7 +369,7 @@ LRESULT CPageLayers::OnRClickItem(WPARAM item,LPARAM point)
 				VERIFY(pPopup->AppendMenu(MF_STRING,ID_TEST_MEMOS,"Test memo field integrity"));
 			}
 
-			if(pShp->KeyFld() && (!pShp->HasLocFlds() || m_pDoc->LayerSet().IsGeoWgs84())) {
+			if(pShp->KeyFld() && (!pShp->HasLocFlds() || m_pDoc->LayerSet().IsWgs84())) {
 				VERIFY(pPopup->AppendMenu(MF_STRING,ID_COMPARE_SHP,"Compare with other layers..."));
 			}
 
@@ -975,8 +974,7 @@ void CPageLayers::OnOpenXC()
 		    "expressions \"?(...)\" that control how fields are edited or initialized,\n"
 			"you'll need to close and reopen the project before they can take effect.",
 			pShp->m_csTitle,
-			"Don't display this again during this session."))
-			bNopenXCPrompt=true;
+			"Don't display this again during this session.")==2) bNopenXCPrompt=true;
 	}
 	CString s(pShp->PathName());
 	s.Truncate(s.ReverseFind('.'));

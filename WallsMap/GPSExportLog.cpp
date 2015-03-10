@@ -188,7 +188,6 @@ int GPSExportLog(LPCSTR shpName)
 _failDBF:
 	db.CloseDel();
 	CShpLayer::DeleteComponents(ebuf);
-	//AfxGetMainWnd()->EndWaitCursor();
 	AfxMessageBox("Unable save log - error writing DBF component.");
 	return 0;
 }

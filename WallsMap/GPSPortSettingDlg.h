@@ -63,9 +63,9 @@ private:
 	CSerialMFC *m_pSerial;
 	CComboBoxNS m_cbPort;
 	CComboBoxNS m_cbBaud;
-	bool m_bPortOpened,m_bHaveGPS,m_bHavePos,m_bWindowDisplayed,
+	bool m_bPortOpened,m_bHaveGPS,m_bHavePos,m_bWindowDisplayed, m_bTimerSet,
 		 m_bPortAvailable,m_bRecordingGPS,m_bLogPaused,m_bLogStatusChg;
-
+	UINT_PTR m_tmTimer;
 	void ShowPortMsg(LPCSTR p);
 
 	void Show(UINT id,bool bShow) {GetDlgItem(id)->ShowWindow(bShow?SW_SHOW:SW_HIDE);}
@@ -86,6 +86,7 @@ private:
 	afx_msg void OnBnClickedMinimize();
 	afx_msg void OnWindowPosChanged( WINDOWPOS*);
 	afx_msg LONG OnWindowDisplayed(UINT, LONG);
+	afx_msg void OnTimer(UINT nIDEvent);
 
 	DECLARE_MESSAGE_MAP()
 public:

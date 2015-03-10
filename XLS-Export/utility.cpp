@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "crack.h"
 #include "XlsExport.h"
+#include "XMessageBox.h"
 #include "utility.h"
 
 static __inline bool isspc(char c)
@@ -239,7 +240,96 @@ bool GetBool(CDaoRecordset &rs,int nFld)
 	return false;
 }
 
+void GetDateStr(LPSTR p,CDaoRecordset &rs,int nFld)
+{
+	COleVariant var;
+	rs.GetFieldValue(nFld,var);
+	if(var.vt==VT_DATE) {
+		 CString s(CCrack::strVARIANT(var));
+	     s.Trim();
+		 strcpy(p,s);
+	}
+	else *p=0;
+}
+
 void GetBoolStr(LPSTR s,CDaoRecordset &rs,int nFld)
 {
 	strcpy(s, GetBool(rs, nFld)?"Y":"N");
+}
+
+BOOL GetTempFilePathWithExtension(CString &csPath,LPCSTR pExt)
+ {
+   UUID uuid;
+   unsigned char* sTemp;
+   HRESULT hr = UuidCreateSequential(&uuid);
+   if (hr != RPC_S_OK) return FALSE;
+   hr = UuidToString(&uuid, &sTemp);
+   if (hr != RPC_S_OK) return FALSE;
+   CString sUUID(sTemp);
+   sUUID.Remove('-');
+   RpcStringFree(&sTemp);
+
+   TCHAR pszPath[MAX_PATH];
+   if(!::GetTempPath(MAX_PATH,pszPath)) return FALSE;
+   csPath.Format("%s%s.%s",pszPath,(LPCSTR)sUUID,pExt);
+   if(csPath.GetLength()>MAX_PATH) {
+	   csPath.Empty();
+	   return FALSE;
+   }
+   return TRUE;
+}
+
+void OpenFileAsText(LPCSTR file)
+{
+	char buf[MAX_PATH];
+	CString path;
+	HANDLE hFile;
+	if(!GetTempFilePathWithExtension(path,"txt") ||
+		(hFile=CreateFile(path,GENERIC_WRITE,0,NULL,CREATE_NEW,FILE_ATTRIBUTE_NORMAL,NULL))==INVALID_HANDLE_VALUE)
+			goto _error;
+	VERIFY(CloseHandle(hFile));
+	HINSTANCE h=::FindExecutable(path,NULL,buf);
+	VERIFY(DeleteFile(path));
+	if((int)h>32 && (int)ShellExecute(NULL, "open", buf, file, NULL, SW_NORMAL)>32)
+		return;
+_error:
+	CMsgBox("File %s missing or could not be opened.",(LPCSTR)file);
+}
+
+int MsgYesNoCancelDlg(HWND hWnd, LPCSTR msg, LPCSTR title, LPCSTR pYes, LPCSTR pNo, LPCSTR pCancel)
+{
+		XMSGBOXPARAMS xmb;
+
+		xmb.bUseUserDefinedButtonCaptions = TRUE; 
+		_tcscpy(xmb.UserDefinedButtonCaptions.szYes, pYes); 
+		_tcscpy(xmb.UserDefinedButtonCaptions.szNo, pNo);
+		if(pCancel) _tcscpy(xmb.UserDefinedButtonCaptions.szCancel, pCancel);
+
+		return 0xFF & XMessageBox(hWnd, msg, title,
+			pCancel?(MB_YESNOCANCEL|MB_ICONQUESTION|MB_NORESOURCE):(MB_YESNO|MB_ICONQUESTION|MB_NORESOURCE), &xmb);
+}
+
+int MsgCheckDlg(HWND hWnd, UINT mb, LPCSTR msg, LPCSTR title, LPCSTR pDoNotAsk)
+{
+		XMSGBOXPARAMS xmb;
+
+		xmb.bUseUserDefinedButtonCaptions = TRUE; 
+		_tcscpy(xmb.UserDefinedButtonCaptions.szDoNotTellAgain, pDoNotAsk);
+
+		if(mb==MB_OK) mb |= (MB_ICONINFORMATION | MB_NOSOUND | MB_DONOTTELLAGAIN | MB_NORESOURCE);
+		else mb |= (MB_ICONQUESTION | MB_NOSOUND | MB_DONOTTELLAGAIN | MB_NORESOURCE);
+		int i=XMessageBox(hWnd, msg, title, mb, &xmb);
+		return ((i&0xFF)==IDOK)?(1+((i&MB_DONOTTELLAGAIN)!=0)):0;
+}
+
+bool MsgOkCancel(HWND hWnd, LPCSTR msg, LPCSTR title)
+{
+	int i=XMessageBox(hWnd, msg, title,MB_OKCANCEL | MB_NOSOUND | MB_ICONQUESTION | MB_NORESOURCE, NULL);
+	return (i&0xFF)==IDOK;
+}
+
+int MsgInfo(HWND hWnd, LPCSTR msg, LPCSTR title, UINT style /*= MB_NOSOUND | MB_ICONINFORMATION*/)
+{
+	if(!style) style = (MB_NOSOUND | MB_ICONINFORMATION);
+	return XMessageBox(hWnd, msg, title, style | MB_NORESOURCE, NULL);
 }

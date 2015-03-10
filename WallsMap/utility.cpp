@@ -1387,11 +1387,11 @@ int GetZone(const double &lat,const double &lon)
 LPCSTR GetMediaTyp(LPCSTR sPath,BOOL *pbLocal /*=NULL*/)
 {
 	static LPCSTR MediaTyp[]={
-		".png",".jpg",".tif",".nti",".ai",".avi",".doc",".docx",".flv",".gmw",
+		".png",".jpg",".jpeg",".tif",".tiff",".nti",".ai",".avi",".doc",".docx",".flv",".gmw",
 		".kml",".m4v",".mp4",".mpg",".ntl",".pdf",".qgs",".rtf",".shp",".svg",".svgz",
 		".tt6",".wmv",".wpj"};
 	#define NUM_MEDIATYP (sizeof(MediaTyp)/sizeof(LPCSTR))
-	#define NUM_LOCALTYP 4
+	#define NUM_LOCALTYP 6
 
 	LPCSTR pExt=trx_Stpext(sPath);
 	if(*pExt) {
@@ -1457,6 +1457,8 @@ int MsgYesNoCancelDlg(HWND hWnd, LPCSTR msg, LPCSTR title, LPCSTR pYes, LPCSTR p
 
 int MsgCheckDlg(HWND hWnd, UINT mb, LPCSTR msg, LPCSTR title, LPCSTR pDoNotAsk)
 {
+        // returns 0 (cancel), 1 (ok), 2 (box checked)
+
 		XMSGBOXPARAMS xmb;
 
 		xmb.bUseUserDefinedButtonCaptions = TRUE; 

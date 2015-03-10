@@ -495,7 +495,7 @@ BEGIN
     PUSHBUTTON      "Change Link",IDC_UPDATELINK,111,91,55,12
     DEFPUSHBUTTON   "OK",IDOK,173,91,55,12
     ICON            IDR_MAINFRAME,IDC_STATIC,7,14,20,20
-    CTEXT           "\nWALLS Project Editor -- Beta Version 2.0 B8\nBuild 2014-11-01\nCopyright © 2014 by David McKenzie (davidmck@austin.rr.com)",IDC_STATIC,32,7,219,38,SS_SUNKEN
+    CTEXT           "\nWALLS Project Editor -- Version 2.0\nBuild 2015-01-12\nCopyright © 2015 by David McKenzie (davidmck@austin.rr.com)",IDC_STATIC,32,7,219,38,SS_SUNKEN
     LTEXT           "This version of Walls may be freely distributed. Click on the link below\nto obtain information on new releases and related software.",IDC_STATIC,19,52,238,18,NOT WS_GROUP
     LTEXT           "http://texasspeleologicalsurvey.org/software/walls/tsswalls.php",IDC_WALLSURL,19,73,248,11
 END
@@ -1106,8 +1106,8 @@ BEGIN
     COMBOBOX        IDC_DATUM,122,81,90,76,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Year",IDC_STATIC,19,8,19,8
     LTEXT           "Month",IDC_STATIC,54,8,23,8
-    LTEXT           "Declination:",IDC_STATIC,9,49,41,8
-    RTEXT           "6.31",IDC_DECLINATION,54,49,29,8
+    LTEXT           "Declination:",IDC_STATIC,9,49,40,8
+    RTEXT           "6.31",IDC_DECLINATION,53,49,30,8
     LTEXT           "Grid conv:",IDC_STATIC,9,71,34,8
     LTEXT           "Deg",IDC_STATIC,129,8,22,8
     CTEXT           "Min",IDC_ST_MIN,154,8,28,8
@@ -2389,7 +2389,7 @@ ID_MODELDATA            RCDATA                  "igrf.bin"
 STRINGTABLE
 BEGIN
     IDS_ERR_DELETEOPEN      "Existing file:  %s\nThe new name is that of an existing file you currently have open.\nYou must close it before it can be replaced or attached to this project."
-    IDR_MAINFRAME           "Walls Project Editor v2.0 B8"
+    IDR_MAINFRAME           "Walls Project Editor v2.0"
     IDR_PRJTYPE             "\nPROJECT\nWALLS Project\nProject Files (*.wpj)\n.wpj\nWPJFileType\nWPJ File Type"
     IDS_PRJ_FILES           "Project Files (*.wpj;*.prj)"
     IDR_SRVTYPE             "\nSURVEY\nWALLS Survey\nSurvey Files (*.srv)\n.srv\nSRVFileType\nSRV File Type"

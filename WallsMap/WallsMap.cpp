@@ -512,6 +512,6 @@ BOOL CWallsMapApp::OnOpenRecentFile(UINT nID)
 
 void CWallsMapApp::AddToRecentFileList(const char* pszPathName)
 {
-	if(!m_bNoAddRecent)
+	if(!m_bNoAddRecent && !(*pszPathName=='\\' && pszPathName[1]=='\\')) //no network locs!
 		CWinApp::AddToRecentFileList(pszPathName);
 }

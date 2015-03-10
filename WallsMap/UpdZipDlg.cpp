@@ -155,7 +155,7 @@ void CUpdZipDlg::OnOK()
 		path=m_pShp->PathName()+rootPathLen;
 		//path with name portion replaced will be the zip's path of created components --
 
-		CShpLayer::DeleteComponents(m_pathName);
+		if(!CShpLayer::DeleteComponents(m_pathName)) goto _fail;
 
 		//Write DBF/DBT components --
 		if((nRecs=m_pShp->ExportUpdateDbf(keybuf,m_pathName,m_iFlags))<0) {

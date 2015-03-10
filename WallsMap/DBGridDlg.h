@@ -130,7 +130,7 @@ private:
 
 	int ColAdvance(int iCol);
 	static void XC_AdjustWidth(CWnd *pWnd,int nFld);
-
+	bool ConfirmFillRepl();
 	void InitRecno();
 	void CountDeletes();
 	void AllowPolyDel(bool bEnable);
@@ -273,6 +273,7 @@ private:
 	afx_msg void OnInvertselection();
 	afx_msg void OnLinkTest();
 	afx_msg void OnTableFill();
+	afx_msg void OnTableRepl();
 	afx_msg void OnDeleteRecords();
 	afx_msg void OnUndeleteRecords();
 };

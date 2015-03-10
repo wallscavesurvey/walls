@@ -181,6 +181,7 @@
 #define IDD_FLDS_IGNORED                266
 #define IDD_COPYSELECTED                268
 #define IDD_TABLE_FILL                  269
+#define IDD_TABLE_REPL                  273
 #define IDC_PATHNAME                    377
 #define IDC_PATH_SHPDEF                 378
 #define IDC_RANGE                       378
@@ -229,6 +230,7 @@
 #define IDC_SHP_KEY                     1001
 #define IDC_ARGUMENTS                   1001
 #define IDC_FILLTEXT                    1001
+#define IDC_FIND_WHAT                   1001
 #define IDC_ADVANCED                    1002
 #define IDC_EDIT_DETAILS                1002
 #define IDC_EDIT_NORTH                  1002
@@ -237,6 +239,7 @@
 #define IDC_CAPTION                     1002
 #define IDC_EDIT_SINGLE2                1002
 #define IDC_EDIT_MULTIPLE               1002
+#define IDC_REPL_WITH                   1002
 #define IDC_POINT_TREE                  1003
 #define IDC_LABEL_ZOOMOUT               1003
 #define IDC_DOT_CENTER                  1003
@@ -419,6 +422,8 @@
 #define IDC_LOOKIN                      1108
 #define IDC_SEARCH_MEMOS                1109
 #define IDC_ALLOW_EDITS                 1110
+#define IDC_FILTER_RTF                  1110
+#define IDC_SEARCH_RTF                  1110
 #define IDC_ST_DRAGNOTE                 1111
 #define IDC_USE_LAYOUT                  1112
 #define IDC_CHK_NOTAGAIN                1113
@@ -463,14 +468,17 @@
 #define IDC_OPEN_EXPORTED               1143
 #define IDC_USE_INDEX                   1143
 #define IDC_TEST_MEMOS                  1143
+#define IDC_MATCH_CASE                  1143
 #define IDC_ST_DENOM                    1144
 #define IDC_TEST_MEMOS2                 1144
+#define IDC_MATCH_WORD                  1144
 #define IDC                             1145
 #define IDC_ST_RATIO_BOX                1145
 #define IDC_CHECK2                      1146
 #define IDC_INC_SCALE                   1146
 #define IDC_PREVIEW                     1146
 #define IDC_INCLUDE_LINKED              1146
+#define IDC_EXTENDED                    1146
 #define IDC_BUTTON2                     1147
 #define IDC_HELPCONTENTS                1147
 #define IDC_REMOVE_REC                  1147
@@ -824,6 +832,9 @@
 #define ID_TABLE_FILL                   33279
 #define ID__TESTMEMOFIELDINTEGRITY      33283
 #define ID_TEST_MEMOS                   33284
+#define ID__REPLACE                     33285
+#define ID_REPL_TEXT                    33286
+#define ID_TABLE_REPL                   33287
 #define ID_APPENDLAYER_0                34000
 #define ID_APPENDLAYER_1                34001
 #define ID_APPENDLAYER_2                34002
@@ -858,8 +869,8 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        273
-#define _APS_NEXT_COMMAND_VALUE         33285
+#define _APS_NEXT_RESOURCE_VALUE        274
+#define _APS_NEXT_COMMAND_VALUE         33288
 #define _APS_NEXT_CONTROL_VALUE         1227
 #define _APS_NEXT_SYMED_VALUE           182
 #endif
