@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="A__trx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\Trx_file.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="bt_delid.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bt_finid.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bt_keyid.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bt_lnkid.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bt_recid.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bt_setid.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="bt_stoid.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxallc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxalloc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxattc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxbuild.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxcache.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxclosd.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxclose.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxcreat.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxdel.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxdelc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxdetc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxempty.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxerrno.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxerrt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxextra.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxfiled.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxfilem.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxfilen.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxfillk.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxfind.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxfindn.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxfirst.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxflush.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxget.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxgetk.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxgetno.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxgetnp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxgetr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxgettr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxinit.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxinitf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxins.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxlast.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxminpw.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxnew.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxnext.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxnfiln.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxnfren.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxnumke.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxnumpw.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxnumre.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxnumtn.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxnumtr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxnumus.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxopen.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxpathn.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxpck.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxprev.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxpurge.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxputr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxpvar.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxrunl.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxsetde.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxsetex.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxsetmi.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxsetp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxsetuf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxsetun.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxsizfi.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxsizk.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxsizno.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxsiznp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxsizr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxskip.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="trxutref.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

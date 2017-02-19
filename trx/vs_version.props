@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="Globals">
+    <!-- Place the name of the directory containing the source of zlib used for
+   debugging in this property.
+
+         The directory need only contain the '.c' and '.h' files from the
+   source.
+
+   If you use a relative directory name (as below) then it must be
+   relative to the project directories; these are one level deepers than
+   the directories containing this file.
+
+   If the version of zlib you use does not match that used when the
+   distribution was built you will get warnings from pngtest that the zlib
+   versions do not match.  The zlib version used in this build is recorded
+   below:
+     -->
+  </PropertyGroup>
+  <PropertyGroup Label="UserMacros">
+    <IncV140XP>$(MSBuildProgramFiles32)\Windows Kits\10\Include\10.0.10240.0\ucrt\</IncV140XP>
+    <LibV140XP>$(MSBuildProgramFiles32)\Windows Kits\10\lib\10.0.10240.0\ucrt\$(PlatformShortName)</LibV140XP>
+    <WorkDIR>Y:\Documents\Walls</WorkDIR>
+    <WorkLIB>$(WorkDIR)\lib</WorkLIB>
+    <WorkINC>$(WorkDIR)\trx\inc</WorkINC>
+    <WorkBIN>$(WorkDIR)\bin</WorkBIN>
+  </PropertyGroup>
+  <PropertyGroup>
+    <IncludePath>$(WorkINC);$(IncV140XP);$(IncludePath)</IncludePath>
+    <LibraryPath>$(WorkLIB);$(LibV140XP);$(LibraryPath)</LibraryPath>
+    <ExecutablePath>$(ExecutablePath)</ExecutablePath>
+    <OutDir>$(WorkBIN)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup />
+  <ItemGroup>
+    <BuildMacro Include="WorkDIR">
+      <Value>$(WorkDIR)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="WorkLIB">
+      <Value>$(WorkLIB)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="WorkINC">
+      <Value>$(WorkINC)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="WorkBIN">
+      <Value>$(WorkBIN)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+  </ItemGroup>
+</Project>

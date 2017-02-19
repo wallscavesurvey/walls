@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dbfallc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfalloc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfappen.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfattc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfcache.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfclosd.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfclose.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfcreat.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfdelc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfdetc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbferrno.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbferrs.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbffilemo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbffilen.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbffld.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbffldde.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfflddf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbffldke.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbffldle.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbffldna.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbffldnu.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbffldp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbffldst.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbffldty.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfflush.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbffmerr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfgetdb.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfgetf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfgetfd.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfgetfk.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfgetfs.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfgetr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfgo.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfhandle.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfhdrd.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfhdrr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbflast.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfmark.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfnext.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfnumfl.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfnumre.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfnumus.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfopen.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfopnfl.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfpathn.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfpos.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfprev.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfputf.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfputr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfputs.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfrec.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfrecp.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfsizh.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfsizr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfskip.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbftype.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbfunmar.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\inc\a__dbf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\dbf_file.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="dbf_file.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

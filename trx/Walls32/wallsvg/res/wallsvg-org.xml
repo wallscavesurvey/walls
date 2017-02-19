@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="no"?>
+<?walls?>
+<!---->
+<!--
+	NOTES:
+	Style attributes and flag symbol shapes can be adjusted manually by setting
+	updated="yes" in the above processing instruction and editing the <!ENTITY..>
+	and <symbol..> definitions in the sections below. Otherwise, the presence
+	of updated="no" allows Walls to overwrite this file without prompting.
+
+	The content of the w2d_Ref group should not be altered since it will be used
+	for adjustment and georeferencing. To hide the contained text, insert
+	display="none" after id="w2d_Ref".
+
+	The order of appearance of the remaining groups determines the rendering
+	sequence (last on top) and should not be changed. The w2d_Walls, w2d_Detail,
+	and w2d_Legend layers are available for storing adjustable graphics content
+	you create from within an SVG editor. This content might include annotation,
+	cave walls, and floor details that need to maintain their relative positions
+	with respect to survey vectors. The Walls documentation specifies how
+	layer assignment determines how artwork is morphed or adjusted. The editor
+	must preserve the scale, units (1/72 in), and element IDs (layer names).
+-->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 20010904//EN"
+	"http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd" [
+	<!--Styles for major and minor grid lines -->
+	<!ENTITY G_0 "fill:none;stroke:#009900;stroke-width:0.8;">
+	<!ENTITY G_1 "fill:none;stroke:#009900;stroke-width:0.16;">
+	<!--w2d_Background color (set by Walls)-->
+	<!ENTITY B_s "fill:#FFFFFF;">
+	<!--w2d_Frame outline color and thickness-->
+	<!ENTITY F_s "stroke:#000000;fill:none;stroke-width:3;">
+	<!--Style for w2d_Frame text (title and georeferencing info)-->
+	<!ENTITY T_s "fill:#0033FF;font-family:'ArialMT';font-size:5;">
+	<!--Style for w2d_Vectors (stroke color and thickness of survey vectors)-->
+	<!ENTITY V_s "stroke:#FF0000;fill:none;stroke-width:0.16;">
+	<!--Style for w2d_Labels (station names)-->
+	<!ENTITY L_s "fill:#0033FF;font-family:'ArialMT';font-size:3;">
+	<!--Style for w2d_Notes-->
+	<!ENTITY N_s "fill:#000000;font-family:'TimesNewRomanPS-ItalicMT';font-size:8;">
+	<!--Scales for the station marker symbol and named flags--> 
+	<!ENTITY _M "0.5">
+]>
+ 
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	width="680pt" height="540pt" viewBox="0 0 680 540"
+	style="enable-background:new 0 0 680 540">
+
+	<!--Define marker and flag symbols with centers at (1,1) and with width 2.-->
+	<g id="w2d_Background"/>
+	<g id="w2d_Ref"/>
+	<g id="w2d_Survey">
+		<g id="w2d_Vectors"/>
+		<g id="w2d_Markers"/>
+	</g>
+	<g id="w2d_Flags"/>
+	<g id="w2d_Labels"/>
+	<g id="w2d_Notes"/>
+	<g id="w2d_Grid"/>
+	<g id="w2d_Frame"/>
+</svg>

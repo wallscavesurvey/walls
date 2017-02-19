@@ -1,0 +1,30 @@
+##############################################################################
+#
+#               Makefile for GPStrans  -  subdirectory ./grid/
+#
+##############################################################################
+#
+# You don't need to change anything here. Do every changes in ./Makefile
+#
+##############################################################################
+CC	= gcc
+INCLUDES=-I../include
+CFLAGS	= -g -DSUNOS41 -I/usr/X11/include 
+
+
+OFILES	= itm.o bng.o tm.o ups.o utm.o kkj.o gridutils.o
+HFILES  = ../include/defs.h ../include/Garmin.h ../include/Prefs.h
+
+.c.o:	
+	$(CC) -c $(CFLAGS) $(INCLUDES) $<
+
+all:	$(OFILES) $(HFILES)
+
+
+clean:
+	@rm -f core gpstrans *.o *.bak *~ #*#
+
+
+
+
+

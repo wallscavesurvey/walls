@@ -1,0 +1,30 @@
+##############################################################################
+#
+#               Makefile for GPStrans  -  subdirectory ./gps/
+#
+##############################################################################
+#
+# You don't need to change anything here. Do every changes in ./Makefile
+#
+##############################################################################
+CC	= gcc
+INCLUDES=-I../include
+CFLAGS	= -g -D__LINUX__
+
+
+OFILES	= sendgpsinfo.o dms.o datum.o calendar.o gpsmessage.o garmincomm.o  \
+	  garminserial.o getgpsinfo.o latlong.o
+HFILES  = ../include/defs.h ../include/Prefs.h ../include/Garmin.h
+
+.c.o:	$(HFILES)
+	$(CC) -c $(CFLAGS) $(INCLUDES) $<
+
+all:	$(OFILES) $(HFILES)
+
+clean:
+	@rm -f core gpstrans *.o *.bak *~ #*#
+
+
+
+
+
