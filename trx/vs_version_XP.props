@@ -2,10 +2,10 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
-    <WorkLIB>\Work14\lib</WorkLIB>
-    <WorkINC>\Work14\trx\inc</WorkINC>
-    <WorkBIN>\Work14\bin</WorkBIN>
-    <WorkDIR>\Work14\</WorkDIR>
+    <WorkDIR>$(SolutionDir)</WorkDIR>
+    <WorkLIB>$(WorkDIR)lib</WorkLIB>
+    <WorkINC>$(WorkDIR)trx\inc</WorkINC>
+    <WorkBIN>$(WorkDIR)bin</WorkBIN>
     <IncV140XP>$(MSBuildProgramFiles32)\Windows Kits\10\Include\10.0.10240.0\ucrt\</IncV140XP>
     <LibV140XP>$(MSBuildProgramFiles32)\Windows Kits\10\lib\10.0.10240.0\ucrt\$(PlatformShortName)</LibV140XP>
   </PropertyGroup>
