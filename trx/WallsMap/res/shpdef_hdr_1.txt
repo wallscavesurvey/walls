@@ -1,0 +1,71 @@
+WallsMap Shapefile Template Ver 1.2
+===================================
+
+If selected as a template, this file will be read by WallsMap to determine
+the attribute table structure of exported shapefiles.
+
+FORMAT:
+
+The only lines in this file read during an export begin with a period, hence
+an attribute field definition would actually begin with .FLD, not FLD as
+indicated in this generic description:
+
+FLD <name> <type> <fld_length>[.<decimals>] [<< <src_name>] [;<comment>]
+
+Note that optional parts of the definition are enclosed in square brackets.
+
+<name> is the field's name in the shapefile's DBF component. A legal name can
+be up to 10 characters long and have no embedded spaces. It should consist
+only of uppercase letters, digits, and underscores. Some field names beginning
+with an underscore (e.g., _DATUM) are given special treatment by WallsMap as
+described below.
+
+<type> can be either N (numeric), L (logical: Y/N or T/F), D (date:
+yyyymmdd), C (fixed-length text), or M (variable-length text, or memo).
+
+The required <fld_length> is the field's total length in characters. For
+numeric fields this number can have an appended period and decimal count,
+such as 10.2. The maximum length of type C fields is 254. Logical fields,
+date fields, and memo fields are forced to have lengths 1, 8, and 10,
+respectively.
+
+An optional string "<<" followed by <src_name> specifies that the value for
+attribute <name> is to be derived from a field named <src_name> in the source
+shapefile. When no source field is specified, the field is initialized to
+blanks. If <src_name> is enclosed in square brackets ([..]), a type C field
+will be initialized with the bracketed character string.
+
+SPECIAL CASES:
+
+The following field subsets, whichever you specify, are automatically
+maintained by WallsMap assuming it has sufficient information. If you choose
+to use them, only the field names are required; the sizes and types are
+forced to have the values indicated.
+
+FLD	_LATITUDE	N	12.7	; Degrees latitude
+FLD	_LONGITUDE	N	12.7	; Degrees longitude
+
+FLD	_EASTING	N	12.2	; UTM easting (meters)
+FLD	_NORTHING	N	12.2	; UTM northing (meters)
+FLD	_ZONE		C	3		; UTM Zone (e.g., 14N)
+
+FLD	_DATUM		C	5		; Datum (e.g., NAD83)
+
+The two fields below are also maintained automatically during updates.
+They store a 19-char timestamp followed by a 30-char editor's name, such
+as "2008-09-20 19:20:30 D.Smith." During an export, the contents of these
+fields are always copied unchanged if they exist in the source shapefile.
+
+FLD	_CREATED	C	50	; Created date/time/name
+FLD	_UPDATED	C	50	; Updated date/time/name
+
+ABOUT MEMO FIELDS:
+
+When type M (memo) fields are specified, a .DBT file containing the text will
+be created as part of the shapefile set. WallsMap supports the display and
+editing of memo fields, but typical behavior for a GIS viewer is to tolerate
+their presence in the table while ignoring the .DBT file. Note that memo
+fields and C fields are compatible, meaning that one can be the field created
+with the other being the field copied from in the source shapefile.
+
+=====================================

@@ -1,0 +1,481 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\walls.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP                  "res\\toolbar.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About Walls3D...",           ID_APP_ABOUT
+    END
+END
+
+IDR_SCENESDFTYPE MENU
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM "&Close",                      ID_FILE_CLOSE
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Wireframe\tCtrl+W",          IDR_WIREFRAME
+        MENUITEM "&Hidden Line\tCtrl+H",        IDR_HIDDENLINE
+        MENUITEM "&Flat Shading\tCtrl+F",       IDR_FLATSHADING
+        MENUITEM "&Smooth Shading\tCtrl+S",     IDR_SMOOTHSHADING
+        MENUITEM "&Texturing\tCtrl+T",          ID_TEXTURING
+        MENUITEM SEPARATOR
+        MENUITEM "&Reset View\tCtrl+R",         ID_VIEW_RESET
+        MENUITEM SEPARATOR
+        MENUITEM "Show Fr&amerate",             ID_VIEW_FRAMERATE
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "Stat&us Bar",                 ID_VIEW_STATUS_BAR
+    END
+    POPUP "&Window"
+    BEGIN
+        MENUITEM "&Cascade",                    ID_WINDOW_CASCADE
+        MENUITEM "&Tile",                       ID_WINDOW_TILE_HORZ
+        MENUITEM "&Arrange Icons",              ID_WINDOW_ARRANGE
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About Walls3D...",           ID_APP_ABOUT
+    END
+END
+
+IDR_SCENEVRMLTYPE MENU
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM "&Close",                      ID_FILE_CLOSE
+        MENUITEM SEPARATOR
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                       ID_APP_EXIT
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Wireframe\tCtrl+W",          IDR_WIREFRAME
+        MENUITEM "&Hidden Line\tCtrl+H",        IDR_HIDDENLINE
+        MENUITEM "&Flat Shading\tCtrl+F",       IDR_FLATSHADING
+        MENUITEM "&Smooth Shading\tCtrl+S",     IDR_SMOOTHSHADING
+        MENUITEM "&Texturing\tCtrl+T",          ID_TEXTURING
+        MENUITEM SEPARATOR
+        MENUITEM "&Reset View\tCtrl+R",         ID_VIEW_RESET
+        MENUITEM SEPARATOR
+        MENUITEM "S&how Framerate",             ID_VIEW_FRAMERATE
+        MENUITEM "&Toolbar",                    ID_VIEW_TOOLBAR
+        MENUITEM "Stat&us Bar",                 ID_VIEW_STATUS_BAR
+    END
+    POPUP "&Window"
+    BEGIN
+        MENUITEM "&Cascade",                    ID_WINDOW_CASCADE
+        MENUITEM "Tile &Vertically",            ID_WINDOW_TILE_VERT
+        MENUITEM "Tile &Horizontally",          ID_WINDOW_TILE_HORZ
+        MENUITEM "&Arrange Icons",              ID_WINDOW_ARRANGE
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About Walls3D...",           ID_APP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS
+BEGIN
+    "F",            IDR_FLATSHADING,        VIRTKEY, CONTROL, NOINVERT
+    "H",            IDR_HIDDENLINE,         VIRTKEY, CONTROL, NOINVERT
+    "L",            ID_VIEW_LEVELVIEW,      VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
+    "R",            ID_VIEW_RESET,          VIRTKEY, CONTROL, NOINVERT
+    "S",            IDR_SMOOTHSHADING,      VIRTKEY, CONTROL, NOINVERT
+    "T",            ID_TEXTURING,           VIRTKEY, CONTROL, NOINVERT
+    VK_F1,          ID_NOFUNCTION,          VIRTKEY, NOINVERT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
+    "W",            IDR_WIREFRAME,          VIRTKEY, CONTROL, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 34, 22, 291, 147
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About Walls3D"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,13,21,20
+    DEFPUSHBUTTON   "OK",IDOK,118,129,52,12,WS_GROUP
+    CTEXT           "Walls3D Version 1.02  Copyright © 2013 by David McKenzie",IDC_STATIC,44,13,209,16,SS_CENTERIMAGE | SS_SUNKEN
+    LTEXT           "Walls3D is a simple VRML 1.0 file viewer intended for use with WALLS, a cave surveying program available at the Texas Speleological Survey website:",IDC_STATIC,22,40,259,19
+    CTEXT           "Version 1.0 of Walls3D is partially based on VRWeb 1.1b5 Beta\nby Gerbert Orasche and Michael Pichler",IDC_STATIC,24,83,243,17
+    CTEXT           "Copyright © 1994-95, Institute for Information Processing and \nComputer Supported New Media, Graz University of Technology, Austria",IDC_STATIC,23,103,244,19
+    GROUPBOX        "",IDC_STATIC,17,75,257,50
+    LTEXT           "www.texasspeleologicalsurvey.org/software/walls/tsswalls.php",IDC_NEWURL,43,62,232,12
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "OriginalFilename", "WALLS3D.EXE"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR 16, 15
+BEGIN
+    BUTTON      ID_FILE_OPEN
+    SEPARATOR
+    BUTTON      ID_WINDOW_CASCADE
+    BUTTON      ID_WINDOW_TILE_VERT
+    BUTTON      ID_WINDOW_TILE_HORZ
+    SEPARATOR
+    BUTTON      ID_VIEW_RESET
+    SEPARATOR
+    BUTTON      ID_APP_ABOUT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 142
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE
+BEGIN
+    IDR_MAINFRAME           "Walls3D Viewer"
+    IDR_SCENESDFTYPE        "Walls3D Viewer\nWalls3D\n\nHyper-G Scenes (*.sdf;*.gz)\n.sdf;.gz\nVRML Scene\nVRML Scene"
+    IDR_SCENEVRMLTYPE       "Walls3D Viewer\nWalls3D\n\nVRML  (*.wrl,*.gz)\n.wrl;.gz\n\nWalls3DScene\nWalls3D Scene"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_APP_TITLE       "Walls3D"
+    AFX_IDS_IDLEMESSAGE     "Ready."
+    IDS_STR_HELP_HEADUP     "Click one of the head up icons, hold button, and drag mouse"
+    IDS_STR_HELP_FLIP       "Use left mouse button to drag, right to zoom, and both/middle to rotate"
+    IDS_STR_HELP_FLY        "Left button starts/stops flying '+' and '-' increase/decrease velocity; move mouse for rotation."
+    IDS_STR_HELP_FLYTO      "Set marker with the left button, cursor up flies to cursor down away from marker."
+    IDS_STR_HELP_WALK       "Left button for walking, right for turning head, both for up/down/left/right"
+END
+
+STRINGTABLE
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE
+BEGIN
+    ID_FILE_NEW             "Create a new document\nNew"
+    ID_FILE_OPEN            "Open an existing document\nOpen 3D file"
+    ID_FILE_CLOSE           "Close the active document\nClose"
+    ID_FILE_SAVE            "Save the active document\nSave"
+    ID_FILE_SAVE_AS         "Save the active document with a new name\nSave As"
+    ID_FILE_PAGE_SETUP      "Change the printing options\nPage Setup"
+    ID_FILE_PRINT_SETUP     "Change the printer and printing options\nPrint Setup"
+    ID_FILE_PRINT           "Print the active document\nPrint"
+    ID_FILE_PRINT_PREVIEW   "Display full pages\nPrint Preview"
+END
+
+STRINGTABLE
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quit the application; prompts to save documents\nExit"
+END
+
+STRINGTABLE
+BEGIN
+    ID_FILE_MRU_FILE1       "Open this document"
+    ID_FILE_MRU_FILE2       "Open this document"
+    ID_FILE_MRU_FILE3       "Open this document"
+    ID_FILE_MRU_FILE4       "Open this document"
+END
+
+STRINGTABLE
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE
+BEGIN
+    ID_WINDOW_NEW           "Open another window for the active document\nNew Window"
+    ID_WINDOW_ARRANGE       "Arrange icons at the bottom of the window\nArrange Icons"
+    ID_WINDOW_CASCADE       "Arrange windows so they overlap\nCascade windows"
+    ID_WINDOW_TILE_HORZ     "Arrange windows top-to bottom as non-overlapping tiles\nTile windows horizontally"
+    ID_WINDOW_TILE_VERT     "Arrange windows side-by-side as non-overlapping tiles\nTile windows vertically"
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+    AFX_IDS_MDICHILD        "Activate this window"
+END
+
+STRINGTABLE
+BEGIN
+    IDR_WIREFRAME           "Set the wireframe mode\nwireframe"
+    IDR_HIDDENLINE          "Set the hidden line mode\nhidden line"
+    IDR_FLATSHADING         "Set the flat shading mode\nflat shading"
+    IDR_SMOOTHSHADING       "Set the smooth shading mode\nsmooth shading"
+    ID_NAVIGATION_FLIP      "Rotate, zoom and drag objects"
+    ID_NAVIGATION_HEADSUP   "Shows navigation icons\nheads up"
+    ID_NAVIGATION_WALK      "Walk around with the mouse\nwalk around"
+    ID_VIEW_RESET           "Resets the view position to the beginning state\nReset view"
+    ID_NAVIGATION_FLYTO     "Mark any object and fly to point of interest\nfly to"
+    ID_NAVIGATION_FLY       "Fly through the scene\nfly"
+    ID_NAVIGATION_KEEPTURNING "If checked velocity mode is on\nvelocity mode"
+END
+
+STRINGTABLE
+BEGIN
+    ID_NAVIGATION_INTERACTIVE_WIREFRAME 
+                            "Switch back to wireframe mode when animated"
+    ID_NAVIGATION_INTERACTIVE_HIDDENLINE 
+                            "Switch back to hidden line mode when animated"
+    ID_NAVIGATION_INTERACTIVE_FLATSHADING 
+                            "Switch back to flat shading mode when animated"
+    ID_NAVIGATION_INTERACTIVE_SMOOTHSHADING 
+                            "Switch back to smooth shading mode when animated"
+    ID_TEXTURING            "Set the texturing mode\ntexture"
+    ID_NAVIGATION_INTERACTIVE_TEXTURING 
+                            "Switch to texturing mode when animated"
+    ID_VIEW_VRMLPARSEROUTPUT 
+                            "Shows error and warning messages from the VRML parser\nshow parseroutput"
+    ID_VIEW_INTERACTIVE_ENABLE 
+                            "Enable the interactive quality fallback mode\nenable quality fallback"
+    ID_VIEW_POLYGONS_AUTOMATIC "Use hints for polygon rendering\n"
+    ID_VIEW_POLYGONS_TWOSIDED "Render double sided polygons"
+    ID_VIEW_POLYGONS_SINGLESIDED "Render single sided polygons"
+    ID_VIEW_LIGHTING_AUTOMATIC "Use hints for lighting calculations"
+    ID_VIEW_LIGHTING_LIGHTINGOFF "Switch lighting calculations off"
+    ID_VIEW_LIGHTING_SWITCHON "Switch lighting calculations on"
+    ID_VIEW_LEVELVIEW       "Levels the view horizontally"
+END
+
+STRINGTABLE
+BEGIN
+    ID_VIEW_FRAMERATE       "Toggles display of the current framerate\ntoggle framerate display"
+    ID_NAVIGATION_SWITCHCAMERA "Switch to defined cameras"
+    ID_NAVIGATION_COLLISIONDETECTION 
+                            "Toggle Collision Detection\nCollision Detection"
+    ID_NAVIGATION_FREEROTATIONCONTROL "Toggle the Free Rotation Control"
+    ID_NAVIGATION_EDIT      "Enables the edit mode"
+END
+
+#endif    // English (United States) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// German (Austria) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEA)
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN_AUSTRIAN
+#pragma code_page(1252)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#include ""res\\scene.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "\r\n"
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "#include ""afxres.rc""  \t// Standard components\r\n"
+    "#include ""afxprint.rc""\t// printing/print preview resources\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // German (Austria) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#include "res\scene.rc2"  // non-Microsoft Visual C++ edited resources
+
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+#include "afxres.rc"  	// Standard components
+#include "afxprint.rc"	// printing/print preview resources
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

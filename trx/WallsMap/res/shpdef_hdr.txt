@@ -1,0 +1,7 @@
+WallsMap Shapefile Template v1.33
+=================================
+If selected as a template, this file will be read by WallsMap to determine
+the attribute table structure of an exported shapefile. It can also control
+how attributes are displayed and edited if it exists as one of the shapefile's
+components. For format details, see the program's documentation.
+=================================

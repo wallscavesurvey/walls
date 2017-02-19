@@ -1,0 +1,58 @@
+WallsMap Shapefile Template Ver 1.0
+===================================
+
+If selected as a template, this file will be read by WallsMap to determine
+the attribute table structure of exported shapefiles.
+
+FORMAT:
+
+The only lines in this file read during an export begin with a period, hence
+an attribute field definition would actually begin with .FLD, not FLD as
+indicated in this generic description:
+
+FLD <name> <type> <fld_length>[.<decimals>] [<< <src_name>] [;<comment>]
+
+Note that optional parts of the definition are enclosed in square brackets.
+
+<name> is the field's name in the shapefile's DBF component. It can be up to
+10 characters long with no embedded spaces. If the first character is a
+period, WallsMap will treat the field as read-only. For other software a
+period prefix will likely have no special meaning.
+
+<type> can be either N (numeric), L (logical: Y/N or T/F), D (date:
+yyyymmdd), C (fixed-length text), or M (variable-length text, or memo).
+
+The required <fld_length> is the field's total length in characters. For
+numeric fields this number can have an appended period and decimal count,
+such as 10.2. The maximum length of type C fields is 254. Logical fields,
+date fields, and memo fields are forced to have lengths 1, 8, and 10,
+respectively.
+
+An optional string "<<" followed by <src_name> specifies that the value for
+attribute <name> is to be derived from a field named <src_name> in the source
+shapefile. When no source field is specified, the field is initialized to
+blanks. If <src_name> is enclosed in square brackets ([..]), a type C field
+will be initialized with the bracketed character string.
+
+SPECIAL CASES:
+
+The following six fields, if defined, will be automatically filled and
+revised by WallsMap:
+
+FLD	.LATITUDE		N	11.6	; Degrees latitude
+FLD	.LONGITUDE		N	11.6	; Degrees longitude
+FLD	.EASTING		N	11.2	; UTM easting (meters)
+FLD	.NORTHING		N	11.2	; UTM northing (meters)
+FLD	.ZONE			C	3	; UTM Zone (e.g., 14N)
+FLD	.DATUM			C	5	; Datum (e.g., NAD83)
+
+ABOUT MEMO FIELDS:
+
+When type M (memo) fields are specified, a .DBT file containing the text will
+be created as part of the shapefile set. WallsMap supports the display and
+editing of memo fields, but typical behavior for a GIS viewer is to tolerate
+their presence in the table while ignoring the .DBT file. Note that memo
+fields and C fields are compatible, meaning that one can be the field created
+with the other being the field copied from in the source shapefile.
+
+=====================================

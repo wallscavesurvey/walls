@@ -1,0 +1,505 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F4C4EAE5-C0E3-44E5-989C-202244DC047B}</ProjectGuid>
+    <RootNamespace>WallsMap</RootNamespace>
+    <Keyword>MFCProj</Keyword>
+    <ProjectName>WallsMap</ProjectName>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\zlib.props" />
+    <Import Project="..\vs_version.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\zlib.props" />
+    <Import Project="..\vs_version.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</IgnoreImportLibrary>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
+    <EmbedManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</EmbedManifest>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(WorkINC);$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(WorkINC);$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(WorkLIB);$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(WorkLIB);$(LibraryPath)</LibraryPath>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectName)</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+    </Midl>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(ZLibSrcDir);$(WorkDIR)trx\Serial;$(WorkDIR)libgdal_1110\port;$(WorkDIR)libgdal_1110\gcore;$(WorkDIR)libgdal_1110\ogr;$(WorkDIR)libgdal_1110\frmts\gtiff\libtiff;$(WorkDIR)libgdal_1110\frmts\gtiff\libgeotiff;$(WorkDIR)libpng164;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_USE_THEMES;PSAPI_VERSION=1;CPL_DISABLE_DLL;WIN32;_WINDOWS;NO_WARN_MBCS_MFC_DEPRECATION;_DEBUG;_CRT_SECURE_NO_WARNINGS;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>
+      </DisableSpecificWarnings>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalDependencies>iqalibD.lib;SerialD.lib;libgeorefd.lib;liblocod.lib;nti_filed.lib;dbf_filed.lib;trx_filed.lib;trx_cshd.lib;trx_strd.lib;libgdal_1110D.lib;libpngD.lib;turbojpeg-static.lib;libwebpD.lib;kakadu6_4D.lib;libecwj2Sd.lib;zlibstatD.lib;WallsMap_sid.lib;Dbghelp.lib;Version.lib;Psapi.lib;crypt32.lib;Rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreSpecificDefaultLibraries>LIBCMT.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <LargeAddressAware>true</LargeAddressAware>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+      <DelayLoadDLLs>WallsMap_sid.dll</DelayLoadDLLs>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+    <Manifest>
+      <EnableDpiAwareness>false</EnableDpiAwareness>
+    </Manifest>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>$(ZLibSrcDir);$(WorkDIR)trx\Serial;$(WorkDIR)libgdal_1110\port;$(WorkDIR)libgdal_1110\gcore;$(WorkDIR)libgdal_1110\ogr;$(WorkDIR)libgdal_1110\frmts\gtiff\libtiff;$(WorkDIR)libgdal_1110\frmts\gtiff\libgeotiff;$(WorkDIR)libpng164;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NODLLEXP;_USE_THEMES;PSAPI_VERSION=1;CPL_DISABLE_DLL;WIN32;_WINDOWS;NO_WARN_MBCS_MFC_DEPRECATION;ZLIB_WINAPI;NDEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <MinimalRebuild>false</MinimalRebuild>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <BrowseInformation>false</BrowseInformation>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <AdditionalOptions>/IGNORE:4089 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>iqalib.lib;Serial.lib;libgeoref.lib;libloco.lib;nti_file.lib;dbf_file.lib;trx_file.lib;trx_csh.lib;trx_str.lib;libgdal_1110.lib;libpng.lib;turbojpeg-static.lib;libwebp.lib;kakadu6_4.lib;libecwj2S.lib;zlibstat.lib;WallsMap_sid.lib;Dbghelp.lib;Version.lib;Psapi.lib;crypt32.lib;Rpcrt4.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <IgnoreAllDefaultLibraries>
+      </IgnoreAllDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateMapFile>false</GenerateMapFile>
+      <MapFileName>wallsmap_map.txt</MapFileName>
+      <SubSystem>Windows</SubSystem>
+      <LargeAddressAware>true</LargeAddressAware>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+      <DelayLoadDLLs>WallsMap_sid.dll</DelayLoadDLLs>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+    </Link>
+    <Manifest>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <VerboseOutput>false</VerboseOutput>
+      <EnableDpiAwareness>false</EnableDpiAwareness>
+    </Manifest>
+    <PostBuildEvent>
+      <Command>copy "$(TargetPath)" "$(WorkBIN)"</Command>
+      <Message>copy exe to \work14\bin</Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\inc\ShpDBF.cpp" />
+    <ClCompile Include="aboutdlg.cpp" />
+    <ClCompile Include="AdvSearchDlg.cpp" />
+    <ClCompile Include="BackClrDlg.cpp" />
+    <ClCompile Include="BasicExcel.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="CenterViewDlg.cpp" />
+    <ClCompile Include="centroid.cpp" />
+    <ClCompile Include="CheckHeadCtrl.cpp" />
+    <ClCompile Include="ChildFrm.cpp" />
+    <ClCompile Include="ColorButton.cpp" />
+    <ClCompile Include="ColorPopup.cpp" />
+    <ClCompile Include="ColumnDlg.cpp" />
+    <ClCompile Include="ColumnTreeCtrl.cpp" />
+    <ClCompile Include="ComboBoxNS.cpp" />
+    <ClCompile Include="CompareDlg.cpp" />
+    <ClCompile Include="CompareFcnDlg.cpp" />
+    <ClCompile Include="CompareShp.cpp" />
+    <ClCompile Include="CopySelectedDlg.cpp" />
+    <ClCompile Include="CustomTreeChildCtrl.cpp" />
+    <ClCompile Include="DBGridDlg.cpp" />
+    <ClCompile Include="DbtEditDlg.cpp" />
+    <ClCompile Include="dbtfile.cpp" />
+    <ClCompile Include="DIBWrapper.cpp" />
+    <ClCompile Include="DlgExportImg.cpp" />
+    <ClCompile Include="DlgExportXLS.cpp" />
+    <ClCompile Include="DlgOptionsGE.cpp" />
+    <ClCompile Include="DlgSymbols.cpp" />
+    <ClCompile Include="DlgSymbolsImg.cpp" />
+    <ClCompile Include="DlgSymbolsPoly.cpp" />
+    <ClCompile Include="DrawXComboList.cpp" />
+    <ClCompile Include="EditImageDlg.cpp" />
+    <ClCompile Include="EditLabel.cpp" />
+    <ClCompile Include="EditorPrefsDlg.cpp" />
+    <ClCompile Include="EnableVisualStyles.cpp" />
+    <ClCompile Include="ExcelFormat.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ExpandNTI.cpp" />
+    <ClCompile Include="ExportJob.cpp" />
+    <ClCompile Include="ExportNTI.cpp" />
+    <ClCompile Include="ExportNTI_Adv.cpp" />
+    <ClCompile Include="ExportShpDlg.cpp" />
+    <ClCompile Include="ExportXLS.cpp" />
+    <ClCompile Include="Filebuf.cpp" />
+    <ClCompile Include="Filecfg.cpp" />
+    <ClCompile Include="FileDropTarget.cpp" />
+    <ClCompile Include="FileIsInUse.cpp" />
+    <ClCompile Include="FindDlgTbl.cpp" />
+    <ClCompile Include="FldsIgnoreDlg.cpp" />
+    <ClCompile Include="FontComboBox.cpp" />
+    <ClCompile Include="ftracker.cpp" />
+    <ClCompile Include="GdalLayer.cpp" />
+    <ClCompile Include="GEDefaultsDlg.cpp" />
+    <ClCompile Include="..\inc\GetElapsedSecs.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="GPSExportLog.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="GPSOptionsDlg.cpp" />
+    <ClCompile Include="GPSPortSettingDlg.cpp" />
+    <ClCompile Include="HeaderCtrlEx.cpp" />
+    <ClCompile Include="HeaderCtrlH.cpp" />
+    <ClCompile Include="HScrollListBox.cpp" />
+    <ClCompile Include="ImageLayer.cpp" />
+    <ClCompile Include="ImageViewDlg.cpp" />
+    <ClCompile Include="ImageZoomDlg.cpp" />
+    <ClCompile Include="KmlDef.cpp" />
+    <ClCompile Include="LayerSet.cpp" />
+    <ClCompile Include="LayerSetPage.cpp" />
+    <ClCompile Include="LayerSetSheet.cpp" />
+    <ClCompile Include="LinkTestDlg.cpp" />
+    <ClCompile Include="ListCtrlEx.cpp" />
+    <ClCompile Include="ListCtrlSelect.cpp" />
+    <ClCompile Include="LogFont.cpp" />
+    <ClCompile Include="MainFrm.cpp" />
+    <ClCompile Include="MapLayer.cpp" />
+    <ClCompile Include="MemUsageDlg.cpp" />
+    <ClCompile Include="Modeless.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="MsgCheck.cpp" />
+    <ClCompile Include="NiceSlider.cpp" />
+    <ClCompile Include="NtiLayer.cpp" />
+    <ClCompile Include="PageDetails.cpp" />
+    <ClCompile Include="PageLayers.cpp" />
+    <ClCompile Include="PercentDlg.cpp" />
+    <ClCompile Include="PlaceMark.cpp" />
+    <ClCompile Include="PointTree.cpp" />
+    <ClCompile Include="ptnode.cpp" />
+    <ClCompile Include="Quadtree.cpp" />
+    <ClCompile Include="QuickEdit.cpp" />
+    <ClCompile Include="QuickList.cpp" />
+    <ClCompile Include="ReloadDlg.cpp" />
+    <ClCompile Include="ResizeDlg.cpp" />
+    <ClCompile Include="RRECRuler.cpp" />
+    <ClCompile Include="RRECToolbar.cpp" />
+    <ClCompile Include="RulerRichEdit.cpp" />
+    <ClCompile Include="RulerRichEditCtrl.cpp" />
+    <ClCompile Include="SafeMirrorFile.cpp" />
+    <ClCompile Include="ScaleDlg.cpp" />
+    <ClCompile Include="ScaleWnd.cpp" />
+    <ClCompile Include="SelEditedDlg.cpp" />
+    <ClCompile Include="SelMarkerDlg.cpp" />
+    <ClCompile Include="ShowShapeDlg.cpp" />
+    <ClCompile Include="ShpDef.cpp" />
+    <ClCompile Include="ShpLayer.cpp" />
+    <ClCompile Include="ShpLayer_XC.cpp" />
+    <ClCompile Include="ShpPolyTest.cpp" />
+    <ClCompile Include="ShpRender.cpp" />
+    <ClCompile Include="SizeComboBox.cpp" />
+    <ClCompile Include="SSplitter.cpp" />
+    <ClCompile Include="StatLink.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="StdGrfx.cpp" />
+    <ClCompile Include="StdioFileEx.cpp" />
+    <ClCompile Include="TabCombo.cpp" />
+    <ClCompile Include="TableFillDlg.cpp" />
+    <ClCompile Include="TableReplDlg.cpp" />
+    <ClCompile Include="TextFile.cpp" />
+    <ClCompile Include="ThreadJob.cpp" />
+    <ClCompile Include="ThumbListCtrl.cpp" />
+    <ClCompile Include="ThumbTooltip.cpp" />
+    <ClCompile Include="TitleDlg.cpp" />
+    <ClCompile Include="UpdatedDlg.cpp" />
+    <ClCompile Include="UpdZipDlg.cpp" />
+    <ClCompile Include="utility.cpp" />
+    <ClCompile Include="WallsMap.cpp" />
+    <ClCompile Include="WallsMapDoc.cpp" />
+    <ClCompile Include="WallsMapView.cpp" />
+    <ClCompile Include="WebMapFmtDlg.cpp" />
+    <ClCompile Include="windowpl.cpp" />
+    <ClCompile Include="XComboList.cpp" />
+    <ClCompile Include="XMessageBox.cpp" />
+    <ClCompile Include="zip.cpp" />
+    <ClCompile Include="ZipDlg.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\inc\dbfile.h" />
+    <ClInclude Include="..\inc\dbf_file.h" />
+    <ClInclude Include="..\inc\FltPoint.h" />
+    <ClInclude Include="..\inc\ShpDBF.h" />
+    <ClInclude Include="..\inc\trxfile.h" />
+    <ClInclude Include="..\inc\Trx_file.h" />
+    <ClInclude Include="..\inc\trx_str.h" />
+    <ClInclude Include="BasicExcel.hpp" />
+    <ClInclude Include="CenterViewDlg.h" />
+    <ClInclude Include="ColumnTreeCtrl.h" />
+    <ClInclude Include="ComboBoxNS.h" />
+    <ClInclude Include="CompareDlg.h" />
+    <ClInclude Include="CompareFcnDlg.h" />
+    <ClInclude Include="CopySelectedDlg.h" />
+    <ClInclude Include="CustomTreeChildCtrl.h" />
+    <ClInclude Include="d2dhdr.h" />
+    <ClInclude Include="DlgExportXLS.h" />
+    <ClInclude Include="DlgSymbolsImg.h" />
+    <ClInclude Include="EditLabel.h" />
+    <ClInclude Include="ExcelFormat.h" />
+    <ClInclude Include="ExportShpDlg.h" />
+    <ClInclude Include="FileIsInUse.h" />
+    <ClInclude Include="FldsIgnoreDlg.h" />
+    <ClInclude Include="FontComboBox.h" />
+    <ClInclude Include="aboutdlg.h" />
+    <ClInclude Include="AdvSearchDlg.h" />
+    <ClInclude Include="BackClrDlg.h" />
+    <ClInclude Include="CheckHeadCtrl.h" />
+    <ClInclude Include="ChildFrm.h" />
+    <ClInclude Include="ColorButton.h" />
+    <ClInclude Include="ColorPopup.h" />
+    <ClInclude Include="ColumnDlg.h" />
+    <ClInclude Include="..\inc\dbfile_shp.h" />
+    <ClInclude Include="DBGridDlg.h" />
+    <ClInclude Include="DbtEditDlg.h" />
+    <ClInclude Include="DIBWrapper.h" />
+    <ClInclude Include="DlgExportImg.h" />
+    <ClInclude Include="DlgOptionsGE.h" />
+    <ClInclude Include="DlgSymbols.h" />
+    <ClInclude Include="DlgSymbolsPoly.h" />
+    <ClInclude Include="EditImageDlg.h" />
+    <ClInclude Include="EditorPrefsDlg.h" />
+    <ClInclude Include="EnableVisualStyles.h" />
+    <ClInclude Include="ExpandNTI.h" />
+    <ClInclude Include="ExportJob.h" />
+    <ClInclude Include="ExportNTI.h" />
+    <ClInclude Include="ExportNTI_Adv.h" />
+    <ClInclude Include="filebuf.h" />
+    <ClInclude Include="filecfg.h" />
+    <ClInclude Include="FileDropTarget.h" />
+    <ClInclude Include="FileMap.h" />
+    <ClInclude Include="FindDlgTbl.h" />
+    <ClInclude Include="ftracker.h" />
+    <ClInclude Include="GdalLayer.h" />
+    <ClInclude Include="GEDefaultsDlg.h" />
+    <ClInclude Include="..\inc\GetElapsedSecs.h" />
+    <ClInclude Include="GPSOptionsDlg.h" />
+    <ClInclude Include="GPSPortSettingDlg.h" />
+    <ClInclude Include="GPSView.h" />
+    <ClInclude Include="HeaderCtrlEx.h" />
+    <ClInclude Include="HeaderCtrlH.h" />
+    <ClInclude Include="HScrollListBox.h" />
+    <ClInclude Include="ids.h" />
+    <ClInclude Include="ImageViewDlg.h" />
+    <ClInclude Include="ImageZoomDlg.h" />
+    <ClInclude Include="KmlDef.h" />
+    <ClInclude Include="LayerSetSheet.h" />
+    <ClInclude Include="LinkTestDlg.h" />
+    <ClInclude Include="ListCtrlEx.h" />
+    <ClInclude Include="ListCtrlSelect.h" />
+    <ClInclude Include="LogFont.h" />
+    <ClInclude Include="MainFrm.h" />
+    <ClInclude Include="MapLayer.h" />
+    <ClInclude Include="MemoEditDlg.h" />
+    <ClInclude Include="MemUsageDlg.h" />
+    <ClInclude Include="Modeless.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="MsgCheck.h" />
+    <ClInclude Include="NiceSlider.h" />
+    <ClInclude Include="NtiLayer.h" />
+    <ClInclude Include="PageDetails.h" />
+    <ClInclude Include="PageLayers.h" />
+    <ClInclude Include="PercentDlg.h" />
+    <ClInclude Include="PlaceMark.h" />
+    <ClInclude Include="PointTree.h" />
+    <ClInclude Include="ptnode.h" />
+    <ClInclude Include="Quadtree.h" />
+    <ClInclude Include="QuickEdit.h" />
+    <ClInclude Include="QuickList.h" />
+    <ClInclude Include="ReloadDlg.h" />
+    <ClInclude Include="ResizeDlg.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="RRECRuler.h" />
+    <ClInclude Include="RRECToolbar.h" />
+    <ClInclude Include="RulerRichEdit.h" />
+    <ClInclude Include="RulerRichEditCtrl.h" />
+    <ClInclude Include="SafeMirrorFile.h" />
+    <ClInclude Include="ScaleDlg.h" />
+    <ClInclude Include="ScaleWnd.h" />
+    <ClInclude Include="SelEditedDlg.h" />
+    <ClInclude Include="SelMarkerDlg.h" />
+    <ClInclude Include="ShowShapeDlg.h" />
+    <ClInclude Include="ShpDef.h" />
+    <ClInclude Include="ShpLayer.h" />
+    <ClInclude Include="ShpStruct.h" />
+    <ClInclude Include="SSplitter.h" />
+    <ClInclude Include="StatLink.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="StdGrfx.h" />
+    <ClInclude Include="TabCombo.h" />
+    <ClInclude Include="TableFillDlg.h" />
+    <ClInclude Include="TableReplDlg.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="ThreadJob.h" />
+    <ClInclude Include="ThumbListCtrl.h" />
+    <ClInclude Include="TitleDlg.h" />
+    <ClInclude Include="UpdatedDlg.h" />
+    <ClInclude Include="UpdZipDlg.h" />
+    <ClInclude Include="utility.h" />
+    <ClInclude Include="WallsMap.h" />
+    <ClInclude Include="WallsMapDoc.h" />
+    <ClInclude Include="WallsMapView.h" />
+    <ClInclude Include="WebMapFmtDlg.h" />
+    <ClInclude Include="windowpl.h" />
+    <CustomBuildStep Include="XBrowseForFolder.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </CustomBuildStep>
+    <ClInclude Include="XComboList.h" />
+    <ClInclude Include="XMessageBox.h" />
+    <ClInclude Include="zip.h" />
+    <ClInclude Include="ZipDlg.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\walls32\res\UTM_UPS_Buttons.bmp" />
+    <None Include="res\bitmap1.bmp" />
+    <None Include="res\bmp00001.bmp" />
+    <None Include="res\bmp00002.bmp" />
+    <None Include="res\bmp00003.bmp" />
+    <None Include="res\checkbox.bmp" />
+    <None Include="res\checkboxes.bmp" />
+    <None Include="res\cur00001.cur" />
+    <None Include="res\cursor1.cur" />
+    <None Include="res\cursor_hand.cur" />
+    <None Include="res\cursor_zoomin.cur" />
+    <None Include="res\cursor_zoomout.cur" />
+    <None Include="res\draginfo.bmp" />
+    <None Include="res\folderclose.ico" />
+    <None Include="res\folderopen.ico" />
+    <None Include="res\folders-img.bmp" />
+    <None Include="res\FOLDER_OPEN.ico" />
+    <None Include="res\icon1.ico" />
+    <None Include="res\icon2.ico" />
+    <None Include="res\measure.cur" />
+    <None Include="res\Toolbar.bmp" />
+    <CustomBuildStep Include="res\kml_file.txt">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </CustomBuildStep>
+    <None Include="res\White-20x18.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="WallsMap.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\Delete_red.bmp" />
+    <Image Include="res\toolbar1.bmp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="WallsMap.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

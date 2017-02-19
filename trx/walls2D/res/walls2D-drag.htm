@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+	<HEAD>
+	<TITLE>Walls2D</TITLE>
+	<SCRIPT type="text/vbscript" language="VBScript">
+	Function SVGControlVersion()
+		on error resume next
+		Set svgCtl =CreateObject("Adobe.SVGCtl")
+		SVGControlVersion=svgCtl.getSVGViewerVersion()
+	end Function
+	</SCRIPT>
+	<SCRIPT type="text/javascript" language="JavaScript">
+//global variables
+var svgDoc;
+var svgRoot;
+var offsetX;
+var offsetY;
+var bPanning;
+var bDragging;
+var offsetX0;
+var offsetY0;
+var dragX;
+var dragY;
+
+function saveView(bZoom) {
+
+	if(bDragging) return;
+
+	var trans=svgRoot.getCurrentTranslate();
+	var scale=svgRoot.getCurrentScale();
+
+	offsetX=trans.getX(); offsetY=trans.getY();
+	if(bZoom) external.zzoooo(scale);
+	if(scale==1 && offsetX==0 && offsetX==0) {
+		offsetX0=offsetY0=0;
+		bPanning=0;
+		return;
+	}
+	if(!bZoom) {
+		if(!bPanning) bPanning=external.ppaann;
+		return;
+	}
+	bPanning=0;
+	offsetX0=offsetX; offsetY0=offsetY;
+}
+
+function onMouseDown(evt)
+{
+	dragX=evt.getClientX();
+	dragY=evt.getClientY();
+	//alert("down");
+	offsetX0=offsetX;
+	offsetY0=offsetY;
+	bDragging=1
+}
+
+function onMouseUp()
+{
+	bDragging=0;
+	saveView(0);
+}
+
+function onMouseMove(evt)
+{
+	if(bDragging) {
+		svgRoot.currentTranslate.x=offsetX0+(evt.getClientX()-dragX);
+		svgRoot.currentTranslate.y=offsetY0+(evt.getClientY()-dragY);
+	}
+}
+
+function initMap(evt) {
+	svgDoc=evt.getTarget().getOwnerDocument();
+	svgRoot=svgDoc.getDocumentElement();
+	offsetX=0;
+	offsetY=0;
+	offsetX0=0;
+	offsetY0=0;
+	bPanning=0;
+	bDragging=0;
+	external.ttiitt(svgRoot.getAttribute("title"))
+}
+
+function showWalls2D(id,checkVal) {
+	if(checkVal>-2) {
+		svgdoc=document.svgMap.getSVGDocument()
+		if(!svgdoc) return false
+		svgobj=svgdoc.getElementById(id)
+		if(!svgobj) return false
+		if(checkVal == -1) return true
+		svgobj.setAttribute('style',checkVal?'display:inline':'display:none')
+		return true
+	}
+	if(checkVal==-3) {
+		if(offsetX==offsetX0 && offsetY==offsetY0) return false
+		svgRoot.currentTranslate.x=offsetX0;
+		svgRoot.currentTranslate.y=offsetY0;
+		bPanning=0;
+		offsetX=offsetX0;
+		offsetY=offsetY0;
+		return true
+	}
+	if(checkVal==-4) {
+		svgRoot.currentTranslate.x=svgRoot.currentTranslate.y=0;
+		svgRoot.currentScale=1;
+		offsetX0=0; offsetY0=0;
+		bPanning=0;
+		return true;
+	}
+	version=SVGControlVersion()
+	if(!version) return false;
+	return (version.substring(0,7)=='Adobe; ' && version.substring(7,8)>='3')
+}
+	</SCRIPT>
+	</HEAD>
+	<BODY scroll="no" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+	<EMBED name=svgMap width="100%%" height="100%%"
+      pluginspage=http://www.adobe.com/svg/viewer/install/
+      src="%s" type="image/svg-xml">
+    <NOEMBED>The Adobe SVG Viewer plug-in is required to see this map. 
+    </NOEMBED>
+	</BODY>
+</HTML>

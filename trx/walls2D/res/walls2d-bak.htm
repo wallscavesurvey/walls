@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+	<HEAD>
+	<TITLE>Walls2D</TITLE>
+	<SCRIPT type="text/vbscript" language="VBScript">
+	Function SVGControlVersion()
+		on error resume next
+		Set svgCtl =CreateObject("Adobe.SVGCtl")
+		SVGControlVersion=svgCtl.getSVGViewerVersion()
+	end Function
+	</SCRIPT>
+	<SCRIPT type="text/javascript" language="JavaScript">
+//global variables
+var svgDoc;
+var svgRoot;
+var svgImg;
+var offsetX;
+var offsetY;
+var imgX;
+var imgY;
+var	scale;
+var pixSize;
+var svgWidth;
+var svgHeight;
+var bPanning=0;
+
+function SetOriginal()
+{
+	offsetX0=0; offsetY0=0;
+	imgX=0; imgY=0;
+	bPanning=0;
+	svgImg.setAttribute("transform","translate(0 0)");
+}
+
+function saveView(bZoom) {
+	var trans=svgRoot.getCurrentTranslate();
+	offsetX=trans.getX(); offsetY=trans.getY();
+	if(bZoom) {
+		pixSize0=pixSize;
+		scale=svgRoot.getCurrentScale();
+		external.zzoooo(scale);
+		setPixSize();
+	}
+	if(scale==1 && offsetX==0 && offsetX==0) {
+		SetOriginal();
+		return;
+	}
+	if(!bZoom) {
+		if(!bPanning) {
+			bPanning=external.ppaann;
+		}
+		return;
+	}
+	bPanning=0;
+	offsetX0=offsetX; offsetY0=offsetY;
+}
+
+function setPixSize() {
+	width=window.document.body.clientWidth;
+	height=window.document.body.clientHeight;
+	if(svgAspect>width/height) {
+	  pixSize=(svgHeight/height)/scale;
+	}
+	else {
+	  pixSize=(svgWidth/width)/scale;
+	}
+}
+
+function onResize()
+{
+	oldPixSize=pixSize;
+	setPixSize();
+	imgX=imgX*(pixSize/oldPixSize);
+	imgY=imgY*(pixSize/oldPixSize);
+	svgImg.setAttribute("transform","translate("+imgX+" "+imgY+")");
+}
+
+function initMap(evt) {
+	svgDoc=evt.getTarget().getOwnerDocument();
+	svgRoot=svgDoc.getDocumentElement();
+	var viewbox=new String(svgRoot.getAttribute("viewBox"));
+	var viewboxes=viewbox.split(' ');
+	svgWidth=viewboxes[2];
+	svgHeight=viewboxes[3];
+	svgAspect=svgWidth/svgHeight;
+	scale=1;
+	setPixSize();
+	svgImg=svgDoc.getElementById("svgImg");
+	imgX=0; imgY=0;
+	offsetX=0;
+	offsetY=0;
+	offsetX0=0;
+	offsetY0=0;
+	external.ttiitt(svgRoot.getAttribute("title"))
+}
+
+function showWalls2D(id,checkVal) {
+	if(checkVal>-2) {
+		svgdoc=document.svgMap.getSVGDocument()
+		if(!svgdoc) return false
+		svgobj=svgdoc.getElementById(id)
+		if(!svgobj) return false
+		if(checkVal == -1) return true
+		svgobj.setAttribute('style',checkVal?'display:inline':'display:none')
+		return true
+	}
+	if(checkVal==-3) {
+		bPanning=0;
+		if(offsetX==offsetX0 && offsetY==offsetY0) {
+			return false
+		}
+		imgX=imgX-(offsetX-offsetX0)*pixSize;
+		imgY=imgY-(offsetY-offsetY0)*pixSize;
+		offsetX0=offsetX;
+		offsetY0=offsetY;
+		svgImg.setAttribute("transform","translate("+imgX+" "+imgY+")");
+		return true
+	}
+	if(checkVal==-4) {
+		svgRoot.currentTranslate.x=svgRoot.currentTranslate.y=0;
+		svgRoot.currentScale=scale=1;
+		SetOriginal();
+		return true;
+	}
+	version=SVGControlVersion()
+	if(!version) return false;
+	return (version.substring(0,7)=='Adobe; ' && version.substring(7,8)>='3')
+}
+	</SCRIPT>
+	</HEAD>
+	<BODY scroll="no" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+	<EMBED name=svgMap width="100%%" height="100%%"
+      pluginspage=http://www.adobe.com/svg/viewer/install/
+      src="%s" type="image/svg-xml">
+    <NOEMBED>The Adobe SVG Viewer plug-in is required to see this map. 
+    </NOEMBED>
+	</BODY>
+</HTML>

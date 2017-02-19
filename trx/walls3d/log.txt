@@ -1,0 +1,62 @@
+Compiling...
+Arrays.cpp
+Hglinks.cpp
+treaps.cpp
+objectid.cpp
+message.cpp
+objconst.cpp
+object.cpp
+pcstuff.cpp
+Mfcutil.cpp
+hgdummy.cpp
+unzip.cpp
+gentreap.cpp
+Str.cpp
+List.cpp
+hlsutil.cpp
+light.cpp
+wrlpick.cpp
+E:\Vc\vrweb\wrlpick.cpp(482) : warning C4003: not enough actual parameters for macro 'HITENCOUNTERED'
+E:\Vc\vrweb\wrlpick.cpp(490) : warning C4003: not enough actual parameters for macro 'HITENCOUNTERED'
+geomobj.cpp
+dummyobj.cpp
+sdfcam.cpp
+QvLib.cpp
+E:\Vc\vrweb\vrml\../vrml/QvDirectionalLight.cpp(16) : warning C4244: '=' : conversion from 'const double' to 'float', possible loss of data
+E:\Vc\vrweb\vrml\../vrml/QvRotation.cpp(12) : warning C4244: '=' : conversion from 'const double' to 'float', possible loss of data
+wrlbuild.cpp
+writescene.cpp
+scene3d.cpp
+scenevw.cpp
+wrltraverse.cpp
+polyhed.cpp
+MainFrm.cpp
+scenepick.cpp
+object3d.cpp
+wscene.cpp
+scene.cpp
+wrldraw.cpp
+scviewer.cpp
+stdafx.cpp
+ge3d_ogl.cpp
+E:\Vc\vrweb\ge3d\ge3d_ogl.cpp(135) : warning C4244: 'initializing' : conversion from 'const double' to 'float', possible loss of data
+E:\Vc\vrweb\ge3d\ge3d_ogl.cpp(845) : warning C4018: '==' : signed/unsigned mismatch
+E:\Vc\vrweb\ge3d\ge3d_ogl.cpp(855) : warning C4018: '<' : signed/unsigned mismatch
+E:\Vc\vrweb\ge3d\ge3d_ogl.cpp(1640) : warning C4101: 'c' : unreferenced local variable
+vrmlscene.cpp
+material.cpp
+readscene.cpp
+camera.cpp
+vecutil.cpp
+SDFSCENE.CPP
+writevrml.cpp
+opengl.cpp
+strarray.cpp
+srcanch.cpp
+slist.cpp
+scenemen.cpp
+wrlsave.cpp
+sceneDoc.cpp
+Generating Code...
+Linking...
+scene.exe - 0 error(s), 8 warning(s)

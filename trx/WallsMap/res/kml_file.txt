@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.1">
+<Document>
+	<name>%s</name>
+%s	<Style id="sn_W">
+		<IconStyle>
+			<scale>%.1f</scale>
+			<Icon>
+				<href>%s</href>
+			</Icon>
+		</IconStyle>
+		<LabelStyle>
+			<scale>%.1f</scale>
+		</LabelStyle>
+	</Style>
