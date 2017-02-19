@@ -11,8 +11,8 @@ let me know if you'd be willing to help, even if you only have time to give me t
 ## Roadmap
 
 Right now I need to figure out what else is missing from here; David had all of his projects stored in one giant folder
-and I've tried to pare it down to only what's necessary for Walls.  But some things are definitely missing (for example,
-Walls2D is needed for SVG export).  It may also make sense to store WallsMap and other programs in this repo/codebase.
+and I've tried to pare it down to only what's necessary for Walls.  It will probably make the most sense to put WallsMap
+and possibly other projects in this repo as well.
 
 ## Quick Start for Developers
 
