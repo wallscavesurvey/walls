@@ -148,6 +148,8 @@
 #define IDR_TABLE_CONTEXT               213
 #define IDD_FINDDLGTBL                  214
 #define IDR_FILL_CONTEXT                214
+#define IDR_FILL_CONTEXT1               215
+#define IDR_IMG_CONTEXT                 215
 #define IDD_MSGCHECK                    216
 #define IDD_EDITIMAGE                   217
 #define IDB_DRAGINFO                    220
@@ -835,6 +837,7 @@
 #define ID__REPLACE                     33285
 #define ID_REPL_TEXT                    33286
 #define ID_TABLE_REPL                   33287
+#define ID_SHOW_SETUNLOCATED            33288
 #define ID_APPENDLAYER_0                34000
 #define ID_APPENDLAYER_1                34001
 #define ID_APPENDLAYER_2                34002
@@ -869,8 +872,8 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        274
-#define _APS_NEXT_COMMAND_VALUE         33288
+#define _APS_NEXT_RESOURCE_VALUE        275
+#define _APS_NEXT_COMMAND_VALUE         33289
 #define _APS_NEXT_CONTROL_VALUE         1227
 #define _APS_NEXT_SYMED_VALUE           182
 #endif

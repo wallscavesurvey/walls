@@ -12,80 +12,31 @@
     <Filter Include="Data Files">
       <UniqueIdentifier>{323b6157-6dcc-44a5-a4dc-ee0a2a7b4192}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{23442d93-b220-439c-abe5-af12bc02644d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\wallsvg.cpp">
+    <None Include="res\wallsvg.xml">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="wallsvg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="wallsvg.rc">
-      <Filter>Source Files</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\wall_shp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="E:\caves\Allison\Dry 2006-01-05\0 9-21-05_mrg.svg">
-      <Filter>Data Files</Filter>
-    </None>
-    <None Include="E:\caves\Allison\Dry 2006-01-05\9-21-05_w2d copy_ai11.svg">
-      <Filter>Data Files</Filter>
-    </None>
-    <None Include="E:\caves\Allison\Dry 2006-01-05\DRY CAVE_w2d.svg">
-      <Filter>Data Files</Filter>
-    </None>
-    <None Include="J:\temp\ZicafooseBlowhole\Full Map_mrg.svg">
-      <Filter>Data Files</Filter>
-    </None>
-    <None Include="E:\kaua\project\KAUA-CEN_ai11_mrg.svg">
-      <Filter>Data Files</Filter>
-    </None>
-    <None Include="E:\kaua\project\KAUA-CEN_w2d_mrg.svg">
-      <Filter>Data Files</Filter>
-    </None>
-    <None Include="J:\temp\Walls\Projects\Kaua North Maze\KAUA-NM_ai10_mrg.svg">
-      <Filter>Data Files</Filter>
-    </None>
-    <None Include="..\..\..\walls2b7\projects\Kaua North Maze\KAUA-NM_ai11_mrg.svg">
-      <Filter>Data Files</Filter>
-    </None>
-    <None Include="J:\temp\Walls\Projects\Kaua North Maze\KAUA-NM_w2d.svg">
-      <Filter>Data Files</Filter>
-    </None>
-    <None Include="..\..\..\Walls\Projects\Kaua North Maze\KAUA-NM_w2d_mrg.svg">
-      <Filter>Data Files</Filter>
-    </None>
-    <None Include="..\..\..\walls2b7\projects\Kaua North Maze\KAUA-NM_w2d_mrg.svg">
-      <Filter>Data Files</Filter>
-    </None>
-    <None Include="J:\temp\Walls\Projects\Tutorial Project\pngtest.svg">
-      <Filter>Data Files</Filter>
-    </None>
-    <None Include="J:\temp\Walls\Projects\Tutorial Project\Polygon_ai10_mrg.svg">
-      <Filter>Data Files</Filter>
-    </None>
-    <None Include="..\..\..\walls2b7\projects\Tutorial\Polygon_ai11_mrg.svg">
-      <Filter>Data Files</Filter>
-    </None>
-    <None Include="..\..\..\walls2b7\projects\Tutorial\Polygon_ai12_mrg.svg">
-      <Filter>Data Files</Filter>
-    </None>
-    <None Include="..\..\..\walls2b7\projects\Tutorial\Polygon_w2d_mrg.svg">
-      <Filter>Data Files</Filter>
-    </None>
-    <None Include="G:\temp\Walls\Projects\Tutorial Project\TUTORIAL_w2d.svg">
-      <Filter>Data Files</Filter>
-    </None>
-    <None Include="res\wallsvg.xml" />
-    <None Include="E:\gis\Mexico\Sprouse roundtripping\Quintana Roo\Arboles_solo.svg">
-      <Filter>Data Files</Filter>
-    </None>
-    <None Include="E:\gis\Mexico\Sprouse roundtripping\Quintana Roo\$1.svg">
-      <Filter>Data Files</Filter>
-    </None>
+    <ResourceCompile Include="wallsvg.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

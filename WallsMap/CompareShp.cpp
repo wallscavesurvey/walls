@@ -40,6 +40,7 @@ static UINT	  nLinkedFiles,nMissingFiles,nNewRecs,nRefBlank,nChangedPfx;
 static UINT   nNotFound,nFound,nUnchanged,nOutdated,nChanged,nRevised,nRemoved;
 
 static __int64 iSizeLinkedFiles;
+static double fLocTolerance;
 
 //Status of record being scanned --
 static bool   bRecHeaderListed;
@@ -425,6 +426,12 @@ void CShpLayer::ListMemoFields()
 
 bool CShpLayer::IsNotLocated(double lat,double lon)
 {
+	if(m_pdbfile->noloc_lat || m_pdbfile->noloc_lon) {
+		double f=pow(10,-m_pdbfile->noloc_dir);
+		return fabs(lat-m_pdbfile->noloc_lat)<f && fabs(lon-m_pdbfile->noloc_lon)<f;
+	}
+	return false;
+	/*
 	#define MAX_NOERR 0.0000005 
 	bool b=false;
 	double latx=m_pdbfile->noloc_lat;
@@ -441,6 +448,7 @@ bool CShpLayer::IsNotLocated(double lat,double lon)
 			     break;
 	}
 	return b;
+	*/
 }
 
 static void ListNewTS(WORD f)
@@ -510,7 +518,7 @@ bool CShpLayer::CompareLocs(bool bChangedPfx)
 	bool bLocChanged=true;
 
 	if(bNolocL==bNolocR) {
-		if(bNolocL || (fptL.y==fptR.y && fptL.x==fptR.x) || (fabs(fptR.y-fptL.y)<0.000001 && fabs(fptR.x-fptL.x)<0.000001))
+		if(bNolocL || fabs(fptR.y-fptL.y)<fLocTolerance && fabs(fptR.x-fptL.x)<fLocTolerance)
 			bLocChanged=false; //close enough?
 	}
 
@@ -682,6 +690,7 @@ int CShpLayer::CompareUpdates(BOOL bIncludeAll)
 	nCautions=nNotes=nBadLinks=nLinkedFiles=nMissingFiles=nGoodLinks=0;
     iSizeLinkedFiles=0;
 	nNotFound=nFound=nUnchanged=nOutdated=nChanged=nRevised=nRemoved=0;
+	fLocTolerance=pow(10,-m_pdbfile->noloc_dir); //pow(10,-6) = 0.000001 deg = 10 cm
 
 	UINT nTimestampChgOnly=0;
 	pShpR=NULL;
@@ -794,6 +803,7 @@ int CShpLayer::CompareUpdates(BOOL bIncludeAll)
 
 			if(iUpdated && !iCreated && !nFieldsListed && !bOutdated) {
 				nFieldsListed++;
+				writelognote(N_NOTE, "Only the UPDATED timestamp has changed!");
 				nTimestampChgOnly++; //for caution message
 			}
 			
@@ -1411,7 +1421,7 @@ int CShpLayer::ExportUpdateShp(LPSTR pathBuf,CString &pathName,int iFlags)
 	int nRecs=0;
 	TRXREC trxrec;
 	DWORD rec;
-	char keyBuf[256]={lenKey};
+	char keyBuf[256]={(char)lenKey};
 
 	//First get record count and extent
 	CFltRect extent(DBL_MAX,-DBL_MAX,-DBL_MAX,DBL_MAX);
@@ -2064,7 +2074,9 @@ _keyIdx:
 
 	ASSERT(nOutRecs==db.NumRecs());
 
-	if(db.Close()) goto _failDBF;
+	if(db.Close()) {
+		goto _failDBF;
+	}
 
 	return nOutRecs;
 

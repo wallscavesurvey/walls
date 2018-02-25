@@ -89,7 +89,7 @@ public:
 
 protected:
 // Document update functions --
-
+	BOOL IsLocateEnabled();
 	BOOL IsReadOnly() {return GetDocument()->m_bReadOnly;}
 	BOOL IsSrvFile() {return GetDocument()->IsSrvFile();}
 	const CString & GetPathName() {return GetDocument()->GetPathName();}
@@ -139,7 +139,6 @@ protected:
 
 // Generated message map functions
 protected:
-    //{{AFX_MSG(CWedView)
 	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
@@ -163,25 +162,24 @@ protected:
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnEditProperties();
 	afx_msg void OnLocateInGeom();
-	afx_msg void OnUpdateLocateInGeom(CCmdUI* pCmdUI);
+	//afx_msg void OnUpdateLocateInGeom(CCmdUI* pCmdUI);
 	afx_msg void OnLocateOnMap();
+	afx_msg void OnViewSegment();
 	afx_msg void OnVectorInfo();
-	//}}AFX_MSG
 	afx_msg void OnUpdateFindNext(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateSel(CCmdUI* pCCmdUI);
 	afx_msg void OnUpdateCol(CCmdUI* pCCmdUI);
 	afx_msg void OnUpdateLine(CCmdUI* pCCmdUI);
 	afx_msg void OnUpdatePfxNam(CCmdUI* pCmdUI);
     afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
-
-	DECLARE_MESSAGE_MAP()
-public:
 	afx_msg void OnEditUndo();
 	afx_msg void OnUpdateEditUndo(CCmdUI *pCmdUI);
 	afx_msg void OnEditRedo();
 	afx_msg void OnUpdateEditRedo(CCmdUI *pCmdUI);
 	afx_msg void OnPopupWriteprotect();
 	afx_msg void OnUpdatePopupWriteprotect(CCmdUI *pCmdUI);
+
+	DECLARE_MESSAGE_MAP()
 };
 
 /////////////////////////////////////////////////////////////////////////////

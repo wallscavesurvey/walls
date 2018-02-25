@@ -61,6 +61,7 @@ protected:
 	afx_msg void OnProperties();
 	afx_msg void OnFileEdit();
 	afx_msg void OnViewStats();
+	afx_msg void OnBnClickedViewseg();
 	afx_msg void OnDestroy();
 	afx_msg void OnFrMagDlg();
 	afx_msg void OnToMagDlg();

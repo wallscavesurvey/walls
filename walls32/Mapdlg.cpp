@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "walls.h"
+#include "Prjdoc.h"
 #include "compview.h"
 #include "plotview.h"
 #include "pageview.h" 
@@ -10,12 +11,14 @@
 #include "mapframe.h"
 #include "wall_srv.h"
 #include "compile.h"
+#include "dialogs.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
 static char BASED_CODE THIS_FILE[] = __FILE__;
 #endif
 
+BOOL CMapDlg::m_bConfirmedReset=0;
 
 /////////////////////////////////////////////////////////////////////////////
 // CMapDlg dialog
@@ -24,9 +27,7 @@ CMapDlg::CMapDlg(BOOL bPrinter,CWnd* pParent /*=NULL*/)
 	: CDialog(CMapDlg::IDD, pParent)
 	, m_nLblPrefix(0)
 {
-	//{{AFX_DATA_INIT(CMapDlg)
 	m_iLabelType = 1;
-	//}}AFX_DATA_INIT
 	if(bPrinter<2) {
 		m_MF[0]=CPlotView::m_mfFrame;
 		m_MF[1]=CPlotView::m_mfPrint;
@@ -39,6 +40,7 @@ CMapDlg::CMapDlg(BOOL bPrinter,CWnd* pParent /*=NULL*/)
 	}
 	m_pMF=&m_MF[bPrinter];
 	m_bSwapping=m_bFlagChange=FALSE;
+	m_bLineChg=m_bLabelChg=m_bApplyActive=FALSE;
 }
 
 void CMapDlg::RefreshFrameSize()
@@ -87,7 +89,12 @@ void CMapDlg::InitControls()
 	SetWindowText(buf);
 
 	GetDlgItem(IDC_ST_FRAME)->SetWindowText(m_pMF->bPrinter?"Default Initial Frame Size":"Window Width");
-	if(!m_bExport) GetDlgItem(IDC_SWAPSETS)->SetWindowText(ptyp[1-m_pMF->bPrinter]);
+	if(!m_bExport) {
+		GetDlgItem(IDC_SWAPSETS)->SetWindowText(ptyp[1-m_pMF->bPrinter]);
+		m_bApplyActive=m_bMapsActive && !m_pMF->bPrinter;
+		GetDlgItem(IDC_APPLYLBL)->ShowWindow(m_bApplyActive?SW_SHOW:SW_HIDE);
+		if(m_bApplyActive) Enable(IDC_APPLYLBL,m_bLabelChg|m_bLineChg);
+	}
 	else GetDlgItem(IDC_SWAPSETS)->ShowWindow(SW_HIDE);
 
 	Enable(IDC_FRAMETHICK,m_pMF->bPrinter);
@@ -114,7 +121,7 @@ void CMapDlg::InitControls()
     ((CComboBox *)GetDlgItem(IDC_FLAGSTYLE))->SetCurSel(m_pMF->iFlagStyle);
 
 	Enable(IDC_FRAMEFONT,m_pMF->bPrinter);
-	Enable(IDC_MONOCHROME,m_pMF->bPrinter);
+	GetDlgItem(IDC_MONOCHROME)->ShowWindow(m_pMF->bPrinter?SW_SHOW:SW_HIDE);
 }
 
 UINT CMapDlg::CheckData()
@@ -183,7 +190,6 @@ void CMapDlg::DoDataExchange(CDataExchange* pDX)
 		InitControls();
 	}
 
-	//{{AFX_DATA_MAP(CMapDlg)
 	DDX_Text(pDX, IDC_FRAMEWIDTH, m_FrameWidthInches);
 	DDV_MaxChars(pDX, m_FrameWidthInches, 10);
 	DDX_Text(pDX, IDC_FRAMETHICK, m_FrameThick);
@@ -217,7 +223,6 @@ void CMapDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_USEPAGESIZE, m_bUsePageSize);
 	DDX_Radio(pDX, IDC_LBLHEIGHTS, m_iLabelType);
 	DDX_CBIndex(pDX, IDC_LBLPREFIXES, m_nLblPrefix);
-	//}}AFX_DATA_MAP
 
 	if(pDX->m_bSaveAndValidate) {
 		UINT id=CheckData();
@@ -255,31 +260,33 @@ void CMapDlg::DoDataExchange(CDataExchange* pDX)
 					}
 				}
 				else {
-					if(CPlotView::m_pMapFrame &&
-						CPlotView::m_mfFrame.fFrameWidthInches!=m_MF[0].fFrameWidthInches) {
-							//CMapFrame::DetachFrameSet();
-							if(pCV!=NULL) pCV->EnableUpdateButtons();
-						}
-						NoteChange(&m_MF[1]);
-						if(m_bFlagChange) {
-							CPlotView::m_mfExport.bFlagSolid=m_MF[1-m_pMF->bPrinter].bFlagSolid=
-								m_pMF->bFlagSolid;
-							CPlotView::m_mfExport.iFlagStyle=m_MF[1-m_pMF->bPrinter].iFlagStyle=
-								m_pMF->iFlagStyle;
-							CPlotView::m_mfExport.iFlagSize=m_MF[1-m_pMF->bPrinter].iFlagSize=
-								m_pMF->iFlagSize;
-							CPlotView::m_mfExport.iMarkerSize=m_MF[1-m_pMF->bPrinter].iMarkerSize=
-								m_pMF->iMarkerSize;
+					NoteChange(&m_MF[1]);
+					if(m_bFlagChange) {
+						CPlotView::m_mfExport.bFlagSolid=m_MF[1-m_pMF->bPrinter].bFlagSolid=
+							m_pMF->bFlagSolid;
+						CPlotView::m_mfExport.iFlagStyle=m_MF[1-m_pMF->bPrinter].iFlagStyle=
+							m_pMF->iFlagStyle;
+						CPlotView::m_mfExport.iFlagSize=m_MF[1-m_pMF->bPrinter].iFlagSize=
+							m_pMF->iFlagSize;
+						CPlotView::m_mfExport.iMarkerSize=m_MF[1-m_pMF->bPrinter].iMarkerSize=
+							m_pMF->iMarkerSize;
 
-							m_MF[1].bChanged=TRUE;
-						}
-						CPlotView::m_mfFrame=m_MF[0];
-						CPlotView::m_mfPrint=m_MF[1];
-						CPlotView::m_mfExport.fFrameWidthInches=m_MF[1].fFrameWidthInches;
-						CPlotView::m_mfExport.fFrameHeightInches=m_MF[1].fFrameHeightInches;
-						CPlotView::m_mfExport.iFrameThick=m_MF[1].iFrameThick;
+						m_MF[1].bChanged=TRUE;
+					}
+					CPlotView::m_mfFrame=m_MF[0];
+					CPlotView::m_mfPrint=m_MF[1];
+					CPlotView::m_mfExport.fFrameWidthInches=m_MF[1].fFrameWidthInches;
+					CPlotView::m_mfExport.fFrameHeightInches=m_MF[1].fFrameHeightInches;
+					CPlotView::m_mfExport.iFrameThick=m_MF[1].iFrameThick;
+
+					
 				}
 			}
+		}
+		if(!m_bSwapping && m_bApplyActive && (m_bLineChg || m_bLabelChg)) {
+			ASSERT(CPrjDoc::m_pReviewDoc);
+			CPrjDoc::m_pReviewDoc->UpdateMapViews(FALSE,
+				m_bLineChg?M_TOGGLEFLAGS:(M_NOTES|M_NAMES|M_HEIGHTS|M_PREFIXES));
 		}
 	} 
 } 
@@ -288,14 +295,26 @@ IMPLEMENT_DYNAMIC(CMapDlg,CDialog)
 
 BEGIN_MESSAGE_MAP(CMapDlg, CDialog)
     ON_MESSAGE(WM_COMMANDHELP,OnCommandHelp)
-	//{{AFX_MSG_MAP(CMapDlg)
 	ON_BN_CLICKED(IDC_FRAMEFONT, OnFrameFont)
 	ON_BN_CLICKED(IDC_LABELFONT, OnLabelFont)
 	ON_BN_CLICKED(IDC_NOTEFONT, OnNoteFont)
 	ON_BN_CLICKED(IDC_SWAPSETS, OnSwapSets)
 	ON_BN_CLICKED(IDC_USEPAGESIZE, OnUsePageSize)
 	ON_BN_CLICKED(IDC_FLAGSOLID, OnFlagSolid)
-	//}}AFX_MSG_MAP
+	ON_BN_CLICKED(IDC_RESET, OnReset)
+	ON_BN_CLICKED(IDC_APPLYLBL, OnApplyLbl)
+
+	ON_EN_CHANGE(IDC_LABELINC, OnLabelChg)
+	ON_EN_CHANGE(IDC_LABELSPACE, OnLabelChg)
+	ON_EN_CHANGE(IDC_MARKERXOFF, OnLabelChg)
+	ON_EN_CHANGE(IDC_MARKERYOFF, OnLabelChg)
+	ON_CBN_SELCHANGE(IDC_LBLPREFIXES, OnLabelChg)
+
+	ON_EN_CHANGE(IDC_VECTORTHIN, OnLineChg)
+	ON_EN_CHANGE(IDC_VECTORTHICK, OnLineChg)
+	ON_EN_CHANGE(IDC_FLAGTHICK, OnLineChg)
+	ON_EN_CHANGE(IDC_MARKERTHICK, OnLineChg)
+
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -340,11 +359,13 @@ void CMapDlg::OnFrameFont()
 void CMapDlg::OnLabelFont()
 {
 	 CMainFrame::ChangeLabelFont(m_pMF->pfLabelFont);
+	 OnLabelChg();
 }
 
 void CMapDlg::OnNoteFont()
 {
-         CMainFrame::ChangeLabelFont(m_pMF->pfNoteFont);
+     CMainFrame::ChangeLabelFont(m_pMF->pfNoteFont);
+	 OnLabelChg();
 }
 
 LRESULT CMapDlg::OnCommandHelp(WPARAM wNone, LPARAM lParam)
@@ -381,4 +402,62 @@ void CMapDlg::OnUsePageSize()
 	//else GetDlgItem(IDC_FRAMEWIDTH)->SetFocus();
 	Enable(IDC_FRAMEWIDTH,!m_bUsePageSize);
 	Enable(IDC_FRAMEHEIGHT,!m_bUsePageSize);
+}
+
+void CMapDlg::OnLabelTypeChg(UINT id)
+{
+	OnLabelChg();
+}
+
+void CMapDlg::OnLabelChg()
+{
+	if(!m_bApplyActive) return;
+	if(!m_bLabelChg) {
+		if(!m_bLineChg) Enable(IDC_APPLYLBL, TRUE);
+		m_bLabelChg=TRUE;
+	}
+}
+
+void CMapDlg::OnLineChg()
+{
+	if(!m_bApplyActive) return;
+	if(!m_bLineChg) {
+		if(!m_bLabelChg) Enable(IDC_APPLYLBL, TRUE);
+		m_bLineChg=TRUE;
+	}
+}
+
+void CMapDlg::OnApplyLbl()
+{
+	ASSERT(m_bApplyActive && (m_bLineChg || m_bLabelChg));
+	if(UpdateData(1)) {
+		m_bLineChg=m_bLabelChg=FALSE;
+		Enable(IDC_APPLYLBL,FALSE);
+	}
+}
+
+void CMapDlg::OnReset()
+{
+	BOOL bChg=m_pMF->bChanged;
+	m_pMF->bChanged=0;
+	if(memcmp(m_pMF,&CPlotView::m_mfDflt[m_pMF->bPrinter],sizeof(MAPFORMAT))) {
+		if(!m_bConfirmedReset) {
+			CString s;
+			s.Format("This will restore format preferences for %s maps to their original default values. If you do this "
+			"you might lose changes you've made in earlier program sessions. Font settings, however, are not affected.",m_bExport?"EXPORTED":(m_pMF->bPrinter?"PRINTED":"SCREEN"));
+			CApplyDlg dlg(IDD_MOVE_CONFIRM,&m_bConfirmedReset,"Comfirm Reset to Defaults",s);
+			if(dlg.DoModal()!=IDOK) goto _ret;
+		}
+		ASSERT(m_pMF=&m_MF[m_bExport?0:m_pMF->bPrinter]);
+		*m_pMF=CPlotView::m_mfDflt[m_pMF->bPrinter];
+		m_pMF->bChanged=TRUE;
+		UpdateData(0);
+		if(m_bApplyActive) {
+			m_bLineChg=m_bLabelChg=TRUE;
+			Enable(IDC_APPLYLBL, TRUE);
+		}
+		return;
+	}
+_ret:
+	m_pMF->bChanged=bChg;
 }

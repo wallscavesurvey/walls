@@ -134,18 +134,15 @@ int CExpSvgDlg::CheckData()
 				CMsgBox(MB_ICONEXCLAMATION,IDS_ERR_MERGEFILE1,m_MergePath);
 				return IDC_MERGEPATH2;
 			}
-			/*
-			if(!m_bAdjustable) {
-				SetCheck(IDC_ADJUSTABLE,1);
-				m_bAdjustable=TRUE;
-			}
-			*/
 			m_pSVG->mrgpath2=m_MergePath2;
 		}
-		else m_pSVG->mrgpath2="";
+		else {
+			m_pSVG->mrgpath2="";
+		}
 		m_pSVG->mrgpath=m_MergePath;
 	}
 	else {
+		m_bUseMerge2=0;
 		m_pSVG->mrgpath=m_pSVG->mrgpath2="";
 	}
 	
@@ -192,10 +189,6 @@ void CExpSvgDlg::DoDataExchange(CDataExchange* pDX)
 		int id=CheckData(); //sets m_bExists=1 if file exists and is rewritable
 
 		if(id!=0) {
-			if(id==-1) {
-				EndDialog(IDCANCEL);
-				pDX->Fail();
-			}
 			pDX->m_idLastControl=id;
 			//***7.1 pDX->m_hWndLastControl=GetDlgItem(id)->m_hWnd;
 			pDX->m_bEditLastControl=TRUE;

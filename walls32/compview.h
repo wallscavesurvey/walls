@@ -25,12 +25,18 @@
 #include "wall_shp.h"
 #endif
 
+enum {TRV_ATT=1,TRV_SEL=2,TRV_PLT=4,TRV_PASSAGE=8,};
+
+struct BASENAME {
+	char baseName[NET_SIZNAME];
+};
+
 /////////////////////////////////////////////////////////////////////////////
 class CCompView : public CPanelView
 {
 	DECLARE_DYNCREATE(CCompView)
 	
-	int m_nLastNetwork,m_nLastSystem;
+	int m_nLastNetwork,m_nLastSystem,m_nLastTraverse;
 	BOOL m_bLoopsShown;
 
 public:
@@ -38,6 +44,7 @@ public:
 	int m_nFileno;             //IDX_LIST index corresponding to current network component
 	BOOL m_bHomeTrav;          //TRUE when zooming to a traverse in PlotTraverse(0)
 	BOOL m_bZoomedTrav;        //TRUE if last operation was a zoom traverse
+	CPanelView *m_pOtherPanel; //pPV if IncTrav or IncSys invoked from CPlotView
 
 	int m_iStrFlag;            //"Float" flags of current string --
 
@@ -61,6 +68,11 @@ public:
 	static NTW_HEADER m_NTWhdr;
 	static POINT *m_pNTWpnt;
 	static NTW_POLYGON *m_pNTWply;
+
+	int    m_iBaseNameCount;
+	BOOL   m_bBaseName_filled;
+	BASENAME *m_pBaseName;
+	void GetBaseNames();
 	
 private:
     void ClearListBox(UINT idc);
@@ -76,7 +88,6 @@ private:
 public:
 	static void Terminate();
 	static void Initialize();
-	void SelectNetwork(UINT recNTN);
 	void GoToVector();
 	BOOL GoToComponent();
 	void UpdateFont();
@@ -94,7 +105,6 @@ public:
 	CPlotView *GetPlotView() {return pREV->GetPlotView();} //Used by CPrjDoc::PlotTraverse()
 	CSegView *GetSegView() {return pREV->GetSegView();} //Used by CPrjDoc::PlotFrame()
 	CPageView *GetPageView() {return pREV->GetPageView();} //Used by CPrjDoc::PlotFrame()
-    void EnableUpdateButtons();
     void Show(UINT idc,BOOL bShow)
     {
     	GetDlgItem(idc)->ShowWindow(bShow?SW_SHOW:SW_HIDE);
@@ -107,6 +117,8 @@ public:
 	{
 		return pLB(IDC_NETWORKS)->GetCount();
 	}
+
+	void GetNetworkBaseName(CString &name);
 	
 	//Messages generated during WALLNET4 adjustment --
 	void StatMsg(char *msg);
@@ -114,10 +126,13 @@ public:
 	void SysTTL(char *msg);
 	void LoopTTL(int nch,int ncv=0);
     void NetMsg(NET_WORK *pNet,int bSurvey);
-    	  
-    afx_msg void OnSysChg();
-    afx_msg void OnIsolChg();
-    afx_msg void OnTravChg();
+	void OnTravChg();
+  	BOOL OnSysChg();
+	BOOL OnIsolChg();
+
+	afx_msg void OnSysChgSel();
+	afx_msg void OnIsolChgSel();
+    afx_msg void OnTravChgSel();
 	afx_msg void OnEditFind();
 	afx_msg void OnFindNext();
 	afx_msg void OnUpdateFindNext(CCmdUI* pCmdUI);
@@ -135,7 +150,6 @@ protected:
     afx_msg void OnNetChg();
 
 	// Generated message map functions
-	//{{AFX_MSG(CCompView)
 	afx_msg void OnFinished();
 	afx_msg void OnCompleted();
 	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
@@ -145,7 +159,8 @@ protected:
 	afx_msg void OnFloatV();
 	afx_msg void OnMapExport();
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
-	//}}AFX_MSG
+	afx_msg void OnUpdateTravToggle(CCmdUI* pCmdUI);
+	afx_msg void OnTravToggle();
 	DECLARE_MESSAGE_MAP()
 };
 

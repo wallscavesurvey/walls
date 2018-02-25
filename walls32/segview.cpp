@@ -25,8 +25,6 @@
 static char BASED_CODE THIS_FILE[] = __FILE__;
 #endif
 
-#undef _SEGNC
-
 /////////////////////////////////////////////////////////////////////////////
 // CSegView
 
@@ -49,40 +47,34 @@ void CSegView::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CSegView, CPanelView)
 	ON_CBN_SELCHANGE(IDC_LINESTYLE,OnLineIdxChg)
 	ON_LBN_SELCHANGE(2,OnSegmentChg)
-    //ON_MESSAGE(CPN_SELENDOK,     OnSelEndOK)
-    //ON_MESSAGE(CPN_SELENDCANCEL, OnSelEndCancel)
     ON_MESSAGE(CPN_SELCHANGE,    OnChgColor)
-    //ON_MESSAGE(CPN_CLOSEUP,      OnCloseUp)
-    //ON_MESSAGE(CPN_DROPDOWN,     OnDropDown)
     ON_MESSAGE(CPN_GETCUSTOM,  OnGetGradient)
     ON_MESSAGE(CPN_DRAWCUSTOM,  OnDrawGradient)
-	//{{AFX_MSG_MAP(CSegView)
 	ON_WM_SETFOCUS()
+	ON_WM_DRAWITEM()
+	ON_WM_MEASUREITEM()
+	ON_BN_CLICKED(IDC_DISPLAY, OnDisplay)
+	ON_WM_CHAR()
+	ON_WM_CTLCOLOR()
+
+	ON_BN_CLICKED(IDC_MARKERS, OnMarks)
+	ON_BN_CLICKED(IDC_LRUDSTYLE, OnLrudStyle)
+	ON_BN_CLICKED(IDC_DETAILS, OnDetails)
+	ON_BN_CLICKED(IDC_ENTERKEY, OnEnterKey)
+	ON_BN_CLICKED(IDC_SYMBOLS, OnSymbols)
 	ON_BN_CLICKED(IDC_SEGDETACH, OnSegDetach)
 	ON_BN_CLICKED(IDC_NAMES, OnNames)
 	ON_BN_CLICKED(IDC_APPLYTOALL, OnApplyToAll)
 	ON_BN_CLICKED(IDC_SEGDISABLE, OnSegDisable)
-	ON_WM_DRAWITEM()
-	ON_WM_MEASUREITEM()
-	ON_BN_CLICKED(IDC_DISPLAY, OnDisplay)
-	//ON_BN_CLICKED(IDC_EXTERNUPDATE, OnExternUpdate)
-	ON_WM_CHAR()
-	ON_WM_CTLCOLOR()
-	ON_BN_CLICKED(IDC_MARKERS, OnMarks)
+
+	ON_COMMAND(ID_MAP_EXPORT, OnMapExport)
+	ON_COMMAND(ID_FILE_PRINT, OnFilePrint)
+    ON_COMMAND(ID_FILE_PRINT_PREVIEW, OnFilePrintPreview)
+    ON_COMMAND(ID_FILE_EXPORT, OnFileExport)
 	ON_COMMAND(ID_EDIT_LEAF, OnEditLeaf)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_LEAF, OnUpdateEditLeaf)
 	ON_COMMAND(ID_EDIT_PROPERTIES, OnEditProperties)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_PROPERTIES, OnUpdateEditProperties)
-	ON_BN_CLICKED(IDC_LRUDSTYLE, OnLrudStyle)
-	ON_BN_CLICKED(IDC_DETAILS, OnDetails)
-	ON_COMMAND(ID_MAP_EXPORT, OnMapExport)
-	ON_BN_CLICKED(IDC_APPLY, OnApply)
-	//}}AFX_MSG_MAP
-	ON_BN_CLICKED(IDC_ENTERKEY, OnEnterKey)
-	ON_BN_CLICKED(IDC_SYMBOLS, OnSymbols)
-    ON_COMMAND(ID_FILE_PRINT, OnFilePrint)
-    ON_COMMAND(ID_FILE_PRINT_PREVIEW, OnFilePrintPreview)
-    ON_COMMAND(ID_FILE_EXPORT, OnFileExport)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -94,11 +86,11 @@ BOOL	CSegView::m_bChanged;
 BOOL    CSegView::m_bNewVisibility;
 BOOL	CSegView::m_bNoPromptStatus;
 GRIDFORMAT * CSegView::m_pGridFormat;
-int CSegView::m_iLastFlag=0;
 double CSegView::m_fThickPenPts;
+CMarkerDlg *CSegView::m_pMarkerDlg=NULL;
 
 static char szTravTitle[2][18] = {{"Floated Traverses"},{"Selected Traverse"}};
-static char *szThickPenPts="SvgThickPenPts";
+LPCSTR CSegView::szThickPenPts="SvgThickPenPts";
 
 styletyp * CSegView::m_StyleHdr;
 int     CSegView::m_PenStyle[SEG_NUM_PENSTYLES]=
@@ -111,7 +103,7 @@ CSegView::CSegView()
 	//}}AFX_DATA_INIT
 	m_pRoot=NULL;
 	m_hBrushBkg=NULL;
-	m_bChanged=m_bGradientChanged=FALSE;
+	m_bChanged=m_bGradientChanged=m_bTravSelected=m_bFromLocal=FALSE;
 	m_iLastFlag=0;
 }
 
@@ -276,8 +268,6 @@ void CSegView::OnInitialUpdate()
 	//m_SegList.SetHorizontalExtent(450);
     
     ASSERT(!m_pRoot && !m_hBrushBkg);
-    //Enable(IDC_EXTERNUPDATE,CPlotView::m_pMapFrame!=NULL);
-	Enable(IDC_APPLY,CPrjDoc::IsActiveFrame());
 
 	m_ToolTips.Create(this);
 	m_colorNotes.AddToolTip(&m_ToolTips);
@@ -294,8 +284,6 @@ void CSegView::OnUpdate(CView *pSender,LPARAM lHint,CObject *pHint)
      ReviseLineHeight();
      m_SegList.ChangeTextHeight(m_LineHeight);
   }
-  //else if(lHint!=CTabView::hintSwitchTo && lHint!=CTabView::hintSwitchFrom)
-  //Invalidate();
 }
 
 static int SaveSegBranch(CSegListNode *pNode,int iLen)
@@ -347,14 +335,24 @@ void CSegView::SetTravSelected(BOOL bTravSelected)
 	  
 	  //NOTE: No updating of other views is done here. The segment tree is changed
 	  //      but not invalidated.
+
 	  
 	  if(bTravSelected==m_bTravSelected) return;
 	  
-	  SetNewVisibility(TRUE);		  
-			  
+	  SetNewVisibility(TRUE);
+
+#if 1
+	  if(bTravSelected) {
+		  //m_pTraverse->SetUsingOwn(0);  //flag will be cleared for HDR_FLOATED before save
+	  }
 	  SaveTravStyles();
 	  m_bTravSelected=bTravSelected;
-	  
+	  m_bChanged=TRUE;
+#else
+	  SaveTravStyles();
+	  m_bTravSelected=bTravSelected;
+#endif
+
 	  //Fix node title --
 	  m_pTraverse->m_pSeg->m_pTitle=szTravTitle[bTravSelected];
 	  
@@ -388,10 +386,14 @@ void CSegView::SaveSegments()
       m_StyleHdr[HDR_GRIDLINES]=m_pGridlines->m_pSeg->style;
       m_StyleHdr[HDR_OUTLINES]=m_pOutlines->m_pSeg->style;
      
+	  if(!m_bTravSelected) {
+		  m_pTraverse->SetUsingOwn(1);  //flag will be set for HDR_FLOATED before save
+	  }
+
       SaveTravStyles();
+	  m_StyleHdr[HDR_FLOATED].SetUsingOwn(m_bTravSelected);
       
 	  for(e=0;e<SEG_NUM_HDRSTYLES;e++) m_StyleHdr[e].SetUnchanged();
-	  //m_pGridFormat->bChanged=FALSE;
 	  
 	  ixSEG.MarkExtra();
 	      
@@ -413,7 +415,10 @@ void CSegView::SaveSegments()
 
 void CSegView::ResetContents()
 {
-    //Save and free segment tree --
+	if(m_pMarkerDlg)
+		m_pMarkerDlg->OnOK();
+
+	//Save and free segment tree --
     if(m_pRoot) {
 		m_SegList.ResetContent();
 		pPV->SaveViews();
@@ -442,7 +447,10 @@ static char *GetSegName(char *name)
 	len=SegBuf[0]-len;
 	if(len) {
 	  char *pName=SegBuf+SegBuf[0]-len+1;
-	  if(len>=SRV_SIZ_NAMBUF) len=SRV_SIZ_NAMBUF-1;
+	  if(len>SRV_MAX_SEGNAMLEN) {
+		  ASSERT(FALSE);
+		  len=SRV_MAX_SEGNAMLEN;
+	  }
 	  memcpy(name,pName,len);
 	  if(pName>SegBuf+1) pName--; //pName==SRV_SEG_DELIM or pName==SegBuf+1
 	  SegBuf[0]=pName-SegBuf-1;
@@ -487,7 +495,8 @@ CSegListNode *CSegView::AttachHdrNode(int idParent,int idThis,
 	pNode->m_pStyleParent=pNode;
 	pNode->m_bOpen=FALSE;
 	//Traverse segment always starts detached --
-	pNode->m_bFloating=(idThis==TREEID_TRAVERSE)?TRUE:pStyle->IsFloating();
+	//pNode->m_bFloating=(idThis==TREEID_TRAVERSE)?TRUE:pStyle->IsFloating();
+	pNode->m_bFloating=pStyle->IsFloating();
 	pNode->m_pSeg->style.SetUsingOwn(TRUE);
 	pNode->m_bVisible=!pNode->m_bFloating;
     return pNode;
@@ -645,17 +654,20 @@ BOOL CSegView::LoadGradients()
 
 BOOL CSegView::InitSegTree()
 {
+	CSegListNode *pNode=m_SegList.GetSelectedNode();
 	if(m_pRoot) {
 	  if(m_recNTN!=(UINT)dbNTN.Position()) {
-	    InitSegStats();
-	    UpdateStats(m_SegList.GetSelectedNode());
+		UpdateControls();
+		if(pNode && pNode->HasVecs()) {
+			InitSegStats();
+			UpdateStats(pNode);
+		}
 	  }
 	  return TRUE;
 	}
 	m_recNTN=(UINT)-1;
 	
-	CSegListNode *pNode;
-	char buf[SRV_SIZ_NAMBUF];
+	char buf[SRV_SIZ_SEGNAMBUF];
 	UINT numsegs=0;
 
 	m_pGridlines=m_pOutlines=m_pTraverse=m_pSegments=m_pRawTraverse=NULL;
@@ -681,15 +693,17 @@ BOOL CSegView::InitSegTree()
 	m_Gradient[0]->SetUseFeet(LEN_ISFEET());
 	m_Gradient[0]->SetUseLengthUnits(TRUE);
 	m_Gradient[1]->SetUseIntValue(TRUE);
+
+	m_bTravSelected=m_StyleHdr[HDR_FLOATED].IsUsingOwn();
 	
 	if(!(m_pGridlines=AttachHdrNode(TREEID_ROOT,TREEID_GRID,
 	       m_StyleHdr+HDR_GRIDLINES,"Grid Lines",FALSE)) ||
 	   !(m_pOutlines=AttachHdrNode(TREEID_GRID,TREEID_OUTLINES,
 	       m_StyleHdr+HDR_OUTLINES,"Passage Outlines",TRUE)) ||
 	   !(m_pTraverse=AttachHdrNode(TREEID_OUTLINES,TREEID_TRAVERSE,
-	       m_StyleHdr+HDR_TRAVERSE,szTravTitle[m_bTravSelected=TRUE],TRUE)) ||
+	       m_StyleHdr+(m_bTravSelected?HDR_TRAVERSE:HDR_FLOATED),szTravTitle[m_bTravSelected],TRUE)) ||
 	   !(m_pRawTraverse=AttachHdrNode(TREEID_TRAVERSE,TREEID_RAWTRAVERSE,
-	       m_StyleHdr+HDR_RAWTRAVERSE,"Unadjusted",FALSE))
+	       m_StyleHdr+HDR_RAWTRAVERSE,"Unadjusted Version",FALSE))
 	   )
 	   goto _errMem;
 	
@@ -776,8 +790,9 @@ BOOL CSegView::InitSegTree()
 	m_SegList.SetRedraw(TRUE);
     
 	//May not need these?
-	pPV->SetCheck(IDC_TRAVSELECTED,FALSE);
-	pPV->SetCheck(IDC_TRAVFLOATED,FALSE);
+	//pPV->SetCheck(IDC_TRAVSELECTED,FALSE);
+	//pPV->SetCheck(IDC_TRAVFLOATED,FALSE);
+	pPV->SetTravChecks(m_bTravSelected,!m_StyleHdr[HDR_FLOATED-2*m_bTravSelected].IsFloating());
 	
 	pPV->SetCheck(IDC_EXTERNGRIDLINES,IsGridVisible());
 	pPV->SetCheck(IDC_WALLS,IsOutlinesVisible());
@@ -879,8 +894,10 @@ void CSegView::OnSegDetach()
 		    pNode->SetBranchVisibility();
 		  }
 	  }
-	  if(pNode!=m_pTraverse) MarkSeg(pNode);
+	  MarkSeg(pNode);
 	  UpdateControls(TYP_DETACH);  //not a selection change
+
+	  GetDocument()->RefreshMaps();
 	}
 }
 
@@ -888,66 +905,76 @@ void CSegView::UpdateStats(CSegListNode *pNode)
 {
     double fLength;
     UINT uNumVecs;
+	BOOL bHasVecs=pNode->HasVecs();
     
     //CMsgBox(MB_ICONEXCLAMATION,"pNode=%p m_pSegments=%p",pNode,m_pSegments);
     
     if(pNode<m_pSegments) {
     	uNumVecs=(UINT)-1;
-    }
-    else if(pNode->IsOpen()) {
-	    fLength=pNode->Length();
+		SetText(IDC_ST_BRANCH, "Totals");
+		Enable(IDC_ST_BRANCH, 0);
+	}
+    else if(pNode->IsLeaf() || pNode->IsOpen()) {
+		Enable(IDC_ST_BRANCH, 1);
+		SetText(IDC_ST_BRANCH, "Node Totals");
+		fLength=pNode->Length();
 	    uNumVecs=pNode->NumVecs(); 
 	}
 	else {
-	    fLength=0.0;
+		Enable(IDC_ST_BRANCH, 1);
+		SetText(IDC_ST_BRANCH, "Branch Totals");
+		fLength=0.0;
 	    uNumVecs=0;
         //CMsgBox(MB_ICONEXCLAMATION,"Before Addstats");
-	    pNode->AddStats(fLength,uNumVecs);
+	    if(bHasVecs) {
+			pNode->AddStats(fLength, uNumVecs);
+		}
 	}
-	
-    //CMsgBox(MB_ICONEXCLAMATION,"After AddStats");
     
-	if(uNumVecs!=(UINT)-1) {
-		char buf[30];
-		sprintf(buf,"%u",uNumVecs);
-		SetText(IDC_SEGVECTORS,buf); 
-		sprintf(buf,"%.1f",LEN_SCALE(fLength));
-		SetText(IDC_SEGLENGTH,buf);
-		if(!uNumVecs) uNumVecs--;
-	}
-	else {
-		SetText(IDC_SEGVECTORS,0); 
-		SetText(IDC_SEGLENGTH,0);
+	Show(IDC_SEGLENGTH, bHasVecs);
+	Show(IDC_SEGVECTORS,bHasVecs);
+	if(bHasVecs) {
+		if(uNumVecs!=(UINT)-1) {
+			char buf[30];
+			sprintf(buf,"%u",uNumVecs);
+			SetText(IDC_SEGVECTORS,buf); 
+			sprintf(buf,"%.1f",LEN_SCALE(fLength));
+			SetText(IDC_SEGLENGTH,buf);
+			if(!uNumVecs) uNumVecs--;
+		}
+		else {
+			SetText(IDC_SEGVECTORS,0); 
+			SetText(IDC_SEGLENGTH,0);
+		}
 	}
 }
 
 void CSegView::EnableControls(CSegListNode *pNode)
 {
     BOOL bEnable=pNode!=m_pRoot && pNode->IsUsingOwn();
+	BOOL bHasVecs=pNode->HasVecs();
 
 	if(pNode==m_pSegments || pNode->Level()>1) {
-		//Enable(IDC_SEGDISABLE,TRUE);
 		SetText(IDC_SEGDISABLE,(bEnable?"Inherit":"Use Own"));
-		Enable(IDC_SEGDISABLE,pNode!=m_pSegments);
+		Enable(IDC_SEGDISABLE,bHasVecs && pNode!=m_pSegments);
 	}
 	else {
-		//Enable(IDC_SEGDISABLE,TRUE);
 		SetText(IDC_SEGDISABLE,"Change Type");
 		Enable(IDC_SEGDISABLE,pNode==m_pTraverse);
 	}
 
-	Enable(IDC_DETAILS,pNode>=m_pSegments);
-	Enable(IDC_LINESTYLE,bEnable);
-	Enable(IDC_LINECOLOR,bEnable);
+	Enable(IDC_DETAILS, bHasVecs && pNode>=m_pSegments);
+	Enable(IDC_LINESTYLE,bEnable && bHasVecs);
+	Enable(IDC_LINECOLOR,bEnable && bHasVecs);
 	if(bEnable) {
 		m_colorLines.SetCustomText(pNode>=m_pSegments?5:2);
 		m_colorLines.SetColor(pNode->OwnStyle()->LineColorGrad());
 		m_colorLines.Invalidate(NULL);
 	}
-	bEnable=(bEnable && pNode!=m_pGridlines && pNode!=m_pOutlines);
-	Enable(IDC_MARKERS,bEnable);
-	Enable(IDC_NAMES,bEnable);
-	Enable(IDC_APPLYTOALL,pNode!=m_pRoot && !pNode->TitlePtr());
+	Enable(IDC_MARKERS, bEnable && bHasVecs);
+	Enable(IDC_NAMES, bEnable && bHasVecs);
+	Enable(IDC_SEGDETACH, pNode!=m_pSegments && bEnable && bHasVecs);
+	Enable(IDC_APPLYTOALL,bHasVecs && pNode>m_pSegments && !pNode->TitlePtr());
 }
 
 void CSegView::UpdateDetachButton(CSegListNode *pNode)
@@ -959,32 +986,25 @@ void CSegView::UpdateControls(UINT uType)
 {
  	//Called when selection changes in listbox --
 	CSegListNode *pNode=m_SegList.GetSelectedNode();
+	BOOL bHasVecs=pNode && pNode->HasVecs();
 	if(pNode) {
 	    if(uType==TYP_SEL) {
 	       if(pNode!=m_pRoot) {
 			   styletyp *pStyle=pNode->IsUsingOwn()?pNode->OwnStyle():pNode->Style();
 		       SetCheck(IDC_MARKERS,pStyle->IsNoMark());
 		       SetCheck(IDC_NAMES,pStyle->IsNoName());
-		       //SetCheck(IDC_FLAGS,!pNode->OwnStyle()->IsNoFlag());
-		       //SetCheck(IDC_NOTES,!pNode->OwnStyle()->IsNoNote());
 			   CBStyle()->SetCurSel(pNode->IsUsingOwn()?pNode->OwnLineIdx():pNode->LineIdx());
 		   }
 		   else {
 		       SetCheck(IDC_MARKERS,FALSE);
 		       SetCheck(IDC_NAMES,FALSE);
-		       //SetCheck(IDC_NOTES,FALSE);
-		       //SetCheck(IDC_FLAGS,FALSE);
 		       CBStyle()->SetCurSel(-1);
 		   }
 	       EnableControls(pNode);
-	       
-           //CMsgBox(MB_ICONEXCLAMATION,"Before UpdateStats");
-	       
-	       UpdateStats(pNode);
- 	    }
-	    //else uType==TYP_DETACH
-	    UpdateDetachButton(pNode);
-	    Enable(IDC_SEGDETACH,pNode!=m_pRoot);
+ 	       UpdateStats(pNode);
+	    }
+        UpdateDetachButton(pNode);
+	    Enable(IDC_SEGDETACH, bHasVecs && pNode!=m_pSegments);
 	}
 }
 
@@ -1003,7 +1023,8 @@ void CSegView::OnLineIdxChg()
        pNode->m_pSeg->style.SetLineIdx(i);
        MarkSeg(pNode);
        m_SegList.InvalidateNode(pNode);
-    }
+	   GetDocument()->RefreshMaps();
+	}
 }
 
 CSegListNode * CSegView::UpdateStyle(UINT flag,BOOL bTyp)
@@ -1016,7 +1037,8 @@ CSegListNode * CSegView::UpdateStyle(UINT flag,BOOL bTyp)
 	       else *pFlags&=~flag;
 	       MarkSeg(pNode);
 	       SetNewVisibility(TRUE);
-	    }
+		   GetDocument()->RefreshMaps();
+		}
 	    else {
 	       ASSERT(FALSE);
 	    }
@@ -1087,17 +1109,9 @@ void CSegView::OnApplyToAll()
 	ASSERT(pNode && !pNode->TitlePtr());
 	
 	if(!m_bNoPromptStatus) {
-		char buf[10+SRV_SIZ_NAMBUF];
-		_snprintf(buf,10+SRV_SIZ_NAMBUF,"Apply to: %Fs",pNode->Name());
-#ifdef _SEGNC
-		char c=buf[10]&0x7F;
-		if(c) {
-		  buf[10]=toupper(c);
-	      _strlwr(buf+11);
-	    }
-#else
+		char buf[10+SRV_SIZ_SEGNAMBUF];
+		_snprintf(buf,10+SRV_SIZ_SEGNAMBUF,"Apply to: %s",pNode->Name());
 		buf[10]&=0x7F;
-#endif		
 		CApplyDlg dlg(IDD_APPLYTOALL,&m_bNoPromptStatus,buf);
 		
 		if(dlg.DoModal()!=IDOK) return;
@@ -1107,6 +1121,7 @@ void CSegView::OnApplyToAll()
 	//For now, don't bother to check if any visibility
 	//attributes actually changed --
 	SetNewVisibility(TRUE);
+	GetDocument()->RefreshMaps();
 }
 
 void CSegView::OnSegDisable()
@@ -1133,13 +1148,16 @@ void CSegView::OnSegDisable()
 		    else pNode->SetUsingOwn(FALSE);
 		    MarkSeg(pNode);
 	        pNode->SetStyleParents(pNode->Parent()->StyleParent());
-	        //EnableControls(pNode);
-			UpdateControls(TYP_SEL);
         }
-	    SetNewVisibility(TRUE);
+		UpdateControls(TYP_SEL);
+		SetNewVisibility(TRUE);
 	    
         //Update tree display --
         m_SegList.InvalidateNode(pNode);
+
+		if(pNode->HasVecs())
+			GetDocument()->RefreshMaps();
+
    }
 }
 
@@ -1216,15 +1234,9 @@ CPlotView * CSegView::InitPlotView()
 
 void CSegView::OnDisplay()
 {
+	pPV->m_bExternUpdate=0;
 	InitPlotView()->OnExternFrame();	
 }
-
-/*
-void CSegView::OnExternUpdate()
-{
-	pPV->OnUpdateFrame();
-}
-*/
 
 void CSegView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 { 
@@ -1270,9 +1282,6 @@ CSegListNode *CSegView::GetSegStats(SEGSTATS &st)
     else {
        strcpy(st.title,pNode->Name());
        *st.title&=0x7F;
-#ifdef _SEGNC
-       *st.title=toupper(*st.title);
-#endif
     }
 	
     if(pNode->IsLeaf() || pNode->IsOpen()) {
@@ -1283,7 +1292,7 @@ CSegListNode *CSegView::GetSegStats(SEGSTATS &st)
       strcat(st.title,"/...");
 	  st.highpoint=-DBL_MAX;
 	  st.lowpoint=DBL_MAX;
-      pNode->AddSegStats(&st);
+      pNode->AddSegStats(&st,FALSE);
       CountNotes(&st,SegID(pNode),TRUE);
     }
     
@@ -1307,7 +1316,7 @@ void CSegView::OnDetails()
 
 	if(!pNode) return;
 		
-	CStatDlg dlg(&st);
+	CStatDlg dlg(&st,(pNode->IsLeaf() || pNode->IsOpen()));
 	UINT id=dlg.DoModal();
 	
 	if(!st.numvecs) return;
@@ -1318,12 +1327,6 @@ void CSegView::OnDetails()
 			CMsgBox(MB_ICONEXCLAMATION,IDS_ERR_NONUTMSHP);
 			return;
 		}
-		/*
-		else if(LEN_ISFEET()) {
-		  CMsgBox(MB_ICONEXCLAMATION,IDS_ERR_GRIDFEET," shapefile");
-		  return;
-		}
-		*/
 		CExpavDlg expavdlg(pNode,&st);
 	    expavdlg.DoModal();
 	}
@@ -1397,7 +1400,7 @@ void CSegView::ApplyClrToFrames(COLORREF clr,UINT id)
 	}
 	clrSaved=pStyle->LineColorGrad();
 	pStyle->SetLineColorGrad(clr);
-	CPrjDoc::RefreshActiveFrames();
+	GetDocument()->RefreshMaps();
 	pStyle->SetLineColorGrad(clrSaved);
 }
 
@@ -1431,6 +1434,7 @@ LRESULT CSegView::OnChgColor(WPARAM clr,LPARAM id)
 		case IDC_MARKERCOLOR:
 			pStyle=&m_StyleHdr[HDR_MARKERS];
 			pStyle->SetMarkerColor(clr);
+			if(m_pMarkerDlg) m_pMarkerDlg->UpdateMarkerColor(clr);
 			break;
 
 		case IDC_BKGCOLOR:
@@ -1442,6 +1446,10 @@ LRESULT CSegView::OnChgColor(WPARAM clr,LPARAM id)
 			m_SegList.InvalidateNode(m_pOutlines);
 			m_SegList.RefreshBranchOwners(m_pTraverse);
 			m_SegList.RefreshBranchOwners(m_pSegments);
+			if(m_pMarkerDlg) {
+				ASSERT(m_pMarkerDlg->m_pSV==this);
+				m_pMarkerDlg->UpdateBkgColor(clr);
+			}
 			break;
 
 		case IDC_NOTECOLOR:
@@ -1454,63 +1462,78 @@ LRESULT CSegView::OnChgColor(WPARAM clr,LPARAM id)
 
 	pStyle->SetChanged(); //not relevant for header styles
 	m_bChanged=TRUE;
+
+	GetDocument()->RefreshMaps();
+
     return TRUE;
+}
+
+void CSegView::UpdateSymbols()
+{
+	CMarkerDlg *pDlg=m_pMarkerDlg;
+
+	if(!pDlg || pDlg->m_pSV!=this) {
+		ASSERT(0);
+		return;
+	}
+	ASSERT(pDlg->m_bChanged);
+	if(pDlg->m_bChanged) {
+		SetNewVisibility(TRUE);
+	}
+
+	if(pDlg->m_bkgcolor!=BackColor()) {
+		OnChgColor(pDlg->m_bkgcolor, IDC_BKGCOLOR);
+		m_colorBackgnd.SetColor(pDlg->m_bkgcolor);
+		m_colorBackgnd.Invalidate(NULL);
+	}
+	if(pDlg->m_markcolor!=MarkerColor()) {
+		OnChgColor(pDlg->m_markcolor, IDC_MARKERCOLOR);
+		m_colorMarkers.SetColor(pDlg->m_markcolor);
+		m_colorMarkers.Invalidate(NULL);
+	}
+	if(pDlg->m_markstyle!=MarkerStyle()) {
+		SetMarkerStyle(pDlg->m_markstyle);
+		m_bChanged=TRUE;
+	}
+	if(pDlg->m_bNoOverlap!=IsNoOverlap()) {
+		SetNoOverlap(pDlg->m_bNoOverlap);
+		m_bChanged=TRUE;
+		SetNewVisibility(TRUE);
+	}
+	if(pDlg->m_bHideNotes!=IsHideNotes()) {
+		SetHideNotes(pDlg->m_bHideNotes);
+		m_bChanged=TRUE;
+	}
+
+	if(pDlg->AreMapsActive() && (m_bChanged || m_bNewVisibility))
+		GetDocument()->RefreshMaps();
 }
 
 void CSegView::OnSymbols()
 {
-	CMarkerDlg dlg;
+	ASSERT(CPrjDoc::m_pReviewDoc && pSV);
 
-	dlg.m_bNoOverlap=IsNoOverlap();
-	dlg.m_bHideNotes=IsHideNotes();
-
-	if(IDOK==dlg.DoModal()) {
-		if(dlg.m_bChanged) SetNewVisibility(TRUE);
-
-		if(dlg.m_bkgcolor!=BackColor()) {
-			OnChgColor(dlg.m_bkgcolor,IDC_BKGCOLOR);
-			m_colorBackgnd.SetColor(dlg.m_bkgcolor);
-		    m_colorBackgnd.Invalidate(NULL);
+	if(m_pMarkerDlg) {
+		if(m_pMarkerDlg->m_pSV==this && m_pMarkerDlg->m_pDoc==CPrjDoc::m_pReviewDoc) {
+			m_pMarkerDlg->BringWindowToTop();
+			return;
 		}
-		if(dlg.m_markcolor!=MarkerColor()) {
-			OnChgColor(dlg.m_markcolor,IDC_MARKERCOLOR);
-			m_colorMarkers.SetColor(dlg.m_markcolor);
-		    m_colorMarkers.Invalidate(NULL);
-		}
-		if(dlg.m_markstyle!=MarkerStyle()) {
-			SetMarkerStyle(dlg.m_markstyle);
-			m_bChanged=TRUE;
-		}
-		if(dlg.m_bNoOverlap!=IsNoOverlap()) {
-			SetNoOverlap(dlg.m_bNoOverlap);
-			m_bChanged=TRUE;
-			SetNewVisibility(TRUE);
-		}
-		if(dlg.m_bHideNotes!=IsHideNotes()) {
-			SetHideNotes(dlg.m_bHideNotes);
-			m_bChanged=TRUE;
-		}
+		m_pMarkerDlg->OnCancel();
 	}
+	m_pMarkerDlg=new CMarkerDlg();
+}
+
+void CSegView::OnSymbolsLocal()
+{
+	m_bFromLocal=TRUE;
+	OnSymbols();
+	m_bFromLocal=FALSE;
 }
 
 void CSegView::OnLrudStyle() 
 {
-   double fThickPenPts=m_fThickPenPts;
-
-   CLrudDlg dlg(this,&fThickPenPts);
-   if(dlg.DoModal()==IDOK) {
-		if(fThickPenPts!=m_fThickPenPts) {
-		  AfxGetApp()->WriteProfileString(CPlotView::szMapFormat,szThickPenPts,dlg.m_ThickPenPts);
-		  m_fThickPenPts=fThickPenPts;
-		}
-		if(dlg.m_iLrudStyle!=LrudStyleIdx() || dlg.m_iEnlarge!=LrudEnlarge() ||
-			dlg.m_bSVGUseIfAvail!=IsSVGUseIfAvail()) {
-		  SetLrudStyleIdx(dlg.m_iLrudStyle);
-		  SetLrudEnlarge(dlg.m_iEnlarge);
-		  SetSVGUseIfAvail(dlg.m_bSVGUseIfAvail);
-		  m_bChanged=TRUE;
-		}
-   }
+   CLrudDlg dlg(GetDocument(),this);
+   dlg.DoModal();
 }
 
 COLORREF CSegView::SafeColor(COLORREF clr)
@@ -1759,11 +1782,6 @@ LONG CSegView::OnDrawGradient(UINT wParam, LONG /*lParam*/)
 	ASSERT(idx>=0 && idx<SEG_NUM_GRADIENTS && m_Gradient[idx]);
 	m_Gradient[idx]->FillRect(pCC->pDC,(CRect *)pCC->pRect);
 	return TRUE;
-}
-
-void CSegView::OnApply() 
-{
-	CPrjDoc::RefreshActiveFrames();	
 }
 
 BOOL CSegView::HasFloors()

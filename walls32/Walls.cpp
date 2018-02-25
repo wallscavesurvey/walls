@@ -14,7 +14,8 @@
 #include "plotview.h"
 #include "mapview.h"
 #include "segview.h"
-#include "impdlg.h"
+#include "ImpSefDlg.h"
+#include "ImpCssDlg.h"
 #include "aboutdlg.h"
 #include "TipDlg.h"
 #include "GpsInDlg.h"
@@ -23,6 +24,10 @@
 #include <new.h>
 
 #ifdef _DEBUG
+#undef _TEST_FOCUS
+#ifdef _TEST_FOCUS
+VOID CALLBACK HighlightTimerProc(HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime);
+#endif
 #undef THIS_FILE
 static char BASED_CODE THIS_FILE[] = __FILE__;
 #endif
@@ -37,10 +42,10 @@ BEGIN_MESSAGE_MAP(CWallsApp, CWinApp)
 	ON_COMMAND(CG_IDS_TIPOFTHEDAY, ShowTipOfTheDay)
 	//{{AFX_MSG_MAP(CWallsApp)
 	ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
-	ON_COMMAND(ID_SURVEY_NEW, OnSurveyNew)
 	ON_COMMAND(ID_PROJECT_NEW, OnProjectNew)
 	ON_COMMAND(ID_FILE_OPEN, OnFileOpen)
-	ON_COMMAND(ID_IMPORT, OnImport)
+	ON_COMMAND(ID_IMPORT_SEF, OnImportSef)
+	ON_COMMAND(ID_IMPORT_CSS, OnImportCss)
 	ON_COMMAND(ID_GPS_DOWNLOAD, OnGpsDownload)
 	//}}AFX_MSG_MAP
 	// Global help commands
@@ -303,13 +308,6 @@ BOOL CWallsApp::FirstInstance()
     return bClassRegistered = TRUE; // First instance. Proceed as normal.
 }
 
-static BOOL IsVersionNT()
-{
-	OSVERSIONINFO osver;
-	osver.dwOSVersionInfoSize=sizeof(osver);
-	GetVersionEx(&osver);
-	return osver.dwPlatformId==VER_PLATFORM_WIN32_NT;
-}
 
 BOOL CWallsApp::InitInstance()
 {
@@ -327,17 +325,20 @@ BOOL CWallsApp::InitInstance()
 	// This strategy depends on MFC's "best match" algorithm for selecting
 	// the best template for a given file name --
 
-    AddDocTemplate(m_pSrvTemplate=new CMultiDocTemplate(IDR_SRVTYPE,
+    m_pSrvTemplate=new CMultiDocTemplate(IDR_SRVTYPE,
             RUNTIME_CLASS(CLineDoc),
             RUNTIME_CLASS(CTxtFrame),        // MDI child frame
-            RUNTIME_CLASS(CWedView)));
+            RUNTIME_CLASS(CWedView));
+
+	AddDocTemplate(m_pSrvTemplate);
             
 	m_pPrjTemplate=new CMultiDocTemplate(IDR_PRJTYPE,
 			RUNTIME_CLASS(CPrjDoc),
             RUNTIME_CLASS(CPrjFrame),
 			RUNTIME_CLASS(CPrjView));
 			
-	m_pPrjTemplate->m_hMenuShared = m_pSrvTemplate->m_hMenuShared;			
+	m_pPrjTemplate->m_hMenuShared = m_pSrvTemplate->m_hMenuShared;
+				
 	AddDocTemplate(m_pPrjTemplate);
 	
 	m_pRevTemplate=new CMultiDocTemplate(IDR_REVTYPE,
@@ -360,7 +361,12 @@ BOOL CWallsApp::InitInstance()
 	CMainFrame* pMainFrame = new CMainFrame;
 	m_pMainWnd = pMainFrame;
 
-	m_bIsVersionNT=IsVersionNT();
+	dwOsMajorVersion=GetOsMajorVersion();
+
+	if(dwOsMajorVersion<5) {
+	   CMsgBox(MB_ICONINFORMATION, "Sorry, this program requires a later version of Windows (XP or above).");
+	   return FALSE;
+	}
 
 #ifdef _USEHTML
 	m_bWinHelp=FALSE;
@@ -412,6 +418,13 @@ BOOL CWallsApp::InitInstance()
 	// simple command line parsing
 #ifdef _DEBUG
 	//CMsgBox(MB_ICONEXCLAMATION,"%02x|%02x|%s|*",m_lpCmdLine[0],m_lpCmdLine[1],m_lpCmdLine);
+#endif
+
+#ifdef _TEST_FOCUS
+	// Check the focus ten times a second
+	// Change hwndMain to your main application window
+	// Note that this won't work if you have multiple UI threads
+	::SetTimer(pMainFrame->m_hWnd, 1, 100, HighlightTimerProc);
 #endif
 
 	if (*m_lpCmdLine=='\0' || m_lpCmdLine[1]=='"')
@@ -500,34 +513,60 @@ void CWallsApp::OnFileOpen()
 	OpenDocumentFile(pathName);
 }
 
-void CWallsApp::OnSurveyNew()
-{
-	m_pSrvTemplate->OpenDocumentFile(NULL);
-}
-
 void CWallsApp::OnProjectNew()
 {
 	if(!CloseItemProp()) return;
 	m_pPrjTemplate->OpenDocumentFile(NULL);
 }
 
-void CWallsApp::OnImport()
+void CWallsApp::OnImportSef()
 {
-	CImpDlg dlg;
-	
+	CImpSefDlg dlg;
+
 	CLineView::m_nLineStart=0;
 	if(dlg.DoModal()!=IDOK || dlg.m_PrjPath.IsEmpty()) {
-	  if(CLineView::m_nLineStart) {
-	    m_pSrvTemplate->OpenDocumentFile(dlg.m_SefPath);
-	    CLineView::m_nLineStart=0;
-	  }
+		if(CLineView::m_nLineStart) {
+			m_pSrvTemplate->OpenDocumentFile(dlg.m_SefPath);
+			CLineView::m_nLineStart=0;
+		}
 	}
 	else {
-	  m_pMainWnd->UpdateWindow();
-	  m_pPrjTemplate->OpenDocumentFile(dlg.m_PrjPath);
+		m_pMainWnd->UpdateWindow();
+		m_pPrjTemplate->OpenDocumentFile(dlg.m_PrjPath);
 	}
 }
 
+void CWallsApp::OnImportCss()
+{
+	CImpCssDlg dlg;
+
+	CLineView::m_nLineStart=0;
+	if(dlg.DoModal()!=IDOK || dlg.m_WpjPath.IsEmpty()) {
+		if(CLineView::m_nLineStart) {
+			CLineDoc *pDoc=CLineDoc::GetLineDoc(dlg.m_CssPath);
+			if(pDoc) {
+				pDoc->DisplayLineViews();
+			}
+			else {
+				theApp.OpenDocumentFile(dlg.m_CssPath);
+			}
+			CLineView::m_nLineStart=0;
+		}
+	}
+	else {
+		m_pMainWnd->UpdateWindow();
+		m_pPrjTemplate->OpenDocumentFile(dlg.m_WpjPath);
+	}
+}
+
+bool CWallsApp::IsProjectOpen(LPCSTR pathName)
+{
+	if(FindOpenProject(pathName)) {
+		CMsgBox(MB_ICONINFORMATION, "%s\n\nThis project is already open. You must choose a different name or location.", (LPCSTR)pathName);
+		return true;
+	}
+	return false;
+}
 
 void CWallsApp::OnGpsDownload() 
 {
@@ -760,7 +799,84 @@ CDocument* CWallsApp::OpenWallsDocument(LPCTSTR lpszFileName)
 			  }
 		  }
 		  if(fp) fclose(fp);
+		  return p?CWinApp::OpenDocumentFile(p):NULL;
 	}
-	else p=(LPSTR)lpszFileName;
-	return p?CWinApp::OpenDocumentFile(p):NULL;
+	else {
+		CLineDoc *pDoc=(CLineDoc *)CWinApp::OpenDocumentFile(lpszFileName);
+		if(pDoc && pDoc->IsKindOf(RUNTIME_CLASS(CLineDoc)))
+			pDoc->UpdateOpenFileTitle(trx_Stpnam(lpszFileName),"");
+		return pDoc;
+	}
 }
+
+#ifdef _TEST_FOCUS
+LRESULT CALLBACK HighlightWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+	switch(message)
+	{
+	case WM_NCHITTEST:
+		return HTTRANSPARENT;
+	default:
+		return DefWindowProc(hWnd, message, wParam, lParam);
+	}
+	return 0;
+}
+
+VOID CALLBACK HighlightTimerProc(HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime)
+{
+	// static locals are bad
+	static bool initialised = false;
+	static HWND hwndHighlight = 0;
+
+	if(!initialised)
+	{
+		HINSTANCE hInstance = 0;
+
+		WNDCLASSEX wcex;
+
+		wcex.cbSize = sizeof(WNDCLASSEX);
+
+		wcex.style          = CS_HREDRAW | CS_VREDRAW;
+		wcex.lpfnWndProc    = HighlightWndProc;
+		wcex.cbClsExtra     = 0;
+		wcex.cbWndExtra     = 0;
+		wcex.hInstance      = hInstance;
+		wcex.hIcon          = 0;
+		wcex.hCursor        = 0;
+		wcex.hbrBackground  = (HBRUSH)(COLOR_HIGHLIGHTTEXT);
+		wcex.lpszMenuName   = 0;
+		wcex.lpszClassName  = "HighlightWindowClasss";
+		wcex.hIconSm        = 0;
+
+		ATOM atomHighlightClass = RegisterClassEx(&wcex);
+
+		hwndHighlight = CreateWindowEx(WS_EX_LAYERED | WS_EX_TOPMOST | WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW,
+			(LPCSTR)atomHighlightClass, "", WS_POPUP,
+			CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, NULL, NULL, hInstance, NULL);
+
+		// Set opacity to 200/255
+		SetLayeredWindowAttributes(hwndHighlight, 0, 200, LWA_ALPHA);
+
+		initialised = true;
+	}
+
+	static HWND hwndCurrentHighlight = 0;
+
+	HWND hwndFocus = GetFocus();
+	if(hwndFocus != hwndCurrentHighlight)
+	{
+		if(hwndFocus == 0)
+		{
+			ShowWindow(hwndHighlight, SW_HIDE);
+		}
+		else
+		{
+			RECT rect;
+			GetWindowRect(hwndFocus, &rect);
+			MoveWindow(hwndHighlight, rect.left, rect.top, rect.right - rect.left, rect.bottom - rect.top, false);
+			ShowWindow(hwndHighlight, SW_SHOW);
+		}
+		hwndCurrentHighlight = hwndFocus;
+	}
+}
+#endif

@@ -132,7 +132,6 @@ protected:
 	afx_msg void OnUpdateCompileItem(CCmdUI* pCmdUI);
 	afx_msg void OnEnableBoth();
 	afx_msg void OnUpdateEnableBoth(CCmdUI* pCmdUI);
-	afx_msg void Disable(CCmdUI* pCmdUI);
 	afx_msg void OnPurgeBranch();
 	afx_msg void OnRecompile();
 	afx_msg void OnEditFind();
@@ -146,13 +145,15 @@ protected:
 	afx_msg void OnUpdateEditLeaf(CCmdUI* pCmdUI);
 	afx_msg void OnUpdateRecompile(CCmdUI* pCmdUI);
 	afx_msg void OnExportSef();
+	afx_msg void OnUpdateExportSef(CCmdUI* pCmdUI);
 	afx_msg void OnCompileItem();
 	afx_msg void OnExportItem();
 	afx_msg void OnUpdateExportItem(CCmdUI* pCmdUI);
 	afx_msg void OnUpdatePrjEditItem(CCmdUI* pCmdUI);
 	afx_msg void OnRefreshBranch();
 	afx_msg void OnLaunchLog();
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	//afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	afx_msg LRESULT OnCtlColorListBox(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnReviewLast();
 	afx_msg void OnUpdateReviewLast(CCmdUI* pCmdUI);
 	afx_msg void OnLaunch2d();
@@ -173,11 +174,9 @@ protected:
 	afx_msg void OnUpdatePrjOpenfolder(CCmdUI *pCmdUI);
 	afx_msg void OnSelChanged();
 	afx_msg LRESULT OnPropViewLB(WPARAM wParam,LPARAM lParam);
-	DECLARE_MESSAGE_MAP()
-public:
 	afx_msg void OnRemoveprotection();
 	afx_msg void OnWriteprotect();
-	//afx_msg void OnUpdateWriteprotect(CCmdUI *pCmdUI);
+	DECLARE_MESSAGE_MAP()
 };
 
 #ifndef _DEBUG	// debug version in hierlvw.cpp

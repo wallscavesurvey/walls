@@ -43,6 +43,7 @@ typedef struct {
 
 enum {TYP_LST_VECTOR,TYP_LST_NAME=1,TYP_LST_NOTE=2,TYP_LST_FLAG=4,TYP_LST_LOC=8};
 
+class CMarkerDlg;
 class CExpavDlg;
 class CExpSvgDlg;
 struct SVG_VIEWFORMAT;
@@ -60,18 +61,13 @@ friend class CExpSvgDlg;
 
 private:
 	CSegList m_SegList;       //Constructed after CSegView()
-	BOOL m_bTravSelected;
+	BOOL m_bTravSelected,m_bFromLocal;
 	CToolTipCtrl m_ToolTips;
-	    
-// Form Data
+
 public:
-	//{{AFX_DATA(CSegView)
 	enum { IDD = IDD_SEGDLG };
 	CStatic	m_SegFrm;
-	//}}AFX_DATA
 
-// Attributes
-public:
 	CColorCombo m_colorLines;
 	CColorCombo m_colorBackgnd;
 	CColorCombo m_colorLabels;
@@ -87,8 +83,8 @@ public:
 	static BOOL m_bNoPromptStatus;
     static HBRUSH m_hBrushBkg;
     static DWORD FAR *pPrefixRecs;
-	static int m_iLastFlag;
 	static double m_fThickPenPts;
+	static LPCSTR szThickPenPts;
     
     //Points to array of bkgnd, labels, markers, grid, and traverse styles in NTA header --
     static styletyp *m_StyleHdr;
@@ -101,7 +97,10 @@ public:
 	//Used bu SegList
 	static DWORD *pFlagNamePos; //ordered by seq
 	static DWORD *pFlagNameSeq; //Ordered by id
-    
+	static CMarkerDlg *m_pMarkerDlg;
+
+	int m_iLastFlag; //CMarkerDlg listbox position
+
     CSegListNode *m_pRoot;
     CSegListNode *m_pSegments;
     CSegListNode *m_pGridlines;
@@ -119,10 +118,13 @@ public:
 	void RefreshGradients();
 	void ResetContents();
 	void InitSegStats();
-	void SelectSegments() {
-		m_SegList.SetCurSel(4);
+	void UpdateSymbols();
+
+	void SelectSegListNode(int segid)
+	{
+		m_SegList.SelectSegListNode(m_pSegments+segid);
 	}
-	
+
 	//Set default segment styles --
 	static void InitOutlinesHdr(SEGHDR *sh);
 	static void InitSegHdr(SEGHDR *sh);
@@ -145,7 +147,6 @@ public:
 	CComboBox *CBStyle(){
 		return (CComboBox*)GetDlgItem(IDC_LINESTYLE);
 	} 
-	void UpdateBranchStyles(CSegListNode *pNode);
 	void UpdateStats(CSegListNode *pNode);
 	void UpdateControls(UINT uTYPE=TYP_SEL); //A selection change by default
 	
@@ -185,13 +186,14 @@ public:
 
 	BOOL IsLinesVisible() {return m_pSegments->IsLinesVisible();}
 	BOOL IsRawTravVisible() {return m_pRawTraverse->IsVisible();}
-	int RawTravLabelFlags() {return m_pRawTraverse->LabelFlags();}
+	int  RawTravLabelFlags() {return m_pRawTraverse->LabelFlags();}
 	int  TravLabelFlags() {return m_pTraverse->LabelFlags();}
 	void SetOutlinesVisible(BOOL bEnable) {HdrSegEnable(m_pOutlines,bEnable);}
 	void SetGridVisible(BOOL bEnable) {HdrSegEnable(m_pGridlines,bEnable);}
 	void SetTravVisible(BOOL bEnable) {HdrSegEnable(m_pTraverse,bEnable);}
+	void SetRawTravVisible(BOOL bEnable) { HdrSegEnable(m_pRawTraverse,bEnable); }
 	void SetTravSelected(BOOL bTravSelected);
-	
+
     static int PenStyle(CSegListNode *pNode) {return m_PenStyle[pNode->LineIdx()];}
 	static COLORREF LineColor(CSegListNode *pNode) {return pNode->LineColor();}
 	static COLORREF LineColorGrad(CSegListNode *pNode) {return pNode->LineColorGrad();}
@@ -286,7 +288,7 @@ private:
 			styletyp *pStyle,char *pTitle,BOOL bIsSibling);
 
 // Implementation
-protected:
+private:
 	CSegView();			// protected constructor used by dynamic creation
 	virtual ~CSegView();
 	
@@ -311,16 +313,12 @@ protected:
 	virtual void OnInitialUpdate();
 	virtual void OnOK();
 	afx_msg void OnEnterKey();
-	
+	afx_msg void OnSymbolsLocal();
 	afx_msg void OnFileExport();
 	afx_msg void OnFilePrint();
 	afx_msg void OnFilePrintPreview();
 	afx_msg void OnLineIdxChg();
 	afx_msg void OnSegmentChg();
-	afx_msg void OnUpdateDetails(CCmdUI* pCmdUI);
- 
-	// Generated message map functions
-	//{{AFX_MSG(CSegView)
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	afx_msg void OnSegDetach();
 	afx_msg void OnNames();
@@ -329,7 +327,6 @@ protected:
 	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 	afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 	afx_msg void OnDisplay();
-	//afx_msg void OnExternUpdate();
 	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnMarks();
@@ -337,8 +334,6 @@ protected:
 	afx_msg void OnUpdateEditLeaf(CCmdUI* pCmdUI);
 	afx_msg void OnEditProperties();
 	afx_msg void OnUpdateEditProperties(CCmdUI* pCmdUI);
-	afx_msg void OnApply();
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
 

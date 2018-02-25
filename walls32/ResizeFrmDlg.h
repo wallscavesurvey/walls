@@ -8,7 +8,7 @@ class CResizeFrmDlg : public CDialog
 	DECLARE_DYNAMIC(CResizeFrmDlg)
 
 public:
-	CResizeFrmDlg(double *pWidth,int px_per_in,CWnd* pParent = NULL);   // standard constructor
+	CResizeFrmDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CResizeFrmDlg();
 
 // Dialog Data
@@ -16,17 +16,12 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
+	virtual BOOL OnInitDialog();
 
 	DECLARE_MESSAGE_MAP()
 public:
+	int m_iPx_per_in,m_iCurrentWidth;
 	BOOL m_bSave;
-	virtual BOOL OnInitDialog();
-	CString m_InchWidth;
-private:
-	double *m_pWidth;
-	int m_iPx_per_in;
-	void UpdatePixels(char *buf,double f);
-public:
-	afx_msg void OnEnChangeInchwidth();
-	afx_msg void OnDeltaposSpinInches(NMHDR *pNMHDR, LRESULT *pResult);
+	double m_dfltWidthInches;
+
 };

@@ -7,6 +7,8 @@
 #include "zip.h"
 #include "kmldef.h"
 
+bool GE_Checked=false;
+
 static CString csGE_fmt;
 static CString csGE_ptfmt;
 static CString csGE_path;
@@ -58,6 +60,11 @@ static void FixLabel(CString &s)
 	s.Replace(">","&gt;");
 	s.Replace("'","&apos;");
 	s.Replace("\"","&quot;");
+}
+
+CString &GE_Path()
+{
+	return csGE_path;
 }
 
 BOOL GE_Launch(CShpLayer *pShp,LPCSTR pathName,GE_POINT *pt,UINT numpts,BOOL bFly)
@@ -203,27 +210,91 @@ BOOL GE_Launch(CShpLayer *pShp,LPCSTR pathName,GE_POINT *pt,UINT numpts,BOOL bFl
 	return bRet;
 }
 
+static DWORD ReadClassesKey(LPCSTR keynam, LPSTR value)
+{
+	HKEY hkey;
+	char keystr[80];
+	int len=_snprintf(keystr,80,"SOFTWARE\\Classes\\%s",keynam);
+	if(len==80 || RegOpenKeyEx(HKEY_LOCAL_MACHINE,keystr,0,KEY_READ,&hkey))
+		return 0;
+
+	DWORD sz_value=_MAX_PATH; //includes space for null terminator
+	if(RegQueryValueEx(hkey,NULL,NULL,NULL,(LPBYTE)value,&sz_value))
+		sz_value=0;
+	RegCloseKey(hkey);
+	return sz_value; 
+}
+
+#ifdef _DEBUG
+  #define _DEBUG_KML
+#endif
+
 bool GE_IsInstalled()
 {
-	static bool bAvail=false,bChecked=false;
-	if(bChecked) return bAvail;
-	bChecked=true;
+	static bool bAvail=false;
 
-	HKEY hkey;
-	if(RegOpenKeyEx(HKEY_LOCAL_MACHINE,
-		"SOFTWARE\\Classes\\Google Earth.kmzfile\\shell\\Open\\command",0,KEY_READ,&hkey) != ERROR_SUCCESS)
-		return false;
+	if(GE_Checked) return bAvail;
+	GE_Checked=true;
+	bAvail=false;
+
+	if(!csGE_path.IsEmpty() && !_access(csGE_path, 0))
+		return bAvail=true;
+
 	char path[_MAX_PATH];
-	DWORD sz_path=_MAX_PATH; //includes space for null terminator
-	if(RegQueryValueEx(hkey,NULL,NULL,NULL,(LPBYTE)path,&sz_path)==ERROR_SUCCESS) {
-		LPSTR p=strstr(path,".exe");
-		if(p) {
+	char kmzfile[80];
+#ifdef _DEBUG_KML
+	CString s;
+#endif
+
+	DWORD len=ReadClassesKey(".kmz", path);
+	if(!len || len>=80) {
+#ifdef _DEBUG_KML
+	    s="Key .kmz not found.";
+		goto _err;
+#else
+		return false;
+#endif
+	}
+	strcpy(kmzfile, path);
+	sprintf(path,"%s\\shell\\open\\command",kmzfile);
+	if(!ReadClassesKey(path, path)) {
+#ifdef _DEBUG_KML
+		s.Format("Command not found for file type %s.",kmzfile);
+		goto _err;
+#else
+		return false;
+#endif
+	}
+	LPSTR p=strstr(path,".exe");
+	if(p) {
+		if(p[4]=='"') p[5]=0; else p[4]=0;
+		csGE_path=path;
+		if(*path=='"' && p[4]=='"') {
 			p[4]=0;
-			csGE_path=path;
+			p=path+1;
+		}
+		else p=path;
+		if(!_access(p,0)) {
 			bAvail=true;
+			csGE_path=p;
+		}
+#ifdef _DEBUG_KML
+		else {
+		   s.Format("Command path not found:\n%s",p);
+		   goto _err;
 		}
 	}
-	RegCloseKey(hkey);
+	else {
+		s.Format("Extension .exe not found in command path:\n%s",p);
+		goto _err;
+#endif
+	}
 	return bAvail;
+
+#ifdef _DEBUG_KML
+_err:
+	AfxMessageBox(s);
+	return false;
+#endif
 }
 

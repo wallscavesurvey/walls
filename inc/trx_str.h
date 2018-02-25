@@ -7,7 +7,7 @@ extern "C" {
 #endif
 
 #ifndef __TRX_TYPE_H
-#include <trx_type.h>
+#include "trx_type.h"
 #endif
 
 #define TRXFCN_S LPSTR PASCAL
@@ -78,6 +78,7 @@ extern BYTE   cfg_noexact;
 extern BYTE   cfg_contchr;
 extern BYTE   cfg_commchr;
 extern BYTE	  cfg_equals;
+extern BYTE   cfg_ignorecommas;
 extern PSTR   cfg_commptr;
 extern PSTR   cfg_equalsptr;
 

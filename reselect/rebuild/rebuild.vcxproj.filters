@@ -22,6 +22,9 @@
       <UniqueIdentifier>{ea737b6f-e883-42fb-947b-7201220dd622}</UniqueIdentifier>
       <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
     </Filter>
+    <Filter Include="Data">
+      <UniqueIdentifier>{fc7c5994-85ef-4e8a-b4ca-d09bc3f02f40}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\reindex\indexa.c">
@@ -143,5 +146,10 @@
     <CustomBuild Include="..\..\..\TexBib\2010-11-21\TEXBIB.LOG">
       <Filter>TEXBIB</Filter>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\TexBib\2015-10-24_work\texbib.cfg">
+      <Filter>Data</Filter>
+    </None>
   </ItemGroup>
 </Project>

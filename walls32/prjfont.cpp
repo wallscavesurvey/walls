@@ -34,10 +34,7 @@ BOOL CTitleFontDialog::OnInitDialog()
   return TRUE;
 }
 
-BEGIN_MESSAGE_MAP(CTitleFontDialog, CDialog)
-	//{{AFX_MSG_MAP(CTitleFontDialog)
-		// NOTE: the ClassWizard will add message map macros here
-	//}}AFX_MSG_MAP
+BEGIN_MESSAGE_MAP(CTitleFontDialog, CFontDialog)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -75,6 +72,29 @@ void CLogFont::Init(char *FaceName,int Height,int Weight,int Pitch,
 	lfUnderline = Underline;
 	lfPitchAndFamily = Pitch;
 	strcpy((char *)lfFaceName,FaceName);
+}
+
+BOOL CLogFont::GetFontFromStr(PSTR str)
+{
+	int numArgs=cfg_GetArgv(str, CFG_PARSE_ALL);
+	if(numArgs>=14) {
+		lfHeight=atol(cfg_argv[0]);
+		lfWidth=atol(cfg_argv[1]);
+		lfEscapement=atol(cfg_argv[2]);
+		lfOrientation=atol(cfg_argv[3]);
+		lfWeight=atol(cfg_argv[4]);
+		lfItalic=atoi(cfg_argv[5]);
+		lfUnderline=atoi(cfg_argv[6]);
+		lfStrikeOut=atoi(cfg_argv[7]);
+		lfCharSet=atoi(cfg_argv[8]);
+		lfOutPrecision=atoi(cfg_argv[9]);
+		lfClipPrecision=atoi(cfg_argv[10]);
+		lfQuality=atoi(cfg_argv[11]);
+		lfPitchAndFamily=atoi(cfg_argv[12]);
+		strcpy(lfFaceName, cfg_argv[13]);
+		return TRUE;
+	}
+	return FALSE;
 }
 
 PRJFONT::~PRJFONT()

@@ -95,8 +95,8 @@ UINT CViewDlg::CheckData()
 	double h=vf.fFrameHeight*pageUnitsPerIn;
 	double w=vf.fFrameWidth*pageUnitsPerIn;
 
-	if(!CheckFlt(m_FrameHeight,&h,1.0,MAX_FRAMEWIDTHINCHES*pageUnitsPerIn,4)) return IDC_FRAMEHEIGHT;
 	if(!CheckFlt(m_FrameWidth,&w,1.0,MAX_FRAMEWIDTHINCHES*pageUnitsPerIn,4)) return IDC_FRAMEWIDTH;
+	if(!CheckFlt(m_FrameHeight,&h,1.0,MAX_FRAMEWIDTHINCHES*pageUnitsPerIn,4)) return IDC_FRAMEHEIGHT;
 
 	if(!m_leScaleRatio.InRange()) UpdateRatioFromMeters();
 
@@ -107,7 +107,14 @@ UINT CViewDlg::CheckData()
 	vf.bFlags|=m_bInches;
 	if(m_bInches) w*=CENTIMETERS_PER_INCH;
 
-	vf.fPanelWidth=w*m_fScaleRatio/100.0;
+	w*=(m_fScaleRatio/100.0);
+
+	if(w<1.0 || w>1000000.0) {
+		AfxMessageBox("Scale and frame dimension settings would produce a view width outside the allowable range (1 m to 1000 km).");
+		return IDC_FRAMEWIDTH;
+	}
+
+	vf.fPanelWidth=w;
 	
 	if(memcmp(&vf,m_pVF,sizeof(VIEWFORMAT))) {
 	   vf.bChanged=TRUE;

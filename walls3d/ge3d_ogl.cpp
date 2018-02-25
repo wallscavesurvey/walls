@@ -2050,8 +2050,8 @@ float, r
 
     for (i = 0;  i < POINTSONCIRCLE;  i++)
     { angle = i * twopioverpoints;
-      sines [i] = sin (angle);
-      cosin [i] = cos (angle);
+      sines [i] = (float)sin(angle);
+      cosin [i] = (float)cos(angle);
     }
   }
 
@@ -2111,7 +2111,7 @@ float, endangle        /* in degrees */
   glBegin (GL_LINE_LOOP);
   for (i = 0;  i < POINTSONCIRCLE;  i++)
   {
-    glVertex2f (cos (startangle) * radius + x, sin (startangle) * radius + y);
+    glVertex2f ((GLfloat)(cos (startangle) * radius + x), (GLfloat)(sin (startangle) * radius + y));
     startangle += angle;
   }
   glEnd ();
@@ -2494,7 +2494,7 @@ float, yon                      /* ... far clipping plane (both from eye; positi
 {
   float alpha;
 
-  alpha = 2 * atan2 (aper, 2 * focal);  /* in radians */
+  alpha = (float)(2 * atan2 (aper, 2 * focal));  /* in radians */
 
   glMatrixMode (GL_PROJECTION);
   /* fprintf (stderr, "calling gluPerspective (%f, %f, %f, %f)\n",

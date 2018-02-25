@@ -3,8 +3,12 @@
 #ifndef __DBFILE_H
 #define __DBFILE_H
 
+#ifndef __AFXSTR_H__
+#include <afxstr.h>
+#endif
+
 #ifndef __DBF_FILE_H
-#include <dbf_file.h>
+#include "dbf_file.h"
 #endif
 
 bool __inline xisspace(char c) {return isspace((BYTE)c)!=0;}

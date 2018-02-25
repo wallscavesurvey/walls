@@ -38,9 +38,6 @@ BOOL CLineNoDlg::OnInitDialog()
 }
 
 BEGIN_MESSAGE_MAP(CLineNoDlg, CDialog)
-	//{{AFX_MSG_MAP(CLineNoDlg)
-		// NOTE: the ClassWizard will add message map macros here
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 //////////////////////////////////////////////////////////////////////
@@ -48,27 +45,19 @@ END_MESSAGE_MAP()
 
 //BOOL CApplyDlg::m_bNoPromptStatus=FALSE;
 
-CApplyDlg::CApplyDlg(UINT nID,BOOL *pbNoPrompt,const char *pTitle,CWnd* pParent /*=NULL*/)
-	: CDialog(nID, pParent)
+CApplyDlg::CApplyDlg(UINT nID,BOOL *pbNoPrompt,LPCSTR pTitle,LPCSTR pMsg,CWnd* pParent /*=NULL*/)
+	: m_pbNoPrompt(pbNoPrompt), m_pTitle(pTitle), m_pMsg(pMsg), CDialog(nID, pParent)
 {
-	//{{AFX_DATA_INIT(CApplyDlg)
 	m_bNoPrompt = FALSE;
-	//}}AFX_DATA_INIT
-	m_pTitle=pTitle;
-	m_pbNoPrompt=pbNoPrompt;
 }
 
 BEGIN_MESSAGE_MAP(CApplyDlg, CDialog)
-	//{{AFX_MSG_MAP(CApplyDlg)
-	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 void CApplyDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CApplyDlg)
 	DDX_Check(pDX, IDC_APPLY_PROMPT, m_bNoPrompt);
-	//}}AFX_DATA_MAP
 	
 	if(pDX->m_bSaveAndValidate) *m_pbNoPrompt=m_bNoPrompt;
 } 
@@ -77,7 +66,7 @@ BOOL CApplyDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	SetWindowText(m_pTitle);
-	
+	if(m_pMsg) GetDlgItem(IDC_ST_MESSAGE)->SetWindowText(m_pMsg);
 	CenterWindow();
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
@@ -224,7 +213,7 @@ BOOL CFileStatDlg::OnInitDialog()
 	CDialog::OnInitDialog();
 	
 	long filesize;
-	struct tm *ptm;
+	SYSTEMTIME *ptm;
 	BOOL bReadOnly=FALSE;
 
  	GetDlgItem(IDC_ST_LOCATION)->SetWindowText(m_pPathName);

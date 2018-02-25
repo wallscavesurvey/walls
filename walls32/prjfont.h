@@ -7,6 +7,7 @@ struct CLogFont : public LOGFONT
 {
    void Init(char *FaceName,int Height,int Weight=FW_REGULAR,int Pitch=34,
         int Italic=FALSE,int Underline=FALSE);
+   BOOL GetFontFromStr(PSTR str);
 };
 
 struct PRJFONT

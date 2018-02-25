@@ -20,13 +20,18 @@ public:
     //void Enable(UINT id,BOOL bEnable) {GetDlgItem(id)->EnableWindow(bEnable);}
     void Enable(UINT id,BOOL bEnable)
     {
-       ::EnableWindow(::GetDlgItem(GetSafeHwnd(),id),bEnable);
+		GetDlgItem(id)->EnableWindow(bEnable);
     }
 
     void SetText(UINT id,char *pStr)
     {
     	GetDlgItem(id)->SetWindowText(pStr?pStr:"");
     }
+
+	void Show(UINT idc, BOOL bShow)
+	{
+		GetDlgItem(idc)->ShowWindow(bShow?SW_SHOW:SW_HIDE);
+	}
 
     void SetCheck(UINT id,BOOL bChecked) {((CButton *)GetDlgItem(id))->SetCheck(bChecked);}
     BOOL GetCheck(UINT id) {return ((CButton *)GetDlgItem(id))->GetCheck()!=0;}
@@ -41,13 +46,12 @@ protected:
 	virtual ~CPanelView();
     afx_msg void OnSysCommand(UINT nChar,LONG lParam);
 	// Generated message map functions
-	//{{AFX_MSG(CPanelView)
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnDisplayOptions();
 	afx_msg void OnPrintOptions();
 	afx_msg void OnZipBackup();
 	afx_msg void OnLrudStyle();
-	//}}AFX_MSG
+
 	DECLARE_MESSAGE_MAP()
 };
 

@@ -69,11 +69,11 @@ HRESULT CFileIsInUseImpl::s_CreateInstance(HWND hwnd, LPCSTR pszFilePath, FILE_U
 
 HRESULT CFileIsInUseImpl::QueryInterface(REFIID riid, void **ppv)
 {
-    static const QITAB qit[] =
-    {
-        QITABENT(CFileIsInUseImpl, IFileIsInUse),
-        { 0 },
-    };
+	//avoid warning C4838 -- converting OFFSETOFCLASS() to int --
+    #define QITABENTMULTI_XX(Cthis, Ifoo, Iimpl) { &__uuidof(Ifoo), (int)OFFSETOFCLASS(Iimpl, Cthis) }
+	#define QITABENT_XX(Cthis, Ifoo) QITABENTMULTI_XX(Cthis, Ifoo, Ifoo)
+
+    static const QITAB qit[] = {QITABENT_XX(CFileIsInUseImpl, IFileIsInUse), { 0, 0 } };
     return QISearch(this, qit, riid, ppv);
 }
 

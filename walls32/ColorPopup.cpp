@@ -32,6 +32,7 @@
 // file. 
 
 #include "stdafx.h"
+#include "Walls.h"
 #include "ColorButton.h"
 
 #ifdef _DEBUG
@@ -154,7 +155,8 @@ void CColorPopup::Initialise()
     // Create the font
     NONCLIENTMETRICS ncm;
     ncm.cbSize = sizeof(NONCLIENTMETRICS);
-    VERIFY(SystemParametersInfo(SPI_GETNONCLIENTMETRICS, sizeof(NONCLIENTMETRICS), &ncm, 0));
+	if(theApp.dwOsMajorVersion<6) ncm.cbSize-=sizeof(ncm.iPaddedBorderWidth);
+    VERIFY(SystemParametersInfo(SPI_GETNONCLIENTMETRICS, ncm.cbSize, &ncm, 0));
     m_Font.CreateFontIndirect(&(ncm.lfMessageFont));
 
     // Create the palette

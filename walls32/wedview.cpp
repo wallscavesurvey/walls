@@ -50,11 +50,13 @@ BEGIN_MESSAGE_MAP(CWedView,CLineView)
 	ON_WM_RBUTTONUP()
 	ON_COMMAND(ID_EDIT_PROPERTIES, OnEditProperties)
 	ON_COMMAND(ID_LOCATEINGEOM, OnLocateInGeom)
-	ON_UPDATE_COMMAND_UI(ID_LOCATEINGEOM, OnUpdateLocateInGeom)
+	//ON_UPDATE_COMMAND_UI(ID_LOCATEINGEOM, OnUpdateLocateInGeom)
 	ON_COMMAND(ID_LOCATEONMAP, OnLocateOnMap)
-	ON_UPDATE_COMMAND_UI(ID_LOCATEONMAP, OnUpdateLocateInGeom)
+	//ON_UPDATE_COMMAND_UI(ID_LOCATEONMAP, OnUpdateLocateInGeom)
+	ON_COMMAND(ID_REVIEWSEG, OnViewSegment)
+	//ON_UPDATE_COMMAND_UI(ID_REVIEWSEG, OnUpdateLocateInGeom)
 	ON_COMMAND(ID_VECTORINFO, OnVectorInfo)
-	ON_UPDATE_COMMAND_UI(ID_VECTORINFO, OnUpdateLocateInGeom)
+	//ON_UPDATE_COMMAND_UI(ID_VECTORINFO, OnUpdateLocateInGeom)
 	//}}AFX_MSG_MAP
     ON_MESSAGE(WM_COMMANDHELP,OnCommandHelp)
 	ON_UPDATE_COMMAND_UI(ID_FIND_PREV,OnUpdateFindNext)
@@ -709,7 +711,7 @@ void CWedView::OnDrawLine(CDC* pDC,LINENO nLine,CRect rect)
 {
 	int chr0,chr1;
 	bool caretLine=m_bCaretShown && (m_nActiveLine==nLine);
-	bool bGrayed=(nLine==m_nFlagLine || nLine==m_nFlagLine2);
+	bool bGrayed=(nLine==m_nFlagLine); // || nLine==m_nFlagLine2);
 	LPBYTE pLine=LinePtr(nLine);
     int len=*pLine++;
     int Xmax=rect.right;
@@ -1032,24 +1034,31 @@ CPrjListNode * CWedView::FindName(CPrjDoc **ppDoc,LPCSTR name)
 
 void CWedView::OpenProjectFile()
 {
-    char buf[16];
-    char *pl;
-    int c1,c2;
-    CPrjDoc *pDoc;
+	char buf[16];
+	int c1, len;
+	CPrjDoc *pDoc;
 	CPrjListNode *pNode;
-	    
-    if(!GetSelectedChrs(m_nActiveLine,c1,c2) || c2-c1>14) return;
-    c2-=c1; //Length of selected string
-    memcpy(buf,LinePtr(m_nActiveLine)+c1+1,c2);
-    buf[c2]=0;
-    if(!(pl=strchr(buf,':'))) return;
-    *pl++=0;
 
-    if(pNode=FindName(&pDoc,buf)) {
-	  m_nLineStart=atoi(pl);
-	  m_nCharStart=0;
-      pDoc->OpenSurveyFile(pNode);
-    }
+	if(!GetSelectedChrs(m_nActiveLine, c1, len)) return;
+	PBYTE pLine=LinePtr(m_nActiveLine);
+	len=*pLine++;
+	PBYTE pb=pLine+c1; //*pb first char of selection
+	while(pb>pLine && pb[-1]!='\t') {
+		pb--; c1--;
+	}
+	pb=pLine+c1;
+	while(pb<pLine+len && *pb!=':') pb++;
+	if(*pb!=':') return;
+	len=pb-(pLine+c1); //length of name
+	if(len>15) return;
+	memcpy(buf,pLine+c1, len);
+	buf[len]=0;
+
+	if(pNode=FindName(&pDoc, buf)) {
+		m_nLineStart=atoi((char *)(pb+1));
+		m_nCharStart=0;
+		pDoc->OpenSurveyFile(pNode);
+	}
 }
 
 void CWedView::OnLButtonDblClk(UINT nFlags, CPoint point)
@@ -1067,7 +1076,9 @@ void CWedView::OnLButtonDblClk(UINT nFlags, CPoint point)
     if(!m_bSelectTrailingWS) while(IsWS(pLine[c0])) c0--;
     SetPosition(m_nActiveLine,c0,POS_CHR,TRUE);
     
-    if(GetDocument()->IsLstFile()) OpenProjectFile();
+    if(GetDocument()->IsLstFile()) {
+	    OpenProjectFile();
+	}
 }
 
 void CWedView::OnSetFocus(CWnd* pOldWnd)
@@ -1400,6 +1411,13 @@ void CWedView::OnRButtonUp(UINT nFlags, CPoint point)
 	{
 		CMenu* pPopup = menu.GetSubMenu(0);
 		ASSERT(pPopup != NULL);
+		if(!IsLocateEnabled()) {
+			pPopup->DeleteMenu(8, MF_BYPOSITION);
+			pPopup->DeleteMenu(8, MF_BYPOSITION);
+			pPopup->DeleteMenu(8, MF_BYPOSITION);
+			pPopup->DeleteMenu(8, MF_BYPOSITION);
+			pPopup->DeleteMenu(8, MF_BYPOSITION);
+		}
 		ClientToScreen(&point);
 		pPopup->TrackPopupMenu(TPM_LEFTALIGN|TPM_RIGHTBUTTON,point.x,point.y,GetParentFrame());
 	}
@@ -1464,13 +1482,18 @@ void CWedView::OnLocateInGeom()
 	CPrjDoc::m_nLineStart=m_nActiveLine;
 	if(CPrjDoc::FindVector(FALSE,2)) {
 		if(GetParentFrame()->IsZoomed()) GetParentFrame()->ShowWindow(SW_RESTORE);
-		CPrjDoc::PositionReview();
+
+		//Assumes pPLT is positioned at vector that was found --
+		DWORD rec=dbNTP.Position();
+		pCV->GoToComponent(); //may change component (pCV->OnNetChg), update preview map, and refresh map frames!
+		VERIFY(!dbNTP.Go(rec));
+		CPrjDoc::PositionReview(); //position a specific traverse and update map frames, and float buttons
 	}
 	CPrjDoc::m_nLineStart=0;
 	CPrjDoc::m_pErrorNode=NULL;
 }
 
-void CWedView::OnUpdateLocateInGeom(CCmdUI* pCmdUI) 
+BOOL CWedView::IsLocateEnabled()
 {
 	BOOL bEnable=(CPrjDoc::m_pReviewNode!=NULL/* && CPrjDoc::m_pReviewNode->IsReviewable()==2*/);
 
@@ -1486,7 +1509,7 @@ void CWedView::OnUpdateLocateInGeom(CCmdUI* pCmdUI)
 			pNode=pNode->Parent();
 		}
 	}
-	pCmdUI->Enable(bEnable);
+	return bEnable;
 }
 
 BOOL CWedView::LocateVector()
@@ -1514,7 +1537,14 @@ void CWedView::OnLocateOnMap()
 	}
 }
 
-void CWedView::OnVectorInfo() 
+void CWedView::OnViewSegment()
+{
+	if(LocateVector()) {
+		CPrjDoc::ViewSegment();
+	}
+}
+
+void CWedView::OnVectorInfo()
 {
 	if(LocateVector()) {
 		ASSERT(pPLT->vec_id);

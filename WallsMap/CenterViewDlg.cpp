@@ -317,6 +317,10 @@ void CCenterViewDlg::OnSpinUtm(NMHDR* pNMHDR, LRESULT* pResult)
 	if(m_iZoneDoc && abs(abs(zone)-abs(m_iZoneDoc))>2) return;
 	CFltPoint fpt;
 	GetEditedPoint(fpt);
+	if(!m_iZoneDoc) {
+		int tzone=GetTrueZone();
+		if(abs(abs(zone)-abs(tzone))>2) return;
+	}
 	if(!GetConvertedPoint(fpt,m_iNadSel,&zone,m_iNadSel,m_iZoneSel)) {
 		return;
 	}
@@ -447,6 +451,8 @@ void CCenterViewDlg::OnBnClickedPasteloc()
 		if(!ix || !m_bNadToggle && butm!=m_bUtmDisplayed)
 			goto _errmsg;
 
+		ElimSlash(csPaste);
+
 		if(m_bNadToggle && !butm && m_iZoneDoc && abs(abs(GetZone(m_f0,m_f1))-abs(m_iZoneDoc))>2)
 			goto _errmsg;
 
@@ -472,6 +478,7 @@ void CCenterViewDlg::OnBnClickedPasteloc()
 			int zone=0;
 			m_bOutOfZone=false;
 			if(!butm) {
+				//have just pasted valid lat/long in boxes -- m_f0/m_f1 are lat/long
 				m_iZoneSel=GetZone(m_f0,m_f1);
 				SetText(IDC_UTMZONE,GetIntStr(m_iZoneSel));
 				if(m_bUtmDisplayed) {
@@ -482,21 +489,28 @@ void CCenterViewDlg::OnBnClickedPasteloc()
 					CheckRadioButton(IDC_TYPEGEO,IDC_TYPEUTM,IDC_TYPEGEO);
 					SetCoordLabels();
 				}
+				FixZoneMsg(zone);
 			}
 			else {
+				//have just pasted valid utm in boxes -- m_f0 and m_f1 are easting and northing
 				if(!m_bUtmDisplayed) {
-					//auto switch to utm!
+					//auto switch to utm, keeping iZoneSel (possibly out-of-zone)!
 					m_bUtmDisplayed=true;
-					zone=m_iZoneSel;
-					//SetRO(IDC_UTMZONE,TRUE); //always RO
 					Show(IDC_SPIN_UTMZONE,TRUE);
 					CheckRadioButton(IDC_TYPEGEO,IDC_TYPEUTM,IDC_TYPEUTM);
 					SetCoordLabels();
+					zone=GetTrueZone(); //was zone=m_iZoneSel;
+					m_bOutOfZone=zone!=m_iZoneSel;
+					FixZoneMsg(zone); //if m_bOutOfZone, display true zone==zone
 				}
-				else zone=GetTrueZone();
-				m_bOutOfZone=zone!=m_iZoneSel;
+				else {
+					//we are updating utm coords.
+					//get zone corrseponding to m_f0,m_f1 == easting,northing
+					zone=GetTrueZone(); //assumes iZoneSel is selected zone
+					m_bOutOfZone=zone!=m_iZoneSel;
+					FixZoneMsg(zone); //if m_bOutOfZone, display true zone==zone
+				}
 			}
-			FixZoneMsg(zone);
 		}
 
 		m_bValidEast=m_bValidNorth=m_bValidZone=true;

@@ -41,18 +41,17 @@ BOOL CAboutDlg::OnInitDialog()
 {
 	m_textLink.SubclassDlgItem(IDC_NEWURL,this);
 	CDialog::OnInitDialog();
-	CString fmt,sVersion("in development"),urlName(theApp.m_pszHelpFilePath);
-	urlName.Replace(".chm",".url");
+	CString fmt,sVersion,urlName;
 	CStdioFileEx file;
-	if(file.Open(urlName, CFile::modeRead | CFile::typeText)) {
+	if(file.Open(theApp.m_csUrlPath, CFile::modeRead | CFile::typeText)) {
 		file.ReadString(urlName);
 		file.ReadString(urlName);
 		if(urlName.GetLength()>11 && !memcmp("URL=http://",(LPCSTR)urlName,11)) {
 			m_textLink.SetLink((LPCSTR)urlName+11);
-			LPCSTR pExt=strstr(urlName,"WallsMap-");
+			LPCSTR pExt=strstr(theApp.m_csUrlPath,"WallsMap-");
 			if(pExt) {
 				fmt.SetString(pExt+9,trx_Stpext(pExt)-(pExt+9));
-				sVersion.Format("%s Edition",(LPCSTR)fmt);
+				sVersion.Format(" (%s Edition)",(LPCSTR)fmt);
 			}
 		}
 		file.Close();

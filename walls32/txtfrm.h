@@ -16,12 +16,8 @@ protected:
     BOOL m_bIconTitle;
 	BOOL PreCreateWindow(CREATESTRUCT& cs);
 	afx_msg void OnIconEraseBkgnd(CDC* pDC);
-	afx_msg LRESULT OnSetText(WPARAM wParam,LPARAM strText);
-
-	// Generated message map functions
-	//{{AFX_MSG(CTxtFrame)
 	afx_msg void OnWindowPosChanged(WINDOWPOS FAR* lpwndpos);
-	//}}AFX_MSG
+
 	DECLARE_MESSAGE_MAP()
 };
 

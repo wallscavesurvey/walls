@@ -15,21 +15,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\garmin.c">
+    <ClCompile Include="garmin.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\gpsutil.c">
+    <ClCompile Include="gpsutil.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\wallgps.c">
+    <ClCompile Include="wallgps.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\winasync.c">
+    <ClCompile Include="winasync.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\gps.h">
+    <ClInclude Include="gps.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

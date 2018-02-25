@@ -13,8 +13,10 @@
 
 IMPLEMENT_DYNAMIC(CGEDefaultsDlg, CDialog)
 
-CGEDefaultsDlg::CGEDefaultsDlg(UINT uKmlRange,UINT uLabelSize,UINT uIconSize,CString &csIconSingle,CString &csIconMultiple,CWnd* pParent /*=NULL*/)
+CGEDefaultsDlg::CGEDefaultsDlg(LPCSTR pgePath, UINT uKmlRange,
+	      UINT uLabelSize, UINT uIconSize, CString &csIconSingle, CString &csIconMultiple, CWnd* pParent /*=NULL*/)
 	: CDialog(CGEDefaultsDlg::IDD, pParent)
+	, m_PathName(pgePath)
 	, m_uKmlRange(uKmlRange)
 	, m_uIconSize(uIconSize)
 	, m_uLabelSize(uLabelSize)
@@ -30,6 +32,8 @@ CGEDefaultsDlg::~CGEDefaultsDlg()
 void CGEDefaultsDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Text(pDX, IDC_PATHNAME, m_PathName);
+	DDV_MaxChars(pDX, m_PathName, 260);
 	DDX_Control(pDX, IDC_RANGE, m_ceKmlRange);
 	DDX_Text(pDX, IDC_RANGE, m_uKmlRange);
 	DDV_MinMaxUInt(pDX, m_uKmlRange, 100, 100000);
@@ -37,6 +41,16 @@ void CGEDefaultsDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_EDIT_SINGLE, m_csIconSingle);
 	DDX_Control(pDX, IDC_EDIT_MULTIPLE, m_ceIconMultiple);
 	DDX_Text(pDX, IDC_EDIT_MULTIPLE, m_csIconMultiple);
+
+	if(pDX->m_bSaveAndValidate) {
+	    if(!m_PathName.IsEmpty()) {
+			if((m_PathName[1]!=':' || _access(m_PathName, 0))) {
+				AfxMessageBox("Program's pathname incomplete or no longer valid.");
+				pDX->m_idLastControl=IDC_PATHNAME;
+				pDX->Fail();
+			}
+		}
+	}
 }
 
 BEGIN_MESSAGE_MAP(CGEDefaultsDlg, CDialog)
@@ -44,6 +58,7 @@ BEGIN_MESSAGE_MAP(CGEDefaultsDlg, CDialog)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPIN_LSIZE, OnLabelSize)
 	ON_BN_CLICKED(IDC_LOAD_DFLTS, &CGEDefaultsDlg::OnBnClickedLoadDflts)
     ON_MESSAGE(WM_COMMANDHELP,OnCommandHelp)
+	ON_BN_CLICKED(IDBROWSE, &CGEDefaultsDlg::OnClickedBrowse)
 END_MESSAGE_MAP()
 
 void CGEDefaultsDlg::RefreshIconSize()
@@ -106,6 +121,29 @@ void CGEDefaultsDlg::OnBnClickedLoadDflts()
 	m_csIconSingle=CShpLayer::pIconSingle;
 	UpdateData(FALSE);
 }
+
+void CGEDefaultsDlg::OnClickedBrowse()
+{
+	CString strFilter;
+	if(!AddFilter(strFilter, IDS_EXE_FILES)) return;
+
+	TCHAR pf[MAX_PATH];
+	CString path;
+	if(SHGetSpecialFolderPath(0, pf, CSIDL_PROGRAM_FILES, FALSE)) {
+		strcat(pf, "\\");
+		path=pf;
+	}
+	else if(!m_PathName.IsEmpty()) {
+		LPCSTR p=trx_Stpnam(m_PathName);
+		path.SetString(p, trx_Stpnam(p)-p);
+	}
+
+	if(!DoPromptPathName(path, OFN_FILEMUSTEXIST, 3, strFilter,
+		TRUE, IDS_COMPARE_FCN, ".exe")) return;
+
+	GetDlgItem(IDC_PATHNAME)->SetWindowText(m_PathName=path);
+}
+
 
 LRESULT CGEDefaultsDlg::OnCommandHelp(WPARAM wNone, LPARAM lParam)
 {

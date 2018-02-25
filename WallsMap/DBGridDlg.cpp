@@ -654,7 +654,7 @@ LRESULT CDBGridDlg::OnGetListItem(WPARAM wParam, LPARAM lParam)
 				if(m_bExpandMemos && *pFld!=' ') {
 					UINT dbtrec=CDBTFile::RecNo(pFld);
 					if(dbtrec) {
-						UINT bufSiz=512;
+						UINT bufSiz=1023;
 						LPCSTR p=m_pdbfile->dbt.GetText(&bufSiz,dbtrec);
 						ASSERT(bufSiz);
 						if(bufSiz) {

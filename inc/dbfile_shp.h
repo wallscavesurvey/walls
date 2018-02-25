@@ -4,7 +4,7 @@
 #define __DBFILE_H
 
 #ifndef __DBF_FILE_H
-#include <a__dbf.h>
+#include "a__dbf.h"
 #endif
 
 bool __inline xisspace(char c) {return isspace((BYTE)c)!=0;}

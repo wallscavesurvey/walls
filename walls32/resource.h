@@ -60,8 +60,13 @@
 #define IDS_ERR_DATEELEV                33
 #define IDS_NAMLSTFMTH_LL               34
 #define IDS_SVG_BROWSE2                 35
+#define IDS_ERR_PAGEZOOMOUT             36
 #define IDS_STRING37                    37
 #define IDS_ERR_LAUNCH_ACC              37
+#define IDS_CSS_FILES                   38
+#define IDS_WPJ_FILES                   39
+#define IDS_WPJBROWSE                   40
+#define IDS_PRJ_EXPORTLOG               41
 #define IDS_LST_FILES                   61
 #define IDD_ABOUTBOX                    100
 #define IDC_VECTORLIST                  100
@@ -114,7 +119,7 @@
 #define IDC_NAME                        116
 #define IDC_LATDEG10                    116
 #define IDC_SURVEY                      117
-#define IDD_IMPORTDLG                   117
+#define IDD_IMPSEFDLG                   117
 #define IDC_LONDEG10                    117
 #define IDC_BOOK                        118
 #define IDC_USEGRID                     118
@@ -201,12 +206,12 @@
 #define IDD_ITEM_GENERAL                158
 #define IDS_PRJ_WGS84UPSS               158
 #define IDC_NEXTTRAV                    159
-#define IDC_IMPBROWSE                   159
 #define IDC_LOOPS                       159
 #define IDC_IMPPRJPATH                  160
 #define IDD_ITEM_REFERENCE              160
-#define IDC_IMPSEFPATH                  161
+#define IDC_IMPDATPATH                  161
 #define IDD_ITEM_OPTIONS                161
+#define IDC_WPJBROWSE                   162
 #define IDC_IMPLINECOUNT                162
 #define IDD_EXPORTSEF                   162
 #define IDC_IMPORTING                   163
@@ -271,6 +276,7 @@
 #define IDC_NOTE1TEXT                   195
 #define IDC_MARKERSIZE                  195
 #define IDD_GPSINDLG                    195
+#define IDR_SCALE_CONTEXT               195
 #define IDC_NOTE2TEXT                   196
 #define IDC_FRAMEHEIGHT                 196
 #define IDC_NOTETEXT                    197
@@ -348,9 +354,13 @@
 #define IDC_NOTECOLOR                   237
 #define IDC_FLOORCOLOR                  238
 #define IDC_ST_BRANCH                   239
+#define IDC_HAND2                       239
 #define IDC_ST_COLORS                   240
 #define IDC_MARKERCOLOR                 240
 #define IDC_ST_SEGMENT                  241
+#define IDC_HAND3                       243
+#define IDD_DIALOG3                     244
+#define IDD_IMPCSSDLG                   244
 #define IDC_USESTYLES                   245
 #define IDC_USECOLORS                   246
 #define IDC_MONOCHROME                  246
@@ -415,6 +425,7 @@
 #define IDC_TTLENGTH                    315
 #define IDC_PERCENT                     316
 #define IDC_EXPORT3D                    317
+#define IDC_EXLENGTH                    317
 #define IDC_NUMNOTES                    318
 #define IDC_USEFEET                     319
 #define IDC_NUMFLAGS                    319
@@ -440,6 +451,7 @@
 #define IDC_LOOPSH                      336
 #define IDC_LOOPSV                      337
 #define IDC_IMPCOMBINE                  337
+#define IDC_ALLOWCOLONS                 338
 #define IDC_3DVIEWER                    339
 #define IDC_3DSTATUS                    340
 #define IDC_FLAGSOLID                   342
@@ -533,14 +545,15 @@
 #define IDC_ST_TITLE                    438
 #define IDC_CONV                        439
 #define IDC_ST_FILENAME                 439
-#define IDC_CONVERTPFX                  440
+#define IDC_NOCVTPFX                    440
 #define IDC_ST_SURVEYDATE               440
-#define IDC_INCLUDEDET                  441
 #define IDC_ST_FILEDATE                 441
-#define IDC_FORCEFEET                   442
+#define IDC_CONVERTHT                   442
 #define IDC_ST_ATTR                     442
+#define IDC_USE_VDIST                   442
 #define IDC_ST_STATUS                   443
-#define IDC_FIXEDCOLS                   444
+#define IDC_USE_VDIST2                  443
+#define IDC_USE_ALLSEF                  443
 #define IDC_SHPPATH                     444
 #define IDC_SHP_VECTORS                 445
 #define IDC_SHP_STATIONS                446
@@ -624,8 +637,8 @@
 #define IDC_ST_MARKERSTYLE              537
 #define IDC_LRUDSTYLE                   543
 #define IDC_LRUDSOLID                   544
-#define IDC_LRUDTICKS                   546
-#define IDC_LRUDBOTH                    547
+#define IDC_LRUDTICKS                   545
+#define IDC_LRUDBOTH                    546
 #define IDC_LRUDMARKERCLR               548
 #define IDC_SPIN_ENLARGE                551
 #define IDC_EDIT_ENLARGE                552
@@ -703,6 +716,7 @@
 #define IDC_FR_NOTE                     631
 #define IDC_ST_FR_NAME                  632
 #define IDC_ST_TO_NAME                  633
+#define IDC_VIEWSEG                     634
 #define IDC_ST_EAST                     636
 #define IDC_ST_NORTH                    637
 #define IDC_ST_UP                       638
@@ -732,7 +746,19 @@
 #define IDC_CHECK1                      671
 #define IDC_CHK_MERGE2                  671
 #define IDC_LRUD                        671
+#define IDC_FORCE_DAV                   671
+#define IDC_ATTACH_SRC                  671
 #define IDC_LRUDPT                      672
+#define IDC_CSSBROWSE                   674
+#define IDC_ST_DEFAULT                  675
+#define IDC_ST_CURRENT                  676
+#define IDC_SEFBROWSE                   677
+#define IDC_PRJBROWSE                   678
+#define IDC_CHRS_REPL                   679
+#define IDC_REPL_DFLT                   680
+#define IDC_APPLYLBL                    682
+#define IDC_APPLYLBL2                   683
+#define IDC_RESET                       683
 #define IDC_COPYSINGLE                  914
 #define IDC_COPYMULTIPLE                915
 #define ID_CHANGEFONT                   987
@@ -803,7 +829,6 @@
 #define ID_PROJECT_SAVE_AS              32795
 #define ID_PROJECT_SAVE                 32796
 #define ID_PROJECT_SEARCH               32797
-#define ID_SURVEY_NEW                   32798
 #define ID_SURVEY_OPEN                  32799
 #define ID_SURVEY_CLOSE                 32800
 #define ID_SURVEY_SAVE                  32801
@@ -826,7 +851,6 @@
 #define IDS_SHP_NOTIFY3                 32818
 #define ID_PURGEBRANCH                  32819
 #define ID_REVIEWFONT                   32820
-#define ID_IMPORT                       32821
 #define ID_NULLIMPORT                   32822
 #define ID_MAKENTC                      32823
 #define ID_MAPFONT                      32824
@@ -888,7 +912,6 @@
 #define ID_SVG_EXPORT                   32907
 #define ID_2D_CONFIG                    32908
 #define ID_BUTTON32918                  32918
-#define ID_BUTTON32919                  32919
 #define ID_BUTTON32920                  32920
 #define ID_BUTTON32921                  32921
 #define ID_BUTTON32924                  32924
@@ -962,6 +985,19 @@
 #define ID_EDIT_SELECTALL               33017
 #define ID_POPUP_WRITEPROTECT           33019
 #define ID_PRJ_OPENFOLDER               33020
+#define ID_FILE_IMPORT                  33021
+#define ID_IMPORT_CSS                   33024
+#define ID_IMPORT_SEF                   33025
+#define ID_FILE_EXPORT33026             33026
+#define ID_REVIEWSEG                    33027
+#define ID_POPUP_SHOWSELECTEDTRAVERSE   33028
+#define ID_MAP_TRAVERSE                 33029
+#define ID_MAP_SELECTED                 33030
+#define ID_OPTIONS_MAPFORMAT            33031
+#define ID_OPTIONS_SCREENMAPNAVIGATION  33032
+#define ID_MAPNAVIGATION                33033
+#define ID_SCALEUNITS_METERS            33085
+#define ID_SCALEUNITS_FEET              33086
 #define ID_PRJ_SAVE                     57603
 #define ID_PRJ_SAVE_AS                  57604
 #define IDC_UPDATEFRAME                 57610
@@ -988,6 +1024,7 @@
 #define IDS_ERR_SEARCH1                 61235
 #define IDS_ERR_REPLACE1                61236
 #define IDS_ERR_INCSEARCH1              61237
+#define IDS_CSSBROWSE                   61237
 #define IDS_ERR_REPABORT1               61238
 #define IDS_ERR_REPLINE1                61239
 #define IDS_ERR_PROJECT2                61240
@@ -1032,7 +1069,9 @@
 #define IDS_ERR_PRJMEM                  61274
 #define IDS_PRJ_FINDCOUNT2              61275
 #define IDS_ERR_IMPPRJPATH1             61276
+#define IDS_ERR_WPJPATH1                61276
 #define IDS_ERR_IMPSEFPATH1             61277
+#define IDS_ERR_IMPPATH1                61277
 #define IDS_ITMBROWSE                   61278
 #define IDS_ERR_IMPERRMSG1              61279
 #define IDS_ERR_IMPLOADDLL1             61280
@@ -1185,9 +1224,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        236
-#define _APS_NEXT_COMMAND_VALUE         33021
-#define _APS_NEXT_CONTROL_VALUE         672
+#define _APS_NEXT_RESOURCE_VALUE        260
+#define _APS_NEXT_COMMAND_VALUE         33034
+#define _APS_NEXT_CONTROL_VALUE         683
 #define _APS_NEXT_SYMED_VALUE           149
 #endif
 #endif

@@ -479,16 +479,16 @@ bool CImageViewDlg::InitThumbnail(CImageData &image)
 	return true;
 }
 
-void CImageViewDlg::NoDropMsg()
+void CImageViewDlg::NoDropMsg(CShpLayer *pShp)
 {
 	CMsgBox("%s\n\nSince this record is not currently editable, images can't be added or rearranged.",
-		m_pShp->Title());
+		pShp->Title());
 }
 
 void CImageViewDlg::OnDrop()
 {
 	if(!IsEditable()) {
-		NoDropMsg();
+		NoDropMsg(m_pShp);
 		return;
 	}
 
@@ -887,7 +887,7 @@ void CImageViewDlg::MoveSelected(int nDragIndex,int nDropIndex)
 	ASSERT(nDragIndex==m_iListSel);
 
 	if(!IsEditable()) {
-		NoDropMsg();
+		NoDropMsg(m_pShp);
 		return;
 	}
 

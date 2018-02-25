@@ -15,8 +15,8 @@
 #include "custsite.h"
 #include "statlink.h"
 
-#define TSS_URL "http://www.utexas.edu/tmm/sponsored_sites/tss/"
-#define TEXBIB_URL "http://www.utexas.edu/tmm/sponsored_sites/tss/TexBib/"
+#define TSS_URL "http://texasspeleologicalsurvey.org/"
+#define TEXBIB_URL "http://texasspeleologicalsurvey.org/software/texbib/texbib.php"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

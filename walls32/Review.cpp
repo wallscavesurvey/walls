@@ -199,9 +199,11 @@ void CReView::switchTab(int viewIndex)
 
 	if(m_tabArray.m_curTab==viewIndex) return;
 	if(m_tabArray.m_curTab==TAB_PLOT) GetPlotView()->ClearTracker();
+	/*
 	else if(m_tabArray.m_curTab==TAB_SEG) {
 		GetSegView()->SelectSegments();
 	}
+	*/
 
 	switch(viewIndex) {
 
@@ -215,16 +217,9 @@ void CReView::switchTab(int viewIndex)
 			  break;
 
 		case TAB_PLOT :
-				{
-				  if(!GetSegView()->InitSegTree()) return;
-				  pCV->PlotTraverse(0);
-				  if(pCV->m_bHomeTrav) {
-					GetSegView()->SetTravSelected(TRUE); //View selected vs floated
-					GetSegView()->SetTravVisible(TRUE);  //Attach Traverse bullet
-					GetPlotView()->EnableMarkers(); //Turn on Traverse and Markers checkboxes
-				  }
-				} 
-				break;
+			  if(!GetSegView()->InitSegTree()) return;
+			  pCV->PlotTraverse(0);
+			  break;
 
 		case TAB_SEG  :
 			  if(!GetSegView()->InitSegTree()) return;

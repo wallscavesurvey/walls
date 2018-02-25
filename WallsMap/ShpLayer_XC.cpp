@@ -120,7 +120,10 @@ int CShpLayer::ParseFldKey(UINT f,LPSTR p0)
 	if(nArgs>=1) {
 		m_pdbfile->pfxfld=m_pdb->FldNum(cfg_argv[0]);
 		if(nArgs>=4) {
-			m_pdbfile->noloc_dir=(BYTE)atoi(cfg_argv[1]);
+			{
+				BYTE b=(BYTE)atoi(cfg_argv[1]);
+				if(b>=5 && b<=12) m_pdbfile->noloc_dir=b;
+			}
 			m_pdbfile->noloc_lat=atof(cfg_argv[2]);
 			m_pdbfile->noloc_lon=atof(cfg_argv[3]);
 			if(nArgs>=5) {
@@ -527,13 +530,17 @@ BOOL CShpLayer::XC_RefreshInitFlds(LPBYTE pRec,const CFltPoint &fpt,BOOL bReinit
 		if(bReinit==1 && (it->wFlgs&XC_READONLY)) {
 			memset(pRec+m_pdb->FldOffset(it->nFld),' ',m_pdb->FldLen(it->nFld));
 		}
-		else if(pstr=XC_GetInitStr(s,*it,fpt,pRec,pOldPt)) {
-			ASSERT(bReinit<2 || app_pShowDlg);
-			if(bReinit==2 && !bRet) {
-				VERIFY(app_pShowDlg->LoadEditBuf());
+		else {
+			if(bReinit==1 && (it->wFlgs&XC_HASLIST))
+				continue;
+			if(pstr=XC_GetInitStr(s, *it, fpt, pRec, pOldPt)) {
+				ASSERT(bReinit<2 || app_pShowDlg);
+				if(bReinit==2 && !bRet) {
+					VERIFY(app_pShowDlg->LoadEditBuf());
+				}
+				bRet=TRUE;
+				m_pdb->StoreTrimmedFldData(m_pdbfile->pbuf,pstr,it->nFld);
 			}
-			bRet=TRUE;
-			m_pdb->StoreTrimmedFldData(m_pdbfile->pbuf,pstr,it->nFld);
 		}
 	}
 	return bRet; //actually used only if bReinit==2 to refreash field list, etc.

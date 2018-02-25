@@ -177,7 +177,7 @@ BEGIN
     CTEXT           "Version 1.0 of Walls3D is partially based on VRWeb 1.1b5 Beta\nby Gerbert Orasche and Michael Pichler",IDC_STATIC,24,83,243,17
     CTEXT           "Copyright © 1994-95, Institute for Information Processing and \nComputer Supported New Media, Graz University of Technology, Austria",IDC_STATIC,23,103,244,19
     GROUPBOX        "",IDC_STATIC,17,75,257,50
-    LTEXT           "www.utexas.edu/tmm/sponsored_sites/tss/Walls/tsswalls.htm",IDC_NEWURL,43,62,232,12
+    LTEXT           "www.texasspeleologicalsurvey.org/software/walls/tsswalls.php",IDC_NEWURL,43,62,232,12
 END
 
 

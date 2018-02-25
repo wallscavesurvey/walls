@@ -82,7 +82,7 @@ int getRayPoints(double x,double y,int id,BOOL bPoly)
 			az=(az-fView)*(PI/180.0);
 			if(lrud.dim[0]==LRUD_BLANK_NEG) {
 				float z=0.0;
-				if(bProfile && (z=lrud.dim[2])==LRUD_BLANK && (z=-lrud.dim[3])==LRUD_BLANK_NEG) z=0.0;
+				if(bProfile && ((z=lrud.dim[2])==LRUD_BLANK || z==0) && (z=-lrud.dim[3])==LRUD_BLANK_NEG) z=0.0;
 				id=insert_raypoint(id,lrud.dim[1]+fExag,z,x,y,az);
 			}
 			else {
@@ -547,7 +547,7 @@ void PlotLrudTicks(BOOL bTicksOnly)
 
 	styletyp style=*pSV->OutlineStyle();
 
-	if(style.IsNoLines() || style.LineIdx()==CSegView::PS_HEAVY_IDX)
+	if(style.IsNoLines()) // || style.LineIdx()==CSegView::PS_HEAVY_IDX)
 		style.SetLineIdx(CSegView::PS_SOLID_IDX);
 	if(!pMF->bUseColors) style.SetLineColor(bTicksOnly?RGB_BLACK:RGB_WHITE);
 

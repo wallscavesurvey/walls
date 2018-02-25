@@ -54,17 +54,18 @@ public:
 	afx_msg void OnHelpContents();
 	#endif
 	BOOL m_bDDEFileOpen;
-	BOOL m_bIsVersionNT;
+	DWORD dwOsMajorVersion;
 	LRESULT RunCommand(int fcn,LPCSTR pData);
+	bool IsProjectOpen(LPCSTR pathName);
 
 	afx_msg void OnFilePrintSetup();
 
     //{{AFX_MSG(CWallsApp)
 	afx_msg void OnAppAbout();
-	afx_msg void OnSurveyNew();
 	afx_msg void OnProjectNew();
 	afx_msg void OnFileOpen();
-	afx_msg void OnImport();
+	afx_msg void OnImportSef();
+	afx_msg void OnImportCss();
 	afx_msg void OnGpsDownload();
 	afx_msg BOOL OnOpenRecentFile(UINT nID);
 	//}}AFX_MSG

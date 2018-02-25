@@ -86,6 +86,8 @@ enum {
   SVG_ERR_ROTXFORM,
   SVG_ERR_GRPXFORM,
   SVG_ERR_FINALMRG,
+  SVG_ERR_W2DGROUP,
+  SVG_ERR_W2DDUP,
   SVG_ERR_UNKNOWN,
   SVG_ERR_ENDSCAN
 };
@@ -109,7 +111,7 @@ enum {
 #define SVG_LENGTH_MIN_DFLT "1"
 
 struct STRING_BUF {
-	enum {MAX_CNT=500,INC_SIZ=512};
+	enum {MAX_CNT=5000,INC_SIZ=512};
 	STRING_BUF() : pbuf(NULL),len(0),cnt(0),siz(0),bOverflow(0) {};
 	~STRING_BUF() {free(pbuf);}
 	void Clear() {free(pbuf); pbuf=NULL; len=cnt=siz=bOverflow=0;}

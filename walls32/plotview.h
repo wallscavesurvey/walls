@@ -70,9 +70,6 @@ public:
 	static UINT m_uMetaRes;  // Metafile resolution (used by CPrjDoc::PlotFrame())
 	static POINT *m_pathPoint; //Path drawing in CPrjDoc::PlotFrame()
 	
-    //Non-null when an external frame with the current width is active --
-    static CMapFrame *m_pMapFrame; 
-    
 	CFixedTracker m_tracker;
 	HCURSOR m_hCursorBmp;
 	
@@ -92,8 +89,7 @@ public:
 	
 	BOOL m_bInches;			  //For scale and frame size formatting
 	BOOL m_bProfile;
-	BOOL m_bExternUpdate;	  //Set in CSegView::OnExternUpdate() to specify updating.
-							  //Checked in CPrjDoc::PlotFrame()
+	BOOL m_bExternUpdate;
     
 	static PRJFONT m_FrameFont;
 	static PRJFONT m_LabelPrntFont;
@@ -103,14 +99,13 @@ public:
 	static PRJFONT m_NoteScrnFont;
 	static PRJFONT m_NoteExportFont;
 	
-	static MAPFORMAT m_mfPrint;
-	static MAPFORMAT m_mfFrame;
-	static MAPFORMAT m_mfExport;
+	static MAPFORMAT m_mfFrame, m_mfPrint, m_mfExport;
+	static const MAPFORMAT m_mfDflt[3];
 	static GRIDFORMAT m_GridFormat;
 	static char *szMapFormat;
 	
 	CBitmap m_cBmpBkg;    // Bitmap containing map and highlighted system
-protected:
+private:
 	CBitmap m_cBmp;       // Displayed bitmap with highlighted traverse
 	HBITMAP m_hBmpOld;    // Handle of old bitmap to save
 	HBRUSH m_hBrushOld;   // Handle of old brush to save
@@ -119,25 +114,29 @@ protected:
 	CDC m_dcRotBmp;
 	HBITMAP m_hRotBmpOld;
 	BOOL m_bPrinterOptions,m_bMeasuring; //Used when invoking CMapDlg()
-	//int m_xHotspot,m_yHotspot;
+	bool m_bPanning,m_bPanned;
     
 // Operations
 private:
+#ifdef VISTA_INC
+	void ShowTrackingTT(CPoint &point);
+#endif
 	BOOL IncSys(int dir);
 	void IncTrav(int dir);
 	BOOL TrackerOK();
-	//void ClearTracker();
 	void LabelProfileButton(BOOL bProfile);
 	void SetOptions(MAPFORMAT *pMF);
 	void DrawFrame(CDC *pDC,CRect *pClip);
 	void DisableButton(UINT id);
 	void RefreshMeasure();
 	void OnFindPrevNext(int iNext);
+	BOOL ZoomInOK();
+	BOOL ZoomOutOK();
 
 public:
     static void Initialize();
     static void Terminate();
-    
+   
 	CReView *GetReView() {return (CReView *)m_pTabView;}
 	CPageView *GetPageView() {return GetReView()->GetPageView();} //Used by CPrjDoc::PlotFrame()
 	void LoadViews();
@@ -149,14 +148,6 @@ public:
 	int GetTrackerPos(CPoint *pt);
 	void ViewMsg();
     void ResetContents();
-    void EnableMarkers()
-    { 
-    	//Used only by CReview::switchTab() when zooming --
-    	SetCheck(IDC_EXTERNMARKERS,TRUE);
-    	SetCheck(IDC_EXTERNLABELS,TRUE);
-    	SetCheck(IDC_TRAVSELECTED,TRUE);
-    	SetCheck(IDC_TRAVFLOATED,FALSE);
-    }
 	void EnableDefaultButtons(BOOL bDefEnable);
     void EnableSysButtons(BOOL bEnable)
     {
@@ -170,6 +161,11 @@ public:
     	Enable(IDC_TRAVNEXT,bEnable);
     	Enable(IDC_TRAVPREV,bEnable);
     }
+
+	BOOL IsEnabled(UINT id)
+    {
+		return GetDlgItem(id)->IsWindowEnabled();
+	}
 
     void EnableTraverse(BOOL bEnable)
     {
@@ -186,7 +182,7 @@ public:
 
 	afx_msg void OnFileExport();  //Used also from CSegView::OnFileExport()
 	afx_msg void OnExternFrame(); //Used also from CSegView::OnDisplay()
-	afx_msg void OnUpdateFrame(); //Used also from CSegView::OnExternUpdate()
+	afx_msg void OnUpdateFrame();
 	afx_msg void OnGridOptions();
 	afx_msg void OnFilePrint();
 	afx_msg void OnFilePrintPreview();
@@ -220,9 +216,15 @@ protected:
     afx_msg void OnEditFind();
     afx_msg void OnFindNext();
 
+#ifdef _SAV_LBL
+	afx_msg void OnExternLabels();
+	afx_msg void OnExternMarkers();
+#endif
+
 	// Generated message map functions
 	//{{AFX_MSG(CPlotView)
 	afx_msg void OnDestroy();
+	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);

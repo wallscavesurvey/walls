@@ -8,6 +8,7 @@
 #include "expsef.h"
 #include "expsefd.h"
 #include "wall_srv.h"
+#include "wall_emsg.h"
 
 #include <trxfile.h>
 
@@ -15,11 +16,6 @@
 #undef THIS_FILE
 static char BASED_CODE THIS_FILE[] = __FILE__;
 #endif
-
-#define EXP_ERR_SETOPTIONS -1
-#define EXP_ERR_DATEDECL -2
-#define EXP_ERR_LOADDECL -3
-#define EXP_ERR_CLOSE -4
 
 #define EXP_DLL_FCN "_Export@4"
 
@@ -30,7 +26,8 @@ static PRJREF *pREF;
 typedef int (FAR PASCAL *LPFN_EXPORT)(EXPTYP *);
 
 static LPFN_EXPORT pExport;
-static UINT uFLG;
+static UINT uFLG,numerrors;
+static CPrjListNode *pNodeExp;
 
 #define EXP_FCN(id) (pEXP->fcn=id,pExport(pEXP))
 
@@ -39,7 +36,6 @@ extern double fTotalLength;
 
 static EXPTYP *pEXP;
 static CTRXFile *pixPFX;
-static CExpSefDlg *pDLG;
 
 static int PASCAL LogPrefix(char *name)
 {
@@ -80,6 +76,27 @@ int PASCAL exp_CB(int fcn_id,LPSTR lpStr)
 	BYTE buf[TRX_MAX_KEYLEN+1];
 	
 	switch(fcn_id) {
+
+		case FCN_CVTLATLON:
+		{
+			NTVRec *pNTV=(NTVRec *)lpStr;
+			ASSERT(pREF);
+			MD.format=0;
+			MD.lat.isgn=MD.lon.isgn=1;
+			MD.lon.fdeg=pNTV->xyz[0];
+			MD.lat.fdeg=pNTV->xyz[1];
+			MD.lon.fmin=MD.lon.fsec=MD.lat.fmin=MD.lat.fsec=0.0;
+			MD.datum=pREF->datum;
+			MD.zone=pREF->zone; //force to root of reference
+			if((e=MF(MAG_CVTLL2UTM3)) && e!=MAG_ERR_OUTOFZONE) {
+				return EXP_ERR_DATEDECL;
+			}
+			pNTV->xyz[0]=MD.east;
+			pNTV->xyz[1]=MD.north;
+			CMainFrame::PutRef(pREF); //restore MD
+			return 0;
+		}
+
 		case FCN_DATEDECL:
 		{
 			ASSERT(pREF);
@@ -96,12 +113,17 @@ int PASCAL exp_CB(int fcn_id,LPSTR lpStr)
 
  		case FCN_PREFIX:
  		{
-			ASSERT(pEXP->flags&EXP_CVTPFX);
 			e=strlen(lpStr);
 			if(e>128) return 0;
 			memcpy(buf+1,lpStr,*buf=e); //Pascal string required
 			e=LogPrefix((char *)buf);
 			return e;
+		}
+
+		case FCN_ERROR:
+		{
+			numerrors++;
+			return CPrjDoc::m_pLogDoc->log_write(lpStr);
 		}
 		
 	} /*switch*/
@@ -114,28 +136,24 @@ int PASCAL exp_CB(int fcn_id,LPSTR lpStr)
 int CPrjDoc::ExportBranch(CPrjListNode *pNode)
 {
    int e;
-   static char msg[32]="Converting ";
+
+   pEXP->flags=uFLG;
 
    if(!pNode->m_dwFileChk) return 0;
    
    if(pNode->m_bLeaf) {
 
-	 pEXP->flags=uFLG;
-   
 	 if(pREF=pNode->GetAssignedRef()) {
 		pEXP->flags |= EXP_USEDATES*pNode->InheritedState(FLG_DATEMASK);
-		pEXP->grid=pREF->conv;
 	 }
-	 else pEXP->grid=0.0;
+	 pEXP->pREF=pREF; //for writing conv, zone and datum name to SEF
 
      //Set the compile options, if any --
 	 //SetOptions must be called AFTER exp_Open()!
 	 pEXP->path=SurveyPath(pNode);
 
      if(!(e=EXP_FCN(EXP_SRVOPEN)) && !(e=SetOptions(pNode))) {
-		 //Show status msg --
-		 strcpy(msg+11,pEXP->name=pNode->Name());
-		 pDLG->StatusMsg(msg);
+		 pEXP->name=pNode->Name();
 		 pEXP->title=pNode->Title();
 		 e=EXP_FCN(EXP_SURVEY);
 		 numfiles++;
@@ -155,10 +173,11 @@ int CPrjDoc::ExportBranch(CPrjListNode *pNode)
 		 pNode=(CPrjListNode *)pNode->m_pFirstChild;
 
 		 while(pNode) {
-		   if(((uFLG&EXP_INCDET) || !pNode->m_bFloating) && (e=ExportBranch(pNode))) break;
-		   pNode=(CPrjListNode *)pNode->m_pNextSibling;
+			if(!pNode->m_bFloating) {
+				if(e=ExportBranch(pNode)) break;
+		    }
+			pNode=(CPrjListNode *)pNode->m_pNextSibling;
 		 }
-
 		 if(!e) EXP_FCN(EXP_CLOSEDIR);
 	 }
 
@@ -166,7 +185,7 @@ int CPrjDoc::ExportBranch(CPrjListNode *pNode)
    return e;
 }
 
-int CPrjDoc::ExportSEF(CExpSefDlg *pDlg,CPrjListNode *pNode,const char *pathname,UINT flags)
+int CPrjDoc::ExportSEF(CPrjListNode *pNode,const char *pathname,UINT flags)
 { 
 
     CTRXFile ixPFX;     //Branch node's original NTA file (segment index)
@@ -175,9 +194,8 @@ int CPrjDoc::ExportSEF(CExpSefDlg *pDlg,CPrjListNode *pNode,const char *pathname
 
 	m_pErrorNode=NULL;
 
-	//Let's see if the directory needs to be created --
-	if(!DirCheck((char *)pathname,TRUE)) return 0;
-
+	//Pathname was already checked
+	
 	//Load DLL --
 	//UINT prevMode=SetErrorMode(SEM_NOOPENFILEERRORBOX);
 	HINSTANCE hinst=LoadLibrary(EXP_DLL_NAME); //EXP_DLL_NAME
@@ -192,31 +210,29 @@ int CPrjDoc::ExportSEF(CExpSefDlg *pDlg,CPrjListNode *pNode,const char *pathname
 	  return -1;
 	}
 
-	if(flags&EXP_CVTPFX) {
-		//Create a temporary index file for converting name prefixes to integers --
-		//Non-flushed mode is the default --
-		if(!(e=ixPFX.Create(WorkPath(pNode,TYP_TMP),sizeof(short)))) { 
-		  ixPFX.SetUnique(); //We will only insert unique names
-		  ixPFX.SetExact(); //We will use "insert if not found"
-		  //Assign cache and make it the default for indexes --
-		  if(e=ixPFX.AllocCache(SIZ_PFX_CACHE,FALSE)) ixPFX.CloseDel();
-		}
-		if(e) {
-			FreeLibrary(hinst);
-			AfxMessageBox(IDS_ERR_MEMORY);
-			return -1;
-		}
-		pixPFX=&ixPFX;
+	//Create a temporary index file for converting name prefixes to short forms --
+	//Non-flushed mode is the default --
+	if(!(e=ixPFX.Create(WorkPath(pNode,TYP_TMP),sizeof(short)))) { 
+		ixPFX.SetUnique(); //We will only insert unique names
+		ixPFX.SetExact(); //We will use "insert if not found"
+		//Assign cache and make it the default for indexes --
+		if(e=ixPFX.AllocCache(SIZ_PFX_CACHE,FALSE)) ixPFX.CloseDel();
 	}
-	else pixPFX=NULL;
+	if(e) {
+		FreeLibrary(hinst);
+		AfxMessageBox(IDS_ERR_MEMORY);
+		return -1;
+	}
+	pixPFX=&ixPFX;
 
-	uFLG=flags;
-    numfiles=0;
+	numfiles=numerrors=0;
 	pEXP=&exp;
-	pDLG=pDlg;
-	exp.flags=EXP_VERSION;
+	uFLG=flags;
+	exp.fTotalLength=EXP_VERSION;
 	exp.path=pathname;
 	exp.title=(char *)exp_CB;
+
+	InitLogPath(pNode);
     
 	BeginWaitCursor();
 
@@ -230,26 +246,27 @@ int CPrjDoc::ExportSEF(CExpSefDlg *pDlg,CPrjListNode *pNode,const char *pathname
 
 	if(pixPFX) ixPFX.CloseDel(TRUE); 	//Delete cache
 
+	if(m_fplog) fclose(m_fplog);
+
 	EndWaitCursor();
 
 	switch(e) {
 
 		case 0:
-			if(numfiles) pDLG->StatusMsg("");
-			if(!exp.numvectors) AfxMessageBox(IDS_ERR_NTVEMPTY);
+			if(!exp.numvectors && !exp.numfixedpts) AfxMessageBox(IDS_ERR_NTVEMPTY);
 			else {
-				char *pUnits;
-				if(pNode->IsFeetUnits()) {
-					pUnits="ft",
-					exp.fTotalLength/=0.3048;
+			    CString s;
+			    s.Format("Created %s --\n\nFiles processed: %u  Fixed Pts: %u  Vectors: %u\nTotal corrected vector length: %.2f m (%.2f ft)",
+				    TrimPath(CString(pathname), 50),numfiles, exp.numfixedpts, exp.numvectors,exp.fTotalLength, exp.fTotalLength/0.3048);
+				if(numerrors)
+				    s.AppendFormat("\nLogged cautions or non-fatal errors: %u",numerrors);
+
+				if(exp.maxnamlen>12) {
+					s.AppendFormat("\n\nNOTE: The longest prefixed name has %u characters (>12), so it's likely only Walls can import the file.",
+						exp.maxnamlen);
+					if(exp.flags&EXP_NOCVTPFX) s+=" Consider exporting again with the \"Suppress name prefix length reduction\" box unchecked.";
 				}
-				else pUnits="m";
-				CMsgBox(MB_ICONEXCLAMATION,IDS_OK_EXPSEF5,
-				pathname,
-				numfiles,
-				exp.numvectors,
-				exp.fTotalLength,
-				pUnits);
+				AfxMessageBox(s);
 			}
 			break;
 
@@ -270,6 +287,10 @@ int CPrjDoc::ExportSEF(CExpSefDlg *pDlg,CPrjListNode *pNode,const char *pathname
 			CMsgBox(MB_ICONEXCLAMATION,IDS_ERR_EXPCLOSE1,pathname);
 			break;
 
+		case EXP_ERR_VERSION:
+		    CMsgBox(MB_ICONEXCLAMATION,"Version " EXP_VERSION_STR " (not %s) of " EXP_DLL_NAME " required.", pEXP->title);
+			break;
+
 		default: 	    
 			//An error was found in the text file at line number pEXP->lineno --
 			if(e!=EXP_ERR_DATEDECL && e!=EXP_ERR_LOADDECL) {
@@ -283,5 +304,12 @@ int CPrjDoc::ExportSEF(CExpSefDlg *pDlg,CPrjListNode *pNode,const char *pathname
 	}
 
 	FreeLibrary(hinst);
+
+	if(m_fplog) {
+		if(IDOK==CMsgBox(MB_OKCANCEL, IDS_PRJ_EXPORTLOG)) {
+			LaunchFile(m_pNodeLog, CPrjDoc::TYP_LOG);
+		}
+	}
+
 	return e;
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "RulerRichEditCtrl.h"
 #include "EditLabel.h"
 
 // CEditImageDlg dialog
@@ -17,7 +18,8 @@ public:
 
 private:
 	CEditLabel m_ceTitle;
-	CEditLabel m_ceDesc;
+	CStatic	m_placement;
+	CRulerRichEditCtrl m_rtf;
 
 	virtual BOOL OnInitDialog();
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
@@ -33,6 +35,7 @@ public:
 	CString m_csDesc;
 	CString m_csPath;
 	CString m_csSize;
-	//afx_msg void OnEnChangeCaption(); ??
+
+	afx_msg LRESULT OnLinkClicked(WPARAM, LPARAM lParam);
 	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 };

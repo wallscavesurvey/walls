@@ -132,8 +132,34 @@ CString CReselectVw::ResourceToURL(LPCTSTR lpszURL)
 	return m_strURL;
 }
 
+static SYSTEMTIME *GetLocalFileTime(const char *pszPathName)
+{
+	static SYSTEMTIME stLocal;
+	memset(&stLocal, 0, sizeof(SYSTEMTIME));
+
+	WIN32_FILE_ATTRIBUTE_DATA fdata;
+	if(!GetFileAttributesEx(pszPathName, GetFileExInfoStandard, &fdata)) {
+		return NULL;
+	}
+
+	// Convert the last-write time to local time.
+	SYSTEMTIME stUTC;
+	if(!FileTimeToSystemTime(&fdata.ftLastWriteTime, &stUTC))
+		goto _eret;
+	if(!SystemTimeToTzSpecificLocalTime(NULL, &stUTC, &stLocal))
+		goto _eret;
+	return &stLocal;
+
+_eret:
+	ASSERT(0);
+	return NULL;
+}
+
+
+
 static BOOL GetFileTimeStr(char *time,const char *pName)
 {
+/*
     struct _stat status;
 	struct tm *ptm;
 
@@ -146,6 +172,18 @@ static BOOL GetFileTimeStr(char *time,const char *pName)
 	}
 	ptm=localtime(&status.st_mtime);
 	_snprintf(time,31,"Version\n%2u/%02u/%02u",ptm->tm_mon+1,ptm->tm_mday,(ptm->tm_year%100));
+	return TRUE;
+*/
+	strcpy(argvbuf, theApp.m_szDBFilePath);
+	strcpy(trx_Stpnam(argvbuf), pName);
+	argvbuf[strlen(argvbuf)-1]='x';
+
+	SYSTEMTIME *ptm=GetLocalFileTime(argvbuf);
+	if(!ptm) {
+		*time=0;
+		return FALSE;
+	}
+	_snprintf(time, 31, "Version\n%2u/%02u/%02u", ptm->wMonth, ptm->wDay, (ptm->wYear%100));
 	return TRUE;
 }
 

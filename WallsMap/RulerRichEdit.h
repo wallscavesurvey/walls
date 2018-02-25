@@ -3,6 +3,7 @@
 
 // RulerRichEdit.h : header file
 //
+#include "FileDropTarget.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CRulerRichEdit window
@@ -15,6 +16,8 @@ public:
 	virtual ~CRulerRichEdit();
 
 	BOOL Create( DWORD style, CRect rect, CWnd* parent );
+
+	CFileDropTarget m_dropTarget;
 
 protected:
 // Message handlers

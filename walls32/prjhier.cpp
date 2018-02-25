@@ -1075,10 +1075,12 @@ LRESULT CPrjList::OnDrop(WPARAM NumItems, LPARAM dragData )
 	  pItemProp->m_pNode=NULL; //prevent update of deleted node
 	}
 
-	//Recompute survey and workfile checksums for all tree nodes --
-	dstDoc->BranchFileChk(dstDoc->m_pRoot);
-	dstDoc->BranchWorkChk(dstDoc->m_pRoot);
-	dstDoc->BranchEditsPending(dstDoc->m_pRoot);
+	if(!srcNode->IsOther()) {
+		//Recompute survey and workfile checksums for all tree nodes --
+		dstDoc->BranchFileChk(dstDoc->m_pRoot);
+		dstDoc->BranchWorkChk(dstDoc->m_pRoot);
+		dstDoc->BranchEditsPending(dstDoc->m_pRoot);
+	}
 
 	SetCurSel(selIndex);
 	GetDocument()->SaveProject();
@@ -1127,9 +1129,23 @@ void CPrjList::DroppedItemsOnWindowAt(CWnd* DropWnd,const CPoint& DropWndPt,BOOL
     DropWnd->SendMessage(WM_DROP,0,(LPARAM)(LPVOID)&drag);
 }
 
-BOOL CPrjList::OnEraseBkgnd(CDC* pDC)
+#if 0
+//BOOL CPrjList::OnEraseBkgnd(CDC* pDC)
 {
-	BOOL bRet=CHierListBox::OnEraseBkgnd(pDC);
+	//return CHierListBox::OnEraseBkgnd(pDC); //white bkgrnd
+	//return CListBoxEx::OnEraseBkgnd(pDC); //white bkgrnd
+	//return CListBox::OnEraseBkgnd(pDC); //white bkgrnd
+
+	/* not required here
+	RECT rect;
+	GetWindowRect(&rect); //Screen coords 
+	rect.right-=rect.left;
+	rect.bottom-=rect.top;
+	rect.left=rect.top=0;
+	CBrush *cb=(CBrush *)CBrush::FromHandle((HBRUSH)::GetStockObject(LTGRAY_BRUSH));
+	pDC->FillRect(&rect, cb);
+	return 1;
+	*/
 #ifdef _USE_BORDER
 	RECT rect;
 	CWindowDC wDC(this);
@@ -1151,8 +1167,9 @@ BOOL CPrjList::OnEraseBkgnd(CDC* pDC)
 //	wDC.LineTo(rect.right,rect.bottom);
 //	wDC.LineTo(0,rect.bottom);
 #endif
-	return bRet;
+	//return bRet;
 }
+#endif
 
 //Used by CPrjView::OnEditFind() --
 void CPrjList::ClearBranchCheckmarks(CPrjListNode *pNode)

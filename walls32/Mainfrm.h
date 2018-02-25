@@ -5,6 +5,7 @@
 #define MAINFRM_H
 
 #include "Picture.h"
+#include "prjref.h"
 
 #if !defined(LSTBOXEX_H)
  #include "lstboxex.h"
@@ -33,56 +34,6 @@ enum e_ref {REF_FMTDM=1,REF_FMTDMS=2,REF_FMTMASK=3,REF_LONDIR=4,REF_LATDIR=8};
 #define REF_NAD27 254
 #define REF_MAXDATUM 250
 #define REF_NUMFLDS 14
-#define REF_SIZDATUMNAME 20
-
-struct PRJREF { //2*8 + 4*4 + 2 + 6 + 20 = 60 bytes
-	PRJREF() {*datumname=0;}
-	PRJREF(
-		double dnorth,
-		double deast,
-		int ielev,
-		float fconv,
-		float flatsec,
-		float flonsec,
-		short szone,
-		BYTE blatmin,
-		BYTE blonmin,
-		BYTE blatdeg,
-		BYTE blondeg,
-		BYTE bflags,
-		BYTE bdatum,
-		char *pdatumname)
-		: north  (dnorth)
-		, east   (deast)
-		, elev   (ielev)
-		, conv   (fconv)
-		, latsec (flatsec)
-		, lonsec (flonsec)
-		, zone   (szone)
-		, latmin (blatmin)
-		, lonmin (blonmin)
-		, latdeg (blatdeg)
-		, londeg (blondeg)
-		, flags  (bflags)
-		, datum  (bdatum)
-	{
-		strcpy(datumname,pdatumname);
-	}
-	double north;
-	double east;
-	int elev;
-	float conv;
-	float latsec;
-	float lonsec;
-	short zone;
-	BYTE latmin;
-	BYTE lonmin;
-	BYTE latdeg;
-	BYTE londeg;
-	BYTE flags;
-	BYTE datum;
-	char datumname[REF_SIZDATUMNAME];
-};
 
 extern int moveBranch_id;
 extern BOOL moveBranch_SameList;
@@ -165,6 +116,7 @@ public:
 	static void ConvertUTM2LL(double *pXY);
 
     void RestoreWindow(int nShow);
+	void SetHierRefresh();
 
     virtual BOOL CreateClient(LPCREATESTRUCT lpCreateStruct, CMenu* pWindowMenu); //MYMDI 
     static void IconEraseBkgnd(CDC* pDC); //Called by CPrjFrame::OnIconEraseBkgnd(), etc.
@@ -183,7 +135,10 @@ public:
 	static void GetMrgPathNames(CString &merge1, CString &merge2);
 	static BOOL CloseLineDoc(LPCSTR pathname,BOOL bNoSave);
 	static BOOL LineDocOpened(LPCSTR pathname);
+
 	void OnViewerConfig(BOOL b3D);
+	void BrowseNewProject(CDialog *pDlg, CString &prjPath);
+	void BrowseFileInput(CDialog *pDlg, CString &srcPath, CString &outPath, UINT ids_outfile);
    
 #if 0
 	//Public static utility used for window placement in view's OnInitialUpdate --

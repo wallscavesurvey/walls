@@ -487,12 +487,14 @@ int CNtiLayer::CopyToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,double fSc
 	//convert viewExt to image pixels at this level
 	GeoPtToImgPt(viewExt.tl,lvl);
 	GeoPtToImgPt(viewExt.br,lvl);
+
 	if(viewExt.l<0.0) viewExt.l=0.0;
 	if(viewExt.r>(double)lvlWidth) viewExt.r=lvlWidth;
 	if(viewExt.t<0.0) viewExt.t=0.0;
 	if(viewExt.b>(double)lvlHeight) viewExt.b=lvlHeight;
-	CRect crImage(_rnd(viewExt.l),_rnd(viewExt.t),_rnd(viewExt.r),_rnd(viewExt.b));
 
+	//CRect crImage(_rnd(viewExt.l),_rnd(viewExt.t),_rnd(viewExt.r),_rnd(viewExt.b));
+	CRect crImage((int)floor(viewExt.l),(int)floor(viewExt.t),(int)ceil(viewExt.r),(int)ceil(viewExt.b));
 	if(crImage.Width()<=0 || crImage.Height()<=0) return 0;
 
 	//crImage is the image rectangle (in image pixel coordinates at this level)
@@ -509,14 +511,11 @@ int CNtiLayer::CopyToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,double fSc
 
 	//fScale=Screen pixels/geo-units in destination --
 	int destOffX=_rnd(fScale*(fpt.x-geoExt.l)); 
-	if(destOffX<0) destOffX=0;
 	int destOffY=_rnd(fScale*(fpt.y-geoExt.t));
 	if(m_bTrans) destOffY=-destOffY;
-	if(destOffY<0) destOffY=0;
 
 	int destWidth=_rnd(fZoom*crImage.Width());
 	int destHeight=_rnd(fZoom*crImage.Height());
-
 
 	//Did last operation modify original DIB so that a new one is needed?
 	bool bDibChanged=(m_hdcMask && m_crTransColorMask && (!m_bUseTransColor || m_crTransColor!=m_crTransColorMask));

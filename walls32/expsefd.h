@@ -16,40 +16,27 @@ class CExpSefDlg : public CDialog
 public:
 	CExpSefDlg(CWnd* pParent = NULL);   // standard constructor
 
-	void StatusMsg(char *msg)
-	{
-		GetDlgItem(IDC_ST_STATUS)->SetWindowText(msg);
-	}
-
-// Dialog Data
-	//{{AFX_DATA(CExpSefDlg)
 	enum { IDD = IDD_EXPORTSEF };
-	CString	m_pathname;
-	//}}AFX_DATA
 
-	static BOOL	m_bConvertPfx;
-	static BOOL	m_bIncludeDet;
-	static BOOL	m_bForceFeet;
-	static BOOL m_bFixedCols;
+	CString	m_pathname;
+
+	static BOOL	m_bNoConvertPfx;
+	static BOOL	m_bUseVdist;
+	static BOOL	m_bUseAllSef;
 	CPrjDoc *m_pDoc;
 	CPrjListNode *m_pNode;
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CExpSefDlg)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+	virtual BOOL OnInitDialog();
 
 // Implementation
 protected:
     afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
-
-	// Generated message map functions
-	//{{AFX_MSG(CExpSefDlg)
 	afx_msg void OnBrowse();
-	virtual BOOL OnInitDialog();
-	//}}AFX_MSG
+	afx_msg void OnBnClickedUseAllsef();
+	afx_msg void OnBnClickedUseVdist();
 	DECLARE_MESSAGE_MAP()
 };
 

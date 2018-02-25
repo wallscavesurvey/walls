@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<topic template="Default" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
   <title translate="true">Instrument Corrections</title>
   <keywords>
     <keyword translate="true">Instrument Corrections</keyword>
@@ -9,11 +10,11 @@
       <para styleclass="Heading1"><text styleclass="Heading1" translate="true">Instrument Corrections</text></para>
     </header>
     <para styleclass="Normal"></para>
-    <para styleclass="Normal"><text styleclass="Subheader" translate="true">INCD / INCA / INCAB / &#160;INCV / INCVB / INCS = &lt;tape/instrument correction&gt;</text></para>
+    <para styleclass="Normal"><text styleclass="Subheader" translate="true">INCD / INCA / INCAB / &#160;INCV / INCVB = &lt;tape/instrument correction&gt;</text></para>
     <para styleclass="Normal"><text styleclass="Subheader" translate="true">INCH = &lt;height adjustment&gt;</text></para>
-    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">The expression INCx=n, with n a decimal number and x one of D, A, AB, V, VB, or S specifies a correction that the program will add to the corresponding measurement entry when it is processed. Those measurement entries are, respectively, Distance, Azimuth, Azimuth Backsight, Vertical angle, Vertical angle Backsight, and instrument/target above Station heights. &#160;These corrections will be applied only to compass and tape (CT) data lines. &#160;(Although Walls doesn&apos;t process them, the LRUD distances should also be considered subject to the INCS correction, just as they are the S=&lt;units&gt; specifier.)</text></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">The expression INCx=n, with n a decimal number and x one of D, A, AB, V, or VB, specifies a correction that the program will add to the corresponding measurement entry when it is processed. Those measurement entries are, respectively, Distance, Azimuth, Azimuth Backsight, Vertical angle, and Vertical angle Backsight. &#160;These corrections will be applied only to compass and tape (CT) data lines.</text></para>
     <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">&#32;</text></para>
-    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Note that only the distance correction, INCD, will be applied to pure vertical shots, where the inclination is +90 or -90 degrees. &#160;Also, corrections are not applied to zero heights or distances, both of which are allowed. &#160;(Zero-length vectors can be defined.) &#160;However, if applying a correction to a distance or height would cause a change of sign, an error message is displayed.</text></para>
+    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Note that only the distance correction, INCD, will be applied to pure vertical shots, where the inclination is +90 or -90 degrees. &#160;Also, corrections are not applied to zero heights or distances, both of which are allowed. &#160;(Zero-length vectors can be defined.) &#160;However, if applying a correction to a distance would cause a change of sign, an error message is displayed.</text></para>
     <para style="tabstops:24px left ;"></para>
     <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Like measurements on data lines, the correction units can be given explicitly with suffixes (e.g., IncA=1.35d). &#160;Otherwise, the units are assumed to be the current default for the corresponding measurement. &#160;In this case, if measurement units are later changed without a corresponding change in the correction, the correction keeps its original meaning. &#160;For example, a six-inch tape correction will stay six inches, even after switching to a meter tape. &#160;(This is done to be consistent -- &#160;we don&apos;t want some types of settings to be automatically zeroed when their units change.) </text></para>
     <para style="tabstops:24px left ;"></para>

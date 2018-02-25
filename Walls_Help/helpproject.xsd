@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2008 rel. 2 (http://www.altova.com) by Alexander Halser (EC Software GmbH) -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XInclude" xmlns:xml="http://www.w3.org/XML/1998/namespace" elementFormDefault="unqualified" attributeFormDefault="unqualified">
-	<xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/XML/1998/namespace"/>
+	<xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="http://www.w3.org/2001/03/xml.xsd"/>
 	<xs:element name="helpproject">
 		<xs:complexType>
 			<xs:sequence>
@@ -67,6 +68,7 @@
 															<xs:attribute name="search" type="xs:boolean" default="true"/>
 															<xs:attribute name="favorite" type="xs:boolean" default="true"/>
 															<xs:attribute name="saveregistry" type="xs:boolean" default="true"/>
+															<xs:attribute name="globalwindowname" type="xs:string"/>
 															<xs:attribute name="buttons" type="xs:integer"/>
 															<xs:attribute name="navigationwidth" type="xs:integer" default="200"/>
 														</xs:complexType>
@@ -208,6 +210,52 @@
 																					<xs:attribute name="name" type="xs:string" use="required"/>
 																				</xs:complexType>
 																			</xs:element>
+																			<xs:element name="task-variables" minOccurs="0">
+																				<xs:complexType>
+																					<xs:sequence minOccurs="0" maxOccurs="unbounded">
+																						<xs:element name="task-variable" minOccurs="0">
+																							<xs:complexType>
+																								<xs:simpleContent>
+																									<xs:extension base="xs:string">
+																										<xs:attribute name="id" type="xs:string" use="required"/>
+																										<xs:attribute name="type">
+																											<xs:simpleType>
+																												<xs:restriction base="xs:string">
+																													<xs:enumeration value="text"/>
+																													<xs:enumeration value="html"/>
+																												</xs:restriction>
+																											</xs:simpleType>
+																										</xs:attribute>
+																										<xs:attribute name="translate" type="xs:boolean"/>
+																										<xs:attribute name="lang" type="xs:language"/>
+																									</xs:extension>
+																								</xs:simpleContent>
+																							</xs:complexType>
+																						</xs:element>
+																					</xs:sequence>
+																				</xs:complexType>
+																			</xs:element>
+																			<xs:element name="task-build-events" minOccurs="0">
+																				<xs:complexType>
+																					<xs:sequence minOccurs="0" maxOccurs="unbounded">
+																						<xs:element name="task-build-event" minOccurs="0">
+																							<xs:complexType>
+																								<xs:attribute name="id" type="xs:string" use="required"/>
+																								<xs:attribute name="event-kind" use="required">
+																									<xs:simpleType>
+																										<xs:restriction base="xs:string">
+																											<xs:enumeration value="before"/>
+																											<xs:enumeration value="after"/>
+																										</xs:restriction>
+																									</xs:simpleType>
+																								</xs:attribute>
+																								<xs:attribute name="command" type="xs:string" use="required"/>
+																								<xs:attribute name="params" type="xs:string"/>
+																							</xs:complexType>
+																						</xs:element>
+																					</xs:sequence>
+																				</xs:complexType>
+																			</xs:element>
 																		</xs:sequence>
 																		<xs:attribute name="name" type="xs:string"/>
 																		<xs:attribute name="format" use="required">
@@ -300,7 +348,7 @@
 			<xs:documentation>Percent value (integer with optional "%" suffix)</xs:documentation>
 		</xs:annotation>
 		<xs:restriction base="xs:string">
-			<xs:pattern value="([0-9.])+[%]*"/>
+			<xs:pattern value="([\-+]?[0-9.])+[%]*"/>
 		</xs:restriction>
 	</xs:simpleType>
 	<xs:complexType name="anchor.class" mixed="true">
@@ -499,6 +547,7 @@
 				<xs:attribute name="width" type="pixel.type"/>
 				<xs:attribute name="height" type="pixel.type"/>
 				<xs:attribute name="translate" type="xs:boolean"/>
+				<xs:attribute name="inline" type="xs:boolean" default="false"/>
 			</xs:extension>
 		</xs:simpleContent>
 	</xs:complexType>
@@ -533,6 +582,7 @@
 		<xs:attribute name="styleclass" type="xs:string"/>
 		<xs:attribute name="style" type="xs:string"/>
 		<xs:attribute name="id" type="xs:string"/>
+		<xs:attribute name="class" type="xs:string"/>
 	</xs:complexType>
 	<xs:complexType name="snippet.class" mixed="false">
 		<xs:annotation>
@@ -602,6 +652,8 @@
 				<xs:attribute name="src" type="xs:string"/>
 				<xs:attribute name="styleclass" type="xs:string"/>
 				<xs:attribute name="style" type="xs:string"/>
+				<xs:attribute name="id" type="xs:string"/>
+				<xs:attribute name="class" type="xs:string"/>
 				<xs:attribute name="translate" type="xs:boolean"/>
 			</xs:extension>
 		</xs:complexContent>
@@ -654,6 +706,7 @@
 			<xs:element name="topicref" type="topicref.class" minOccurs="0" maxOccurs="unbounded"/>
 		</xs:choice>
 		<xs:attribute ref="xml:base"/>
+		<xs:attribute name="defaulttopic" type="xs:string"/>
 	</xs:complexType>
 	<xs:complexType name="navref.class" mixed="true">
 		<xs:annotation>
@@ -842,9 +895,11 @@
 		</xs:attribute>
 		<xs:attribute name="width" type="xs:integer"/>
 		<xs:attribute name="height" type="xs:integer"/>
-		<xs:attribute name="padding" type="xs:integer"/>
+		<xs:attribute name="padding" type="xs:string"/>
 		<xs:attribute name="styleclass" type="xs:string"/>
 		<xs:attribute name="style" type="xs:string"/>
+		<xs:attribute name="class" type="xs:string"/>
+		<xs:attribute name="translate" type="xs:boolean"/>
 	</xs:complexType>
 	<xs:complexType name="topicref.class" mixed="true">
 		<xs:annotation>
@@ -948,8 +1003,8 @@
 		</xs:annotation>
 		<xs:simpleContent>
 			<xs:extension base="xs:string">
-				<xs:attribute name="name" type="xs:string"/>
-				<xs:attribute name="href" type="xs:string"/>
+				<xs:attribute name="name" type="xs:string" use="required"/>
+				<xs:attribute name="href" type="xs:string" use="required"/>
 			</xs:extension>
 		</xs:simpleContent>
 	</xs:complexType>
@@ -975,12 +1030,15 @@
 			</xs:simpleType>
 		</xs:attribute>
 		<xs:attribute name="padding" type="xs:string"/>
+		<xs:attribute name="id" type="xs:string"/>
+		<xs:attribute name="class" type="xs:string"/>
 		<xs:attribute name="styleclass" type="xs:string"/>
 		<xs:attribute name="style" type="xs:string"/>
 		<xs:attribute name="previewimage" type="xs:string"/>
 		<xs:attribute name="autostart" type="xs:boolean"/>
 		<xs:attribute name="loop" type="xs:boolean"/>
 		<xs:attribute name="showcontrols" type="xs:boolean"/>
+		<xs:attribute name="playbutton" type="xs:boolean"/>
 		<xs:attribute name="flashversion" type="xs:integer"/>
 	</xs:complexType>
 </xs:schema>

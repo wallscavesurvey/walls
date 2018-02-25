@@ -18,8 +18,6 @@
 static char BASED_CODE THIS_FILE[] = __FILE__;
 #endif 
 
-#undef _SEGNC
-
 /////////////////////////////////////////////////////////////////////////////
 // CSegListNode
 
@@ -125,36 +123,49 @@ void CSegListNode::InitSegStats(SEGSTATS *st)
 	}
 }
 
-void CSegListNode::AddSegStats(SEGSTATS *st)
+void CSegListNode::AddSegStats(SEGSTATS *st, BOOL bFlt)
 {
 	if(NumVecs()) {
-		st->ttlength+=Length();
-		st->hzlength+=HzLength();
-		st->vtlength+=VtLength();
-		st->numvecs+=NumVecs();
-		if(st->highpoint<m_pSeg->m_fHigh) {
-			st->highpoint=m_pSeg->m_fHigh;
-			st->idhigh=m_pSeg->m_idHigh;
+		if(bFlt) {
+			st->exlength+=Length();
 		}
-		if(st->lowpoint>m_pSeg->m_fLow) {
-			st->lowpoint=m_pSeg->m_fLow;
-			st->idlow=m_pSeg->m_idLow;
+		else {
+			st->ttlength+=Length();
+			st->hzlength+=HzLength();
+			st->vtlength+=VtLength();
+			st->numvecs+=NumVecs();
+			if(st->highpoint<m_pSeg->m_fHigh) {
+				st->highpoint=m_pSeg->m_fHigh;
+				st->idhigh=m_pSeg->m_idHigh;
+			}
+			if(st->lowpoint>m_pSeg->m_fLow) {
+				st->lowpoint=m_pSeg->m_fLow;
+				st->idlow=m_pSeg->m_idLow;
+			}
 		}
 	}
 	CSegListNode *pNode=FirstChild();
 	while(pNode) {
-	  if(!pNode->IsFloating()) pNode->AddSegStats(st);
+	  pNode->AddSegStats(st, bFlt || pNode->IsFloating());
 	  pNode=pNode->NextSibling();
 	}
 }
 
-//#pragma optimize("",off)
+bool CSegListNode::HasVecs()
+{
+	if(m_pSeg) {
+		if(NumVecs()) return true;
+		CSegListNode *pNode=FirstChild();
+		while(pNode) {
+			if(pNode->HasVecs()) return true;
+			pNode=pNode->NextSibling();
+		}
+	}
+	return false;
+}
+
 void CSegListNode::AddStats(double &fLength,UINT &uNumVecs)
 {
-	//CAUTION! VC++ 1.52 optimization bug. this pointer (ES:CX)
-	//not correctly loaded as confirmed with CVW. Call to Length()
-	//at start of fcn causes protection fault.
-	
 	CSegListNode *pNode=FirstChild();
 	while(pNode) {
 	  if(!pNode->IsFloating()) pNode->AddStats(fLength,uNumVecs);
@@ -163,7 +174,6 @@ void CSegListNode::AddStats(double &fLength,UINT &uNumVecs)
 	fLength+=Length();
 	uNumVecs+=NumVecs();
 }
-//#pragma optimize("",on)
 
 void CSegListNode::FlagVisible(UINT mask)
 {
@@ -219,6 +229,7 @@ BEGIN_MESSAGE_MAP(CSegList, CHierListBox)
 	ON_WM_LBUTTONDBLCLK()
 	ON_WM_RBUTTONUP()
 	//}}AFX_MSG_MAP
+	ON_WM_LBUTTONDOWN()
 END_MESSAGE_MAP()
 
 CSegList::CSegList() : CHierListBox(TRUE,18,4)
@@ -333,27 +344,31 @@ void CSegList::DrawItemEx( CListBoxExDrawStruct& ds )
 	rect.left+=width+1; //Draw text fairly close to rounded rectangle
 	
     HFONT hFontOld;
-    char buf[SRV_SIZ_NAMBUF];
+    char buf[SRV_SIZ_SEGNAMBUF];
     char *pTitle;
 
+	COLORREF txtClr=RGB_BLACK;
+
+	if(pNode->Level()<=1) txtClr=RGB_DKRED;
+	else if(!pNode->HasVecs()) {
+		txtClr=RGB_GRAY;
+	}
+
     if(pNode->TitlePtr()) {
-       ::SetTextColor(hDC,pNode->Level()>1?RGB_BLACK:RGB_DKRED);     
        pTitle=pNode->TitlePtr();
        hFontOld=(HFONT)::SelectObject(hDC,CPrjView::m_BookFont.cf.GetSafeHandle());
     }
     else {
-       ::SetTextColor(hDC,RGB_BLACK);     
        strcpy(buf,pNode->Name());
        pTitle=buf;
        *buf&=0x7F;
-#ifdef _SEGNC
-       *buf=toupper(*buf);
-#endif
        hFontOld=(HFONT)::SelectObject(hDC,CPrjView::m_SurveyFont.cf.GetSafeHandle());
     }
     
+	::SetTextColor(hDC, txtClr);
 	::TextOut(hDC,rect.left,rect.top,pTitle,strlen(pTitle));
 	::SelectObject(hDC,hFontOld);
+	::SetTextColor(hDC, RGB_BLACK);
 }
 
 void CSegList::RefreshBranchOwners(CSegListNode *pNode)
@@ -433,19 +448,20 @@ int CSegList::SetCurSel(int sel)
   return iRet;
 }
 
-void CSegList::OnLButtonDblClk(UINT nFlags, CPoint point)
+void CSegList::OpenParentNode(CSegListNode *pNode)
 {
-	int index=ItemFromPoint(point);
+	CSegListNode *pParent=pNode->Parent();
+	if(pParent && !pParent->IsOpen()) {
+		OpenParentNode(pParent);
+	}
+	OpenNode(pNode,pNode->GetIndex());
+}
 
-	if(index==1) {
-	  //Invoke grid options --
-	  pPV->OnGridOptions();
-	}
-	else if(index==2) {
-	  //Passage options --
-	  pSV->OnLrudStyle();
-	}
-	else CHierListBox::OnLButtonDblClk(nFlags, point);
+void CSegList::SelectSegListNode(CSegListNode *pNode)
+{
+	CSegListNode *pParent=pNode->Parent();
+	if(!pParent->IsOpen()) OpenParentNode(pNode);
+	SetCurSel(pNode->GetIndex());
 }
 
 void CSegList::OnRButtonUp(UINT nFlags, CPoint point) 
@@ -477,3 +493,42 @@ CPrjListNode *CSegList::GetSelectedPrjListNode()
 	  }
 	  return NULL;
 }
+
+
+void CSegList::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+
+	int index=ItemFromPoint(point);
+
+	if(index>=3) {
+		CHierListNode* n = GET_HLNODE(index);
+		if(n->m_pFirstChild) {
+			int off=9+(n->m_Level-1)*18;
+		    if(point.x<=off && point.x>off-7) {
+				OpenNode(n, index);
+			}
+		}
+	}
+	CHierListBox::OnLButtonDown(nFlags, point);
+}
+
+void CSegList::OnLButtonDblClk(UINT nFlags, CPoint point)
+{
+	int index=ItemFromPoint(point);
+
+	if(index==1) {
+		//Invoke grid options --
+		pPV->OnGridOptions();
+	}
+	else if(index==2) {
+		//Passage options --
+		pSV->OnLrudStyle();
+	}
+	else if(index>=0) {
+		CHierListNode* n = GET_HLNODE(index);
+		ASSERT_NODE(n);
+		OpenNode(n, index);
+	}
+}
+

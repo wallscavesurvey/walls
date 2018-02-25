@@ -172,7 +172,6 @@ void CPageView::OnInitialUpdate()
     //m_hCursorBmp=AfxGetApp()->LoadStandardCursor(IDC_CROSS);
 	
 	//m_tracker.m_nStyle=CRectTracker::resizeInside|CRectTracker::solidLine;
-    //Enable(IDC_UPDATEFRAME,m_pMapFrame!=NULL);  
     ResetContents();
 }
 
@@ -563,7 +562,7 @@ void CPageView::OnMouseMove(UINT nFlags, CPoint point)
 		return;
 	}
 
-	CPrjDoc::GetCoordinate(m_Coordinate,point,TRUE);
+	CPrjDoc::GetCoordinate(dpCoordinate,point,TRUE);
 	if(!m_bTracking) {
 		TrackMouse(m_hWnd);
 		m_bTracking=TRUE;
@@ -591,7 +590,7 @@ void CPageView::OnUpdateUTM(CCmdUI* pCmdUI)
 			CPrjDoc::m_pReviewNode->RefZoneStr(s);
 		}
 		else {
-			GetCoordinateFormat(s,m_Coordinate,pPV->m_bProfile);
+			GetCoordinateFormat(s,dpCoordinate,pPV->m_bProfile,LEN_ISFEET());
 			pCmdUI->SetText(s);
 		}
 	}

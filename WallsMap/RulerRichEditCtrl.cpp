@@ -56,7 +56,7 @@
 //includes rulerricheditctrl.h --
 #include "dbteditdlg.h"
 #include "TableFillDlg.h"
-
+#include "EditImageDlg.h"
 extern const UINT WM_SWITCH_EDITMODE;
 
 #ifdef _DEBUG
@@ -176,7 +176,6 @@ CRulerRichEditCtrl::CRulerRichEditCtrl() : m_pen( PS_DOT, 0, RGB( 0, 0, 0 ) )
 	m_movingtab = -1;
 	m_pFindDlg = NULL;
 	m_richEditModule = LoadLibrary (_T("Riched20.dll"));
-	m_pTableFillDlg=NULL;
 }
 
 CRulerRichEditCtrl::~CRulerRichEditCtrl()
@@ -202,7 +201,7 @@ CRulerRichEditCtrl::~CRulerRichEditCtrl()
 
 
 BOOL CRulerRichEditCtrl::Create( DWORD dwStyle, const RECT &rect, CWnd* pParentWnd,
-								UINT nID, const CLogFont *pFont,COLORREF clrTxt)
+								UINT nID, const CLogFont *pFont, COLORREF clrTxt)
 /* ============================================================
 	Function :		CRulerRichEditCtrl::Create
 	Description :	Creates the control and sub controls.
@@ -214,6 +213,7 @@ BOOL CRulerRichEditCtrl::Create( DWORD dwStyle, const RECT &rect, CWnd* pParentW
 											and "WS_VISIBLE".
 					const RECT &rect	-	Placement rectangle.
 					CWnd* pParentWnd	-	Parent window.
+					UINT idContext      -   Context menu id
 					UINT nID			-	Control ID
 
 	Usage :			Call to create the control.
@@ -236,16 +236,6 @@ BOOL CRulerRichEditCtrl::Create( DWORD dwStyle, const RECT &rect, CWnd* pParentW
 		{
 			CreateMargins();
 			return TRUE;
-			/*
-			if( CreateToolbar() )
-			{
-				if( CreateRuler() )
-				{
-					UpdateToolbarButtons();
-					result = TRUE;
-				}
-			}
-			*/
 		}		
 	}
 
@@ -2018,26 +2008,33 @@ void CRulerRichEditCtrl::OnContextMenu(CWnd* pWnd, CPoint pt)
 	m_rtf.GetWindowRect(&rect);
 	if(!rect.PtInRect(pt)) return;
 	CMenu menu;
-	if(!menu.LoadMenu(m_pTableFillDlg?IDR_FILL_CONTEXT:IDR_RTF_CONTEXT)) return;
+	if(!menu.LoadMenu(m_idContext)) return;
 	CMenu* pPopup = menu.GetSubMenu(0);
 	ASSERT(pPopup != NULL);
 
-	if(m_pTableFillDlg) {
-		if(!m_rtf.CanPaste())
+	if(m_idContext!=IDR_RTF_CONTEXT) {
+		if(m_readOnly)
+			pPopup->EnableMenuItem(ID_EDIT_CUT, MF_BYCOMMAND|MF_DISABLED|MF_GRAYED);
+
+		if(m_readOnly || !m_rtf.CanPaste())
 			pPopup->EnableMenuItem(ID_EDIT_PASTE,MF_BYCOMMAND|MF_DISABLED|MF_GRAYED);
 
 		if(!m_rtf.CanUndo())
 			pPopup->EnableMenuItem(ID_EDIT_UNDO,MF_BYCOMMAND|MF_DISABLED|MF_GRAYED);
 		if(!m_rtf.CanRedo())
 			pPopup->EnableMenuItem(ID_EDIT_REDO,MF_BYCOMMAND|MF_DISABLED|MF_GRAYED);
-		if(m_pTableFillDlg->m_bMemo) {
-			pPopup->CheckMenuItem(ID_FORMAT_PLAIN,(!m_bFormatRTF)?(MF_CHECKED|MF_BYCOMMAND):(MF_UNCHECKED|MF_BYCOMMAND));
-			pPopup->CheckMenuItem(ID_FORMAT_RTF,m_bFormatRTF?(MF_CHECKED|MF_BYCOMMAND):(MF_UNCHECKED|MF_BYCOMMAND));
-		}
-		else {
-			pPopup->DeleteMenu(ID_FORMAT_PLAIN,MF_BYCOMMAND);
-			pPopup->DeleteMenu(ID_FORMAT_RTF,MF_BYCOMMAND);
-			pPopup->DeleteMenu(pPopup->GetMenuItemCount()-1,MF_BYPOSITION);
+
+		if(m_idContext==IDR_FILL_CONTEXT) {
+			//will never br readonly at this point --
+			if(((CTableFillDlg *)(m_pParentDlg))->m_bMemo) {
+				pPopup->CheckMenuItem(ID_FORMAT_PLAIN,(!m_bFormatRTF)?(MF_CHECKED|MF_BYCOMMAND):(MF_UNCHECKED|MF_BYCOMMAND));
+				pPopup->CheckMenuItem(ID_FORMAT_RTF,m_bFormatRTF?(MF_CHECKED|MF_BYCOMMAND):(MF_UNCHECKED|MF_BYCOMMAND));
+			}
+			else {
+				pPopup->DeleteMenu(ID_FORMAT_PLAIN,MF_BYCOMMAND);
+				pPopup->DeleteMenu(ID_FORMAT_RTF,MF_BYCOMMAND);
+				pPopup->DeleteMenu(pPopup->GetMenuItemCount()-1,MF_BYPOSITION);
+			}
 		}
 	}
 	else {
@@ -2122,8 +2119,8 @@ void CRulerRichEditCtrl::OnEditPaste()
 #endif
 
   // if(!m_bFormatRTF && !GetTextLength() && ::IsClipboardFormatAvailable(uCF_RTF)) {
-   if(!m_bFormatRTF) {
-	   if((!m_pTableFillDlg || m_pTableFillDlg->m_bMemo) && ::IsClipboardFormatAvailable(uCF_RTF)) {
+   if(!m_bFormatRTF && m_idContext!=IDR_IMG_CONTEXT) {
+	   if((m_idContext!=IDR_FILL_CONTEXT || ((CTableFillDlg *)m_pParentDlg)->m_bMemo) && ::IsClipboardFormatAvailable(uCF_RTF)) {
 		   UINT id=AfxMessageBox(IDS_RTF_PASTE,MB_YESNOCANCEL);
 		   if(id==IDCANCEL) return;
 		   if(id==IDYES) {

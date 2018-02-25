@@ -16,6 +16,7 @@ struct SEGSTATS {
 	double hzlength;
 	double vtlength;
 	double ttlength;
+	double exlength;
 	UINT   numvecs;
 	UINT   numnotes;
 	UINT   numflags;
@@ -33,7 +34,7 @@ class CStatDlg : public CDialog
 {
 // Construction
 public:
-	CStatDlg(SEGSTATS *st,CWnd* pParent = NULL);	// standard constructor
+	CStatDlg(SEGSTATS *st,BOOL bIsOpen,CWnd* pParent = NULL);	// standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CStatDlg)
@@ -44,6 +45,7 @@ public:
 // Implementation
 protected:
     SEGSTATS *m_st;
+	BOOL m_bIsOpen;
     
     void SetText(UINT id,char *text)
     {

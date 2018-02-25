@@ -6,15 +6,22 @@
 #include <trx_file.h>
 
 //Functions in indexa.c --
+
+extern char filename[128];
+extern UINT logtotal;
+extern FILE *fplog;
+
 BOOL is_xspace(byte c);
 nptr skip_space_types(nptr p);
-void index_author(int trxno,UINT refno,char *pRef);
+void index_authors(int trxno,UINT refno,char *pRef);
 apfcn_v parse_keywords(nptr p0);
 apfcn_n skip_tag(nptr p);
 nptr elim_all_st(nptr p0,int n);
 nptr elim_all_ins(nptr p0);
+nptr elim_all_ole(nptr p0,BOOL bNote,UINT *uLinksOLE);
+apfcn_v logmsg(LPSTR p, LPCSTR s);
 
-static char hdr[]="REINDEX v2.07 - Bibliographic Item Indexing (c) 2008, D. McKenzie\n";
+static char hdr[]="REINDEX v3.0 - Bibliographic Item Indexing (c) 2015, D. McKenzie\n";
 
 #define MAX_FNAMES 20
 #define MAXPATH 128
@@ -27,20 +34,22 @@ static char hdr[]="REINDEX v2.07 - Bibliographic Item Indexing (c) 2008, D. McKe
 #define TRX_KW_TREE (trx)
 #define TRX_AUTHOR_TREE (trx+1)
 
+static BOOL last_empty;
 static nptr tmpname="REINDEX.$$$";
 static nptr span_str="<span ";
 #define LEN_SPAN_STR 6
 
-static FILE *fp,*fptmp,*fplog;
-static UINT num_fnames,linecnt,refcnt,bufcnt,reftotal,logtotal,uNoRefs;
+static FILE *fp,*fptmp;
+static UINT num_fnames,linecnt,refcnt,reftotal,uNoRefs,uLinksOLE,uLinksOLE_ttl;
+static UINT kw_parsed;
 static byte linebuf[SIZ_LINEBUF],seqbuf[16]; //"xxxxx. "
 static byte refbuf[SIZ_REFBUF],new_refbuf[SIZ_REFBUF];
 static byte logname[MAXPATH],cfgname[MAXPATH],namebuf[MAXPATH];
 static byte fname[MAX_FNAMES][MAXPATH];
 static nptr new_refptr;
 static int trx;
-static BOOL bPause,bPeriodFound,bRefLastParagraph,bBibClass;
-static BOOL bIndexClass,bRefSeen,bCompound;
+static BOOL bPeriodFound,bRefLastParagraph,bBibClass;
+static BOOL bIndexClass,bRefSeen,bCompound,bListOLE;
 
 #define LEN_REFIDX (16*1024)
 static WORD refidx[LEN_REFIDX];
@@ -79,14 +88,14 @@ acfcn_v abortmsg(nptr format,...)
   va_end(marker);
   if(fplog) {
 	  fclose(fplog);
-	  _unlink(logname);
+	  //_unlink(logname);
   }
   if(trx) trx_CloseDel(trx);
-  if(bPause) pause("to exit");
+  pause("to exit");
   exit(1);
 }
 
-static void openlog(nptr hdr)
+apfcn_v openlog(nptr hdr)
 {
 	int i;
 
@@ -100,29 +109,6 @@ static void openlog(nptr hdr)
 	putc('\n',fplog);
 	while(i--) putc('=',fplog);
 	putc('\n',fplog);
-}
-
-apfcn_v logmsg(nptr p, nptr s)
-{
-  char prefix[56];
-  //char buf[256];
-  int i;
-
-  if(!fplog) {
-	  openlog("QUESTIONABLE ITEMS");
-	  putc('\n',fplog);
-  }
-  strncpy(prefix,p,50);
-  if(prefix[49]!=0) strcpy(prefix+49,"..");
-  if(*prefix!='<' && (p=strchr(prefix,'<'))) *p=0;
-  if((i=strlen(prefix))<51) while(i++<51) strcat(prefix," ");
-  p=trx_Stpext(namebuf);
-  if(*p) *p=0;
-  else p=0;
-  //sprintf(buf,"%s:%5u. %s - %s.\n",namebuf,reftotal,prefix,s);
-  fprintf(fplog,"%s:%5u. %s - %s.\n",namebuf,reftotal,prefix,s);
-  if(p) *p='.';
-  logtotal++;
 }
 
 static void abort_format(nptr msg)
@@ -149,6 +135,8 @@ static BOOL get_cline(void)
   nptr p=linebuf;
   int c;
 
+_retry:
+
   while((c=getc(fp))!=EOF && c!='\n') {
     if(p<linebuf+SIZ_LINEBUF-1) *p++=c;
     else {
@@ -158,15 +146,19 @@ static BOOL get_cline(void)
   }
   *p=0;
   if(c==EOF && p==linebuf) return FALSE;
+  if(p==linebuf) {
+	  if(last_empty) goto _retry;
+	  last_empty=1;
+  }
+  else last_empty=0;
   linecnt++;
   return TRUE;
 }
 
 static BOOL get_ref_paragraph(void)
 {
-	UINT linlen;
+	UINT linlen,bufcnt=0;
 	nptr p,pStart;
-	bufcnt=0;
 
 	while(get_cline()) {
 		pStart=skip_space_types(linebuf);
@@ -223,13 +215,36 @@ static nptr skip_seqnum(nptr p0)
 
 apfcn_v IndexDate(int date)
 {
-	//This will be called from index_author() in indexa.c for every reference --
+	//This will be called once from index_authors() in indexa.c for every reference --
 	//reindex.exe does nothing. rebuild.exe creates a sorted array.
+}
+
+static UINT add_colon_key(nptr key)
+{
+	nptr p;
+	UINT len;
+
+	if((p=strstr((char *)key+1, ": ")) && p[2]) {
+		p++;
+		len=strlen((char *)p+1);
+		*p=(byte)len;
+		if(len>255 || trx_InsertKey(TRX_KW_TREE, &reftotal, p)) {
+			return 0;
+		}
+		*p=' ';
+	}
+	return reftotal;
 }
 
 apfcn_v AddKeyword(byte *keybuf)
 {
-	if(trx_InsertKey(TRX_KW_TREE,&reftotal,keybuf)) abortmsg("Error writing index");
+	UINT rec;
+	if(!(rec=add_colon_key(keybuf)) || trx_InsertKey(TRX_KW_TREE,&rec,keybuf))
+		abortmsg("Error writing index");
+	if(!memicmp(keybuf+1, "BIOLOGY.", 8)) {
+		int jj=0;
+	}
+	kw_parsed++;
 }
 
 static nptr elim_span(nptr p0)
@@ -344,23 +359,13 @@ static BOOL new_ref_paragraph(void)
 	new_refptr+=strlen(strcpy(new_refptr,seqbuf));
 	strcpy(new_refptr,p);
 
-#ifdef _DEBUG
-	//if(reftotal==3575) {
-		//reftotal=3575;
-	//}
-#endif
-
 	if(bBibClass && !bRefLastParagraph) {
-		index_author(TRX_AUTHOR_TREE,reftotal,p);
+		index_authors(TRX_AUTHOR_TREE,reftotal, new_refptr);
 	}
 
 	if(bBibClass!=TRUE) {
 		if(bIndexClass) logmsg(p,"Item with \"index\" style");
 		else logmsg(p,"Item style is not \"Bibliography\"");
-	}
-
-	if(!bPeriodFound) {
-		//logmsg(p,"Note: Prefix \". \" absent in original");
 	}
 
 	if(bRefLastParagraph) {
@@ -392,15 +397,22 @@ static void put_ref_paragraph(nptr p)
 
 static apfcn_v scan_file(void)
 {
-  linecnt=refcnt=0;
+  linecnt=refcnt=uLinksOLE=0;
   bRefLastParagraph=bRefSeen=FALSE;
 
   eprintf("\n%-25s - References:     0",namebuf);
+
+  last_empty=0;
+
   while(get_ref_paragraph()) {
 	  //refbuf now has reference, keywords, or blank line --
 
+	  if(!elim_all_ole(refbuf, bListOLE,&uLinksOLE))
+		  abort_format("name tag doesn't terminate");
+
 	  if(new_ref_paragraph()) {
-	    put_ref_paragraph(new_refbuf);
+
+		put_ref_paragraph(new_refbuf);
         eprintf("\b\b\b\b\b%5u",++refcnt);
 		bRefSeen=TRUE;
 	  }
@@ -409,6 +421,11 @@ static apfcn_v scan_file(void)
 		put_ref_paragraph(refbuf);
 	  }
   }
+  if(uLinksOLE) {
+	  eprintf("  OLE Links: %5u", uLinksOLE);
+	  uLinksOLE_ttl+=uLinksOLE;
+  }
+
 }
 
 static apfcn_v trim_twsp(nptr ln)
@@ -469,10 +486,12 @@ static apfcn_v init_index(void)
 	trx_Create(&trx,namebuf,0,2,0,1024,4);
 
 	if(trx && (trx_InitTree(TRX_KW_TREE,4,0,TRX_KeyMaxSize) ||
-		trx_InitTree(TRX_AUTHOR_TREE,4,0,TRX_KeyMaxSize) || trx_AllocCache(trx,128,TRUE))) {
+		trx_InitTree(TRX_AUTHOR_TREE,4,0,TRX_KeyMaxSize) ||
+		trx_AllocCache(trx,128,TRUE))) {
 		trx_CloseDel(trx);
 		trx=0;
 	}
+	trx_SetExact(TRX_AUTHOR_TREE,TRUE);
 	if(!trx) abortmsg("Cannot create index %s",namebuf);
 }
 
@@ -578,19 +597,15 @@ static apfcn_v scan_index(int idx)
 void main(int argc,nptr *argv)
 {
   nptr p;
-  WORD e;
-  BOOL blist_kw,blist_authors;
+  UINT e;
+  BOOL blist_kw=TRUE,blist_authors=TRUE;
 
   eprintf("\n%s",hdr);
 
-  blist_kw=blist_authors=TRUE;
+  bListOLE=TRUE;
 
   while(--argc) {
     _strupr(p=*++argv);
-	if(!strcmp(p,"-P")) {
-		bPause=TRUE;
-		continue;
-	}
 	if(!memcmp(p,"-N",2)) {
 		uNoRefs=atoi(p+2);
 		continue;
@@ -603,58 +618,61 @@ void main(int argc,nptr *argv)
 		blist_kw=FALSE;
 		continue;
 	}
-	if(!strcmp(p,"-A")) {
+	if(!strcmp(p, "-A")) {
 		blist_authors=FALSE;
 		continue;
 	}
-    if(*cfgname || trx_Stpnam(p)!=p || *trx_Stpext(p)) continue;
+	if(!strcmp(p, "-L")) {
+		bListOLE=FALSE;
+		continue;
+	}
+	if(*cfgname || trx_Stpnam(p)!=p || *trx_Stpext(p)) continue;
 	strcpy(cfgname,p);
   }
 
   if(!*cfgname) {
     eprintf("\n"
-	  "Usage: REINDEX <cfgname> [-p (pause before exit)]\n\n"
+	  "Usage: REINDEX [-k] [-a] [-c] [-l] [-n<number>] <cfgname>\n\n"
       "Creates indexed versions of HTML files whose names are listed in a\n"
-	  "plain text file, <cfgname>.CFG. It also generates an output text file,\n"
-	  "<cfgname>.LST, containing diagnostic messages and a text representation\n"
-	  "of the author and keyword indexes.\n\n"
+	  "plain text file, <cfgname>.CFG>. It also generates an output text file,\n"
+	  "<cfgname>.LST, containing diagnostic messages and text representations\n"
+	  "of the author and keyword indexes. After a review of this file, program,\n"
+	  "REBUILD, can be run to produce the database for RESELECT.\n\n"
 
 	  "The file names listed in <cfgname>.CFG must appear one per line, be\n"
 	  "without path prefixes, and must correspond to files residing in the\n"
-	  "program's default (\"Start in:\") folder along with <cfgname>.CFG. When\n"
-	  "a file extension is missing from a name, it is assumed to be .HTM. See\n"
-	  "the provided CFG file template for additional format details.\n\n"
+	  "program's folder along with <cfgname>.CFG. When a file extension is\n"
+	  "missing from a name, it is assumed to be .HTM. See the provided CFG\n"
+	  "file template for additional format details.\n\n"
 	  
 	  "The HTML files to be processed should contain James Reddell's style of\n"
-	  "bibliographic references and have MS Word 2000's native HTML (not DOC)\n"
+	  "bibliographic references and have MS Word's \"Web Page, Filtered\"\n"
 	  "format. The program scans the files and revises them by prefixing each\n"
 	  "detected reference with a sequence number representing its position in\n"
 	  "the complete scan. (Any existing numbers are updated.) Apart from prefix\n"
-	  "assignment, the content and exact format of the files is preserved.\n");
+	  "assignment, the content and essential format of the files is preserved.\n");
 	pause("for more info");
 	eprintf(
-	  "A single paragraph is treated as a bibliographic item when either\n"
-	  "1) it has the \"bibliography\" style and is separated from the previous\n"
-	  "reference, or 2) it starts with a blank or integer prefix ending in\n"
-	  "\". \", regardless of style or separation.\n"
-	  "\n"
-	  "Alternatively, a paragraph is treated as a keyword list when it\n"
-	  "immediately follows a bibliographic item and does NOT have such a\n"
-	  "prefix. Although the expected style is \"index\", this is not enforced.\n"
-	  "For example, an unintended paragraph break in a reference would\n"
-	  "cause the trailing portion to be treated as keywords. Since keyword\n"
-	  "paragraphs, like blank lines, serve as item separators, the actual\n"
-	  "keyword paragraph would then be orphaned (preserved but not indexed).\n"
-	  "Unexpected styles and conditions like this should cause diagnostic\n"
-	  "messages to be logged.\n\n"
+	  "A single paragraph is treated as a bibliographic item when it has a style\n"
+	  "named \"bibliography..\" and is separated from the previous reference by an\n"
+	  "empty line. A paragraph is treated as a keyword list when it immediately\n"
+	  "follows a bibliographic paragraph. Although the expected style is \"index\",\n"
+	  "this is not enforced. For example, an unintended paragraph break in a\n"
+	  "reference would cause the trailing portion to be treated as keywords.\n"
+	  "Since keyword paragraphs, like blank lines, serve as item separators, the\n"
+	  "actual keywords would be orphaned (preserved but not indexed). Unexpected\n"
+	  "conditions like this should cause diagnostic messages to be logged.\n\n"
+
 	  "Backups of the original files will be saved with extension .HTB.\n"
-	  "The diagnostics and index listings are written to <cfgname>.LST.\n"
-	  "\n"
-	  "Additional options: Use -Nn to not list keywords with more than n\n"
+	  "The diagnostics and index listings are written to <cfgname>.LST.\n\n"
+
+	  "Options: Use -N<number> to not list keywords with more than <number>\n"
 	  "references. Use -C to list only authors with compound last names.\n"
-	  "Use -K or -A to omit the keyword or author index listing.\n"
-	  );
-	if(bPause) pause("to exit");
+	  "Use -K and/or -A to omit the keyword or author listing from the log.\n"
+	  "Use -L to omit notes for stripped-out useless OLE link tags that Word\n"
+	  "sometimes needlessly inserts during cut/paste operations.\n"
+	);
+	pause("to exit");
     exit(1);
   }
 
@@ -674,6 +692,8 @@ void main(int argc,nptr *argv)
     strcpy(namebuf,fname[e]);
     if((fp=fopen(namebuf,"rt"))==NULL) abortmsg("Cannot open file %s",namebuf);
     if((fptmp=fopen(tmpname,"wt"))==NULL) abortmsg("Cannot create temporary file");
+	trx_Stncc(filename,trx_Stpnam(namebuf),sizeof(filename));
+	*trx_Stpext(filename)=0;
     scan_file();
 	fclose(fp);
 	fp=0;
@@ -685,13 +705,17 @@ void main(int argc,nptr *argv)
 	fptmp=0;
     strcpy(trx_Stpext(namebuf),".htb");
     _unlink(namebuf);
-    if(rename(fname[e],namebuf)) abortmsg("Cannot rename %s to %s",fname[e],namebuf);
-    if(rename(tmpname,fname[e]))
+    if(rename(fname[e],namebuf)) {
+		abortmsg("Cannot rename %s to %s", fname[e], namebuf);
+	}
+    if(rename(tmpname,fname[e])) {
       abortmsg("Cannot rename temporary file to %s",fname[e]);
+	}
   }
 
-  eprintf("\n\nFiles: %d  References: %u  Names: %u  Keywords: %u\n",
-	  num_fnames,reftotal,trx_NumKeys(TRX_AUTHOR_TREE),trx_NumKeys(TRX_KW_TREE));
+  e=trx_NumKeys(TRX_KW_TREE);
+  eprintf("\n\nFiles: %d  Refs: %u  Authors: %u  Keywords: %u (%u compound)  Removed OLE links: %u\n",
+	  num_fnames, reftotal, trx_NumKeys(TRX_AUTHOR_TREE), e, (e-kw_parsed), uLinksOLE_ttl);
 
   if(blist_authors) scan_index(TRX_AUTHOR_TREE);
   if(blist_kw) scan_index(TRX_KW_TREE);
@@ -705,6 +729,6 @@ void main(int argc,nptr *argv)
 	  else eprintf("\nNo questionable items. Indexes written to %s.\n",logname);
   }
 
-  if(bPause) pause("to exit");
+  pause("to exit");
   exit(0);
 }

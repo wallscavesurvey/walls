@@ -57,9 +57,11 @@ int CShpLayer::shp_typcode[]={SHP_POINT,SHP_POLYLINE,SHP_POLYGON,SHP_MULTIPOINT,
 CString CShpLayer::m_csIconSingle;
 CString CShpLayer::m_csIconMultiple;
 bool CShpLayer::m_bChangedGEPref=false;
+bool CShpLayer::m_bChangedGEPath=false;
 LPCSTR CShpLayer::pIconSingle="http://maps.google.com/mapfiles/kml/paddle/W.png";
 LPCSTR CShpLayer::pIconMultiple="http://maps.google.com/mapfiles/kml/paddle/ltblu-diamond.png";
 static const TCHAR szOptionsKML[] = _T("OptionsKML");
+static const TCHAR szPathKML[] = _T("PathKML");
 static const TCHAR szShpArgs[] = _T("Preferences");
 static const TCHAR szSelMrk[] = _T("SelMrk");
 static const TCHAR szHighMrk[] = _T("HighMrk");
@@ -222,7 +224,8 @@ void SHP_DBFILE::Clear()
 	delete pvxd;
 	pvxd=NULL;
 	lblfld=keyfld=pfxfld=bTypeZ=bHaveTmpshp=0;
-	noloc_dir=0;
+	noloc_dir=6;
+	noloc_lat=noloc_lon=0.0;
 	if(col.order.size()) {
 		VEC_INT().swap(col.order);
 		VEC_INT().swap(col.width);
@@ -417,6 +420,8 @@ void CShpLayer::Init()
 	SHP_DBFILE::csEditorName=theApp.GetProfileString(szPreferences,szEditorName,"");
 	SHP_DBFILE::bEditorPrompted=SHP_DBFILE::bEditorPreserved=!SHP_DBFILE::csEditorName.IsEmpty();
 
+	GE_Path()=theApp.GetProfileString(szPreferences, szPathKML);
+
 	CString s=theApp.GetProfileString(szPreferences,szOptionsKML);
 	if(!s.IsEmpty()) {
 		int i=cfg_GetArgv((LPSTR)(LPCSTR)s,CFG_PARSE_ALL);
@@ -451,6 +456,11 @@ void CShpLayer::UnInit()
 		theApp.WriteProfileString(szPreferences,szSelMrk,m_mstyle_s.GetProfileStr(s));
 		theApp.WriteProfileString(szPreferences,szHighMrk,m_mstyle_h.GetProfileStr(s));
 	}
+
+	if(m_bChangedGEPath) {
+		theApp.WriteProfileString(szPreferences, szPathKML, GE_Path());
+	}
+
 	if(m_bChangedGEPref) {
 		CString s;
 		s.Format("%u %u %u",m_uKmlRange,m_uIconSize,m_uLabelSize);
@@ -464,7 +474,9 @@ void CShpLayer::UnInit()
 
 void CShpLayer::SetGEDefaults()
 {
-	CGEDefaultsDlg dlg(m_uKmlRange,m_uLabelSize,m_uIconSize,m_csIconSingle,m_csIconMultiple);
+	GE_Checked=false;
+	LPCSTR path=GE_IsInstalled()?GE_Path():"";
+	CGEDefaultsDlg dlg(path,m_uKmlRange,m_uLabelSize,m_uIconSize,m_csIconSingle,m_csIconMultiple);
 	if(IDOK==dlg.DoModal()) {
 		if(m_uKmlRange!=dlg.m_uKmlRange || m_uIconSize!=dlg.m_uIconSize || m_uLabelSize!=dlg.m_uLabelSize) {
 			m_uLabelSize=dlg.m_uLabelSize;
@@ -479,6 +491,11 @@ void CShpLayer::SetGEDefaults()
 		if(m_csIconMultiple.Compare(dlg.m_csIconMultiple)) {
 			m_csIconMultiple=dlg.m_csIconMultiple;
 			m_bChangedGEPref=true;
+		}
+		if(dlg.m_PathName.Compare(path)) {
+			GE_Path()=dlg.m_PathName;
+			GE_Checked=false; //check it again upon next launch
+			m_bChangedGEPath=true;
 		}
 	}
 }
@@ -3418,7 +3435,7 @@ UINT CShpLayer::CopyShpRec(CShpLayer *pSrcLayer,UINT uSrcRec,BYTE *pFldSrc,bool 
 		ASSERT((*pSrcLayer->m_pdb->RecPtr()=='*')==bDeleted);
 
 		bool bHasMemos;
-
+	
 		if(!pFldSrc) {
 			//fields match --
 			bHasMemos=HasMemos();
@@ -3492,7 +3509,8 @@ UINT CShpLayer::CopyShpRec(CShpLayer *pSrcLayer,UINT uSrcRec,BYTE *pFldSrc,bool 
 							s.SetString((LPSTR)pSrcPtr,pSrcDef->F_Len);
 							s.Trim();
 							if(s.GetLength()) {
-								bHasMemos=true; //causes dbt hdr flush in next secion
+							    if(!m_pdbfile->dbt.InitFree()) throw 0;
+								bHasMemos=true; //causes dbt hdr flush below
 								UINT dbtRec=m_pdbfile->dbt.PutTextField(s,s.GetLength());
 								if(dbtRec==(UINT)-1) {
 									//treat this as truncation
@@ -3578,6 +3596,7 @@ UINT CShpLayer::CopyShpRec(CShpLayer *pSrcLayer,UINT uSrcRec,BYTE *pFldSrc,bool 
 					CDBTFile::SetRecNo((LPSTR)m_pdb->FldPtr(e),dbtRec);
 				}
 			}
+			dbt.FlushHdr();
 		}
 	}
 	catch(...) {

@@ -4,11 +4,11 @@
 #define __A__DBF_H
 
 #ifndef __A__CSH_H
-#include <a__csh.h>
+#include "a__csh.h"
 #endif
 
 #ifndef __DBF_FILE_H
-#include <dbf_file.h>
+#include "dbf_file.h"
 #endif
 
 #ifdef __cplusplus

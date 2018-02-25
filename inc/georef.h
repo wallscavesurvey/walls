@@ -176,7 +176,7 @@ class CTransverseMercator
 //latlong.cpp --
 //Caution -- unless *zone==0, UTM will be forced to specified zone!
 bool geo_LatLon2UTM(double lat,double lon,int *zone,double *x,double *y,int datum);
-void geo_UTM2LatLon(int zone, double x, double y,double *lat, double *lon,int datum);
+void geo_UTM2LatLon(int zone, double x, double y,double *lat, double *lon,int datum,double *conv=0);
 void geo_FromToWGS84(bool fromWGS84,double *latitude,double *longitude,int datum);
 int geo_GetZone(const double &lat,const double &lon);
 

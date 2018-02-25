@@ -60,7 +60,7 @@ static WORD *pLabelMap;
 WORD  *hlimit;
 #endif
 
-#define MAX_FRAMES 10
+#define MAX_FRAMES 50
 typedef struct {
 	double xoff,yoff;
 	double mapMeters;
@@ -1318,7 +1318,7 @@ static apfcn_i GetStrEndpoint(int rec,plttyp *pPlt)
 	//Initializes *pPlt with a copy of the plot record containing the
 	//starting coordinates of the string rec. Returns the starting dbNTV record no.
 
-	ASSERT(rec>=pNTN->str_id1 && rec<=pNTN->str_id2);
+	ASSERT(rec>=nSTR_1 && rec<=nSTR_2);
 	
 	memset(pPlt,0,sizeof(plttyp));  //In case of unexpected error
 	
@@ -1459,7 +1459,7 @@ static apfcn_v PlotString(int recID,BOOL bRaw)
   
   int rec=piSTR[recID];
   
-  ASSERT(rec>=pNTN->str_id1 && rec<=pNTN->str_id2);
+  ASSERT(rec>=nSTR_1 && rec<=nSTR_2);
 
   if(bRaw) {
 	 if(!dbNTS.Go(rec)) {
@@ -1533,8 +1533,8 @@ static BOOL LineVisible()
 	    CSegListNode *pNode=pSV->SegNode(seg_id);
 	    
 	    if(pNode->IsVisible()) {
-	    
-			if(!mapStr_id && nFloatCnt && mapStr_flag[pPLT->str_id]) {
+			ASSERT(!pPLT->str_id || pPLT->str_id-nSTR_1<nSTR);
+			if(!mapStr_id && nFloatCnt && pPLT->str_id && mapStr_flag[pPLT->str_id-nSTR_1]) {
 			  if(mapSeg!=(WORD)-2) {
 				  InitPenStyle(pSV->TravStyle());
 				  mapSeg=(WORD)-2;
@@ -1563,7 +1563,7 @@ int CPrjDoc::InitNamTyp()
     //marker and/or name visibility then so does the station.
     //Also set flags to indicate adjacency of floated vectors.
     
-    UINT irec;
+    int irec;
    	UINT v,end_id;
   	CSegListNode *pNode;
   	
@@ -1572,7 +1572,7 @@ int CPrjDoc::InitNamTyp()
   	irec=(pPV->m_iTrav && pSV->IsTravVisible() && pSV->IsTravSelected())?
   		piSTR[pPV->m_iTrav-1]:0; 
     
-    if(!pSV->IsNewVisibility() && mapStr_id==(int)irec) return -1;
+    if(!pSV->IsNewVisibility() && mapStr_id==irec) return -1;
     mapStr_id=irec;
     
     ASSERT(dbNTV.Opened());
@@ -1593,15 +1593,17 @@ int CPrjDoc::InitNamTyp()
 	  }
 	  mapStr_flag=pNamTyp+maxid;
 	}
-	else memset(pNamTyp,0,maxid+nSTR+1);
+	else {
+		memset(pNamTyp, 0, maxid+nSTR+1);
+	}
 	
     UINT bFloatFlag=(nSTR && pSV->IsTravVisible())?
      (bProfile?NET_STR_FLTMSKV:NET_STR_FLTMSKH):0;
      
     if(bFloatFlag) {
-		for(irec=(UINT)pNTN->str_id1;irec<=(UINT)pNTN->str_id2;irec++) {
+		for(irec=nSTR_1;irec<=nSTR_2;irec++) {
 	        if(!dbNTS.Go(irec) && (pSTR_flag&bFloatFlag)) {
-	          mapStr_flag[irec]|=1;
+	          mapStr_flag[irec-nSTR_1]|=1;
 	          nFloatCnt++;
 	        }
 		}
@@ -1610,10 +1612,12 @@ int CPrjDoc::InitNamTyp()
 	BOOL bAllFloated=mapStr_id==0 && nFloatCnt!=0;
 	
     end_id=0;
-	for(irec=pNTN->plt_id1;irec<=pNTN->plt_id2;irec++,end_id=(UINT)pPLT->end_id) {
+	for(DWORD prec=pNTN->plt_id1;prec<=pNTN->plt_id2;prec++,end_id=(UINT)pPLT->end_id) {
 		ASSERT(end_id<maxid);
-		if(dbNTP.Go(irec)) break;
+		if(dbNTP.Go(prec)) break;
 		if(!pPLT->vec_id) continue;
+
+		ASSERT(!pPLT->str_id || pPLT->str_id>=nSTR_1 && pPLT->str_id<=nSTR_2);
 
 		v=M_COMPONENT;
 
@@ -1624,7 +1628,7 @@ int CPrjDoc::InitNamTyp()
 		if(mapStr_id && mapStr_id==pPLT->str_id) {
 		  v|=pSV->TravLabelFlags();
 		}
-		else if(bAllFloated && mapStr_flag[pPLT->str_id]) {
+		else if(bAllFloated && pPLT->str_id && mapStr_flag[pPLT->str_id-nSTR_1]) {
 		  if(v&M_VISIBLE) v|=pSV->TravLabelFlags();
 		}
 		else if(v&M_VISIBLE) v|=pNode->LabelFlags();
@@ -2037,13 +2041,14 @@ void CPrjDoc::PlotFrame(UINT flags)
 	CBitmap *pBmp=NULL;
 	HBITMAP hBmpOld=NULL;
 	HBRUSH  hBrushOld=NULL;
-
+	CMapFrame *pFrame=NULL;
 	HPEN    hPenOld=NULL;
 		
 	//Variables used for screen plotting --
 	CDC dcBmp;
 		
 	ASSERT(dbNTN.Opened() && dbNTP.Opened());
+
 	ASSERT((int)dbNTN.Position()==pPV->m_recNTN);
 
 	if(dbNTP.Go(irec=pNTN->plt_id1)) {
@@ -2064,6 +2069,7 @@ void CPrjDoc::PlotFrame(UINT flags)
 	double sav_midE=midE;
 	double sav_midN=midN;
 	BOOL sav_bProfile=bProfile;
+	bool bKeepScale=false;
 
 	pVnode=pVnodeF=NULL;
 	pVnodeMap=NULL;
@@ -2106,58 +2112,104 @@ void CPrjDoc::PlotFrame(UINT flags)
 		//Display map in a separate screen window --
 		//Get temporary DC for screen - Will be released in dc destructor
 		CWindowDC dc(NULL);
-		CMapFrame *pf=pPV->m_pMapFrame;
-		pMF=&pPV->m_mfFrame;
+
+		pFrame=m_pReviewDoc->m_pMapFrame;
+		ASSERT(!pFrame || pFrame->m_pDoc==m_pReviewDoc);
+
+		pMF=&pPV->m_mfFrame; //MAPFORMAT
 		
 		if(pPV->m_bExternUpdate>1) {
-		   bProfile=pf->m_bProfile;
-		   sinA=pf->m_sinA;
-		   cosA=pf->m_cosA;
-		   fView=pf->m_fView;
-		   midE=pf->m_midE;
-		   midN=pf->m_midN;
-		   midU=pf->m_midU;
+		   ASSERT(pFrame);
+		   bProfile=pFrame->m_bProfile;
+		   sinA=pFrame->m_sinA;
+		   cosA=pFrame->m_cosA;
+		   fView=pFrame->m_fView;
+		   midE=pFrame->m_midE;
+		   midN=pFrame->m_midN;
+		   midU=pFrame->m_midU;
 		   if(pPV->m_bExternUpdate==3) {
-			    //pf->m_pCRect.Width() is the requested new frame bitmap width.
-			    //pf->sizeBmp.cx is the old frame bitmap width.
-				xoff=pf->m_xoff;
-				yoff=pf->m_yoff;
-				size.cx=pf->m_pCRect->right;
-				xscale=(pf->m_scale*size.cx)/pf->m_sizeBmp.cx;
-				pf->SendMessage(WM_SYSCOMMAND,SC_CLOSE);
-				pPV->m_bExternUpdate=0;
+			   //CMapView() - called only after frame resizing by dragging border
+			   bKeepScale=true;
+			   xoff=pFrame->m_xoff; //same TL offsets
+			   yoff=pFrame->m_yoff;
+			   size=pFrame->m_pView->m_sizeClient;
+			   xscale=pFrame->m_scale; //same scale
+			   pBmp=new CBitmap;
+			   //This allocates ? bytes of GPI private (assuming 1024x756x256) --
+			   if(!pBmp->CreateCompatibleBitmap(&dc, size.cx, size.cy)) {
+				   delete pBmp;
+				   CMsgBox(MB_ICONEXCLAMATION, IDS_ERR_MAKEFRAME1, ::GetLastError());
+				   goto _restore;
+			   }
+			   delete pFrame->m_pBmp;
+			   pFrame->SetFrameSize(size); //view already established size, this allows disabling scrolling
+			   pFrame->InitializeFrame(pBmp, size, xoff, yoff, xscale);
 		   }
 		   else {
-				xoff=pf->m_xoff+pf->m_pCRect->left/pf->m_scale;
-				yoff=pf->m_yoff+pf->m_pCRect->top/pf->m_scale;
-				size.cx=pf->m_sizeBmp.cx;
-				xscale=(pf->m_scale*size.cx)/pf->m_pCRect->Width();
+			    ASSERT(pPV->m_bExternUpdate==2);
+			    //Called from CMapView::RefreshView() (applying CSegView changes) and
+				//CMapView::NewVew() (temporary adjustments, pan, zoom, center, etc.)
+				//No window size change --
+				xoff=pFrame->m_xoff+pFrame->m_pCRect->left/pFrame->m_scale;
+				yoff=pFrame->m_yoff+pFrame->m_pCRect->top/pFrame->m_scale;
+				size=pFrame->m_pView->m_sizeClient;
+				double sc=(pFrame->m_scale*size.cx)/pFrame->m_pCRect->Width();
+				if(sc==xscale) {
+					bKeepScale=true;
+				}
+				else xscale=sc;
 		   }
-		   size.cy=(int)(((double)size.cx*pPV->m_sizeBmp.cy)/pPV->m_sizeBmp.cx);
 		}
 		else {
+			//Called from CPlotView using Display Map or Update View --
+			ASSERT(!pPV->m_bExternUpdate || pPV->m_bExternUpdate==1);
+			double pvxscale(xscale);
+
+			int pvwidth=pPV->m_sizeBmp.cx;
+			int pvheight=pPV->m_sizeBmp.cy;
+			double pvyratio=(double)pvheight/pvwidth;
+
 			if(pPV->m_bTrackerActive) {
 				//We are zooming into the tracker rectangle --
 				CPoint posTracker;
-				int i=pPV->GetTrackerPos(&posTracker); //i==width
-				ASSERT(i>0);
+				int trkw=pPV->GetTrackerPos(&posTracker); //width of tracker window in pixels
 				xoff+=posTracker.x/xscale;
 				yoff+=posTracker.y/yscale;
-				xscale=(xscale*pPV->m_sizeBmp.cx)/i; //more dots per meter
+				pvxscale=(xscale*pvwidth)/trkw; //more dots per meter
 			}
-			if(pPV->m_bExternUpdate) size=pf->m_sizeBmp;
+
+			if(pPV->m_bExternUpdate) {
+				ASSERT(pPV->m_bExternUpdate==1);
+				//Using the existing frame's client size (update from review dlg) --
+				size=pFrame->m_pView->m_sizeClient;
+				//Adjust xoff,yoff to place tracker or pPV bitmap center coordinate at client center --
+				if(pvwidth*size.cy<pvheight*size.cx) {
+					//wider plot -- decrease xoff
+					//scale determined by size.cy (fit height)
+					xscale=(pvxscale*size.cy)/pPV->m_sizeBmp.cy; //more dots per meter
+					xoff-=(size.cx/xscale-pvwidth/pvxscale)/2;
+				}
+				else if(pvwidth*size.cy>pvheight*size.cx) {
+					//taller plot -- decrease yoff
+					//scale determined by size.cx (fit width)
+					xscale=(pvxscale*size.cx)/pPV->m_sizeBmp.cx; //more dots per meter
+					yoff-=(size.cy/xscale-(pvwidth*pvyratio)/pvxscale)/2;
+				}
+			}
 			else {
+			    //Creating a new CMapFrame/CMapView --
+				//Use current defaulf frame width with aspect ratio same as CPlotView --
 				size.cx=(int)(pMF->fFrameWidthInches*dc.GetDeviceCaps(LOGPIXELSX));
-				size.cy=(int)(((double)size.cx*pPV->m_sizeBmp.cy)/pPV->m_sizeBmp.cx);
+				size.cy=(int)(pvyratio*size.cx);
+				xscale=(pvxscale*size.cx)/pvwidth; //more dots per meter
 			}
-			xscale=(xscale*size.cx)/pPV->m_sizeBmp.cx; //more dots per meter
 		}
 
 		yscale=xscale;
 
 		if(!pPV->m_bExternUpdate) {
 
-			pf=NULL;
+			pFrame=NULL;
 				    
 			pBmp=new CBitmap;
 						
@@ -2169,19 +2221,18 @@ void CPrjDoc::PlotFrame(UINT flags)
 			}
 		}
 		else {
-		   ASSERT(pf);
-		   delete pf->m_pVnodeF;
-		   pf->m_pVnodeF=NULL;
-		   //ASSERT(!CMapFrame::m_bKeepVnode || (pf->m_pVnode && pPV->m_bExternUpdate==2)); 
+		   ASSERT(pFrame);
+		   delete pFrame->m_pVnodeF;
+		   pFrame->m_pVnodeF=NULL;
+		   //ASSERT(!CMapFrame::m_bKeepVnode || (pFrame->m_pVnode && pPV->m_bExternUpdate==2)); 
 		   if(!CMapFrame::m_bKeepVnode) {
-				delete pf->m_pVnode;
-				pf->m_pVnode=NULL;
+				delete pFrame->m_pVnode;
+				pFrame->m_pVnode=NULL;
 		   }
-		   ASSERT(size.cx==pf->m_sizeBmp.cx);
-		   VERIFY(pBmp=pf->m_pBmp);
+		   VERIFY(pBmp=pFrame->m_pBmp);
 		}
 
-		if(xscale>=VNODE_MIN_SCALE && (!pf || !pf->m_pVnode)) {
+		if(xscale>=VNODE_MIN_SCALE && (!pFrame || !pFrame->m_pVnode)) {
 			szpVnodeMap=(pNTN->plt_id2-pNTN->plt_id1+8*sizeof(DWORD))/(8*sizeof(DWORD));
 			pVnodeMap=(DWORD *)calloc(szpVnodeMap,sizeof(DWORD));
 		}
@@ -2247,14 +2298,15 @@ void CPrjDoc::PlotFrame(UINT flags)
 		}
 		else flags &= ~(M_ALLFLAGS);
 	}
-	else mapStr_id=nFloatCnt=0;
+	else {
+		mapStr_id=nFloatCnt=0;
+	}
 
 	if((flags&M_LRUDS) && pSV->IsSegmentsVisible()) {
 
 		irec=pSV->LrudStyle();
 
-		if(!bProfile && (irec&LRUD_SVGMASK)==LRUD_SVGMASK &&
-			(irec&LRUD_BOTH)!=LRUD_TICK && theApp.m_bIsVersionNT) {
+		if(!bProfile && (irec&LRUD_SVGMASK)==LRUD_SVGMASK && (irec&LRUD_BOTH)!=LRUD_TICK) {
 			PlotSVGMaskLayer();
 			irec&=~LRUD_SOLID; //do not plot lrud polys
 		}
@@ -2285,13 +2337,13 @@ void CPrjDoc::PlotFrame(UINT flags)
 
   		if(mapStr_id) {
   			//Plot the unadjusted version of the selected traverse ignoring visibility --
-			if(pSV->IsRawTravVisible() && mapStr_flag[mapStr_id])
+			if(pSV->IsRawTravVisible() && mapStr_flag[mapStr_id-nSTR_1])
 			PlotRawTraverse(mapStr_id,flags&pSV->RawTravLabelFlags(),FALSE);
 		}
 		else if(nFloatCnt && pSV->IsRawTravVisible()) {
   			//Plot the unadjusted version of all floated traverses observing visibility --
-			for(irec=(UINT)pNTN->str_id1;irec<=(UINT)pNTN->str_id2;irec++) 
-				if(mapStr_flag[irec])
+			for(irec=nSTR_1;(int)irec<=nSTR_2;irec++)
+				if(mapStr_flag[irec-nSTR_1])
 					PlotRawTraverse(irec,flags&pSV->RawTravLabelFlags(),TRUE);
 		}
 
@@ -2339,28 +2391,33 @@ void CPrjDoc::PlotFrame(UINT flags)
 	  	//Restore device context for bitmap (required?) --
 	    VERIFY(::SelectObject(dcBmp.m_hDC,hBmpOld));
 	    if(hBrushOld) ::SelectObject(dcBmp.m_hDC,hBrushOld);
-	    
+
 	    if(!pPV->m_bExternUpdate) {
 		  	//Create a new frame for a CMapView --
-			CMapFrame* pFrame =
-			  (CMapFrame *)CWallsApp::m_pMapTemplate->CreateNewFrame(m_pReviewDoc,NULL);
+			pFrame = (CMapFrame *)CWallsApp::m_pMapTemplate->CreateNewFrame(m_pReviewDoc,NULL);
 			if(pFrame) {
 			  ASSERT(pFrame->IsKindOf(RUNTIME_CLASS(CMapFrame)));
-			  pFrame->InitializeFrame(pBmp,size,xoff,yoff,xscale);
+			  pFrame->m_pDoc=m_pReviewDoc;
 			  pFrame->m_pVnode=pVnode;
 			  pFrame->m_pVnodeF=pVnodeF;
 			  pVnode=pVnodeF=NULL;
-			  pFrame->SetTitle(m_pReviewNode->Title(),flags);
-			  pFrame->m_pNext=CPlotView::m_pMapFrame;
-			  CPlotView::m_pMapFrame=pFrame;
+			  pFrame->SetTransform(flags);
+			  pFrame->m_pNext=m_pReviewDoc->m_pMapFrame;
+			  m_pReviewDoc->m_pMapFrame=pFrame;
 			  //Display and activate the view --
+			  pFrame->SetFrameSize(size); //view establishes size
 			  CWallsApp::m_pMapTemplate->InitialUpdateFrame(pFrame,m_pReviewDoc);
+			  //The above will activate frame and place it at top of stack --
+			  //pFrame=m_pReviewDoc->m_pMapFrame;
+			  pFrame->InitializeFrame(pBmp, size, xoff, yoff, xscale);
+			  pFrame->ShowTitle();
+			  pFrame->m_pView->DrawScale();
+			  pPV->Enable(IDC_UPDATEFRAME, TRUE);
 			}
 			else delete pBmp;
 	    }
 	    else {
 			//Invalidate the existing CMapView and bring it to the top --
-			CMapFrame *pFrame=pPV->m_pMapFrame;
 
 			ASSERT((!pFrame->m_pVnode || CMapFrame::m_bKeepVnode) && !pFrame->m_pVnodeF);
 			ASSERT(!CMapFrame::m_bKeepVnode || !pVnode || pVnode->IsInitialized());
@@ -2372,11 +2429,16 @@ void CPrjDoc::PlotFrame(UINT flags)
 			else CMapFrame::m_bKeepVnode=FALSE;
 			pFrame->m_pVnodeF=pVnodeF;
 			pVnodeF=NULL;
-
-			pFrame->SetTitle(m_pReviewNode->Title(),flags);
-			((CMapView *)pFrame->GetActiveView())->Invalidate();
-			if(pFrame->IsIconic()) pFrame->ShowWindow(SW_RESTORE);
-			else pFrame->BringWindowToTop();
+			pFrame->m_pFrameNode=m_pReviewNode; //***Missing before 5/1/2016!
+			pFrame->m_dwReviewNetwork=dbNTN.Position();
+			pFrame->SetTransform(flags); //also sets m_bProfile, m_bFeetUnits in view
+			pFrame->ShowTitle();
+			if(!bKeepScale)	pFrame->m_pView->DrawScale();
+			pFrame->m_pView->Invalidate();
+			if(!m_bRefreshing) {
+				if(pFrame->IsIconic()) pFrame->ShowWindow(SW_RESTORE);
+				else pFrame->BringWindowToTop();
+			}
 	    }
 	}
 	

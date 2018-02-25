@@ -16,7 +16,7 @@
     <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Vector_Data_Lines" styleclass="Normal" translate="true">Vector Data Lines</link></para>
     <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Units_Directive" styleclass="Normal" translate="true">#Units Directive</link></para>
     <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="SEG_Directives" styleclass="Normal" translate="true">#Segment Directive</link></para>
-    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="FIX_Directive" styleclass="Normal" translate="true">#FIX Directive</link><text styleclass="Normal" style="font-weight:normal;" translate="true">&#32;</text><text styleclass="Normal" style="font-weight:normal; color:#800000;" translate="true">(Updated)</text></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="FIX_Directive" styleclass="Normal" translate="true">#FIX Directive</link></para>
     <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Prefix_Directive" styleclass="Normal" translate="true">#Prefix Directive</link></para>
     <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="_Note_Directive" styleclass="Normal" translate="true">#Note Directive</link></para>
     <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Flag_Directive." styleclass="Normal" translate="true">#Flag and #Symbol Directives</link></para>

@@ -2,10 +2,11 @@
   Modified from GPSTRANS/MacGPS sources (11/14/97 - DMcK)
 */
 
+/*
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+*/
 static const double Pi = 3.14159265358979323846;
 /*static const double Degree = Pi/180.0; */
 static const double Degree = 1.74532925199e-2;
@@ -59,6 +60,8 @@ extern int gps_nDatums;
 #define gps_NAD83_datum 19
 #define gps_WGS84_datum (gps_nDatums-1)
 
+/*
 #ifdef __cplusplus
 }
 #endif
+*/

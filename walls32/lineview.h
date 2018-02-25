@@ -23,7 +23,7 @@ public:
     CLineDoc* GetDocument();
     
     static LINENO m_nLineStart;
-    static LINENO m_nLineStart2;
+    //static LINENO m_nLineStart2;
     static int m_nCharStart;
     LINENO  m_nLineOffset;    // current line offset of first displayed line
     LINENO  m_nLineTotal;     // total lines in document
@@ -41,7 +41,7 @@ protected:
     int     m_nSelectChr;     // Base line of current selection
     LINENO  m_nSelectLine;    // Base char of current selection
     LINENO  m_nFlagLine;
-    LINENO	m_nFlagLine2;
+    //LINENO	m_nFlagLine2;
     BOOL  m_bSelectMode;
 	BOOL  m_bInsideUpdate;    // internal state for OnSize callback
     int   m_iSelectX;
@@ -67,7 +67,7 @@ public:
     
     void GetEditRectLastLine(CRect *pRect,LINENO& nLastLine,BOOL bIncludePartial);
     void ScrollToError(); //Called by CPrjView::Compile()
-    void SetFlagLine(LINENO line,LINENO line2=0); //Used by CWedView::OnGotoline()
+    void SetFlagLine(LINENO line); //Used by CWedView::OnGotoline()
     
     //Used by CPrjView::OnCompile() to position caret at error --
     BOOL SetPosition(LINENO nLine,int iPos,UINT iTyp=POS_CHR,BOOL bSelect=FALSE);
@@ -172,11 +172,10 @@ protected:
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnEditDelete();
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-public:
 	afx_msg void OnUpdateEditDelete(CCmdUI *pCmdUI);
 	afx_msg void OnEditSelectall();
+
+	DECLARE_MESSAGE_MAP()
 };
 
 #ifndef _DEBUG  // debug version in lineview.cpp

@@ -6,7 +6,6 @@
 #include "CompareFcnDlg.h"
 #include "afxdialogex.h"
 
-
 // CCompareFcnDlg dialog
 
 IMPLEMENT_DYNAMIC(CCompareFcnDlg, CDialog)
@@ -16,7 +15,6 @@ CCompareFcnDlg::CCompareFcnDlg(LPCSTR pPath, LPCSTR pArgs, CWnd* pParent /*=NULL
 	, m_PathName(pPath)
 	, m_Arguments(pArgs)
 {
-
 }
 
 CCompareFcnDlg::~CCompareFcnDlg()
@@ -37,11 +35,9 @@ void CCompareFcnDlg::DoDataExchange(CDataExchange* pDX)
 	}
 }
 
-
 BEGIN_MESSAGE_MAP(CCompareFcnDlg, CDialog)
 	ON_BN_CLICKED(IDBROWSE, &CCompareFcnDlg::OnClickedBrowse)
 END_MESSAGE_MAP()
-
 
 BOOL CCompareFcnDlg::OnInitDialog()
 {
@@ -56,7 +52,6 @@ BOOL CCompareFcnDlg::OnInitDialog()
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
-
 
 void CCompareFcnDlg::OnClickedBrowse()
 {

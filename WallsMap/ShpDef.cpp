@@ -438,24 +438,18 @@ BOOL CShpDef::Write(CShpLayer *pShp,CSafeMirrorFile &cf) const
 				cf.Write((LPCSTR)fld,fld.GetLength());
 			}
 			SHP_DBFILE *pdf=pShp->m_pdbfile;
-			if((pFld=FindDstFld(pdf->keyfld)) && pFld->F_Typ=='C') {
-				fld.Format(".FLDKEY %s",pFld->F_Nam);
+			if(pFld=FindDstFld(pdf->keyfld)) {
+				DBF_pFLDDEF pFldPfx=FindDstFld(pdf->pfxfld);
+				int dec=pdf->noloc_dir;
+				fld.Format(".FLDKEY %s %s %u %s",pFld->F_Nam,pFldPfx?pFldPfx->F_Nam:"",dec,GetFloatStr(pdf->noloc_lat,dec));
+				fld.AppendFormat(" %s",GetFloatStr(pdf->noloc_lon,dec));
 				cf.Write((LPCSTR)fld,fld.GetLength());
-				if((pFld=FindDstFld(pdf->pfxfld)) && pFld->F_Typ=='C') {
-					fld.Format(" %s", pFld->F_Nam);
-					cf.Write((LPCSTR)fld,fld.GetLength());
-					if(pdf->noloc_dir>0) {
-						fld.Format(" %u %.2f %.2f",pdf->noloc_dir,pdf->noloc_lat,pdf->noloc_lon);
-						cf.Write((LPCSTR)fld,fld.GetLength());
-						if(pShp->m_pKeyGenerator) {
-							fld.Format(" \"%s\"",pShp->m_pKeyGenerator);
-							cf.Write((LPCSTR)fld, fld.GetLength());
-							if(pShp->m_pUnkName && pShp->m_pUnkPfx) {
-								fld.Format(" \"%s\" \"%s\"", pShp->m_pUnkName, pShp->m_pUnkPfx);
-								cf.Write((LPCSTR)fld, fld.GetLength());
-							}
-						}
+				if(pShp->m_pKeyGenerator) {
+					fld.Format(" \"%s\"",pShp->m_pKeyGenerator);
+					if(pShp->m_pUnkName && pShp->m_pUnkPfx) {
+						fld.AppendFormat(" \"%s\" \"%s\"", pShp->m_pUnkName, pShp->m_pUnkPfx);
 					}
+					cf.Write((LPCSTR)fld, fld.GetLength());
 				}
 				cf.Write("\r\n",2);
 				if(pShp->m_pdbfile->pvxc_ignore) {

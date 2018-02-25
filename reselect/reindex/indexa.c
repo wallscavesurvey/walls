@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
@@ -5,18 +6,56 @@
 #include <trx_file.h>
 
 #define EXPLICIT_SPC 0xA0
+#define MAX_NAMEKEYLEN 80
 
 //Functions in rebuild.c or reindex.c --
 
-apfcn_v logmsg(nptr p, nptr s);
 acfcn_v abortmsg(nptr format,...);
 apfcn_v AddKeyword(byte *keybuf);
 apfcn_v IndexDate(int date);
+apfcn_v openlog(nptr hdr);
+
+#define MAX_ORGKEYS 1000
+static LPSTR orgkeys[MAX_ORGKEYS];
+static UINT numOrgkeys;
 
 static UINT nParseKW;
 
 static int trx;
 static UINT reftotal;
+
+//globals --
+char filename[128];
+UINT logtotal;
+FILE *fplog;
+
+apfcn_v logmsg(LPSTR p, LPCSTR s)
+{
+    #define SIZ_MSG 70
+
+	char prefix[SIZ_MSG+6];
+	int i;
+
+	if(!fplog) {
+		openlog("QUESTIONABLE ITEMS");
+		putc('\n', fplog);
+	}
+	strncpy(prefix, p, SIZ_MSG);
+	if(prefix[SIZ_MSG-1]!=0) strcpy(prefix+SIZ_MSG-1, "..");
+	if(*prefix!='<' && (p=strchr(prefix, '<'))) *p=0;
+	if((i=strlen(prefix))<SIZ_MSG+1) while(i++<SIZ_MSG+1) strcat(prefix, " ");
+	fprintf(fplog, "%s:%5u. %s - %s.\n", filename, reftotal, prefix, s);
+	logtotal++;
+}
+
+BOOL pfxcmp(LPCSTR p, LPCSTR pfx)
+{
+	for(; *p && *pfx; p++, pfx++) {
+		if(*p!=*pfx) return TRUE;
+	}
+	return *pfx!=0;
+}
+
 
 BOOL is_xspace(byte c)
 {
@@ -25,7 +64,7 @@ BOOL is_xspace(byte c)
 
 nptr skip_space_types(nptr p)
 {
-	while((is_xspace(*p) && (++p)) || (!memcmp(p,"&nbsp;",6) && (p+=6)));
+	while((is_xspace(*p) && (++p)) || (!pfxcmp(p,"&nbsp;") && (p+=6)));
 	return p;
 }
 
@@ -42,6 +81,8 @@ static BOOL convert_ansi(byte *p)
 		case 0x92: c='\''; break;
 		case 0x93:
 		case 0x94: c='"'; break;
+		case 0x96: //N-Dash
+		case 0x97: c='-'; break; //M-Dash
 		case 231:
 		case 199: c='C'; break;
 		case 192:
@@ -97,7 +138,6 @@ static BOOL convert_ansi(byte *p)
 		case 221:
 		case 253:
 		case 255: c='Y'; break;
-		case 0x97: c='-'; break;
 		case 0xBA: c='d'; break;
 
 		default: return FALSE;
@@ -162,71 +202,71 @@ static void condition_key(nptr p)
 	}
 }
 
-static BOOL add_author_key(char *cKey)
+static BOOL add_author_key(char *cKey,BOOL bAssoc)
 {
-	UINT i,len;
-	byte *p;
-	byte pKey[46];
+	byte pkey[MAX_NAMEKEYLEN+6];
+	byte *p=pkey,*psrc=cKey;
 
-	if((len=strlen(cKey))>40) {
-		logmsg(cKey,"Note: Indexed as ASSOCIATION (length > 40 chars)");
-		trx_Stccp(pKey,"ASSOCIATION");
-		goto _index;
-	}
-
-	p=(byte *)trx_Stccp(pKey,cKey);
-
-	//Remove spaces after embedded periods and commas and convert non-ascii codes --
-	p=pKey;
-	for(i=1;i<=len;i++) {
-		if(pKey[i]==' ' && (*p==',' || *p=='.' || p==pKey || i==len)) continue;
-		if(pKey[i]==',' && *p=='.') {
-			*p=',';
-			continue;
+	//Copy key, removing spaces after embedded periods and commas and converting non-ascii codes --
+	for(;*psrc;psrc++) {
+		if(!bAssoc) {
+			if(*psrc==' ' && (*p==',' || *p=='.' || *p==' ' || psrc==cKey)) continue;
+			//also remove any period followed by a comma --
+			if(*psrc=='.' && psrc[1]==',') continue;
 		}
-		*++p=pKey[i];
+		*++p=*psrc;
 		if(!isascii(*p) && !convert_ansi(p)) logmsg(cKey,"Name has unknown non-ascii char");
+		if(p-pkey==MAX_NAMEKEYLEN) {
+			logmsg(cKey, "Truncated 80-char key placed in name index");
+			break;
+		}
 	}
+	//p==pkey or *p==last character stored
 
-	while(p>pKey && !isalpha(*p)) p--;
-	*pKey=(p-pKey);
+	while(p>pkey && !isalpha(*p)) p--;
+	p[1]=0;  //pkey+1 is now a c-str
+	*pkey=(byte)(p-pkey); //pkey isnow a p-str with last char *p
+	while(p>pkey) if(*p--==',') break;
 
-	while(p>pKey) if(*p--==',') break;
-
-	if(p==pKey && memcmp(p+1,"ANONYMOUS",9)) {
-		if(!memcmp(p+1,"AUTHOR UNKNOWN",14)) {
-			trx_Stccp(pKey,"UNKNOWN,AUTHOR");
+	if(p==pkey) {
+		//no comma in pkey --
+		if(!pfxcmp(p+1,"ANONYMOUS")) {
+			*p=9; p[10]=0;
+		}
+		else if(!pfxcmp(p+1,"AUTHOR UNKNOWN")) {
+			trx_Stccp(pkey,"UNKNOWN,AUTHOR");
 		}
 		else {
-			p=trx_Stcpc(cKey,pKey);
-			for(;*p;p++) if(*p==' ') break;
-			//Note -- Indexing trx_Stxpc(pKey) exposes error in index format!!
-			if(*p && strcmp(p," PSEUD")) {
-				logmsg(cKey,"Note: Indexed as ASSOCIATION (no comma found)");
-				trx_Stccp(pKey,"ASSOCIATION");
+			//drop certain trailing words --
+			for(p=pkey+*pkey;p>pkey;p--) if(*p==' ') break;
+			if(p>pkey) {
+				p++;
+				if(!strcmp(p,"INC") || !strcmp(p,"LLC") || !pfxcmp(p,"PSEUD") || !pfxcmp(p, "EDITOR") || !pfxcmp(p, "DIRECTOR") ||
+					!pfxcmp(p, "MODERATOR")) {
+					*--p=0;
+					*pkey=(byte)(p-pkey-1);
+				}
 			}
-			else {
-				if(*p) {
-					(*pKey)-=6;
-					*p=0;
-				}
-				else {
-					if(!strcmp(cKey,"EDITORS") || !strcmp(cKey,"DIRECTORS") ||
-					   !strcmp(cKey,"MODERATORS") || !strcmp(cKey,"ASSOCIATES")) return TRUE;
-				}
-				logmsg(cKey,"Note: No first name or initials (indexed)");
+			if(*pkey) {
+			    bAssoc=TRUE;
 			}
 		}
 	}
 
-	if(!pKey) {
-		logmsg(cKey,"Empty name - remaining chars ignored");
+	if(!*pkey) {
+		logmsg(cKey,"Empty author name - remaining chars ignored");
 		return FALSE;
 	}
 
-_index:
+	if(bAssoc) {
+		//check if assoc already encountered --
+		if(trx_Find(trx, pkey))
+			if(strchr(pkey+1,' ')) logmsg(pkey+1, "Organization assumed");
+		    else logmsg(pkey+1, "Pseudonym assumed");
+	}
 
-	if(trx_InsertKey(trx,&reftotal,pKey)) abortmsg("Error writing author index");
+
+	if(trx_InsertKey(trx,&reftotal,pkey)) abortmsg("Error writing author index");
 	return TRUE;
 
 }
@@ -257,31 +297,48 @@ static BOOL reverse_author_key(char *px,char *pxnext)
 {
 	char *p,*p0=px,*psuffix;
 	UINT len;
-	char namebuf[256];
+	char namebuf[512];
 
-	psuffix=strchr(p0,',');
-	if(!psuffix) psuffix=p0+strlen(p0);
+	//first eliminate spaces preceded by periods or commas
+	len=0;
+	for(p=px;*p && (!pxnext || p<pxnext);p++) {
+	   if(*p==' ' && (!len || px[len-1]=='.' || px[len-1]==',')) continue;
+	   px[len++]=*p;
+	}
+	p0[len]=0;
 
-	//Now it's possible JR, III, etc., is not preceeded by a comma --
-	for(p=psuffix-1;p>p0;p--) if(p[-1]==' ') break;
-	if(p>p0 && abbrev_length(p)) {
-		*--p=',';
-		psuffix=p;
+	//set p and psuffix to comma-prefixed suffix, which will be stored after reversed name --
+	psuffix=strrchr(p0, ',');
+	if(!psuffix) {
+		psuffix=p0+strlen(p0);
+		//see if "last name" is actually a known suffix: JR, III, etc.
+		for(p=psuffix-1; p>p0; p--) if(p[-1]==' ') break;
+		if(p>p0 && abbrev_length(p)) {
+			//found a known suffix, so set p to last name past earlier space below
+			*--p=',';
+			psuffix=p;
+		}
+		else {
+			p=psuffix;
+			assert(!*p);
+		}
 	}
 	else p=psuffix;
 
 	if(p>p0 && p[-1]=='.') p--;
+	//p points one past last character of last name -
+	//p0 could be AM ENDE
 
 	len=0;
 
 	for(;p>p0;p--) {
-		if(p[-1]==' ' || p[-1]=='.') {
+		if(p[-1]=='.' || (p[-1]==' ' && !(p-p0>4 && !memcmp(p-4," AM",3)))) {
 			if(len>1) break;
 		}
 		len++;
 	}
 
-	//p points to last name of length len, p0 points to first name of length (p-p0)-1:
+	//p now points to last name of length len, p0 points to first name of length (p-p0)-1:
 
 	if(len+strlen(psuffix)+(p-p0)+4>=sizeof(namebuf)) return FALSE;
 	memcpy(namebuf,p,len);
@@ -293,13 +350,18 @@ static BOOL reverse_author_key(char *px,char *pxnext)
 	if(*psuffix) strcpy(namebuf+len,psuffix);
 	else namebuf[len]=0;
 	if(pxnext && (UINT)(pxnext-px)<=len) return FALSE;
-	strcpy(px,namebuf);
+	//strcpy(px,namebuf);
+	for(p=namebuf; *p; p++) {
+		if(*p!='.' || p[1]!=',') *px++=*p;
+	}
+	*px=0;
 	return TRUE;
 }
 
 static int isdate(nptr *p0)
 {
-	//return 0 (no date or unknown), years>0, or -1 (no date phrase found)
+    // *p0 == ". ", does it precede a date indicator or follow a numeric date?
+	// return 0 (no date or unknown), years>0, or -1 (no date phrase found)
 	int len,date;
 	nptr p=*p0+2;
 
@@ -316,12 +378,12 @@ static int isdate(nptr *p0)
 		!memcmp(p,"IN PRESS",8)) return 0;
 
 	len=0; p=*p0;
+	assert(*p=='.');
 	if(isdigit(p[--len]) && isdigit(p[--len]) &&
 		isdigit(p[--len]) && isdigit(p[--len]) && p[--len]==' ') {
+		//p=". " immediately follows a numeric date, p+len == " nnnn"
 		date=atoi(p+len+1);
-		//Either the period is missing or a comma was used instead of a period --
-		if(p[len-1]==',') len--;
-		*p0=p+len;
+		*p0=p+len; //back up *p0 5 characters so that **p0 == " " 
 		return date;
 	}
 
@@ -377,10 +439,10 @@ static char *skip_ed(char *px)
 }
 
 
-static char *advance_px(char *p)
+static nptr advance_px(nptr p)
 {
-	//*ppx points to the next key to be added, possibly needing to be reversed.
-	//This function terminates this key and advances px to the next name.
+	//p points to the next key to be added, possibly needing to be reversed.
+	//This function terminates this key and returns a pointer to the next name.
 
 	char *px=strstr(p,", ");
 
@@ -403,14 +465,16 @@ static char *advance_px(char *p)
 
 static nptr cleanCopy(nptr p0,nptr px)
 {
-	nptr p;
+	nptr p,pn;
 	UINT lenb,lenc;
 
 	strncpy(p0,px,506);
 	p0[506]=0;
 
 	lenb=lenc=0;
+	pn=NULL;
 	for(px=p=p0;*p;p++) {
+		if(*p=='?') continue;
 		if(*p=='<') {
 			lenb++;
 			continue;
@@ -419,6 +483,7 @@ static nptr cleanCopy(nptr p0,nptr px)
 			if(lenb) lenb--;
 			continue;
 		}
+		if(lenb) continue;
 
 		if(*p=='(') {
 			if(!lenc && px>p0 && px[-1]==' ') px--;
@@ -429,31 +494,68 @@ static nptr cleanCopy(nptr p0,nptr px)
 		if(*p==')') {
 			if(lenc) {
 				lenc--;
-				if(p[1]=='.' && px>p0 && px[-1]==' ') p++;
-				continue;
+				if(p[1]=='.' && px>p0 && px[-1]==' ') {
+					px[-1]='.';
+					p++;
+				}
 			}
+			continue;
 		}
 
-		if(lenb || lenc || *p=='[' || *p==']' || *p=='?') continue;
+		if(lenc) continue;
+
+		if(*p=='[') {
+			if(p[1]!='=') continue;
+			while(px>p0 && *(px-1)==' ') px--;
+			while(px>p0 && *(px-1)!=' ') px--;
+			for(++p;*++p && *p!=']';px++) {
+				*px=is_xspace(*p)?' ':*p;
+				if(*px=='"' || *px=='&' || !isascii(*px)) {
+					logmsg(p0,"Bracketed group has \", &, or non-ascii character");
+				}
+			}
+			if(!*p) break;
+			//*p==']'
+		}
+
+		if(*p==']') {
+			if(p[-1]=='.' && p[1]=='.') p++;
+			continue;
+		}
 
 		if(is_xspace(*p)) {
-			*px++=' ';
+			if(px>p0 && px[-1]!=' ') {
+				*px++=' ';
+			}
 			continue;
+		}
+
+		if(*p=='.') {
+		   if(px>p0 && px[-1]==' ') px--;
+		   *px++='.';
+		   continue;
 		}
 
 		if(*p=='&') {
-			if(!memcmp(p,"&amp;",5)) {
+			if(!memcmp(p, "&quot;", 6)) {
+			    p+=5;
+			}
+			else if(!memcmp(p, "&amp;", 5)) {
 				strcpy(px,"and"); px+=3;
 				p+=4;
 			}
-			else {
-				p=strchr(p,';');
-				if(!p) break;
+			else if(!memcmp(p, "&nbsp;", 6)) {
+			    if(px>p0 && px[-1]!=' ') *px++=' ';
+				p+=5;
+			}
+			else if(!memcmp(p, "&#8209;", 7)) {
+				*px++='-';
+				p+=6;
 			}
 			continue;
 		}
 
-		if(*p=='"') continue;
+		if(*p=='"') continue; //skip quotes
 
 		if(!isascii(*p)) {
 			*px=*p;
@@ -467,21 +569,10 @@ static nptr cleanCopy(nptr p0,nptr px)
 
 	*px=0;
 
-	//Now eliminate multiple spaces --
-	for(px=p=p0;*p;p++) {
-		if(*p==' ') {
-			*px++=' ';
-			while(p[1]==' ') p++;
-			continue;
-		}
-		*px++=*p;
-	}
-	*px=0;
-
 	return p0;
 }
 
-void index_author(int trxno,UINT refno,char *pRef)
+void index_authors(int trxno,UINT refno,char *pRef)
 {
 	byte *px,*p,*p0;
 	UINT len;
@@ -491,59 +582,140 @@ void index_author(int trxno,UINT refno,char *pRef)
 	trx=trxno;
 	reftotal=refno;
 
+	//only need upper-case to handle authors and trailing date -
 	p0=_strupr(cleanCopy((nptr)buffer,(nptr)pRef));
 
-	for(p=p0;p && *p;p=strstr(++p,". ")) {
+	for(p=p0;*p && (p=strstr(++p,". "));p++) {
 		if((date=isdate(&p))>=0) break;
 	}
-	
-	IndexDate(date);
 
-	if(date>0 && (date<1800 || date>2020)) logmsg(p0,"Date is questionable");
+	IndexDate(date); //date<=0 treated as no date
 
 	if(!p) {
-		len=strlen(p0);
-		if(len>=9 && !memcmp(p0,"ANONYMOUS",9)) len=9;
-		else if(len>=14 && !memcmp(p0,"AUTHOR UNKNOWN",14)) len=14;
-		else {
-			logmsg(p0,"Date unrecognized - no names indexed");
+		// no recognizable date or no ". " found in reference --
+		logmsg(p0, "Error: Date (\" nnnn.\" or \" n.d.\") not found - no names indexed");
+		return;
+	}
+
+	len=p-p0;
+	while(len && (p0[len-1]==',' || p0[len-1]=='.' || p0[len-1]== ' ')) len--;
+
+	assert(date>=0);
+	if(date && (date<1800 || date>2020)) {
+		logmsg(p0, "Date is questionable");
+	}
+
+	if(!len) {
+		logmsg(p0, "Error: No names found to index");
+		return;
+	}
+
+	p0[len]=0; //remove trailing period and date
+
+	#if 1
+	if(!pfxcmp(p0, "HAUWERT. N. [=NICO] M., D.")) {
+		int jj=0;
+	}
+	#endif
+
+	//Author string is an association if name following "AND" suggests it is --
+	assert(*p0!=' ');
+	if((px=strstr(p0, " AND ")) && !pfxcmp(px+5, "ASSOCIATES") && px[15]!=',') {
+		if(px[-1]!=',') {
+			add_author_key(p0, TRUE);
 			return;
 		}
-	}
-	else {
-		len=p-p0;
-		if(len && p0[len-1]=='.') len--;
+		*--px=0;
 	}
 
-	if(date<0) logmsg(p0,"Date missing or unrecognized");
+	if(!(px=strrchr(p0, ','))) {
+		if(!pfxcmp(p0, "ANONYMOUS")) {
+			p0[9]=0;
+			add_author_key(p0, FALSE);
+			return;
+		}
+		//No commas - compound association?
+_retry:
+		for(p=p0; *p;) {
+			px=strchr(p, '.');
+			if(!px) px=p+strlen(p);
+			if(px-p<4) {
+				add_author_key(p0, TRUE);
+				return;
+			}
+			if(!*px) break;
+			p=px+1;
+			if(*p==' ') p++;
+		}
 
-	p0[len]=0;
-	p=p0;
+		if(len==px-p) {
+			add_author_key(p0, TRUE);
+			return;
+		}
 
-	if(!(px=strchr(p,','))) {
-		add_author_key(p);
+		logmsg(p0, "Multiple organizations indexed");
+
+		for(p=p0; *p;) {
+			px=strchr(p, '.');
+			if(!px) px=p+strlen(p);
+			else *px++=0;
+			add_author_key(p, TRUE);
+			p=px;
+			if(*p==' ') p++;
+		}
+
 		return;
+	}
+
+	//*px is last comma in colplete author string
+	if(*++px==' ') px++;
+
+	if(!strcmp(px, "EDS") || !pfxcmp(px, "EDITOR") || !pfxcmp(px, "DIRECTOR") ||
+		!pfxcmp(px, "MODERATOR") || !pfxcmp(px, ", AND ASSOCIATES")) {
+		while(px>p0 && (px[-1]==' ' || px[-1]==',' || px[-1]=='.')) px--;
+		*px=0;
+	}
+	else if(!strcmp(px, "INC") || !strcmp(px, "LLC")) {
+		while(px>p0 && (px[-1]==' ' || px[-1]==',' || px[-1]=='.')) px--;
+		*px=0;
+		add_author_key(p0, 2); //don't note in log?
+		return;
+	}
+
+	if(!*p0) goto _err;
+
+	if(!(px=strchr(p0, ','))) {
+		add_author_key(p0, TRUE);
+		return;
+	}
+
+	//count words in first name --
+	len=1;
+	for(p=p0; p<px; p++) if(*p==' ') len++;
+	if(len>3) {
+		//index multiple associations --
+		goto _retry;
 	}
 
 	if(*++px==' ') px++;
 
-	px=advance_px(px);
-	if(!*p) goto _err;
+	px=advance_px(px); //advance past common modifyers, "EDS", etc.
 
 	while(TRUE) {
-		if(!add_author_key(p)) break;
+	    //p0 is current name, px is next name --
+		if(!add_author_key(p0,FALSE)) break;
 		if(!px) break;
 		if(!*px) {
 			abortmsg("Unexpected parse error: Reference %u",reftotal);
 		}
-		p=px;
+		p0=px;
 		px=advance_px(px);
-		if(!reverse_author_key(p,px)) goto _err;
+		if(!reverse_author_key(p0,px)) goto _err;
 	}
 	return;
 
 _err:
-	logmsg(cleanCopy((nptr)buffer,(nptr)pRef),"Unrecognized format for name(s)");
+	logmsg(cleanCopy((nptr)buffer,(nptr)pRef),"Invalid format for name(s)");
 	return;
 }
 
@@ -609,6 +781,58 @@ nptr elim_all_ins(nptr p0)
 	return skip_space_types(p0);
 }
 
+nptr elim_all_ole(nptr p,BOOL bNote,UINT *uLinksOLE)
+{
+	//remove any <a name=xxx></a> or <a name=xxx>...</a>
+	nptr p0,p1;
+	while(p0=strstr(p, "<a name=")) {
+		*uLinksOLE=*uLinksOLE+1;
+		if(bNote) logmsg(p0, "Note: Link removed from paragraph");
+		if(!(p1=strchr(p0, '>'))) return NULL;
+		p1++;
+		strcpy(p0, p1);
+		if(!(p1=strstr(p0, "</a>"))) return NULL;
+		strcpy(p1, p1+4);
+	}
+	return p;
+}
+
+nptr elim_all_spans(nptr p)
+{
+	//remove any <a name=xxx></a> or <a name=xxx>...</a>
+	nptr p0, p1;
+	while(p0=strstr(p, "<span ")) {
+		if(!(p1=strchr(p0, '>'))) return NULL;
+		p1++;
+		strcpy(p0, p1);
+		if(!(p1=strstr(p0, "</span>"))) return NULL;
+		strcpy(p1, p1+7);
+	}
+	return p;
+}
+
+static BOOL is_abbrev2(LPSTR p)
+{
+	static LPCSTR abbrev2[]={ "NO","FT","MI","MR","MT","ST","JR" };
+	int i=sizeof(abbrev2)/sizeof(LPCSTR)-1;
+	p-=1;
+	for(; i>=0; i--) {
+		if(!memicmp(p, abbrev2[i], 2)) break;
+	}
+	return i>=0;
+}
+
+static BOOL is_abbrev3(LPSTR p)
+{
+	static LPCSTR abbrev3[]={ "NOS","BLK","SEC","HWY","MRS" };
+	int i=sizeof(abbrev3)/sizeof(LPCSTR)-1;
+	p-=2;
+	for(; i>=0; i--) {
+		if(!memicmp(p, abbrev3[i], 2)) break;
+	}
+	return i>=0;
+}
+
 apfcn_v parse_keywords(nptr p0)
 {
 	nptr p;
@@ -621,13 +845,18 @@ apfcn_v parse_keywords(nptr p0)
 
 	nParseKW++;
 
+#ifdef _DEBUG
+	if(reftotal==3102) {
+		int jj=0;
+	}
+#endif
+
 	while(*p) {
 		keylen=toklen=0;
 		while(iskeydelim(*p)) p++;
 		bLastSpc=TRUE;
 
 		for(;*p;p++) {
-
 			if(*p=='<') {
 				p=skip_tag(p);
 				p--;
@@ -637,6 +866,7 @@ apfcn_v parse_keywords(nptr p0)
 			if(is_xspace(*p)) {
 				if(bLastSpc) continue;
 				bLastSpc=TRUE;
+				if(!keylen) continue;
 				c=' ';
 				goto _next;
 			}
@@ -646,6 +876,7 @@ apfcn_v parse_keywords(nptr p0)
 					p+=5;
 					if(bLastSpc) continue;
 					bLastSpc=TRUE;
+					if(!keylen) continue;
 					c=' ';
 					goto _next;
 				}
@@ -658,7 +889,11 @@ apfcn_v parse_keywords(nptr p0)
 					p+=4;
 				}
 				else if(!memicmp(p,"&mdash;",7)) {
-					c=0xBE;
+					c='-';
+					p+=6;
+				}
+				else if(!memcmp(p, "&#8209;", 7)) {
+					c='-';
 					p+=6;
 				}
 				else c='&';
@@ -673,36 +908,20 @@ apfcn_v parse_keywords(nptr p0)
 				*p='.';
 			}
 
-			if(*p=='.' && (is_xspace(p[1]) || p[1]=='<')  && toklen!=1) {
-				if(toklen!=2 || 
-					(
-					!(keybuf[keylen-1]=='N' && keybuf[keylen]=='O') &&
-					!(keybuf[keylen-1]=='F' && keybuf[keylen]=='T') &&
-					!(keybuf[keylen-1]=='M' && keybuf[keylen]=='I') &&
-					!(keybuf[keylen-1]=='M' && keybuf[keylen]=='R') &&
-					!(keybuf[keylen-1]=='M' && keybuf[keylen]=='T') &&
-					!(keybuf[keylen-1]=='S' && keybuf[keylen]=='T') &&
-					!(keybuf[keylen-1]=='J' && keybuf[keylen]=='R')
-					))
-				{
-					if(toklen!=3 ||
-						(
-						!(keybuf[keylen-2]=='N' && keybuf[keylen-1]=='O' && keybuf[keylen]=='S') &&
-						!(keybuf[keylen-2]=='B' && keybuf[keylen-1]=='L' && keybuf[keylen]=='K') &&
-						!(keybuf[keylen-2]=='S' && keybuf[keylen-1]=='E' && keybuf[keylen]=='C') &&
-						!(keybuf[keylen-2]=='H' && keybuf[keylen-1]=='W' && keybuf[keylen]=='Y') &&
-						!(keybuf[keylen-2]=='M' && keybuf[keylen-1]=='R' && keybuf[keylen]=='S')
-						))
-					{
-						p++;
-						break;
+			if(*p=='.' ) {
+			    if(!p[1]) break;
+				if(is_xspace(p[1]) || p[1]=='<' || !pfxcmp(p+1,"&nbsp;")) {
+					if(!((toklen==1 && isalpha(keybuf[keylen])) || toklen==2 && is_abbrev2(keybuf+keylen) || toklen==3 && is_abbrev3(keybuf+keylen))) {
+					    break;
 					}
 				}
 			}
 
 			c=*p;
 _next:
-			if(isalpha(c)) toklen++;
+			if(isalpha(c) || isdigit(c)) {
+			  toklen++;
+			}
 			else toklen=0;
 
 			if(keylen<TRX_MAX_KEYLEN) keybuf[++keylen]=toupper(c);
@@ -712,15 +931,8 @@ _next:
 		if(keylen) {
 			*keybuf=(byte)keylen;
 			keybuf[keylen+1]=0;
-#ifdef _DEBUG
-			if(strstr(keybuf,"BROWNWOOD")) {
-				c=0;
-			}
-#endif
 			condition_key(keybuf);
 			AddKeyword(keybuf);
 		}
 	}
 }
-
-

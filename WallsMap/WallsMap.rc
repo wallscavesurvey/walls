@@ -25,13 +25,21 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 //
 
 IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+
 IDB_POLYLINE            BITMAP                  "res\\bmp00002.bmp"
+
 IDB_SCALEBAR            BITMAP                  "res\\bmp00001.bmp"
+
 IDB_CHECKBOXES          BITMAP                  "res\\checkboxes.bmp"
+
 IDB_DRAGINFO            BITMAP                  "res\\draginfo.bmp"
+
 IDB_CHECKBOX4           BITMAP                  "res\\checkbox.bmp"
+
 IDB_FOLDERS_IMG         BITMAP                  "res\\folders-img.bmp"
+
 IDB_WHITE               BITMAP                  "res\\White-20x18.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -119,8 +127,11 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\icon1.ico"
+
 IDI_FOLDERCLOSE         ICON                    "res\\folderclose.ico"
+
 IDI_FOLDEROPEN          ICON                    "res\\folderopen.ico"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -377,6 +388,7 @@ BEGIN
         MENUITEM "Zoom 4X to location",         ID_ZOOM_VIEW
         MENUITEM "Copy coordinates",            ID_SHOW_COPYLOC
         MENUITEM "Paste coordinates",           ID_SHOW_PASTELOC
+        MENUITEM "Set unlocated",               33288
         MENUITEM SEPARATOR
         POPUP "Locate in Google Earth"
         BEGIN
@@ -569,6 +581,20 @@ BEGIN
     END
 END
 
+IDR_IMG_CONTEXT MENU
+BEGIN
+    POPUP ""
+    BEGIN
+        MENUITEM "Undo\tCtrl+Z",                ID_EDIT_UNDO
+        MENUITEM "Redo\tCtrl+Y",                57644
+        MENUITEM SEPARATOR
+        MENUITEM "Cut\tCtrl+X",                 ID_EDIT_CUT
+        MENUITEM "Copy\tCtrl+C",                ID_EDIT_COPY
+        MENUITEM "Paste\tCtrl+V",               ID_EDIT_PASTE
+        MENUITEM "Select &All\tCtrl+A",         40007
+    END
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -696,7 +722,7 @@ BEGIN
     CTEXT           "",IDC_ST_TITLE,40,11,226,22,SS_NOPREFIX
     LTEXT           "To download the most recent build, click on this link:",IDC_STATIC,29,63,235,9
     LTEXT           "Acknowledgement: This program takes advantage of the open source Geospatial Data Abstraction Library (GDAL) available at www.gdal.org.",IDC_STATIC,30,35,242,24
-    LTEXT           "davidmck.fmnetdesign.com/WallsMap.htm",IDC_NEWURL,29,75,250,13
+    LTEXT           "texasspeleologicalsurvey.org/software/wallsmap/",IDC_NEWURL,29,75,250,13
 END
 
 IDD_PAGE_DETAILS DIALOGEX 0, 0, 322, 182
@@ -1122,29 +1148,32 @@ BEGIN
     LTEXT           "Scale of symbol equivalence:",IDC_STATIC,211,127,57,15
 END
 
-IDD_GEDEFAULTSDLG DIALOGEX 0, 0, 317, 169
+IDD_GEDEFAULTSDLG DIALOGEX 0, 0, 361, 194
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Google Earth (KML) Launch Options"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
-    EDITTEXT        IDC_RANGE,49,43,41,13,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT_SINGLE,56,79,239,14,ES_AUTOHSCROLL
-    EDITTEXT        IDC_EDIT_MULTIPLE,56,99,239,14,ES_AUTOHSCROLL
-    EDITTEXT        IDC_MSIZE,50,128,33,13,ES_AUTOHSCROLL | ES_READONLY | ES_NUMBER
-    CONTROL         "",IDC_SPIN_MSIZE,"msctls_updown32",UDS_WRAP | UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,75,128,11,12
-    EDITTEXT        IDC_LSIZE,130,128,33,13,ES_AUTOHSCROLL | ES_READONLY | ES_NUMBER
-    CONTROL         "",IDC_SPIN_LSIZE,"msctls_updown32",UDS_WRAP | UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,155,128,11,12
-    PUSHBUTTON      "Load Defaults",IDC_LOAD_DFLTS,144,151,53,14
-    DEFPUSHBUTTON   "OK",IDOK,201,151,53,14
-    PUSHBUTTON      "Cancel",IDCANCEL,259,151,53,14
-    LTEXT           "Range in\nmeters:",IDC_STATIC,15,41,30,17
-    LTEXT           "Range is the horizontal extent of the initial view in Google Earth when you fly to a single point.",IDC_STATIC,96,41,185,18
-    LTEXT           "Icon Size:",IDC_STATIC,16,129,32,8
-    LTEXT           "These program settings are used to construct the KML sent to Google Earth when you select ""Locate in Google Earth"" via a right-click pop-up menu.",IDC_STATIC,15,14,282,21
-    GROUPBOX        "Placemark icon URLs",IDC_STATIC,9,67,303,53
-    LTEXT           "Single Pt:",IDC_STATIC,16,81,32,8
-    LTEXT           "Multiple Pt:",IDC_STATIC,16,101,38,8
-    LTEXT           "Label Size:",IDC_STATIC,93,129,36,8
+    EDITTEXT        IDC_PATHNAME,7,35,330,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDBROWSE,340,35,17,13
+    EDITTEXT        IDC_RANGE,49,75,41,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_SINGLE,56,110,291,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_MULTIPLE,56,130,291,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MSIZE,50,155,33,13,ES_AUTOHSCROLL | ES_READONLY | ES_NUMBER
+    CONTROL         "",IDC_SPIN_MSIZE,"msctls_updown32",UDS_WRAP | UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,75,155,11,12
+    EDITTEXT        IDC_LSIZE,130,155,35,13,ES_AUTOHSCROLL | ES_READONLY | ES_NUMBER
+    CONTROL         "",IDC_SPIN_LSIZE,"msctls_updown32",UDS_WRAP | UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,155,155,11,12
+    PUSHBUTTON      "Load Defaults",IDC_LOAD_DFLTS,181,176,53,14
+    DEFPUSHBUTTON   "OK",IDOK,243,176,53,14
+    PUSHBUTTON      "Cancel",IDCANCEL,304,176,53,14
+    LTEXT           "Range in\nmeters:",IDC_STATIC,15,73,30,17
+    LTEXT           "Range is the horizontal extent of the initial view in Google Earth when you fly to a single point.",IDC_STATIC,96,73,244,18
+    LTEXT           "Icon Size:",IDC_STATIC,16,156,32,8
+    LTEXT           "The following settings are used to construct the KML files optionally sent to Google Earth:",IDC_STATIC,7,56,334,13
+    GROUPBOX        "Placemark icon URLs",IDC_STATIC,8,98,350,76
+    LTEXT           "Single Pt:",IDC_STATIC,16,112,32,8
+    LTEXT           "Multiple Pt:",IDC_STATIC,16,132,38,8
+    LTEXT           "Label Size:",IDC_STATIC,93,156,36,8
+    LTEXT           "The box below should have the full path to the Google Earth executable.  If it's empty, no GE installation was automatically detected, in which case you'll need to specify it here to enable ""fly to"" operations.",IDC_STATIC,8,10,344,16
 END
 
 IDD_SELEDITED DIALOGEX 0, 0, 254, 120
@@ -1227,7 +1256,6 @@ CAPTION "Image Properties"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     EDITTEXT        IDC_CAPTION,83,66,225,14,ES_AUTOHSCROLL
-    EDITTEXT        IDC_DESCRIPTION,11,96,318,66,ES_MULTILINE | ES_WANTRETURN | WS_VSCROLL
     DEFPUSHBUTTON   "OK",IDOK,226,167,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,281,167,50,14
     EDITTEXT        IDC_PATHNAME,20,23,303,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER
@@ -1236,6 +1264,7 @@ BEGIN
     LTEXT           "Size:",IDC_ST_SIZE,22,39,298,8
     GROUPBOX        "",IDC_STATIC,7,13,324,42
     LTEXT           "File Information:",IDC_STATIC,15,6,70,8
+    LTEXT           "",IDC_STATIC_PLACEMENT,7,96,324,66,NOT WS_VISIBLE
 END
 
 IDD_IMGZOOM DIALOGEX 0, 0, 257, 104
@@ -1578,8 +1607,8 @@ BEGIN
     EDITTEXT        IDC_PATHNAME,40,75,300,12,ES_AUTOHSCROLL
     PUSHBUTTON      "...",IDBROWSE,344,75,19,12
     EDITTEXT        IDC_ARGUMENTS,83,95,164,12,ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "OK",IDOK,249,123,52,14
-    PUSHBUTTON      "Cancel",IDCANCEL,311,123,52,14
+    DEFPUSHBUTTON   "OK",IDOK,249,125,52,14
+    PUSHBUTTON      "Cancel",IDCANCEL,311,125,52,14
     LTEXT           "",IDC_ST_MSGHDR,9,13,347,42
     GROUPBOX        "",IDC_STATIC,1,3,361,57
     LTEXT           "Program:",IDC_STATIC,5,76,31,9
@@ -1661,7 +1690,7 @@ BEGIN
             VALUE "FileDescription", "WallsMap executable"
             VALUE "FileVersion", "0.3"
             VALUE "InternalName", "WallsMap.exe"
-            VALUE "LegalCopyright", "(c) 2014, David McKenzie"
+            VALUE "LegalCopyright", "(c) 2016, David McKenzie"
             VALUE "OriginalFilename", "WallsMap.exe"
             VALUE "ProductName", "WallsMap GIS Viewer"
             VALUE "ProductVersion", "0.3"
@@ -1851,10 +1880,10 @@ BEGIN
 
     IDD_GEDEFAULTSDLG, DIALOG
     BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 312
+        LEFTMARGIN, 1
+        RIGHTMARGIN, 358
         TOPMARGIN, 7
-        BOTTOMMARGIN, 165
+        BOTTOMMARGIN, 190
     END
 
     IDD_SELEDITED, DIALOG
@@ -2025,7 +2054,7 @@ BEGIN
     IDD_COMPARE_FCN, DIALOG
     BEGIN
         RIGHTMARGIN, 363
-        BOTTOMMARGIN, 127
+        BOTTOMMARGIN, 139
     END
 
     IDD_COPYSELECTED, DIALOG
@@ -2216,11 +2245,53 @@ END
 //
 
 IDC_MEASURE             CURSOR                  "res\\measure.cur"
+
 IDC_CURSOR_ZOOMOUT      CURSOR                  "res\\cursor_zoomout.cur"
+
 IDC_CURSOR_ZOOMIN       CURSOR                  "res\\cursor_zoomin.cur"
+
 IDC_CURSOR_HAND         CURSOR                  "res\\cursor_hand.cur"
+
 IDC_CURSOR_SELECT       CURSOR                  "res\\cursor1.cur"
+
 IDC_CURSOR_SELECTADD    CURSOR                  "res\\cur00001.cur"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_EDITIMAGE AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DBTEDITDLG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_GEDEFAULTSDLG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_COMPARE_FCN AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_ADVANCED_SRCH AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_ABOUTBOX AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -2384,7 +2455,7 @@ BEGIN
     IDS_INSERT_FILELINK     "Select File for Opening via URL"
     IDS_SAVETOFILE          "File Path and Name for Saving Selected Text"
     IDP_AFXOLEINIT_FAILED   "Failed to initialize Object Linking and Embedding"
-    IDS_ABOUT_TITLE         "WallsMap v0.3, Build 2015-03-09 (%s)\nCopyright © 2015 David McKenzie, Austin TX."
+    IDS_ABOUT_TITLE         "WallsMap v0.3, Build 2016-10-25%s\nCopyright © 2016 David McKenzie, Austin TX."
     IDS_WEBMAP_INFO         "Enter a URL for instructing your default browser to open a web mapping application at a specific location. Your entry must include ""<LAT>"" and ""<LON>"" (no quotes) as placeholders for the location's latitude and longitude in decimal degrees. Optionally include ""<NAM>"" for a label."
     IDS_FMT_PLACEMARK       "\t<Placemark>\r\n\t\t<name>%s</name>\r\n%s%s\r\n\t\t<styleUrl>#sn_W</styleUrl>\r\n\t\t<Point><coordinates>%.7f,%.7f,0</coordinates></Point>\r\n\t</Placemark>\r\n"
     IDS_FMT_LOOKAT          "%s<LookAt>\r\n%s<longitude>%.7f</longitude><latitude>%.7f</latitude>\r\n%s<altitude>0</altitude><range>%u</range><tilt>0</tilt><heading>0</heading>\r\n%s</LookAt>"

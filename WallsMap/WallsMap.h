@@ -72,6 +72,7 @@ public:
     static CMultiDocTemplate *m_pDocTemplate;
 	static BOOL m_bBackground;
 	static BOOL m_bNoAddRecent;
+	CString m_csUrlPath;
 
 // Overrides
 	virtual void WinHelpInternal(DWORD_PTR dwData, UINT nCmd = HELP_CONTEXT);

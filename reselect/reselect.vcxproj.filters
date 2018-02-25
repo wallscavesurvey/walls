@@ -115,7 +115,6 @@
     <None Include="res\search.htm" />
     <None Include="res\texbib.htm" />
     <None Include="res\tssrect.avi" />
-    <None Include="mapxmod.asm" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

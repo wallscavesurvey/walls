@@ -150,6 +150,7 @@ BEGIN_MESSAGE_MAP(CShowShapeDlg, CResizeDlg)
 	//ON_BN_CLICKED(IDC_SAVEATTR, OnBnClickedSaveattr)
 	ON_BN_CLICKED(IDC_RESETATTR, OnBnClickedResetattr)
 	ON_COMMAND(ID_SHOW_CLEAREDITED, OnClearEdited)
+	ON_COMMAND(ID_SHOW_SETUNLOCATED, OnSetUnlocated)
 	ON_COMMAND(ID_SHOW_UNSELECT, OnUnselect)
 	ON_UPDATE_COMMAND_UI(ID_SHOW_UNSELECT, OnUpdateUnselect)
 	ON_COMMAND(ID_EXPORT_SHAPES, OnExportShapes)
@@ -898,8 +899,12 @@ void CShowShapeDlg::OnRclickTree(NMHDR* pNMHDR, LRESULT* pResult)
 			pPopup->DeleteMenu(ID_SHOW_DELETE,MF_BYCOMMAND);
 			pPopup->DeleteMenu(ID_SHOW_PASTELOC,MF_BYCOMMAND); //Copy OK
 			pPopup->DeleteMenu(ID_SHOW_CLEAREDITED,MF_BYCOMMAND);
+			pPopup->DeleteMenu(ID_SHOW_SETUNLOCATED,MF_BYCOMMAND);
 		}
 		else {
+			if(!m_pSelLayer->m_pdbfile->noloc_lat && !m_pSelLayer->m_pdbfile->noloc_lon) {
+				pPopup->DeleteMenu(ID_SHOW_SETUNLOCATED,MF_BYCOMMAND);
+			}
 			{
 				CString sPaste;
 				bool butm=m_bUtmDisplayed; //paste can cause switch from utm to lat/long --
@@ -1065,9 +1070,15 @@ bool CShowShapeDlg::IsFieldEmpty(UINT nFld)
 
 bool CShowShapeDlg::DiscardShpEditsOK()
 {
-	bool bret=(IDOK==CMsgBox(MB_OKCANCEL,"You've directly edited the coordinates displayed for %s. "
-				"To revise the location you must press the Relocate button before unselecting or leaving that item.\n"
-				"\nPress OK discard edits and leave, or CANCEL to continue editing.",GetTreeLabel(m_hSelItem)));
+	CString s;
+	if(!IsEnabled(IDC_RELOCATE))
+		s.Format("The coordinate values you've entered for %s aren't recognized as valid. You must make them valid (or press Reset Loc)",GetTreeLabel(m_hSelItem));
+	else
+		s.Format("You've directly edited the coordinates displayed for %s. To revise the location you must press the Relocate button",GetTreeLabel(m_hSelItem));
+
+	bool bret=(IDOK==CMsgBox(MB_OKCANCEL,"%s before unselecting or leaving that item.\n"
+				"\nPress OK discard edits and leave, or CANCEL to continue editing.",(LPCSTR)s));
+
 	if(bret) OnBnClickedUndoEdit();
 	return bret;
 }
@@ -1334,7 +1345,7 @@ LRESULT CShowShapeDlg::OnGetListItem(WPARAM wParam, LPARAM lParam)
 				if(!memo_chr && !m_pNewShpRec && !pdb->Go(m_uSelRec)) {
 					UINT dbtrec=CDBTFile::RecNo((LPCSTR)GetFldPtr(fld));
 					if(dbtrec) {
-						UINT uDataLen=SIZ_FLDVALUE-1;
+						UINT uDataLen=1023; //SIZ_FLDVALUE-1;
 						p=dbt_GetMemoHdr(m_pSelLayer->m_pdbfile->dbt.GetText(&uDataLen,dbtrec),LEN_MEMO_HDR);
 						memo_chr=*p; p+=2;
 					}
@@ -1502,6 +1513,7 @@ void CShowShapeDlg::OnShowPasteloc()
 		double f0,f1;
 		int ix=CheckCoordinatePair(s,butm,&f0,&f1);
 		ASSERT(ix);
+		ElimSlash(csPaste);
 		cfg_quotes=FALSE;
 		int n=cfg_GetArgv((LPSTR)(LPCSTR)csPaste,CFG_PARSE_ALL);
 		cfg_quotes=TRUE;
@@ -1545,6 +1557,44 @@ void CShowShapeDlg::OnShowPasteloc()
 		Enable(IDC_RELOCATE);
 		Enable(IDC_RESTORE);
 	}
+}
+
+void CShowShapeDlg::OnSetUnlocated()
+{
+	double lat=m_pSelLayer->m_pdbfile->noloc_lat;
+	double lon=m_pSelLayer->m_pdbfile->noloc_lon;
+
+	m_iZoneSel=GetZone(lat,lon);
+	SetText(IDC_UTMZONE,GetIntStr(m_iZoneSel));
+	if(m_bUtmDisplayed) {
+		//auto switch to lat/long!
+		m_bUtmDisplayed=false;
+		SetRO(IDC_UTMZONE,TRUE);
+		Show(IDC_SPIN_UTMZONE,FALSE);
+		CheckRadioButton(IDC_TYPEGEO,IDC_TYPEUTM,IDC_TYPEGEO);
+		SetCoordLabels();
+	}
+	char buf[32];
+	buf[31]=0;
+
+	m_bInitFlag=true;
+	_snprintf(buf,31,"%.7f",lat);
+	Enable(IDC_EDIT_EAST); //In case moving away from a root
+	SetText(IDC_EDIT_EAST,buf);
+	_snprintf(buf,31,"%.7f",lon);
+	Enable(IDC_EDIT_NORTH);
+	SetText(IDC_EDIT_NORTH,buf);
+	m_bInitFlag=false;
+
+	if(m_iNadSel==2) {
+		ASSERT(IsChecked(IDC_DATUM2));
+	    CheckRadioButton(IDC_DATUM1,IDC_DATUM2,IDC_DATUM1);
+		m_iNadSel=1;
+	    m_pDoc->m_bShowAltNad=(m_iNadDoc!=1);
+	}
+	m_bEditShp=m_bValidEast=m_bValidNorth=m_bValidZone=true;
+	Enable(IDC_RELOCATE);
+	Enable(IDC_RESTORE);
 }
 
 void CShowShapeDlg::NoSearchableMsg()

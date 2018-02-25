@@ -9,16 +9,31 @@
 #include <trx_file.h>
 #include <dbf_file.h>
 
+#undef _USE_FILTER //span-related bug in filter.exe (see filter_bug.txt)
+
 //Functions in indexa.c --
+
+extern char filename[128];
+extern UINT logtotal;
+extern FILE *fplog;
+
+BOOL pfxcmp(LPCSTR p, LPCSTR pfx);
 BOOL is_xspace(byte i);
 nptr skip_space_types(nptr p);
-void index_author(int trxno,UINT refno,char *pRef);
+void index_authors(int trxno,UINT refno,char *pRef);
 apfcn_v parse_keywords(nptr p0);
 apfcn_n skip_tag(nptr p);
 nptr elim_all_st(nptr p0,int n);
 nptr elim_all_ins(nptr p0);
+nptr elim_all_ole(nptr p,BOOL bNote,DWORD *uLinksOLE);
+nptr elim_all_spans(nptr p);
+apfcn_v logmsg(LPSTR p, LPCSTR s);
 
-static char hdr[]="REBUILD v1.07\nBibliographic Database Compilation (c) 2008, D. McKenzie\n";
+#define RMARGIN 72
+#define LEN_REFIDX (16*1024)
+static WORD refidx[LEN_REFIDX];
+
+static char hdr[]="REBUILD v3.0\nBibliographic Database Compilation (c) 2015, D. McKenzie\n";
 
 #define MAX_FNAMES 50
 #define MAX_KWADDS 500
@@ -61,9 +76,9 @@ struct {
 } dbkRec={0};
 #pragma pack()
 
-static FILE *fp,*fphtx,*fplog;
+static FILE *fp,*fphtx;
 static char *kwname[MAX_KWNAMES];
-static UINT num_fnames,num_kwadds,linecnt,refcnt,reftotal,logtotal,nameidx,num_kwnames;
+static UINT num_fnames,num_kwadds,linecnt,refcnt,reftotal,nameidx,num_kwnames;
 static byte linebuf[SIZ_LINEBUF];
 static byte refbuf[SIZ_REFBUF];
 static byte cfgname[MAXPATH],fspec[MAXPATH];
@@ -74,13 +89,13 @@ static char namebuf[SIZ_NAMEBUF];
 static UINT inamebuf;
 static UINT kw_parsed;
 
-static UINT num_datekeys,siz_datekeys;
+static UINT num_datekeys,siz_datekeys,uLinksOLE;
 static DATEKEY comp_datekey;
 static DATEKEY *datekeys;
 
 static int trx,dbf,dbk;
-static BOOL bPause,bErrRefNo,bKeepTemp,nColonKeys,nColonRefs,bBold,bRefBold;
-
+static BOOL bErrRefNo,nColonKeys,nColonRefs,bBold,bRefBold;
+static BOOL bIndexClass,bBibClass;
 static char titlebuf[SIZ_LINEBUF];
 static char *title="Bibliographic Database";
 
@@ -127,45 +142,26 @@ acfcn_v abortmsg(nptr format,...)
   if(trx) trx_CloseDel(trx);
   if(dbf) dbf_CloseDel(dbf);
   if(dbk) dbf_CloseDel(dbk);
-  if(bPause) pause("to exit");
+  pause("to exit");
   exit(1);
 }
 
-static void openlog(nptr hdr)
+apfcn_v openlog(nptr hdr)
 {
 	int i;
 
 	byte logname[128];
 
-	trx_Stcext(logname,cfgname,"LOG",128);
+	if(!fplog) {
+		trx_Stcext(logname, cfgname, "LOG", MAXPATH);
+		if((fplog=fopen(logname, "wt"))==NULL) abortmsg("Cannot open %s", logname);
+	}
+	else putc('\n', fplog);
 
-	if((fplog=fopen(logname,"wt"))==NULL)
-		abortmsg("Cannot open %s",logname);
 	i=fprintf(fplog,"%s - %s",cfgname,hdr);
 	putc('\n',fplog);
 	while(i--) putc('=',fplog);
 	putc('\n',fplog);
-}
-
-apfcn_v logmsg(nptr p, nptr s)
-{
-  char prefix[36];
-  int i;
-
-  if(!fplog) {
-	  openlog("QUESTIONABLE ITEMS");
-	  putc('\n',fplog);
-  }
-  strncpy(prefix,p,30);
-  if(prefix[29]!=0) strcpy(prefix+29,"...");
-  if(*prefix!='<' && (p=strchr(prefix,'<'))) *p=0;
-  if((i=strlen(prefix))<32) while(i++<32) strcat(prefix," ");
-  p=trx_Stpext(fname[nameidx]);
-  if(*p) *p=0;
-  else p=0;
-  fprintf(fplog,"%s:%5u. %s - %s.\n",fname[nameidx],reftotal,prefix,s);
-  if(p) *p='.';
-  logtotal++;
 }
 
 static void abort_format(nptr msg)
@@ -173,37 +169,22 @@ static void abort_format(nptr msg)
   abortmsg("File %s, line %d: Bad format: %s",fname[nameidx],linecnt,msg);
 }
 
-static BOOL get_cline(void)
-{
-  nptr p=linebuf;
-  int c;
-
-  while((c=getc(fp))!=EOF && c!='\n') {
-    if(p<linebuf+SIZ_LINEBUF-1) *p++=c;
-    else {
-		linecnt++;
-		abort_format("Line too long");
-	}
-  }
-  *p=0;
-  if(c==EOF && p==linebuf) return FALSE;
-  linecnt++;
-  return TRUE;
-}
-
 static void elim_outerbold(nptr p0)
 {
-	int len;
+	int len,npfx;
 	nptr p;
 
 	bBold=FALSE;
 
-	if(!memcmp(p0,"<b>",3)) {
+	if(!pfxcmp(p0,"<b")) {
+		p=skip_tag(p0);
+		if(*(p-1)!='>') abort_format("\">\" expected following \"<b\"");
+		npfx=p-p0;
 		len=1;
-		for(p=p0+3;*p;p++) {
+		for(;*p;p++) {
 			if(*p=='<') {
-				if(!memcmp(p,"</b>",4)) {
-					if(!memcmp(p+4,"<b>",3)) {
+				if(!pfxcmp(p,"</b>")) {
+					if(!pfxcmp(p+4,"<b>")) {
 						STRCPY_LEFT(p,p+7);
 						p--;
 					}
@@ -212,7 +193,7 @@ static void elim_outerbold(nptr p0)
 						p+=3;
 					}
 				}
-				else if(!memcmp(p,"<b>",3)) {
+				else if(!pfxcmp(p,"<b>")) {
 					len++;
 					p+=2;
 				}
@@ -220,7 +201,7 @@ static void elim_outerbold(nptr p0)
 		}
 		if(!len) {
 			STRCPY_LEFT(p,p+4);
-			STRCPY_LEFT(p0,p0+3);
+			STRCPY_LEFT(p0,p0+npfx);
 			bBold=TRUE;
 		}
 	}
@@ -237,6 +218,24 @@ static void repl_chr(nptr p,int c,nptr s)
 	}
 }
 
+static BOOL get_cline(void)
+{
+	nptr p=linebuf;
+	int c;
+
+	while((c=getc(fp))!=EOF && c!='\n') {
+		if(p<linebuf+SIZ_LINEBUF-1) *p++=c;
+		else {
+			linecnt++;
+			abort_format("Line too long");
+		}
+	}
+	*p=0;
+	if(c==EOF && p==linebuf) return FALSE;
+	linecnt++;
+	return TRUE;
+}
+
 static BOOL get_paragraph(void)
 {
 	UINT linlen,bufcnt=0;
@@ -244,8 +243,17 @@ static BOOL get_paragraph(void)
 
 	while(get_cline()) {
 		p=skip_space_types(linebuf);
-		if(!memcmp(p,"<p",2)) {
+		if(*p=='<' && p[1]=='p') {
+#ifndef _USE_FILTER
+			bBibClass=!_memicmp(p, "<p class=Bibliography", 21) || !_memicmp(p, "<p class=MsoBibliography", 24);
+			bIndexClass=!bBibClass && !_memicmp(p, "<p class=index", 14);
+#endif
+			//skip entire paragraph prefix tag --
 			p=skip_tag(p);
+			while(!p || !*p) {
+				if(!get_cline()) abort_format("Paragraph truncated");
+				if(p=strchr(linebuf,'>')) p++;
+			}
 			do {
 			  linlen=strlen(p)+1; //include NULL
 			  if(bufcnt+linlen>=SIZ_REFBUF) abort_format("Paragraph too large");
@@ -379,12 +387,16 @@ static UINT add_colon_key(nptr key)
 {
 	DWORD ref_mask;
 	nptr p;
+	UINT len;
 
 	if((p=strstr((char *)key+1,": ")) && p[2]) {
 		ref_mask=(reftotal|REF_MASK);
 		p++;
-		*p=strlen((char *)p+1);
-		if(InsertKey(&ref_mask,p)) return 0;
+		len=strlen((char *)p+1);
+		*p=(byte)len;
+		if(len>255 || InsertKey(&ref_mask,p)) {
+			return 0;
+		}
 		nColonKeys++;
 		*p=' ';
 		return (reftotal|COLON_MASK);
@@ -394,8 +406,8 @@ static UINT add_colon_key(nptr key)
 
 apfcn_v IndexDate(int date)
 {
-	//This will be called from index_author() in indexa.c for every reference --
-	//reindex.exe does nothing. rebuild.exe creates a sorted array.
+	//This will be called once from index_authors() in indexa.c for every reference --
+	//Here, in rebuild.c, we're creating a sorted array.
 
 	if(reftotal>0xFFFF) abortmsg("Only 64K references supported in this version");
 
@@ -443,23 +455,31 @@ static void expand_href(nptr p)
 	}
 }
 
+static BOOL bad_format(LPCSTR p)
+{
+    char buf[80]={"Paragraph skipped: "};
+	strcpy(buf+19,p);
+	logmsg(refbuf, p);
+	return FALSE;
+}
+
 static BOOL put_ref_paragraph(void)
 {
-	int len;
+ 	int len;
 	nptr p=refbuf;
 	UINT refno=0;
 
-	if(*p=='<' && p[1]=='a' && p[2]==' ') {
-		p=skip_tag(p);
-		p=skip_space_types(p);
-	}
+	p=skip_space_types(p);
 
 	while(isdigit(*p)) {
 		if(!refno) refno=(UINT)atoi(p);
 		p++;
 	}
+
 	if(*p++!='.' || *p++!=' ' || !*p) {
-		if(refcnt) logmsg(refbuf,"Paragraph skipped - no \"n. \" prefix");
+		if(refcnt) {
+			logmsg(refbuf, "Error: Paragraph skipped - \". <author>\" must follow ref number");
+		}
 		return FALSE;
 	}
     if(refno!=reftotal+1 && !bErrRefNo) {
@@ -467,7 +487,7 @@ static BOOL put_ref_paragraph(void)
 		bErrRefNo=TRUE;
 	}
 
-	index_author(TRX_AUTHOR_TREE,++reftotal,p);
+	index_authors(TRX_AUTHOR_TREE,++reftotal,p);
 
 	expand_href(p);
 	len=strlen(p);
@@ -495,27 +515,31 @@ static apfcn_v scan_file(void)
 
   eprintf("\n%-25s - References:     0",fname[nameidx]);
 
-  linecnt=refcnt=0;
+  linecnt=refcnt=uLinksOLE=0;
   bBreakSeen=bRefSeen=FALSE;
 
   while(get_paragraph()) {
 
-	  //p=skip_space_types(refbuf);
+	  if(!(p=elim_all_ole(refbuf,1, &uLinksOLE)))
+		  abort_format("name tag doesn't terminate");
 
-	if(!(p=elim_all_ins(refbuf)))
+      if(uLinksOLE) abort_format("must run REINDEX first");
+
+	  if(!(p=elim_all_ins(p)))
 		abort_format("ins tag doesn't terminate");
 
-	if(!(p=elim_all_st(p,1)) || !(p=elim_all_st(p,2)))
+	  if(!(p=elim_all_st(p,1)) || !(p=elim_all_st(p,2)))
 		abort_format("st tag doesn't terminate");
 
-	if((p0=strstr(p,"<st")) && isdigit(p0[3])) {
+	  if((p0=strstr(p,"<st")) && isdigit(p0[3]))
 		abort_format("unexpected st_: tag");
-	}
+
+	  if(!(p=elim_all_spans(p)))
+		  abort_format("span tag doesn't terminate");
+
+	  p=skip_space_types(p);
 
 	  if(p>refbuf) strcpy(refbuf,p);
-
-	  //elim_lspc(refbuf);
-	  //elim_tag(refbuf,"ins");
 
 	  if(!*refbuf) {
 		  if(bRefSeen) {
@@ -529,6 +553,9 @@ static apfcn_v scan_file(void)
 
 	  //refbuf now has reference or keywords --
 	  if(bBreakSeen) {
+		#ifndef _USE_FILTER
+	    if(!bBibClass) abort_format("Biliography class expected - run Reindex first");
+		#endif
 	    if(put_ref_paragraph()) {
 			eprintf("\b\b\b\b\b%5u",++refcnt);
 			bRefBold=bBold;
@@ -538,6 +565,9 @@ static apfcn_v scan_file(void)
 	  }
 	  else if(bRefSeen) {
 		//Should be keywords --
+#ifndef _USE_FILTER
+		if(!bIndexClass) abort_format("Index class expected - run Reindex first");
+#endif
 		if(num_kwnames) ClearMacroNames();
 		dbkRec.keyid=0;
 		parse_keywords(refbuf);
@@ -707,6 +737,8 @@ static apfcn_v init_database(void)
 		abort_index("TRX");
 	}
 
+	trx_SetExact(TRX_AUTHOR_TREE, TRUE);
+
     if((fphtx=fopen(fixspec(cfgname,"htx"),"wt"))==NULL)
 	  abortmsg("Cannot create file %s",fspec);
 
@@ -833,24 +865,123 @@ static void append_dbk(void)
 _err:
 	abortmsg("unexp err 1");
 }
-	
+
+static int get_first_key(int idx)
+{
+	DWORD rec;
+	return (trx_FillKeyBuffer(idx, -2) || trx_GetRec(idx, &rec, sizeof(DWORD)))?0:rec;
+}
+
+static UINT get_next_key(int idx)
+{
+	DWORD rec;
+	return (trx_FillKeyBuffer(idx, 1) || trx_GetRec(idx, &rec, sizeof(DWORD)))?0:rec;
+}
+
+static void list_refs(int idx, UINT refcnt)
+{
+	UINT col;
+
+	col=fprintf(fplog, "\n%s:  %u", refbuf, refidx[--refcnt])-2;
+	while(refcnt) {
+		col+=fprintf(fplog, ",");
+		if(col>=RMARGIN) col=fprintf(fplog, "\n   ")-2;
+		col+=fprintf(fplog, " %u", refidx[--refcnt]);
+	}
+}
+
+static apfcn_v scan_index(int idx)
+{
+	UINT rec;
+	DWORD rlen, rlen_max, refcnt, numkeys;
+	BYTE rlen_maxkey[256];
+
+	if(!(numkeys=trx_NumKeys(idx))) return;
+
+	if(idx==TRX_KW_TREE) {
+		eprintf("\nWriting keyword list..");
+		openlog("KEYWORD INDEX");
+	}
+	else {
+		eprintf("\nWriting author list..");
+		openlog("AUTHOR INDEX");
+	}
+
+	trx_SetKeyBuffer(idx, linebuf);
+
+	*refbuf=0xFF;
+	refbuf[1]=0;
+	rlen=rlen_max=refcnt=0;
+	rec=get_first_key(idx);
+
+	while(rec) {
+		numkeys--;
+
+		linebuf[*linebuf+1]=0;
+
+		if(strcmp(linebuf+1, refbuf)) {
+			if(refcnt) list_refs(idx, refcnt);
+			refidx[0]=(WORD)rec;
+			refcnt=1;
+			strcpy(refbuf, linebuf+1);
+
+			if(rlen) break;
+			rlen=trx_RunLength(idx)-1;
+			if(rlen>rlen_max && strcmp(refbuf, "ANONYMOUS")) {
+				rlen_max=rlen;
+				strcpy(rlen_maxkey, refbuf);
+			}
+		}
+		else {
+			rlen--;
+			if(refcnt<LEN_REFIDX) refidx[refcnt++]=(WORD)rec;
+		}
+		rec=get_next_key(idx);
+	}
+
+	if(refcnt) list_refs(idx, refcnt);
+
+	putc('\n', fplog);
+
+	if(rlen) {
+		abortmsg("Unexpected index format (runlength=%u)", rlen);
+	}
+
+	if(numkeys) abortmsg("Error reading index - code %u", trx_errno);
+
+	eprintf(" Completed.\nMost %s: %s (%u appearances)\n",
+		(idx==TRX_KW_TREE)?"frequent keyword":"prolific author", rlen_maxkey, rlen_max+1);
+
+}
+
+#ifdef _USE_FILTER
+static void filter_convert()
+{
+	int i;
+	strcpy(trx_Stpext(fspec), ".$$$");
+	sprintf(linebuf, "filter -cflmrst %s %s", fname[nameidx], fspec);
+	if((i=system(linebuf))>1 || i<0)
+		abortmsg("Error executing \"%s\" (Code %d, errno: %d)", linebuf, i, errno);
+}
+#endif
+
 /*==============================================================*/
 void main(int argc,nptr *argv)
 {
   nptr p;
   UINT e;
-  int i;
+  BOOL blist_kw=TRUE, blist_authors=TRUE;
 
   eprintf("\n%s",hdr);
 
   while(--argc) {
     _strupr(p=*++argv);
-	if(!strcmp(p,"-P")) {
-		bPause=TRUE;
+	if(!strcmp(p, "-K")) {
+		blist_kw=FALSE;
 		continue;
 	}
-	if(!strcmp(p,"-K")) {
-		bKeepTemp=TRUE;
+	if(!strcmp(p, "-A")) {
+		blist_authors=FALSE;
 		continue;
 	}
     if(*cfgname || trx_Stpnam(p)!=p || *trx_Stpext(p)) continue;
@@ -859,22 +990,22 @@ void main(int argc,nptr *argv)
 
   if(!*cfgname) {
     eprintf("\n"
-	  "Usage: REBUILD <cfgname> [-p (pause before exit)] [-k]\n\n"
+	  "Usage: REBUILD [-k] [-a] <cfgname>\n\n"
       "Creates an indexed database from HTML files whose names are listed in\n"
 	  "a text file, <cfgname>.CFG. An output text file, <cfgname>.LOG,\n"
-	  "containing diagnostic messages might also be produced.\n"
-	  "\n"
+	  "containing diagnostic messages will normally also be produced.\n"
 	  "See the provided CFG file template for format details. The HTML files\n"
 	  "should contain James Reddell's style of bibliographic references,\n"
-	  "preferably preconditioned by the REINDEX utility. Another requirement is\n"
-	  "that Microsoft's HTML Filter v.2 (filter.exe) be installed. (Option -k\n"
-	  "will prevent the deletion of filtered HTML files with extension .$$$.)\n"
-	  "\n"
-      "The program creates a database consisting of three files,<cfgname>.HTX,\n"
-	  "<cfgname>.TRX, and <cfgname>.DBK, which will serve as input for the\n"
-	  "browser program, RESELECT.\n"
+	  "preconditioned by the REINDEX utility, the latter having been run first\n"
+	  "to assign numbers to newly-added references. REINDEX will also have\n"
+	  "produced a diagnostic log, <cfgname>.LST. (Note different extension).\n\n"
+	
+      "Unlike REINDEX, this program creates a database consisting of three files,\n"
+	  "<cfgname>.HTX, <cfgname>.TRX, and <cfgname>.DBK, which will serve as\n"
+	  "input for the browser program, RESELECT.\n\n"
+	  "Use -K and/or -A to omit the keyword or author listing from the log.\n"
 	  );
-	if(bPause) pause("to exit");
+	pause("to exit");
     exit(1);
   }
 
@@ -901,24 +1032,29 @@ void main(int argc,nptr *argv)
 
   for(e=0;e<num_fnames;e++) {
 	strcpy(fspec,fname[nameidx]);
-	strcpy(trx_Stpext(fspec),".$$$");
-	sprintf(linebuf,"filter -cflmrst %s %s",fname[nameidx],fspec);
-	if((i=system(linebuf))>1 || i<0)
-		abortmsg("Error executing \"%s\" - Code %d, errno: %d",linebuf,i,errno);
+#ifdef _USE_FILTER
+	filter_convert(); //changes fspec extension, aborts on failure
+#endif
     if((fp=fopen(fspec,"rt"))==NULL)
 		abortmsg("Cannot open file %s",fspec);
-    scan_file();
+	trx_Stncc(filename, trx_Stpnam(fspec), sizeof(filename));
+	*trx_Stpext(filename)=0;
+	scan_file();
 	fclose(fp);
-	if(!bKeepTemp) _unlink(fspec);
 	fp=0;
+#ifdef _USE_FILTER
+	if(!bKeepTemp) _unlink(fspec);
+#endif
 	nameidx++;
   }
 
   fclose(fphtx);
   fphtx=0;
 
-  eprintf("\n\nFiles: %d  Refs: %u  Names: %u  Keywords: %u entries, %u assigned.\n\n",
-	  num_fnames,reftotal,trx_NumKeys(TRX_AUTHOR_TREE),kw_parsed,trx_NumKeys(TRX_KW_TREE));
+  e=trx_NumKeys(TRX_KW_TREE);
+  eprintf("\n\nFiles: %d  Refs: %u  Authors: %u  Keywords: %u (%u compound)\n\n",
+	  num_fnames, reftotal, trx_NumKeys(TRX_AUTHOR_TREE), e, (e-kw_parsed));
+
 
   if((e=dbf_NumRecs(dbf))!=reftotal+1) {
 	  abortmsg("Unexpected error: Ref count (%u) should be %u",e-1,reftotal);
@@ -945,6 +1081,9 @@ void main(int argc,nptr *argv)
   dbf_CloseDel(dbk);
   dbk=0;
 
+  if(blist_authors) scan_index(TRX_AUTHOR_TREE);
+  if(blist_kw) scan_index(TRX_KW_TREE);
+
   if((e=trx_Close(trx))) {
 	  trx=0;
 	  abortmsg("Error closing file %s.TRX (code %u)",cfgname,e);
@@ -964,6 +1103,6 @@ void main(int argc,nptr *argv)
 
   eprintf("\nDatabase generated - 3 files: %s.htx/trx/dbk.\n",cfgname);
 
-  if(bPause) pause("to exit");
+  pause("to exit");
   exit(0);
 }

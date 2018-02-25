@@ -836,6 +836,7 @@ double CWallsMapView::MetersPerPixel(double scale)
 	return 1.0/scale;
 }
 
+/*
 void CWallsMapView::MaximizeWindow()
 {
 	WINDOWPLACEMENT wp;
@@ -845,6 +846,7 @@ void CWallsMapView::MaximizeWindow()
 	wp.showCmd=SW_SHOWMAXIMIZED;
 	VERIFY(pParentFr->SetWindowPlacement(&wp));
 }
+*/
 
 CMDIChildWnd * CWallsMapView::ComputeBorders()
 {
@@ -1263,7 +1265,7 @@ void CWallsMapView::GetDragDistAz(CString &cs)
 			}
 			dec=(dist<10)?2:1;
 		}
-		char fmt[8];
+		char fmt[16];
 		sprintf(fmt,"%%.%uf %s, ",dec,pu);
 		cs.Format(fmt,dist);
 	}
@@ -1312,17 +1314,20 @@ void CWallsMapView::OnMouseMove(UINT nFlags, CPoint point)
 		if(m_wndTooltip)
 			DestroyTooltip();
 
-		BOOL bMoved=(m_ptMeasure!=point);
+		if(m_ptMeasure.x==point.x && m_ptMeasure.y==point.y)
+			return;
 
 		RefreshMeasure();
 		m_ptMeasure=point;
 		RefreshMeasure();
 
-		if(!g_hwndTrackingTT && (g_hwndTrackingTT=CreateTrackingToolTip(m_hWnd))) {
-			// Activate the tooltip.
-			::SendMessage(g_hwndTrackingTT,TTM_TRACKACTIVATE, (WPARAM)TRUE, (LPARAM)&g_toolItem);
+		bool bNew=false;
+
+		if(!g_hwndTrackingTT) {
+			g_hwndTrackingTT=CreateTrackingToolTip(m_hWnd);
+			bNew=true;
 		}
-		if(bMoved && g_hwndTrackingTT) {
+		if(g_hwndTrackingTT) {
 			CString s;
 			GetDragDistAz(s);
 			g_toolItem.lpszText = s.GetBuffer();
@@ -1330,6 +1335,10 @@ void CWallsMapView::OnMouseMove(UINT nFlags, CPoint point)
             // Position the tooltip. The coordinates are adjusted so that the tooltip does not overlap the mouse pointer.
 			ClientToScreen(&point);
 			::SendMessage(g_hwndTrackingTT,TTM_TRACKPOSITION, 0, (LPARAM)MAKELONG(point.x + 10, point.y - 20));
+			if(bNew) {
+				// Activate the tooltip.
+				::SendMessage(g_hwndTrackingTT,TTM_TRACKACTIVATE, (WPARAM)TRUE, (LPARAM)&g_toolItem);
+			}
 		}
 	}
 	else {

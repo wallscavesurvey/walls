@@ -1,5 +1,5 @@
-#include "stdafx.h"
-#include <ShpDBF.h>
+#include <stdafx.h>
+#include "ShpDBF.h"
 
 bool CShpDBF::TypesCompatible(char cSrc, char cDst)
 {

@@ -35,12 +35,9 @@ CVecInfoDlg::CVecInfoDlg(CWnd* pParent /*=NULL*/)
 void CVecInfoDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CVecInfoDlg)
-	//}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CVecInfoDlg, CDialog)
-	//{{AFX_MSG_MAP(CVecInfoDlg)
 	ON_WM_CTLCOLOR()
 	ON_BN_CLICKED(IDC_PROPERTIES, OnProperties)
 	ON_BN_CLICKED(IDC_FILE_EDIT, OnFileEdit)
@@ -48,8 +45,8 @@ BEGIN_MESSAGE_MAP(CVecInfoDlg, CDialog)
 	ON_WM_DESTROY()
 	ON_BN_CLICKED(IDC_FR_MAGDLG, OnFrMagDlg)
 	ON_BN_CLICKED(IDC_TO_MAGDLG, OnToMagDlg)
-	//}}AFX_MSG_MAP
     ON_MESSAGE(WM_COMMANDHELP,OnCommandHelp)
+	ON_BN_CLICKED(IDC_VIEWSEG, OnBnClickedViewseg)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -154,7 +151,7 @@ BOOL CVecInfoDlg::OnInitDialog()
 	ASSERT(CPrjDoc::m_pReviewNode);
 	GetStrFromFld(fname,pVEC->filename,8);
 	if(CPrjDoc::m_pReviewNode && (m_pNode=CPrjDoc::m_pReviewNode->FindName(fname))) {
-		struct tm *ptm=GetLocalFileTime(CPrjDoc::m_pReviewDoc->SurveyPath(m_pNode),NULL);
+		SYSTEMTIME *ptm=GetLocalFileTime(CPrjDoc::m_pReviewDoc->SurveyPath(m_pNode),NULL);
 		SetText(IDC_ST_FILEDATE,GetTimeStr(ptm,NULL));
 		SetText(IDC_ST_FILENAME,trx_Stpnam(CPrjDoc::m_pathBuf));
 		str.Empty();
@@ -260,6 +257,11 @@ void CVecInfoDlg::OnViewStats()
 	EndDialog(IDYES);
 }
 
+void CVecInfoDlg::OnBnClickedViewseg()
+{
+	EndDialog(IDNO);
+}
+
 static void LoadMagDlg(double *enu)
 {
 
@@ -309,4 +311,3 @@ LRESULT CVecInfoDlg::OnCommandHelp(WPARAM wNone, LPARAM lParam)
 	AfxGetApp()->WinHelp(111,HELP_CONTEXT);
 	return TRUE;
 }
-

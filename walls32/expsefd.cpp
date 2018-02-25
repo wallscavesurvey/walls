@@ -16,10 +16,9 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CExpSefDlg dialog
 
-BOOL CExpSefDlg::m_bIncludeDet=FALSE;
-BOOL CExpSefDlg::m_bConvertPfx=FALSE;
-BOOL CExpSefDlg::m_bFixedCols=FALSE;
-BOOL CExpSefDlg::m_bForceFeet=FALSE;
+BOOL CExpSefDlg::m_bNoConvertPfx=FALSE;
+BOOL CExpSefDlg::m_bUseVdist=FALSE;
+BOOL CExpSefDlg::m_bUseAllSef=TRUE;
 
 CExpSefDlg::CExpSefDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CExpSefDlg::IDD, pParent)
@@ -32,14 +31,13 @@ CExpSefDlg::CExpSefDlg(CWnd* pParent /*=NULL*/)
 void CExpSefDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CExpSefDlg)
 	DDX_Text(pDX, IDC_PATHNAME, m_pathname);
 	DDV_MaxChars(pDX, m_pathname, 250);
-	//}}AFX_DATA_MAP
-	DDX_Check(pDX, IDC_INCLUDEDET, m_bIncludeDet);
-	DDX_Check(pDX, IDC_CONVERTPFX, m_bConvertPfx);
-	DDX_Check(pDX, IDC_FORCEFEET, m_bForceFeet);
-	DDX_Check(pDX, IDC_FIXEDCOLS, m_bFixedCols);
+	DDX_Check(pDX, IDC_NOCVTPFX, m_bNoConvertPfx);
+	DDX_Check(pDX, IDC_USE_VDIST, m_bUseVdist);
+	DDX_Check(pDX, IDC_USE_ALLSEF, m_bUseAllSef);
+
+	ASSERT(!m_bUseVdist || m_bUseAllSef);
 
 	if(pDX->m_bSaveAndValidate) {
 		//Now let's see if the directory needs to be created --
@@ -50,21 +48,16 @@ void CExpSefDlg::DoDataExchange(CDataExchange* pDX)
 			return;
 	  }
 	  	  
-	  m_pDoc->ExportSEF(this,m_pNode,m_pathname,
-		  EXP_INCDET*m_bIncludeDet+
-		  EXP_CVTPFX*m_bConvertPfx+
-		  EXP_FORCEFEET*m_bForceFeet+
-		  EXP_FIXEDCOLS*m_bFixedCols
-		  );
+	  m_pDoc->ExportSEF(m_pNode,m_pathname,EXP_NOCVTPFX*m_bNoConvertPfx+EXP_USE_VDIST*m_bUseVdist+EXP_USE_ALLSEF*m_bUseAllSef);
 	}
 }
 
 
 BEGIN_MESSAGE_MAP(CExpSefDlg, CDialog)
     ON_MESSAGE(WM_COMMANDHELP,OnCommandHelp)
-	//{{AFX_MSG_MAP(CExpSefDlg)
 	ON_BN_CLICKED(IDBROWSE, OnBrowse)
-	//}}AFX_MSG_MAP
+	ON_BN_CLICKED(IDC_USE_ALLSEF, &CExpSefDlg::OnBnClickedUseAllsef)
+	ON_BN_CLICKED(IDC_USE_VDIST, &CExpSefDlg::OnBnClickedUseVdist)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -91,3 +84,19 @@ LRESULT CExpSefDlg::OnCommandHelp(WPARAM wNone, LPARAM lParam)
 	return TRUE;
 }
 
+
+void CExpSefDlg::OnBnClickedUseAllsef()
+{
+	m_bUseAllSef=!m_bUseAllSef;
+	if(!m_bUseAllSef && m_bUseVdist) {
+		((CButton *)GetDlgItem(IDC_USE_VDIST))->SetCheck(m_bUseVdist=FALSE);
+	}
+}
+
+void CExpSefDlg::OnBnClickedUseVdist()
+{
+	m_bUseVdist=!m_bUseVdist;
+	if(m_bUseVdist && !m_bUseAllSef) {
+		((CButton *)GetDlgItem(IDC_USE_ALLSEF))->SetCheck(m_bUseAllSef=TRUE);
+	}
+}

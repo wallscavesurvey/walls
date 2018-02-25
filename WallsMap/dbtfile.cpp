@@ -308,19 +308,20 @@ LPCSTR dbt_GetMemoHdr(LPCSTR src,UINT maxHdrLen)
 {
 	//Return with "* " or "~ " in first 2 chars of dbt_memoHdr
 
-	static char dbt_memoHdr[514];
+	static char dbt_memoHdr[1024];
 	LPSTR p,pDst=dbt_memoHdr;
-
 	*pDst++='*';
 	*pDst++=' ';
 
+	bool bFormatRTF=CDBTData::IsTextRTF(src);
+	//RTF markup at start can exceed 511 bytes in length, so process up to two records of data
+	//less 3 bytes for prefix and null terminator --
+	UINT maxLen=bFormatRTF?1021:511;
 	UINT len=strlen(src);
-	if(len>511) len=511;
+	if(len>maxLen) len=maxLen;
 
 	memcpy(pDst,src,len);
 	pDst[len]=0;
-
-	bool bFormatRTF=CDBTData::IsTextRTF(pDst);
 
 	if(bFormatRTF) {
 		len=CDBTFile::StripRTF(pDst,TRUE); //Keep prefix

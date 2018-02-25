@@ -13,6 +13,8 @@
 #define new DEBUG_NEW
 #endif
 
+static bool bDM=false;
+
 static LPCSTR pFldSep;
 static int nSep;
 static UINT xlsline=0,numRecs=0;
@@ -144,6 +146,12 @@ static double getDeg(double y)
 	return deg+min/60.0+((UINT)y)/3600.0;
 }
 
+static double getDM(double x)
+{
+	double deg=(int)x;
+	return deg + 100*(x-deg)/60;
+}
+
 int CXlsExportDlg::StoreFldData(int f)
 {
 	char buf[256];
@@ -233,16 +241,18 @@ int CXlsExportDlg::GetCoordinates(double *pLat, double *pLon, double *pEast, dou
 		bDefY=true;
 		*pLat=m_psd->latDflt;
 	}
-	else if(!m_psd->iTypXY && y>90.0) {
-		y=getDeg(y);
+	else if(!m_psd->iTypXY) {
+		if(bDM) y=getDM(y);
+		else if(y>90.0) y=getDeg(y);
 	}
 	double x=GetDbDouble(m_psd->v_srcIdx[m_psd->iFldX]);
 	if(!x) {
 		bDefX=true;
 		*pLon=m_psd->lonDflt;
 	}
-	else if(!m_psd->iTypXY && x>180.0) {
-		x=-getDeg(x);
+	else if(!m_psd->iTypXY) {
+		if(bDM) x=getDM(x);
+		else if(x>180.0) x=-getDeg(x);
 	}
 
 	int e=0;

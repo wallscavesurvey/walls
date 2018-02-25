@@ -4,7 +4,7 @@
 #define __DBF_FILE_H
 
 #ifndef __TRX_TYPE_H
-#include <trx_type.h>
+#include "trx_type.h"
 #endif
 
 #ifdef __cplusplus
@@ -26,8 +26,8 @@ enum {DBF_ReadWrite=0,DBF_Share=1,DBF_DenyWrite=2,DBF_ReadOnly=4,
 #define DBF_FILEID_MEMO 0x83
 
 /*Max numbers of DBF files and file/user connections open at once --*/
-#define DBF_MAX_FILES 200
-#define DBF_MAX_USERS 200
+#define DBF_MAX_FILES 300    /*changed from 200, 2016-01-12*/
+#define DBF_MAX_USERS 300
 #define DBF_MIN_BUFSIZ 512 /*Used by dbf_AllocCache*/
 
 /*Basic error codes common to DBF and TRX file types --*/

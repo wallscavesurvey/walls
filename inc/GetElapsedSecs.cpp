@@ -1,5 +1,5 @@
 #include <windows.h>
-#include <GetElapsedSecs.h>
+#include "GetElapsedSecs.h"
 
 #ifdef __cplusplus
 extern "C" {

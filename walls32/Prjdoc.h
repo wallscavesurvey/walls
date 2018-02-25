@@ -74,13 +74,27 @@ protected: // create from serialization only
 // Attributes
 public:
    enum {SAVEBUFSIZ=0x400};
-   enum {LHINT_FONT=1};
+   enum {LHINT_FONT=1, LHINT_CLOSEMAP=2, LHINT_REFRESHNET=4, LHINT_FLGCHECK=8, LHINT_FLGREFRESH=16};
    
    static double m_AzLimit,m_VtLimit,m_LnLimit;
    static BOOL m_bNewLimits;
-   static BOOL m_bReviewing;
+   static BOOL m_bReviewing,m_bRefreshing;
    static int m_iValueRangeNet;
-   
+   static int m_nMapsUpdated;
+   static CPrjDoc *m_pLogDoc;
+
+   CPrjListNode *m_pNodeLog;
+   CMapFrame *m_pMapFrame;
+
+   #ifdef _DEBUG
+   int GetFrameCnt();
+   #endif
+
+   FILE *m_fplog;
+   int log_write(LPCSTR lpStr);
+   void InitLogPath(CPrjListNode *pNode);
+   CMapFrame *FrameNodeExists(CPrjListNode *pNode);
+      
    CPrjListNode * m_pRoot;
    CPrjDoc *m_pNextPrjDoc;  //May not really need this!
    int m_nActivePage;		//first active page of CItemProp dlg
@@ -107,8 +121,9 @@ public:
    static const char *UnitStr();
    static const char *ViewUnitStr();
    static CPrjListNode *m_pErrorNode;
-   static CPrjListNode *m_pErrorNode2;
-   static LINENO m_nLineStart,m_nLineStart2;
+   //static CPrjListNode *m_pErrorNode2;
+   static LINENO m_nLineStart;
+   //static LINENO m_nLineStart2;
    static int m_nCharStart;
 
    static NET_DATA net_data;   //Struct for WALLNET4.DLL communications
@@ -141,6 +156,7 @@ public:
    static void InitGradValues(CGradient &grad,double fMin,double fMax,int iTyp);
    static void InitGradient(CGradient *pGrad,int n);
    static void VectorProperties();
+   static void ViewSegment();
    static LPCSTR GetDatumStr(char *buf,CPrjListNode *pNode);
    /*static BOOL IsLinkFlagged(int frgID,int flag);*/
 
@@ -181,7 +197,7 @@ public:
 	char * Title() {return m_pRoot->Title();}
 	char * WorkPath(CPrjListNode *pNode,int typ);
 	char * WorkPath() {return WorkPath(NULL,0);}
-	char * LogPath() {return WorkPath(m_pReviewNode,TYP_LOG);}
+	char * LogPath() {return WorkPath(m_pNodeLog,TYP_LOG);}
 	char * ShapeFilePath() {return m_pShapeFilePath?m_pShapeFilePath:WorkPath();}
 	void SetShapeFilePath(const char *path) {
 		if(_stricmp(path,ShapeFilePath())) {
@@ -228,12 +244,13 @@ public:
 	void TimerRefresh();
 #endif
 
-	int ExportSEF(CExpSefDlg *pDlg,CPrjListNode *pNode,const char *pathname,UINT flags);
+	int ExportSEF(CPrjListNode *pNode,const char *pathname,UINT flags);
 	int ExportBranch(CPrjListNode *pNode);
 
 	int Compile(CPrjListNode *pNode);
     void Review(CPrjListNode *pNode);
 	int PurgeWorkFiles(CPrjListNode *pNode,BOOL bIncludeNTA=FALSE);
+	void ClearDefaultViews(CPrjListNode *pNode);
 	void PurgeAllWorkFiles(CPrjListNode *pNode,BOOL bIncludeNTA=FALSE,BOOL bIgnoreFloating=FALSE);
 	void RefreshBranch(CPrjListNode *pNode);
 	void CloseWorkFiles();
@@ -241,7 +258,9 @@ public:
 	void ProcessSVG();
 
 	static BOOL IsActiveFrame();
-	static void RefreshActiveFrames();
+	BOOL RefreshMaps();
+	BOOL RefreshMapTraverses(UINT bFlg);
+	BOOL CPrjDoc::UpdateMapViews(BOOL bChkOnly, UINT flgs);
 
 	static void InitTransform(CMapFrame *pf);
 	static BOOL FindStation(const char *pName,BOOL bMatchCase,int iFindNext=0);
@@ -319,12 +338,11 @@ public:
 
 // Generated message map functions
 protected:
-	//{{AFX_MSG(CPrjDoc)
 	afx_msg void OnUpdateFileSave(CCmdUI* pCmdUI);
 	afx_msg void OnFileSaveAs();
 	afx_msg void OnFileSave();
 	afx_msg void OnFileClose();
-	//}}AFX_MSG
+
 	DECLARE_MESSAGE_MAP()
 };
 

@@ -2,7 +2,7 @@
 #define _POLYTEST_H
 
 #ifndef _FLTRECT_H
-#include <FltRect.h>
+#include "FltRect.h"
 #endif
 
 #pragma pack(1)

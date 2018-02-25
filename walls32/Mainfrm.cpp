@@ -19,7 +19,7 @@
 #include "itemprop.h"
 #include "compview.h"
 #include "compile.h"
-#include "PictHolder.h"
+//#include "PictHolder.h"
 #include "mapframe.h"
 
 #include <direct.h>
@@ -1261,6 +1261,47 @@ void CMainFrame::CheckDatumName(PRJREF *pr)
 	}
 }
 
+void CMainFrame::BrowseNewProject(CDialog *pDlg, CString &prjPath)
+{
+	CString strFilter;
+	if(!AddFilter(strFilter, IDS_WPJ_FILES)) return;
+	if(!DoPromptPathName(prjPath,0 /*OFN_OVERWRITEPROMPT*/, 1, strFilter, FALSE, IDS_WPJBROWSE, PRJ_PROJECT_EXTW)) return;
+
+	pDlg->GetDlgItem(IDC_IMPPRJPATH)->SetWindowText(prjPath);
+
+	CEdit *pw=(CEdit *)pDlg->GetDlgItem(IDC_IMPPRJPATH);
+	pw->SetSel(0, -1);
+	pw->SetFocus();
+}
+
+void CMainFrame::BrowseFileInput(CDialog *pDlg, CString &srcPath, CString &outPath, UINT ids_outfile)
+{
+    bool bSEF=ids_outfile!=IDS_CSS_FILES;
+	CString strFilter;
+	if(!AddFilter(strFilter, ids_outfile)) return;
+	if(!DoPromptPathName(srcPath, OFN_HIDEREADONLY|OFN_FILEMUSTEXIST, 1, strFilter, TRUE,
+		bSEF?IDS_IMPBROWSE:IDS_CSSBROWSE, bSEF?".SEF":".MAK")) return;
+
+	pDlg->GetDlgItem(IDC_IMPDATPATH)->SetWindowText(srcPath);
+
+	SetCurrentDir(srcPath);
+
+	CEdit *pw=(CEdit *)pDlg->GetDlgItem(IDC_IMPPRJPATH);
+
+	if(!pw->GetWindowTextLength()) {
+		char *p=strFilter.GetBuffer(srcPath.GetLength()+4);
+		strcpy(p, srcPath);
+		strcpy(trx_Stpext(p), PRJ_PROJECT_EXTW);
+		pw->SetWindowText(p);
+		outPath=p;
+		strFilter.ReleaseBuffer();
+		pw->SetSel(0, -1);
+		pw->SetFocus();
+	}
+}
+
+
+
 void CMainFrame::InitRef(PRJREF *pr,MAGDATA *pMD /*=&app_MagData*/)
 {
     PutRef(pr,pMD);
@@ -1492,6 +1533,25 @@ void CMainFrame::OnClose()
 	KillTimer(0x123);
 #endif
 	CMDIFrameWnd::OnClose();
+}
+
+void CMainFrame::SetHierRefresh()
+{
+	//Required for OpenContainingFolder() when run on Vaio!!
+	CMultiDocTemplate *pTmp=theApp.m_pPrjTemplate;
+
+	POSITION pos = pTmp->GetFirstDocPosition();
+	while(pos != NULL) {
+		CPrjDoc *pDoc=(CPrjDoc *)pTmp->GetNextDoc(pos);
+		ASSERT(pDoc->IsKindOf(RUNTIME_CLASS(CPrjDoc)));
+		POSITION vpos=pDoc->GetFirstViewPosition();
+		if(vpos) {
+			CPrjView *pView=(CPrjView *)pDoc->GetNextView(vpos);
+			if(pView && pView->IsKindOf(RUNTIME_CLASS(CPrjView))) {
+				pView->m_PrjList.m_bRefresh=TRUE; //refresh listbox background upon first write
+			}
+		}
+	}
 }
 
 #ifdef _USE_FILETIMER

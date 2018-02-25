@@ -20,3 +20,5 @@ typedef std::vector<GE_POINT> VEC_GE_POINT;
 
 BOOL GE_Launch(CShpLayer *pShp,LPCSTR pathName,GE_POINT *pt,UINT numpts,BOOL bFly);
 bool GE_IsInstalled();
+extern bool GE_Checked;
+CString &GE_Path();

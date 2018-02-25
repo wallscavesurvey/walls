@@ -4,11 +4,11 @@
 #define __A__CSH_H
 
 #ifndef __TRX_CSH_H
-  #include <trx_csh.h>
+  #include "trx_csh.h"
 #endif
 
 #ifndef __DOS_IO_H
-  #include <dos_io.h>
+  #include "dos_io.h"
 #endif
 
 #ifdef __cplusplus

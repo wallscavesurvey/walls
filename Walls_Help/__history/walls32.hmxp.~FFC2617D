@@ -1,0 +1,512 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<helpproject xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="helpproject.xsd" version="1.6" isskin="false" isrepository="false">
+  <config>
+    <namespaces/>
+    <export-task-groups>
+      <export-task-group name="Common">
+        <export-tasks>
+          <export-task name="Publish your project in CHM format" format="CHM">
+            <task-config-group name="settings">
+              <task-config-value name="outputfile">walls32.chm</task-config-value>
+              <task-config-value name="deletetemp">1</task-config-value>
+              <task-config-value name="make0include">CHM</task-config-value>
+              <task-config-value name="make0status">*</task-config-value>
+            </task-config-group>
+          </export-task>
+          <export-task name="Publish your project in PDF format" format="PDF">
+            <task-config-group name="settings">
+              <task-config-value name="outputfile">walls32.pdf</task-config-value>
+              <task-config-value name="template">H:\Program Files (x86)\EC Software\HelpAndManual6\Templates\pdf\Standard_manual.mnl</task-config-value>
+              <task-config-value name="make4include">PDF</task-config-value>
+              <task-config-value name="make4status">*</task-config-value>
+            </task-config-group>
+          </export-task>
+          <export-task name="Publish your project in HTML format" format="HTM">
+            <task-config-group name="settings">
+              <task-config-value name="outputfile">.\HTML\index.html</task-config-value>
+              <task-config-value name="make3include">HTML</task-config-value>
+              <task-config-value name="make3status">*</task-config-value>
+            </task-config-group>
+          </export-task>
+        </export-tasks>
+      </export-task-group>
+      <export-task-group name="Recent Publishes">
+        <export-tasks>
+          <export-task name="Publish as CHM" format="CHM">
+            <task-config-group name="settings">
+              <task-config-value name="outputfile">..\..\bin\walls32.chm</task-config-value>
+              <task-config-value name="skin">..\..\..\Program Files (x86)\EC Software\HelpAndManual6\Templates\HTML Skins\Integrated IFrames - Fancy Wood Style.hmskin</task-config-value>
+              <task-config-value name="deletetemp">1</task-config-value>
+              <task-config-value name="make0include">CHM</task-config-value>
+              <task-config-value name="make0status">*</task-config-value>
+            </task-config-group>
+          </export-task>
+          <export-task name="Publish as PDF" format="PDF">
+            <task-config-group name="settings">
+              <task-config-value name="outputfile">..\..\bin\Walls_manual.pdf</task-config-value>
+              <task-config-value name="template">Walls_manual.mnl</task-config-value>
+              <task-config-value name="make4include">PDF</task-config-value>
+              <task-config-value name="make4status">*</task-config-value>
+            </task-config-group>
+          </export-task>
+        </export-tasks>
+      </export-task-group>
+    </export-task-groups>
+    <helpwindows>
+      <helpwindow name="Main" left="-1" top="-1" width="-1" height="-1">
+        <window-options-hlp autosize="false" maximize="false" posabsolute="false" keepontop="false" buttons="0" headercolor="#F0F0F0" textcolor="#FFFFFF"/>
+        <window-options-chm navigation="true" navigationwidth="200" search="true" favorite="true" saveregistry="true" buttons="12366">
+          <user-button name="home">
+            <caption translate="true">home</caption>
+          </user-button>
+        </window-options-chm>
+      </helpwindow>
+    </helpwindows>
+    <styleclasses>
+      <styleclass name="Code Example" shortcut="0">
+        <style-set media="screen" type="para">white-space:nowrap; page-break-inside:avoid;</style-set>
+        <style-set media="screen" type="text">font-family:'Courier New'; font-size:8pt;</style-set>
+      </styleclass>
+      <styleclass name="Courier Fixed" shortcut="116">
+        <style-set media="screen" type="text">font-family:'Courier New'; font-size:9pt; color:#000000;</style-set>
+      </styleclass>
+      <styleclass name="Normal" shortcut="115">
+        <style-set media="screen" type="para">text-align:left; text-indent:0px; margin-right:0px; margin-left:0px;</style-set>
+        <style-set media="screen" type="text">font-family:Arial; font-size:9pt; color:#000000;</style-set>
+      </styleclass>
+      <styleclass name="Comment" parentclass="Normal" shortcut="0"/>
+      <styleclass name="Heading1" parentclass="Normal" shortcut="114">
+        <style-set media="screen" type="para">text-align:left; text-indent:0px; margin-right:0px; margin-left:0px;</style-set>
+        <style-set media="screen" type="text">font-family:Arial; font-size:13pt; font-weight:bold; color:#ffffff;</style-set>
+      </styleclass>
+      <styleclass name="Image Caption" parentclass="Normal" shortcut="0">
+        <style-set media="screen" type="text">font-size:8pt; font-weight:bold;</style-set>
+      </styleclass>
+      <styleclass name="Notes" parentclass="Normal" shortcut="0"/>
+      <styleclass name="Subheader" shortcut="0">
+        <style-set media="screen" type="text">font-family:Arial; font-size:11pt; font-weight:bold; color:#000000;</style-set>
+      </styleclass>
+      <styleclass name="Toggle style" shortcut="0">
+        <style-set media="screen" type="text">font-size:9pt; font-style:italic; background-color:#ccffff;</style-set>
+      </styleclass>
+      <tablestyleclass name="Default">
+        <style-set media="screen">width:auto; cell-padding:0px; cell-spacing:0px; page-break-inside:auto; border-width:0px; border-spacing:0px; cell-border-width:0px; border-style:none; background-color:none; head-row-background-color:none; alt-row-background-color:none;</style-set>
+      </tablestyleclass>
+    </styleclasses>
+    <config-group name="project">
+      <config-value name="title" translate="true">Walls Project Editor</config-value>
+      <config-value name="copyright" translate="true">Copyright © 2013 by David McKenzie</config-value>
+      <config-value name="versionmajor">2</config-value>
+      <config-value name="versionminor">8</config-value>
+      <config-value name="versionbuild">0</config-value>
+      <config-value name="lcid" translate="true">en-us</config-value>
+      <config-value name="bidimode"></config-value>
+      <config-value name="charset" translate="true">DEFAULT_CHARSET</config-value>
+      <config-value name="deffont">font-family:'MS Sans Serif'; font-size:8pt; color:#000000;</config-value>
+      <config-value name="contents">Contents</config-value>
+      <config-value name="topicprefix"></config-value>
+      <config-value name="autohelpstart">340</config-value>
+      <config-value name="autohelpincrement">10</config-value>
+      <config-value name="autohelpanchor">0</config-value>
+      <config-value name="searchpath">.\images\</config-value>
+      <config-value name="imageshortcuts"></config-value>
+      <config-group name="custombuilds">
+        <config-value name="demo">Demo Build</config-value>
+        <config-value name="user1">User defined 1</config-value>
+        <config-value name="user2">User defined 2</config-value>
+        <config-value name="user3">User defined 3</config-value>
+      </config-group>
+      <config-value name="imageshortcuts_includebaggage">1</config-value>
+      <config-value name="make0include">CHM</config-value>
+      <config-value name="make0status">*</config-value>
+      <config-group name="spellcheck">
+        <config-value name="project">0</config-value>
+      </config-group>
+      <config-value name="make4include">PDF</config-value>
+      <config-value name="make4status">*</config-value>
+    </config-group>
+    <config-group name="hlp">
+      <config-value name="citation" translate="true"></config-value>
+      <config-value name="afootnotes">A</config-value>
+      <config-value name="fts">0</config-value>
+      <config-value name="anchorseparator">:</config-value>
+      <config-value name="cntoffset">0</config-value>
+      <config-value name="hpj" translate="true"></config-value>
+      <config-value name="outputfile">walls32.hlp</config-value>
+      <config-value name="deletetemp">1</config-value>
+    </config-group>
+    <config-group name="chm">
+      <config-value name="htmlpopup">3</config-value>
+      <config-value name="htmlpopuptextfile">CSHelp.txt</config-value>
+      <config-value name="mastertoc"></config-value>
+      <config-value name="hhp" translate="true"><![CDATA[[FILES]
+..\nonscroll.js]]></config-value>
+      <config-value name="hhcwindowstyles">8388645</config-value>
+      <config-value name="usesecondarywindows">0</config-value>
+      <config-value name="outputfile">..\..\bin\walls32.chm</config-value>
+      <config-value name="deletetemp">1</config-value>
+      <config-group name="htmlpopupjavaoptions">
+        <config-value name="borderwidth">1</config-value>
+        <config-value name="padding">6</config-value>
+        <config-value name="bgcolor">#FFFFE1</config-value>
+        <config-value name="bordercolor">#000000</config-value>
+        <config-value name="filter0">progid:DXImageTransform.Microsoft.Shadow(color='B0B0B0', Direction=135, Strength=4)</config-value>
+      </config-group>
+      <config-value name="skin">..\..\..\Program Files (x86)\EC Software\HelpAndManual6\Templates\HTML Skins\Integrated IFrames - Fancy Wood Style.hmskin</config-value>
+    </config-group>
+    <config-group name="hxs">
+      <config-value name="namespace"></config-value>
+      <config-value name="uniqueid"></config-value>
+      <config-value name="filetype">0</config-value>
+      <config-value name="fts">1</config-value>
+      <config-value name="akeywords">1</config-value>
+      <config-value name="htmlpopup">0</config-value>
+      <config-value name="outputfile"></config-value>
+      <config-value name="buildhwproj">0</config-value>
+      <config-value name="deletetemp">0</config-value>
+    </config-group>
+    <config-group name="html">
+      <config-value name="topiceditor">0</config-value>
+      <config-value name="topicsimplebuttons">1</config-value>
+      <config-group name="topicsimplebutton1">
+        <config-value name="CAPTION" translate="true">Top</config-value>
+      </config-group>
+      <config-group name="topicsimplebutton2">
+        <config-value name="CAPTION" translate="true">Previous</config-value>
+      </config-group>
+      <config-group name="topicsimplebutton3">
+        <config-value name="CAPTION" translate="true">Next</config-value>
+      </config-group>
+      <config-group name="topictemplates">
+        <config-value name="default" translate="true"><![CDATA[<%DOCTYPE%>
+<html>
+<head>
+   <title><%TOPIC_TITLE%></title>
+   <meta name="generator" content="Help &amp; Manual" />
+   <meta name="keywords" content="<%TOPIC_KEYWORDS%>" />
+   <meta http-equiv="Content-Type" content="text/html; charset=<%DOCCHARSET%>" />
+   <IF_HTML><meta http-equiv="X-UA-Compatible" content="IE=edge" /></IF_HTML>
+   <link type="text/css" href="<%STYLESHEET%>" rel="stylesheet" />
+   <style type="text/css">
+     body { margin: 0px; background: #FFFFFF; }
+   </style>
+</head>
+<body>
+
+<IF_TOPIC_HEADER>
+<table style="width:100%; border:none; border-spacing:0px; padding:5px; background:#C0C0C0">
+  <tr style="vertical-align:middle">
+    <td style="text-align:left">
+      <%TOPIC_HEADER%>
+    </td>
+    <td style="text-align:right">
+     <a href="<%HREF_DEFAULT_PAGE%>">Top</a>&nbsp;
+     <IF_PREVIOUS_PAGE><a href="<%HREF_PREVIOUS_PAGE%>">Previous</a>&nbsp;</IF_PREVIOUS_PAGE>
+     <IF_NEXT_PAGE><a href="<%HREF_NEXT_PAGE%>">Next</a></IF_NEXT_PAGE>
+    </td>
+  </tr>
+</table>
+</IF_TOPIC_HEADER>
+
+<!-- Placeholder for topic body. -->
+<table style="width:100%;border:none;border-spacing:0px"><tr style="vertical-align:top"><td style="text-align:left;padding:5px">
+<%TOPIC_TEXT%>
+</td></tr></table>
+
+</body>
+</html>]]></config-value>
+      </config-group>
+      <config-value name="topicsimpleheadercolor">#C0C0C0</config-value>
+      <config-value name="topicsimpletextcolor">#FFFFFF</config-value>
+      <config-value name="navigationstyle">2</config-value>
+      <config-value name="frameeditor">1</config-value>
+      <config-value name="contentborder">1</config-value>
+      <config-value name="contentwidth">35</config-value>
+      <config-value name="headframeheight">30</config-value>
+      <config-value name="headframescroll">0</config-value>
+      <config-value name="frametemplate" translate="true"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN"
+  "http://www.w3.org/TR/html4/frameset.dtd">
+<html>
+<head>
+<title><%TITLE%></title>
+<meta http-equiv="Content-Type" content="text/html; charset=<%DOCCHARSET%>">
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="helpman_settings.js"></script>
+<script type="text/javascript" src="helpman_navigation.js"></script>
+<script type="text/javascript">
+<!--
+var defaulttopic="<%HREF_DEFAULT_PAGE%>";
+if (location.href.lastIndexOf("?") > 0) defaulttopic=location.href.substring(location.href.lastIndexOf("?")+1,location.href.length).replace(/:/g,"");
+document.write('<frameset cols="35%,*" frameborder="1" framespacing="1">');
+if (document.getElementById) {
+  document.write('<frame name="hmnavigation" src="<%HREF_CONTENT_PAGE_DYN%>" title="Navigation frame">'); }
+else {
+  document.write('<frame name="hmnavigation" src="<%HREF_CONTENT_PAGE_STATIC%>" title="Navigation frame">'); }
+document.write('<frame name="hmcontent" src="' + defaulttopic + '" title="Content frame">');
+document.write('</frameset>');
+//-->
+</script>
+</head>
+<noscript>
+  <frameset cols="35%,*" frameborder="1" framespacing="1">
+    <frame name="hmnavigation" src="<%HREF_CONTENT_PAGE_STATIC%>" title="Navigation frame">
+    <frame name="hmcontent" src="<%HREF_DEFAULT_PAGE%>" title="Content frame">
+    <noframes>
+      This page requires frames<br><a href="<%HREF_CONTENT_PAGE_STATIC%>">Click here to view the table of contents without frames</a>
+    </noframes>
+  </frameset>
+</noscript>
+</html>]]></config-value>
+      <config-value name="hasindex">1</config-value>
+      <config-value name="hassearch">1</config-value>
+      <config-value name="contentnumbers">0</config-value>
+      <config-value name="contentlazysync">0</config-value>
+      <config-value name="contentindent">20</config-value>
+      <config-value name="contentsingleclick">0</config-value>
+      <config-value name="contentautocollapse">0</config-value>
+      <config-value name="contentexpand">0</config-value>
+      <config-value name="defaulticons">1</config-value>
+      <config-value name="iconopenbook"></config-value>
+      <config-value name="iconclosedbook"></config-value>
+      <config-value name="icontopic"></config-value>
+      <config-value name="toceditor">1</config-value>
+      <config-value name="tocsimpletext1" translate="true"><![CDATA[<font face="Arial,Helvetica" size="4"><b><%TITLE%></b></font><br>
+<font face="Arial,Helvetica" size="2">
+<a href="<%HREF_INDEX_PAGE%>">Keyword Index</a>
+</font><br><br><br>]]></config-value>
+      <config-value name="tocsimpletext2" translate="true"><![CDATA[<hr><font face="Arial,Helvetica" size="1"><%COPYRIGHT%></font>]]></config-value>
+      <config-value name="tocsimplefont1">font-family:Helvetica,Arial; font-size:10pt; font-weight:normal; font-style:normal; text-decoration:none;</config-value>
+      <config-value name="tocsimplefont2">font-family:Helvetica,Arial; font-size:9pt; font-weight:normal; font-style:normal; text-decoration:none;</config-value>
+      <config-value name="tocsimplefont3">font-family:Helvetica,Arial; font-size:8pt; font-weight:normal; font-style:normal; text-decoration:none;</config-value>
+      <config-value name="tocsimplefont4">font-family:Helvetica,Arial; font-size:8pt; font-weight:normal; font-style:normal; text-decoration:none;</config-value>
+      <config-value name="tocsimplefont5">font-family:Helvetica,Arial; font-size:8pt; font-weight:normal; font-style:normal; text-decoration:none;</config-value>
+      <config-value name="tocsimplefont6">font-family:Helvetica,Arial; font-size:8pt; font-weight:normal; font-style:normal; text-decoration:none;</config-value>
+      <config-value name="contenttemplate" translate="true"></config-value>
+      <config-value name="indexeditor">0</config-value>
+      <config-value name="indexsimpletext1" translate="true"><![CDATA[<font face="Arial,Helvetica" size="4"><b>Keyword Index</b></font><br>
+<font face="Arial,Helvetica" size="2">
+<a href="<%HREF_CONTENT_PAGE%>">Table of Contents</a>
+</font><br><br>]]></config-value>
+      <config-value name="indexsections" translate="true">A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z</config-value>
+      <config-value name="indexsimplefont1">font-family:Arial,Helvetica; font-size:14pt; font-weight:normal; font-style:normal; text-decoration:none;</config-value>
+      <config-value name="indexsimplefont2">font-family:Arial,Helvetica; font-size:10pt; font-weight:normal; font-style:normal; text-decoration:none;</config-value>
+      <config-value name="indexsimplefont3">font-family:Arial,Helvetica; font-size:10pt; font-weight:normal; font-style:normal; text-decoration:none;</config-value>
+      <config-value name="indexsimplefont4">font-family:Arial,Helvetica; font-size:8pt; font-weight:normal; font-style:normal; text-decoration:none;</config-value>
+      <config-value name="indextemplate" translate="true"></config-value>
+      <config-value name="searcheditor">0</config-value>
+      <config-value name="searchsimpletext1" translate="true"></config-value>
+      <config-value name="searchtemplate" translate="true"></config-value>
+      <config-value name="searchstoplist" translate="true"></config-value>
+      <config-value name="searchskipwordsmin">3</config-value>
+      <config-value name="searchjoinwordchars" translate="true">.-_'</config-value>
+      <config-value name="searchhighlight">1</config-value>
+      <config-value name="searchallowdate">0</config-value>
+      <config-value name="searchaccentinsensitive">0</config-value>
+      <config-value name="searchsinglecase">0</config-value>
+      <config-value name="htmlpopup">3</config-value>
+      <config-value name="defaultext">.htm</config-value>
+      <config-value name="cssfile">default.css</config-value>
+      <config-value name="fontsizeencoding">0</config-value>
+      <config-value name="fontsizebase">100</config-value>
+      <config-value name="exportmarkersastext">1</config-value>
+      <config-value name="exportstylenames">1</config-value>
+      <config-value name="exportxhtml">0</config-value>
+      <config-value name="imageconversion">1</config-value>
+      <config-value name="jpgquality">90</config-value>
+      <config-value name="imagehint">0</config-value>
+      <config-value name="outputfile"></config-value>
+      <config-value name="synctimestamp">1</config-value>
+      <config-value name="layoutthreeframe">0</config-value>
+      <config-value name="iframebackcolor">#FFFFFF</config-value>
+      <config-value name="iframenavwidth">250</config-value>
+      <config-value name="iframemargins">5</config-value>
+      <config-value name="iframeborderwidth">1</config-value>
+      <config-value name="iframebordercolor">#FFFFFF</config-value>
+      <config-value name="iframeheaderheight">60</config-value>
+      <config-value name="iframeheaderhtml" translate="true"><![CDATA[<p><%TITLE%></p>]]></config-value>
+    </config-group>
+    <config-group name="pdf">
+      <config-value name="template">Walls_manual.mnl</config-value>
+      <config-value name="style">0</config-value>
+      <config-value name="createoutline">1</config-value>
+      <config-value name="createhotspots">1</config-value>
+      <config-value name="createthumbnails">1</config-value>
+      <config-value name="insertseealso">0</config-value>
+      <config-value name="linkcolor">16711680</config-value>
+      <config-value name="ignoreblank">1</config-value>
+      <config-value name="compression">1</config-value>
+      <config-value name="jpegquality">0</config-value>
+      <config-value name="openmode">1</config-value>
+      <config-value name="zoommode">0</config-value>
+      <config-value name="ownerpassword"></config-value>
+      <config-value name="userpassword"></config-value>
+      <config-value name="userprint">1</config-value>
+      <config-value name="usercopy">1</config-value>
+      <config-value name="userchange">1</config-value>
+      <config-value name="encrypt128bit">0</config-value>
+      <config-value name="title" translate="true">&lt;%TITLE%&gt;</config-value>
+      <config-value name="subject" translate="true"></config-value>
+      <config-value name="author" translate="true">David McKenzie</config-value>
+      <config-value name="keywords" translate="true"></config-value>
+      <config-value name="embedfonts">1</config-value>
+      <config-value name="embedfontsexclude">Arial;Courier;Courier New;Times New Roman;</config-value>
+      <config-value name="cidfontmode">0</config-value>
+      <config-value name="newfontsubsetting">1</config-value>
+      <config-value name="textasglyphs">0</config-value>
+      <config-value name="outputfile">..\..\bin\Walls_manual.pdf</config-value>
+    </config-group>
+    <config-group name="rtf">
+      <config-value name="papersize"></config-value>
+      <config-value name="pageorientation">Portrait</config-value>
+      <config-value name="topmargin">720</config-value>
+      <config-value name="bottommargin">720</config-value>
+      <config-value name="leftmargin">720</config-value>
+      <config-value name="rightmargin">720</config-value>
+      <config-value name="flipmargin">0</config-value>
+      <config-value name="headerfont">font-family:Arial; font-size:10pt; font-weight:normal; font-style:normal; text-decoration:none; color:#000000;</config-value>
+      <config-value name="headertext" translate="true"></config-value>
+      <config-value name="footerfont">font-family:Arial; font-size:10pt; font-weight:normal; font-style:normal; text-decoration:none; color:#000000;</config-value>
+      <config-value name="footertext" translate="true"></config-value>
+      <config-value name="pagenumfont">font-family:Arial; font-size:10pt; font-weight:normal; font-style:normal; text-decoration:none; color:#000000;</config-value>
+      <config-value name="pagenumtext" translate="true"></config-value>
+      <config-value name="chapterfont1">font-family:Arial; font-size:10pt; font-weight:normal; font-style:normal; text-decoration:none; color:#000000;</config-value>
+      <config-value name="chapternumbering1">None</config-value>
+      <config-value name="chapterbreak1">false</config-value>
+      <config-value name="chapterfont2">font-family:Arial; font-size:10pt; font-weight:normal; font-style:normal; text-decoration:none; color:#000000;</config-value>
+      <config-value name="chapternumbering2">None</config-value>
+      <config-value name="chapterbreak2">false</config-value>
+      <config-value name="chapterfont3">font-family:Arial; font-size:10pt; font-weight:normal; font-style:normal; text-decoration:none; color:#000000;</config-value>
+      <config-value name="chapternumbering3">None</config-value>
+      <config-value name="chapterbreak3">false</config-value>
+      <config-value name="chapterfont4">font-family:Arial; font-size:10pt; font-weight:normal; font-style:normal; text-decoration:none; color:#000000;</config-value>
+      <config-value name="chapternumbering4">None</config-value>
+      <config-value name="chapterbreak4">false</config-value>
+      <config-value name="chapterfont5">font-family:Arial; font-size:10pt; font-weight:normal; font-style:normal; text-decoration:none; color:#000000;</config-value>
+      <config-value name="chapternumbering5">None</config-value>
+      <config-value name="chapterbreak5">false</config-value>
+      <config-value name="chapterfont6">font-family:Arial; font-size:10pt; font-weight:normal; font-style:normal; text-decoration:none; color:#000000;</config-value>
+      <config-value name="chapternumbering6">None</config-value>
+      <config-value name="chapterbreak6">false</config-value>
+      <config-value name="imagemarker">0</config-value>
+      <config-value name="activehyperlinks">1</config-value>
+      <config-value name="outputfile"></config-value>
+    </config-group>
+    <config-group name="ebook">
+      <config-value name="template"></config-value>
+      <config-value name="icon"></config-value>
+      <config-value name="splashbmp"></config-value>
+      <config-value name="left">-1</config-value>
+      <config-value name="top">-1</config-value>
+      <config-value name="width">-1</config-value>
+      <config-value name="height">-1</config-value>
+      <config-value name="maximized">0</config-value>
+      <config-value name="language" translate="true">English.lng</config-value>
+      <config-value name="showindex">1</config-value>
+      <config-value name="showsearch">1</config-value>
+      <config-value name="compressviewer">0</config-value>
+      <config-value name="saveregistry">0</config-value>
+      <config-value name="about" translate="true"></config-value>
+      <config-value name="splashwav"></config-value>
+      <config-value name="pagewav"></config-value>
+      <config-value name="password"></config-value>
+      <config-value name="serialnumber"></config-value>
+      <config-value name="enableselect">1</config-value>
+      <config-value name="outputfile"></config-value>
+    </config-group>
+    <config-group name="user">
+      <config-group name="david">
+        <config-group name="project">
+          <config-value name="lastexport">0</config-value>
+        </config-group>
+      </config-group>
+    </config-group>
+    <variables>
+      <variable id="AUTHOR" type="text" translate="true">enter value here</variable>
+    </variables>
+    <helpcontext-numbers>
+      <helpcontext-number href="Adjusted_Totals" value="11"/>
+      <helpcontext-number href="Adjusted_Totals" value="11"/>
+      <helpcontext-number href="Adjusted_Totals" value="11"/>
+      <helpcontext-number href="Adjusted_Totals#excluding_vectors" value="121"/>
+      <helpcontext-number href="Adjustment_Brushed_Strokes" value="300"/>
+      <helpcontext-number href="Backsight_Types" value="125"/>
+      <helpcontext-number href="Color_dialog" value="14"/>
+      <helpcontext-number href="Color_Gradients" value="22"/>
+      <helpcontext-number href="CommandLine" value="200"/>
+      <helpcontext-number href="Compass_Data_Import" value="330"/>
+      <helpcontext-number href="Compile_Options_Page" value="131"/>
+      <helpcontext-number href="Connected_component" value="340"/>
+      <helpcontext-number href="Contents" value="1000"/>
+      <helpcontext-number href="Converting_Goups_to_Layers" value="290"/>
+      <helpcontext-number href="Converting_Groups_to_Layers" value="280"/>
+      <helpcontext-number href="CorelDraw" value="220"/>
+      <helpcontext-number href="DefiningandUsingMacros" value="150"/>
+      <helpcontext-number href="ESRI_Shapefiles" value="130"/>
+      <helpcontext-number href="Export_3D" value="13"/>
+      <helpcontext-number href="Exporting_Maps" value="16"/>
+      <helpcontext-number href="Exporting_SEF_Files" value="128"/>
+      <helpcontext-number href="Flag_and_Marker_Symbols" value="142"/>
+      <helpcontext-number href="Format_of_Survey_Data" value="7"/>
+      <helpcontext-number href="General_Page" value="6"/>
+      <helpcontext-number href="geographical_calculator" value="118"/>
+      <helpcontext-number href="Geographical_Reference_Page" value="119"/>
+      <helpcontext-number href="Geographical_Reference_Page#Derive_Magnetic" value="120"/>
+      <helpcontext-number href="Geometry_page" value="1"/>
+      <helpcontext-number href="Geometry_page#geom_componets" value="107"/>
+      <helpcontext-number href="GPS_Download" value="25"/>
+      <helpcontext-number href="grid_convergence" value="310"/>
+      <helpcontext-number href="Grid_Intervals" value="9"/>
+      <helpcontext-number href="Import_SEF" value="12"/>
+      <helpcontext-number href="Live_Paint_and_Pattern_Support" value="320"/>
+      <helpcontext-number href="LongTraverses" value="160"/>
+      <helpcontext-number href="Map_Format_Options" value="8"/>
+      <helpcontext-number href="Map_Page" value="3"/>
+      <helpcontext-number href="Map_Page#T_106" value="106"/>
+      <helpcontext-number href="Map_Page#T_113" value="113"/>
+      <helpcontext-number href="Map_Page#T_116" value="116"/>
+      <helpcontext-number href="Measuretool" value="260"/>
+      <helpcontext-number href="Page_Layout_Page" value="4"/>
+      <helpcontext-number href="Page_Offsets_Dialog" value="141"/>
+      <helpcontext-number href="Position_and_Scale_dialog" value="110"/>
+      <helpcontext-number href="PositionAccuracy" value="170"/>
+      <helpcontext-number href="Prefix_Directive" value="115"/>
+      <helpcontext-number href="project_tree" value="19"/>
+      <helpcontext-number href="project_tree#Prj_Compile_Opt" value="117"/>
+      <helpcontext-number href="project_tree#T_114" value="114"/>
+      <helpcontext-number href="Recent_Changes" value="143"/>
+      <helpcontext-number href="RegularExpressions" value="240"/>
+      <helpcontext-number href="ScreenMapOperations" value="112"/>
+      <helpcontext-number href="SearchOperations" value="230"/>
+      <helpcontext-number href="SEG_Directives" value="109"/>
+      <helpcontext-number href="Segment_Page" value="5"/>
+      <helpcontext-number href="Seldom_Used#LRUD_ARG" value="138"/>
+      <helpcontext-number href="SRV_Files" value="126"/>
+      <helpcontext-number href="Style_of_Wall_Drawing" value="144"/>
+      <helpcontext-number href="Suffixes" value="127"/>
+      <helpcontext-number href="Survey_Text_Editor" value="17"/>
+      <helpcontext-number href="SVG_Advanced_Settings" value="23"/>
+      <helpcontext-number href="SVG_Export_Dialog" value="21"/>
+      <helpcontext-number href="SVG_Import_and_Export" value="18"/>
+      <helpcontext-number href="SVG_Layers" value="24"/>
+      <helpcontext-number href="SVG_Overview" value="30"/>
+      <helpcontext-number href="Tips#Coosing_Fonts" value="124"/>
+      <helpcontext-number href="Tips#T_101" value="101"/>
+      <helpcontext-number href="Tips#T_102" value="102"/>
+      <helpcontext-number href="Traverse_page" value="2"/>
+      <helpcontext-number href="TraverseChainBehavior" value="270"/>
+      <helpcontext-number href="Variance_Assignments" value="151"/>
+      <helpcontext-number href="Vector_and_Coordinate_Reports" value="20"/>
+      <helpcontext-number href="Vector_Data_Lines#LRUD" value="145"/>
+      <helpcontext-number href="Vector_Data_Lines#Wall_Shots" value="146"/>
+      <helpcontext-number href="VectorPropertiesWindow" value="111"/>
+      <helpcontext-number href="Zip_Archives" value="26"/>
+    </helpcontext-numbers>
+  </config>
+  <xi:include parse="xml" href="Maps/table_of_contents.xml"/>
+  <project-files>
+    <file href="Topics/*.xml" build="ALL" filetype="topic"/>
+    <file href="Topics/Invisible/*.xml" build="ALL" filetype="topic"/>
+    <file href="Baggage/*.*" build="ALL" filetype="baggage"/>
+  </project-files>
+</helpproject>

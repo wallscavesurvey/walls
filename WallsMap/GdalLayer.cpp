@@ -31,8 +31,8 @@ bool CGdalLayer::IsScaledType() const
 			case GDT_Int16:
 			case GDT_UInt32:
 			case GDT_Int32:
+			case GDT_Float32:
 				return true;
-			//case GDT_Float32:
 			//case GDT_Float64:
 		}
 	}
@@ -518,8 +518,14 @@ BOOL CGdalLayer::ReadGrayscale(BYTE *lpBits,const CRect &crRegion,int szWinX,int
 				break;
 
 			case 4 :
-				for(int col=0;col<szWinX;col++,pSrc+=4)
-					*pDst++=(BYTE)(*(DWORD *)pSrc*fDiv+0.5);
+				if(m_uDataType==GDT_Float32) {
+					for(int col=0; col<szWinX; col++, pSrc+=4)
+						*pDst++=(BYTE)(*(float*)pSrc*fDiv+0.5);
+				}
+				else {
+					for(int col=0; col<szWinX; col++, pSrc+=4)
+						*pDst++=(BYTE)(*(DWORD *)pSrc*fDiv+0.5);
+				}
 				break;
 		}
 	}

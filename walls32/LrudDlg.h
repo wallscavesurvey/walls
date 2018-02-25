@@ -16,34 +16,37 @@ class CLrudDlg : public CDialog
 {
 // Construction
 public:
-	CLrudDlg(CSegView *pSV,double *pfThickPenPts,CWnd* pParent = NULL);   // standard constructor
+	CLrudDlg(CPrjDoc *pDoc, CSegView *pSV, CWnd* pParent = NULL);   // standard constructor
 
-// Dialog Data
-	//{{AFX_DATA(CLrudDlg)
 	enum { IDD = IDD_LRUDSTYLE };
+
+public:
 	int		m_iLrudStyle;
 	BOOL	m_bSVGUseIfAvail;
 	CString	m_ThickPenPts;
-	//}}AFX_DATA
 	CString m_LrudExag;
-	double *m_pfThickPenPts;
+	double  m_fThickPenPts;
 	int m_iEnlarge;
 	CSegView *m_pSV;
+	CPrjDoc *m_pDoc;
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CLrudDlg)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
+	BOOL m_bMapsActive;
+	void EnableApply(BOOL bEnable) {GetDlgItem(IDC_APPLY)->EnableWindow(bEnable);}
 
-// Implementation
 protected:
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
-	// Generated message map functions
-	//{{AFX_MSG(CLrudDlg)
+	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
-	//}}AFX_MSG
+
+
+	BOOL HasChanged();
+
+    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+	afx_msg void OnBnClickedApply();
+	afx_msg void OnBnClickedSVGUse();
+	afx_msg void OnBnClickedLRUD(UINT id);
+	afx_msg void OnEditChgEnlarge();
+	afx_msg void OnEditChgExag();
+	afx_msg void OnEditThickPenPts();
 	DECLARE_MESSAGE_MAP()
 };
 

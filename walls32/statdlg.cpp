@@ -15,10 +15,11 @@ static char BASED_CODE THIS_FILE[] = __FILE__;
 // CStatDlg dialog
 
 
-CStatDlg::CStatDlg(SEGSTATS *st,CWnd* pParent /*=NULL*/)
+CStatDlg::CStatDlg(SEGSTATS *st,BOOL bIsOpen,CWnd* pParent /*=NULL*/)
 	: CDialog(CStatDlg::IDD, pParent)
 {
 	m_st=st;
+	m_bIsOpen=bIsOpen; //for title
 	//{{AFX_DATA_INIT(CStatDlg)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
@@ -67,6 +68,7 @@ BOOL CStatDlg::OnInitDialog()
 		SetFloat(IDC_HZLENGTH,m_st->hzlength);
 		SetFloat(IDC_VTLENGTH,m_st->vtlength);
 		SetFloat(IDC_TTLENGTH,m_st->ttlength);
+		SetFloat(IDC_EXLENGTH, m_st->exlength);
 		SetFloat(IDC_HIGHPOINT,m_st->highpoint);
 		SetFloat(IDC_LOWPOINT,m_st->lowpoint);
 		SetFloat(IDC_DEPTH,m_st->highpoint-m_st->lowpoint);
@@ -75,13 +77,14 @@ BOOL CStatDlg::OnInitDialog()
 		SetText(IDC_HZLENGTH,na);
 		SetText(IDC_VTLENGTH,na);
 		SetText(IDC_TTLENGTH,na);
+		SetText(IDC_EXLENGTH,na);
 		SetText(IDC_HIGHPOINT,na);
 		SetText(IDC_LOWPOINT,na);
 		SetText(IDC_DEPTH,na);
 		GetDlgItem(IDC_ARCVIEW)->EnableWindow(FALSE);
 		GetDlgItem(IDC_VECTORLIST)->EnableWindow(FALSE);
 	}
-	SetWndTitle(this,IDS_STAT_TITLE,m_st->title);
+	SetWndTitle(this,IDS_STAT_TITLE,m_bIsOpen?"Node":"Branch", m_st->title);
 	
 	CenterWindow();
 	

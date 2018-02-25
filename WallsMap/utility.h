@@ -122,6 +122,7 @@ LPCSTR  DatumStr(INT8 iNad);
 BOOL	DoPromptPathName(CString& pathName,DWORD lFlags,
 			int numFilters,CString &strFilter,BOOL bOpen,UINT ids_Title,LPCSTR defExt);
 BOOL	DirCheck(LPSTR pathname,BOOL bPrompt);
+bool	ElimSlash(CString &s);
 bool	ForceExtension(CString &path,LPCSTR ext);
 bool	GetConvertedPoint(CFltPoint &fpt,const int iNad,int *piZone,const int iNadSrc,const int iZoneSrc);
 void	OpenContainingFolder(LPCSTR path);

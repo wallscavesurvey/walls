@@ -34,13 +34,11 @@ protected:
 	BOOL PreCreateWindow(CREATESTRUCT& cs);
 	 
 	afx_msg void OnIconEraseBkgnd(CDC* pDC);
-	afx_msg LRESULT OnSetText(WPARAM wParam,LPARAM strText);
 	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 
 	// Generated message map functions
 	//{{AFX_MSG(CPrjFrame)
 	afx_msg void OnGetMinMaxInfo(MINMAXINFO FAR* lpMMI);
-	afx_msg void OnWindowPosChanged(WINDOWPOS FAR* lpwndpos);
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg void OnNcLButtonDown(UINT nHitTest, CPoint point);
 	afx_msg void OnNcRButtonDown(UINT nHitTest, CPoint point);

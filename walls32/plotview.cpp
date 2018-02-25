@@ -48,7 +48,6 @@ IMPLEMENT_DYNCREATE(CPlotView, CPanelView)
 
 CDC CPlotView::m_dcBmp;
 CRect CPlotView::m_rectBmp;
-CMapFrame * CPlotView::m_pMapFrame=NULL;
 UINT CPlotView::m_uMetaRes;
 POINT * CPlotView::m_pathPoint;
 
@@ -72,12 +71,20 @@ GRIDFORMAT CPlotView::m_GridFormat={
 
 static char * szDevType[3]={"Screen","Printer","Export"};
 static char * szFontType[3]={"Labels","Notes","Frame Annotation"};
+static int offX, offY;
 
 char *CPlotView::szMapFormat="Map Format";
+
 PRJFONT CPlotView::m_LabelScrnFont;
 PRJFONT CPlotView::m_NoteScrnFont;
+PRJFONT CPlotView::m_LabelPrntFont;
+PRJFONT CPlotView::m_NotePrntFont;
+PRJFONT CPlotView::m_FrameFont;
+PRJFONT CPlotView::m_LabelExportFont;
+PRJFONT CPlotView::m_NoteExportFont;
 
-MAPFORMAT CPlotView::m_mfFrame={
+const MAPFORMAT CPlotView::m_mfDflt[3]={
+{
     8.0, 	//fFrameWidthInches
     0.0,    //fFrameHeightInches (printer only)
 	0,      //iFrameThick (printer only)
@@ -102,16 +109,34 @@ MAPFORMAT CPlotView::m_mfFrame={
 	&m_LabelScrnFont,  //pfLabelFont
 	NULL,              //pfFrameFont
 	&m_NoteScrnFont    //pfNoteFont
-};
-	
-PRJFONT CPlotView::m_LabelExportFont;
-PRJFONT CPlotView::m_NoteExportFont;
-
-PRJFONT CPlotView::m_LabelPrntFont;
-PRJFONT CPlotView::m_NotePrntFont;
-PRJFONT CPlotView::m_FrameFont;
-
-MAPFORMAT CPlotView::m_mfExport={
+},
+{
+	9.5, 	//fFrameWidthInches
+	7.5,   //fFrameHeightInches (printer only)
+	4,      //iFrameThick (printer only)
+	3,      //iMarkerSize
+	1,		//iMarkerThick
+	5,      //iFlagSize
+	1,		//iFlagThick
+	1,		//iVectorThin
+	4,		//iVectorThick
+	3,		//iOffLabelX
+	0,		//iOffLabelY
+	6,		//iTickLength
+	2,		//iTickThick
+	1,		//iLabelSpace
+	1,		//iLabelInc
+	FALSE,	//bLblFlags
+	FALSE,	//bUseColors
+	0,      //iFlagStyle: 0-squares,1-circles,2-triangles
+	2,      //bFlagSolid: 0-clear,1-solid,2-opaque
+	FALSE,	//bChanged
+	TRUE,	//bPrinter	
+	&m_LabelPrntFont,  //pfLabelFont
+	&m_FrameFont,      //pfFrameFont
+	&m_NotePrntFont    //pfNoteFont
+},
+{
     9.5, 	//fFrameWidthInches
     7.5,   //fFrameHeightInches (printer only)
 	1,      //iFrameThick (printer only)
@@ -136,45 +161,23 @@ MAPFORMAT CPlotView::m_mfExport={
 	&m_LabelExportFont,  //pfLabelFont
 	&m_FrameFont,      //pfFrameFont
 	&m_NoteExportFont    //pfNoteFont
-};
+}};
 
-MAPFORMAT CPlotView::m_mfPrint={
-    9.5, 	//fFrameWidthInches
-    7.5,   //fFrameHeightInches (printer only)
-	4,      //iFrameThick (printer only)
-	3,      //iMarkerSize
-	1,		//iMarkerThick
-	5,      //iFlagSize
-	1,		//iFlagThick
-	1,		//iVectorThin
-	4,		//iVectorThick
-	3,		//iOffLabelX
-	0,		//iOffLabelY
-	6,		//iTickLength
-	2,		//iTickThick
-	1,		//iLabelSpace
-	1,		//iLabelInc
-	FALSE,	//bLblFlags
-	FALSE,	//bUseColors
-	0,      //iFlagStyle: 0-squares,1-circles,2-triangles
-	2,      //bFlagSolid: 0-clear,1-solid,2-opaque
-	FALSE,	//bChanged
-	TRUE,	//bPrinter	
-	&m_LabelPrntFont,  //pfLabelFont
-	&m_FrameFont,      //pfFrameFont
-	&m_NotePrntFont    //pfNoteFont
-};
+MAPFORMAT CPlotView::m_mfFrame;
+MAPFORMAT CPlotView::m_mfPrint;
+MAPFORMAT CPlotView::m_mfExport;
 
 static CPoint ptPan;
 static BOOL bPanValidated;
 
 static void PASCAL LoadMapFormat(int typ,MAPFORMAT *pMF)
 {
+	*pMF=CPlotView::m_mfDflt[typ];
 	CWinApp* pApp = AfxGetApp();
-	MAPFORMAT mf=*pMF;
-	
 	CString str=pApp->GetProfileString(CPlotView::szMapFormat,szDevType[typ],NULL);
-	if(str.IsEmpty()) return;
+	if(str.IsEmpty()) {
+		return;
+	}
 	
     /*Sadly, use of sscanf() generates the following fatal error during linkage:
       RC : fatal error RW1031: Segment 1 and its
@@ -186,6 +189,7 @@ static void PASCAL LoadMapFormat(int typ,MAPFORMAT *pMF)
 		
 	tok_init(str.GetBuffer(1));
 	if(tok_int()==5) {
+		MAPFORMAT mf=*pMF;
 		mf.fFrameWidthInches=tok_dbl();
 		mf.fFrameHeightInches=tok_dbl();
 		mf.iFrameThick=tok_int();  //width (pixels) of frame outline
@@ -207,9 +211,12 @@ static void PASCAL LoadMapFormat(int typ,MAPFORMAT *pMF)
 		mf.bFlagSolid=tok_int();
 		mf.iLabelSpace=tok_int();
 		mf.iLabelInc=tok_int();
-		if(tok_count()==20) *pMF=mf;
+		if(tok_count()==20) {
+			*pMF=mf;
+			return;
+		}
 	}
-	else pMF->bChanged=TRUE;
+	pMF->bChanged=TRUE;
 }	   
 
 static void PASCAL SaveMapFormat(int typ,MAPFORMAT *pMF)
@@ -249,11 +256,16 @@ static void PASCAL SaveMapFormat(int typ,MAPFORMAT *pMF)
 CPlotView::CPlotView()
 	: CPanelView(CPlotView::IDD)
 {
-	m_bCursorInBmp=m_bMeasuring=FALSE;
-	m_bExternUpdate=FALSE; //controlled hereafter by CSegView::OnExternUpdate()
+#ifdef VISTA_INC
+	ASSERT(g_hwndTrackingTT==NULL);
+#endif
+	m_bCursorInBmp=FALSE;
+	m_bMeasuring=FALSE;
+	m_bExternUpdate=FALSE;
 	m_bPrinterOptions=FALSE;
 	m_pathPoint=NULL;
 	m_bInches=LEN_ISFEET();
+	m_bPanning=m_bPanned=false;
 }
 
 CPlotView::~CPlotView()
@@ -270,70 +282,71 @@ void CPlotView::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CPlotView, CPanelView)
+	ON_WM_CTLCOLOR()
+	ON_WM_SYSCOMMAND()
+	ON_WM_DESTROY()
+	ON_WM_MOUSEMOVE()
+	ON_WM_DRAWITEM()
+	ON_WM_SETCURSOR()
+	ON_WM_RBUTTONDOWN()
+	ON_WM_RBUTTONUP()
+	ON_WM_LBUTTONDOWN()
+	ON_WM_LBUTTONUP()
+	ON_WM_LBUTTONDBLCLK()
+	ON_WM_MOUSEWHEEL()
 	ON_COMMAND(ID_EDIT_FIND, OnEditFind)
 	ON_COMMAND(ID_FIND_NEXT, OnFindNext)
 	ON_COMMAND(ID_TRAV_TOGGLE, OnTravToggle)
 	ON_UPDATE_COMMAND_UI(ID_TRAV_TOGGLE, OnUpdateTravToggle)
-	ON_WM_SYSCOMMAND()
+	ON_COMMAND(ID_PLT_PANTOHERE, OnPltPanToHere)
+	ON_COMMAND(ID_PLT_ZOOMIN, OnPltZoomIn)
+	ON_COMMAND(ID_PLT_ZOOMOUT, OnPltZoomOut)
+	ON_UPDATE_COMMAND_UI(ID_PLT_RECALL, OnUpdatePltRecall)
+	ON_UPDATE_COMMAND_UI(ID_PLT_DEFAULT, OnUpdatePltDefault)
+	ON_COMMAND(ID_MEASUREDIST, OnMeasureDist)
+	ON_UPDATE_COMMAND_UI(ID_MEASUREDIST, OnUpdateMeasureDist)
+	ON_UPDATE_COMMAND_UI(ID_FIND_NEXT, OnUpdateFindNext)
+	ON_UPDATE_COMMAND_UI(ID_FIND_PREV, OnUpdateFindPrev)
+	ON_COMMAND(ID_FIND_PREV, OnFindPrev)
+	ON_UPDATE_COMMAND_UI(ID_INDICATOR_UTM, OnUpdateUTM)
+	ON_UPDATE_COMMAND_UI(ID_INDICATOR_SEL, OnUpdateUTM)
+	ON_COMMAND(ID_FILE_PRINT, OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_PREVIEW, OnFilePrintPreview)
+	ON_COMMAND(ID_FILE_EXPORT, OnFileExport)
+	ON_COMMAND(ID_MAP_EXPORT, OnMapExport)
+	ON_COMMAND(ID_PLT_DEFAULT, OnPanelDefault)
+	ON_COMMAND(ID_PLT_RECALL, OnRecall)
 	ON_BN_CLICKED(IDC_SYSNEXT, OnSysNext)
 	ON_BN_CLICKED(IDC_SYSPREV, OnSysPrev)
 	ON_BN_CLICKED(IDC_TRAVNEXT, OnTravNext)
 	ON_BN_CLICKED(IDC_TRAVPREV, OnTravPrev)
 	ON_BN_CLICKED(IDC_EXTERNFRAME, OnExternFrame)
 	ON_BN_CLICKED(IDC_UPDATEFRAME, OnUpdateFrame)
-	
-	//{{AFX_MSG_MAP(CPlotView)
-	ON_WM_DESTROY()
-	ON_WM_MOUSEMOVE()
-	ON_WM_SETCURSOR()
-	ON_WM_LBUTTONDOWN()
 	ON_BN_CLICKED(IDC_ZOOMIN, OnPanelZoomIn)
 	ON_BN_CLICKED(IDC_DEFAULT, OnPanelDefault)
 	ON_BN_CLICKED(IDC_ZOOMOUT, OnPanelZoomOut)
 	ON_BN_CLICKED(IDC_PLANPROFILE, OnPlanProfile)
 	ON_BN_CLICKED(IDC_EXTERNGRIDLINES, OnExternGridlines)
-	ON_WM_LBUTTONDBLCLK()
 	ON_BN_CLICKED(IDC_ROTATELEFT, OnRotateLeft)
 	ON_BN_CLICKED(IDC_ROTATERIGHT, OnRotateRight)
-	ON_WM_DRAWITEM()
 	ON_BN_CLICKED(IDC_TRAVSELECTED, OnTravSelected)
 	ON_BN_CLICKED(IDC_TRAVFLOATED, OnTravFloated)
 	ON_BN_CLICKED(IDC_EXTERNFLAGS, OnExternFlags)
 	ON_BN_CLICKED(IDC_DISPLAYOPTIONS, OnDisplayOptions)
-	ON_WM_RBUTTONDOWN()
-	ON_WM_CTLCOLOR()
 	ON_BN_CLICKED(IDC_RECALL, OnRecall)
 	ON_BN_CLICKED(IDC_SAVE, OnSave)
 	ON_BN_CLICKED(IDC_WALLS, OnWalls)
-	ON_WM_RBUTTONUP()
-	ON_COMMAND(ID_PLT_PANTOHERE, OnPltPanToHere)
-	ON_COMMAND(ID_PLT_ZOOMIN, OnPltZoomIn)
-	ON_COMMAND(ID_PLT_ZOOMOUT, OnPltZoomOut)
-	ON_UPDATE_COMMAND_UI(ID_PLT_RECALL, OnUpdatePltRecall)
-	ON_UPDATE_COMMAND_UI(ID_PLT_DEFAULT, OnUpdatePltDefault)
-	ON_WM_LBUTTONUP()
-	ON_COMMAND(ID_MEASUREDIST, OnMeasureDist)
-	ON_UPDATE_COMMAND_UI(ID_MEASUREDIST, OnUpdateMeasureDist)
-	ON_UPDATE_COMMAND_UI(ID_FIND_NEXT, OnUpdateFindNext)
-	ON_UPDATE_COMMAND_UI(ID_FIND_PREV, OnUpdateFindPrev)
-	ON_COMMAND(ID_FIND_PREV, OnFindPrev)
 	ON_BN_CLICKED(IDC_CHGVIEW, OnChgView)
-	//}}AFX_MSG_MAP
-
-	ON_MESSAGE(WM_MOUSELEAVE,OnMouseLeave)
-	ON_UPDATE_COMMAND_UI(ID_INDICATOR_UTM,OnUpdateUTM)
-	ON_UPDATE_COMMAND_UI(ID_INDICATOR_SEL,OnUpdateUTM)
 	ON_BN_CLICKED(IDC_EXTERNNOTES, OnExternNotes)
+#ifdef _SAV_LBL
+	ON_BN_CLICKED(IDC_EXTERNLABELS, OnExternLabels)
+	ON_BN_CLICKED(IDC_EXTERNMARKERS, OnExternMarkers)
+#else
 	ON_BN_CLICKED(IDC_EXTERNLABELS, OnFlagToggle)
 	ON_BN_CLICKED(IDC_EXTERNMARKERS, OnFlagToggle)
+#endif
 	ON_BN_CLICKED(IDC_GRIDOPTIONS, OnGridOptions)
-    ON_COMMAND(ID_FILE_PRINT, OnFilePrint)
-    ON_COMMAND(ID_FILE_PRINT_PREVIEW, OnFilePrintPreview)
-    ON_COMMAND(ID_FILE_EXPORT, OnFileExport)
-	ON_COMMAND(ID_MAP_EXPORT, OnMapExport)
-	ON_COMMAND(ID_PLT_DEFAULT, OnPanelDefault)
-	ON_COMMAND(ID_PLT_RECALL, OnRecall)
-
+	ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -361,14 +374,17 @@ void CPlotView::Initialize()
     LoadMapFormat(0,&m_mfFrame);
     LoadMapFormat(1,&m_mfPrint);
     LoadMapFormat(2,&m_mfExport);
-	m_mfExport.iMarkerSize=m_mfFrame.iMarkerSize=m_mfPrint.iMarkerSize;
-	m_mfExport.iFlagSize=m_mfFrame.iFlagSize=m_mfPrint.iFlagSize;
-	m_mfExport.iFlagStyle=m_mfFrame.iFlagStyle=m_mfPrint.iFlagStyle;
-	m_mfExport.bFlagSolid=m_mfFrame.bFlagSolid=m_mfPrint.bFlagSolid;
+	//WHY??? ---
+	//m_mfExport.iMarkerSize=m_mfFrame.iMarkerSize=m_mfPrint.iMarkerSize;
+	//m_mfExport.iFlagSize=m_mfFrame.iFlagSize=m_mfPrint.iFlagSize;
+	//m_mfExport.iFlagStyle=m_mfFrame.iFlagStyle=m_mfPrint.iFlagStyle;
+	//m_mfExport.bFlagSolid=m_mfFrame.bFlagSolid=m_mfPrint.bFlagSolid;
 	m_mfExport.fFrameWidthInches=m_mfPrint.fFrameWidthInches;
 	m_mfExport.fFrameHeightInches=m_mfPrint.fFrameHeightInches;
     CMainFrame::XferVecLimits(FALSE);
 	CMapView::m_hCursorPan=AfxGetApp()->LoadCursor(MAKEINTRESOURCE(AFX_IDC_MOVE4WAY));
+	//CMapView::m_hCursorHand=CMapView::m_hCursorPan;
+	CMapView::m_hCursorHand=AfxGetApp()->LoadCursor(IDC_HAND3);
 	CMapView::m_hCursorMeasure=AfxGetApp()->LoadCursor(IDC_MEASURE);
 	CMapView::m_hCursorCross=AfxGetApp()->LoadStandardCursor(IDC_CROSS);
 	CMapView::m_hCursorArrow=AfxGetApp()->LoadStandardCursor(IDC_ARROW);
@@ -462,7 +478,7 @@ void CPlotView::OnInitialUpdate()
     m_hCursorBmp=AfxGetApp()->LoadStandardCursor(IDC_CROSS);
 	m_tracker.m_pr=&CPlotView::m_rectBmp;
 	m_tracker.m_nStyle=CRectTracker::resizeInside|CRectTracker::solidLine;
-    Enable(IDC_UPDATEFRAME,m_pMapFrame!=NULL);  
+    //Compile enables IDC_UPDATEFRAME button accordingly
     ResetContents();
  }
 
@@ -493,6 +509,10 @@ void CPlotView::LoadViews()
 		memcpy(m_vfSaved,&((SEGHDR *)ixSEG.ExtraPtr())->vf,sizeof(m_vfSaved));
 		SetCheck(IDC_EXTERNFLAGS,(m_vfSaved[0].bFlags&VF_VIEWFLAGS)!=0);
 		SetCheck(IDC_EXTERNNOTES,(m_vfSaved[0].bFlags&VF_VIEWNOTES)!=0);
+#ifdef _SAV_LBL
+		SetCheck(IDC_EXTERNLABELS, (m_vfSaved[0].bFlags&VF_VIEWLABEL)!=0);
+		SetCheck(IDC_EXTERNMARKERS, (m_vfSaved[0].bFlags&VF_VIEWMARK)!=0);
+#endif
 	}
 	m_recNTN=dbNTN.Position();
 
@@ -599,7 +619,7 @@ void CPlotView::DisplayPanelWidth()
 	}
 	  
 	//get minimal length string, 1 decimal place --
-	GetDlgItem(IDC_WIDTH)->SetWindowText(GetFloatStr(LEN_SCALE(w),1));
+	GetDlgItem(IDC_WIDTH)->SetWindowText(GetFloatStr(LEN_SCALE(w),-1));
 }
 
 void CPlotView::EnableDefaultButtons(BOOL bDefEnable)
@@ -713,7 +733,8 @@ BOOL CPlotView::IncSys(int dir)
     }
     pCV->PlotTraverse(0);
     EnableTravButtons(pCV->m_bSeg>1);
-    return TRUE;
+	GetDocument()->RefreshMapTraverses(TRV_SEL);
+	return TRUE;
 }
 
 void CPlotView::IncTrav(int dir)
@@ -728,8 +749,9 @@ void CPlotView::IncTrav(int dir)
 	else if(i>nTrav) i=0;
 	if(plb->SetCurSel(i)<0) return;
 	CPrjDoc::SetTraverse(((CListBox *)pCV->GetDlgItem(IDC_SYSTEMS))->GetCurSel(),i);
-    pCV->OnTravChg();
+    pCV->OnTravChg(); //update Float button and m_iStrFlag flags
     pCV->PlotTraverse(0);
+	GetDocument()->RefreshMapTraverses(TRV_SEL);
 }
 
 void CPlotView::OnSysNext()
@@ -757,65 +779,8 @@ void CPlotView::RefreshMeasure()
     CClientDC dc(this);
     dc.SetROP2(R2_NOT);
     dc.SetBkMode(TRANSPARENT);
-    dc.MoveTo(CMapView::m_ptMeasureStart);
-	dc.LineTo(CMapView::m_ptMeasureEnd);
-}
-
-void CPlotView::OnMouseMove(UINT nFlags, CPoint point)
-{
-	// TODO: Add your message handler code here and/or call default
-	//CPanelView::OnMouseMove(nFlags, point);
-	BOOL bCursorInBmp=m_rectBmp.PtInRect(point);
-	if(bCursorInBmp!=m_bCursorInBmp) {
-		if(bCursorInBmp) ::SetCursor(CMapView::m_bMeasureDist?CMapView::m_hCursorMeasure:m_hCursorBmp);
-	  m_bCursorInBmp=bCursorInBmp;
-	}
-	
-	if(!bCursorInBmp) return;
-
-	if(bPanValidated && (nFlags&(MK_CONTROL+MK_LBUTTON+MK_RBUTTON))>MK_CONTROL) {
-    	point.x-=ptPan.x;
-    	point.y-=ptPan.y;
-    	if(point.x || point.y) {
-    	    if(nFlags&MK_LBUTTON) {
-    			//Pan image --
-				DPOINT pt((double)(m_sizeBmp.cx/2.0-point.x)/m_xscale,(double)(m_sizeBmp.cy/2.0-point.y)/m_xscale);
-	    	    ptPan.x+=point.x;
-	    	    ptPan.y+=point.y;
-		    	m_pPanPoint=&pt;
-				//m_bTrackerActive=FALSE; //Should already be the case
-		    	pCV->PlotTraverse(-2);
-		    	m_pPanPoint=NULL;
-	    		bPanValidated=FALSE;
-		    }
-		    else if(point.x) {
-    			//Rotate image in one degree increments --
-			    int i=(int)(fView+(180.0*point.x)/m_sizeBmp.cx);
-			    if(i>=360) i-=360;
-			    else if(i<0) i+=360;
-			    ASSERT(i>=0 && i<360);
-				if(m_iView!=i) {
-				  m_iView=i;
-		    	  ptPan.x+=point.x;
-		    	  //ptPan.y+=point.y;
-				  pCV->PlotTraverse(-2);
-	    		  bPanValidated=FALSE;
-	    		}
-		    }
-	    }
-	}
-	else {
-		CPrjDoc::GetCoordinate(CMapView::m_Coordinate,point,FALSE);
-		if(m_bMeasuring) {
-			RefreshMeasure();
-			CMapView::m_ptMeasureEnd=point;
-			RefreshMeasure();
-		}
-		else if(!m_bTracking) {
-			TrackMouse(m_hWnd);
-			m_bTracking=TRUE;
-		}
-	}
+    dc.MoveTo(ptMeasureStart);
+	dc.LineTo(ptMeasureEnd);
 }
 
 BOOL CPlotView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
@@ -826,100 +791,13 @@ BOOL CPlotView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 	  if(nHitTest==HTCLIENT) {
 	    if(m_bCursorInBmp) {
            if(!m_bTrackerActive || !m_tracker.SetCursor(this,nHitTest))
-             ::SetCursor(CMapView::m_bMeasureDist?CMapView::m_hCursorMeasure:m_hCursorBmp);
+             ::SetCursor(bMeasureDist?CMapView::m_hCursorMeasure:m_hCursorBmp);
 	       return TRUE;
 	    }
 	  }
 	}
 	return CPanelView::OnSetCursor(pWnd, nHitTest, message);
 }
-
-void CPlotView::OnRButtonDown(UINT nFlags, CPoint point)
-{
-	if(m_bCursorInBmp && (nFlags&MK_CONTROL)) {
-		ClearTracker();
-		bPanValidated=TRUE;
-		ptPan=point;
-    }
-}
-
-void CPlotView::OnLButtonDown(UINT nFlags, CPoint point)
-{
-	CRect rectSave;
-	int ht;
-	
-	if(m_bCursorInBmp) {
-		if(m_bTrackerActive) {
-			ht=m_tracker.HitTest(point);
-			m_tracker.GetTrueRect(rectSave); //Includes sizing handles
-			if(ht>=0) {
-			    //Some part of the tracker was grabbed --
-			    if(m_tracker.Track(this, point,TRUE)) {
-					// The tracking was committed --
-					InvalidateRect(&rectSave);
-					m_tracker.GetTrueRect(rectSave);
-					if(rectSave.Width()<m_sizeBmp.cx) InvalidateRect(&rectSave);
-					else {
-					  //We have expanded tracker to full panel size --
-					  m_bTrackerActive=FALSE;
-					  ht=2;  //Tracker deleted. No rubberband mode needed --
-					}
-				}
-				else {
-				    //The tracker change was cancelled with the escape key
-				    //or right mouse button. Leave status unchanged --
-				    ht=CRectTracker::hitMiddle;
-				}
-			}
-			else {
-			    //We clicked outside of tracker, cancelling it --
-			    m_bTrackerActive=FALSE;
-			    InvalidateRect(&rectSave);
-			}
-			if(ht>=0) {
-			  if(ht==CRectTracker::hitMiddle) return;
-			  ht=1;
-			}
-		}
-		else ht=0;
-		
-		//At this point the status is:
-		//ht =  2  - An existing tracker was deleted - do not enter rubberband mode
-		//ht =  1  - An existing tracker changed in size - do not enter rubberband mode
-		//ht =  0  - No tracker previously active - enter rubberband mode
-		//ht = -1  - An existing tracker was deleted - enter rubberband mode
-		
-	    if(ht<=0) {
-	        if(nFlags&MK_CONTROL) {
-				bPanValidated=TRUE;
-				ptPan=point;
-		    }
-			else if(CMapView::m_bMeasureDist) {
-				CPrjDoc::GetCoordinate(CMapView::m_Coordinate,point,FALSE);
-				CMapView::m_CoordinateMeasure=CMapView::m_Coordinate;
-				CMapView::m_ptMeasureStart=CMapView::m_ptMeasureEnd=point;
-				m_bMeasuring=TRUE;
-				ht=0;
-			}
-		    else if(m_tracker.TrackRubberBand(this,point,TRUE)) {
-				// The tracking was committed --
-				m_tracker.GetTrueRect(rectSave);
-				if(rectSave.Width()<m_sizeBmp.cx) {
-					m_bTrackerActive=rectSave.Width()>=MIN_TRACKERWIDTH;
-					InvalidateRect(&rectSave);
-					ht--;
-				}
-	        }
-		}
-		
-		if(ht) {
-			if(m_bTrackerActive) GetTrackerPos(NULL); //Initialize new width
-			DisplayPanelWidth();
-		}
-		return;
-	}
-	CPanelView::OnLButtonDown(nFlags,point);
-} 
 
 BOOL CPlotView::TrackerOK()
 {
@@ -935,31 +813,6 @@ BOOL CPlotView::TrackerOK()
 	return TRUE;
 }
 
-void CPlotView::OnPanelZoomIn()
-{
-	if(!m_bTrackerActive) {
-		if((1.0+PERCENT_ZOOMOUT/100.0)*m_fPanelWidth<1.0) {
-			AfxMessageBox(IDS_ERR_PAGEZOOM);
-			return;
-		}
-	}
-	else if(!TrackerOK()) return;
-	
-	if(m_bTrackerActive || pCV->m_bSeg<1 || !pSV->IsTravSelected() ||
-	   !pSV->IsTravVisible())
-	  pCV->PlotTraverse(1);
-	else {
-	  pCV->m_bHomeTrav=TRUE;
-	  pCV->PlotTraverse(0);
-	  pCV->m_bHomeTrav=FALSE;
-	}
-}
-
-void CPlotView::OnPanelZoomOut()
-{
-	pCV->PlotTraverse(-1);	
-}
-
 void CPlotView::OnFileExport()
 {
 	CMsgBox(MB_ICONINFORMATION,IDS_PRJ_UNAVAILABLE);
@@ -968,31 +821,49 @@ void CPlotView::OnFileExport()
 void CPlotView::OnExternFrame()
 {
     if(!TrackerOK()) return;
-    BOOL bOldFrame=m_pMapFrame!=NULL;
-	UINT flags;
 
-	if(m_bExternUpdate) flags=(m_pMapFrame->m_flags&M_TOGGLEFLAGS);
+	ASSERT(GetDocument()==CPrjDoc::m_pReviewDoc);
+	CPrjDoc *pDoc=CPrjDoc::m_pReviewDoc;
+
+ 	UINT flags;
+
+	if(m_bExternUpdate) {
+		CMapFrame *pFrame=pDoc->FrameNodeExists(CPrjDoc::m_pReviewNode);
+		if(!pFrame) {
+			ASSERT(0);
+			return;
+		}
+		if(pFrame!=pDoc->m_pMapFrame) {
+			pFrame->SetDocMapFrame();
+		}
+		flags=(pFrame->m_flags&M_TOGGLEFLAGS);
+	}
 	else flags=(
-	  GetCheck(IDC_EXTERNMARKERS)*M_MARKERS+
-	  GetCheck(IDC_EXTERNLABELS)*M_NAMES+
-	  GetCheck(IDC_EXTERNFLAGS)*M_FLAGS+
-	  GetCheck(IDC_EXTERNNOTES)*M_NOTES+
-	  GetCheck(IDC_WALLS)*M_LRUDS);
+		GetCheck(IDC_EXTERNMARKERS)*M_MARKERS
+		+GetCheck(IDC_EXTERNLABELS)*M_NAMES
+		+GetCheck(IDC_EXTERNFLAGS)*M_FLAGS
+		+GetCheck(IDC_EXTERNNOTES)*M_NOTES
+		+GetCheck(IDC_WALLS)*M_LRUDS
+		//+GetCheck(IDC_TRAVSELECTED)*M_SELECTED
+	);
 
+	#ifndef _DEBUG
 	CPrjDoc::PlotFrame(flags);
-	if(m_pMapFrame && !bOldFrame) pCV->EnableUpdateButtons();
+	#else
+	   int n1=CPrjDoc::m_pReviewDoc->GetFrameCnt();
+	   CPrjDoc::PlotFrame(flags);
+	   int n2=CPrjDoc::m_pReviewDoc->GetFrameCnt();
+	   ASSERT(n2-n1==(m_bExternUpdate?0:1));
+	#endif
 }
 
 void CPlotView::OnUpdateFrame()
 {
-	if(!m_pMapFrame) return;
-	m_bExternUpdate=TRUE;
+	if(!GetDocument()->m_pMapFrame) return;
+	m_bExternUpdate=1;
 	OnExternFrame();
-	m_bExternUpdate=FALSE;
-	//PostMessage(WM_RETFOCUS);
+	m_bExternUpdate=0;
 } 
-
-static int offX,offY;
 
 BOOL CPlotView::OnPreparePrinting(CPrintInfo* pInfo)
 {
@@ -1199,13 +1070,18 @@ void CPlotView::OnUpdate(CView *pSender,LPARAM lHint,CObject *pHint)
 void CPlotView::OnExternGridlines()
 {
 	pSV->SetGridVisible(GetCheck(IDC_EXTERNGRIDLINES));
+	pSV->m_bChanged=TRUE;
+	GetDocument()->RefreshMaps();
 }
 
 void CPlotView::OnGridOptions()
 {
 	char name[NET_SIZNAME+1];
 	CGridDlg dlg(pSV->m_pGridFormat,CPrjDoc::GetNetNameOfOrigin(name),this);
-	if(dlg.DoModal()==IDOK && dlg.m_bChanged) pSV->m_bChanged=TRUE;
+	if(dlg.DoModal()==IDOK && dlg.m_bChanged) {
+		pSV->m_bChanged=TRUE;
+		GetDocument()->RefreshMaps();
+	}
 }
 
 void CPlotView::OnWalls() 
@@ -1218,33 +1094,6 @@ void CPlotView::OnWalls()
 	pSV->SetOutlinesVisible(bVisible);
 	pSV->m_bChanged=TRUE;
 }
-
-void CPlotView::OnLButtonDblClk(UINT nFlags, CPoint point)
-{
-    if(m_bTrackerActive) {
-		CRect rect=m_tracker.m_rect; //Does not include border and handles as does GetTrueRect()
-		rect.NormalizeRect();
-		if(rect.PtInRect(point)) {
-		  OnPanelZoomIn();
-		  return;
-		}
-    }
-    if(m_bCursorInBmp) {
-    	//Pan image --
-		DPOINT pt((double)(point.x-m_ptBmp.x)/m_xscale,(double)(point.y-m_ptBmp.y)/m_xscale);
-    	m_pPanPoint=&pt;
-		m_bTrackerActive=FALSE; //Should already be the case
-    	pCV->PlotTraverse(-2);
-    	m_pPanPoint=NULL;
-    }
-}
-
-/*
-void CPlotView::OnRButtonDblClk(UINT nFlags, CPoint point)
-{
-	if(m_bCursorInBmp && !(nFlags&MK_CONTROL)) OnPanelZoomOut();
-}
-*/
 
 void CPlotView::OnRotateRight()
 {
@@ -1260,16 +1109,43 @@ void CPlotView::OnRotateLeft()
 	pCV->PlotTraverse(-2);
 }
 
+void CPlotView::OnTravSelected()
+{
+	BOOL bVisible=GetCheck(IDC_TRAVSELECTED);
+
+	ASSERT(bVisible || pSV->IsTravSelected() && pSV->IsTravVisible());
+
+	SetCheck(IDC_TRAVFLOATED, FALSE);
+	pSV->SetTravSelected(TRUE); //leave bullet label as "traverse"
+	//pSV->SetRawTravVisible(TRUE); //attach raw traverse
+	pSV->SetTravVisible(bVisible); //attach/detach bullet
+	GetDocument()->RefreshMaps();
+}
+
+void CPlotView::OnTravFloated()
+{
+	BOOL bVisible=GetCheck(IDC_TRAVFLOATED);
+
+	ASSERT(bVisible && (pSV->IsTravSelected() || !pSV->IsTravVisible()) ||
+	      !bVisible && !pSV->IsTravSelected() && pSV->IsTravVisible());
+
+	pSV->SetTravSelected(!bVisible); //toggle bullet between traverse and floated
+	//pSV->SetRawTravVisible(!bVisible);
+	pSV->SetTravVisible(bVisible);	 //attach/detach bullet
+	SetCheck(IDC_TRAVSELECTED,FALSE);
+	GetDocument()->RefreshMaps();
+}
+
 void CPlotView::OnTravToggle()
 {
 	pCV->TravToggle();
 	pCV->PlotTraverse(0);
+	GetDocument()->RefreshMapTraverses(TRV_SEL);
 }
 
 void CPlotView::OnUpdateTravToggle(CCmdUI* pCmdUI)
 {
-	int i=m_bProfile?NET_STR_FLTMSKV:NET_STR_FLTMSKH;
-	pCmdUI->Enable((pCV->m_iStrFlag&i)!=0);
+	pCmdUI->Enable(pCV->m_iStrFlag>0 && (pCV->m_iStrFlag&(NET_STR_FLTMSKV|NET_STR_FLTMSKH))!=0);
 }
 
 void CPlotView::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDIS)
@@ -1370,7 +1246,7 @@ void CPlotView::OnFindNext()
 
 void CPlotView::OnUpdateFindNext(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable(CPrjDoc::m_iFindStation!=0 || CPrjDoc::m_iFindVector!=0);
+	pCmdUI->Enable(CPrjDoc::m_iFindStation!=0 /*|| CPrjDoc::m_iFindVector!=0*/);
 }
 
 void CPlotView::OnFindPrev() 
@@ -1380,8 +1256,8 @@ void CPlotView::OnFindPrev()
 
 void CPlotView::OnUpdateFindPrev(CCmdUI* pCmdUI) 
 {
-	pCmdUI->Enable(CPrjDoc::m_iFindStation!=0 && CPrjDoc::m_iFindStationMax>1 ||
-		CPrjDoc::m_iFindVector!=0 && CPrjDoc::m_iFindVectorMax>1);
+	pCmdUI->Enable(CPrjDoc::m_iFindStation!=0 && CPrjDoc::m_iFindStationMax>1);
+	/* || CPrjDoc::m_iFindVector!=0 && CPrjDoc::m_iFindVectorMax>1);*/
 }
 
 void CPlotView::OnFilePrint()
@@ -1415,28 +1291,6 @@ void CPlotView::SetTravChecks(BOOL bTravSelected,BOOL bVisible)
 	SetCheck(bTravSelected?IDC_TRAVFLOATED:IDC_TRAVSELECTED,FALSE); 
 }
 
-void CPlotView::OnTravSelected()
-{
-	BOOL bVisible=GetCheck(IDC_TRAVSELECTED);
-	
-	if(bVisible) {
-	  pSV->SetTravSelected(TRUE);
-	  SetCheck(IDC_TRAVFLOATED,FALSE);
-	}
-	pSV->SetTravVisible(bVisible);   //attach/detach bullet
-}
-
-void CPlotView::OnTravFloated()
-{
-	BOOL bVisible=GetCheck(IDC_TRAVFLOATED);
-	
-	if(bVisible) {
-	  pSV->SetTravSelected(FALSE);
-	  SetCheck(IDC_TRAVSELECTED,FALSE);
-	}
-	pSV->SetTravVisible(bVisible);	 //attach/detach bullet
-}
-
 void CPlotView::OnFlagToggle()
 {
 	pSV->SetNewVisibility(TRUE);
@@ -1459,6 +1313,18 @@ void CPlotView::OnExternFlags()
 {
 	ToggleNoteFlag(IDC_EXTERNFLAGS,VF_VIEWFLAGS);
 }
+
+#ifdef _SAV_LBL
+void CPlotView::OnExternLabels()
+{
+	ToggleNoteFlag(IDC_EXTERNLABELS, VF_VIEWLABEL);
+}
+
+void CPlotView::OnExternMarkers()
+{
+	ToggleNoteFlag(IDC_EXTERNMARKERS, VF_VIEWMARK);
+}
+#endif
 
 void CPlotView::OnDisplayOptions()
 {
@@ -1788,8 +1654,11 @@ void CPlotView::OnUpdateUTM(CCmdUI* pCmdUI)
 			CPrjDoc::m_pReviewNode->RefZoneStr(s);
 		}
 		else {
-			if(m_bMeasuring) CMapView::GetDistanceFormat(s,m_bProfile,LEN_ISFEET());
-			else GetCoordinateFormat(s,CMapView::m_Coordinate,m_bProfile);
+#ifndef VISTA_INC
+			if(m_bMeasuring) GetDistanceFormat(s,m_bProfile,LEN_ISFEET());
+			else
+#endif
+		    GetCoordinateFormat(s,dpCoordinate,m_bProfile,LEN_ISFEET());
 		}
 		pCmdUI->SetText(s);
 	}
@@ -1797,11 +1666,16 @@ void CPlotView::OnUpdateUTM(CCmdUI* pCmdUI)
 
 LRESULT CPlotView::OnMouseLeave(WPARAM wParam,LPARAM strText)
 {
-	m_bCursorInBmp=m_bTracking=FALSE;
+	/*
 	if(m_bMeasuring) {
 		RefreshMeasure();
 		m_bMeasuring=FALSE;
+#ifdef VISTA_INC
+		DestroyTrackingTT();
+#endif
 	}
+	m_bCursorInBmp=m_bTracking=FALSE;
+	*/
 	return FALSE;
 }
 
@@ -1813,8 +1687,51 @@ void CPlotView::OnPltPanToHere()
 	m_pPanPoint=NULL;
 }
 
+BOOL CPlotView::ZoomOutOK()
+{
+	if((1.0+(PERCENT_ZOOMOUT/100.0))*m_fPanelWidth>1000000.0) {
+		AfxMessageBox(IDS_ERR_PAGEZOOMOUT);
+		return FALSE;
+	}
+	return TRUE;
+}
+
+BOOL CPlotView::ZoomInOK()
+{
+	if((PERCENT_ZOOMOUT/100.0)*m_fPanelWidth<1.0) {
+		AfxMessageBox(IDS_ERR_PAGEZOOM);
+		return FALSE;
+	}
+	return TRUE;
+}
+
+void CPlotView::OnPanelZoomIn()
+{
+	if(!m_bTrackerActive) {
+		if(!ZoomInOK()) return;
+	}
+	else if(!TrackerOK()) return;
+	
+	if(m_bTrackerActive || pCV->m_bSeg<1 || !pSV->IsTravSelected() ||
+	   !pSV->IsTravVisible())
+	  pCV->PlotTraverse(1);
+	else {
+	  pCV->m_bHomeTrav=TRUE;
+	  pCV->PlotTraverse(0);
+	  pCV->m_bHomeTrav=FALSE;
+	}
+}
+
+void CPlotView::OnPanelZoomOut()
+{
+	if(ZoomOutOK()) 
+		pCV->PlotTraverse(-1);
+}
+
 void CPlotView::OnPltZoomIn() 
 {
+	if(!ZoomInOK()) return;
+
 	DPOINT pt((double)(ptPan.x-m_ptBmp.x)/m_xscale,(double)(ptPan.y-m_ptBmp.y)/m_xscale);
     m_pPanPoint=&pt;
 	pCV->PlotTraverse(1);
@@ -1823,10 +1740,28 @@ void CPlotView::OnPltZoomIn()
 
 void CPlotView::OnPltZoomOut() 
 {
+	if(!ZoomOutOK()) return;
+
 	DPOINT pt((double)(ptPan.x-m_ptBmp.x)/m_xscale,(double)(ptPan.y-m_ptBmp.y)/m_xscale);
     m_pPanPoint=&pt;
 	pCV->PlotTraverse(-1);
 	m_pPanPoint=NULL;
+}
+
+BOOL CPlotView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	if(zDelta) {
+		//ClearTracker(0);
+		ptPan=m_rectBmp.CenterPoint();
+		if(zDelta<0) {
+			OnPltZoomOut();
+		}
+		else {
+			OnPltZoomIn();
+		}
+		return TRUE;
+	}
+	return FALSE;
 }
 
 void CPlotView::OnUpdatePltRecall(CCmdUI* pCmdUI) 
@@ -1844,21 +1779,32 @@ void CPlotView::OnLButtonUp(UINT nFlags, CPoint point)
 	if(m_bMeasuring) {
 		RefreshMeasure();
 		m_bMeasuring=FALSE;
+#ifdef VISTA_INC
+		DestroyTrackingTT();
+#endif
 	}
 }
 
 void CPlotView::OnMeasureDist() 
 {
-	CMapView::m_bMeasureDist=!CMapView::m_bMeasureDist;
+	bMeasureDist=!bMeasureDist;
 }
 
 void CPlotView::OnUpdateMeasureDist(CCmdUI* pCmdUI) 
 {
-	pCmdUI->SetCheck(CMapView::m_bMeasureDist);
+	pCmdUI->SetCheck(bMeasureDist);
 }
 
 void CPlotView::OnRButtonUp(UINT nFlags, CPoint point) 
 {
+	if(m_bPanning) {
+		m_bPanning=false;
+		if(m_bPanned) {
+			bPanValidated=TRUE;
+			m_bPanned=false;
+			return;
+		}
+	}
 	CMenu menu;
 	if(m_bCursorInBmp && !(nFlags&MK_CONTROL) && menu.LoadMenu(IDR_PLT_CONTEXT))
 	{
@@ -1868,26 +1814,12 @@ void CPlotView::OnRButtonUp(UINT nFlags, CPoint point)
 		ClientToScreen(&point);
 		int e=pPopup->TrackPopupMenu(TPM_LEFTALIGN|TPM_RIGHTBUTTON|TPM_RETURNCMD,point.x,point.y,GetParentFrame());
 		if(e) {
-			/*
-			if(e==ID_PLT_ZOOMIN) {
-				if(m_bTrackerActive) OnPanelZoomIn();
-				else {
-					ptPan=pt;
-					OnPltZoomIn();
-				}
-			}
-			else if(e==ID_PLT_ZOOMOUT) {
-				if(m_bTrackerActive) OnPanelZoomOut();
-				else {
-					ptPan=pt;
-					OnPltZoomOut();
-				}
-			}
-			else {
-			*/
 			ClearTracker();
 			ptPan=pt;
 			SendMessage(WM_COMMAND,e);
+		}
+		else {
+			bPanValidated=FALSE;
 		}
 	}
 }
@@ -1907,3 +1839,228 @@ BOOL CPlotView::PreTranslateMessage(MSG* pMsg)
 	return CFormView::PreTranslateMessage(pMsg);
 }
 
+void CPlotView::OnLButtonDblClk(UINT nFlags, CPoint point)
+{
+    if(m_bTrackerActive) {
+		CRect rect=m_tracker.m_rect; //Does not include border and handles as does GetTrueRect()
+		rect.NormalizeRect();
+		if(rect.PtInRect(point)) {
+		  OnPanelZoomIn();
+		  return;
+		}
+    }
+    if(m_bCursorInBmp) {
+    	//Pan image --
+		DPOINT pt((double)(point.x-m_ptBmp.x)/m_xscale,(double)(point.y-m_ptBmp.y)/m_xscale);
+    	m_pPanPoint=&pt;
+		m_bTrackerActive=FALSE; //Should already be the case
+    	pCV->PlotTraverse(-2);
+    	m_pPanPoint=NULL;
+    }
+}
+
+void CPlotView::OnRButtonDown(UINT nFlags, CPoint point)
+{
+	if(m_bCursorInBmp) {
+		if(!(nFlags&MK_CONTROL)) {
+			m_bPanning=true;
+			m_bPanned=false;
+		}
+		ClearTracker();
+		bPanValidated=TRUE;
+		ptPan=point;
+    }
+}
+
+#ifdef VISTA_INC
+void CPlotView::ShowTrackingTT(CPoint &point)
+{
+	CString s;
+	GetDistanceFormat(s,m_bProfile,LEN_ISFEET(),false); //conversion possibly needed for CMapView windows only
+	g_toolItem.lpszText = s.GetBuffer();
+	::SendMessage(g_hwndTrackingTT,TTM_SETTOOLINFO, 0, (LPARAM)&g_toolItem);
+	// Position the tooltip. The coordinates are adjusted so that the tooltip does not overlap the mouse pointer.
+	ClientToScreen(&point);
+	::SendMessage(g_hwndTrackingTT,TTM_TRACKPOSITION, 0, (LPARAM)MAKELONG(point.x + 10, point.y - 20));
+}
+#endif
+
+void CPlotView::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	CRect rectSave;
+	int ht;
+	
+	if(m_bCursorInBmp) {
+		if(m_bTrackerActive) {
+			ht=m_tracker.HitTest(point);
+			m_tracker.GetTrueRect(rectSave); //Includes sizing handles
+			if(ht>=0) {
+			    //Some part of the tracker was grabbed --
+			    if(m_tracker.Track(this, point,TRUE)) {
+					// The tracking was committed --
+					InvalidateRect(&rectSave);
+					m_tracker.GetTrueRect(rectSave);
+					if(rectSave.Width()<m_sizeBmp.cx) InvalidateRect(&rectSave);
+					else {
+					  //We have expanded tracker to full panel size --
+					  m_bTrackerActive=FALSE;
+					  ht=2;  //Tracker deleted. No rubberband mode needed --
+					}
+				}
+				else {
+				    //The tracker change was cancelled with the escape key
+				    //or right mouse button. Leave status unchanged --
+				    ht=CRectTracker::hitMiddle;
+				}
+			}
+			else {
+			    //We clicked outside of tracker, cancelling it --
+			    m_bTrackerActive=FALSE;
+			    InvalidateRect(&rectSave);
+			}
+			if(ht>=0) {
+			  if(ht==CRectTracker::hitMiddle) return;
+			  ht=1;
+			}
+		}
+		else ht=0;
+		
+		//At this point the status is:
+		//ht =  2  - An existing tracker was deleted - do not enter rubberband mode
+		//ht =  1  - An existing tracker changed in size - do not enter rubberband mode
+		//ht =  0  - No tracker previously active - enter rubberband mode
+		//ht = -1  - An existing tracker was deleted - enter rubberband mode
+		
+	    if(ht<=0) {
+	        if(nFlags&MK_CONTROL) {
+				bPanValidated=TRUE;
+				ptPan=point;
+		    }
+			else if(bMeasureDist) {
+				if(m_bMeasuring) {
+					ASSERT(0);
+					RefreshMeasure();
+					m_bMeasuring=FALSE;
+			        #ifdef VISTA_INC
+					   DestroyTrackingTT();
+                    #endif
+				}
+				if(!(nFlags&MK_RBUTTON)) {
+					CPrjDoc::GetCoordinate(dpCoordinate,point,FALSE);
+					dpCoordinateMeasure=dpCoordinate;
+					ptMeasureStart=ptMeasureEnd=point;
+					m_bMeasuring=true;
+#ifdef VISTA_INC
+					ASSERT(!g_hwndTrackingTT);
+					if(!g_hwndTrackingTT) {
+						g_hwndTrackingTT=CreateTrackingToolTip(m_hWnd);
+					}
+					if(g_hwndTrackingTT) {
+						//position tooltip --
+						ShowTrackingTT(point);
+						//Activate the tooltip.
+						::SendMessage(g_hwndTrackingTT,TTM_TRACKACTIVATE, (WPARAM)TRUE, (LPARAM)&g_toolItem);
+					}
+#endif
+					return;
+				}
+			}
+		    else if(m_tracker.TrackRubberBand(this,point,TRUE)) {
+				// The tracking was committed --
+				m_tracker.GetTrueRect(rectSave);
+				if(rectSave.Width()<m_sizeBmp.cx) {
+					m_bTrackerActive=rectSave.Width()>=MIN_TRACKERWIDTH;
+					InvalidateRect(&rectSave);
+					ht--;
+				}
+	        }
+		}
+		
+		if(ht) {
+			if(m_bTrackerActive) GetTrackerPos(NULL); //Initialize new width
+			DisplayPanelWidth();
+		}
+		return;
+	}
+	CPanelView::OnLButtonDown(nFlags,point);
+} 
+
+void CPlotView::OnMouseMove(UINT nFlags, CPoint point)
+{
+	//TODO: Add your message handler code here and/or call default
+	//CPanelView::OnMouseMove(nFlags, point);
+	BOOL bCursorInBmp=m_rectBmp.PtInRect(point);
+	if(bCursorInBmp!=m_bCursorInBmp) {
+		if(bCursorInBmp) ::SetCursor(bMeasureDist?CMapView::m_hCursorMeasure:m_hCursorBmp);
+		m_bCursorInBmp=bCursorInBmp;
+	}
+	
+	if(!m_bCursorInBmp) {
+		if(m_bMeasuring) {
+			RefreshMeasure();
+			m_bMeasuring=FALSE;
+	#ifdef VISTA_INC
+			DestroyTrackingTT();
+	#endif
+		}
+		CPanelView::OnMouseMove(nFlags, point);
+		return;
+	}
+
+	CPrjDoc::GetCoordinate(dpCoordinate, point, FALSE);
+
+	if(m_bMeasuring) {
+
+		if(ptMeasureEnd==point)
+			return;
+
+		RefreshMeasure();
+		ptMeasureEnd=point;
+		RefreshMeasure();
+
+
+#ifdef VISTA_INC
+		if(g_hwndTrackingTT) {
+			ShowTrackingTT(point);
+		}
+#endif
+		return;
+	}
+
+	if(m_bPanning && !(nFlags&MK_RBUTTON)) {
+		m_bPanning=m_bPanned=false;
+	}
+
+	if(bPanValidated && (m_bPanning || (nFlags&(MK_CONTROL+MK_LBUTTON+MK_RBUTTON))>MK_CONTROL)) {
+    	point.x-=ptPan.x;
+    	point.y-=ptPan.y;
+    	if(point.x || point.y) {
+    	    if(m_bPanning || (nFlags&MK_LBUTTON)) {
+    			//Pan image --
+				DPOINT pt((double)(m_sizeBmp.cx/2.0-point.x)/m_xscale,(double)(m_sizeBmp.cy/2.0-point.y)/m_xscale);
+	    	    ptPan.x+=point.x;
+	    	    ptPan.y+=point.y;
+		    	m_pPanPoint=&pt;
+				//m_bTrackerActive=FALSE; //Should already be the case
+		    	pCV->PlotTraverse(-2);
+		    	m_pPanPoint=NULL;
+	    		bPanValidated=FALSE;
+				if(m_bPanning) m_bPanned=true;
+		    }
+		    else if(point.x) {
+    			//Rotate image in one degree increments --
+			    int i=(int)(fView+(180.0*point.x)/m_sizeBmp.cx);
+			    if(i>=360) i-=360;
+			    else if(i<0) i+=360;
+			    ASSERT(i>=0 && i<360);
+				if(m_iView!=i) {
+				  m_iView=i;
+		    	  ptPan.x+=point.x;
+		    	  //ptPan.y+=point.y;
+				  pCV->PlotTraverse(-2);
+	    		  bPanValidated=FALSE;
+	    		}
+		    }
+	    }
+	}
+}

@@ -397,6 +397,7 @@ private:
 	afx_msg void OnUpdateUnselect(CCmdUI *pCmdUI);
 	afx_msg void OnUnselect();
 	afx_msg void OnOpenTable();
+	afx_msg void OnSetUnlocated();
 
 	UINT m_uLayerTotal;
 	int m_iZoneSel;	//Zone of selection (0 if Lat/Long)

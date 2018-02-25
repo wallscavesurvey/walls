@@ -4,7 +4,7 @@
 #define __DOS_IO_H
 
 #ifndef __TRX_TYPE_H
-#include <trx_type.h>
+#include "trx_type.h"
 #endif
 
 #ifndef _INC_FCNTL

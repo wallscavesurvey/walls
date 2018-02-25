@@ -4,6 +4,9 @@
 /////////////////////////////////////////////////////////////////////////////
 // CSegList window
 
+//save status of label/marker checkboxes on map page
+#undef _SAV_LBL
+
 #ifndef HIERLB_H
  #include "hierlb.h"
 #endif
@@ -256,6 +259,10 @@ enum {VF_LEGLL=0,VF_LEGTL=1,VF_LEGLR=2,VF_LEGTR=3,VF_LEGNONE=4,VF_LEGMASK=28};
 
 #define VF_VIEWNOTES (1<<8)
 #define VF_VIEWFLAGS (1<<9)
+#ifdef _SAV_LBL
+#define VF_VIEWLABEL (1<<10)
+#define VF_VIEWMARK  (1<<11)
+#endif
 
 #pragma pack(1)
 struct VIEWFORMAT {
@@ -384,8 +391,9 @@ public:
     void SetStyleParents(CSegListNode *pParent);
     void SetBranchVisibility();
     void InitSegStats(SEGSTATS *st);
-	void AddSegStats(SEGSTATS *st);
+	void AddSegStats(SEGSTATS *st, BOOL bFlt);
     void AddStats(double &fLength,UINT &uVectors);
+	bool HasVecs();
     void FlagVisible(UINT mask);
 
     void SetBranchTitle();
@@ -431,7 +439,6 @@ public:
 
     
     BOOL RootDetached(void); //To aid display/invalidation of root icon
-
 	//Overridden non-virtual of CListBox --
     int SetCurSel(int sel);
 	int m_uExtent;
@@ -450,12 +457,13 @@ protected:
 	
 	void CheckExtentChange();
 
+	void SelectSegListNode(CSegListNode *pNode);
+	void OpenParentNode(CSegListNode *pNode);
 
-protected:
-	//{{AFX_MSG(CSegList)
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
-	//}}AFX_MSG
+
 	DECLARE_MESSAGE_MAP()
 };
 

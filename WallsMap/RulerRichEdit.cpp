@@ -24,7 +24,7 @@
 
 #include "stdafx.h"
 #include "ids.h"
-#include ".\rulerrichedit.h"
+#include "rulerrichedit.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -97,8 +97,12 @@ BOOL CRulerRichEdit::Create( DWORD style, CRect rect, CWnd* parent )
    ============================================================*/
 {
 
-	return CWnd::Create (RTF_CLASS, NULL, style, rect, parent, RTF_CONTROL );
-
+	if(CWnd::Create(RTF_CLASS, NULL, style, rect, parent, RTF_CONTROL)) {
+		VERIFY(S_OK==RevokeDragDrop(*this));
+		VERIFY(m_dropTarget.Register(this, DROPEFFECT_LINK));
+		return TRUE;
+	}
+	return FALSE;
 };
 
 /////////////////////////////////////////////////////////////////////////////

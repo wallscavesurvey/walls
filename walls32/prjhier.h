@@ -247,7 +247,6 @@ protected:
 	//{{AFX_MSG(CPrjList)
 	afx_msg LRESULT OnDrop(WPARAM,LPARAM);
 	afx_msg LRESULT OnCanDrop(WPARAM,LPARAM);
-	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnSysChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);

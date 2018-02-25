@@ -43,14 +43,15 @@ CBrush CLineView::m_cbFlag;
 COLORREF CLineView::m_TextColor;
 
 LINENO CLineView::m_nLineStart=0;
-LINENO CLineView::m_nLineStart2=0;
+//LINENO CLineView::m_nLineStart2=0;
 int CLineView::m_nCharStart=0;
 
 CLineView::CLineView()
 {
 	// Init everything to zero (except for base class, CView) --
 	// AFX_ZERO_INIT_OBJECT(CView);
-	m_nLineOffset=m_nLineTotal=m_nActiveLine=m_nSelectLine=m_nFlagLine=m_nFlagLine2=0;
+	m_nLineOffset=m_nLineTotal=m_nActiveLine=m_nSelectLine=m_nFlagLine=0;
+	//m_nFlagLine2=0;
 	m_bCaretVisible=m_bOwnCaret=false;
 	m_caretX=m_caretY=0;
 	m_rangeX=m_scrollX=m_nActiveChr=m_nSelectChr=m_bSelectMode=m_bInsideUpdate=0;
@@ -73,17 +74,19 @@ void CLineView::OnInitialUpdate()
 	  if(m_nLineStart>m_nLineTotal) {
 			m_nLineStart=1;
 			m_nCharStart=0;
-			m_nFlagLine=m_nFlagLine2=0;
+			m_nFlagLine=0;
+			//m_nFlagLine2=0;
 	  }
 	  else {
 			m_nFlagLine=m_nLineStart;
-			m_nFlagLine2=m_nLineStart2;
+			//m_nFlagLine2=m_nLineStart2;
 	  }
       m_nSelectLine=m_nActiveLine=m_nLineStart;
       m_nLineOffset=m_nLineStart-START_PREFIX;
       if(m_nLineOffset<1) m_nLineOffset=1;
       m_nSelectChr=m_nActiveChr=GetPosition(m_nActiveLine,m_nCharStart,m_caretX);
-      m_nLineStart=m_nLineStart2=0;
+      m_nLineStart=0;
+	  //m_nLineStart2=0;
     }
     else {
       m_caretX=0;
@@ -98,18 +101,20 @@ void CLineView::OnInitialUpdate()
 	UpdateBars();
 }
 
-void CLineView::SetFlagLine(LINENO line,LINENO line2)
+void CLineView::SetFlagLine(LINENO line)
 {
   if(m_nFlagLine!=line) {
     InvalidateLine(m_nFlagLine,0);
     m_nFlagLine=line;
     if(line) InvalidateLine(line,0);
   }
+  /*
   if(m_nFlagLine2!=line2) {
     InvalidateLine(m_nFlagLine2,0);
     m_nFlagLine2=line2;
     if(line2) InvalidateLine(line2,0);
   }
+  */
 }
 
 void CLineView::ScrollToError()
@@ -120,9 +125,10 @@ void CLineView::ScrollToError()
     int top=m_nLineStart-START_PREFIX;
 	ScrollToDevicePosition(0,(top>0)?top:1);
 	SetPosition(m_nLineStart,m_nCharStart,POS_SCROLL);
-	SetFlagLine(m_nLineStart,m_nLineStart2);
+	SetFlagLine(m_nLineStart); //,m_nLineStart2);
   }
-  m_nLineStart=m_nLineStart2=0;
+  m_nLineStart=0;
+  //m_nLineStart2=0;
 }
 
 void CLineView::OnPrepareDC(CDC* pDC, CPrintInfo* pInfo)

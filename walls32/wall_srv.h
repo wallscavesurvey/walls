@@ -2,21 +2,21 @@
 
 #ifndef __WALL_SRV_H
 #define __WALL_SRV_H 
-
+/*
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+*/
 #pragma pack(1)
 
-#define SRV_VERSION		 10		  /* For release B7+ */
 #define SRV_SIZNAME      8        /* Maximum name length (chars)*/
 #define SRV_SIZFILE		 8		  /* Length of file name stored in database*/
 #define SRV_SIZNAME_STR "8"       /* For error message*/
 #define SRV_SEG_DELIM 0x01		  /* Replaces "/" in segment paths*/
 #define SRV_SIZ_SEGBUF 256
 #define SRV_MAX_FLAGSIZE 200
-#define SRV_SIZ_NAMBUF 80         /* Max length of a segment name plus 1*/
+#define SRV_MAX_SEGNAMLEN 80        /* Max length of a segment name*/
+#define SRV_SIZ_SEGNAMBUF 84        /* Seg component buffer length*/
 #define SRV_LEN_PREFIX 128        /* Max length of a prefix name plus 1*/
 #define SRV_MAX_PREFIXCOMPS 3	  /* Maximum supported prefix levels*/
 #define SRV_LEN_PREFIX_DISP (3*8+2)    /* Max length of displayed prefix*/
@@ -34,20 +34,6 @@ extern "C" {
 /*Char values for variance flags*/
 #define SRV_CHAR_FLTVECT '?'     /* vector floats within network*/
 #define SRV_CHAR_FLTTRAV '*'     /* vector's traverse floats within network*/
-
-/*Error codes used by WALLS. WALL-SRV.DLL must use different return codes
-  for its internal messages --*/
-#define SRV_ERR_EOF		  -1
-#define SRV_ERR_DUPNAMES  -2
-#define SRV_ERR_DISPLAYED -3
-#define SRV_ERR_MAGDLL  -4
-
-/*Error codes returned by srv_Next() but set in srv_CB() in COMPILE.CPP --*/
-enum {
-       SRV_ERR_BADFLAGNAME=1,
-       SRV_ERR_NOFLAGNAME,
-       SRV_ERR_LOCAL
-     };
 
 /*Values for vector flags (we add 0x20 to insure visibility within database)*/
 #define NET_VEC_NORMAL   0x20 	 /* ( ) normal vector*/
@@ -108,7 +94,7 @@ typedef struct {
 	char  nam[SRV_SIZNAME];	/* Station name (space extended)*/
 	float dim[4];
 	float az;				/* Facing azimuth from nam[1] to nam[2]*/
-	byte flags;				/* 0 or LRUD_FLG_CS */ 
+	WORD flags;				/* 0 or LRUD_FLG_CS */ 
 	UINT lineno;
 } SRV_LRUD;
 
@@ -128,9 +114,9 @@ void PASCAL srv_Close(void);
 LPSTR PASCAL srv_ErrMsg(LPSTR buffer,int code);
 
 #pragma pack()
-
+/*
 #ifdef __cplusplus
 }
 #endif
-
+*/
 #endif

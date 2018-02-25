@@ -2,7 +2,7 @@
 #define __A__NTI_H
 
 #ifndef __A__CSH_H
-#include <a__csh.h>
+#include "a__csh.h"
 #endif
 
 /*NTI file header --*/

@@ -11,24 +11,51 @@
 
 BOOL LoadNTW()
 {
-	int i;
-	struct _stat st;
+	DWORD i,size;
 	NTW_HEADER ntw_hdr;
 	POINT *pPts=NULL;
 	int fh=-1;
 
+
 	char *ntwpath=CPrjDoc::m_pReviewDoc->WorkPath(CPrjDoc::m_pReviewNode,CPrjDoc::TYP_NTW);
 
-	if(_stat(ntwpath,&st) || -1==(fh=_open(ntwpath,_O_BINARY|_O_SEQUENTIAL|_O_RDONLY))) goto _errOpen;
-	if(_read(fh,&ntw_hdr,sizeof(ntw_hdr))!=sizeof(ntw_hdr)) goto _errRead;
-	if(st.st_size!=(long)(sizeof(ntw_hdr)+
+	if(_stat_fix(ntwpath,&size) || -1==(fh=_open(ntwpath,_O_BINARY|_O_SEQUENTIAL|_O_RDONLY))) {
+		#ifdef _DEBUG
+		   CMsgBox(MB_ICONEXCLAMATION,"Failed to open %s",ntwpath);
+		#endif
+		goto _errOpen;
+	}
+
+	if(_read(fh,&ntw_hdr,sizeof(ntw_hdr))!=sizeof(ntw_hdr)) {
+#ifdef _DEBUG
+		CMsgBox(MB_ICONEXCLAMATION, "Failure reading %u-byte NTW header.", sizeof(ntw_hdr));
+#endif
+		goto _errRead;
+	}
+	if(size!=(DWORD)(sizeof(ntw_hdr)+
 		ntw_hdr.nPoints*sizeof(POINT)+
 		ntw_hdr.nPolygons*sizeof(NTW_POLYGON)+
 		ntw_hdr.nPolyRecs*sizeof(NTW_RECORD)+
-		ntw_hdr.nMaskName*sizeof(SHP_MASKNAME))) goto _errFormat;
+		ntw_hdr.nMaskName*sizeof(SHP_MASKNAME))) {
+#ifdef _DEBUG
+		  CMsgBox(MB_ICONEXCLAMATION, "Bad NTW format: %s", ntwpath);
+#endif
+		  goto _errFormat;
+		}
 
-	if(!(pPts=(POINT *)malloc(i=st.st_size-sizeof(ntw_hdr)))) goto _errMalloc;
-	if(i!=_read(fh,pPts,i)) goto _errRead;
+	if(!(pPts=(POINT *)malloc(i=size-sizeof(ntw_hdr)))) {
+#ifdef _DEBUG
+		CMsgBox(MB_ICONEXCLAMATION, "Failure allocating %u bytes for NTW point data.", i);
+#endif
+		goto _errMalloc;
+	}
+
+	if(i!=_read(fh,pPts,i)) {
+#ifdef _DEBUG
+		CMsgBox(MB_ICONEXCLAMATION, "Failure reading %u bytes of NTW point data.", i);
+#endif
+		goto _errRead;
+	}
 	_close(fh);
 
 	CCompView::m_NTWhdr=ntw_hdr;

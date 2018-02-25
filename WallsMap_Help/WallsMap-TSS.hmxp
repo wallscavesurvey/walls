@@ -112,7 +112,7 @@
     <config-group name="user">
       <config-group name="david">
         <config-group name="project">
-          <config-value name="lastexport">0</config-value>
+          <config-value name="lastexport">4</config-value>
         </config-group>
       </config-group>
     </config-group>

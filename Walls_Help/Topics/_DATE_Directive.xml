@@ -1,12 +1,13 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<topic template="Default" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
-  <title translate="true">#DATE Directive</title>
+<?xml-stylesheet type="text/xsl" href="../helpproject.xsl" ?>
+<topic template="Default" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../helpproject.xsd">
+  <title translate="true">#Date Directive</title>
   <keywords>
     <keyword translate="true">#DATE Directive</keyword>
   </keywords>
   <body>
     <header>
-      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">#DATE Directive</text></para>
+      <para styleclass="Heading1"><text styleclass="Heading1" translate="true">#Date Directive</text></para>
     </header>
     <para style="tabstops:24px left ;"></para>
     <para styleclass="Normal"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Although vectors defined in data files can be assigned a </text><link displaytype="text" defaultstyle="true" type="topiclink" href="segment_attributes" styleclass="Normal" translate="true">segment attribute,</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> a component of which can be a text string like &quot;15 Jan 97&quot;, an explicit </text><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">date attribute </text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">can be assigned as well. The program will, if you enable this feature, automatically calculate a magnetic declination whenever a #DATE directive is encountered. &#160;Another benefit of using date directives is the ability to </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Color_dialog" style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">color surveys by date</link><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> using a color sequence, or </text><text style="font-family:Arial; font-size:9pt; font-style:italic; color:#000000;" translate="true">gradient </text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">defined for this purpose. Assigned dates will also be among the attributes of </text><link displaytype="text" defaultstyle="true" type="topiclink" href="ESRI_Shapefiles" styleclass="Normal" translate="true">exported shapefiles</link><text styleclass="Normal" translate="true">&#32;</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">allowing a GIS program like ArcView, for example, to color surveys by date range.</text></para>

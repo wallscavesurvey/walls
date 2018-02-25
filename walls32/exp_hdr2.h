@@ -163,7 +163,7 @@ static int Out_CP_Vectors(void)
 }
 
 
-DLLExport int PASCAL Export(EXPTYP *pexp)
+DLLExportC int PASCAL Export(EXPTYP *pexp)
 {
 	int e=0;
 

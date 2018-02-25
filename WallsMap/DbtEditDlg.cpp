@@ -102,6 +102,7 @@ BOOL CDbtEditDlg::PreTranslateMessage(MSG* pMsg)
 		if(pMsg->wParam==VK_ESCAPE) return TRUE;
 		if(pMsg->wParam==0x56) {
 			if(GetKeyState(VK_CONTROL)<0) {
+				//^V
 				if(m_bEditable && m_rtf.CanPaste())
 					m_rtf.PostMessage(WM_COMMAND,ID_EDIT_PASTE);
 				return TRUE;
@@ -183,10 +184,12 @@ BOOL CDbtEditDlg::OnInitDialog()
 	m_rtf.SetWordWrap(TRUE);
 	m_rtf.SetBackgroundColor(CMainFrame::m_clrBkg);
 	m_rtf.GetRichEditCtrl().LimitText(128*1024);
-
+	m_rtf.m_pParentDlg=this;
+	m_rtf.m_idContext=IDR_RTF_CONTEXT;
+	
 	InitData();
 
-	VERIFY(m_dropTarget.Register(this));
+	VERIFY(m_dropTarget.Register(this,DROPEFFECT_LINK));
 
 	return FALSE;  // return TRUE unless you set the focus to a control
 }

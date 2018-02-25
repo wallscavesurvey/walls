@@ -292,7 +292,7 @@ private:
 	void CenterOnPtPopup(double scale);
 	void EditShape(int x,int cx,int y,int cy);
 	void SelectEdited(BOOL bNew);
-	void MaximizeWindow();
+	//void MaximizeWindow();
 	CMDIChildWnd * ComputeBorders();
 
 protected:

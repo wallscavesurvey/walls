@@ -53,9 +53,9 @@ BEGIN_MESSAGE_MAP(CPrjView, CView)
 	ON_UPDATE_COMMAND_UI(ID_PRJ_COMPILEITEM, OnUpdateCompileItem)
 	ON_COMMAND(ID_ENABLEBOTH, OnEnableBoth)
 	ON_UPDATE_COMMAND_UI(ID_ENABLEBOTH, OnUpdateEnableBoth)
-	ON_UPDATE_COMMAND_UI(ID_WINDOW_NEW, Disable)
 	ON_COMMAND(ID_PURGEBRANCH, OnPurgeBranch)
 	ON_COMMAND(ID_RECOMPILE, OnRecompile)
+	ON_UPDATE_COMMAND_UI(ID_RECOMPILE, OnUpdateRecompile)
 	ON_COMMAND(ID_EDIT_FIND, OnEditFind)
 	ON_COMMAND(ID_SEGMENTCLR, OnSegmentClr)
 	ON_COMMAND(ID_SEGMENTSET, OnSegmentSet)
@@ -65,15 +65,16 @@ BEGIN_MESSAGE_MAP(CPrjView, CView)
 	ON_COMMAND(ID_EDIT_DELETE, OnDelitems)
 	ON_COMMAND(ID_EDIT_LEAF, OnEditLeaf)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_LEAF, OnUpdateEditLeaf)
-	ON_UPDATE_COMMAND_UI(ID_RECOMPILE, OnUpdateRecompile)
 	ON_COMMAND(ID_EXPORTSEF, OnExportSef)
+	ON_UPDATE_COMMAND_UI(ID_EXPORTSEF, OnUpdateExportSef)
 	ON_COMMAND(ID_PRJ_COMPILEITEM, OnCompileItem)
 	ON_COMMAND(ID_PRJ_EXPORTITEM, OnExportItem)
 	ON_UPDATE_COMMAND_UI(ID_PRJ_EXPORTITEM, OnUpdateExportItem)
 	ON_UPDATE_COMMAND_UI(ID_PRJ_EDITITEM, OnUpdatePrjEditItem)
 	ON_COMMAND(ID_REFRESHBRANCH, OnRefreshBranch)
 	ON_COMMAND(ID_LAUNCHLOG, OnLaunchLog)
-	ON_WM_CTLCOLOR()
+	ON_MESSAGE(WM_CTLCOLORLISTBOX, OnCtlColorListBox)
+	//ON_WM_CTLCOLOR()
 	ON_COMMAND(ID_REVIEWLAST, OnReviewLast)
 	ON_UPDATE_COMMAND_UI(ID_REVIEWLAST, OnUpdateReviewLast)
 	ON_COMMAND(ID_LAUNCH2D, OnLaunch2d)
@@ -322,6 +323,9 @@ void CPrjView::OnInitialUpdate()
 	
 	pPrjFrame->SetWindowPos(NULL,rect.left+offset,rect.top+offset,size.cx,size.cy,
 	 SWP_HIDEWINDOW|SWP_NOACTIVATE);
+
+	LPSTR pStr=GetDocument()->m_pRoot->Title();
+	pPrjFrame->SetWindowText(pStr);
 }
 
 void CPrjView::OnSize(UINT nType, int cx, int cy)
@@ -373,7 +377,19 @@ BOOL CPrjView::OnEraseBkgnd(CDC* pDC)
 {
     //Response to WM_ERASEBKGND.
     //Disable background repainting since listbox fills view --
-	return TRUE; 
+	return 1; //CView::OnEraseBkgnd(pDC);
+    /*
+	// Set brush to desired background color
+	CBrush* pOldBrush = pDC->SelectObject(CBrush::FromHandle((HBRUSH)::GetStockObject(LTGRAY_BRUSH)));
+
+	CRect rect;
+	pDC->GetClipBox(&rect);     // Erase the area needed
+
+	pDC->PatBlt(rect.left, rect.top, rect.Width(), rect.Height(),
+		PATCOPY);
+	pDC->SelectObject(pOldBrush);
+	return TRUE;
+	*/
 }
 
 void CPrjView::OnDelitems()
@@ -568,6 +584,7 @@ void CPrjView::OnNewItem()
 				}
 			  }
 		  }
+		  OnRefreshBranch();
 		}
 		else
 			CPrjList::PrjErrMsg(index);
@@ -695,7 +712,7 @@ void CPrjView::UpdateProperties(CItemProp *pDlg)
 			CPrjFrame *parent=(CPrjFrame *)GetParent();
 			ASSERT(parent->IsKindOf(RUNTIME_CLASS(CPrjFrame)));
 			if(parent->GetActiveDocument())
-				parent->SetWindowText("");
+				parent->SetWindowText(pNode->Title());
 		}
 		else if(pNode->IsLeaf() && !(bChg&UPD_NAME)) {
 		   CLineDoc *pLineDoc=GetDocument()->GetOpenLineDoc(pNode);
@@ -725,6 +742,8 @@ void CPrjView::UpdateProperties(CItemProp *pDlg)
 		}
 		else if((flags&FLG_MASK_BR)!=(pNode->m_uFlags&FLG_MASK_BR)) {
 			PurgeAllWorkFiles(pNode,FALSE,TRUE); //ignore floating
+			//Also must clear default views!
+			GetDocument()->ClearDefaultViews(pNode);
 			bChg|=UPD_BR;
 		}
 	}
@@ -901,25 +920,19 @@ void CPrjView::OnCompile()
 	//  -2 - Empty workfile name (edit properties)
 	//  -3 - Error occured at specific line number in leaf item m_pErrorNode
 
-	if(e>=0) {
-	  m_PrjList.RefreshNode(pNode);
-	  if(e) {
-		  if(IDOK==CMsgBox(MB_OKCANCEL,IDS_PRJ_ERRORLOG)) {
-			  CMainFrame::CloseLineDoc(GetDocument()->LogPath(),TRUE); 
-			  GetDocument()->LaunchFile(CPrjDoc::m_pReviewNode,CPrjDoc::TYP_LOG);
-		  }
-	  }
+	if(!e) {
+		m_PrjList.RefreshNode(pNode);
 	}
 	else if(e==-2) {
 		GetDocument()->m_nActivePage=0;
 		EditItem(pNode); //Edit properties
 	}
 	else if(e==-3) {
-	  //The WALL-SRV.DLL detected an error during compilation.
-	  //We must open or reactivate a survey file view window with the
-	  //caret positioned at the error. At this point, Compile() has
-	  //already initialized CPrjDoc::m_pErrorNode, CPrjDoc::m_nLineStart,
-	  //and CPrjDoc::m_nCharStart.
+		//The WALL-SRV.DLL detected an error during compilation.
+		//We must open or reactivate a survey file view window with the
+		//caret positioned at the error. At this point, Compile() has
+		//already initialized CPrjDoc::m_pErrorNode, CPrjDoc::m_nLineStart,
+		//and CPrjDoc::m_nCharStart.
 	  
 	  	GetDocument()->OpenSurveyFile(NULL);
 	}
@@ -945,11 +958,6 @@ void CPrjView::OnSetFocus(CWnd* pOldWnd)
 {
 	CView::OnSetFocus(pOldWnd);
 	m_PrjList.SetFocus();
-}
-
-void CPrjView::Disable(CCmdUI* pCmdUI)
-{
-	pCmdUI->Enable(FALSE);
 }
 
 void CPrjView::OnRecompile()
@@ -1105,11 +1113,27 @@ void CPrjView::OnExportSef()
 {
  	CPrjDoc *pDoc=GetDocument();
 	CExpSefDlg dlg;
-	  
-	dlg.m_pDoc=pDoc;
-	dlg.m_pathname=pDoc->WorkPath(dlg.m_pNode=GetSelectedNode(),CPrjDoc::TYP_SEF);
 
+	dlg.m_pDoc=pDoc;
+	dlg.m_pNode=GetSelectedNode();
+	dlg.m_pathname=pDoc->WorkPath(NULL, 0); //workpath folder path only, folder name should be wpj file name
+	if(!dlg.m_pNode->IsRoot()) {
+	    CString sefName(dlg.m_pNode->Title());
+		FixFilename(sefName);
+	    int i=dlg.m_pathname.ReverseFind('\\');
+		if(i) dlg.m_pathname.Truncate(i+1);
+		else dlg.m_pathname+='\\';
+		dlg.m_pathname+=sefName;
+	}
+	dlg.m_pathname+=".SEF";
 	if(dlg.DoModal()==IDOK && pDoc->m_pErrorNode) pDoc->OpenSurveyFile(NULL);
+}
+
+void CPrjView::OnUpdateExportSef(CCmdUI* pCmdUI)
+{
+	CPrjListNode *pNode=GetSelectedNode();
+	int bRev=pNode?(!pNode->IsOther()):0;
+	pCmdUI->Enable(bRev!=0 && !CPrjDoc::m_bComputing);
 }
 
 void CPrjView::OnExportItem()
@@ -1125,7 +1149,7 @@ void CPrjView::OnUpdateExportItem(CCmdUI* pCmdUI)
 {
     CPrjListNode *pNode=GetSelectedNode();
 	ASSERT(pNode);
-    pCmdUI->Enable(/*pNode->IsReviewable() && */!CPrjDoc::m_bComputing);
+    pCmdUI->Enable(!pNode->IsOther() && !CPrjDoc::m_bComputing);
 }
 
 void CPrjView::OnRefreshBranch() 
@@ -1133,14 +1157,9 @@ void CPrjView::OnRefreshBranch()
 	GetDocument()->RefreshBranch(GetSelectedNode());
 }
 
-HBRUSH CPrjView::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) 
+LRESULT CPrjView::OnCtlColorListBox(WPARAM wParam, LPARAM lParam)
 {
-	//HBRUSH hbr = CView::OnCtlColor(pDC, pWnd, nCtlColor);
-	
-	// TODO: Change any attributes of the DC here
-	
-	// TODO: Return a different brush if the default is not desired
-	return (HBRUSH)::GetStockObject(LTGRAY_BRUSH);
+	return (LRESULT)::GetStockObject(LTGRAY_BRUSH);
 }
 
 void CPrjView::OnReviewLast() 
@@ -1157,12 +1176,12 @@ void CPrjView::OnUpdateReviewLast(CCmdUI* pCmdUI)
     pCmdUI->Enable(pNode->m_dwWorkChk && !CPrjDoc::m_bComputing);
 }
 
-
 void CPrjView::OnPrjOpenfolder()
 {
 	CPrjListNode *pNode=GetSelectedNode();
 	ASSERT(pNode && pNode->IsLeaf());
-	OpenContainingFolder(GetDocument()->SurveyPath(pNode));
+	if(OpenContainingFolder(m_PrjList.m_hWnd,GetDocument()->SurveyPath(pNode)))
+		((CMainFrame *)AfxGetMainWnd())->SetHierRefresh();
 }
 
 void CPrjView::OnUpdatePrjOpenfolder(CCmdUI *pCmdUI)

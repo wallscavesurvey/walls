@@ -25,7 +25,6 @@ IMPLEMENT_DYNCREATE(CPrjFrame, CMDIChildWnd)
 //#define SIZ_FILE_EXT 3  //must be fixed
 
 BEGIN_MESSAGE_MAP(CPrjFrame, CMDIChildWnd)
-    ON_MESSAGE(WM_SETTEXT,OnSetText)
     ON_MESSAGE(WM_COMMANDHELP,OnCommandHelp)
 	ON_WM_ICONERASEBKGND()
 	//{{AFX_MSG_MAP(CPrjFrame)
@@ -49,10 +48,12 @@ BOOL CPrjFrame::PreCreateWindow(CREATESTRUCT& cs)
 	// By turning off the default MFC-defined FWS_ADDTOTITLE style,
 	// the framework will use first string in the document template
 	// STRINGTABLE resource instead of the document name.
-	// cs.style &= ~(LONG)FWS_ADDTOTITLE;
+
+	cs.style &= ~(LONG)FWS_ADDTOTITLE;
+	cs.style &=~(LONG)WS_MAXIMIZEBOX;
+	cs.dwExStyle&=~(WS_EX_CLIENTEDGE|WS_EX_WINDOWEDGE);
 
 	if(!CMDIChildWnd::PreCreateWindow(cs)) return FALSE;
-    cs.dwExStyle&=~(WS_EX_CLIENTEDGE|WS_EX_WINDOWEDGE);
     m_bIconTitle=FALSE;
 	return TRUE;	  
 }
@@ -77,21 +78,6 @@ void CPrjFrame::OnIconEraseBkgnd(CDC* pDC)
     CMainFrame::IconEraseBkgnd(pDC);
 }
 
-void CPrjFrame::OnWindowPosChanged(WINDOWPOS FAR* lpwndpos)
-{
-	CMDIChildWnd::OnWindowPosChanged(lpwndpos);
-	if(m_bIconTitle!=IsIconic()) SetWindowText("");
-}
-
-LRESULT CPrjFrame::OnSetText(WPARAM wParam,LPARAM strText)
-{
-  CPrjDoc *pDoc=(CPrjDoc *)GetActiveDocument();
-  m_bIconTitle=IsIconic();
-  LPSTR pStr=m_bIconTitle?pDoc->m_pszName:(pDoc->m_pRoot->Title());
-  return DefWindowProc(WM_SETTEXT,wParam,(LPARAM)pStr);
-}
-
-
 void CPrjFrame::OnSysCommand(UINT nID, LPARAM lParam)
 {
 	//Experimentation alone (double-clicking system menu) revealed
@@ -112,8 +98,10 @@ void CPrjFrame::OnSysCommand(UINT nID, LPARAM lParam)
 			ASSERT_VALID(pView);
 			CFrameWnd* pFrame = pView->GetParentFrame();
 			ASSERT_VALID(pFrame);
-			if(pFrame->IsKindOf(RUNTIME_CLASS(CMapFrame)))
-			  pFrame->SendMessage(WM_SYSCOMMAND,SC_CLOSE);
+			if(pFrame->IsKindOf(RUNTIME_CLASS(CMapFrame))) {
+			   ((CMapFrame *)pFrame)->m_pDoc=NULL;
+			   pFrame->SendMessage(WM_SYSCOMMAND,SC_CLOSE);
+			}
 	    }
 	}
 	CMDIChildWnd::OnSysCommand(nID, lParam);
@@ -130,11 +118,6 @@ BOOL CPrjFrame::ChkNcLButtonDown(UINT nHitTest)
 	if(hPropHook) {
 		if(!PropOK()) {
 			TRACE0("OnNcLButtonDown (!PropOK)\n");
-			//if(pPropView->GetParent()!=this) {
-				//TRACE0("Activating pPropView\n");
-				//((CPrjFrame *)pPropView->GetParent())->ActivateFrame();
-			//}
-			//((CFrameWnd *)AfxGetMainWnd())->ActivateFrame();
 			return FALSE;
 		}
 		TRACE0("OnNcLButtonDown (PropOK, default)\n");

@@ -4,8 +4,10 @@
 #include "stdafx.h"
 #include "walls.h"
 #include "prjdoc.h"
+#include "compview.h"
 #include "revframe.h"
 #include "review.h"
+#include "Compile.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -74,10 +76,19 @@ void CRevFrame::OnWindowPosChanged(WINDOWPOS FAR* lpwndpos)
 
 LRESULT CRevFrame::OnSetText(WPARAM wParam,LPARAM strText)
 {
+  if(!pCV->m_bBaseName_filled) {
+	  return TRUE;
+  }
   m_bIconTitle=IsIconic();
   CPrjListNode *pNode=CPrjDoc::m_pReviewNode;
   LPSTR pStr=(LPSTR)(m_bIconTitle?pNode->Name():pNode->Title());
-  return DefWindowProc(WM_SETTEXT,wParam,(LPARAM)pStr);
+  CString csRevTitle(CPrjDoc::m_pReviewDoc->Title());
+  CString csBaseName;
+  pCV->GetNetworkBaseName(csBaseName);
+  if(!pNode->IsRoot() || !csBaseName.IsEmpty()) {
+	  csRevTitle.AppendFormat(" - %s%s",pStr,csBaseName);
+  }
+  return DefWindowProc(WM_SETTEXT,wParam,(LPARAM)(LPCSTR)csRevTitle);
 }
 
 void CRevFrame::CenterWindow()

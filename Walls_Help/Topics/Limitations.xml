@@ -12,18 +12,19 @@
     <para styleclass="Normal"></para>
     <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">The following limits will be of interest to anyone converting between data formats:</text></para>
     <para style="tabstops:24px left ;"></para>
-    <list id="2" type="ul" listtype="bullet" formatstring="&#183;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" style="text-indent:-13px; margin-left:13px; tabstops:13px left ; font-family:Symbol; font-size:9pt; color:#000000;">
-      <li style="text-indent:-13px; margin-left:13px; tabstops:13px left ;"><text styleclass="Normal" translate="true"> &#160;Lines in a data file can be no longer than 255 characters.</text></li>
+    <list id="4" type="ul" listtype="bullet" formatstring="&#183;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" style="text-indent:-13px; margin-left:13px; tabstops:13px left ; font-family:Symbol; font-size:9pt; color:#000000;">
+      <li style="text-indent:-13px; margin-left:13px; tabstops:13px left ;"><text styleclass="Normal" translate="true"> &#160;Lines in data files can be no longer than 255 characters.</text></li>
       <li style="text-indent:-13px; margin-left:13px; tabstops:13px left ;"><text styleclass="Normal" translate="true"> &#160;Station names (unprefixed) are limited to 8 characters in length.</text></li>
       <li style="text-indent:-13px; margin-left:13px; tabstops:13px left ;"><text styleclass="Normal" translate="true"> &#160;Station name </text><link displaytype="text" defaultstyle="true" type="topiclink" href="name_prefix" styleclass="Normal" translate="true">prefixes</link><text styleclass="Normal" translate="true"> are limited to 127 characters in length but should be unique in the first 8 characters.</text></li>
-      <li style="text-indent:-13px; margin-left:13px; tabstops:13px left ;"><text styleclass="Normal" translate="true"> &#160;The maximum length of an expanded </text><link displaytype="text" defaultstyle="true" type="topiclink" href="segment_attributes" styleclass="Normal" translate="true">segment</link><text styleclass="Normal" translate="true"> name is 255 characters.</text></li>
+      <li style="text-indent:-13px; margin-left:13px; tabstops:13px left ;"><text styleclass="Normal" translate="true"> &#160;The maximum length of a </text><link displaytype="text" defaultstyle="true" type="topiclink" href="segment_attributes" styleclass="Normal" translate="true">segment</link><text styleclass="Normal" translate="true"> pathname is 255 characters. For a segment name it&apos;s 80 characters.</text></li>
       <li style="text-indent:-13px; margin-left:13px; tabstops:13px left ;"><text styleclass="Normal" translate="true"> &#160;Project and segment trees are currently limited to 16 levels of depth.</text></li>
     </list>
     <para style="tabstops:24px left ;"></para>
     <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">Here are some program limitations I expect to remove eventually:</text></para>
-    <para style="tabstops:24px left ;"></para>
+    <para style="text-indent:-13px; margin-left:13px; tabstops:13px left ;"></para>
     <list id="3" type="ul" listtype="bullet" formatstring="&#183;" format-charset="SYMBOL_CHARSET" levelreset="true" legalstyle="false" startfrom="1" style="text-indent:-13px; margin-left:13px; tabstops:13px left ; font-family:Symbol; font-size:9pt; color:#000000;">
-      <li style="text-indent:-13px; margin-left:13px; tabstops:13px left ;"><text styleclass="Normal" translate="true"> &#160;Reports formatted especially for the printer, like </text><link displaytype="text" defaultstyle="true" type="topiclink" href="Traverse_List" styleclass="Normal" translate="true">traverse lists</link><text styleclass="Normal" translate="true">, &#160;are not yet available.</text></li>
+      <li style="text-indent:-13px; margin-left:13px; tabstops:13px left ;"><text styleclass="Normal" translate="true"> &#160;Other export formats may be supported, such as GPX, KML, and DXF.</text></li>
+      <li style="text-indent:-13px; margin-left:13px; tabstops:13px left ;"><text styleclass="Normal" translate="true"> &#160;Reports formatted especially for the printer are not yet available.</text></li>
       <li style="text-indent:-13px; margin-left:13px; tabstops:13px left ;"><text styleclass="Normal" translate="true"> &#160;SVG exports are limited to plan views.</text></li>
     </list>
     <para style="text-indent:-13px; margin-left:13px; tabstops:13px left ;"></para>

@@ -93,7 +93,7 @@ enum {LF_LAT,LF_LON,LF_EAST,LF_NORTH,LF_ZONE,LF_DATUM,LF_UPDATED,LF_CREATED,NUM_
 
 struct SHP_DBFILE { //size=84
 	SHP_DBFILE() : nUsers(0), pbuf(NULL), pbuflen(0), pShpEditor(NULL), pvxc(NULL),pvxc_ignore(NULL),pvxd(NULL),ppoly(NULL),
-	   pDBGridDlg(NULL), lblfld(0), keyfld(0), pfxfld(0), noloc_dir(0), bTypeZ(0), bHaveTmpshp(0) {}
+	   pDBGridDlg(NULL), lblfld(0), keyfld(0), pfxfld(0), noloc_dir(6), noloc_lat(0.0),noloc_lon(0.0), bTypeZ(0), bHaveTmpshp(0) {}
 	CShpDBF db;
 	CDBTFile dbt;   //memo file
 	VEC_BYTE vdbe;  //edit flags
@@ -122,7 +122,7 @@ struct SHP_DBFILE { //size=84
 	BYTE pfxfld; //e.g., COUNTY
 	BYTE lblfld;
 	BYTE keyfld;
-	BYTE noloc_dir;  //1 if NW, 2 if NE, 3 if SW, 4 if SE
+	BYTE noloc_dir;
 	//==================
 	static bool bEditorPrompted;
 	static bool bEditorPreserved;
@@ -501,7 +501,7 @@ public:
 	static char *new_point_str;
 	static bool m_bShpReeditMsg;
 	static bool m_bSelectedMarkerChg;
-	static bool m_bChangedGEPref;
+	static bool m_bChangedGEPref,m_bChangedGEPath;
 	static VEC_DWORD m_vGridRecs;
 	static CShpLayer *m_pGridShp;
 	static SHP_MRK_STYLE m_mstyle_sD,m_mstyle_hD,m_mstyle_s,m_mstyle_h;

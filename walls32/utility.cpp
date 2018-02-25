@@ -155,7 +155,12 @@ BOOL PASCAL AddFilter(CString &filter,int nIDS)
 BOOL PASCAL DoPromptPathName(CString& pathName,DWORD lFlags,
    int numFilters,CString &strFilter,BOOL bOpen,UINT ids_Title,char *defExt)
 {
-	CFileDialog dlgFile(bOpen);  //TRUE for open rather than save
+#ifdef _DEBUG
+	//bVistaStyle==TRUE causes exception the first time this is called while debugging!
+	CFileDialog dlgFile(bOpen,0,0,OFN_HIDEREADONLY,0,0,0,!IsDebuggerPresent());
+#else
+	CFileDialog dlgFile(bOpen,0,0,OFN_HIDEREADONLY,0,0,0,TRUE);
+#endif
 
 	CString title;
 	VERIFY(title.LoadString(ids_Title));
@@ -172,7 +177,7 @@ BOOL PASCAL DoPromptPathName(CString& pathName,DWORD lFlags,
 	
 	dlgFile.m_ofn.lpstrInitialDir=initDir;
 	dlgFile.m_ofn.Flags |= (lFlags|OFN_ENABLESIZING);
-	if(!(lFlags&OFN_OVERWRITEPROMPT)) dlgFile.m_ofn.Flags&=~OFN_OVERWRITEPROMPT;
+	if(!(lFlags&OFN_OVERWRITEPROMPT)) dlgFile.m_ofn.Flags&=~OFN_OVERWRITEPROMPT; //handled above
 
 	dlgFile.m_ofn.nMaxCustFilter+=numFilters;
 	dlgFile.m_ofn.lpstrFilter = strFilter;
@@ -181,6 +186,7 @@ BOOL PASCAL DoPromptPathName(CString& pathName,DWORD lFlags,
 	dlgFile.m_ofn.lpstrFile = path;
 	dlgFile.m_ofn.nMaxFile = _MAX_PATH;
 	if(defExt) dlgFile.m_ofn.lpstrDefExt = defExt+1;
+	//dlgFile.m_ofn.FlagsEx= OFN_EX_NOPLACESBAR; //fixes invalid handle error in DEBUG mode, but empties navigation pane!!!
 
 	if(dlgFile.DoModal() == IDOK) {
 		pathName.SetString(path);
@@ -468,7 +474,7 @@ BOOL DirCheck(char *pathname,BOOL bPrompt)
 	//Return 0 if directory was absent and not created, in which case
 	//a message or prompt was displayed.
 
-	struct _stat st;
+	BOOL bIsDir;
 	char *pnam;
 	BOOL bRet=TRUE;
 	char cSav;
@@ -478,9 +484,9 @@ BOOL DirCheck(char *pathname,BOOL bPrompt)
 	if(pnam[-2]!=':') pnam--;
 	cSav=*pnam;
 	*pnam=0; //We are only examining the path portion
-	if(!_stat(pathname,&st)) {
+	if(!_stat_fix(pathname,NULL,NULL,&bIsDir)) {
 	  //Does directory already exist?
-	  if(st.st_mode&_S_IFDIR) goto _restore;
+	  if(bIsDir) goto _restore;
 	  goto _failmsg; //A file by that name must already exist
 	}
 	//_stat falure due to anything but nonexistence?
@@ -579,25 +585,110 @@ BOOL IsAbsolutePath(const char *path)
 	return *path=='\\' || *path=='/' || (*path && path[1]==':'); 
 }
 
-struct tm *GetLocalFileTime(const char *pszPathName,long *pSize,BOOL *pbReadOnly /*=NULL*/)
+int _stat_fix(const char *pszPathName, DWORD *pSize /*=NULL*/, BOOL *pbReadOnly /*=NULL*/, BOOL *pbIsDir /*=NULL*/)
 {
-   struct _stat status;
+	WIN32_FILE_ATTRIBUTE_DATA fdata;
+	if(!GetFileAttributesEx(pszPathName, GetFileExInfoStandard, &fdata)) {
+#ifdef _DEBUG
+		DWORD e=GetLastError();
+		if(e==1 || e==2 || e==3) {
+			return -1;
+		}
+#endif
+		return -1;
+	}
+	if(pSize) *pSize=fdata.nFileSizeLow;
+	if(pbReadOnly) *pbReadOnly=(fdata.dwFileAttributes&FILE_ATTRIBUTE_READONLY)!=0;
+	if(pbIsDir) *pbIsDir=(fdata.dwFileAttributes&FILE_ATTRIBUTE_DIRECTORY)!=0;
 
-   if(_stat(pszPathName,&status)) return NULL;
-   if(pbReadOnly) *pbReadOnly=(status.st_mode&_S_IWRITE)==0;
-   if(pSize) *pSize=status.st_size;
-   return localtime(&status.st_mtime);
+	return 0;
 
 }
 
-char * GetTimeStr(struct tm *ptm,long *pSize)
+SYSTEMTIME *GetLocalFileTime(const char *pszPathName,long *pSize,BOOL *pbReadOnly /*=NULL*/)
+{
+	static SYSTEMTIME stLocal;
+	memset(&stLocal, 0, sizeof(SYSTEMTIME));
+	if(pbReadOnly) *pbReadOnly=0;
+	if(pSize) *pSize=0;
+
+#ifdef _CHKSTAT
+	//_stat() fails under Windows XP due to a bug in VS 2015 - Windows XP (v140_xp) toolset !!!
+	//Workaround is to use GetFileAttributesEx(). This tests the workaround in _DEBUG mode under Win7+ --
+	static BOOL nFail=0;
+	struct _stat status;
+	UINT size2,timesum2=0;
+	BOOL bReadOnly2=2,bNotFound=0;
+	struct tm *ptm;
+
+	if(_stat(pszPathName,&status)) {
+		if(errno==ENOENT) {
+			bNotFound=1;
+		}
+		if(bNotFound || nFail) goto _cont;
+		CMsgBox(MB_ICONASTERISK,"_stat() returns EINVAL with file %s", pszPathName);
+		nFail++;
+		goto _cont;
+	}
+
+	if(pbReadOnly) bReadOnly2=(status.st_mode&_S_IWRITE)==0;
+	size2=status.st_size;
+	ptm=localtime(&status.st_mtime);
+	if(ptm) timesum2=ptm->tm_sec+ptm->tm_min+ptm->tm_hour+ptm->tm_mday+ptm->tm_mon+ptm->tm_year;
+_cont:
+#endif
+
+	WIN32_FILE_ATTRIBUTE_DATA fdata;
+	if(!GetFileAttributesEx(pszPathName, GetFileExInfoStandard,&fdata)) {
+#ifdef _DEBUG
+		DWORD e=GetLastError();
+		if(e==1 || e==2 || e==3) {
+#ifdef _CHKSTAT
+			ASSERT(bNotFound);
+#endif
+			return NULL;
+		}
+#ifdef _CHKSTAT
+		ASSERT(!bNotFound || !_TraceLastError());
+#endif
+#endif
+		return NULL;
+	}
+	if(pbReadOnly) *pbReadOnly=(fdata.dwFileAttributes&FILE_ATTRIBUTE_READONLY)!=0;
+	if(pSize) *pSize=fdata.nFileSizeLow;
+
+	// Convert the last-write time to local time.
+	SYSTEMTIME stUTC;
+	if(!FileTimeToSystemTime(&fdata.ftLastWriteTime, &stUTC))
+		goto _eret;
+	if(!SystemTimeToTzSpecificLocalTime(NULL, &stUTC, &stLocal))
+		goto _eret;
+
+#ifdef _DEBUG
+#ifdef _CHKSTAT
+	if(!nFail) {
+		UINT timesum1=stLocal.wSecond+stLocal.wMinute+stLocal.wHour+stLocal.wDay+stLocal.wMonth-1+stLocal.wYear-1900;
+		ASSERT(timesum1==timesum2 && (!pSize || *pSize==size2));
+		ASSERT(!pbReadOnly || *pbReadOnly==bReadOnly2);
+	}
+#endif
+#endif
+
+	return &stLocal;
+
+_eret:
+	ASSERT(0);
+	return NULL;
+}
+
+char * GetTimeStr(SYSTEMTIME *ptm,long *pSize)
 {
 	static char buf[56];
 	if(!ptm) *buf=0;
 	else {
 		int len=_snprintf(buf,56,"%4u-%02u-%02u %02u:%02u:%02u",
-			ptm->tm_year+1900,ptm->tm_mon+1,ptm->tm_mday,
-			ptm->tm_hour,ptm->tm_min,ptm->tm_sec);
+			ptm->wYear,ptm->wMonth,ptm->wDay,
+			ptm->wHour,ptm->wMinute,ptm->wSecond);
 		if(pSize) {
 			_snprintf(buf+len,56-len,"  Size: %u KB",(*pSize+500)/1000);
 		}
@@ -615,10 +706,13 @@ void TrackMouse(HWND hWnd)
 		_TrackMouseEvent(&tme);
 }
 
-void GetCoordinateFormat(CString &s,DPOINT &coord,BOOL bProfile)
+void GetCoordinateFormat(CString &s,DPOINT &coord,BOOL bProfile,BOOL bFeetUnits)
 {
-	if(bProfile) s.Format( "%10.0f U",coord.y); 
-	else s.Format( "%10.0f E%11.0f N",coord.x,coord.y);
+	if(bProfile) {
+		int inc=(coord.y>=100.0)?0:((coord.y>=10.0)?1:2);
+		s.Format("%10.*f %s elev", inc, coord.y, bFeetUnits?"ft":"m");
+	}
+	else s.Format( "%10.2f E%11.2f N",coord.x,coord.y);
 }
 
 void ElimNL(char *p)
@@ -828,7 +922,7 @@ int CheckDirectory(CString &path,BOOL bOpen /*=FALSE*/)
 		else {
 			//File exists and is rewritable.
 			long filesize=0;
-			struct tm *ptm=GetLocalFileTime(path,&filesize);
+			SYSTEMTIME *ptm=GetLocalFileTime(path,&filesize);
 			if(!bOpen) e=(IDOK==CMsgBox(MB_OKCANCEL,IDS_FILE_EXISTDLG,(LPCSTR)path,GetTimeStr(ptm,&filesize)))?0:1;
 			else {
 				CString s;
@@ -864,10 +958,10 @@ int CompareNumericLabels(LPCSTR p,LPCSTR p1)
 
 int SetFileReadOnly(LPCSTR pPath,BOOL bReadOnly,BOOL bNoPrompt)
 {
-	struct _stat status;
-	if(!_stat(pPath,&status)) {
+	BOOL bIsRO;
+	if(!_stat_fix(pPath,NULL,&bIsRO)) {
 		//File exists on disk --
-		if((status.st_mode&_S_IWRITE)!=(bReadOnly*_S_IWRITE)) return 1; //status unchanged
+		if(bReadOnly==bIsRO) return 1;  //status unchanged
 		if(!_chmod(pPath,bReadOnly?_S_IREAD:(_S_IWRITE|_S_IREAD))) return 2; //status changed
 		//Unable to change file status on disk
 		if(!bNoPrompt) AfxMessageBox(IDS_ERR_FILE_RW);
@@ -972,12 +1066,145 @@ BOOL ClipboardPaste(LPSTR strData,UINT maxLen)
 	return (*strData!=0);
 }
 
-void OpenContainingFolder(LPCSTR path)
+BOOL OpenContainingFolder(HWND hwnd,LPCSTR path)
 {
 	CString sParam;
 	sParam.Format("/select,\"%s\"",path);
-	if((int)ShellExecute(NULL,"OPEN","explorer.exe", sParam, NULL, SW_NORMAL)<=32) {
+	if((int)ShellExecute(hwnd,"OPEN","explorer.exe", sParam, NULL, SW_NORMAL)<=32) {
 		AfxMessageBox("Unable to launch Explorer");
+		return 0;
 	}
+	return 1;
 }
 
+LPCSTR TrimPath(LPSTR path, int maxlen)
+{
+	LPSTR pStart;
+	int lenttl;
+	if((lenttl=strlen(path))<=maxlen || !(pStart=strchr(path, '\\')))
+		return path;
+
+	if(*++pStart=='\\') pStart++;
+	LPSTR pNext=pStart;
+	lenttl+=2; //space for ".."
+
+	for(int len=lenttl;len>maxlen;pNext++) {
+	   if(!(pNext=strchr(pNext,'\\')))
+	     return path;
+	   len=lenttl-(pNext-pStart);
+    }
+	*pStart++='.';
+	*pStart++='.';
+	strcpy(pStart,pNext-1);
+	return path;
+}
+
+LPCSTR TrimPath(CString &path,int maxlen)
+{
+	TrimPath(path.GetBuffer(),maxlen);
+	path.ReleaseBuffer();
+	return path;
+}
+
+LPSTR GetRelativePath(LPSTR buf, LPCSTR pPath, LPCSTR pRefPath, BOOL bNoNameOnPath)
+{
+	//Note: buf has assumed size >= MAX_PATH and pPath==buf is allowed.
+	//Last arg should be FALSE if pPath contains a file name, in which case it will
+	//be appended to the relative path in buf.
+
+	int lenRefPath=trx_Stpnam(pRefPath)-pRefPath;
+	ASSERT(lenRefPath>=3);
+
+	LPSTR pDupPath=(pPath==buf)?_strdup(pPath):NULL;
+	if(pDupPath)
+		pPath=pDupPath;
+	else if(buf!=pPath)
+		strcpy(buf, pPath);
+
+	if(bNoNameOnPath) strcat(buf, "\\");
+	else *trx_Stpnam(buf)=0;
+
+	int lenFilePath=strlen(buf);
+	int maxLenCommon=min(lenFilePath, lenRefPath);
+	for(int i=0; i<=maxLenCommon; i++) {
+		if(i==maxLenCommon || toupper(buf[i])!=toupper(pRefPath[i])) {
+			if(!i) break;
+
+			while(i && buf[i-1]!='\\') i--;
+			ASSERT(i);
+			if(i<3) break;
+			lenFilePath-=i;
+			pPath+=i;
+			LPSTR p=(LPSTR)pRefPath+i;
+			for(i=0; p=strchr(p, '\\'); i++, p++); //i=number of folder level prefixes needed
+			if(i*3+lenFilePath>=MAX_PATH) {
+				//at least don't overrun buf
+				break;
+			}
+			for(p=buf; i; i--) {
+				strcpy(p, "..\\"); p+=3;
+			}
+			//pPath=remaining portion of path that's different
+			//pPath[lenFilePath-1] is either '\' or 0 (if bNoNameOnPath)
+			if(lenFilePath) {
+				memcpy(p, pPath, lenFilePath);
+				if(bNoNameOnPath) p[lenFilePath-1]='\\';
+			}
+			p[lenFilePath]=0;
+			break;
+		}
+	}
+	if(!bNoNameOnPath) {
+		LPCSTR p=trx_Stpnam(pPath);
+		if((lenFilePath=strlen(buf))+strlen(p)<MAX_PATH)
+			strcpy(buf+lenFilePath, p);
+	}
+	if(pDupPath) free(pDupPath);
+	return buf;
+}
+
+void FixFilename(CString &name)
+{
+	static LPCSTR pBadChrs="\\/:?\"<>|*";
+	for(LPSTR pn=name.GetBuffer(); *pn; pn++) {
+		if(strchr(pBadChrs,*pn)) *pn='_';
+	}
+	name.ReleaseBuffer();
+}
+
+// RTL_OSVERSIONINFOEXW is defined in winnt.h
+BOOL GetOsVersion(RTL_OSVERSIONINFOEXW* pk_OsVer)
+{
+	typedef LONG(WINAPI* tRtlGetVersion)(RTL_OSVERSIONINFOEXW*);
+
+	memset(pk_OsVer, 0, sizeof(RTL_OSVERSIONINFOEXW));
+	pk_OsVer->dwOSVersionInfoSize = sizeof(RTL_OSVERSIONINFOEXW);
+
+	HMODULE h_NtDll = GetModuleHandleW(L"ntdll.dll");
+	tRtlGetVersion f_RtlGetVersion = (tRtlGetVersion)GetProcAddress(h_NtDll, "RtlGetVersion");
+
+	ASSERT(f_RtlGetVersion); //All processes load ntdll.dll
+
+	return f_RtlGetVersion && f_RtlGetVersion(pk_OsVer)==0;
+}
+
+DWORD GetOsMajorVersion()
+{
+	RTL_OSVERSIONINFOEXW rtl;
+	if(!GetOsVersion(&rtl)) return 0;
+	return rtl.dwMajorVersion;
+}
+
+#ifdef _DEBUG
+// Makes trace windows a little bit more informative...
+BOOL _TraceLastError()
+{
+	LPVOID lpMsgBuf;
+	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
+		NULL, GetLastError(), MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+		(LPTSTR)&lpMsgBuf, 0, NULL);
+	TRACE1("Last error: %s\n", lpMsgBuf);
+	LocalFree(lpMsgBuf);
+	return TRUE;
+}
+#endif

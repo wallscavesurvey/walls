@@ -106,9 +106,10 @@ char *toDM(double a)
 /****************************************************************************/
 double DMtoDegrees(char *dms)
 {
-  short   neg = 0;
-  short   d;
-  double  m;
+  //short   neg = 0;
+  //short   d;
+	int   d;
+	double  m;
   
   sscanf(dms, "%d%lf", &d, &m);
   m = (double) (abs(d)) + m / 60.0;

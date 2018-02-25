@@ -164,7 +164,8 @@ void CTraView::OnPrevTrav()
 	  plb->SetCurSel(--i);
 	  int iSys=((CListBox *)pCV->GetDlgItem(IDC_SYSTEMS))->GetCurSel();
 	  CPrjDoc::SetTraverse(iSys,i);
-	  pCV->OnTravChg();
+	  pCV->OnTravChg(); //update Float button and m_iStrFlag flags
+	  GetDocument()->RefreshMapTraverses(TRV_SEL+TRV_PLT);
 	}
 }
 
@@ -176,7 +177,8 @@ void CTraView::OnNextTrav()
 	  int iSys=((CListBox *)pCV->GetDlgItem(IDC_SYSTEMS))->GetCurSel();
 	  plb->SetCurSel(++i);
 	  CPrjDoc::SetTraverse(iSys,i);
-	  pCV->OnTravChg();
+	  pCV->OnTravChg(); //update Float button and m_iStrFlag flags
+	  GetDocument()->RefreshMapTraverses(TRV_SEL+TRV_PLT);
 	}
 }
 

@@ -6,11 +6,11 @@
 #define __A__TRX_H
 
 #ifndef __TRX_FILE_H
-#include <trx_file.h>
+#include "trx_file.h"
 #endif
 
 #ifndef __A__CSH_H
-#include <a__csh.h>
+#include "a__csh.h"
 #endif
 
 #ifdef __cplusplus

@@ -1,7 +1,0 @@
-﻿<topic class="Popup" template="Popup" lasteditedby="David" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../helpproject.xsd">
-  <title translate="true">Traverse List</title>
-  <body>
-    <para style="tabstops:24px left ;"><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">The </text><text style="font-family:Arial; font-size:9pt; font-weight:bold; color:#000000;" translate="true">traverse list </text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true">is a report option still to be implemented in Walls. &#160;It will show various statistics for loop system traverses, such as </text><text style="font-family:Arial; font-size:9pt; font-style:italic; color:#000000;" translate="true">network variances</text><text style="font-family:Arial; font-size:9pt; color:#000000;" translate="true"> and other numbers from which confidence intervals for estimated locations, for example, can be derived.</text></para>
-    <para style="tabstops:24px left ;"></para>
-  </body>
-</topic>

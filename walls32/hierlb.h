@@ -101,7 +101,8 @@ protected:
 public:
 	CHierListBox(BOOL lines=TRUE,WORD offset=16,WORD rootOffset=0);
 	virtual ~CHierListBox();
-	
+	BOOL m_bRefresh; //used only when refreshing ater open containing folder
+
 private:
 	void DrawLines(CHierListNode*, CDC*, LPCRECT );
 	

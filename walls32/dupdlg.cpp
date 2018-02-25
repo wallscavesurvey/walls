@@ -13,7 +13,6 @@ static char BASED_CODE THIS_FILE[] = __FILE__;
 BEGIN_MESSAGE_MAP(CDupDlg, CDialog)
 	//{{AFX_MSG_MAP(CDupDlg)
 	ON_BN_CLICKED(ID_ABORT, OnAbort)
-	ON_BN_CLICKED(ID_DUPEDIT, OnDupEdit)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -50,9 +49,4 @@ BOOL CDupDlg::OnInitDialog()
 void CDupDlg::OnAbort()
 {
 	EndDialog(IDABORT);	
-}
-
-void CDupDlg::OnDupEdit()
-{
-	EndDialog(IDABORT+1);	
 }

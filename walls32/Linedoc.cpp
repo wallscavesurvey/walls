@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "walls.h"
 #include "prjdoc.h"
+#include "txtfrm.h"
 #include "linedoc.h"
 #include "lineview.h"
 #include "filebuf.h"
@@ -33,9 +34,6 @@ END_MESSAGE_MAP()
 
 ///////////////////////////////////////////////////////////////////////
 //Static file scope variables and functions --
-
-const char *CLineDoc::m_pszInitFrameTitle=NULL;//Optionally set by routine that opens document
-const char *CLineDoc::m_pszInitIconTitle=NULL; //Non-null if the above is non-null
 
 static BOOL bLinesClipped; //Used by ClipPaste() and PutClipLine()
 BOOL CLineDoc::m_bNewEmptyFile; //Used by OnNewDocument() if not NULL
@@ -94,30 +92,6 @@ static BOOL LineTruncateFail(BYTE *pLine,LINENO nLine,int& linlen)
 ///////////////////////////////////////////////////////////////////////
 //CLineDoc Variables and Methods --
 
-void CLineDoc::InitFrameTitles()
-{
-    //If one is set, both must be set!
-    ASSERT(m_pszInitIconTitle);
-
-	int len=m_bReadOnly?7:0;
-
-	m_pszFrameTitle=(char *)realloc(m_pszFrameTitle,
-		(m_lenFrameTitle=len+strlen(m_pszInitFrameTitle))+
-		(m_lenIconTitle=strlen(m_pszInitIconTitle))+
-		2*SIZ_FRAMETITLE_SFX);
-
-	if(m_pszFrameTitle) {
-	  if(len) strcpy(m_pszFrameTitle,"<LOCK> ");
-	  strcpy(m_pszFrameTitle+len,m_pszInitFrameTitle);
-	  m_pszIconTitle=strcpy(m_pszFrameTitle+m_lenFrameTitle+SIZ_FRAMETITLE_SFX,
-		m_pszInitIconTitle);
-	}
-	//We only use this once. The calling fcn may set this to zero also?
-	m_pszInitFrameTitle=NULL;
-	m_pszInitIconTitle=NULL;
-	m_bTitleMarked=FALSE;
-}
-
 CLineDoc::CLineDoc()
 {
     //Cannot use this due to an embedded CObject, CLineHint --
@@ -142,20 +116,13 @@ CLineDoc::CLineDoc()
     //The following is done also by DeleteContents() and should
     //be unnecessary here except to avoid an ASSERT() --
     m_nActiveLine=0;
-    m_bActiveChange=m_bSaveAs=FALSE;
+    m_bActiveChange=m_bSaveAs=m_bTitleMarked=FALSE;
     
     //The application may have set m_pszInitFrameTitle and
     //m_pszInitIconTitle to strings that are meant to replace the
     //window captions supplied by MFC --
 
 	m_bReadOnly=m_bReadOnlyOpen;
-    
-    m_pszFrameTitle=NULL;
-/*	
-    if(m_pszInitFrameTitle) {
-		InitFrameTitles();
-    }
-*/
 }
 
 CLineDoc::~CLineDoc()
@@ -168,7 +135,6 @@ CLineDoc::~CLineDoc()
       if(pd) pd->m_pNextLineDoc=m_pNextLineDoc;
     }
     free(m_pActiveBuffer);
-    free(m_pszFrameTitle);
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -276,12 +242,6 @@ BOOL CLineDoc::OnOpenDocument(const char* pszPathName)
  	  SetTitle(pszPathName);
  	  return OnNewDocument();
  	}
-
-	if(!m_pszInitFrameTitle) {
-		m_pszInitFrameTitle=trx_Stpnam(pszPathName);
-		m_pszInitIconTitle="";
-	}
-	InitFrameTitles();
 
 	CFileBuffer file(READBUFSIZ);
 	if(file.OpenFail(pszPathName,CFile::modeRead|CFile::shareDenyWrite)) return FALSE;
@@ -1383,14 +1343,10 @@ void CLineDoc::SetPathName(const char* pszPathName, BOOL bAddToMRU)
 
 void CLineDoc::MarkDocTitle(BOOL bChg)
 {
-     char buf[256];
-     strcpy(buf,GetTitle());
-     if(bChg) strcat(buf,"*");
-     else {
-       int len=strlen(buf);
-       if(len && buf[len-1]=='*') buf[len-1]=0;
-     }
-     SetTitle(buf);
+	 m_csFrameTitle.Truncate(m_lenFrameTitle);
+     if(bChg) m_csFrameTitle+='*';
+	 POSITION vpos=GetFirstViewPosition();
+	 if(vpos) ((CTxtFrame *)(GetNextView(vpos)->GetParent()))->SetWindowText(m_csFrameTitle);
 }
 
 void CLineDoc::CheckTitleMark(BOOL bChg)
@@ -1463,7 +1419,7 @@ void CLineDoc::OnFileSaveAs()
 	SetPathName(newName);
 
 	if(pNode) UpdateOpenFileTitle(pNode->Title(),pNode->Name());
-	else UpdateOpenFileTitle(GetPathName(),GetTitle());
+	else UpdateOpenFileTitle(trx_Stpnam(GetPathName()),"");
 }
 
 BOOL CLineDoc::SaveModified()
@@ -1559,14 +1515,16 @@ BOOL CLineDoc::Close(BOOL bNoSave)
 void CLineDoc::UpdateOpenFileTitle(LPCSTR newTitle,LPCSTR newName)
 {
 	POSITION vpos=GetFirstViewPosition();
-	while(vpos) {
-      CLineView *pView=(CLineView *)GetNextView(vpos);
-	  ASSERT(pView && pView->IsKindOf(RUNTIME_CLASS(CLineView)));
-	  m_pszInitFrameTitle=newTitle;
-	  m_pszInitIconTitle=newName;
-	  InitFrameTitles();
-	  ((CMDIChildWnd *)pView->GetParent())->SetWindowText("");
-	}
+	if(!vpos) return;
+	CTxtFrame *pFrm=(CTxtFrame *)(GetNextView(vpos)->GetParent());
+
+	m_csFrameTitle=m_bReadOnly?"<LOCK> ":"";
+	if(*newName && _stricmp(newName,newTitle))
+		m_csFrameTitle.AppendFormat("%s - %s", newName, newTitle);
+	else m_csFrameTitle+=newTitle;
+	m_lenFrameTitle=m_csFrameTitle.GetLength();
+	if(IsModified()||m_bActiveChange) m_csFrameTitle+="*";
+	pFrm->SetWindowText(m_csFrameTitle);
 }
 
 BOOL CLineDoc::SaveAllOpenFiles()
@@ -1616,8 +1574,6 @@ void CLineDoc::DisplayLineViews()
 			else pWnd->BringWindowToTop();
 		}
 	}
-
-	m_pszInitFrameTitle=NULL;
 	
 	if(pView && CLineView::m_nLineStart) {
 	     //Since m_nLineStart was NOT reset to zero, we know the survey was reactivated

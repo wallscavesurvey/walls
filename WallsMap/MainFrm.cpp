@@ -415,8 +415,6 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 	//  the CREATESTRUCT cs
 	cs.style |= (LONG)(WS_VSCROLL|WS_HSCROLL);
 
-	//VERIFY(m_dropTarget.Register(this,this));
-
 	return TRUE;
 }
 
@@ -882,14 +880,15 @@ void CMainFrame::Launch_WebMap(CFltPoint &fpt,LPCSTR nam)
 void CMainFrame::OnHelpOpenreadme()
 {
 	char buf[_MAX_PATH+40];
-	LPSTR p=trx_Stpnam(strcpy(buf,theApp.m_pszHelpFilePath));
-	strcpy(p,"WallsMap_ReadMe.txt");
-	if(_access(buf,0)) {
-		strcpy(p+8,p+12);
+	LPSTR p=trx_Stpext(strcpy(buf,theApp.m_csUrlPath));
+	strcpy(p,"_ReadMe.html");
+	if(!_access(buf,0)) {
+		if((int)ShellExecute(m_hWnd, "Open", buf, NULL, NULL, SW_NORMAL)<=32) {
+			AfxMessageBox("Unable to launch browser.");
+		}
+		return;
 	}
-	if(_access(buf,0) || (int)ShellExecute(m_hWnd,"Open",buf, NULL, NULL, SW_NORMAL)<=32) {
-		AfxMessageBox("Release notes not found.");
-	}
+	AfxMessageBox("Release notes not found.");
 }
 
 LRESULT CMainFrame::OnCommandHelp(WPARAM wParam, LPARAM lParam)

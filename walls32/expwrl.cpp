@@ -446,8 +446,9 @@ BOOL CSegView::ExportWRL(LPCSTR pathname,LPSTR title,UINT flags,UINT dimGrid,flo
 	if(!ex.Init(dbNTV.MaxID()+1,(UINT)ixSEG.NumRecs())) return FALSE;
 	
 	char buffer[120];
+
 	if(ex.bScaleV &&
-	_snprintf(buffer,120,"%Fs (Vert x %.1f)",title,fScaleVert)<80) title=buffer;
+	_snprintf(buffer,120,"%s (Vert x %.1f)",title,fScaleVert)<80) title=buffer;
 	
 	e=WrlExport(pathname,title,wall_GetData);
  	  

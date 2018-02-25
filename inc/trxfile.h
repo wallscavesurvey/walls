@@ -4,7 +4,7 @@
 #define __TRXFILE_H
 
 #ifndef __TRX_FILE_H
-#include <trx_file.h>
+#include "trx_file.h"
 #endif
 
 class CTRXFile {

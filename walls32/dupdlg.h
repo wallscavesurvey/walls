@@ -28,7 +28,6 @@ protected:
     BOOL OnInitDialog();
 	//{{AFX_MSG(CDupDlg)
 	afx_msg void OnAbort();
-	afx_msg void OnDupEdit();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

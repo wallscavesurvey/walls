@@ -41,10 +41,6 @@ EXTERN float fLrudExag;
 #define SRV_DLG_INCREMENT 100
 #define NULL_ID ((DWORD)0xFFFFFFFF)
 
-#define PI 3.141592653589793
-#define PI2 (PI/2.0)
-#define U_DEGREES (PI/180.0)
-
 #define _NOTESTR(key) ((char *)key+6)
 #define _NOTELEN(key) (*(BYTE *)key-5)
 
@@ -87,6 +83,19 @@ EXTERN MAPFORMAT *pMF;
 EXTERN DWORD *pVnodeMap;
 EXTERN int iPolysDrawn;
 EXTERN BOOL bNoVectors;
+
+#ifdef VISTA_INC
+EXTERN TOOLINFO g_toolItem;
+EXTERN HWND g_hwndTrackingTT;
+extern HWND CreateTrackingToolTip(HWND hWnd);
+extern void DestroyTrackingTT();
+#endif
+
+EXTERN CPoint ptMeasureStart,ptMeasureEnd;
+EXTERN DPOINT dpCoordinate,dpCoordinateMeasure;
+EXTERN BOOL bMeasureDist;
+extern void GetDistanceFormat(CString &s,BOOL bProfile,bool bFeetUnits,bool bConvert);
+
 #define pNamTyp CCompView::m_pNamTyp
 
 typedef struct {
@@ -143,7 +152,7 @@ EXTERN CDC *pvDC;
 EXTERN int nLen_piSYS;
 EXTERN int nLen_piPLTSEG;  //Current allocated lengths of piSYS[] and piPLTSEG[]
 
-EXTERN int nSTR,nSYS,nISOL,nNTV,nPLTSEGS;
+EXTERN int nSTR,nSTR_1,nSTR_2,nSYS,nISOL,nNTV,nPLTSEGS;
 EXTERN int nLNKS,nFRGS,nLen_piLNK,nSYS_Offset,nSYS_LinkOffset;  //Added 11/4/04 to support link fragments
 EXTERN WORD nISOL_ni[2];
 EXTERN char errBuf[NET_SIZ_ERRBUF];

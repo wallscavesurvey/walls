@@ -4,7 +4,7 @@
 #define __TRX_FILE_H
 
 #ifndef __TRX_TYPE
-#include <trx_type.h>
+#include "trx_type.h"
 #endif
 
 #ifdef __cplusplus

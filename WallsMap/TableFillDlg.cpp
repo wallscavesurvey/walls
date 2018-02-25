@@ -44,7 +44,7 @@ void CTableFillDlg::DoDataExchange(CDataExchange* pDX)
 	if(pDX->m_bSaveAndValidate) {
 		if(m_fTyp!='L') {
 			m_rtf.GetText(m_csFillText);
-			m_csFillText.Trim();;
+			m_csFillText.Trim();
 			if(m_fTyp=='C') {
 				UINT fMax=m_csFillText.GetLength();
 				UINT fLen=m_pGDlg->m_pShp->m_pdb->FldLen(m_nFld);
@@ -89,7 +89,7 @@ BOOL CTableFillDlg::OnInitDialog()
 		GetDlgItem(IDC_YES)->SetFocus();
 	}
 	else {
-		s.Format("Enter text to replace all existing values of %s.  Leave box empty to clear field.",m_pGDlg->m_pShp->m_pdb->FldNamPtr(m_nFld));
+		s.Format("Enter text to replace the content of %s.  Leave box empty to clear field.",m_pGDlg->m_pShp->m_pdb->FldNamPtr(m_nFld));
 		GetDlgItem(IDC_ST_CAUTION)->SetWindowText(s);
 		m_bMemo=(m_fTyp=='M');
 		GetDlgItem(IDC_ST_SETLOGICAL)->ShowWindow(SW_HIDE);
@@ -113,7 +113,8 @@ BOOL CTableFillDlg::OnInitDialog()
 		m_rtf.SetWordWrap(TRUE);
 		m_rtf.SetBackgroundColor(m_bMemo?CMainFrame::m_clrBkg:RGB(255,255,255));
 		m_rtf.GetRichEditCtrl().LimitText(128*1024);
-		m_rtf.m_pTableFillDlg=this;
+		m_rtf.m_pParentDlg=this;
+		m_rtf.m_idContext=IDR_FILL_CONTEXT;
 		m_rtf.GetRichEditCtrl().SetFocus();
 	}
 

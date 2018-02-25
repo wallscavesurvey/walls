@@ -1,6 +1,11 @@
 #ifndef __SHPDBF_H
 #define __SHPDBF_H
-#include <dbfile_shp.h>
+
+#ifndef __AFX_H__
+#include "afx.h"
+#endif
+
+#include "dbfile_shp.h"
 
 //Used when sorting N and F fields (the dBase length limits are 19 and 20.
 #define SIZ_NFLD_BUF 24

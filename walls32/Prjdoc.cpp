@@ -13,6 +13,7 @@
 #include "compview.h"
 #include "plotview.h"
 #include "mapframe.h"
+#include "segview.h"
 #include "mapview.h"
 #include "compile.h"
 #include "ntfile.h"
@@ -44,9 +45,9 @@ BEGIN_MESSAGE_MAP(CPrjDoc, CDocument)
 END_MESSAGE_MAP()
 
 CPrjListNode * CPrjDoc::m_pErrorNode;
-CPrjListNode * CPrjDoc::m_pErrorNode2;
+//CPrjListNode * CPrjDoc::m_pErrorNode2;
 LINENO CPrjDoc::m_nLineStart;
-LINENO CPrjDoc::m_nLineStart2;
+//LINENO CPrjDoc::m_nLineStart2;
 int CPrjDoc::m_nCharStart;
 BOOL CPrjDoc::m_bCheckNames=FALSE;
 BOOL CPrjDoc::m_bComputing=FALSE;
@@ -61,6 +62,7 @@ double CPrjDoc::m_VtLimit=5.0;
 BOOL CPrjDoc::m_bNewLimits=FALSE;
 int CPrjDoc::m_iValueRangeNet=0;
 CPrjDoc *CPrjDoc::m_pReviewDoc=NULL;
+CPrjDoc *CPrjDoc::m_pLogDoc=NULL;
 CPrjListNode *CPrjDoc::m_pReviewNode=NULL;
 NET_DATA CPrjDoc::net_data;
 char CPrjDoc::m_pathBuf[_MAX_PATH];
@@ -75,6 +77,8 @@ int CPrjDoc::m_iFindStationCnt=0;
 int CPrjDoc::m_iFindStationMax=0;
 int CPrjDoc::m_iFindStationIncr=1;
 int CPrjDoc::m_bVectorDisplayed=0;
+int CPrjDoc::m_nMapsUpdated=0;
+BOOL CPrjDoc::m_bRefreshing=0;
 
 static CFileCfg *pFile;
 
@@ -309,10 +313,11 @@ static DWORD FileChecksum(const char *pszPathName)
     UINT timesum;
 	long filesize;
 
-	struct tm *ptm=GetLocalFileTime(pszPathName,&filesize);
+	SYSTEMTIME *ptm=GetLocalFileTime(pszPathName,&filesize);
     
     if(!ptm) return 0;
-    timesum=ptm->tm_sec+ptm->tm_min+ptm->tm_hour+ptm->tm_mday+ptm->tm_mon+ptm->tm_year;
+
+    timesum=ptm->wSecond+ptm->wMinute+ptm->wHour+ptm->wDay+ptm->wMonth-1+ptm->wYear-1900;
 
     DWORD buf[3];
     memset(buf,0,sizeof(buf));
@@ -449,11 +454,6 @@ char * CPrjDoc::WorkPath(CPrjListNode *pNode,int typ)
 {
     //Construct a complete pathname based on the node's workfile base name
     //which is assumed to be non-null.
-#ifdef _DEBUG
-	if(pNode && pNode->IsOther()) {
-		ASSERT(FALSE);
-	}
-#endif
     char *p=m_pPath+m_lenPath;
     p+=strlen(strcpy(p,m_pszName));
     if(!pNode) *p=0;
@@ -537,6 +537,7 @@ CPrjDoc::CPrjDoc()
 {
   CMainFrame* mf=(CMainFrame*)theApp.m_pMainWnd;
   m_pRoot=NULL;
+  m_pMapFrame=NULL;
   m_pNextPrjDoc=mf->m_pFirstPrjDoc;
   mf->m_pFirstPrjDoc=this;
   net_data.version=NET_VERSION;
@@ -712,7 +713,7 @@ BOOL CPrjDoc::OnSaveDocument(const char* pszPathName)
 
 	TRY
 	{
-	    PrjWrite(0,";WALLS Project file");
+	    PrjWrite(0,";WALLS Project File");
 		WriteNode(m_pRoot);
 	    file.Close();
 	}
@@ -876,10 +877,7 @@ void CPrjDoc::OnFileSaveAs()
 	    if(!DirCheck(pathName.GetBuffer(0),TRUE)) return;
 
 		//Is project already open?
-		if(theApp.FindOpenProject(pathName)) {
-			CMsgBox(MB_ICONINFORMATION,"File %s is already open. You must choose a different name.",(LPCSTR)pathName);
-			return;
-		}
+		if(theApp.IsProjectOpen(pathName)) return;
 	}
 
     if(!m_pszName || !*m_pszName) {
@@ -972,18 +970,21 @@ CLineDoc *CPrjDoc::OpenSurveyFile(CPrjListNode *pNode)
       ASSERT(pNode);
 	  CLineView::m_nLineStart=m_nLineStart;
 	  CLineView::m_nCharStart=m_nCharStart;
+	  //CLineView::m_nLineStart2=0;
+	  /*
 	  if(pNode==m_pErrorNode2) CLineView::m_nLineStart2=m_nLineStart2;
 	  else CLineView::m_nLineStart2=0;
+	  */
     }
-    else m_pErrorNode2=NULL;
+    //else m_pErrorNode2=NULL;
      
 	if(pNode->IsOther()) {
 		CLineDoc::m_bNewEmptyFile=(_access(SurveyPath(pNode),0)==-1);
 	}
 	else CLineDoc::m_bNewEmptyFile=(pNode->m_dwFileChk==0);
 
-	CLineDoc::m_pszInitFrameTitle=pNode->Title();
-	CLineDoc::m_pszInitIconTitle=pNode->Name();
+	//CLineDoc::m_pszInitFrameTitle=pNode->Title();
+	//CLineDoc::m_pszInitIconTitle=pNode->Name();
 
 	CLineDoc *pDoc=CPrjDoc::GetOpenLineDoc(pNode);
 	
@@ -992,14 +993,19 @@ CLineDoc *CPrjDoc::OpenSurveyFile(CPrjListNode *pNode)
 		CLineDoc::m_bReadOnlyOpen=(_access(path,6)!=0 && errno==EACCES);
 		pDoc=(CLineDoc *)theApp.m_pSrvTemplate->OpenDocumentFile(path);
 		CLineDoc::m_bReadOnlyOpen=FALSE;
+		if(pDoc) {
+			pDoc->UpdateOpenFileTitle(pNode->Title(), pNode->Name());
+		}
 	}
 
 	if(pDoc) pDoc->DisplayLineViews();
 	else {
 		CLineView::m_nLineStart=0;
-		CLineDoc::m_pszInitFrameTitle=NULL;
+		//CLineDoc::m_pszInitFrameTitle=NULL;
 	}
-	
+
+	return pDoc;
+#if 0
 	if(!pDoc || !m_pErrorNode2) return pDoc;
 	
 	if(pNode==m_pErrorNode2) {
@@ -1029,6 +1035,7 @@ CLineDoc *CPrjDoc::OpenSurveyFile(CPrjListNode *pNode)
 	CLineView::m_nLineStart=m_nLineStart2;
 	CLineView::m_nCharStart=0;
 	return OpenSurveyFile(m_pErrorNode2);
+#endif
 }
 
 BOOL CPrjDoc::CanCloseFrame(CFrameWnd* pFrameArg)
@@ -1281,8 +1288,6 @@ int CPrjDoc::ResolveLaunchFile(char *pathname,int typ)
 void CPrjDoc::LaunchFile(CPrjListNode *pNode,int typ)
 {
 	char pathname[_MAX_PATH];
-	struct _stat st;
-	//time_t typ_time;
 
 	if(!pNode) pNode=GetSelectedNode();
 
@@ -1303,7 +1308,7 @@ void CPrjDoc::LaunchFile(CPrjListNode *pNode,int typ)
 	}
 	else *pathname=0;
 	
-	if(!*pathname || _stat(pathname,&st)) {
+	if(!*pathname || _stat_fix(pathname)) {
 		if(typ==TYP_3D || typ==TYP_2D) {
 			if(IDOK==CMsgBox(MB_OKCANCEL|MB_ICONINFORMATION,
 				(typ==TYP_3D)?IDS_PRJ_NO3DFILE:IDS_PRJ_NO2DFILE,Title())) {
@@ -1315,16 +1320,6 @@ void CPrjDoc::LaunchFile(CPrjListNode *pNode,int typ)
 	          pNode->Title());
 	   return;
 	}
-
-	/*
-	if(typ==TYP_LST) { 
-		typ_time=st.st_mtime;
-		
-		if(_stat(WorkPath(pNode,TYP_NTV),&st) || typ_time<st.st_mtime) {
-		  if(IDOK!=CMsgBox(MB_OKCANCEL|MB_ICONINFORMATION,IDS_PRJ_LSTDATE1,pNode->Title())) return;
-		}
-	}
-	*/
 	    
  _open:
  	if(typ==TYP_3D || typ==TYP_2D) CMainFrame::Launch3D(pathname,typ==TYP_3D);
@@ -1382,11 +1377,29 @@ char * CPrjDoc::SurveyPath(CPrjListNode *pNode)
 char * CPrjDoc::GetRelativePathName(char *path,CPrjListNode *pNode)
 {
 	//If possible, transform an absolute path (or pathname)
-	//into a path relative to pNode's path property. In other words,
+	//into a path relative to pNode's path property. For example,
 	//chop off its front part if it matches pNode's path.
+
+	return GetRelativePath(path, path, GetPathPrefix(m_pathBuf, pNode), FALSE);
+
+/*
 	int len=strlen(GetPathPrefix(m_pathBuf,pNode));
-	if(len<=(trx_Stpnam(path)-path) && !_memicmp(m_pathBuf,path,len)) strcpy(path,path+len);
-	return path;
+	int lenpath=trx_Stpnam(path)-path;
+
+	if(len<=lenpath) {
+		if(!_memicmp(m_pathBuf, path, len)) strcpy(path, path+len);
+	}
+	else {
+		//pNode path (m_PathBuf) is longer than path's path prefix --
+		LPSTR p=GetRelativePath(path,path,m_pathBuf,FALSE);
+
+		//Note: path's buffer has assumed size >= MAX_PATH.
+		//Last arg should be FALSE if pPath contains a file name, in which case
+		//it has been appended to the relative path's buffer.
+	}
+	
+    return path;
+*/
 }
 
 void CPrjDoc::RefreshBranch(CPrjListNode *pNode)
@@ -1429,10 +1442,13 @@ void CPrjDoc::PositionReview()
 	//Position Review dialog page at pPLT vector.
 	ASSERT(pCV && pPLT->vec_id!=0);
 	if(pPLT->str_id) {
-		pCV->GoToVector();
+		pCV->GoToVector();  //updates Float button and m_iStrFlag flags
 		UINT iTab=pCV->GetReView()->GetTabIndex();
 		if(iTab!=TAB_TRAV) pCV->GetReView()->switchTab(TAB_TRAV);
 		pCV->SetTraverse();
+		pSV->SetNewVisibility(TRUE);
+		m_pReviewDoc->RefreshMapTraverses(TRV_SEL+TRV_PLT);
+		pSV->SetNewVisibility(FALSE);
 	}
 	else LocateOnMap();
 	pCV->GetParentFrame()->ActivateFrame();
@@ -1457,7 +1473,23 @@ void CPrjDoc::VectorProperties()
 		}
 		else if(id==IDIGNORE) LoadVecFile((pPLT->vec_id+1)/2);
 		else if(id==IDYES) PositionReview();
+		else if(id==IDNO) m_pReviewDoc->ViewSegment();
 	}
+}
+
+void CPrjDoc::ViewSegment()
+{
+	//Assumes pPLT and pVEC is open and correctly positioned --
+	char fname[SHP_SIZ_BUF_ATTRIBUTES];
+	ASSERT((pPLT->vec_id+1)/2==dbNTV.Position());
+
+	pSV->GetAttributeNames(pPLT->seg_id, fname, SHP_SIZ_BUF_ATTRIBUTES);
+	pSV->SelectSegListNode(pPLT->seg_id);
+
+	ASSERT(CPrjDoc::m_pReviewNode);
+	UINT iTab=pCV->GetReView()->GetTabIndex();
+	if(iTab!=TAB_SEG) pCV->GetReView()->switchTab(TAB_SEG);
+	pCV->GetParentFrame()->ActivateFrame();
 }
 
 LPCSTR CPrjDoc::GetDatumStr(char *buf,CPrjListNode *pNode)
@@ -1470,21 +1502,49 @@ LPCSTR CPrjDoc::GetDatumStr(char *buf,CPrjListNode *pNode)
 
 BOOL CPrjDoc::IsActiveFrame()
 {
-	if(!m_pReviewNode) return FALSE;
-	CMapFrame *pFrame=CPlotView::m_pMapFrame;
+	ASSERT(!m_pReviewNode || m_pReviewDoc);
+	if(!m_pReviewNode || !m_pReviewDoc) return FALSE;
+	CMapFrame *pFrame=m_pReviewDoc->m_pMapFrame;
 	while(pFrame && pFrame->m_pFrameNode!=m_pReviewNode) pFrame=pFrame->m_pNext;
 	return pFrame!=NULL;
 }
 
-void CPrjDoc::RefreshActiveFrames()
+BOOL CPrjDoc::RefreshMaps()
 {
-	if(!m_pReviewNode) return;
-	CMapFrame *pFrame=CPlotView::m_pMapFrame;
-	while(pFrame) {
-		if(pFrame->m_pFrameNode==m_pReviewNode)
-			((CMapView *)pFrame->GetActiveView())->RefreshView();
-		pFrame=pFrame->m_pNext;
+	ASSERT(m_pReviewNode);
+	if(!pSV->InitSegTree()) return FALSE;
+	m_nMapsUpdated=0;
+	m_bRefreshing=TRUE;
+	UpdateAllViews(0,LHINT_REFRESHNET);
+	m_bRefreshing=FALSE;
+	return m_nMapsUpdated>0;
+}
+
+BOOL CPrjDoc::RefreshMapTraverses(UINT bFlg)
+{
+	ASSERT(m_pReviewNode);
+	if(!pSV->InitSegTree()) return FALSE;
+
+	if(!pSV->IsTravVisible() || (bFlg&TRV_SEL) && !pSV->IsTravSelected()) {
+		return FALSE;
 	}
+	m_nMapsUpdated=(bFlg&TRV_PLT)?-1:0;
+	m_bRefreshing=TRUE;
+	UpdateAllViews(0, LHINT_REFRESHNET); //only nodes for selected network
+	m_bRefreshing=FALSE;
+	return m_nMapsUpdated>0;
+}
+
+BOOL CPrjDoc::UpdateMapViews(BOOL bChkOnly,UINT flgs)
+{
+	//Check or update all map frames with styles assigned to all components of reviewed node --
+	m_nMapsUpdated=0;
+
+	m_bRefreshing=TRUE;
+	UpdateAllViews(0, bChkOnly?LHINT_FLGCHECK:LHINT_FLGREFRESH,(CObject *)flgs);
+	m_bRefreshing=FALSE;
+
+	return  m_nMapsUpdated > 0;
 }
 
 BOOL CPrjDoc::SetReadOnly(CPrjListNode *pNode,BOOL bReadOnly,BOOL bNoPrompt /*=0*/)
@@ -1555,6 +1615,13 @@ int CPrjDoc::CountBranchReadOnly(CPrjListNode *pNode)
 	return cnt;
 }
 
+CMapFrame *CPrjDoc::FrameNodeExists(CPrjListNode *pNode)
+{
+	for(CMapFrame *pMap=m_pMapFrame;pMap;pMap=pMap->m_pNext)
+		if(pMap->m_pFrameNode==pNode) return pMap;
+	return NULL;
+}
+
 #ifdef _USE_FILETIMER
 void CPrjDoc::TimerRefresh()
 {
@@ -1563,5 +1630,19 @@ void CPrjDoc::TimerRefresh()
 	m_bCheckForChange=FALSE;
 	BranchEditsPending(m_pRoot);
 	GetPrjView()->m_PrjList.RefreshBranch(m_pRoot,TRUE); //include floating branches
+}
+#endif
+
+#ifdef _DEBUG
+int CPrjDoc::GetFrameCnt()
+{
+	int n=0;
+	CMapFrame *pFrame=m_pMapFrame;
+	while(pFrame && n<10) {
+		n++;
+		ASSERT(pFrame->m_pDoc==this);
+		pFrame=pFrame->m_pNext;
+	}
+	return n;
 }
 #endif

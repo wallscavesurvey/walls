@@ -37,7 +37,7 @@ protected:
 class CApplyDlg : public CDialog
 {
 public:
-	CApplyDlg(UINT nID,BOOL *pbNoPrompt,const char *pTitle,CWnd* pParent = NULL);	// standard constructor
+	CApplyDlg(UINT nID,BOOL *pbNoPrompt,LPCSTR pTitle,LPCSTR pMsg=NULL,CWnd* pParent=NULL);	// standard constructor
 	
 	BOOL *m_pbNoPrompt;
 	
@@ -46,7 +46,7 @@ public:
 	BOOL	m_bNoPrompt;
 	//}}AFX_DATA
 protected:
-    const char *m_pTitle;
+    LPCSTR m_pTitle,m_pMsg;
 	// Generated message map functions
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	//{{AFX_MSG(CApplyDlg)

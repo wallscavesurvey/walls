@@ -419,7 +419,10 @@ void CLinkTestDlg::OnBnClickedBrowse()
 	int i;
 	while(!s.IsEmpty() && (i=s.ReverseFind('\\'))>0) {
 		s.Truncate(i);
-		m_pShp->GetFullFromRelative(pathName,s);
+		if(!m_pShp->GetFullFromRelative(pathName, s)) {
+			//too many /../ in s can crash ::GetFullPathName() called from dos_FullPath() in dis_io.c --
+			break;
+		}
 		if(!_access(pathName,0)) {
 			CWallsMapDoc::m_csLastPath=pathName;
 			break;

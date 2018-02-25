@@ -320,7 +320,7 @@ BOOL CAboutDlg::OnInitDialog()
 {
 	m_textLink.SubclassDlgItem(IDC_NEWURL,this);
 	CDialog::OnInitDialog();
-	m_textLink.SetLink("www.utexas.edu/tmm/sponsored_sites/tss/Walls/tsswalls.htm");
+	m_textLink.SetLink("www.texasspeleologicalsurvey.org/software/walls/tsswalls.php");
 	CenterWindow();
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }

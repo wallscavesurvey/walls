@@ -29,14 +29,30 @@ static char THIS_FILE[] = __FILE__;
 CMarkerDlg::CMarkerDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CMarkerDlg::IDD, pParent)
 {
-	//{{AFX_DATA_INIT(CMarkerDlg)
-	m_bHideNotes = FALSE;
-	//}}AFX_DATA_INIT
+	m_bChanged=FALSE;
+	m_bNoOverlap=pSV->IsNoOverlap();
+	m_bHideNotes=pSV->IsHideNotes();
 	m_hbkbr=NULL;
-	m_pFS=NULL;
+	m_pFS=(MK_FLAGSTYLE *)calloc(pixSEGHDR->numFlagNames+1, sizeof(MK_FLAGSTYLE));
+	m_pFS_sav=(MK_FLAGSTYLE *)calloc(pixSEGHDR->numFlagNames+1, sizeof(MK_FLAGSTYLE));
+	ASSERT(pSV && CPrjDoc::m_pReviewDoc && CSegView::m_pMarkerDlg==NULL);
+	m_pDoc=CPrjDoc::m_pReviewDoc;
+	m_pSV=pSV;
+	if(Create(CMarkerDlg::IDD, pParent)) {
+		CSegView::m_pMarkerDlg=this;
+	}
 }
 
-void CMarkerDlg::UpdateFlagStyles(void)
+CMarkerDlg::~CMarkerDlg()
+{
+}
+
+BOOL CMarkerDlg::AreMapsActive()
+{
+	return CPrjDoc::m_pReviewDoc && CPrjDoc::m_pReviewDoc->UpdateMapViews(TRUE, M_TOGGLEFLAGS);
+}
+
+void CMarkerDlg::UpdateFlagStyles()
 {
 	NTA_FLAGTREE_REC rec;
 	
@@ -60,32 +76,37 @@ void CMarkerDlg::UpdateFlagStyles(void)
 void CMarkerDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CMarkerDlg)
 	DDX_Control(pDX, IDC_COLORFRM, m_rectSym);
 	DDX_Check(pDX, IDC_OVERLAP, m_bNoOverlap);
 	DDX_Check(pDX, IDC_HIDENOTES, m_bHideNotes);
-	//}}AFX_DATA_MAP
 	DDX_Control(pDX,IDC_FGCOLOR,m_colorbtn);
 	DDX_Control(pDX,IDC_BKGCOLOR,m_bkgndbtn);
+}
 
-	if(pDX->m_bSaveAndValidate && m_pFS) {
-		CSegView::m_iLastFlag=pLB(IDC_LISTFLAGS)->GetCaretIndex();
-		if(m_bChanged) UpdateFlagStyles();
+void CMarkerDlg::ApplyChange(BOOL bUpdate /*=TRUE*/)
+{
+	//bUpdate==FALSE only from OnOK() --
+	ASSERT(pSV && pSV==m_pSV);
+	if(pSV && pSV==m_pSV) {
+		m_bChanged=bUpdate;
+		UpdateData(0);
+		 //get data from controls
+		pSV->m_iLastFlag=pLB(IDC_LISTFLAGS)->GetCaretIndex();
+		UpdateFlagStyles();
 		m_markcolor=m_pFS[pixSEGHDR->numFlagNames].color;
 		m_markstyle=m_pFS[pixSEGHDR->numFlagNames].style;
+		pSV->m_iLastFlag=pLB(IDC_LISTFLAGS)->GetCaretIndex();
+		if(bUpdate) {
+			pSV->UpdateSymbols();
+			Enable(IDC_APPLY,TRUE);
+		}
 	}
 }
 
 BEGIN_MESSAGE_MAP(CMarkerDlg, CDialog)
-	//ON_REGISTERED_MESSAGE(WM_RETFOCUS,OnChgColor)
-    //ON_MESSAGE(CPN_SELENDOK,     OnSelEndOK)
-    //ON_MESSAGE(CPN_SELENDCANCEL, OnSelEndCancel)
-    ON_MESSAGE(CPN_SELCHANGE,    OnChgColor)
-    //ON_MESSAGE(CPN_CLOSEUP,      OnCloseUp)
-    //ON_MESSAGE(CPN_DROPDOWN,     OnDropDown)
+    ON_MESSAGE(CPN_SELCHANGE, OnChgColor)
 	ON_LBN_SELCHANGE(IDC_LISTFLAGS,OnFlagSelChg)
     ON_MESSAGE(WM_COMMANDHELP,OnCommandHelp)
-	//{{AFX_MSG_MAP(CMarkerDlg)
 	ON_WM_CTLCOLOR()
 	ON_WM_DESTROY()
 	ON_WM_PAINT()
@@ -103,8 +124,10 @@ BEGIN_MESSAGE_MAP(CMarkerDlg, CDialog)
 	ON_BN_CLICKED(IDC_MTRANSPARENT, OnTransparent)
 	ON_WM_VKEYTOITEM()
 	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
+	ON_BN_CLICKED(IDC_OVERLAP, OnOverlap)
+	ON_BN_CLICKED(IDC_HIDENOTES, OnHideNotes)
 	ON_BN_CLICKED(IDC_SETSELECTED, OnSetSelected)
-	//}}AFX_MSG_MAP
+	ON_BN_CLICKED(IDC_APPLY, OnApply)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -116,13 +139,10 @@ void CMarkerDlg::InitFlagNames(void)
 	UINT maxext=0;
 	NTA_FLAGTREE_REC rec;
 	BYTE key[TRX_MAX_KEYLEN+1];
-
 	
 	ASSERT(ixSEG.Opened());
 	ixSEG.UseTree(NTA_NOTETREE);
 	
-	m_pFS=(MK_FLAGSTYLE *)calloc(pixSEGHDR->numFlagNames+1,sizeof(MK_FLAGSTYLE));
-
 	if(m_pFS && pixSEGHDR->numFlagNames>0 && !ixSEG.First()) {
 		 UINT ext;
 		 CDC *pDC=plb->GetDC();
@@ -171,14 +191,16 @@ void CMarkerDlg::InitFlagNames(void)
 
 	//Now set up style for default markers, also specifying horizontal extent --
 	{
-	 MK_FLAGSTYLE *pFS=&m_pFS[pixSEGHDR->numFlagNames];
-	 pFS->flgidx=pFS->lstidx=pixSEGHDR->numFlagNames;
-	 pFS->color=CSegView::m_StyleHdr[HDR_MARKERS].MarkerColor();
-	 pFS->style=m_markstyle=CSegView::m_StyleHdr[HDR_MARKERS].seg_id;
-	 if(maxext) plb->SetHorizontalExtent(maxext);
-	 VERIFY(plb->AddString("{Station Markers}")>=0);
-	 ASSERT(plb->GetCount()==pixSEGHDR->numFlagNames+1);
+		MK_FLAGSTYLE *pFS=&m_pFS[pixSEGHDR->numFlagNames];
+		pFS->flgidx=pFS->lstidx=pixSEGHDR->numFlagNames;
+		pFS->color=m_markcolor=CSegView::m_StyleHdr[HDR_MARKERS].MarkerColor();
+		pFS->style=m_markstyle=CSegView::m_StyleHdr[HDR_MARKERS].seg_id;
+		if(maxext) plb->SetHorizontalExtent(maxext);
+		VERIFY(plb->AddString("{Station Markers}")>=0);
+		ASSERT(plb->GetCount()==pixSEGHDR->numFlagNames+1);
 	}
+
+	memcpy(m_pFS_sav, m_pFS, (pixSEGHDR->numFlagNames+1)*sizeof(MK_FLAGSTYLE));
 
 	ixSEG.UseTree(NTA_SEGTREE);
 }
@@ -186,8 +208,16 @@ void CMarkerDlg::InitFlagNames(void)
 BOOL CMarkerDlg::OnInitDialog() 
 {
     static int dlgfont_id[]={IDC_ST_FLAGLIST,IDC_ST_MARKERSTYLE,0};
+
+	ASSERT(CPrjDoc::m_pReviewNode);
+	CString csTitle,csBranch;
+	if(!CPrjDoc::m_pReviewNode->IsRoot()) {
+		csBranch.Format(": %s", CPrjDoc::m_pReviewNode->Title());
+	}
+	csTitle.Format("Flags and Markers - %s%s",CPrjDoc::m_pReviewDoc->Title(), (LPCSTR)csBranch);
+	SetWindowText(csTitle);
       
- 	CDialog::OnInitDialog();
+ 	CDialog::OnInitDialog(); //fill controls
 
 	pCV->GetReView()->SetFontsBold(GetSafeHwnd(),dlgfont_id);
 
@@ -196,9 +226,8 @@ BOOL CMarkerDlg::OnInitDialog()
 	//First, scan the flagname array --
 	InitFlagNames();
 
-	//m_colorbtn.SetCustomText(2); //default
-	//m_bkgndbtn.SetCustomText(2); //default
-	m_bkgndbtn.SetColor(m_bkgcolor=CSegView::m_StyleHdr[HDR_BKGND].LineColor());
+	m_markcolor=CSegView::MarkerColor();
+	m_bkgndbtn.SetColor(m_bkgcolor=m_bkgcolor_sav=CSegView::BackColor());
 
     ((CSpinButtonCtrl *)GetDlgItem(IDC_SPIN_MSIZE))->SetRange(0,255);
 
@@ -218,12 +247,10 @@ BOOL CMarkerDlg::OnInitDialog()
     VERIFY(m_hBmpOld=(HBITMAP)::SelectObject(m_dcBmp.m_hDC,m_cBmp.GetSafeHandle()));
     VERIFY(m_hBrushOld=(HBRUSH)::SelectObject(m_dcBmp.m_hDC,CSegView::m_hBrushBkg));
 
-	plb->SetCaretIndex(CSegView::m_iLastFlag,0); //Should be last flag selected
-	plb->SetSel(m_lastCaret=CSegView::m_iLastFlag);
+	plb->SetCaretIndex(m_pSV->m_iLastFlag,0); //Should be last flag selected
+	plb->SetSel(m_lastCaret=m_pSV->m_iLastFlag);
 
 	OnFlagSelChg();
-
-	m_bChanged=FALSE;
 
 	m_ToolTips.Create(this);
 	m_colorbtn.AddToolTip(&m_ToolTips);
@@ -252,7 +279,36 @@ void CMarkerDlg::OnDestroy()
     VERIFY(::SelectObject(m_dcBmp.GetSafeHdc(),m_hBrushOld));
     VERIFY(m_dcBmp.DeleteDC());
 	if(m_hbkbr) ::DeleteObject(m_hbkbr);
+	if(m_pFS_sav) free(m_pFS_sav);
 	if(m_pFS) free(m_pFS);
+	CSegView::m_pMarkerDlg=NULL;
+	delete this;
+}
+
+void CMarkerDlg::OnCancel()
+{
+	MK_FLAGSTYLE *pFS=m_pFS_sav;
+	m_pFS_sav=m_pFS;
+	m_pFS=pFS;
+	m_bkgcolor=m_bkgcolor_sav;
+	ApplyChange(TRUE); //need maps and control refreshed
+	DestroyWindow();
+}
+
+void CMarkerDlg::OnOK()
+{
+	ApplyChange(FALSE); //maps and control dynamically updated
+	DestroyWindow();
+}
+
+void CMarkerDlg::OnApply()
+{
+	ASSERT(m_bkgcolor==CSegView::BackColor());
+	memcpy(m_pFS_sav, m_pFS, (pixSEGHDR->numFlagNames+1)*sizeof(MK_FLAGSTYLE));
+	m_bkgcolor_sav=m_bkgcolor;
+	//ApplyChange(TRUE); //maps and control alread refreshed?
+	m_bChanged=FALSE;
+	Enable(IDC_APPLY,FALSE);
 }
 
 void CMarkerDlg::OnPaint() 
@@ -269,6 +325,31 @@ void CMarkerDlg::SetListItemColor(int i,COLORREF rgb)
 	M_SETCOLOR(*pClr,rgb);
 }
 
+void CMarkerDlg::UpdateBkgColor(COLORREF clr)
+{
+	if(m_bkgcolor!=clr) {
+		m_bkgndbtn.SetColor(clr);
+		if(m_hbkbr) ::DeleteObject(m_hbkbr);
+		m_hbkbr=::CreateSolidBrush(clr);
+		if(m_hbkbr) {
+			VERIFY(::SelectObject(m_dcBmp.m_hDC, m_hbkbr));
+			m_bkgcolor=clr;
+		}
+		DrawSymbol();
+	}
+}
+
+void CMarkerDlg::UpdateMarkerColor(COLORREF clr)
+{
+	SetListItemColor(pixSEGHDR->numFlagNames, m_markcolor=clr);
+	int jj=pLB(IDC_LISTFLAGS)->GetCaretIndex();
+	if(pixSEGHDR->numFlagNames==pLB(IDC_LISTFLAGS)->GetCaretIndex()) {
+		m_colorbtn.SetColor(clr);
+		m_colorbtn.Invalidate(FALSE);
+		DrawSymbol();
+	}
+}
+
 LRESULT CMarkerDlg::OnChgColor(WPARAM clr,LPARAM id)
 {
 	if(id==IDC_BKGCOLOR) {
@@ -283,9 +364,9 @@ LRESULT CMarkerDlg::OnChgColor(WPARAM clr,LPARAM id)
 		ASSERT(id==IDC_FGCOLOR);
 		int i=pLB(IDC_LISTFLAGS)->GetCaretIndex();
 		SetListItemColor(i,clr);
-		if(i!=pixSEGHDR->numFlagNames) m_bChanged=TRUE;
 	}
 	DrawSymbol();
+	ApplyChange();
 	return TRUE;
 }
 
@@ -401,7 +482,6 @@ void CMarkerDlg::ChangePriority(int dir)
 	CListBox *plb=pLB(IDC_LISTFLAGS);
 	int i=plb->GetCaretIndex();
 
-
 	if((dir<0 && i<=0) || (dir>0 && (i+2)>=plb->GetCount())) return;
 
 	ASSERT(m_pFS[m_pFS[i].flgidx].lstidx==i);
@@ -414,8 +494,6 @@ void CMarkerDlg::ChangePriority(int dir)
 	m_pFS[i].flgidx=m_pFS[i+dir].flgidx;
 	m_pFS[i+dir].flgidx=idxsav;
 
-	m_bChanged=TRUE;
-
 	CString cs;
 	plb->GetText(i,cs);
 	plb->SetRedraw(FALSE);
@@ -426,6 +504,7 @@ void CMarkerDlg::ChangePriority(int dir)
 	DeselectAllBut(i,i);
 	EnableButtons(i);
 	plb->SetFocus();
+	ApplyChange();
 }
 
 void CMarkerDlg::OnPriorUp() 
@@ -460,8 +539,8 @@ BOOL CMarkerDlg::SetFlagStyle(int iVal,int type)
 	}
 
 	m_pFS[m_pFS[i].flgidx].style=style;
-	if(i!=pixSEGHDR->numFlagNames) m_bChanged=TRUE;
 	DrawSymbol();
+	ApplyChange();
 	return TRUE;
 }
 
@@ -552,17 +631,8 @@ void CMarkerDlg::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDIS)
 	    pDC->ExtTextOut(rect.left,rect.top,ETO_OPAQUE,&rect,cs,NULL);
 	    if(lpDIS->itemState&ODS_FOCUS) pDC->DrawFocusRect(&rect);
  	}
-	//CDialog::OnDrawItem(nIDCtl, lpDrawItemStruct);
 }
-/*
-void CMarkerDlg::UpdateDisableButton(int i)
-{
-	BOOL bEnable=(i!=(int)pixSEGHDR->numFlagNames);
-	if(!bEnable) Enable(IDC_DISABLE,TRUE);
-	GetDlgItem(IDC_DISABLE)->SetWindowText((!bEnable||IsListItemEnabled(i))?"Hide":"Unhide");
-	Enable(IDC_DISABLE,bEnable);
-} 
-*/
+
 void CMarkerDlg::OnDisable() 
 {
     CListBox *plb=pLB(IDC_LISTFLAGS);
@@ -575,15 +645,14 @@ void CMarkerDlg::OnDisable()
 		}
 	}
 	if(bChg) {
-		m_bChanged=TRUE;
 		plb->Invalidate(FALSE); //Updates listbox? necessary?
 		Enable(IDC_DISABLE,FALSE);
 		Enable(IDC_ENABLE,TRUE);
+		ApplyChange();
 	}
 
 	plb->SetFocus();
 }
-
 
 void CMarkerDlg::OnEnable() 
 {
@@ -597,12 +666,26 @@ void CMarkerDlg::OnEnable()
 		}
 	}
 	if(bChg) {
-		m_bChanged=TRUE;
 		plb->Invalidate(FALSE); //Updates listbox? necessary?
 		Enable(IDC_DISABLE,TRUE);
 		Enable(IDC_ENABLE,FALSE);
+		ApplyChange();
 	}
 	plb->SetFocus();
+}
+
+void CMarkerDlg::OnOverlap()
+{
+	m_bNoOverlap=!m_bNoOverlap;
+	CSegView::SetNoOverlap(m_bNoOverlap);
+	ApplyChange();
+}
+
+void CMarkerDlg::OnHideNotes()
+{
+	m_bHideNotes=!m_bHideNotes;
+	CSegView::SetHideNotes(m_bHideNotes);
+	ApplyChange();
 }
 
 BOOL CMarkerDlg::PreTranslateMessage(MSG* pMsg) 
@@ -613,9 +696,9 @@ BOOL CMarkerDlg::PreTranslateMessage(MSG* pMsg)
 			int i=plb->GetCaretIndex();
 			if(i<plb->GetCount()-1) {
 				EnableListItem(i,!IsListItemEnabled(i));
-				m_bChanged=TRUE;
 				plb->Invalidate(FALSE); //Updates listbox? necessary?
 				EnableButtons(-1);
+				ApplyChange();
 			}
 			return TRUE;
 		}
@@ -642,12 +725,12 @@ int CMarkerDlg::OnVKeyToItem(UINT nKey, CListBox* pLB, UINT nIndex)
 	return -1; //default action
 }
 
-
 void CMarkerDlg::OnSetSelected() 
 {
     CListBox *plb=pLB(IDC_LISTFLAGS);
 	int i=plb->GetCaretIndex();
 	ASSERT(i>=0 && i<=(int)pixSEGHDR->numFlagNames);
+	BOOL bChg=0;
 
 	for(int j=plb->GetCount()-1;j>=0;j--) {
 		if(j!=i && plb->GetSel(j)) {
@@ -655,7 +738,10 @@ void CMarkerDlg::OnSetSelected()
 			M_SETHIDDEN(s,M_ISHIDDEN(m_pFS[m_pFS[j].flgidx].style));
 			m_pFS[m_pFS[j].flgidx].style=s;
 			m_pFS[m_pFS[j].flgidx].color=m_pFS[m_pFS[i].flgidx].color;
-			if(j!=pixSEGHDR->numFlagNames) m_bChanged=TRUE;
+			if(j!=pixSEGHDR->numFlagNames) bChg=1;
 		}
+	}
+	if(bChg) {
+		ApplyChange();
 	}
 }

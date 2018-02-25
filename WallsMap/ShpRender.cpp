@@ -842,7 +842,7 @@ int CShpLayer::CopyPolygonsToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,do
 
 				if (bLabeling) {
 					CPoint pt;
-					if (PolyCentroid((LPPOINT)&pt, (LPPOINT)&vPolyPt[0], (LPINT)&vPolyCnt[0], 1)) {
+					if (PolyCentroid((LPPOINT)&pt, (LPPOINT)&vPolyPt[0], (LPINT)&vPolyCnt[0], iLastPart)) {
 						if (clipRect.PtInRect(pt)) {
 							vLblPos.push_back(SHP_LBLPOS(pt, pp - ppoly + 1));
 						}

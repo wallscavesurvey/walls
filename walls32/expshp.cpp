@@ -24,7 +24,7 @@ CExportShp *pExpShp;
 bool bUseMag;
 
 static BOOL bCRF,bVersionNotChecked;
-static enum {TYP_SHP=0,TYP_CRF=1,TYP_SVG=2,TYP_SVGP=3};
+enum {TYP_SHP=0,TYP_CRF=1,TYP_SVG=2,TYP_SVGP=3};
 static int typ_shp;
 static HINSTANCE SVGhinst;
 
@@ -270,16 +270,20 @@ void CSegView::GetAttributeNames(int segid,char *buf,UINT bufsiz)
 
 	buf[0]=0;
 
+	bool bTitle;
+
 	while(pNode && pNode->m_pSeg) {
-		if(pNode->TitlePtr()) break;
+		//if(pNode->TitlePtr()) break;
+		bTitle=(pNode->TitlePtr()!=NULL);
 		l=strlen(strcpy(names,pNode->Name()));
 		(*names)&=0x7F;
 		if(buflen && buflen+l+3<bufsiz) {
-			strcat(names," / ");
+			if(*names) strcat(names," / ");
 			strcat(names,buf);
 		}
 		names[bufsiz-1]=0;
 		buflen=strlen(strcpy(buf,names));
+		if(bTitle) break;
 		pNode=pNode->Parent();
 	}
 }
@@ -1165,8 +1169,8 @@ int CSegView::ExportSVG(CExpSvgDlg *pDlg,SVG_VIEWFORMAT *psvg)
 			if(id_Orphans[1].cnt) s+=GetOrphanErrorMsg(s0,id_Orphans[1],pSvg->mrgpath2);
 
 			if(IDYES==CMsgBox((MB_YESNO|(e?MB_ICONEXCLAMATION:MB_ICONINFORMATION)),"%s\nWould you like to generate and open an error log?",(LPCSTR)s)) {
+				GetDocument()->InitLogPath(CPrjDoc::m_pReviewNode);
 				LPCSTR logpath=GetDocument()->LogPath();
-				_unlink(logpath);
 				FILE *flog=fopen(logpath,"w");
 				if(flog) {
 					fputs("SVG vectors not found in compilation of ",flog);
@@ -1207,11 +1211,6 @@ void CPrjDoc::ProcessSVG()
 	CPrjListNode *pSN;
 
 	if(!m_pReviewNode->IsProcessingSVG() || !(pSN=m_pReviewNode->FindFirstSVG())) return;
-
-	if(!theApp.m_bIsVersionNT) {
-		//AfxMessageBox(IDS_ERR_NTWNEEDSNT);
-		return;
-	}
 
 	LPFN_SVG_EXPORT pfnExport;
 	LPFN_ERRMSG pfnErrMsg;

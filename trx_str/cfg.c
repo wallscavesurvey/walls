@@ -122,6 +122,7 @@ BYTE	cfg_escchr='\\';
 BYTE	cfg_quotes=TRUE;
 BYTE    cfg_equals=TRUE;
 BYTE	cfg_skipempty=TRUE;
+BYTE    cfg_ignorecommas=FALSE;
 
 //Default: Require exact matches. Otherwise extra chars allowed --
 BYTE    cfg_noexact=FALSE;
@@ -274,7 +275,11 @@ TRXFCN_I cfg_GetArgv(PSTR pzBuffer,UINT uPrefix)
                       }
                       break;
                       
-          case ','  : *p=0;
+		  case ',':   if(cfg_ignorecommas) {
+                         p++;
+                         continue;
+ 		              }
+			          *p=0;
                       p=skipspc(++p);
                       /*two successive commas will insert a null token --*/
                       break;

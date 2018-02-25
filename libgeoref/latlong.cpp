@@ -1,6 +1,7 @@
 /*latlong.c -- part of gpslib.lib*/
 #include <georef.h>
 #include <assert.h>
+#include <float.h>
 
 /* define constants */
 static const double CONVERT  = 11930464.7111111111111;        /* 2^31 / 180 */
@@ -148,7 +149,7 @@ int geo_GetZone(const double &lat,const double &lon)
 	return zone;
 }
 
-void geo_UTM2LatLon(int zone, double x, double y,double *lat, double *lon, int datum)
+void geo_UTM2LatLon(int zone, double x, double y,double *lat, double *lon, int datum, double *conv /*=NULL*/)
 {
 	double lon0;
 	int southernHemisphere=0;
@@ -174,6 +175,16 @@ void geo_UTM2LatLon(int zone, double x, double y,double *lat, double *lon, int d
 //  }
 // else
 //    fromUPS(southernHemisphere, x, y, lat, lon);
+
+
+	if(southernHemisphere && *lat==0.0) {
+		if(conv) *conv=0.0;
+		*lat=-DBL_MIN; //dmck
+	}
+	else if(conv) {
+		*conv=sin(*lat*GEO_PI/180)*(*lon-lon0);
+	}
+
 }
 
 

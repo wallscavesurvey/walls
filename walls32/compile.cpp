@@ -6,13 +6,15 @@
 #include "ntfile.h"
 #include "dupdlg.h"
 #include "revframe.h"
+#include "mapframe.h"
+#include "Mapview.h"
 #include "compview.h"
 #include "plotview.h"
 #include "traview.h"
 #include "segview.h"
 #include "magdlg.h"
 #include "dialogs.h"
-
+#include "wall_emsg.h"
 #include <trxfile.h>
 #include <direct.h>
 
@@ -34,7 +36,6 @@ static bool bStrBridge[2];
 static bool bStrLowerc[2];
 static int srv_iSeg;
 static PRJREF *pREF;
-static FILE *fd_log;
 static short root_zone; //for UTM, zone of compiled item
 
 //For preserving old flag priorities during compilation --
@@ -48,6 +49,82 @@ static UINT net_nc;
 static WORD net_ni[2];
 static double net_ss[2];
 static bool bLogNames;
+
+#ifdef VISTA_INC
+//Used for measure tooltip in Plotview & Mapview --
+HWND CreateTrackingToolTip(HWND hWnd)
+{
+    // Create a tooltip.
+    HWND hwndTT = CreateWindowEx(WS_EX_TOPMOST, TOOLTIPS_CLASS, NULL, 
+                                 WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP, 
+                                 CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, 
+                                 hWnd, NULL, NULL, NULL);
+
+    if (!hwndTT)
+    {
+      return NULL;
+    }
+
+    // Set up the tool information. In this case, the "tool" is the entire parent window.
+    
+	g_toolItem.cbSize   = TTTOOLINFOA_V2_SIZE;
+    g_toolItem.uFlags   = TTF_IDISHWND | TTF_TRACK | TTF_ABSOLUTE;
+    g_toolItem.hwnd     = hWnd;
+    g_toolItem.hinst    = AfxGetInstanceHandle();
+    g_toolItem.lpszText = "0,0";
+    g_toolItem.uId      = (UINT_PTR)hWnd;
+    
+    GetClientRect (hWnd, &g_toolItem.rect);
+
+    // Associate the tooltip with the tool window.
+    
+    SendMessage(hwndTT, TTM_ADDTOOL, 0, (LPARAM) (LPTOOLINFO) &g_toolItem);	
+    
+    return hwndTT;
+}
+
+void DestroyTrackingTT()
+{
+	if(g_hwndTrackingTT) {
+		::SendMessage(g_hwndTrackingTT,TTM_TRACKACTIVATE, (WPARAM)FALSE, (LPARAM)&g_toolItem);
+		::DestroyWindow(g_hwndTrackingTT);
+		g_hwndTrackingTT = NULL;
+	}
+}
+
+#endif
+
+void GetDistanceFormat(CString &s,BOOL bProfile,bool bFeetUnits, bool bConvert)
+{
+	int dec=1;
+	bool bFeetDisp=bConvert?!bFeetUnits:bFeetUnits;
+
+	double dy=dpCoordinate.y-dpCoordinateMeasure.y;
+	if(bConvert) dy *= (bFeetUnits?0.3048:(1/0.3048));
+	LPCSTR pu=bFeetDisp?"ft":"m";
+
+	if(bProfile) {
+		if(dy<10) dec++; else if(dy>=1000) dec--;
+		s.Format("%.*f %s elev chg", dec, dy, pu);
+	}
+	else {
+		double dx=dpCoordinate.x-dpCoordinateMeasure.x;
+		if(bConvert) dx *= (bFeetUnits?0.3048:(1/0.3048));
+		double az=atan2(dx,dy)*(180.0/3.141592653589793);
+		if(az<0.0) az+=360.0;
+		dx=sqrt(dx*dx+dy*dy);
+		if(bFeetDisp) {
+			if(dx>5280.0) {
+				dx/=5280.0; pu="mi";
+			}
+		}
+		else if(dx>1000.0) {
+			dx/=1000.0; pu="km";
+		}
+		if(dx<10) dec++; else if(dx>=1000) dec--;
+		s.Format("%.*f %s %.1f°",dec,dx,pu,az);
+	}
+}
 
 CNETData::CNETData(int nFiles)
 {
@@ -91,12 +168,8 @@ int CPrjDoc::InitCompView(CPrjListNode *pNode)
         TRY {
 	        ASSERT(!dbNTN.Opened() && !dbNTS.Opened());
 	 		CRevFrame* pNewFrame = (CRevFrame *)CWallsApp::m_pRevTemplate->CreateNewFrame(this, NULL);
-			if (pNewFrame == NULL) {
-			  m_pReviewNode=NULL;
-			  m_pReviewDoc=NULL;
-			  m_bPageActive=FALSE;
-			  return -1;
-			}
+			if (pNewFrame == NULL) goto _err;
+
 			ASSERT(pNewFrame->IsKindOf(RUNTIME_CLASS(CRevFrame)));
 	        m_pReviewNode=pNode;
 	        m_pReviewDoc=this;
@@ -110,16 +183,23 @@ int CPrjDoc::InitCompView(CPrjListNode *pNode)
 			ASSERT(pCV->IsKindOf(RUNTIME_CLASS(CCompView)));
 		}
 		CATCH(CMemoryException,e) {
-			CMsgBox(MB_ICONEXCLAMATION,IDS_ERR_MEMORY);
+			goto _err;
 		}
 		END_CATCH
     }
     return 0;
+
+_err:
+	CMsgBox(MB_ICONEXCLAMATION, IDS_ERR_MEMORY);
+	m_pReviewNode=NULL;
+	m_pReviewDoc=NULL;
+	m_bPageActive=FALSE;
+	return -1;
 }
 
 static LPBYTE PASCAL get_name_key(LPBYTE name,const LPBYTE namarr,DWORD pfx)
 {
-    //Retrieve pascal-type string from blank-extended field --
+    //Retrieve pascal-type string from blank-extended field -- store up to NTV_SIZNAME+3 bytes
     LPBYTE p=name+1;
     if(pfx) {
       *p++=(BYTE)(0x80|(pfx>>8));
@@ -193,16 +273,10 @@ static int NEAR PASCAL AddNames(vectyp *pVec)
   return AddName(&pVec->id[1],pVec->pfx[1],pVec->nam[1],dwFixed);
 }
 
-static int log_write(LPCSTR lpStr)
-{
-	if(!fd_log) fd_log=fopen(CPrjDoc::m_pReviewDoc->LogPath(),"w");
-	return (!fd_log || EOF==fputs(lpStr,fd_log));
-}
-
 static int NEAR PASCAL CheckNames(vectyp *pVec)
 {
 	int e,off2;
-	BYTE dblname[2*NTV_SIZNAME+4];
+	BYTE dblname[2*NTV_SIZNAME+8]; //was +4
 	
 	if(e=AddNames(pVec)) return e;
 	
@@ -214,13 +288,14 @@ static int NEAR PASCAL CheckNames(vectyp *pVec)
 	
 	if(!n0) n0=pVec->pfx[1]<pVec->pfx[0];
 	else n0=n0<0;
-	
+
+	//store up to NTV_SIZNAME+3 bytes at dblname+1, with dblname[1] as large as NTV_SIZNAME+2
 	get_name_key(dblname+1,(LPBYTE)pVec->nam[n0],pVec->pfx[n0]);
-	off2=dblname[1]+2;
+	off2=dblname[1]+2; //offset of second name prefix byte
 	dblname[1]=0;
 	get_name_key(dblname+off2,(LPBYTE)pVec->nam[1-n0],pVec->pfx[1-n0]);
 	*dblname=off2+dblname[off2];
-	dblname[off2]=0;
+	dblname[off2]=0; //dblname = <2*NTV_SIZNAME+4+2)<0><nn><abcdefgh><0><nn><abcdefgh>
 	
     if(e=pixNAM->InsertKey(&numvectors,dblname)) {
       if(e!=CTRXFile::ErrDup) return IDS_ERR_TRXBUILD;
@@ -249,10 +324,6 @@ static int NEAR PASCAL CheckNames(vectyp *pVec)
 	  if(!bLogNames) {
 		CDupDlg dlg(&loc[0],&loc[1]);
 		if((e=dlg.DoModal())==IDOK || e==IDCANCEL) {
-			//if(e==IDCANCEL) {
-				//pAddNames=AddNames;
-			//}
-			//return 0;
 			bLogNames=(e==IDCANCEL);
 			e=0;
 		}
@@ -265,13 +336,15 @@ static int NEAR PASCAL CheckNames(vectyp *pVec)
 			  loc[1].File,loc[1].nLine,
 			  loc[0].pName,loc[1].pName,
 			  loc[0].File,loc[0].nLine);
-		  log_write(cs);
+		  CPrjDoc::m_pLogDoc->log_write(cs);
 		  return 0;
 	  }
 
-	  if(!e) return 0;
+	  if(!e) return 0; //continue
 
+	  /* No longer allowing this option
       if(e>IDABORT) {
+		  //open file(s) for editing
 	      CPrjDoc::m_pErrorNode=pBranch->FindName(loc[0].File);
 	      CPrjDoc::m_pErrorNode2=pBranch->FindName(loc[1].File);
 	      e=(CPrjDoc::m_pErrorNode==CPrjDoc::m_pErrorNode2 && loc[0].nLine>loc[1].nLine)?1:0;
@@ -279,6 +352,9 @@ static int NEAR PASCAL CheckNames(vectyp *pVec)
 		  CPrjDoc::m_nCharStart=0;
 		  CPrjDoc::m_nLineStart2=(LINENO)loc[1-e].nLine;
 	  }
+	  */
+	  ASSERT(e==IDABORT);
+
       return SRV_ERR_DISPLAYED;
     }
     
@@ -349,7 +425,7 @@ int CPrjDoc::OpenWork(PPVOID pRecPtr,CDBFile *pDB,CPrjListNode *pNode,int typ)
 	if((e=pDB->Open(pathName,CDBFile::ReadWrite)) || !pDB->Cache() &&
 	    	(e=pDB->AllocCache(NTV_BUFRECS*pDB->SizRec(),NTV_NUMBUFS,TRUE))) {
 	    if(e==CDBFile::ErrName) CMsgBox(MB_ICONEXCLAMATION,IDS_ERR_MEMORY);
-	    else CMsgBox(MB_ICONEXCLAMATION,"%Fs:  %s",pDB->Errstr(e),pathName);
+	    else CMsgBox(MB_ICONEXCLAMATION,"%s:  %s",pDB->Errstr(e),pathName);
 	    if(pDB->Opened()) pDB->Close();
 	    return FALSE;
 	}
@@ -693,7 +769,7 @@ static void Mag_ErrMsg()
 		(LPCSTR)rootZoneStr,(LPCSTR)rootDatum);
 }
 
-int PASCAL srv_CB(int fcn_id,LPSTR lpStr)
+static int PASCAL srv_CB(int fcn_id,LPSTR lpStr)
 {
 	int e=0;
 	static NTA_NOTETREE_REC rec;
@@ -904,7 +980,7 @@ int PASCAL srv_CB(int fcn_id,LPSTR lpStr)
 
 		case FCN_ERROR:
 		{
-			return log_write(lpStr);
+			return CPrjDoc::m_pLogDoc->log_write(lpStr);
 		}
 
 	} /*switch*/
@@ -918,12 +994,6 @@ int CPrjDoc::CompileBranch(CPrjListNode *pNode,int iSeg)
 {
    if(!pNode->m_dwFileChk) return 0; //always the case with Other nodes
 
-#ifdef _DEBUG
-   if(pNode->IsOther()) {
-	   ASSERT(FALSE);
-   }
-#endif
-   
    //Initialize SegRec/SegBuf and obtain SegBuf insertion point (>=1) for new segments.
    if((iSeg=InitSegmentPath(pNode,iSeg))<0) return -1; 
      
@@ -967,7 +1037,6 @@ int CPrjDoc::CompileBranch(CPrjListNode *pNode,int iSeg)
 		pNTV->grid=0.0;
 	 }
 
-	 pNTV->flag=SRV_VERSION;  //Allow DLL to confirmversion number
      int e=srv_Open(SurveyPath(pNode),pNTV,srv_CB);
      
      if(e) {
@@ -1079,7 +1148,7 @@ static int PASCAL WriteNTN(char *pathName)
 _errdel:
     db.CloseDel();
 _error:
-    CMsgBox(MB_ICONEXCLAMATION,"%Fs:  %s",db.Errstr(e),pathName);
+    CMsgBox(MB_ICONEXCLAMATION,"%s:  %s",db.Errstr(e),pathName);
     return -1;
 }
 
@@ -1106,7 +1175,7 @@ _retry:
 	}
 	  
 	if(e) {
-      CMsgBox(MB_ICONEXCLAMATION,"%Fs:  %s",dbNTV.Errstr(e),pathName);
+      CMsgBox(MB_ICONEXCLAMATION,"%s:  %s",dbNTV.Errstr(e),pathName);
 	  return FALSE;
 	}
 	
@@ -1144,6 +1213,46 @@ int PASCAL net_CB(int typ)
   }
   
   return 0;
+}
+
+void CPrjDoc::InitLogPath(CPrjListNode *pNode)
+{
+	m_fplog=NULL;
+	m_pLogDoc=this;
+	m_pNodeLog=pNode;
+	CMainFrame::CloseLineDoc(LogPath(), TRUE);
+	_unlink(m_pPath);
+}
+
+int CPrjDoc::log_write(LPCSTR lpStr)
+{
+	if(!m_fplog) m_fplog=fopen(LogPath(), "w");
+	return (!m_fplog || EOF==fputs(lpStr, m_fplog));
+}
+
+void CPrjDoc::ClearDefaultViews(CPrjListNode *pNode)
+{
+	CTRXFile xOSEG;     //Branch node's original NTA file (segment index)
+	SEGHDR *pSH;
+
+	ASSERT(pNode);
+	if(m_pReviewNode==pNode) {
+		pSH=pixSEGHDR;
+	}
+	else {
+		if(xOSEG.Open(WorkPath(pNode, TYP_NTA), CTRXFile::ReadWrite))
+			return;
+		pSH=(SEGHDR *)xOSEG.ExtraPtr();
+	}
+
+	for(int i=0; i<=1; i++) {
+		pSH->vf[i].iComponent=pSH->vf[i].bActive=0;
+	}
+
+	if(xOSEG.Opened()) {
+		xOSEG.MarkExtra();
+		xOSEG.Close();
+	}
 }
 
 int CPrjDoc::Compile(CPrjListNode *pNode)
@@ -1184,14 +1293,39 @@ int CPrjDoc::Compile(CPrjListNode *pNode)
       Review(pNode);
 	  return -1;
 	}
-	
+
 	//Close any workfiles already open. Any failure beyond this point
 	//will require closing the CReView/CCompView dialogs with pCV->Close() --
-	
-	if(InitCompView(pNode)) return -1;
+
+	if(m_pMapFrame) {
+	    //Remove from list frames displaying data for pNode
+
+		CMapFrame *pf;
+		while(pf=FrameNodeExists(pNode)) {
+			pf->RemoveThis();
+			pf->m_pDoc=NULL;
+		}
+
+		UpdateAllViews(0, LHINT_CLOSEMAP,(CObject *)pNode); //Close map frames displaying data for m_pReviewNode
+		#ifdef _DEBUG
+		for(pf=m_pMapFrame; pf; pf=pf->m_pNext) {
+			if(pf->m_pDoc!=this || pf->m_pFrameNode==pNode) {
+				ASSERT(0);
+			}
+		}
+		#endif
+	}
+
+	ASSERT(!m_pMapFrame || m_pMapFrame->m_pFrameNode!=pNode);
+
+	if(InitCompView(pNode)) //Initializes m_pReviewNode
+		return -1;
+
+	pPV->Enable(IDC_UPDATEFRAME,FrameNodeExists(pNode)!=NULL);
+
 	pCV->ShowAbort(TRUE);
 
-    //We will overwrite any existing workfile, so we start with an
+	//We will overwrite any existing workfile, so we start with an
     //empty checksum --
     
   	pNode->m_dwWorkChk=0;
@@ -1323,7 +1457,8 @@ int CPrjDoc::Compile(CPrjListNode *pNode)
     
     numfiles=numvectors=numnames=numvectors0=0;
     fTotalLength=fTotalLength0=0.0;
-    m_pErrorNode=m_pErrorNode2=NULL;                           
+	m_pErrorNode=NULL;
+    //m_pErrorNode=m_pErrorNode2=NULL;                           
     
     ASSERT(pCV);
 
@@ -1346,10 +1481,11 @@ int CPrjDoc::Compile(CPrjListNode *pNode)
 	//pNTV->root_datum=255 indicates to wallsrv.dll that UTM is NOT being generated.
 	//The individual files may have their own references for decl generation
 	
-	fd_log=NULL;
-	_unlink(LogPath());
+	InitLogPath(m_pReviewNode);
+
 	e=CompileBranch(pNode,0); //This is the biggie!
-	if(fd_log) fclose(fd_log);
+
+	if(m_fplog) fclose(m_fplog);
 
 	ASSERT_PLNODE(pNode);
 	
@@ -1421,7 +1557,7 @@ int CPrjDoc::Compile(CPrjListNode *pNode)
 				}
 			}
 			else {
-				if(!fd_log) ::MessageBeep(MB_ICONASTERISK);
+				if(!m_fplog) ::MessageBeep(MB_ICONASTERISK);
 				//Write a review file --
 				e=WriteNTN(WorkPath(pNode,TYP_NTN));
 			}
@@ -1453,8 +1589,12 @@ int CPrjDoc::Compile(CPrjListNode *pNode)
 
 	if(pCV) pCV->PostMessage(WM_COMMAND,ID_COMPLETED);
 	
-    //~CNETData() frees pNET --
-	return fd_log!=NULL;
+	if(m_fplog) {
+		if(IDYES==CMsgBox(MB_YESNO,IDS_PRJ_ERRORLOG)) {
+			LaunchFile(m_pReviewNode,CPrjDoc::TYP_LOG);
+		}
+	}
+	return 0;
 }
 
 static void get_uvestr5(char *buf,double uve)
@@ -1543,7 +1683,7 @@ void CPrjDoc::Review(CPrjListNode *pNode)
 	pNet=(netptr)dbNTN.RecPtr();
 	numvectors=0;
 	fTotalLength=0.0;
-	
+	pCV->m_iBaseNameCount=0;
 	e=dbNTN.First();
 	while(!e) {
 	   ASSERT(pCV);
@@ -1558,11 +1698,12 @@ void CPrjDoc::Review(CPrjListNode *pNode)
 	   }
 	   e=dbNTN.Next();
 	}
-	ASSERT(pCV);
 	pCV->SetTotals(numvectors,fTotalLength);
 	pCV->SendMessage(WM_COMMAND,ID_COMPLETED);
 	m_bReviewing=FALSE;
 	EndWaitCursor();
+
+	pPV->Enable(IDC_UPDATEFRAME, FrameNodeExists(pNode)!=NULL);
 }
 
 //#define XSMALL 0.0000000000001 (fails for house.prj)
@@ -1712,27 +1853,6 @@ static __inline int getLinkID(int linkID)
 	while(linkID>0) linkID=piFRG[linkID-1];
 	return -linkID;
 }
-
-/*
-static __inline int getNextLinkFrag(int s)
-{
-	VERIFY(s=piFRG[s]);
-	return (s<0)?piLNK[-s-1]:s-1;
-}
-
-BOOL CPrjDoc::IsLinkFlagged(int frgID,int flag)
-{
-	//Assumes fragment s is not flagged --
-	for(int s=frgID;(s=getNextLinkFrag(s))!=frgID;) {
-		if(dbNTS.Go(piSTR[s])) {
-			ASSERT(FALSE);
-			return FALSE; //Assume no segments floated
-		}
-		if(pSTR->flag&flag) return TRUE;
-	}
-	return FALSE;
-}
-*/
 
 static apfcn_v SetSegment(int linkID)
 {
@@ -2182,6 +2302,8 @@ int CPrjDoc::SetNetwork(int iNet)
 		else iNet=pvf[iNet].iComponent;
 	}
 	
+	free(CCompView::m_pNamTyp);
+	CCompView::m_pNamTyp=NULL;
 	nSTR=nSYS=nLNKS=nFRGS=0;
 	
 	if(iNet<=0) iNet=1;
@@ -2197,7 +2319,9 @@ int CPrjDoc::SetNetwork(int iNet)
 	}
 
 	nSYS=pNTN->num_sys;
-	nSTR=pNTN->str_id2-pNTN->str_id1+1;
+	nSTR_1=pNTN->str_id1;
+	nSTR_2=pNTN->str_id2;
+	nSTR=nSTR_2-nSTR_1+1;
 		  
 	int sRec=nSYS+1+3*nSTR;
 	  
@@ -2226,7 +2350,7 @@ int CPrjDoc::SetNetwork(int iNet)
 	int sys_id=-2;  //Start with invalid system ID
 	int sys_id_recs=-2;
 		  
-	for(sRec=pNTN->str_id1;sRec<=pNTN->str_id2;sRec++) {
+	for(sRec=nSTR_1;sRec<=nSTR_2;sRec++) {
 	    if(!GoWorkFile(&dbNTS,sRec)) {
 	       return -1;
 	    }
@@ -2678,10 +2802,11 @@ void CPrjDoc::LocateOnMap()
 {
 	//Assumes pPLT is positioned at vector that was found --
 	DWORD rec=dbNTP.Position();
-	BOOL bNewComponent=(pCV->GoToComponent()>1);
+	//BOOL bNewComponent=(pCV->GoToComponent()>1);
+	pCV->GoToComponent();
 	UINT iTab=pCV->GetReView()->GetTabIndex();
 	if(iTab!=TAB_PLOT) pCV->GetReView()->switchTab(TAB_PLOT);
-	else if(bNewComponent) pCV->PlotTraverse(0);
+	//else if(bNewComponent) pCV->PlotTraverse(0);
 	//rec is the vector's TO station in dbNTP --
 	//What if this is an explicit search, such as "T1 <REF>" --
 	if(!m_iFindVectorDir) rec--;

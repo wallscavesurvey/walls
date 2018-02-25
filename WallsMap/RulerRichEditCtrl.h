@@ -10,6 +10,7 @@
 #include "ids.h"
 
 class CTableFillDlg;
+class CEditImageDlg;
 
 /////////////////////////////////////////////////////////////////////////////
 // Helper structs
@@ -71,7 +72,8 @@ public:
 // Construction/creation/destruction
 	CRulerRichEditCtrl();
 	virtual ~CRulerRichEditCtrl();
-	virtual BOOL Create( DWORD dwStyle, const RECT &rect, CWnd* pParentWnd, UINT nID, const CLogFont *pFont,COLORREF clrTxt);
+	virtual BOOL Create( DWORD dwStyle, const RECT &rect, CWnd* pParentWnd,
+		UINT nID, const CLogFont *pFont, COLORREF clrTxt);
 
 // Attributes
 	//Set mode to use, MODE_INCH or MODE_METRIC (default)
@@ -97,7 +99,8 @@ public:
 
 // Implementation
 
-	CTableFillDlg *m_pTableFillDlg;
+	CDialog *m_pParentDlg;
+	UINT m_idContext;
 
 	CString GetRTF();
 	void GetRTF(CString *pStr);

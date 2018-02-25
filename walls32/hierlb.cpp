@@ -393,6 +393,7 @@ END_MESSAGE_MAP()
 CHierListBox::CHierListBox(BOOL lines, WORD offset/*=16*/, WORD rootOffset/*=0*/)
 {
     m_pRoot = NULL;
+	m_bRefresh=0;
 	m_bLines = lines;
 	m_Offset = offset;
 	m_RootOffset = rootOffset;
@@ -787,10 +788,30 @@ void CHierListBox::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 
 		int indent = m_RootOffset+m_Offset*node->m_Level;
 
-		lpDIS->rcItem.left += indent;
-
 		if(selChange || drawEntire)
 		{
+			if(m_bRefresh) {
+				m_bRefresh=0;
+				if(!selChange) {
+					RECT rc;
+					GetWindowRect(&rc);
+					rc.right-=rc.left; rc.left=0;
+					rc.bottom-=rc.top; rc.top=0;
+					::FillRect(lpDIS->hDC, &rc, (HBRUSH)::GetStockObject(LTGRAY_BRUSH));
+					/*
+					SCROLLBARINFO sbi;
+					sbi.cbSize=sizeof(SCROLLBARINFO);
+					::GetScrollBarInfo(m_hWnd, OBJID_VSCROLL, &sbi);
+					if(0==(sbi.rgstate[0]&(STATE_SYSTEM_OFFSCREEN|STATE_SYSTEM_INVISIBLE))) {
+						rc.left=rc.right; rc.right+=sbi.rcScrollBar.right-sbi.rcScrollBar.left;
+						InvalidateRect(&rc,1);
+					}
+					*/
+				}
+			}
+
+			lpDIS->rcItem.left += indent;
+
 			if(m_bLines)
 				DrawLines(node,pDC,&lpDIS->rcItem );
 
@@ -805,10 +826,13 @@ void CHierListBox::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 			// derived class can finish things off
  			CListBoxExDrawStruct ds( pDC,&lpDIS->rcItem, sel,(DWORD)(LPVOID)node,lpDIS->itemID,m_pResources);
 			DrawItemEx( ds );
+			lpDIS->rcItem.left -= indent;
 		}
 
-		if( focusChange || (drawEntire && (lpDIS->itemState&ODS_FOCUS)) )
+		if( focusChange || (drawEntire && (lpDIS->itemState&ODS_FOCUS)) ) {
+			lpDIS->rcItem.left += indent;
 			pDC->DrawFocusRect(&lpDIS->rcItem);
+		}
 	}
 }
 

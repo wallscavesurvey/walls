@@ -48,9 +48,6 @@
     <ClCompile Include="DbtEditDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dbtfile.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DIBWrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -303,9 +300,6 @@
     <ClCompile Include="WebMapFmtDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InfoEditDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DlgSymbolsImg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -400,6 +394,9 @@
       <Filter>Resource Files</Filter>
     </ClCompile>
     <ClCompile Include="TableReplDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dbtfile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -670,9 +667,6 @@
     </ClInclude>
     <ClInclude Include="WebMapFmtDlg.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InfoEditDlg.h">
-      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="DlgSymbolsImg.h">
       <Filter>Header Files</Filter>

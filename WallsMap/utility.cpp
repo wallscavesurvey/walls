@@ -311,6 +311,7 @@ BOOL DoPromptPathName(CString& pathName,DWORD lFlags,
 	dlgFile.m_ofn.lpstrFile = namebuf;
 	dlgFile.m_ofn.nMaxFile = _MAX_PATH;
 	if(defExt) dlgFile.m_ofn.lpstrDefExt = defExt+1;
+	//dlgFile.m_ofn.FlagsEx= OFN_EX_NOPLACESBAR;
 
 	if(dlgFile.DoModal() == IDOK) {
 		pathName=namebuf;
@@ -702,7 +703,7 @@ static int get_latlon(double &fdeg,int i0,int imax,bool bFirst)
 	char buf[42];
 	LPSTR p,p0;
 	int ityp;
-	static char ctyp[3]={(BYTE)0xB0,'\'','\"'};
+	static char ctyp[3]={(char)0xB0,'\'','\"'};
 	int iRet=1;
 
 	if(imax-i0>1) {
@@ -810,13 +811,32 @@ static int get_latlon(double &fdeg,int i0,int imax,bool bFirst)
 	return iRet;
 }
 
+bool ElimSlash(CString &s)
+{
+	int iE,iN;
+	s.MakeUpper();
+
+	if((iE=s.Find(" E"))>0 && isdigit(s[iE-1]) && (iN=s.Find(" N"))>0 && isdigit(s[iN-1])) {
+		s.SetAt(iE, 'E');
+		s.SetAt(iE+1,' ');
+		s.SetAt(iN, 'N');
+		s.SetAt(iN+1,' ');
+	}
+	iE=s.Find('/');
+	if(iE>=0) {
+		s.SetAt(iE,' ');
+		if(s.Find('/')>=0) return false;
+	}
+	return true;
+}
+
 int CheckCoordinatePair(CString &csSrc,bool &bUtm,double *pf0,double *pf1)
 {
 	//return 0 (error), 1 normal order, -1 reversed order
 
 	if(csSrc.GetLength()>42) return 0;
 
-	csSrc.MakeUpper();
+	if(!ElimSlash(csSrc)) return 0;
 
 	cfg_quotes=FALSE;
 	int i=cfg_GetArgv((LPSTR)(LPCSTR)csSrc,CFG_PARSE_ALL);
@@ -827,9 +847,9 @@ int CheckCoordinatePair(CString &csSrc,bool &bUtm,double *pf0,double *pf1)
 	LPSTR p0=cfg_argv[0],p1=cfg_argv[1];
 	double f0,f1;
 	int iret=0;
+	char c0,c1;
 
 	//check for UTM with 'E' and 'N' suffixes --
-	char c0,c1;
 	if(i==1 && ((c0=p0[strlen(p0)-1])=='E' || c0=='N') && ((c1=p1[strlen(p1)-1])=='N' || c1=='E')) {
 		if(c0==c1) return 0;
 		*strrchr(p0,c0)=0; *strrchr(p1,c1)=0;
@@ -844,6 +864,7 @@ int CheckCoordinatePair(CString &csSrc,bool &bUtm,double *pf0,double *pf1)
 		if(!iret || (iret*get_latlon(f1,i,i+i,false)!=1)) return 0;
 		bUtm=false;
 	}
+
 
 	if(!iret) {
 		//two numeric arguments, proper order assumed
@@ -865,6 +886,7 @@ bool GetCoordinate(CString &csSrc,double &fCoord,bool bFirst,bool bUtm)
 {
 	if(bUtm) {
 		int i=csSrc.GetLength()-1;
+		if(i<=0) return false;
 		if(toupper(csSrc[i])==(bFirst?'E':'N'))
 			csSrc.Truncate(i);
 	}
@@ -1389,7 +1411,7 @@ LPCSTR GetMediaTyp(LPCSTR sPath,BOOL *pbLocal /*=NULL*/)
 	static LPCSTR MediaTyp[]={
 		".png",".jpg",".jpeg",".tif",".tiff",".nti",".ai",".avi",".doc",".docx",".flv",".gmw",
 		".kml",".m4v",".mp4",".mpg",".ntl",".pdf",".qgs",".rtf",".shp",".svg",".svgz",
-		".tt6",".wmv",".wpj"};
+		".tt6",".wmv",".wpj",".htm",".html"};
 	#define NUM_MEDIATYP (sizeof(MediaTyp)/sizeof(LPCSTR))
 	#define NUM_LOCALTYP 6
 

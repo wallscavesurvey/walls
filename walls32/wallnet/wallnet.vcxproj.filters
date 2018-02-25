@@ -6,22 +6,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\netlib.h">
+    <ClInclude Include="wnetlib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\wnetlib.h">
+    <ClInclude Include="netlib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\wnetadj.c" />
-    <ClCompile Include="..\wnetdbf.c" />
-    <ClCompile Include="..\wnetdfs.c" />
-    <ClCompile Include="..\wneterr.c" />
-    <ClCompile Include="..\wnetinv.c" />
-    <ClCompile Include="..\wnetlnk.cpp" />
-    <ClCompile Include="..\wnetnet.c" />
-    <ClCompile Include="..\wnetslv.c" />
-    <ClCompile Include="..\wnetupd.c" />
+    <ClCompile Include="wnetadj.c" />
+    <ClCompile Include="wnetdbf.c" />
+    <ClCompile Include="wnetdfs.c" />
+    <ClCompile Include="wneterr.c" />
+    <ClCompile Include="wnetinv.c" />
+    <ClCompile Include="wnetlnk.cpp" />
+    <ClCompile Include="wnetnet.c" />
+    <ClCompile Include="wnetslv.c" />
+    <ClCompile Include="wnetupd.c" />
   </ItemGroup>
 </Project>

@@ -68,7 +68,6 @@ protected:
 	HBRUSH m_hBrushOld;   // Handle of old brush to save
 	HPEN m_hPenOld;       // Handle of old pen to save
 	BOOL m_bCursorInBmp,m_bTracking;
-	DPOINT m_Coordinate;
 
 // Operations
 public:

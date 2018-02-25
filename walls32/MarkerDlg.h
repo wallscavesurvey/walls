@@ -24,25 +24,34 @@ typedef struct {
 
 class CMarkerDlg : public CDialog
 {
-// Construction
+	//DECLARE_DYNAMIC(CMarkerDlg)
+
 public:
 	CMarkerDlg(CWnd* pParent = NULL);   // standard constructor
+	virtual ~CMarkerDlg();
+	virtual void OnCancel();
+	virtual void OnOK();
 
-// Dialog Data
-	//{{AFX_DATA(CMarkerDlg)
+	CPrjDoc *m_pDoc;
+	CSegView *m_pSV;
+
 	enum { IDD = IDD_MARKERDLG };
 	CStatic	m_rectSym;
 	BOOL	m_bNoOverlap;
-	BOOL	m_bHideNotes;
-	//}}AFX_DATA
-
-	COLORREF m_bkgcolor,m_markcolor;
-	HBRUSH m_hbkbr;
-	BOOL m_bChanged;
+    BOOL	m_bHideNotes;
+	COLORREF m_bkgcolor,m_bkgcolor_sav;
+	COLORREF m_markcolor;
 	WORD m_markstyle;
 
+	HBRUSH m_hbkbr;
+	BOOL m_bChanged;
+
+	BOOL AreMapsActive();
+	void UpdateBkgColor(COLORREF clr);
+	void UpdateMarkerColor(COLORREF clr);
+
 private:
-	MK_FLAGSTYLE *m_pFS;
+	MK_FLAGSTYLE *m_pFS, *m_pFS_sav;
 	CToolTipCtrl m_ToolTips;
 	CColorCombo m_colorbtn;
 	CColorCombo m_bkgndbtn;
@@ -55,9 +64,9 @@ private:
 	HBRUSH m_hBrushOld;   // Handle of old brush to save
 	int m_lastCaret;
 
-	void DrawSymbol(void);
-	void InitFlagNames(void);
-	void UpdateFlagStyles(void);
+	void DrawSymbol();
+	void InitFlagNames();
+	void UpdateFlagStyles();
 	BOOL SetFlagStyle(int iVal,int type);
 	void ChangePriority(int dir);
 	BOOL CheckSizeCtrl();
@@ -65,7 +74,9 @@ private:
 	//void UpdateDisableButton(int i);
 	void Enable(UINT id,BOOL bEnable) {GetDlgItem(id)->EnableWindow(bEnable);}
 	void DeselectAllBut(int p,int s);
-	void SelectRange(int i,int j);
+	//void SelectRange(int i,int j);
+
+	void ApplyChange(BOOL bUpdate=TRUE);
 
 	BOOL IsListItemEnabled(int i)
 	{
@@ -96,22 +107,15 @@ private:
 
 	void SetListItemColor(int i,COLORREF rgb);
 
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMarkerDlg)
-	public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+	virtual BOOL OnInitDialog();
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
 
-protected:
-    afx_msg void OnFlagSelChg();
+	afx_msg void OnApply();
+	afx_msg void OnFlagSelChg();
 	afx_msg LRESULT OnChgColor(WPARAM,LPARAM);
     afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 
-	// Generated message map functions
-	//{{AFX_MSG(CMarkerDlg)
-	virtual BOOL OnInitDialog();
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnDestroy();
 	afx_msg void OnPaint();
@@ -129,8 +133,11 @@ protected:
 	afx_msg void OnTransparent();
 	afx_msg int OnVKeyToItem(UINT nKey, CListBox* pListBox, UINT nIndex);
 	afx_msg void OnEnable();
+	afx_msg void OnOverlap();
+	afx_msg void OnHideNotes();
 	afx_msg void OnSetSelected();
-	//}}AFX_MSG
+	//afx_msg void OnBnClickedApply();
+
 	DECLARE_MESSAGE_MAP()
 };
 

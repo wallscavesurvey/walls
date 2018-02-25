@@ -692,7 +692,6 @@ void CItemGeneral::OnBrowse()
 		strcpy(pathbuf,Path);
 	}
 
-
 	Sheet()->m_pDoc->GetRelativePathName(pathbuf,Sheet()->m_pNode->Parent());
 
 	p=trx_Stpnam(pathbuf);
@@ -772,7 +771,7 @@ void CItemGeneral::UpdateSizeDate(char *pathbuf)
 
 	if(bReadOnly) {
 		long filesize;
-		struct tm *ptm;
+		SYSTEMTIME *ptm;
 		if(!m_szPath.IsEmpty()) {
 		   if(m_ePath.m_bAbsolute) strcpy(pathbuf,m_szPath);
 		   else strcat(pathbuf,m_szPath);
@@ -814,7 +813,7 @@ void CItemGeneral::UpdateGenCtrls(void)
 	Enable(IDC_DEFINESEG,!pNode->IsRoot());
 
 	Sheet()->m_pDoc->GetPathPrefix(pathbuf,pNode->Parent());
-	GetDlgItem(IDC_PATHPREFIX)->SetWindowText(pathbuf);
+	GetDlgItem(IDC_PATHPREFIX)->SetWindowText(TrimPath(CString(pathbuf),50));
 	m_ePath.OnChange();
 
 	UpdateSizeDate(pathbuf);
@@ -1175,7 +1174,7 @@ CItemOptions::CItemOptions() : CItemPage(CItemOptions::IDD)
 BOOL CItemOptions::OnInitDialog() 
 {
 	CItemPage::OnInitDialog();
-	//Enable(IDC_SVG_PROCESS,theApp.m_bIsVersionNT && !Sheet()->m_pNode->IsLeaf());
+	//Enable(IDC_SVG_PROCESS,!Sheet()->m_pNode->IsLeaf());
     m_idLastFocus=IDC_OPTIONS;
 	//((CEdit *)GetDlgItem(m_idLastFocus))->SetSel(0,-1);
 	
@@ -1188,7 +1187,7 @@ void CItemOptions::Init(CItemProp *pSheet)
 	m_szOptions = pNode->m_Options;
 
 	UINT flags=pSheet->m_uFlags;
-	m_bSVG_process = theApp.m_bIsVersionNT && (flags&FLG_SVG_PROCESS)!=0;
+	m_bSVG_process = (flags&FLG_SVG_PROCESS)!=0;
 	m_bPreserveLength = pNode->InheritedState(FLG_VTLENMASK);
 	m_bPreserveVertical = pNode->InheritedState(FLG_VTVERTMASK);
 	m_iNorthEast = pNode->InheritedView();
@@ -1270,7 +1269,7 @@ void CItemOptions::DoDataExchange(CDataExchange* pDX)
 			Enable(IDC_PRESERVE_LENGTH,bIsRoot || !m_bInheritLength);
 			Enable(IDC_PRESERVE_VERTICAL,bIsRoot || !m_bInheritVertical);
 			EnableView(bIsRoot || !m_bInheritView);
-			Enable(IDC_SVG_PROCESS,theApp.m_bIsVersionNT && !Sheet()->m_pNode->IsLeaf());
+			Enable(IDC_SVG_PROCESS,!Sheet()->m_pNode->IsLeaf());
 		}
 	}
 }

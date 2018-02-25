@@ -2,29 +2,23 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{6716908f-7cd2-4cfe-b3df-b303cd57c669}</UniqueIdentifier>
-      <Extensions>cpp;c;cxx;rc;def;r;odl;hpj;bat;for;f90</Extensions>
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{02545f8e-11f9-4e0c-a7c4-ff2707f482a6}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;fi;fd</Extensions>
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="Resource Files">
-      <UniqueIdentifier>{0c646db8-d0f0-4499-a937-322186129052}</UniqueIdentifier>
-      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe</Extensions>
-    </Filter>
-    <Filter Include="Data Files">
-      <UniqueIdentifier>{330ca048-d393-4785-923c-466413365ba1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\src_geo">
-      <UniqueIdentifier>{1fa64813-8b7d-4f53-bc56-04f24987659c}</UniqueIdentifier>
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="3dconfig.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Aboutdlg.cpp">
+    <ClCompile Include="aboutdlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Buttonb.cpp">
@@ -39,13 +33,16 @@
     <ClCompile Include="Compile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Compview.cpp">
+    <ClCompile Include="compview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="copyfile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Dialogs.cpp">
+    <ClCompile Include="datum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dialogs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DirDialog.cpp">
@@ -54,13 +51,13 @@
     <ClCompile Include="DisCombo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Dragdrop.cpp">
+    <ClCompile Include="dragdrop.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Dupdlg.cpp">
+    <ClCompile Include="dupdlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Editdlg.cpp">
+    <ClCompile Include="editdlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EditHistory.cpp">
@@ -90,7 +87,7 @@
     <ClCompile Include="Filecfg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Ftracker.cpp">
+    <ClCompile Include="ftracker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GpsInDlg.cpp">
@@ -114,19 +111,19 @@
     <ClCompile Include="Griddlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Hierlb.cpp">
+    <ClCompile Include="hierlb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Htbutton.cpp">
+    <ClCompile Include="htbutton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="hull2d.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Impdlg.cpp">
+    <ClCompile Include="ItemProp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ItemProp.cpp">
+    <ClCompile Include="latlong.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="launchfd.cpp">
@@ -135,7 +132,7 @@
     <ClCompile Include="Linedoc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Lineview.cpp">
+    <ClCompile Include="lineview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="LinkEdit.cpp">
@@ -150,7 +147,7 @@
     <ClCompile Include="lrudshp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Lstboxex.cpp">
+    <ClCompile Include="lstboxex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MagDlg.cpp">
@@ -177,7 +174,7 @@
     <ClCompile Include="netfind.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Ntfile.cpp">
+    <ClCompile Include="ntfile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PageOffDlg.cpp">
@@ -186,7 +183,7 @@
     <ClCompile Include="PageView.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Panelvw.cpp">
+    <ClCompile Include="panelvw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Picture.cpp">
@@ -201,31 +198,34 @@
     <ClCompile Include="Plotview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Pltfind.cpp">
+    <ClCompile Include="pltfind.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Prjdoc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Prjfind.cpp">
+    <ClCompile Include="prjfind.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Prjfont.cpp">
+    <ClCompile Include="prjfont.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Prjframe.cpp">
+    <ClCompile Include="prjframe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Prjhier.cpp">
+    <ClCompile Include="prjhier.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Prjview.cpp">
+    <ClCompile Include="prjview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ResizeFrmDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Revframe.cpp">
+    <ClCompile Include="RessourceButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="revframe.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Review.cpp">
@@ -234,22 +234,22 @@
     <ClCompile Include="ROCombo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Seghier.cpp">
+    <ClCompile Include="seghier.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Seglist.cpp">
+    <ClCompile Include="seglist.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Segview.cpp">
+    <ClCompile Include="segview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Statdlg.cpp">
+    <ClCompile Include="statdlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="StatLink.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Stdafx.cpp">
+    <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SvgAdv.cpp">
@@ -258,7 +258,7 @@
     <ClCompile Include="SvgProc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tabarray.cpp">
+    <ClCompile Include="tabarray.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TabCombo.cpp">
@@ -267,25 +267,31 @@
     <ClCompile Include="TabEdit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tabview.cpp">
+    <ClCompile Include="tabview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TipDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="tm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Traview.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VC90_Libs\trckrect_VC90_new.cpp">
+    <ClCompile Include="txtfrm.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Txtfrm.cpp">
+    <ClCompile Include="ups.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Utility.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Vecdlg.cpp">
+    <ClCompile Include="utm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vecdlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VecInfo.cpp">
@@ -297,80 +303,84 @@
     <ClCompile Include="vnode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Walls.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Wedview.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ZipDlg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="wallzip.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="zip.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\geographiclib\src\PolarStereographic.cpp">
-      <Filter>Source Files\src_geo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\geographiclib\src\TransverseMercator.cpp">
-      <Filter>Source Files\src_geo</Filter>
-    </ClCompile>
-    <ClCompile Include="..\geographiclib\src\UTMUPS.cpp">
-      <Filter>Source Files\src_geo</Filter>
-    </ClCompile>
-    <ClCompile Include="wallmag.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RessourceButton.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VC11_Libs\trckrect_VC11_new.cpp">
+    <ClCompile Include="wall-srv.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="wall-wrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Walls.rc">
+    <ClCompile Include="wallmag.cpp">
       <Filter>Source Files</Filter>
-    </ResourceCompile>
+    </ClCompile>
+    <ClCompile Include="Walls.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="wallzip.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Wedview.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="zip.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ZipDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImpSefDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImpCssDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScaleWnd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3dconfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Aboutdlg.h">
+    <ClInclude Include="aboutdlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Buttonb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="colors.h">
+    <ClInclude Include="ColorButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorPopup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Compile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Compview.h">
+    <ClInclude Include="compview.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="copyfile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Dialogs.h">
+    <ClInclude Include="dialogs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Dragdrop.h">
+    <ClInclude Include="DirDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Dupdlg.h">
+    <ClInclude Include="DisCombo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Editdlg.h">
+    <ClInclude Include="dragdrop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="dupdlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="editdlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EditHistory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ExpavDlg.h">
@@ -385,13 +395,13 @@
     <ClInclude Include="ExpSvgDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Filebuf.h">
+    <ClInclude Include="filebuf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Filecfg.h">
+    <ClInclude Include="filecfg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Ftracker.h">
+    <ClInclude Include="ftracker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GpsInDlg.h">
@@ -409,28 +419,25 @@
     <ClInclude Include="GradientCtrlImpl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Griddlg.h">
+    <ClInclude Include="griddlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Hierlb.h">
+    <ClInclude Include="hierlb.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Htbutton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Impdlg.h">
+    <ClInclude Include="htbutton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ItemProp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LaunchFindDlg.h">
+    <ClInclude Include="Launchfd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Linedoc.h">
+    <ClInclude Include="linedoc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Lineview.h">
+    <ClInclude Include="lineview.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="LinkEdit.h">
@@ -442,7 +449,7 @@
     <ClInclude Include="LrudDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Lstboxex.h">
+    <ClInclude Include="lstboxex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MagDlg.h">
@@ -451,13 +458,13 @@
     <ClInclude Include="Mainfrm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Mapdlg.h">
+    <ClInclude Include="mapdlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MapExp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Mapframe.h">
+    <ClInclude Include="mapframe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Mapview.h">
@@ -466,10 +473,10 @@
     <ClInclude Include="MarkerDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Netlib.h">
+    <ClInclude Include="netfind.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Ntfile.h">
+    <ClInclude Include="ntfile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PageOffDlg.h">
@@ -478,34 +485,34 @@
     <ClInclude Include="PageView.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Panelvw.h">
+    <ClInclude Include="panelvw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Picture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Plotview.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Pltfind.h">
+    <ClInclude Include="pltfind.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Prjdoc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="prjfile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Prjfind.h">
+    <ClInclude Include="prjfind.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="prjfont.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Prjframe.h">
+    <ClInclude Include="prjframe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Prjhier.h">
+    <ClInclude Include="prjhier.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Prjview.h">
+    <ClInclude Include="prjview.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ResizeFrmDlg.h">
@@ -514,19 +521,25 @@
     <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Revframe.h">
+    <ClInclude Include="ResourceButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Review.h">
+    <ClInclude Include="revframe.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Seghier.h">
+    <ClInclude Include="review.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Segview.h">
+    <ClInclude Include="ROCombo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Statdlg.h">
+    <ClInclude Include="seghier.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="segview.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="statdlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StatLink.h">
@@ -541,168 +554,185 @@
     <ClInclude Include="SvgProc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tabarray.h">
+    <ClInclude Include="tabarray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TabCombo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TabEdit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tabview.h">
+    <ClInclude Include="tabview.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TipDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Traview.h">
+    <ClInclude Include="traview.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TravList.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Trxfile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Txtfrm.h">
+    <ClInclude Include="txtfrm.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="utility.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Vecdlg.h">
+    <ClInclude Include="vecdlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VecInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Viewdlg.h">
+    <ClInclude Include="viewdlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="vnode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Wall_srv.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Wall_wrl.h">
+    <ClInclude Include="wallmag.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Walls.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Wedview.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ZipDlg.h">
+    <ClInclude Include="wedview.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="zip.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="wallmag.h">
+    <ClInclude Include="ZipDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ResourceButton.h">
+    <ClInclude Include="ImpSefDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImpCssDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScaleWnd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wall-srv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="wall_srv.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\bg.jpg">
+    <ResourceCompile Include="Walls.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\bg.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\comptyp.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\hand.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\icon1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\idr_srvt.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\litebulb.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\magdlg.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\magdlg.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\maptype.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\marble.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\marble.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\prjtype.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\rotate.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\toolbar.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\UTM_UPS_Buttons.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\walls.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\hiericon.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\toolbar1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\bmp00001.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\scalebar.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\copy.cur">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="RES\COMPTYP.ICO">
+    <None Include="res\copy_mul.cur">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="RES\COPY.CUR">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="RES\COPY_MUL.CUR">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="RES\COPY_SIN.CUR">
+    <None Include="res\copy_sin.cur">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="res\cursor1.cur">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="HIERICON.BMP">
+    <None Include="res\cursor2.cur">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="res\icon1.ico">
+    <None Include="res\hand.cur">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="res\identify.cur">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="RES\IDR_SRVT.ICO">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\litebulb.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\magdlg.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\magdlg.ico">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="RES\MAPTYPE.ICO">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\marble.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\marble.jpg">
+    <None Include="res\Link.cur">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="res\measure.cur">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="RES\MOVE.CUR">
+    <None Include="res\move.cur">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="RES\MOVE_MUL.CUR">
+    <None Include="res\move_mul.cur">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="RES\MOVE_SIN.CUR">
+    <None Include="res\move_sin.cur">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="RES\NODROP.CUR">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="RES\PRJTYPE.ICO">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="RES\ROTATE.BMP">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="RES\TOOLBAR.BMP">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="res\toolbar1.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="RES\WALLS.ICO">
+    <None Include="res\nodrop.cur">
       <Filter>Resource Files</Filter>
     </None>
     <None Include="res\walls.rc2">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\..\walls2b7\Readme32.txt">
-      <Filter>Data Files</Filter>
-    </None>
-    <None Include="igrf.bin">
+    <None Include="res\igrf.bin">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="res\UTM_UPS_Buttons.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuildStep Include="..\..\walls2b7\projects\Tutorial\C Bend.prj">
-      <Filter>Data Files</Filter>
-    </CustomBuildStep>
-    <CustomBuildStep Include="..\bin\Examples\Texas Towns\pop_names.prj">
-      <Filter>Data Files</Filter>
-    </CustomBuildStep>
   </ItemGroup>
 </Project>

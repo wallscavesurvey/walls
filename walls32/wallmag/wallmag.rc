@@ -1,2 +1,0 @@
-#define ID_MODELDATA 100
-ID_MODELDATA            RCDATA  MOVEABLE PURE   "igrf.bin"

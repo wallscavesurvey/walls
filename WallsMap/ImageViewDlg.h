@@ -95,7 +95,8 @@ public:
 
 	LPSTR GetTooltipText(int col,UINT code);
 	void Destroy();
- 	void OnDrop();
+	static void NoDropMsg(CShpLayer *pShp);
+	void OnDrop();
 	void MoveSelected(int nDragIndex,int nDropIndex);
 
 
@@ -169,7 +170,6 @@ private:
 	void ClearImageData();
 	void WaitForThread();
 	void TerminateThread();
-	void NoDropMsg();
 	BOOL InitImageData();
 	void InitThumbnails();
 	bool ImageFound(LPCSTR path);

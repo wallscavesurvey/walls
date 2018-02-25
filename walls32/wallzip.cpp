@@ -116,7 +116,7 @@ static LPCSTR make_prj_temp(char * prjNewPath,LPCSTR pPath)
 					*pathBuf=0;
 					build_path(pathBuf,pathstack);
 					if(*pathBuf && fix_absolute_path(pathBuf,pPath))
-						prjNew.WriteArgv(".%s\t%s\n",prjtypes[PRJ_CFG_PATH-1],pathBuf);
+						prjNew.WriteArgv(".%s\t%s\r\n",prjtypes[PRJ_CFG_PATH-1],pathBuf);
 				}
 
 				switch(typ) {
@@ -155,15 +155,15 @@ static LPCSTR make_prj_temp(char * prjNewPath,LPCSTR pPath)
 									build_path(pathBuf,pathstack);
 								}
 								if(fix_absolute_path(pathBuf,pPath)) {
-									prjNew.WriteArgv(".%s\t%s\n",prjOld.Argv(0),pathBuf);
+									prjNew.WriteArgv(".%s\t%s\r\n",prjOld.Argv(0),pathBuf);
 								}
 							}
 						}
 						continue;
 
 				}
-				if(typ>0) prjNew.WriteArgv(".%s\t%s\n",prjOld.Argv(0),prjOld.Argv(1));
-				else prjNew.WriteArgv("%s\n",prjOld.LineBuffer());
+				if(typ>0) prjNew.WriteArgv(".%s\t%s\r\n",prjOld.Argv(0),prjOld.Argv(1));
+				else prjNew.WriteArgv("%s\r\n",prjOld.LineBuffer());
 			}
 			ASSERT(pathstack.empty());
 			prjNew.Close();

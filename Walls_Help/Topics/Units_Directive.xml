@@ -23,6 +23,6 @@
     <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Instrument_Corrections" styleclass="Normal" translate="true">Instrument Corrections (INCA=, INCV=, etc.)</link></para>
     <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Backsight_Types" styleclass="Normal" translate="true">Backsight Types and Tolerances (TYPEAB=, TYPEVB=)</link></para>
     <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Saving_and_Restoring" styleclass="Normal" translate="true">Saving and Restoring Units Settings (RESET, SAVE, RESTORE)</link></para>
-    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Seldom_Used" styleclass="Normal" translate="true">Advanced or Seldom Used Parameters  (LRUD=, CASE=, PREFIX=, TAPE=, UV=, FLAG=, $name=)</link></para>
+    <para style="margin-left:27px;"><link displaytype="text" defaultstyle="true" type="topiclink" href="Seldom_Used" styleclass="Normal" translate="true">Advanced or Seldom Used Parameters  (LRUD=, CASE=, PREFIX=, TAPE=, UV=, FLAG=, NOTE=, $name=)</link></para>
   </body>
 </topic>

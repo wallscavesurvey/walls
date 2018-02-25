@@ -82,9 +82,11 @@ void CWallsMapApp::ParseCommandLine0(CCommandLineInfo& rCmdInfo)
 		{
 			// remove flag specifier
 			++pszParam;
-			if(!strcmp(pszParam,"TS_OPT")) {
+			if(!strcmp(pszParam,"TS_OPT") || !strcmp(pszParam,"TS_OPT-ON")) {
 				//CMsgBox("OK!");
 				bTS_OPT=true;
+				if(pszParam[6]=='-')
+					bIgnoreEditTS=true;
 				continue;
 			}
 			bFlag = TRUE;
@@ -318,6 +320,16 @@ BOOL CWallsMapApp::InitInstance()
 		free((void*)m_pszHelpFilePath);
 		m_pszHelpFilePath = _tcsdup(strHelpFile);
 		m_eHelpType = afxHTMLHelp; //New requirement as indicated be wincore.cpp assert!
+
+		m_csUrlPath.SetString(m_pszHelpFilePath,trx_Stpnam(m_pszHelpFilePath)-m_pszHelpFilePath);
+		strHelpFile.Replace(".chm","*.url");
+		WIN32_FIND_DATA fd;
+		HANDLE h=::FindFirstFile(strHelpFile, &fd);
+		if(h!=INVALID_HANDLE_VALUE) {
+			m_csUrlPath+=fd.cFileName;
+			::FindClose(h);
+		}
+		else m_csUrlPath.Empty();
 	}
 	//CMsgBox("version=%x",wOSVersion);
 

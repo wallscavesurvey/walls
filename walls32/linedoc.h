@@ -76,20 +76,11 @@ public:
     UINT m_EditFlags;
             
     CLineDoc *m_pNextLineDoc;
-    
-    //Nonzero if m_pszFrameTitle should be initialized upon construction --
-    static const char *m_pszInitFrameTitle;
-    static const char *m_pszInitIconTitle;
-    
+        
     //Points to a frame title character array of length m_lenFrameTitle.
     //There is space for SIZ_FRAMETITLE_SFX extra characters --
-    char *m_pszFrameTitle;
-    int m_lenFrameTitle;
-    
-    char *m_pszIconTitle;
-    int m_lenIconTitle;
-    
-	enum {SIZ_FRAMETITLE_SFX=6}; //space for "*:nn"    
+    CString m_csFrameTitle;
+	int m_lenFrameTitle;
     static BOOL m_bNewEmptyFile;
     
     enum {FILE_SRV=1,FILE_LST=2};
@@ -110,7 +101,6 @@ protected:
 private:
     //Set in the constructor (disabled when m_pszFrameTitle processing is expected by caller) --
     //BOOL m_bEnableFileSaveAs; 
-	void InitFrameTitles();
     void MarkDocTitle(BOOL bChg);
 	BOOL BlockAlloc(UINT size);
 	void BlockReduce(UINT size);

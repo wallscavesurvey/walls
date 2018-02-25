@@ -54,22 +54,33 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "RES\\WALLS.ICO"
+
 IDR_PRJTYPE             ICON                    "RES\\PRJTYPE.ICO"
+
 IDR_SRVTYPE             ICON                    "RES\\IDR_SRVT.ICO"
+
 IDR_COMPTYPE            ICON                    "RES\\COMPTYP.ICO"
+
 IDR_MAPTYPE             ICON                    "RES\\MAPTYPE.ICO"
+
 IDI_MAGDLG              ICON                    "res\\magdlg.ico"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
 // Bitmap
 //
 
-IDR_LISTICONS           BITMAP                  "HIERICON.BMP"
+IDR_LISTICONS           BITMAP                  "res\\hiericon.bmp"
+
 IDB_ROTATE              BITMAP                  "RES\\ROTATE.BMP"
+
 IDB_LIGHTBULB           BITMAP                  "res\\litebulb.bmp"
-IDR_MAINFRAME           BITMAP                  "res\\toolbar1.bmp"
+
 IDB_UTM_UPS             BITMAP                  "res\\UTM_UPS_Buttons.bmp"
+
+IDR_MAINFRAME           BITMAP                  "res\\toolbar1.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -80,14 +91,16 @@ IDR_MAINFRAME MENU
 BEGIN
     POPUP "&File"
     BEGIN
-        MENUITEM "&New Project...",             ID_PROJECT_NEW
-        MENUITEM "New Survey",                  ID_SURVEY_NEW
         MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM "&New Project...",             ID_PROJECT_NEW
+        POPUP "Import "
+        BEGIN
+            MENUITEM "Compass MAK or DAT file...",  ID_IMPORT_CSS
+            MENUITEM "Data from GPS receiver...",   ID_GPS_DOWNLOAD
+            MENUITEM "SEF data file...",            ID_IMPORT_SEF
+        END
         MENUITEM SEPARATOR
         MENUITEM "Printer Setup...",            ID_FILE_PRINT_SETUP
-        MENUITEM SEPARATOR
-        MENUITEM "&Download GPS Data...",       ID_GPS_DOWNLOAD
-        MENUITEM "&Import SEF Project...",      ID_IMPORT
         MENUITEM SEPARATOR
         MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
         MENUITEM "E&xit",                       ID_APP_EXIT
@@ -122,9 +135,21 @@ IDR_SRVTYPE MENU
 BEGIN
     POPUP "&File"
     BEGIN
-        MENUITEM "&New Project",                ID_PROJECT_NEW
-        MENUITEM "New &Text File",              ID_SURVEY_NEW
         MENUITEM "&Open...\tCtrl+O",            ID_FILE_OPEN
+        MENUITEM "&New Project",                ID_PROJECT_NEW
+        POPUP "Import "
+        BEGIN
+            MENUITEM "Compass MAK or DAT file...",  ID_IMPORT_CSS
+            MENUITEM "Data from GPS receiver...",   ID_GPS_DOWNLOAD
+            MENUITEM "SEF data file...",            ID_IMPORT_SEF
+        END
+        POPUP "Export"
+        BEGIN
+            MENUITEM "Map as SV&G file...",         ID_SVG_EXPORT
+            MENUITEM "Map as 3D model (&VRML)...",  ID_EXPORT3D
+            MENUITEM "Map as &Metafile...",         ID_MAP_EXPORT
+            MENUITEM "&Data in branch as SEF file...", ID_PRJ_EXPORTITEM
+        END
         MENUITEM SEPARATOR
         MENUITEM "&Save",                       ID_FILE_SAVE
         MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
@@ -132,16 +157,9 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "Create/Send project &ZIP file...", ID_ZIPBACKUP
         MENUITEM "Station and Vector &Reports...", ID_LAUNCHLST
-        MENUITEM "Export map as SV&G file...",  ID_SVG_EXPORT
-        MENUITEM "Export map as &Metafile...",  ID_MAP_EXPORT
-        MENUITEM "Export 3D model (VRML)...",   ID_EXPORT3D
-        MENUITEM SEPARATOR
-        MENUITEM "&Download GPS Data...",       ID_GPS_DOWNLOAD
-        MENUITEM "&Import SEF project...",      ID_IMPORT
-        MENUITEM "&Export branch as SEF...",    ID_PRJ_EXPORTITEM
         MENUITEM SEPARATOR
         MENUITEM "&Print Map...",               ID_FILE_PRINT
-        MENUITEM "Print Preview",               ID_FILE_PRINT_PREVIEW, GRAYED
+        MENUITEM "Print Preview",               ID_FILE_PRINT_PREVIEW
         MENUITEM "Printer Setup...",            ID_FILE_PRINT_SETUP
         MENUITEM SEPARATOR
         MENUITEM "Launch 3D &Viewer",           ID_LAUNCH3D
@@ -150,7 +168,7 @@ BEGIN
         MENUITEM "Open last coordinate report", ID_LAUNCHLST
         MENUITEM "Open last FS/BS error log",   ID_LAUNCHLOG
         MENUITEM SEPARATOR
-        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1, GRAYED
+        MENUITEM "Recent File",                 ID_FILE_MRU_FILE1
         MENUITEM SEPARATOR
         MENUITEM "E&xit",                       ID_APP_EXIT
     END
@@ -240,10 +258,13 @@ BEGIN
             MENUITEM "Vector highlighting...",      ID_VECLIMITS
             MENUITEM "&Project settings...",        ID_PRJSETTINGS
         END
+        POPUP "Map format options"
+        BEGIN
+            MENUITEM "&Screen maps...",             ID_DISPLAYOPTIONS
+            MENUITEM "&Printed and SVG maps...",    ID_PRINTOPTIONS
+            MENUITEM "&Exported metafiles...",      ID_EXPORTOPTIONS
+        END
         MENUITEM SEPARATOR
-        MENUITEM "&Screen maps...",             ID_DISPLAYOPTIONS
-        MENUITEM "&Printed and SVG maps...",    ID_PRINTOPTIONS
-        MENUITEM "&Exported metafiles...",      ID_EXPORTOPTIONS
         MENUITEM "Flag and &Marker symbols...", ID_MARKERSTYLE
         MENUITEM "Passage &Display options...", IDC_LRUDSTYLE
         MENUITEM SEPARATOR
@@ -252,7 +273,6 @@ BEGIN
     END
     POPUP "&Window"
     BEGIN
-        MENUITEM "&New Window",                 ID_WINDOW_NEW
         MENUITEM "&Cascade",                    ID_WINDOW_CASCADE
         MENUITEM "Tile &Vertically",            ID_WINDOW_TILE_VERT
         MENUITEM "Tile &Horizontally",          ID_WINDOW_TILE_HORZ
@@ -290,6 +310,13 @@ BEGIN
         MENUITEM "Purge &Branch workfiles",     ID_PURGEBRANCH
         MENUITEM "Remove branch\tDEL",          ID_EDIT_DELETE
         MENUITEM SEPARATOR
+        POPUP "Export"
+        BEGIN
+            MENUITEM "Map as SV&G file...",         ID_SVG_EXPORT
+            MENUITEM "Map as 3D model (&VRML)...",  ID_EXPORT3D
+            MENUITEM "Map as &Metafile...",         ID_MAP_EXPORT
+            MENUITEM "&Data in branch as SEF file...", ID_PRJ_EXPORTITEM
+        END
         POPUP "&Sort visible items in branch"
         BEGIN
             MENUITEM "&Increasing labels",          ID_SORTBRANCH
@@ -324,10 +351,10 @@ BEGIN
     BEGIN
         MENUITEM "Zoom In\tLeftDrg",            ID_MAP_ZOOMIN
         MENUITEM "Zoom Out",                    ID_MAP_ZOOMOUT
-        MENUITEM "Original View",               ID_MAP_ORIGINAL
+        MENUITEM "Home to Preview Map",         ID_MAP_ORIGINAL
         MENUITEM "Center/Refresh\tDblClk",      ID_MAP_CENTER
-        MENUITEM "Resize map frame...",         ID_RESIZEMAPFRAME
         MENUITEM SEPARATOR
+        MENUITEM "Set Initial Frame Size...",   ID_RESIZEMAPFRAME
         MENUITEM "Measure Distances",           ID_MEASUREDIST
         MENUITEM SEPARATOR
         MENUITEM "Show Elevations",             ID_MAP_ELEVATIONS
@@ -381,7 +408,8 @@ BEGIN
         MENUITEM "Find next\tF3",               ID_FIND_NEXT
         MENUITEM SEPARATOR
         MENUITEM "Locate vector on map",        ID_LOCATEONMAP
-        MENUITEM "Review statistics",           ID_LOCATEINGEOM
+        MENUITEM "Locate in geometry",          ID_LOCATEINGEOM
+        MENUITEM "View segment",                ID_REVIEWSEG
         MENUITEM "Vector properties...",        ID_VECTORINFO
         MENUITEM SEPARATOR
         MENUITEM "Reverse names",               ID_EDIT_REVERSE
@@ -420,7 +448,7 @@ IDR_GEOM_CONTEXT MENU
 BEGIN
     POPUP "Popup"
     BEGIN
-        MENUITEM "Find vector in statistics...\tCtrl+F", ID_EDIT_FIND
+        MENUITEM "Find vector in geometry...\tCtrl+F", ID_EDIT_FIND
         MENUITEM "Find next\tF3",               ID_FIND_NEXT
     END
 END
@@ -439,8 +467,18 @@ BEGIN
     POPUP "Popup"
     BEGIN
         MENUITEM "Edit",                        ID_GO_EDIT
-        MENUITEM "Review statistics",           ID_LOCATEINGEOM
+        MENUITEM "View statistics",             ID_LOCATEINGEOM
+        MENUITEM "View segment",                ID_REVIEWSEG
         MENUITEM "Vector properties...",        ID_VECTORINFO
+    END
+END
+
+IDR_SCALE_CONTEXT MENU
+BEGIN
+    POPUP ""
+    BEGIN
+        MENUITEM "Meters / Kilometers",         ID_SCALEUNITS_METERS
+        MENUITEM "Feet / Miles",                ID_SCALEUNITS_FEET
     END
 END
 
@@ -495,7 +533,7 @@ BEGIN
     PUSHBUTTON      "Change Link",IDC_UPDATELINK,111,91,55,12
     DEFPUSHBUTTON   "OK",IDOK,173,91,55,12
     ICON            IDR_MAINFRAME,IDC_STATIC,7,14,20,20
-    CTEXT           "\nWALLS Project Editor -- Version 2.0\nBuild 2015-01-12\nCopyright © 2015 by David McKenzie (davidmck@austin.rr.com)",IDC_STATIC,32,7,219,38,SS_SUNKEN
+    CTEXT           "\nWALLS Project Editor -- Version 2.0\nBuild 2016-11-18\nCopyright © 2016 by David McKenzie (davidmck@austin.rr.com)",IDC_STATIC,32,7,219,38,SS_SUNKEN
     LTEXT           "This version of Walls may be freely distributed. Click on the link below\nto obtain information on new releases and related software.",IDC_STATIC,19,52,238,18,NOT WS_GROUP
     LTEXT           "http://texasspeleologicalsurvey.org/software/walls/tsswalls.php",IDC_WALLSURL,19,73,248,11
 END
@@ -548,14 +586,13 @@ STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSME
 CAPTION "Duplicate Name Pair :  %s  %s"
 FONT 8, "Arial", 0, 0, 0x0
 BEGIN
-    PUSHBUTTON      "Continue",IDOK,15,82,50,14
-    PUSHBUTTON      "Log Dups",IDCANCEL,72,82,50,14
+    PUSHBUTTON      "Continue",IDOK,41,83,50,14
+    PUSHBUTTON      "Log Dups",IDCANCEL,98,83,50,14
     LTEXT           "The same pair of names was used to define two different vectors.\nUnless aborted the program will interpret the two lines below as a loop.\nChoose Log Dups to log this and any remaining duplications. ",IDC_STATIC,8,8,236,29
     CTEXT           "",IDC_DUPNAME2,127,52,97,8
     CTEXT           "",IDC_DUPNAME1,26,52,97,8
     GROUPBOX        "",IDC_STATIC,8,39,234,33
-    PUSHBUTTON      "Edit Lines",ID_DUPEDIT,129,82,50,14
-    PUSHBUTTON      "Abort",ID_ABORT,186,82,50,14
+    PUSHBUTTON      "Abort",ID_ABORT,154,83,50,14
 END
 
 IDD_COMPDLG DIALOG 0, 0, 406, 176
@@ -616,29 +653,34 @@ BEGIN
     LTEXT           "Prv/Nxt:",IDC_ST_PREVNEXT,321,154,27,8
 END
 
-IDD_IMPORTDLG DIALOG 0, 0, 282, 114
+IDD_IMPSEFDLG DIALOGEX 0, 0, 343, 150
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
-CAPTION "Import SMAPS Exchange File (SEF) "
-FONT 8, "Arial"
+CAPTION "Import Survey Exchange Format File (SEF) "
+FONT 8, "Arial", 0, 0, 0x0
 BEGIN
     CONTROL         "Combine a directory's surveys into one file.",IDC_IMPCOMBINE,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,55,36,156,8
-    EDITTEXT        IDC_IMPSEFPATH,66,60,146,13,ES_AUTOHSCROLL
-    PUSHBUTTON      "Browse",IDC_IMPBROWSE,225,52,50,14
-    DEFPUSHBUTTON   "OK",IDOK,225,70,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,225,88,50,14
-    LTEXT           "",IDC_IMPLINECOUNT,225,73,50,8,NOT WS_VISIBLE | NOT WS_GROUP
-    LTEXT           "SEF Pathname:",IDC_STATIC,11,61,52,7
-    LTEXT           "This operation requires an SEF of the type generated by SMAPS v5.2 with the RELATIVE pathname option.  It will create a new project file, say BIGCAVE.WPJ, and data files  BIGC0001.SRV, BIGC0002.SRV, etc., in the project's directory.",IDC_STATIC,8,6,265,26
-    GROUPBOX        "",IDC_STATIC,7,48,211,55
-    LTEXT           "Importing...",IDC_IMPORTING,225,56,51,8,NOT WS_VISIBLE | NOT WS_GROUP
-    EDITTEXT        IDC_IMPPRJPATH,66,81,146,13,ES_AUTOHSCROLL
-    LTEXT           "WPJ Pathname:",IDC_STATIC,12,84,52,8
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,19,48,90,15
+    CONTROL         "Interpret colons in station names as prefix delimiters.",IDC_ALLOWCOLONS,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,117,48,107,15
+    EDITTEXT        IDC_CHRS_REPL,236,53,35,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Default",IDC_REPL_DFLT,278,53,32,12
+    EDITTEXT        IDC_IMPDATPATH,50,75,262,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_SEFBROWSE,315,75,20,12,BS_CENTER | BS_TOP
+    EDITTEXT        IDC_IMPPRJPATH,50,96,262,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_PRJBROWSE,315,96,20,12,BS_CENTER | BS_TOP
+    CONTROL         "Attach SEF file to project",IDC_ATTACH_SRC,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,236,115,95,9
+    DEFPUSHBUTTON   "OK",IDOK,233,136,50,13
+    PUSHBUTTON      "Cancel",IDCANCEL,289,136,50,13
+    LTEXT           "SEF Pathname:",IDC_STATIC,11,73,37,16
+    LTEXT           "This function reads an SEF file of the type written SMAPS 5.2 (and Walls).  The ""Interpret colons"" option can be used with Walls exported data, otherwise prefixes will be created for station names longer than 8 characters.  Press F1 for details.",IDC_STATIC,10,5,322,25
+    GROUPBOX        "",IDC_STATIC,3,31,336,100
+    LTEXT           "WPJ Pathname:",IDC_STATIC,11,92,36,16
+    LTEXT           "Replace chars in [ # : , ; <sp>] with",IDC_STATIC,227,42,101,8
 END
 
-IDD_PLOTDLG DIALOG 0, 0, 406, 176
+IDD_PLOTDLG DIALOGEX 0, 0, 406, 176
 STYLE DS_SETFONT | WS_CHILD
-FONT 8, "Arial"
+FONT 8, "Arial", 0, 0, 0x0
 BEGIN
     PUSHBUTTON      "Zoom",IDC_ZOOMIN,286,9,34,11,BS_NOTIFY
     PUSHBUTTON      "Back",IDC_ZOOMOUT,325,9,34,11
@@ -655,13 +697,13 @@ BEGIN
     CONTROL         "",IDC_WALLS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,348,92,10,8
     PUSHBUTTON      "Passage...",IDC_LRUDSTYLE,361,91,40,11
     CONTROL         "Selected",IDC_TRAVSELECTED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,286,116,42,8
-    CONTROL         "Floated",IDC_TRAVFLOATED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,286,128,41,8
-    CONTROL         "Label",IDC_EXTERNLABELS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,336,116,30,8
-    CONTROL         "Note",IDC_EXTERNNOTES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,370,116,29,8
-    CONTROL         "Mark",IDC_EXTERNMARKERS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,336,128,30,8
-    CONTROL         "Flag",IDC_EXTERNFLAGS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,370,128,29,8
-    PUSHBUTTON      "Display Map",IDC_EXTERNFRAME,288,140,51,11
-    PUSHBUTTON      "Update View",IDC_UPDATEFRAME,345,140,51,11
+    CONTROL         "All Floated",IDC_TRAVFLOATED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,286,128,45,8
+    CONTROL         "Label",IDC_EXTERNLABELS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,340,116,30,8
+    CONTROL         "Note",IDC_EXTERNNOTES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,374,116,29,8
+    CONTROL         "Mark",IDC_EXTERNMARKERS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,340,128,30,8
+    CONTROL         "Flag",IDC_EXTERNFLAGS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,374,128,29,8
+    PUSHBUTTON      "Update View",IDC_UPDATEFRAME,287,140,51,11
+    PUSHBUTTON      "Display Map",IDC_EXTERNFRAME,345,140,51,11
     PUSHBUTTON      "<<",IDC_SYSPREV,289,165,21,10
     PUSHBUTTON      ">>",IDC_SYSNEXT,314,165,21,10
     PUSHBUTTON      "<<",IDC_TRAVPREV,347,165,21,10
@@ -669,15 +711,15 @@ BEGIN
     CTEXT           "Traverse",IDC_TRAVSTATIC,348,156,44,8,NOT WS_GROUP
     CTEXT           "System",IDC_SYSSTATIC,291,156,41,8,NOT WS_GROUP
     GROUPBOX        "Displayed or Printed Map",IDC_ST_FRAME,281,80,124,75,BS_CENTER
-    LTEXT           "View:",IDC_STATIC,286,49,21,8,NOT WS_GROUP
-    RTEXT           "500",IDC_WIDTH,312,36,36,8,NOT WS_GROUP
-    RTEXT           "270",IDC_VIEW,312,49,36,8,NOT WS_GROUP
-    LTEXT           " Width:",IDC_STATIC,285,36,22,8,NOT WS_GROUP
+    LTEXT           "View:",IDC_STATIC,285,49,21,8,NOT WS_GROUP
+    RTEXT           "500",IDC_WIDTH,308,36,40,8,NOT WS_GROUP
+    RTEXT           "270",IDC_VIEW,314,49,34,8,NOT WS_GROUP
+    LTEXT           "Width:",IDC_STATIC,285,36,21,8,NOT WS_GROUP
     CTEXT           "Traverses",IDC_STATIC,291,104,42,8
     CTEXT           "Stations",IDC_STATIC,341,104,43,8
     CONTROL         "",IDC_PLTFRM,"Static",SS_GRAYFRAME | NOT WS_VISIBLE,3,2,273,172
     CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,296,112,109,1
-    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDVERT,331,113,1,22
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDVERT,335,113,1,23
     GROUPBOX        "Preview Map",IDC_ST_PANEL,281,0,124,62,BS_CENTER
     LTEXT           "Meters",IDC_ST_FTORMETERS,352,36,22,8
     LTEXT           "Grid",IDC_ST_TRUEORGRID,352,49,23,8
@@ -727,7 +769,7 @@ IDD_MAPFORMAT DIALOGEX 0, 0, 331, 190
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 FONT 8, "Arial", 0, 0, 0x0
 BEGIN
-    CONTROL         "Use printer page setting",IDC_USEPAGESIZE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,20,92,8
+    CONTROL         "Use printer page setting",IDC_USEPAGESIZE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,11,19,92,8
     EDITTEXT        IDC_FRAMEWIDTH,71,31,29,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_FRAMEHEIGHT,71,47,29,12,ES_AUTOHSCROLL
     EDITTEXT        IDC_FRAMETHICK,71,63,29,12,ES_AUTOHSCROLL
@@ -751,10 +793,12 @@ BEGIN
     CONTROL         "Elevations",IDC_LBLHEIGHTS,"Button",BS_AUTORADIOBUTTON | WS_GROUP,178,148,47,14
     CONTROL         "Names",IDC_LBLNAMES,"Button",BS_AUTORADIOBUTTON,229,148,37,14
     COMBOBOX        IDC_LBLPREFIXES,269,149,52,64,CBS_DROPDOWNLIST | CBS_SORT | WS_GROUP | WS_TABSTOP
-    CONTROL         "Monochrome output",IDC_MONOCHROME,"Button",BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP,53,174,83,10
-    PUSHBUTTON      "Printer...",IDC_SWAPSETS,173,172,43,14
-    DEFPUSHBUTTON   "OK",IDOK,228,172,43,14
-    PUSHBUTTON      "Cancel",IDCANCEL,283,172,43,14
+    PUSHBUTTON      "Printer...",IDC_SWAPSETS,7,172,36,14
+    CONTROL         "Monochrome\noutput",IDC_MONOCHROME,"Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_GROUP | WS_TABSTOP,49,172,60,13
+    PUSHBUTTON      "Reset",IDC_RESET,130,172,44,14
+    PUSHBUTTON      "Apply",IDC_APPLYLBL,180,172,44,14,NOT WS_VISIBLE
+    DEFPUSHBUTTON   "OK",IDOK,229,172,44,14
+    PUSHBUTTON      "Cancel",IDCANCEL,278,172,44,14
     GROUPBOX        "",IDC_STATIC,114,89,102,42
     LTEXT           "Size (pts):",IDC_STATIC,119,100,58,8
     GROUPBOX        "",IDC_STATIC,224,89,102,42
@@ -795,33 +839,32 @@ STYLE DS_SETFONT | WS_CHILD
 FONT 8, "Arial", 0, 0, 0x0
 BEGIN
     PUSHBUTTON      "Details / Rpts...",IDC_DETAILS,348,16,54,11
-    CONTROL         "",IDC_NOTECOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,311,42,27,13
-    CONTROL         "",IDC_BKGCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,375,42,27,13
-    CONTROL         "",IDC_LABELCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,311,59,27,13
-    CONTROL         "",IDC_FLOORCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,375,59,27,13
-    CONTROL         "",IDC_MARKERCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,311,76,27,13
+    CONTROL         "",IDC_NOTECOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,307,42,30,13
+    CONTROL         "",IDC_BKGCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,372,42,30,13
+    CONTROL         "",IDC_LABELCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,307,59,30,13
+    CONTROL         "",IDC_FLOORCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,372,59,30,13
+    CONTROL         "",IDC_MARKERCOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,307,76,30,13
     PUSHBUTTON      "Flag Symbols...",IDC_SYMBOLS,345,77,57,11
-    PUSHBUTTON      "Detach",IDC_SEGDETACH,283,104,48,11
+    PUSHBUTTON      "Detach",IDC_SEGDETACH,301,104,48,11
     PUSHBUTTON      "Inherit",IDC_SEGDISABLE,354,104,48,11
-    COMBOBOX        IDC_LINESTYLE,305,119,44,57,CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | WS_TABSTOP
+    COMBOBOX        IDC_LINESTYLE,301,119,48,57,CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED | WS_TABSTOP
     CONTROL         "",IDC_LINECOLOR,"Button",BS_OWNERDRAW | WS_TABSTOP,354,118,48,13
-    CONTROL         "Hide Labels",IDC_NAMES,"Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,281,134,55,8
-    CONTROL         "Hide Markers",IDC_MARKERS,"Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,281,146,55,8
+    CONTROL         "Hide Labels",IDC_NAMES,"Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,279,135,55,8
+    CONTROL         "Hide Markers",IDC_MARKERS,"Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,279,147,55,8
     PUSHBUTTON      "Apply to All",IDC_APPLYTOALL,354,138,48,11
-    PUSHBUTTON      "Display Map",IDC_DISPLAY,287,161,50,11
-    PUSHBUTTON      "Apply to Map",IDC_APPLY,344,161,50,11
+    PUSHBUTTON      "Display Map",IDC_DISPLAY,354,161,48,11
     GROUPBOX        "Branch Totals",IDC_ST_BRANCH,278,0,127,38,BS_CENTER
     GROUPBOX        "Segment Attributes",IDC_ST_SEGMENT,278,93,127,65,BS_CENTER
-    LTEXT           "Vectors:",IDC_STATIC,282,12,28,8,NOT WS_GROUP
-    LTEXT           "Length:",IDC_STATIC,282,23,28,8,NOT WS_GROUP
+    LTEXT           "Vectors:",IDC_STATIC,279,12,28,8,NOT WS_GROUP
+    LTEXT           "Length:",IDC_STATIC,279,23,28,8,NOT WS_GROUP
     RTEXT           "125",IDC_SEGVECTORS,313,12,30,8,NOT WS_GROUP
     RTEXT           "125",IDC_SEGLENGTH,312,23,31,8,NOT WS_GROUP
-    CONTROL         "",IDC_SEGFRM,"Static",SS_ETCHEDFRAME,4,4,271,167
-    LTEXT           "Line\nstyle:",IDC_STATIC,282,116,18,15
-    LTEXT           "Bkgnd:",IDC_STATIC,343,44,29,8
+    CONTROL         "",IDC_SEGFRM,"Static",SS_ETCHEDFRAME,4,4,271,169
+    LTEXT           "Line\nstyle:",IDC_STATIC,279,116,18,15
+    LTEXT           "Bkgnd:",IDC_STATIC,341,44,29,8
     LTEXT           "Labels:",IDC_STATIC,279,61,28,8
     LTEXT           "Notes:",IDC_STATIC,279,44,28,8
-    LTEXT           "Passage Floors:",IDC_STATIC,343,56,29,15
+    LTEXT           "Passage Floors:",IDC_STATIC,341,56,29,15
     LTEXT           "Markers:",IDC_STATIC,279,78,28,8
 END
 
@@ -909,7 +952,7 @@ END
 
 IDD_STATDLG DIALOGEX 0, 0, 297, 142
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
-CAPTION "Adjusted Totals for %s"
+CAPTION "Adjusted %s Totals for %s"
 FONT 8, "Arial", 0, 0, 0x0
 BEGIN
     PUSHBUTTON      "Shapefiles...",IDC_ARCVIEW,67,125,52,12
@@ -917,24 +960,24 @@ BEGIN
     DEFPUSHBUTTON   "Close",IDOK,247,125,40,12
     RTEXT           "Ref:  TYR12345",IDC_REFSTATION,187,4,96,8
     LTEXT           "Highest point:",IDC_STATIC,11,38,47,8
-    RTEXT           "0.0",IDC_HIGHPOINT,60,38,55,8
+    RTEXT           "0.0",IDC_HIGHPOINT,58,38,55,8
     LTEXT           "Component  1 of 3",IDC_COMPONENT,11,4,98,8
     LTEXT           "",IDC_HIGHSTATION,121,38,55,8
     LTEXT           "Lowest point:",IDC_STATIC,11,52,46,8
-    RTEXT           "0.0",IDC_LOWPOINT,60,52,55,8
+    RTEXT           "0.0",IDC_LOWPOINT,58,52,55,8
     LTEXT           "",IDC_LOWSTATION,121,53,55,8
-    LTEXT           "Depth:",IDC_STATIC,185,45,24,8
-    RTEXT           "0.0",IDC_DEPTH,212,45,48,8
+    RTEXT           "Depth:",IDC_STATIC,199,45,24,8
+    RTEXT           "0.0",IDC_DEPTH,229,45,42,8
     GROUPBOX        "",IDC_STATIC,5,10,282,88
     LTEXT           "Vectors:",IDC_STATIC,11,20,28,8
     LTEXT           "0",IDC_NUMVECS,42,20,66,8
     LTEXT           "Horz length:",IDC_STATIC,11,70,43,8
-    RTEXT           "0.00",IDC_HZLENGTH,60,70,55,8
+    RTEXT           "0.00",IDC_HZLENGTH,58,70,55,8
     LTEXT           "Vert  length:",IDC_STATIC,11,84,43,8
-    RTEXT           "0.00",IDC_VTLENGTH,60,84,55,8
-    LTEXT           "Length:",IDC_STATIC,183,76,26,8
-    RTEXT           "0.0",IDC_TTLENGTH,212,76,48,8
-    LTEXT           "",IDC_PERCENT,121,84,55,8
+    RTEXT           "0.00",IDC_VTLENGTH,58,84,55,8
+    RTEXT           "Length:",IDC_STATIC,197,70,26,8
+    RTEXT           "0.0",IDC_TTLENGTH,229,70,42,8
+    LTEXT           "",IDC_PERCENT,121,84,50,8
     LTEXT           "Notes:",IDC_STATIC,126,20,23,8
     LTEXT           "0",IDC_NUMNOTES,154,20,44,8
     LTEXT           "Flags:",IDC_STATIC,221,20,21,8
@@ -944,6 +987,8 @@ BEGIN
     LTEXT           "Subset export:",IDC_STATIC,12,127,51,9
     LTEXT           "Units: %s",IDC_UNITS,126,4,55,8
     LTEXT           "NOTE: This summary represents only the selected network component and selected segment tree node. Only if the node is collapsed is the entire branch summarized.",IDC_STATIC,11,103,274,17
+    RTEXT           "Excl length:",IDC_STATIC,186,84,37,8
+    RTEXT           "0.0",IDC_EXLENGTH,229,84,42,8
 END
 
 IDD_VECLIMITS DIALOG 0, 0, 267, 113
@@ -1146,31 +1191,31 @@ STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_CAPTION
 CAPTION "&General"
 FONT 8, "Arial", 0, 0, 0x0
 BEGIN
-    EDITTEXT        IDC_TITLE,97,14,184,13,ES_AUTOHSCROLL | WS_GROUP
-    CONTROL         "Survey file",IDC_SURVEY,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,12,16,49,10
-    CONTROL         "Book",IDC_SURVEYBOOK,"Button",BS_AUTORADIOBUTTON,12,29,49,10
-    CONTROL         "Other",IDC_SURVEYNOT,"Button",BS_AUTORADIOBUTTON,12,42,49,10
-    EDITTEXT        IDC_NAME,97,36,143,13,ES_AUTOHSCROLL
-    PUSHBUTTON      "Browse...",IDBROWSE,245,35,36,15
-    EDITTEXT        IDC_PATH,97,63,184,13,ES_AUTOHSCROLL | WS_GROUP
-    CONTROL         "Feet",IDC_FEETUNITS,"Button",BS_AUTORADIOBUTTON | NOT WS_VISIBLE | WS_GROUP | WS_TABSTOP,12,70,43,10
-    CONTROL         "Meters",IDC_METERUNITS,"Button",BS_AUTORADIOBUTTON | NOT WS_VISIBLE,12,83,44,9
-    CONTROL         "Properties",IDC_LAUNCHPROMPT,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,12,70,44,8
-    CONTROL         "Open",IDC_LAUNCHOPEN,"Button",BS_AUTORADIOBUTTON,12,83,44,8
-    CONTROL         "Edit",IDC_LAUNCHEDIT,"Button",BS_AUTORADIOBUTTON,12,96,44,8
-    CONTROL         "Name defines segment",IDC_DEFINESEG,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_GROUP | WS_TABSTOP,12,104,88,11
+    EDITTEXT        IDC_TITLE,89,14,198,13,ES_AUTOHSCROLL | WS_GROUP
+    CONTROL         "Survey file",IDC_SURVEY,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,9,16,49,10
+    CONTROL         "Book",IDC_SURVEYBOOK,"Button",BS_AUTORADIOBUTTON,9,29,49,10
+    CONTROL         "Other",IDC_SURVEYNOT,"Button",BS_AUTORADIOBUTTON,9,42,49,10
+    EDITTEXT        IDC_NAME,89,36,149,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "Browse...",IDBROWSE,242,35,36,15
+    EDITTEXT        IDC_PATH,89,63,199,13,ES_AUTOHSCROLL | WS_GROUP
+    CONTROL         "Feet",IDC_FEETUNITS,"Button",BS_AUTORADIOBUTTON | NOT WS_VISIBLE | WS_GROUP | WS_TABSTOP,9,70,43,10
+    CONTROL         "Meters",IDC_METERUNITS,"Button",BS_AUTORADIOBUTTON | NOT WS_VISIBLE,9,83,44,9
+    CONTROL         "Properties",IDC_LAUNCHPROMPT,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,9,70,44,8
+    CONTROL         "Open",IDC_LAUNCHOPEN,"Button",BS_AUTORADIOBUTTON,9,83,44,8
+    CONTROL         "Edit",IDC_LAUNCHEDIT,"Button",BS_AUTORADIOBUTTON,9,96,44,8
+    CONTROL         "Name defines segment",IDC_DEFINESEG,"Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_GROUP | WS_TABSTOP,9,104,88,11
     CONTROL         "Read-only",IDC_READONLY,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,110,104,68,11
-    DEFPUSHBUTTON   "OK",IDOK,181,104,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,237,104,50,14
-    GROUPBOX        "",IDC_STATIC,69,4,218,94
-    GROUPBOX        "Review Units",IDC_ST_REVIEW,6,59,58,39,NOT WS_VISIBLE
-    LTEXT           "Title:",IDC_STATIC,74,15,19,9,NOT WS_GROUP
-    LTEXT           "Name:",IDC_NAMETEXT,74,38,20,9,NOT WS_GROUP
-    GROUPBOX        "Type",IDC_STATIC,6,4,58,51
-    LTEXT           "Path:",IDC_PATHTEXT,74,65,19,9,NOT WS_GROUP
-    LTEXT           "brinco/",IDC_PATHPREFIX,99,53,185,8
-    LTEXT           "Last updated:",IDC_SIZEDATE,74,84,203,8
-    GROUPBOX        "Lauch Options",IDC_ST_LAUNCH,6,59,58,51
+    DEFPUSHBUTTON   "OK",IDOK,186,104,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,242,104,50,14
+    GROUPBOX        "",IDC_STATIC,64,2,228,98
+    GROUPBOX        "Review Units",IDC_ST_REVIEW,3,59,58,39,NOT WS_VISIBLE
+    LTEXT           "Title:",IDC_STATIC,67,15,19,9,NOT WS_GROUP
+    LTEXT           "Name:",IDC_NAMETEXT,67,38,20,9,NOT WS_GROUP
+    GROUPBOX        "Type",IDC_STATIC,3,2,58,51
+    LTEXT           "Path:",IDC_PATHTEXT,67,65,19,9,NOT WS_GROUP
+    LTEXT           "brinco/",IDC_PATHPREFIX,90,53,197,8
+    LTEXT           "Last updated:",IDC_SIZEDATE,69,84,203,8
+    GROUPBOX        "Launch Options",IDC_ST_LAUNCH,3,59,58,51
 END
 
 IDD_ITEM_REFERENCE DIALOGEX 0, 0, 293, 122
@@ -1230,26 +1275,26 @@ BEGIN
     GROUPBOX        "Default View after Compilation ",IDC_STATIC,7,46,128,71,BS_CENTER
 END
 
-IDD_EXPORTSEF DIALOG 0, 0, 289, 131
+IDD_EXPORTSEF DIALOGEX 0, 0, 307, 142
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Export Branch: %s"
-FONT 8, "Arial"
+CAPTION "Export Branch as SEF:  %s"
+FONT 8, "Arial", 0, 0, 0x0
 BEGIN
-    EDITTEXT        IDC_PATHNAME,36,62,227,12,ES_AUTOHSCROLL
-    PUSHBUTTON      "...",IDBROWSE,268,62,14,13
-    CONTROL         "Include detached branches",IDC_INCLUDEDET,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,82,106,10
-    CONTROL         "Convert name prefixes to numeric strings",IDC_CONVERTPFX,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,127,82,143,10
-    CONTROL         "Force length units to feet",IDC_FORCEFEET,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,96,106,10
-    CONTROL         "Use fixed column format (OnStation)",IDC_FIXEDCOLS,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,127,96,129,10
-    DEFPUSHBUTTON   "OK",IDOK,174,112,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,232,112,50,14
-    LTEXT           "This operation creates a SMAPS Exchange File (SEF) compatible with several other cave mapping programs, including SMAPS v5.2.  It includes the station names, unadjusted vectors, and LRUD data, but excludes many Walls-specific attributes.",IDC_STATIC,9,11,270,30
-    GROUPBOX        "",IDC_STATIC,5,2,278,52
-    LTEXT           "Output:",IDC_STATIC,9,63,25,11
-    LTEXT           "To export adjusted data, generate a vector-ordered coordinate list instead.",IDC_STATIC,9,41,267,10
-    LTEXT           "",IDC_ST_STATUS,9,113,160,8
+    EDITTEXT        IDC_PATHNAME,36,57,248,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDBROWSE,286,57,17,13
+    CONTROL         "Also use vdist for relative depth in\ndive surveys (order=DA, tape=SS)",IDC_USE_VDIST,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,11,108,128,17
+    CONTROL         "Suppress name prefix length reduction\n(useful for Walls round trip)",IDC_NOCVTPFX,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,157,87,139,16
+    DEFPUSHBUTTON   "OK",IDOK,200,125,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,253,125,50,14
+    LTEXT           "This operation creates a Survey Exchange Format file suitable for porting unadjusted vector data to other programs. See Help for details (F1).",IDC_STATIC,9,11,289,19
+    GROUPBOX        "",IDC_STATIC,4,3,299,44
+    LTEXT           "Output:",IDC_STATIC,9,60,25,11
+    LTEXT           "NOTE: Detached items within the branch are not included in the export.",IDC_STATIC,10,34,271,10
+    GROUPBOX        "Use the following SEF format features:",IDC_STATIC,4,73,146,57
+    CONTROL         "Instrument corrections, backsights,\ninst / tgt heights, and tape method",IDC_USE_ALLSEF,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,11,86,131,17
 END
 
 IDD_EXPAVDLG DIALOGEX 0, 0, 354, 184
@@ -1385,17 +1430,18 @@ BEGIN
 END
 
 IDD_MARKERDLG DIALOGEX 0, 0, 341, 168
-STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Flag and Marker Symbols"
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTROLPARENT
 FONT 8, "Arial", 0, 0, 0x0
 BEGIN
-    LISTBOX         IDC_LISTFLAGS,6,15,171,116,LBS_MULTIPLESEL | LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | LBS_USETABSTOPS | LBS_NOINTEGRALHEIGHT | LBS_WANTKEYBOARDINPUT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
-    PUSHBUTTON      "Higher",IDC_PRIORUP,37,134,32,12
-    PUSHBUTTON      "Lower",IDC_PRIORDOWN,72,134,32,12
-    PUSHBUTTON      "Hide",IDC_DISABLE,107,134,32,12
-    PUSHBUTTON      "Unhide",IDC_ENABLE,142,134,32,12
-    CONTROL         "Plot one flag / station",IDC_OVERLAP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,153,82,9
-    CONTROL         "Hide notes for unflagged stations",IDC_HIDENOTES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,101,153,123,9
+    LISTBOX         IDC_LISTFLAGS,6,15,171,110,LBS_MULTIPLESEL | LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | LBS_USETABSTOPS | LBS_NOINTEGRALHEIGHT | LBS_WANTKEYBOARDINPUT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Higher",IDC_PRIORUP,37,129,32,12
+    PUSHBUTTON      "Lower",IDC_PRIORDOWN,72,129,32,12
+    PUSHBUTTON      "Hide",IDC_DISABLE,107,129,32,12
+    PUSHBUTTON      "Unhide",IDC_ENABLE,142,129,32,12
+    CONTROL         "Plot one flag / station",IDC_OVERLAP,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,12,150,82,9
+    CONTROL         "Hide notes for\nunflagged stations",IDC_HIDENOTES,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,98,147,74,16
     CONTROL         "Solid",IDC_MSOLID,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,198,33,46,8
     CONTROL         "Opaque",IDC_MOPAQUE,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,198,45,46,8
     CONTROL         "Clear",IDC_MCLEAR,"Button",BS_AUTORADIOBUTTON | WS_TABSTOP,198,57,46,8
@@ -1406,14 +1452,15 @@ BEGIN
     EDITTEXT        IDC_MSIZE,231,126,35,12,ES_AUTOHSCROLL | ES_NUMBER
     CONTROL         "Spin3",IDC_SPIN_MSIZE,"msctls_updown32",UDS_WRAP | UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_NOTHOUSANDS,254,126,15,11
     PUSHBUTTON      "Set Selected",IDC_SETSELECTED,277,127,46,12
-    DEFPUSHBUTTON   "OK",IDOK,237,152,46,12
-    PUSHBUTTON      "Cancel",IDCANCEL,286,152,46,12
+    PUSHBUTTON      "Apply",IDC_APPLY,186,152,44,12,WS_DISABLED
+    DEFPUSHBUTTON   "OK",IDOK,236,152,44,12
+    PUSHBUTTON      "Cancel",IDCANCEL,286,152,44,12
     CTEXT           "Flag Names and Station Counts",IDC_ST_FLAGLIST,8,4,133,8
     GROUPBOX        "",IDC_STATIC,186,11,146,136,BS_CENTER
     GROUPBOX        "Symbol Interior",IDC_STATIC,192,20,65,64,BS_CENTER
     GROUPBOX        "Symbol Shape",IDC_STATIC,262,20,64,64,BS_CENTER
     LTEXT           "Size:",IDC_STATIC,194,128,32,9
-    RTEXT           "Priority:",IDC_STATIC,7,137,27,8
+    RTEXT           "Priority:",IDC_STATIC,7,132,27,8
     LTEXT           "Foregnd:",IDC_STATIC,194,95,32,9
     CONTROL         "",IDC_COLORFRM,"Static",SS_GRAYFRAME,281,92,38,31
     LTEXT           "Backgnd:",IDC_STATIC,194,111,32,9
@@ -1426,21 +1473,22 @@ FONT 8, "Arial", 0, 0, 0x0
 BEGIN
     CONTROL         "If an SVG was processed during compilation, obtain passage outlines from mask layer.",IDC_SVG_USE,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,17,305,10
+    EDITTEXT        IDC_THICKPENPTS,277,32,30,12,ES_AUTOHSCROLL
     CONTROL         "SVG outlines or LRUD polygons",IDC_LRUDSOLID,"Button",BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP,18,113,124,8
     CONTROL         "LRUD dimension lines only",IDC_LRUDTICKS,"Button",BS_AUTORADIOBUTTON,18,126,124,8
     CONTROL         "Both floors and dimension lines",IDC_LRUDBOTH,"Button",BS_AUTORADIOBUTTON,18,139,124,8
+    EDITTEXT        IDC_LRUDEXAG,276,115,31,12,ES_AUTOHSCROLL | WS_GROUP
     EDITTEXT        IDC_EDIT_ENLARGE,238,152,28,13,ES_READONLY | WS_GROUP
     CONTROL         "Spin2",IDC_SPIN_ENLARGE,"msctls_updown32",UDS_WRAP | UDS_SETBUDDYINT | UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS,265,151,11,14
-    DEFPUSHBUTTON   "OK",IDOK,107,177,56,14
-    PUSHBUTTON      "Cancel",IDCANCEL,169,177,56,14
+    PUSHBUTTON      "Apply",IDC_APPLY,72,179,56,14,WS_DISABLED
+    DEFPUSHBUTTON   "OK",IDOK,138,179,56,14
+    PUSHBUTTON      "Cancel",IDCANCEL,204,179,56,14
     GROUPBOX        "Passage Display Options",IDC_STATIC,7,97,315,74
     LTEXT           "Factor to control passage width at turns (5 suggested):",IDC_STATIC,51,154,182,8
     GROUPBOX        "SVG Options for  Plan Views",IDC_STATIC,7,5,316,88
     LTEXT           "NOTE: The option to process an attached source SVG is a Compile Options property.\nSVG passages can only be displayed for book items compiled with that option enabled. The settings in this dialog do not affect exported SVGs, only maps rendered by Walls.",IDC_STATIC,13,48,302,26
     LTEXT           "",IDC_ST_SVG_STATUS,12,78,304,10
-    EDITTEXT        IDC_THICKPENPTS,277,32,30,12,ES_AUTOHSCROLL
     LTEXT           "Outline width (pts) at 1:180 scale when thick pen is chosen (1 suggested): ",IDC_STATIC,13,33,245,8
-    EDITTEXT        IDC_LRUDEXAG,276,115,31,12,ES_AUTOHSCROLL
     LTEXT           "Length in meters to extend LRUD\ndimensions for polygon drawing:",IDC_STATIC,158,113,114,19
 END
 
@@ -1586,12 +1634,12 @@ BEGIN
     LTEXT           "m",IDC_STATIC,196,143,8,8
 END
 
-IDD_MAPHELP DIALOG 0, 0, 263, 67
+IDD_MAPHELP DIALOGEX 0, 0, 263, 67
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-FONT 8, "Arial"
+FONT 8, "Arial", 0, 0, 0x0
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,106,47,50,14
-    LTEXT           "Operations on this display frame are possible only when the corresponding project branch is being Reviewed. In that case the mouse cursor will be a cross instead of an arrow.",IDC_STATIC,9,10,246,30
+    LTEXT           "Operations on this map frame are possible only when the corresponding network component is being Reviewed. In that case the mouse cursor will be a cross instead of an arrow.",IDC_STATIC,9,10,246,30
 END
 
 IDD_LAUNCHFIND DIALOG 0, 0, 234, 111
@@ -1682,7 +1730,7 @@ IDD_VECTORINFO DIALOGEX 0, 0, 378, 176
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 FONT 8, "Arial", 0, 0, 0x1
 BEGIN
-    DEFPUSHBUTTON   "Close",IDOK,254,159,55,13
+    DEFPUSHBUTTON   "Close",IDOK,304,159,55,13
     EDITTEXT        IDC_ST_TITLE,45,7,326,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_STATICEDGE
     EDITTEXT        IDC_ST_ATTR,45,23,326,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_STATICEDGE
     EDITTEXT        IDC_ST_FR_NAME,17,79,79,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_STATICEDGE
@@ -1699,9 +1747,10 @@ BEGIN
     EDITTEXT        IDC_TO_NOTE,17,134,227,12,ES_AUTOHSCROLL | ES_READONLY | NOT WS_BORDER,WS_EX_STATICEDGE
     PUSHBUTTON      "M",IDC_TO_MAGDLG,248,134,15,12,BS_ICON
     LISTBOX         IDC_TO_FLAGS,269,112,93,34,NOT LBS_NOTIFY | LBS_SORT | LBS_NOINTEGRALHEIGHT | LBS_NOSEL | NOT WS_BORDER | WS_VSCROLL | WS_TABSTOP,WS_EX_STATICEDGE
-    PUSHBUTTON      "View Statistics",IDC_VIEWSTATS,68,159,55,13
-    PUSHBUTTON      "Edit Data File",IDC_FILE_EDIT,130,159,55,13
-    PUSHBUTTON      "File Properties",IDC_PROPERTIES,192,159,55,13
+    PUSHBUTTON      "View Geometry",IDC_VIEWSTATS,33,159,55,13
+    PUSHBUTTON      "View Segment",IDC_VIEWSEG,97,159,55,13
+    PUSHBUTTON      "Edit Data File",IDC_FILE_EDIT,161,159,55,13
+    PUSHBUTTON      "File Properties",IDC_PROPERTIES,225,159,55,13
     LTEXT           "File:",IDC_STATIC,142,40,15,11
     LTEXT           "",IDC_ST_FILENAME,162,40,58,11
     LTEXT           "Surveyed:",IDC_STATIC,48,40,35,11
@@ -1713,7 +1762,7 @@ BEGIN
     CTEXT           "Flags",IDC_STATIC,270,62,91,8
     CTEXT           "Name / Note",IDC_STATIC,18,68,77,8
     LTEXT           "",IDC_ST_SURVEYDATE,89,40,46,11
-    LTEXT           "Attributes:",IDC_STATIC,6,23,36,8
+    LTEXT           "Segment:",IDC_STATIC,6,23,36,8
     GROUPBOX        "From / To Stations",IDC_STATIC,6,53,365,100,BS_CENTER
     LTEXT           "Branch:",IDC_STATIC,6,7,36,8
 END
@@ -1760,19 +1809,20 @@ BEGIN
     LTEXT           "Re&place with:",-1,4,26,48,8
 END
 
-IDD_RESIZEFRAME DIALOGEX 0, 0, 203, 80
+IDD_RESIZEFRAME DIALOGEX 0, 0, 273, 109
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Resize Map Frame"
+CAPTION "Set Initial Frame Width"
 FONT 8, "Arial", 400, 0, 0x0
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,48,61,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,105,61,50,14
-    EDITTEXT        IDC_INCHWIDTH,74,18,46,12,ES_AUTOHSCROLL
-    CONTROL         "",IDC_SPIN_INCHES,"msctls_updown32",UDS_ALIGNRIGHT | UDS_AUTOBUDDY | UDS_ARROWKEYS | UDS_HOTTRACK,118,17,11,14
-    CONTROL         "Use this width for new frames:",IDC_SAVEASDEFAULT,
-                    "Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | WS_TABSTOP,19,40,121,8
-    LTEXT           "Width (inches):",IDC_STATIC,20,20,52,8
-    LTEXT           "Pixels:",IDC_ST_PIXELWIDTH,137,20,52,8
+    DEFPUSHBUTTON   "OK",IDOK,161,91,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,217,91,50,14
+    CONTROL         "Make this the default\nfor all sessions:",IDC_SAVEASDEFAULT,
+                    "Button",BS_AUTOCHECKBOX | BS_LEFTTEXT | BS_MULTILINE | WS_TABSTOP,26,60,83,20
+    LTEXT           "Current frame width:",IDC_STATIC,28,40,70,8
+    LTEXT           "Current default:",IDC_STATIC,122,66,51,8
+    LTEXT           "5.3 in.",IDC_ST_DEFAULT,179,66,74,8
+    LTEXT           "8 in. (assuming 96 px/in)",IDC_ST_CURRENT,105,40,107,8
+    LTEXT           "You can resize the map's frame by dragging its borders. Select OK to cause the initial width of generated frames to match this frame's current width.",IDC_STATIC,10,11,247,22
 END
 
 IDD_OPENEXISTING DIALOGEX 0, 0, 284, 97
@@ -1793,7 +1843,7 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,191,66,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,247,66,50,14
-    LTEXT           "Select OK to confirm that you want to modify the source project by MOVING branches instead of copying them. To COPY instead, hold down the CTRL key while LEFT-dragging. Alternatively, you can RIGHT-drag and be presented with transfer options.",IDC_STATIC,7,9,290,30
+    LTEXT           "Select OK to confirm that you want to modify the source project by MOVING branches instead of copying them. To COPY instead, hold down the CTRL key while LEFT-dragging. Alternatively, you can RIGHT-drag and be presented with transfer options.",IDC_ST_MESSAGE,7,9,290,30
     CONTROL         "No confirmation needed next time",IDC_APPLY_PROMPT,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,80,44,129,11
 END
@@ -1811,6 +1861,32 @@ BEGIN
     LTEXT           "If you choose to delete data files also, all file items in the branch, regardless of type, are moved to the Windows recycle bin. Note that other projects could conceivably depend on the same files.",IDC_STATIC,11,40,282,24
 END
 
+IDD_IMPCSSDLG DIALOGEX 0, 0, 345, 178
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION " Import Compass Survey Data"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "Combine a DAT file's surveys into one file",IDC_IMPCOMBINE,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,22,66,85,21
+    CONTROL         "Interpret last colon in a station\nname as a prefix delimiter",IDC_ALLOWCOLONS,
+                    "Button",BS_AUTOCHECKBOX | BS_MULTILINE | WS_TABSTOP,113,66,114,21
+    EDITTEXT        IDC_CHRS_REPL,231,74,35,13,ES_AUTOHSCROLL
+    PUSHBUTTON      "Default",IDC_REPL_DFLT,273,74,32,13
+    EDITTEXT        IDC_IMPDATPATH,54,96,259,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_CSSBROWSE,316,95,20,14,BS_CENTER | BS_TOP
+    EDITTEXT        IDC_IMPPRJPATH,54,119,259,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDC_WPJBROWSE,316,119,20,14,BS_CENTER | BS_TOP
+    CONTROL         "Attach source files to project",IDC_ATTACH_SRC,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,226,140,112,10
+    DEFPUSHBUTTON   "OK",IDOK,231,159,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,288,159,50,14
+    LTEXT           "Create a Walls project from a Compass MAK or DAT file. If a MAK file is specified as input, the DAT pathnames will be obtained from that file along with any fixed points, links, and georeferencing info.",IDC_STATIC,11,5,327,20
+    LTEXT           "MAK or DAT\npathname:",IDC_STATIC,12,94,39,17
+    LTEXT           "WPJ\npathname:",IDC_STATIC,12,117,35,18
+    LTEXT           "Replace chars in [ # : , ; ] with",IDC_STATIC,232,63,100,9
+    LTEXT           "NOTES:\nStation names longer than 8 characters are converted to prefixed names. If a MAK file contains links, 2nd-level prefixes are created. Press F1 for details.",IDC_STATIC,11,25,327,28
+    GROUPBOX        "",IDC_STATIC,6,53,335,103
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -1818,14 +1894,27 @@ END
 //
 
 IDC_NODROP              CURSOR                  "RES\\NODROP.CUR"
+
 IDC_MOVESINGLE          CURSOR                  "RES\\MOVE_SIN.CUR"
+
 IDC_MOVEMULTIPLE        CURSOR                  "RES\\MOVE_MUL.CUR"
+
 IDC_MOVE                CURSOR                  "RES\\MOVE.CUR"
+
 IDC_COPYSINGLE          CURSOR                  "RES\\COPY_SIN.CUR"
+
 IDC_COPYMULTIPLE        CURSOR                  "RES\\COPY_MUL.CUR"
+
 IDC_COPY                CURSOR                  "RES\\COPY.CUR"
+
 IDC_MEASURE             CURSOR                  "res\\measure.cur"
+
 IDC_IDENTIFY            CURSOR                  "res\\identify.cur"
+
+IDC_HAND2               CURSOR                  "res\\Link.cur"
+
+IDC_HAND3               CURSOR                  "res\\hand.cur"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -2030,6 +2119,14 @@ BEGIN
         BOTTOMMARGIN, 131
     END
 
+    IDD_LINENODLG, DIALOG
+    BEGIN
+    END
+
+    IDD_DUPDLG, DIALOG
+    BEGIN
+    END
+
     IDD_COMPDLG, DIALOG
     BEGIN
         RIGHTMARGIN, 401
@@ -2038,6 +2135,13 @@ BEGIN
     IDD_TRAVDLG, DIALOG
     BEGIN
         RIGHTMARGIN, 401
+    END
+
+    IDD_IMPSEFDLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 3
+        RIGHTMARGIN, 339
+        BOTTOMMARGIN, 149
     END
 
     IDD_PLOTDLG, DIALOG
@@ -2049,6 +2153,22 @@ BEGIN
     BEGIN
         LEFTMARGIN, 1
         BOTTOMMARGIN, 148
+    END
+
+    IDD_MAPFORMAT, DIALOG
+    BEGIN
+    END
+
+    IDD_SEGDLG, DIALOG
+    BEGIN
+    END
+
+    IDD_GRIDOPTIONS, DIALOG
+    BEGIN
+    END
+
+    IDD_STATDLG, DIALOG
+    BEGIN
     END
 
     IDD_3DEXPDLG, DIALOG
@@ -2092,8 +2212,8 @@ BEGIN
     IDD_ITEM_GENERAL, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 286
-        TOPMARGIN, 7
+        RIGHTMARGIN, 292
+        TOPMARGIN, 2
         BOTTOMMARGIN, 118
     END
 
@@ -2115,10 +2235,8 @@ BEGIN
 
     IDD_EXPORTSEF, DIALOG
     BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 282
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 124
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 139
     END
 
     IDD_EXPAVDLG, DIALOG
@@ -2179,7 +2297,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 324
         TOPMARGIN, 7
-        BOTTOMMARGIN, 191
+        BOTTOMMARGIN, 193
     END
 
     IDD_EXPSVGDLG, DIALOG
@@ -2275,7 +2393,11 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 371
         TOPMARGIN, 7
-        BOTTOMMARGIN, 169
+        BOTTOMMARGIN, 172
+    END
+
+    1540, DIALOG
+    BEGIN
     END
 
     1541, DIALOG
@@ -2286,9 +2408,9 @@ BEGIN
     IDD_RESIZEFRAME, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 196
+        RIGHTMARGIN, 266
         TOPMARGIN, 7
-        BOTTOMMARGIN, 75
+        BOTTOMMARGIN, 105
     END
 
     IDD_OPENEXISTING, DIALOG
@@ -2314,8 +2436,156 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 90
     END
+
+    IDD_IMPCSSDLG, DIALOG
+    BEGIN
+        RIGHTMARGIN, 341
+        TOPMARGIN, 2
+        BOTTOMMARGIN, 177
+    END
 END
 #endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// IMAGES
+//
+
+IDR_IMAGE_JPEG          IMAGES                  "res\\marble.jpg"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// RCDATA
+//
+
+ID_MODELDATA            RCDATA                  "res\\igrf.bin"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_IMPCSSDLG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_IMPSEFDLG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_ABOUTBOX AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_RESIZEFRAME AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_EXPORTSEF AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_ITEM_GENERAL AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_DUPDLG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_VECTORINFO AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_SEGDLG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_MAPHELP AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_PLOTDLG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_LRUDSTYLE AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_MAPFORMAT AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_MOVE_CONFIRM AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_MARKERDLG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_STATDLG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "David McKenzie"
+            VALUE "FileDescription", "Walls executable"
+            VALUE "FileVersion", "2016.10.5"
+            VALUE "InternalName", "Walls32.exe"
+            VALUE "LegalCopyright", "(c) 2016, David McKenzie"
+            VALUE "OriginalFilename", "Walls32.exe"
+            VALUE "ProductName", "Walls Project Editor"
+            VALUE "ProductVersion", "2.0.0.0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -2326,7 +2596,7 @@ END
 IDR_MAINFRAME TOOLBAR 16, 15
 BEGIN
     BUTTON      ID_BUTTON32918
-    BUTTON      ID_BUTTON32919
+    BUTTON      ID_FILE_SAVE
     BUTTON      ID_BUTTON32920
     SEPARATOR
     BUTTON      ID_BUTTON32921
@@ -2369,20 +2639,6 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// IMAGES
-//
-
-IDR_IMAGE_JPEG          IMAGES                  "res\\marble.jpg"
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// RCDATA
-//
-
-ID_MODELDATA            RCDATA                  "igrf.bin"
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // String Table
 //
 
@@ -2391,7 +2647,7 @@ BEGIN
     IDS_ERR_DELETEOPEN      "Existing file:  %s\nThe new name is that of an existing file you currently have open.\nYou must close it before it can be replaced or attached to this project."
     IDR_MAINFRAME           "Walls Project Editor v2.0"
     IDR_PRJTYPE             "\nPROJECT\nWALLS Project\nProject Files (*.wpj)\n.wpj\nWPJFileType\nWPJ File Type"
-    IDS_PRJ_FILES           "Project Files (*.wpj;*.prj)"
+    IDS_PRJ_FILES           "Project Files (*.wpj)"
     IDR_SRVTYPE             "\nSURVEY\nWALLS Survey\nSurvey Files (*.srv)\n.srv\nSRVFileType\nSRV File Type"
     IDS_SRV_FILES           "Survey Files (*.srv)"
     IDS_PRJ_FILENEW         "Create New WALLS Project"
@@ -2460,7 +2716,6 @@ END
 
 STRINGTABLE
 BEGIN
-    ID_WINDOW_NEW           "Open another window for the active document"
     ID_WINDOW_ARRANGE       "Arrange icons at the bottom of the window"
     ID_WINDOW_CASCADE       "Arrange windows so they overlap"
     ID_WINDOW_TILE_HORZ     "Tile with at least as many rows as columns"
@@ -2554,7 +2809,6 @@ BEGIN
     ID_PROJECT_SAVE_AS      "Save project under a new name"
     ID_PROJECT_SAVE         "Write  project changes to disk"
     ID_PROJECT_SEARCH       "Search for survey text in selected branch and highlight hits"
-    ID_SURVEY_NEW           "Open a new text file window"
     ID_SURVEY_OPEN          "Open an existing text file"
 END
 
@@ -2563,6 +2817,7 @@ BEGIN
     IDS_ERR_MAXLINTABS      "A tab character here is disallowed since it would exceed the editor's limit of 16 per line."
     IDS_ERR_FILEOPENMEM     "The file cannot be opened due to lack of memory or resources."
     IDS_ERR_REPLACE1        "%u replacements made."
+    IDS_CSSBROWSE           "Select a Compass MAK or DAT File"
     IDS_ERR_REPABORT1       "Operation aborted after %u replacements."
     IDS_ERR_REPLINE1        "Since the replacement at line %u failed, the REPLACE ALL operation was terminated at that point."
     IDS_ERR_PROJECT4        "Project script incomplete or corrupted - File: %s%s.WPJ\nLine %d: %s\nDelete script and recreate project or repair script with an editor."
@@ -2630,8 +2885,8 @@ BEGIN
     PRJ_ERR_NODIR1          "The directory %s doesn't exist.  Select OK to create it."
     PRJ_ERR_DIRWORK         "A project work directory cannot be created."
     IDS_PRJ_ERR_COPYTOSELF  "Moves, not copies, are allowed here.  You may copy from a different project."
-    IDS_ERR_NTVBUILD        "Compile aborted:  Could not create workfile.\n%Fs."
-    IDS_ERR_SRVOPEN         "Compile aborted:   %s\n%Fs."
+    IDS_ERR_NTVBUILD        "Compile aborted:  Could not create workfile.\n%s."
+    IDS_ERR_SRVOPEN         "Compile aborted:   %s\n%s."
     IDS_ERR_SRVTEXT         "Compile aborted:  %s\nLine %u  -  %s."
     PRJ_ERR_ZEROCHK         "No survey files were found.  Directory contents have changed."
     IDS_PRJ_ERR_BADNAME     "A survey or workfile base name (excluding extension) must either be blank or have no more than 8 characters."
@@ -2644,7 +2899,7 @@ BEGIN
     PRJ_ERR_NOWRK1          "%s\nA base name for the compiled database is required.  Select OK to edit properties."
     PRJ_ERR_EOF             "Unexpected end of file."
     IDS_ERR_CONVRANGE       "The grid convergence angle must be between -180 and +180."
-    IDS_ERR_TRXBUILD        "Compile aborted:  Error writing temporary workfile.\n%Fs."
+    IDS_ERR_TRXBUILD        "Compile aborted:  Error writing temporary workfile.\n%s."
     IDS_ERR_SRVDUP          "The From and To names are identical"
     IDS_ERR_NTVADJUST       "Adjustment aborted  -  %s."
     IDS_ERR_NTVEMPTY        "The survey file(s) in this branch define no vectors."
@@ -2652,10 +2907,9 @@ BEGIN
     IDS_ERR_IMPNAME1        "A non-blank %s pathname is required."
     IDS_ERR_PRJMEM          "Not enough workspace to load project.  (See About dialog box.).  Try closing the current project if one is open."
     IDS_PRJ_FINDCOUNT2      "There are %u files containing ""%s""."
-    IDS_ERR_IMPPRJPATH1     "CAUTION:  Project %s already exists and will be overwritten.  Also, any existing data files whose names happen to match the generated SRV files (name0001.SRV, etc.)  will be replaced without prompting."
-    IDS_ERR_IMPSEFPATH1     "File %s is either absent or innaccessible."
+    IDS_ERR_WPJPATH1        "%s\n\nCAUTION:  This project already exists and will be overwritten.  Also, any existing data files whose names happen to match the generated data files will be replaced without prompting."
+    IDS_ERR_IMPPATH1        "File %s is either absent or innaccessible."
     IDS_ITMBROWSE           "Select a Survey Data File Name "
-    IDS_ERR_IMPERRMSG1      "Import aborted  -  %s."
 END
 
 STRINGTABLE
@@ -2665,7 +2919,6 @@ BEGIN
     IDS_SHP_NOTIFY3         "Successfully created %d%s shapefile set(s): %s\\%s_x.shp."
     ID_PURGEBRANCH          "Delete compiled workfiles in attached branch"
     ID_REVIEWFONT           "Set font for Review list boxes"
-    ID_IMPORT               "Create new project from imported data (SEF)"
     ID_NULLIMPORT           "Create project from imported data."
     ID_MAKENTC              "Create file <name>.TXT of station coordinates."
     ID_MAPFONT              "Set font for station labels on maps."
@@ -2688,12 +2941,12 @@ BEGIN
     IDS_ERR_BADINT2         "An integer value between %d and %d is required."
     IDS_ERR_BADFLT2         "A decimal value between %.*f and %.*f is required."
     IDS_ERR_SEGSIZE         "A vector's  segment attribute is longer than 255 characters or has too many components."
-    IDS_ERR_TRXSAVE1        "Could not update attributes: %Fs."
+    IDS_ERR_TRXSAVE1        "Could not update attributes: %s."
     IDS_ERR_BADWORK         "The existing database is not fully compatible with this version of the program. To generate a new database while preserving as many map settings as possible, select Recompile Item on the Edit menu  (or press F5)."
     IDS_ERR_WORKSPACE       "This operation would exceed the workspace limit imposed by  this version of WALLS.  (See the About dialog box.)  You can alleviate this by reducing the sizes and/or numbers of projects, files, or windows."
     IDS_PRJ_FINDCOUNT1      "No files contain ""%s""."
     IDS_PRJ_FINDONE1        "One file contains ""%s""."
-    IDS_ERR_REOPENWORK2     "Could not reopen workfile %s: %Fs."
+    IDS_ERR_REOPENWORK2     "Could not reopen workfile %s: %s."
     IDS_COMP_GEOMETRY       "Computing geometry..."
     IDS_COMP_STATISTICS     "Recomputing statistics..."
 END
@@ -2733,8 +2986,8 @@ BEGIN
     IDS_ERR_MAPLOCATE1      "Station ""%s"" is not in the compiled data set being reviewed."
     IDS_ERR_EMPTYNAME       "A non-blank station name must be specified."
     IDS_PRJ_COPYITEM        "NOTE: Changing the path property of this item will cause one or more data files to be moved to a new or different directory.\nSelect OK if this is intended. "
-    IDS_STAT_TITLE          "Adjusted Totals for:  %s"
-    IDS_ERR_SRVOPTION       "Check properties for:  %s\nError in Compile Options: %Fs"
+    IDS_STAT_TITLE          "Adjusted %s Totals for:  %s"
+    IDS_ERR_SRVOPTION       "Check properties for:  %s\nError in Compile Options: %s"
     IDS_STAT_UNITS          "NOTE:  Units are %s."
     IDS_VECLSTFMT           "Vector total: %u  Report Date: %s %s\r\n%s - Reference Station: %s\r\nLength: %.*f %s\r\nHigh Pt: %.*f (%s),  Low Pt: %.*f (%s)\r\n"
     IDS_ERR_EXECUTE1        "Unable to execute program: %s."
@@ -2883,18 +3136,17 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_VECLSTFMTH          "\nPREFIX\tNAME\tEAST\tNORTH\tUP\tFILE\n\n"
+    IDS_VECLSTFMTH          "\r\nPREFIX\tNAME\tEAST\tNORTH\tUP\tFILE:LINE\r\n\r\n"
     IDS_SEF_BROWSE          "Select Folder and File Name for SEF Output"
     IDS_WRL_BROWSE          "Select Folder and File Name for WRL Output"
-    IDS_OK_EXPSEF5          "File %s created --\nSRV files processed: %u  Total vectors: %u  Length: %.2f %s"
-    IDS_ERR_EXPCLOSE1       "Failure writing %s.  Disk may be full."
+    IDS_ERR_EXPCLOSE1       "Select OK to open log. Double-click file address in first column to edit survey data."
     IDS_ERR_EXPTEXT3        "Export aborted:  %s\nLine %u  -  %s."
     IDS_ERR_EXPTEXT1        "Export aborted:  %s"
     IDS_SHP_BROWSE          "Select Folder and/or Base Name for Shapefiles"
     IDS_SHP_NOTYPES         "Nothing exported. No shape types were enabled."
     IDS_PRJ_ERR_NAMEPFX     "The base name or file name cannot have a path prefix. "
     IDS_ERR_MAXPAGES        "A total of no more than 500 pages can be toggled on or off.\nRestart by clearing selections and selecting pages individually."
-    IDS_ERR_PAGEZOOM        "Smaller view widths are disallowed."
+    IDS_ERR_PAGEZOOM        "View widths smaller than 1 meter are disallowed."
     IDS_ERR_NOPAGES         "Nothing to print or preview.  All view frames have been deselected via the Page Layout review dialog."
     IDS_PRJ_LOGNONE1        "%s:\nCompilation has produced no error log for this branch of the project."
 END
@@ -2916,8 +3168,8 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_PRJ_ERRORLOG        "NOTE: Some non-fatal errors were encountered during compilation. Select OK to review error log.\nDouble-click file address in first column of the error log to edit survey data."
-    IDS_NAMLSTFMTH          "\nColumns: PREFIX, NAME, EAST, NORTH, UP, NOTE\n\n"
+    IDS_PRJ_ERRORLOG        "NOTE: Some non-fatal errors were encountered during compilation. Would you like to review the error log?\n\nDouble-click file address in first column of the error log to edit survey data."
+    IDS_NAMLSTFMTH          "\r\nPREFIX\tNAME\tEAST\tNORTH\tUP\tNOTE\r\n\r\n"
     IDS_PRJ_FRAMECHG        "NOTE:  You've changed the default frame size for first-time compilations only.\nUse the Location and Scale dialog to resize the frame for the data being reviewed."
     IDS_ERR_NOPRINTER1      "Unable to connect to printer: %s. Please assign an accessible printer for computing page dimensions."
     IDS_ERR_NOPRINTER       "NOTE: The default printer, if there is one, is currently inaccessible. To allow access to printer settings within Walls, and to display accurate printable regions, you must specify an accessible default printer via the Windows control panel. "
@@ -3123,9 +3375,20 @@ STRINGTABLE
 BEGIN
     IDS_ERR_NONUTMSHP       "Shapefiles can only be produced for UTM compilations. Check the UTM grid-relative setting on the Geographical Reference property page."
     IDS_ERR_DATEELEV        "The elevation given for the geographical reference is out of range. It must be between -1000 and 600000 m for declinations to be estimated using the magnetic model."
-    IDS_NAMLSTFMTH_LL       "\nColumns: PREFIX, NAME, LATITUDE, LONGITUDE, UP, NOTE\n\n"
+    IDS_NAMLSTFMTH_LL       "\r\nColumns: PREFIX, NAME, LATITUDE, LONGITUDE, UP, NOTE\r\n\r\n"
     IDS_SVG_BROWSE2         "Select One or Two SVG files with Adjustable Artwork"
+    IDS_ERR_PAGEZOOMOUT     "View widths larger than 1000 km are disallowed."
     IDS_ERR_LAUNCH_ACC      "Can't open %s.\nFile is in use or can't be accessed."
+    IDS_CSS_FILES           "Compass data files (*.dat;*.mak)"
+    IDS_WPJ_FILES           "Walls project files (*.wpj)"
+    IDS_WPJBROWSE           "Select Folder and File Name for Walls Project"
+    IDS_PRJ_EXPORTLOG       "Select OK to review errors logged during the export operation. Double-click file address in first column to edit survey data."
+END
+
+STRINGTABLE
+BEGIN
+    ID_IMPORT_CSS           "Create project from Compass MAK or DAT file"
+    ID_IMPORT_SEF           "Create project from SEF file"
 END
 
 #endif    // English (United States) resources

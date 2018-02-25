@@ -70,13 +70,16 @@ LPSTR TRXAPI dos_FullPath(LPCSTR pathName,LPCSTR defExt)
 #ifdef _MSC_VER
   /*Static buffer for for returned pathname --*/
   static char _dos_nambuf[MAX_PATH+2];
-  LPSTR pName;
+  LPSTR pName=NULL;
   DWORD len;
 
   if(!(len=GetFullPathName(pathName,MAX_PATH+1,_dos_nambuf,&pName)) ||
-	  len>MAX_PATH || *pName==0) return NULL;
+	  len>MAX_PATH) return NULL;
   if(defExt && *defExt) {
-	  while(*pName && *pName!='.') pName++;
+	  if(!pName || *pName==0) {
+		  pName=_dos_nambuf+strlen(_dos_nambuf);
+	  }
+	  else while(*pName && *pName!='.') pName++;
 	  if(*defExt=='.' || *pName==0) {
 		//Extension override required --
 		if(*pName==0) *pName='.';

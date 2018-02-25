@@ -12,14 +12,12 @@ class CPlotView;
 class CMapDlg : public CDialog
 {
 	DECLARE_DYNAMIC(CMapDlg)
-// Construction
+
 public:
 	CMapDlg(BOOL bPrinter,CWnd* pParent = NULL);	// standard constructor
-
-// Dialog Data 
-
-	//{{AFX_DATA(CMapDlg)
+	~CMapDlg();
 	enum { IDD = IDD_MAPFORMAT };
+
 	CString	m_FrameWidthInches;
 	CString	m_FrameThick;
 	CString	m_MarkerSize;
@@ -37,17 +35,17 @@ public:
 	CString	m_LabelInc;
 	BOOL	m_bUsePageSize;
 	int		m_iLabelType;
-	//}}AFX_DATA
+	int		m_nLblPrefix;
 
-// Implementation
-public:
 	MAPFORMAT *m_pMF;
-	~CMapDlg();
+
 protected:
 	MAPFORMAT m_MF[2];
+	static BOOL m_bConfirmedReset;
 	BOOL m_bSwapping;
 	BOOL m_bExport;
 	BOOL m_bFlagChange;
+	BOOL m_bMapsActive,m_bLineChg,m_bLabelChg,m_bApplyActive;
 
 	CFont m_boldFont;
 	
@@ -73,20 +71,22 @@ protected:
        return ((CButton *)GetDlgItem(id))->GetCheck();
     }
     	
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
-
-	// Generated message map functions
-	//{{AFX_MSG(CMapDlg)
 	virtual BOOL OnInitDialog();
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+
+    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 	afx_msg void OnFrameFont();
 	afx_msg void OnLabelFont();
 	afx_msg void OnNoteFont();
 	afx_msg void OnSwapSets();
 	afx_msg void OnUsePageSize();
 	afx_msg void OnFlagSolid();
-	//}}AFX_MSG
+
+	afx_msg void OnLabelChg();
+	afx_msg void OnLabelTypeChg(UINT id);
+	afx_msg void OnLineChg();
+	afx_msg void OnReset();
+	afx_msg void OnApplyLbl();
+
 	DECLARE_MESSAGE_MAP()
-public:
-	int m_nLblPrefix;
 };

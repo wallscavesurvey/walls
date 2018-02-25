@@ -52,7 +52,7 @@ public:
 	
 	void CDECL WriteArgv(const char *format,...);
 	void CDECL WriteArgv(UINT idFormat,...);
-	void WriteLn() {WriteArgv("\n");}
+	void WriteLn() {WriteArgv("\r\n");}
 	   
 	virtual void Flush();
 	virtual UINT Read(void FAR* lpBuf, UINT nCount);

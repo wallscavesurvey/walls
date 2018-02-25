@@ -34,7 +34,12 @@ CCompView::CCompView()
 	m_pNamTyp=NULL;
 	m_pFlagStyle=NULL;
 	m_pNTWpnt=NULL;
+	m_nLastNetwork=-2;
 	iFindStr=0;
+	m_pOtherPanel=NULL;
+	m_pBaseName=NULL;
+	m_iBaseNameCount=0;
+	m_bBaseName_filled=FALSE;
 }
 
 CCompView::~CCompView()
@@ -43,6 +48,7 @@ CCompView::~CCompView()
 	  ASSERT(CPrjDoc::m_pReviewDoc==GetDocument());
 	  if(pSV) pSV->ResetContents(); //Saves segment changes
 	  CPrjDoc::m_pReviewDoc->CloseWorkFiles();
+	  CPrjDoc::m_pReviewDoc=NULL;
 	  pCV=NULL;
 	  CPrjDoc::m_bComputing=FALSE;
 	  CPrjDoc::m_pReviewNode=NULL;
@@ -50,35 +56,38 @@ CCompView::~CCompView()
 	free(m_pNamTyp);
 	free(m_pFlagStyle);
 	free(m_pNTWpnt);
+	free(m_pBaseName);
 }
 
 BEGIN_MESSAGE_MAP(CCompView, CPanelView)
 	ON_WM_SYSCOMMAND()
-	ON_COMMAND(ID_EDIT_FIND, OnEditFind)
-	ON_COMMAND(ID_FIND_NEXT, OnFindNext)
-	ON_UPDATE_COMMAND_UI(ID_FIND_NEXT,OnUpdateFindNext)
-	ON_LBN_DBLCLK(IDC_SURVEYS,OnSurveyDblClk)
-	ON_LBN_DBLCLK(IDC_SEGMENTS,OnTravDblClk)
-	ON_LBN_SELCHANGE(IDC_SYSTEMS,OnSysChg)
-	ON_LBN_SELCHANGE(IDC_NETWORKS,OnNetChg)
-	ON_LBN_SELCHANGE(IDC_ISOLATED,OnIsolChg)
-	ON_LBN_SELCHANGE(IDC_SEGMENTS,OnTravChg)
-	ON_COMMAND(ID_SURVEYDBLCLK,OnSurveyDblClk)
-	ON_COMMAND(ID_TRAVDBLCLK,OnTravDblClk)
-	
-	//{{AFX_MSG_MAP(CCompView)
-	ON_BN_CLICKED(IDCANCEL, OnFinished)
-	ON_BN_CLICKED(ID_COMPLETED, OnCompleted)
 	ON_WM_DRAWITEM()
 	ON_WM_MEASUREITEM()
+	ON_WM_CONTEXTMENU()
+
+	ON_LBN_DBLCLK(IDC_SURVEYS,OnSurveyDblClk)
+	ON_LBN_DBLCLK(IDC_SEGMENTS,OnTravDblClk)
+	ON_LBN_SELCHANGE(IDC_SYSTEMS,OnSysChgSel)
+	ON_LBN_SELCHANGE(IDC_NETWORKS,OnNetChg)
+	ON_LBN_SELCHANGE(IDC_ISOLATED,OnIsolChgSel)
+	ON_LBN_SELCHANGE(IDC_SEGMENTS,OnTravChgSel)
+	
+	ON_BN_CLICKED(IDCANCEL, OnFinished)
+	ON_BN_CLICKED(ID_COMPLETED, OnCompleted)
 	ON_BN_CLICKED(IDC_HOMETRAV, OnHomeTrav)
 	ON_BN_CLICKED(IDC_FLOATH, OnFloatH)
 	ON_BN_CLICKED(IDC_FLOATV, OnFloatV)
+
+	ON_COMMAND(ID_SURVEYDBLCLK, OnSurveyDblClk)
+	ON_COMMAND(ID_TRAVDBLCLK, OnTravDblClk)
 	ON_COMMAND(ID_MAP_EXPORT, OnMapExport)
-	ON_WM_CONTEXTMENU()
+	ON_COMMAND(ID_EDIT_FIND, OnEditFind)
+	ON_COMMAND(ID_FIND_NEXT, OnFindNext)
+	ON_UPDATE_COMMAND_UI(ID_FIND_NEXT, OnUpdateFindNext)
 	ON_COMMAND(ID_FIND_PREV, OnFindPrev)
 	ON_UPDATE_COMMAND_UI(ID_FIND_PREV, OnUpdateFindPrev)
-	//}}AFX_MSG_MAP
+	ON_COMMAND(ID_TRAV_TOGGLE, OnTravToggle)
+	ON_UPDATE_COMMAND_UI(ID_TRAV_TOGGLE, OnUpdateTravToggle)
 END_MESSAGE_MAP()
 
 void CCompView::UpdateFont()
@@ -144,9 +153,10 @@ void CCompView::OnInitialUpdate()
        IDC_ST_TOTALS,IDC_ST_SURVEYS,IDC_ST_ISOLATED,IDC_ST_UVE,IDC_ST_LOOPS,0};
 
     CPanelView::OnInitialUpdate();
-      
+  
     pCV=this;
-    
+	m_nLastNetwork=-2;
+
     //Lets set the initial window size and position based on the size
     //of the document. We actually do this by resizing the parent frame
     //which has not yet been activated or made visible. (This will be done
@@ -184,6 +194,28 @@ void CCompView::SetTotals(UINT n,double d)
     GetDlgItem(IDC_TOTALS)->SetWindowText(buf);
 }
 
+void CCompView::GetBaseNames()
+{
+	//GetBaseNames from listbox!
+	if(m_pBaseName) {
+		ASSERT(m_bBaseName_filled);
+		ASSERT(pLB(IDC_NETWORKS)->GetCount()==m_iBaseNameCount);
+		return;
+	}
+	ASSERT(!m_bBaseName_filled);
+	m_bBaseName_filled=FALSE;
+	ASSERT(pLB(IDC_NETWORKS)->GetCount()==m_iBaseNameCount);
+	m_pBaseName=(BASENAME *)calloc(m_iBaseNameCount, sizeof(BASENAME));
+	ASSERT(m_pBaseName);
+	CString csText;
+	BASENAME *pName=m_pBaseName;
+	for(int i=0; i<m_iBaseNameCount; i++,pName++) {
+		pLB(IDC_NETWORKS)->GetText(i,csText);
+		memcpy(pName->baseName,(LPCSTR)csText, NET_SIZNAME);
+	}
+	m_bBaseName_filled=TRUE;
+}
+
 void CCompView::SetLoopCount(int nch,int ncv)
 {
     char buf[10];
@@ -193,6 +225,20 @@ void CCompView::SetLoopCount(int nch,int ncv)
     GetDlgItem(IDC_LOOPSV)->SetWindowText(buf);
 }
 
+void CCompView::GetNetworkBaseName(CString &name)
+{
+	CString cs;
+	int i=pLB(IDC_NETWORKS)->GetCurSel();
+	if(i>=0) {
+		cs.SetString(m_pBaseName[i].baseName,NET_SIZNAME);
+		cs.Truncate(NET_SIZNAME);
+		cs.TrimRight();
+		if(cs.Compare("<REF>")) {
+			name.Format(" (%s)",(LPCSTR)cs);
+		}
+	}
+}
+
 void CCompView::NetMsg(NET_WORK *pNet,int bSurvey)
 {
     char buf[80];
@@ -200,6 +246,7 @@ void CCompView::NetMsg(NET_WORK *pNet,int bSurvey)
     //Extend string 6 chars to insure text background goes past right edge of listbox --
     sprintf(buf+NET_SIZNAME,"%7u%10.1f      ",pNet->vectors,LEN_SCALE(pNet->length));
     pLB(bSurvey?IDC_SURVEYS:IDC_NETWORKS)->AddString(buf);
+	if(!bSurvey) m_iBaseNameCount++;
 }
 
 void CCompView::StatMsg(char *msg)
@@ -268,7 +315,7 @@ void CCompView::ResetView()
 	pREV->switchTab(0);
     GetParentFrame()->SetWindowText(NULL);
     m_nLastNetwork=-2;
-    m_nLastSystem=-1;
+    m_nLastSystem=m_nLastTraverse=-1;
     m_nFileno=-1;
     m_bIsol=m_bSys=m_bSeg=0;
     ClearListBox(IDC_NETWORKS);
@@ -283,6 +330,12 @@ void CCompView::ResetView()
     DisableFloat();
     m_bHomeTrav=FALSE;
     CPrjDoc::m_bComputing=TRUE;
+	if(m_iBaseNameCount || m_pBaseName) {
+		free(m_pBaseName);
+		m_pBaseName=NULL;
+		m_iBaseNameCount=0;
+		m_bBaseName_filled=FALSE;
+	}
 }
 
 void CCompView::ResetContents()
@@ -374,7 +427,16 @@ void CCompView::UpdateFloat(int iSys,int iTrav)
 
 void CCompView::OnTravChg()
 {
-    UpdateFloat(pLB(IDC_SYSTEMS)->GetCurSel(),pLB(IDC_SEGMENTS)->GetCurSel());
+    UpdateFloat(pLB(IDC_SYSTEMS)->GetCurSel(),m_nLastTraverse=pLB(IDC_SEGMENTS)->GetCurSel());
+}
+
+void CCompView::OnTravChgSel()
+{
+	if(m_nLastTraverse!=pLB(IDC_SEGMENTS)->GetCurSel()) {
+		OnTravChg();  //update Float button and m_iStrFlag flags
+		//refresh map views where *selected* traverses are shown --
+		GetDocument()->RefreshMapTraverses(TRV_SEL+TRV_PLT); //update preview map prior to first refresh
+	}
 }
 
 void CCompView::PlotTraverse(int iZoom)
@@ -413,7 +475,14 @@ void CCompView::OnCompleted()
 
     ShowAbort(FALSE);
 	pLB(IDC_NETWORKS)->SetCurSel(-1);
-    OnNetChg();
+
+	if(m_pBaseName) {
+		free(m_pBaseName);
+	}
+	m_pBaseName=NULL;
+	m_bBaseName_filled=FALSE;
+
+	OnNetChg();
     CPrjDoc::m_bComputing=FALSE;
 
 
@@ -458,7 +527,9 @@ void CCompView::OnNetChg()
 {
     int i=pLB(IDC_NETWORKS)->GetCurSel();
     if(i==m_nLastNetwork) return;
-    
+
+	GetBaseNames();
+
     ClearListBox(IDC_ISOLATED);
     GetDlgItem(IDC_SYSTTL)->SetWindowText("");
     m_bIsol=m_bSys=0;
@@ -475,10 +546,9 @@ void CCompView::OnNetChg()
     }
     else {
       PostClose();
-      //m_nLastNetwork=i;
       return;
     }
-    
+
     pLB(IDC_SYSTEMS)->SetRedraw(TRUE);
     pLB(IDC_SYSTEMS)->Invalidate();
     
@@ -486,6 +556,7 @@ void CCompView::OnNetChg()
     if(m_bSys) {
       pLB(IDC_SYSTEMS)->SetCurSel(0);
       OnSysChg();
+	  m_nLastTraverse=0;
     }
     else pLB(IDC_SYSTEMS)->EnableWindow(FALSE);
     
@@ -493,7 +564,8 @@ void CCompView::OnNetChg()
       if(!m_bSys) {
         pLB(IDC_ISOLATED)->SetCurSel(0);
         OnIsolChg();
-      }
+		m_nLastTraverse=0;
+	  }
     }
     else {
       if(!m_bSys) {
@@ -506,6 +578,21 @@ void CCompView::OnNetChg()
     }
     
     pREV->enableView(TAB_TRAV,m_bSys || m_bIsol);
+
+	((CRevFrame *)GetParentFrame())->SendMessage(WM_SETTEXT,0);
+
+	VERIFY(pSV->InitSegTree());
+	PlotTraverse(0);
+
+	GetDocument()->RefreshMaps();
+
+	/*
+	if(m_bSys || m_bIsol) {
+		GetDocument()->RefreshMapTraverses(TRV_SEL);
+	}
+	*/
+
+	pSV->SelectSegListNode(0);
 }
 
 void CCompView::SetSystem(int i)
@@ -531,30 +618,37 @@ void CCompView::SetSystem(int i)
     }
 }
 
-void CCompView::OnSysChg()
+BOOL CCompView::OnSysChg()
 {
+	//Called by listbox selection, or from OnNetChg(), GoToVector(), OnFloat()??, pPV->IncSys()
     int i=pLB(IDC_SYSTEMS)->GetCurSel();
-    if(i<0 || i==m_nLastSystem) return;
+    if(i<0 || i==m_nLastSystem) return 0;
     SetSystem(m_nLastSystem=i);
-    
+    m_nLastTraverse=0;
 	pLB(IDC_ISOLATED)->SetCurSel(-1);
+	return 1;
 }
-                
-void CCompView::OnIsolChg()
+
+void CCompView::OnSysChgSel()
+{
+	if(OnSysChg())
+		GetDocument()->RefreshMapTraverses(TRV_SEL+TRV_PLT);
+}
+
+BOOL CCompView::OnIsolChg()
 {
     ASSERT(pLB(IDC_ISOLATED)->GetCurSel()==0);
-    if(m_nLastSystem==-2) return;
+    if(m_nLastSystem==-2) return 0;
     m_nLastSystem=-2;
     SetSystem(-1);
 	pLB(IDC_SYSTEMS)->SetCurSel(-1);
+	return 1;
 }
 
-void CCompView::EnableUpdateButtons()
+void CCompView::OnIsolChgSel()
 {
-	BOOL bEnable=CPlotView::m_pMapFrame!=NULL;
-	//pSV->Enable(IDC_EXTERNUPDATE,bEnable);
-	pSV->Enable(IDC_APPLY,bEnable && CPrjDoc::IsActiveFrame());
-	pPV->Enable(IDC_UPDATEFRAME,bEnable);
+	if(OnIsolChg())
+		GetDocument()->RefreshMapTraverses(TRV_SEL+TRV_PLT);
 }
 
 void CCompView::OnSysCommand(UINT nChar,LONG lParam)
@@ -623,6 +717,19 @@ void CCompView::OnHomeTrav()
 	m_bHomeTrav=TRUE;
     pREV->switchTab(TAB_PLOT);
     m_bHomeTrav=FALSE;
+	if(!pSV->IsTravSelected() || !pSV->IsTravVisible()) {
+		pSV->SetTravSelected(TRUE); //View selected vs floated
+		pSV->SetTravVisible(TRUE);  //Attach Traverse bullet
+		pSV->SetRawTravVisible(TRUE);  //Attach raw raverse bullet
+		pPV->SetCheck(IDC_TRAVSELECTED, TRUE);
+		pPV->SetCheck(IDC_TRAVFLOATED, FALSE);
+	}
+	else if(!pSV->IsRawTravVisible()) {
+		pSV->SetRawTravVisible(TRUE);  //Attach raw raverse bullet
+	}
+	else return;
+	//refresh all map views --
+	GetDocument()->RefreshMapTraverses(0);
 }
 
 void CCompView::OnFloat(int i)
@@ -678,12 +785,16 @@ void CCompView::OnFloat(int i)
 
     pLB(IDC_SEGMENTS)->SetTopIndex(iTopTrav);
     pLB(IDC_SEGMENTS)->SetCurSel(iTrav);
-    OnTravChg();
+
+    OnTravChg(); //update Float button and m_iStrFlag flags
     
 	pTV->ClearContents();
     
-	//When the map panel is next selected, the map will be replotted
-	if(pPV->m_bProfile==i) m_iStrFlag=-2;
+	m_iStrFlag=-2; //When the map panel is next selected, the map will be replotted
+
+	if(!GetSegView()->InitSegTree()) return;
+	PlotTraverse(0);
+	GetDocument()->RefreshMaps();
 }
 
 void CCompView::OnFloatH()
@@ -694,12 +805,6 @@ void CCompView::OnFloatH()
 void CCompView::OnFloatV()
 {
 	OnFloat(1);
-}
-
-void CCompView::SelectNetwork(UINT recNTN)
-{
-	pLB(IDC_NETWORKS)->SetCurSel(recNTN);
-	OnNetChg();
 }
 
 BOOL CCompView::GoToComponent()
@@ -721,7 +826,8 @@ BOOL CCompView::GoToComponent()
 	}
 	ASSERT(nrec>0);
 	if(--nrec!=m_nLastNetwork) {
-		SelectNetwork(nrec);
+		pLB(IDC_NETWORKS)->SetCurSel(nrec);
+		OnNetChg();
 		return 2;
 	}
 	ASSERT(prec==(UINT)dbNTP.Position());
@@ -764,7 +870,7 @@ void CCompView::GoToVector()
 		int sel=pLB(IDC_SEGMENTS)->GetCurSel();
 		ASSERT(e>=0 && e<pLB(IDC_SEGMENTS)->GetCount());
 		pLB(IDC_SEGMENTS)->SetCurSel(e);
-		OnTravChg();
+		OnTravChg(); //update Float button and m_iStrFlag flags
 	  }
 	} //if Go NTS
 }
@@ -774,7 +880,12 @@ void CCompView::OnEditFind()
 	CNetFindDlg dlg;
 
 	if(dlg.DoModal()==IDOK) {
-		if(pPLT->str_id) GoToVector();
+		if(pPLT->str_id) {
+			DWORD rec=dbNTP.Position();
+			GoToComponent(); //may change component (pCV->OnNetChg), update preview map, and refresh map frames!
+			VERIFY(!dbNTP.Go(rec));
+			CPrjDoc::PositionReview();
+		}
 		else {
 			ASSERT(abs(CPrjDoc::m_iFindVectorIncr)==2);
 			//Locate TO station on map --
@@ -803,7 +914,10 @@ void CCompView::OnFindPrevNext(int iDir)
 	ASSERT(pPLT->str_id);
 	if(pPLT->str_id) {
 		ASSERT(abs(CPrjDoc::m_iFindVectorIncr)==1);
-		GoToVector();
+		DWORD rec=dbNTP.Position();
+		GoToComponent(); //may change component (pCV->OnNetChg), update preview map, and refresh map frames!
+		VERIFY(!dbNTP.Go(rec));
+		CPrjDoc::PositionReview();
 	}
 }
 
@@ -859,4 +973,15 @@ void CCompView::OnContextMenu(CWnd* pWnd, CPoint point)
 		}
 		pPopup->TrackPopupMenu(TPM_LEFTALIGN|TPM_RIGHTBUTTON,point.x,point.y,pWnd->GetParentFrame());
 	}
+}
+
+void CCompView::OnTravToggle()
+{
+	TravToggle();
+	GetDocument()->RefreshMapTraverses(TRV_SEL+TRV_PLT);
+}
+
+void CCompView::OnUpdateTravToggle(CCmdUI* pCmdUI)
+{
+	pCmdUI->Enable(m_iStrFlag>0 && (m_iStrFlag&(NET_STR_FLOATV|NET_STR_FLOATH))!=0);
 }

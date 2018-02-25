@@ -162,43 +162,40 @@ static apfcn_u GetFlagNamePosition(BOOL bInit)
 
 static apfcn_i CopyNumericLabel(LPSTR dst,LPCSTR src)
 {
-	//To insure proper sorting of numeric labels we'll convert each digit string
-	//to a 1 byte followed by a reversed 4-byte string corresponding to the number.
+	//To insure proper sorting of prefixed names, convert a trailing digit string
+	//to an 8-byte digit string --.
 
-	int len=0;
-	char nbuf[4];
-	while(*src) {
-		if(isdigit((BYTE)*src)) {
-			len+=5;
-			*(DWORD *)nbuf=atoi(src);
-			*dst++=1;
-			*dst++=nbuf[3];
-			*dst++=nbuf[2];
-			*dst++=nbuf[1];
-			*dst++=nbuf[0];
-			while(isdigit((BYTE)*++src));
-		}
-		else {
-			len++;
-			*dst++=*src++;
-		}
+	int len=strlen(src);
+	LPCSTR p=src+len;
+	for(;p>src;p--) {
+	   if(!isdigit(p[-1])) break;
 	}
+	//*p=0 or p points to first digit
+	len=p-src;
+	if(len) memcpy(dst,src,len);
+	if(*p) len+=sprintf(dst+len,"%08u",atoi(p));
+	dst[len]=0;
+	_strupr(dst);
 	return len;
 }
 
-static apfcn_u GetPrefixNameKey(char *pfxname,char *sprefix,UINT pfx)
+static apfcn_u GetPrefixNameKey(char *pfxnamekey,char *sprefix,UINT pfx)
 {
-	int e=1; //offset of next char in pfxname
+	int e=1; //offset of next char in pfxnamekey
 	char buf[SRV_SIZNAME+2];
 
 	if(pPLT->end_pfx!=pfx) pfx=CSegView::GetPrefix(sprefix,pPLT->end_pfx);
 	if(!pfx) *sprefix=0;
-
-    if(*sprefix) e+=CopyNumericLabel(pfxname+e,sprefix);
-	pfxname[e++]=0;
+    if(*sprefix) {
+	    strcpy(pfxnamekey+1,sprefix);
+		_strupr(pfxnamekey+1);
+		e+=strlen(sprefix);
+	}
+	pfxnamekey[e++]=0;
 	GetStrFromFld(buf,pPLT->name,SRV_SIZNAME);
-	e+=CopyNumericLabel(pfxname+e,buf);
-	*pfxname=e-1;
+	_strupr(buf);
+	e+=CopyNumericLabel(pfxnamekey+e,buf);
+	*pfxnamekey=e-1;
 	return pfx;
 }
 
@@ -248,7 +245,7 @@ static UINT PASCAL IndexName(char *sprefix,UINT pfx,int uFlags)
 
 static void empty_msg(CFileBuffer *pFile)
 {
-	pFile->WriteArgv("No stations satisfy the criteria for listing.\n");
+	pFile->WriteArgv("No stations satisfy the criteria for listing.\r\n");
 }
 
 static void UpdateRange(WALLS_CTM &ctm)
@@ -290,7 +287,7 @@ static UINT ListNames(CFileBuffer *pFile,int uFlags,UINT uDecimals,WALLS_CTM &ct
 				if(lastflagpos!=(flagpos=*(DWORD *)&keybuf[1])) {
 					//New flag section --
 					if(lastflagpos!=(DWORD)-1)
-						pFile->WriteArgv("Station total: %u\n\n",count);
+						pFile->WriteArgv("Station total: %u\r\n\r\n",count);
 					count=0;
 					lastflagpos=flagpos;
 					flagpos=trx_RevDW(flagpos);
@@ -303,9 +300,9 @@ static UINT ListNames(CFileBuffer *pFile,int uFlags,UINT uDecimals,WALLS_CTM &ct
 						if(!*flagbuf) strcpy(flagbuf,"<Unnamed Flags>");
 						else trx_Stxpc(flagbuf);
 					}
-					pFile->WriteArgv("%s\n",flagbuf);
+					pFile->WriteArgv("%s\r\n",flagbuf);
 					memset(flagbuf,'=',strlen(flagbuf));
-					pFile->WriteArgv("%s\n",flagbuf);
+					pFile->WriteArgv("%s\r\n",flagbuf);
 				}
 			}
 
@@ -326,7 +323,7 @@ static UINT ListNames(CFileBuffer *pFile,int uFlags,UINT uDecimals,WALLS_CTM &ct
 					xy[1]=LEN_SCALE(pPLT->xyz[1]);
 				}
 
-				pFile->WriteArgv("%s\t%.*f\t%.*f\t%.*f%s\n",GetPrefixName(namebuf),
+				pFile->WriteArgv("%s\t%.*f\t%.*f\t%.*f%s\r\n",GetPrefixName(namebuf),
 				  dec,xy[0],
 				  dec,xy[1],
 				  uDecimals,LEN_SCALE(pPLT->xyz[2]),pNote);
@@ -340,7 +337,7 @@ static UINT ListNames(CFileBuffer *pFile,int uFlags,UINT uDecimals,WALLS_CTM &ct
 	  e=pixNAM->Next();
   }
   ixSEG.UseTree(NTA_SEGTREE);
-  if(count) pFile->WriteArgv("\nStation total: %u\n",count);
+  if(count) pFile->WriteArgv("\r\nStation total: %u\r\n",count);
   else if(!(uFlags&LFLG_GROUPBYFLAG)) empty_msg(pFile);
   return count_ttl;
 }
@@ -402,7 +399,7 @@ static UINT PASCAL ListVector(CFileBuffer *pFile,char *sprefix,UINT pfx,UINT uDe
 
 static void PASCAL ListSegTitle(CFileBuffer *pFile,CSegListNode *pNode)
 {
-    char buf[SRV_SIZ_NAMBUF];
+    char buf[SRV_SIZ_SEGNAMBUF];
     char *pTitle;
     if(pNode->TitlePtr()) pTitle=pNode->TitlePtr();
     else {
@@ -425,7 +422,7 @@ static int PASCAL ListSegPath(CFileBuffer *pFile,CSegListNode *pNode)
 	  return 2;
 	}
 	ASSERT(pNode->TitlePtr());
-	pFile->WriteArgv("%s\nSegment: ",pNode->TitlePtr());
+	pFile->WriteArgv("%s\r\nSegment: ",pNode->TitlePtr());
 	return 1;
 }
 
@@ -614,7 +611,7 @@ void CSegView::WriteVectorList(SEGSTATS *st,LPCSTR pathname,CSegListNode *pNode,
 
 		if(pRNode->InheritedState(FLG_GRIDMASK)) {
 			char fmt[180];
-			file.WriteArgv("%s\n",CPrjDoc::GetDatumStr(fmt,pRNode));
+			file.WriteArgv("%s\r\n",CPrjDoc::GetDatumStr(fmt,pRNode));
 		}
 
 		if(uFlags&(LFLG_NOTEONLY|LFLG_GROUPBYFLAG|LFLG_GROUPBYLOC)) {
@@ -623,15 +620,15 @@ void CSegView::WriteVectorList(SEGSTATS *st,LPCSTR pathname,CSegListNode *pNode,
 			file.WriteArgv((uFlags&LFLG_VECTOR)?"vectors":"stations");
 			if(uFlags&LFLG_GROUPBYFLAG) file.WriteArgv(" with non-hidden flags");
 			if(uFlags&LFLG_GROUPBYLOC) {
-				file.WriteArgv(" in current %s view.\n",pSV->InitPlotView()->m_bProfile?"profile":"plan");
+				file.WriteArgv(" in current %s view.\r\n",pSV->InitPlotView()->m_bProfile?"profile":"plan");
 				pPV->ClearTracker();
 				CPrjDoc::InitViewFormat(&vf);
-				file.WriteArgv("View Frame: %.2f x %.2f %s, View Direction: %.2f Deg\nFrame Center: %.2f East, %.2f North, %.2f Up\n",
+				file.WriteArgv("View Frame: %.2f x %.2f %s, View Direction: %.2f Deg\r\nFrame Center: %.2f East, %.2f North, %.2f Up\r\n",
 					LEN_SCALE(vf.fPanelWidth),LEN_SCALE(vf.fPanelWidth*vf.fFrameHeight/vf.fFrameWidth),
 					LEN_UNITSTR(),vf.fPanelView,LEN_SCALE(vf.fCenterEast),LEN_SCALE(vf.fCenterNorth),LEN_SCALE(vf.fCenterUp));
 				init_ctm(ctm,vf);
 			}
-			else file.WriteArgv(".\n");
+			else file.WriteArgv(".\r\n");
 		}
 
 	 	file.WriteArgv((uFlags&LFLG_VECTOR)?IDS_VECLSTFMTH:((uFlags&LFLG_LATLONG)?IDS_NAMLSTFMTH_LL:IDS_NAMLSTFMTH));
@@ -687,7 +684,9 @@ void CSegView::WriteVectorList(SEGSTATS *st,LPCSTR pathname,CSegListNode *pNode,
 					}
 					memcpy(xyz,pPLT->xyz,sizeof(xyz));
 			  }
-			  else if(bInFrame) pfx=IndexName(sprefix,pfx,uFlags);
+			  else if(bInFrame) {
+				  pfx=IndexName(sprefix, pfx, uFlags);
+			  }
 
 			  last_end_id=end_id;
 			  bLastRef=(end_id==0);
@@ -695,9 +694,9 @@ void CSegView::WriteVectorList(SEGSTATS *st,LPCSTR pathname,CSegListNode *pNode,
 			}
 
 			if(uFlags&LFLG_VECTOR) {
-				file.WriteArgv("\nVectors Listed: ");
-				if(count) file.WriteArgv("%u  Length: %.2f %s\n",count,LEN_SCALE(length),LEN_UNITSTR());
-				else file.WriteArgv("None\n");
+				file.WriteArgv("\r\nVectors Listed: ");
+				if(count) file.WriteArgv("%u  Length: %.2f %s\r\n",count,LEN_SCALE(length),LEN_UNITSTR());
+				else file.WriteArgv("None\r\n");
 			}
 			else {
 			    //Now actually produce the name-ordered report --
@@ -705,10 +704,10 @@ void CSegView::WriteVectorList(SEGSTATS *st,LPCSTR pathname,CSegListNode *pNode,
 			}
 			if(count && (uFlags&LFLG_GROUPBYLOC)) {
 				if(outCount) file.WriteArgv("Vectors Crossing Frame Boundary: %u",outCount);
-				file.WriteArgv("\nCoordinate Ranges of Stations Inside Frame --\n"
-					"East: \t%.*f\t%.*f\n"
-					"North:\t%.*f\t%.*f\n"
-					"Elev: \t%.*f\t%.*f\n",
+				file.WriteArgv("\nCoordinate Ranges of Stations Inside Frame --\r\n"
+					"East: \t%.*f\t%.*f\r\n"
+					"North:\t%.*f\t%.*f\r\n"
+					"Elev: \t%.*f\t%.*f\r\n",
 					uDecimals,LEN_SCALE(ctm.xyzmin[0]),uDecimals,LEN_SCALE(ctm.xyzmax[0]),
 					uDecimals,LEN_SCALE(ctm.xyzmin[1]),uDecimals,LEN_SCALE(ctm.xyzmax[1]),
 					uDecimals,LEN_SCALE(ctm.xyzmin[2]),uDecimals,LEN_SCALE(ctm.xyzmax[2]));
