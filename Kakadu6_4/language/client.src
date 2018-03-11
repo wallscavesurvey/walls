@@ -1,0 +1,6 @@
+-o client_english.cpp
+-i ../apps/compressed_io/kdu_client.h
+-i ../apps/kdu_client/kdu_client.cpp
+-i ../apps/kdu_client/kdu_clientx.cpp
+-i ../apps/client_server/kdu_client_window.cpp
+-i ../apps/client_server/kdcs_comms.cpp

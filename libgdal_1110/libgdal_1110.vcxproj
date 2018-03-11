@@ -1,0 +1,366 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="alg\contour.cpp" />
+    <ClCompile Include="alg\gdalchecksum.cpp" />
+    <ClCompile Include="alg\gdalcutline.cpp" />
+    <ClCompile Include="alg\gdaldither.cpp" />
+    <ClCompile Include="alg\gdalgeoloc.cpp" />
+    <ClCompile Include="alg\gdalgrid.cpp" />
+    <ClCompile Include="alg\gdalmediancut.cpp" />
+    <ClCompile Include="alg\gdalproximity.cpp" />
+    <ClCompile Include="alg\gdalrasterize.cpp" />
+    <ClCompile Include="alg\gdalrasterpolygonenumerator.cpp" />
+    <ClCompile Include="alg\gdalsievefilter.cpp" />
+    <ClCompile Include="alg\gdalsimplewarp.cpp" />
+    <ClCompile Include="alg\gdaltransformer.cpp" />
+    <ClCompile Include="alg\gdalwarper.cpp" />
+    <ClCompile Include="alg\gdalwarpkernel.cpp" />
+    <ClCompile Include="alg\gdalwarpkernel_opencl.c" />
+    <ClCompile Include="alg\gdalwarpoperation.cpp" />
+    <ClCompile Include="alg\gdal_crs.c" />
+    <ClCompile Include="alg\gdal_rpc.cpp" />
+    <ClCompile Include="alg\gdal_tps.cpp" />
+    <ClCompile Include="alg\llrasterize.cpp" />
+    <ClCompile Include="alg\polygonize.cpp" />
+    <ClCompile Include="alg\rasterfill.cpp" />
+    <ClCompile Include="alg\thinplatespline.cpp" />
+    <ClCompile Include="frmts\bmp\bmpdataset.cpp" />
+    <ClCompile Include="frmts\ecw\ecwdataset.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">FRMT_ecw;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">FRMT_ecw;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="frmts\gdalallregister.cpp">
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">FRMT_pds;FRMT_webp;FRMT_mrsid;FRMT_gtiff;FRMT_png;FRMT_gif;FRMT_bmp;FRMT_jpeg;FRMT_zlib;FRMT_pnm;FRMT_jp2kak;FRMT_ecw;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">FRMT_pds;FRMT_webp;FRMT_mrsid;FRMT_gtiff;FRMT_png;FRMT_gif;FRMT_bmp;FRMT_jpeg;FRMT_zlib;FRMT_pnm;FRMT_jp2kak;FRMT_ecw;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <ClCompile Include="frmts\gif\biggifdataset.cpp" />
+    <ClCompile Include="frmts\gif\gifabstractdataset.cpp" />
+    <ClCompile Include="frmts\gif\gifdataset.cpp" />
+    <ClCompile Include="frmts\gif\giflib\dgif_lib.c" />
+    <ClCompile Include="frmts\gif\giflib\egif_lib.c" />
+    <ClCompile Include="frmts\gif\giflib\gifalloc.c" />
+    <ClCompile Include="frmts\gif\giflib\gif_err.c" />
+    <ClCompile Include="frmts\gif\giflib\gif_hash.c" />
+    <ClCompile Include="frmts\gtiff\geotiff.cpp" />
+    <ClCompile Include="frmts\gtiff\gt_citation.cpp" />
+    <ClCompile Include="frmts\gtiff\gt_overview.cpp" />
+    <ClCompile Include="frmts\gtiff\gt_wkt_srs.cpp" />
+    <ClCompile Include="frmts\gtiff\libgeotiff\geotiff_proj4.c" />
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_extra.c" />
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_free.c" />
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_get.c" />
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_names.c" />
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_new.c" />
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_normalize.c" />
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_print.c" />
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_set.c" />
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_simpletags.c" />
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_tiffp.c" />
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_trans.c" />
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_write.c" />
+    <ClCompile Include="frmts\gtiff\libgeotiff\xtiff.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_aux.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_close.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_codec.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_color.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_compress.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_dir.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_dirinfo.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_dirread.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_dirwrite.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_dumpmode.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_error.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_extension.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_fax3.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_fax3sm.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_flush.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_getimage.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_jpeg.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_jpeg_12.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_luv.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_lzma.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_lzw.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_next.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_ojpeg.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_open.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_packbits.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_pixarlog.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_predict.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_print.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_read.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_strip.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_swab.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_thunder.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_tile.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_version.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_vsi.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_warning.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_write.c" />
+    <ClCompile Include="frmts\gtiff\libtiff\tif_zip.c" />
+    <ClCompile Include="frmts\gtiff\tifvsi.cpp" />
+    <ClCompile Include="frmts\gtiff\tif_float.c" />
+    <ClCompile Include="frmts\hfa\hfa_overviews.cpp" />
+    <ClCompile Include="frmts\jp2kak\jp2kakdataset.cpp" />
+    <ClCompile Include="frmts\jpeg\jpgdataset.cpp" />
+    <ClCompile Include="frmts\jpeg\vsidataio.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="frmts\mrsid\mrsiddataset.cpp" />
+    <ClCompile Include="frmts\mrsid\mrsidstream.cpp" />
+    <ClCompile Include="frmts\pds\nasakeywordhandler.cpp" />
+    <ClCompile Include="frmts\pds\pdsdataset.cpp" />
+    <ClCompile Include="frmts\png\pngdataset.cpp" />
+    <ClCompile Include="frmts\raw\rawdataset.cpp" />
+    <ClCompile Include="frmts\webp\webpdataset.cpp" />
+    <ClCompile Include="gcore\gdalallvalidmaskband.cpp" />
+    <ClCompile Include="gcore\gdalclientserver.cpp" />
+    <ClCompile Include="gcore\gdalcolortable.cpp" />
+    <ClCompile Include="gcore\gdaldataset.cpp" />
+    <ClCompile Include="gcore\gdaldefaultasync.cpp" />
+    <ClCompile Include="gcore\gdaldefaultoverviews.cpp" />
+    <ClCompile Include="gcore\gdaldllmain.cpp" />
+    <ClCompile Include="gcore\gdaldriver.cpp" />
+    <ClCompile Include="gcore\gdaldrivermanager.cpp" />
+    <ClCompile Include="gcore\gdalexif.cpp" />
+    <ClCompile Include="gcore\gdalgeorefpamdataset.cpp" />
+    <ClCompile Include="gcore\gdalgmlcoverage.cpp" />
+    <ClCompile Include="gcore\gdaljp2abstractdataset.cpp" />
+    <ClCompile Include="gcore\gdaljp2box.cpp" />
+    <ClCompile Include="gcore\gdaljp2metadata.cpp" />
+    <ClCompile Include="gcore\gdalmajorobject.cpp" />
+    <ClCompile Include="gcore\gdalmultidomainmetadata.cpp" />
+    <ClCompile Include="gcore\gdalnodatamaskband.cpp" />
+    <ClCompile Include="gcore\gdalnodatavaluesmaskband.cpp" />
+    <ClCompile Include="gcore\gdalopeninfo.cpp" />
+    <ClCompile Include="gcore\gdalpamdataset.cpp" />
+    <ClCompile Include="gcore\gdalpamproxydb.cpp" />
+    <ClCompile Include="gcore\gdalpamrasterband.cpp" />
+    <ClCompile Include="gcore\gdalproxydataset.cpp" />
+    <ClCompile Include="gcore\gdalproxypool.cpp" />
+    <ClCompile Include="gcore\gdalrasterband.cpp" />
+    <ClCompile Include="gcore\gdalrasterblock.cpp" />
+    <ClCompile Include="gcore\gdalvirtualmem.cpp" />
+    <ClCompile Include="gcore\gdal_misc.cpp" />
+    <ClCompile Include="gcore\gdal_rat.cpp" />
+    <ClCompile Include="gcore\gdal_rpcimdio.cpp" />
+    <ClCompile Include="gcore\overview.cpp" />
+    <ClCompile Include="gcore\rasterio.cpp" />
+    <ClCompile Include="ogr\gml2ogrgeometry.cpp" />
+    <ClCompile Include="ogr\ogr2gmlgeometry.cpp" />
+    <ClCompile Include="ogr\ograssemblepolygon.cpp" />
+    <ClCompile Include="ogr\ogrct.cpp" />
+    <ClCompile Include="ogr\ogrcurve.cpp" />
+    <ClCompile Include="ogr\ogrfeature.cpp" />
+    <ClCompile Include="ogr\ogrfeaturedefn.cpp" />
+    <ClCompile Include="ogr\ogrfeaturequery.cpp" />
+    <ClCompile Include="ogr\ogrfeaturestyle.cpp" />
+    <ClCompile Include="ogr\ogrfielddefn.cpp" />
+    <ClCompile Include="ogr\ogrgeomediageometry.cpp" />
+    <ClCompile Include="ogr\ogrgeometry.cpp" />
+    <ClCompile Include="ogr\ogrgeometrycollection.cpp" />
+    <ClCompile Include="ogr\ogrgeometryfactory.cpp" />
+    <ClCompile Include="ogr\ogrlinearring.cpp" />
+    <ClCompile Include="ogr\ogrlinestring.cpp" />
+    <ClCompile Include="ogr\ogrmultilinestring.cpp" />
+    <ClCompile Include="ogr\ogrmultipoint.cpp" />
+    <ClCompile Include="ogr\ogrmultipolygon.cpp" />
+    <ClCompile Include="ogr\ogrpgeogeometry.cpp" />
+    <ClCompile Include="ogr\ogrpoint.cpp" />
+    <ClCompile Include="ogr\ogrpolygon.cpp" />
+    <ClCompile Include="ogr\ogrspatialreference.cpp" />
+    <ClCompile Include="ogr\ogrutils.cpp" />
+    <ClCompile Include="ogr\ogr_api.cpp" />
+    <ClCompile Include="ogr\ogr_expat.cpp" />
+    <ClCompile Include="ogr\ogr_fromepsg.cpp" />
+    <ClCompile Include="ogr\ogr_opt.cpp" />
+    <ClCompile Include="ogr\ogr_srsnode.cpp" />
+    <ClCompile Include="ogr\ogr_srs_dict.cpp" />
+    <ClCompile Include="ogr\ogr_srs_erm.cpp" />
+    <ClCompile Include="ogr\ogr_srs_esri.cpp" />
+    <ClCompile Include="ogr\ogr_srs_ozi.cpp" />
+    <ClCompile Include="ogr\ogr_srs_panorama.cpp" />
+    <ClCompile Include="ogr\ogr_srs_pci.cpp" />
+    <ClCompile Include="ogr\ogr_srs_proj4.cpp" />
+    <ClCompile Include="ogr\ogr_srs_usgs.cpp" />
+    <ClCompile Include="ogr\ogr_srs_validate.cpp" />
+    <ClCompile Include="ogr\ogr_srs_xml.cpp" />
+    <ClCompile Include="ogr\swq.cpp" />
+    <ClCompile Include="ogr\swq_expr_node.cpp" />
+    <ClCompile Include="ogr\swq_op_general.cpp" />
+    <ClCompile Include="ogr\swq_op_registrar.cpp" />
+    <ClCompile Include="ogr\swq_parser.cpp" />
+    <ClCompile Include="ogr\swq_select.cpp" />
+    <ClCompile Include="port\cplgetsymbol.cpp" />
+    <ClCompile Include="port\cplkeywordparser.cpp" />
+    <ClCompile Include="port\cplstring.cpp" />
+    <ClCompile Include="port\cplstringlist.cpp" />
+    <ClCompile Include="port\cpl_atomic_ops.cpp" />
+    <ClCompile Include="port\cpl_base64.cpp" />
+    <ClCompile Include="port\cpl_conv.cpp" />
+    <ClCompile Include="port\cpl_csv.cpp" />
+    <ClCompile Include="port\cpl_error.cpp" />
+    <ClCompile Include="port\cpl_findfile.cpp" />
+    <ClCompile Include="port\cpl_getexecpath.cpp" />
+    <ClCompile Include="port\cpl_hash_set.cpp" />
+    <ClCompile Include="port\cpl_http.cpp" />
+    <ClCompile Include="port\cpl_list.cpp" />
+    <ClCompile Include="port\cpl_minixml.cpp" />
+    <ClCompile Include="port\cpl_minizip_ioapi.cpp" />
+    <ClCompile Include="port\cpl_minizip_unzip.cpp" />
+    <ClCompile Include="port\cpl_minizip_zip.cpp" />
+    <ClCompile Include="port\cpl_multiproc.cpp" />
+    <ClCompile Include="port\cpl_odbc.cpp" />
+    <ClCompile Include="port\cpl_path.cpp" />
+    <ClCompile Include="port\cpl_progress.cpp" />
+    <ClCompile Include="port\cpl_quad_tree.cpp" />
+    <ClCompile Include="port\cpl_recode.cpp" />
+    <ClCompile Include="port\cpl_recode_stub.cpp" />
+    <ClCompile Include="port\cpl_spawn.cpp" />
+    <ClCompile Include="port\cpl_string.cpp" />
+    <ClCompile Include="port\cpl_strtod.cpp" />
+    <ClCompile Include="port\cpl_time.cpp" />
+    <ClCompile Include="port\cpl_virtualmem.cpp" />
+    <ClCompile Include="port\cpl_vsil.cpp" />
+    <ClCompile Include="port\cpl_vsil_abstract_archive.cpp" />
+    <ClCompile Include="port\cpl_vsil_buffered_reader.cpp" />
+    <ClCompile Include="port\cpl_vsil_cache.cpp" />
+    <ClCompile Include="port\cpl_vsil_curl.cpp" />
+    <ClCompile Include="port\cpl_vsil_gzip.cpp" />
+    <ClCompile Include="port\cpl_vsil_sparsefile.cpp" />
+    <ClCompile Include="port\cpl_vsil_stdin.cpp" />
+    <ClCompile Include="port\cpl_vsil_stdout.cpp" />
+    <ClCompile Include="port\cpl_vsil_subfile.cpp" />
+    <ClCompile Include="port\cpl_vsil_tar.cpp" />
+    <ClCompile Include="port\cpl_vsil_win32.cpp" />
+    <ClCompile Include="port\cpl_vsisimple.cpp" />
+    <ClCompile Include="port\cpl_vsi_mem.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="alg\gdalgrid.h" />
+    <ClInclude Include="alg\gdalwarper.h" />
+    <ClInclude Include="alg\gdalwarpkernel_opencl.h" />
+    <ClInclude Include="alg\gdal_alg.h" />
+    <ClInclude Include="alg\gdal_alg_priv.h" />
+    <ClInclude Include="alg\gvgcpfit.h" />
+    <ClInclude Include="alg\thinplatespline.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{07246777-7600-4117-8F4E-F3592AAC97D1}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>libgdal_1110</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)vs_version.props" />
+    <Import Project="$(SolutionDir)zlib.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)vs_version.props" />
+    <Import Project="$(SolutionDir)zlib.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <TargetName>$(ProjectName)D</TargetName>
+    <OutDir>$(WorkLIB)\</OutDir>
+    <IncludePath>$(WorkINC);$(IncludePath)</IncludePath>
+    <LibraryPath>$(WorkLIB);$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(WorkLIB)\</OutDir>
+    <IncludePath>$(WorkINC);$(IncludePath)</IncludePath>
+    <TargetName>$(ProjectName)</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>USE_WIN32_MUTEX;HAVE_LIBZ;WIN32;BIGTIFF_SUPPORT;_DEBUG;_LIB;CPL_DISABLE_DLL;NCSECW_STATIC_LIBS;ZIP_SUPPORT;JPEG_SUPPORT;ZLIB_WINAPI;_CRT_SECURE_NO_WARNINGS;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\port;.\gcore;.\alg;.\ogr;.\ogr\ogrsf_frmts;.\frmts\gtiff\libgeotiff;.\frmts\gtiff;.\frmts\gtiff\libtiff;$(WorkDIR)libpng164;$(WorkINC)\MRSID9;$(WorkINC)\turbojpeg;.\frmts\gif\giflib;.\frmts\raw;$(WorkDIR)Kakadu6_4\apps\kdu_compress;$(WorkDIR)Kakadu6_4\apps\jp2;$(WorkDIR)Kakadu6_4\apps\compressed_io;$(WorkDIR)Kakadu6_4\coresys\common;$(WorkDIR)Kakadu6_4\apps\support;$(WorkDIR)Kakadu6_4\apps\image;$(WorkDIR)ECW_3.3\source\include;\libraries\MrSID9\include;$(ZLibSrcDir)</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <DisableSpecificWarnings>4996;4244</DisableSpecificWarnings>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    </Lib>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>
+      </Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>USE_WIN32_MUTEX;HAVE_LIBZ;WIN32;BIGTIFF_SUPPORT;NDEBUG;CPL_DISABLE_DLL;_LIB;ZLIB_WINAPI;ZIP_SUPPORT;JPEG_SUPPORT;NCSECW_STATIC_LIBS;_CRT_SECURE_NO_WARNINGS;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>.\port;.\gcore;.\alg;.\ogr;.\ogr\ogrsf_frmts;.\frmts\gtiff\libgeotiff;.\frmts\gtiff;.\frmts\gtiff\libtiff;$(WorkDIR)libpng164;$(WorkINC)\MRSID9;$(WorkINC)\turbojpeg;.\frmts\gif\giflib;.\frmts\raw;$(WorkDIR)Kakadu6_4\apps\kdu_compress;$(WorkDIR)Kakadu6_4\apps\jp2;$(WorkDIR)Kakadu6_4\apps\compressed_io;$(WorkDIR)Kakadu6_4\coresys\common;$(WorkDIR)Kakadu6_4\apps\support;$(WorkDIR)Kakadu6_4\apps\image;$(WorkDIR)ECW_3.3\source\include;\libraries\MrSID9\include;$(ZLibSrcDir)</AdditionalIncludeDirectories>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <DisableSpecificWarnings>4996;4244</DisableSpecificWarnings>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Lib>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    </Lib>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>
+      </Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

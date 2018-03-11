@@ -32,6 +32,6 @@
 	 versions do not match.  The zlib version used in this build is recorded
 	 below:
      -->
-    <ZLibSrcDir>\Work12\zlib-1.2.8</ZLibSrcDir>
+    <ZLibSrcDir>$(SolutionDir)\zlib123</ZLibSrcDir>
   </PropertyGroup>
 </Project>

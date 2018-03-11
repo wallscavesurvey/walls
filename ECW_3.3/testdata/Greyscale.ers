@@ -1,0 +1,42 @@
+DatasetHeader Begin
+	Version		= "6.0"
+	Name		= "Greyscale.ers"
+	LastUpdated	= Mon Jul 19 01:31:19 GMT 1999
+	DataFile	= "Greyscale.ecw"
+	DataSetType	= Translated
+	DataType	= Raster
+	ByteOrder	= LSBFirst
+	CoordinateSpace Begin
+		Datum		= "NAD27"
+		Projection	= "NUTM11"
+		CoordinateType	= EN
+		Rotation	= 0:0:0.0
+	CoordinateSpace End
+	RasterInfo Begin
+		CellType	= Unsigned8BitInteger
+		CellInfo Begin
+			Xdimension	= 10
+			Ydimension	= 10
+		CellInfo End
+		NrOfLines	= 1500
+		NrOfCellsPerLine	= 1500
+		RegistrationCoord Begin
+			Eastings	= 475900.90839250002
+			Northings	= 3628704.6741760001
+		RegistrationCoord End
+		NrOfBands	= 1
+		BandId Begin
+			Value		= "Pseudo"
+		BandId End
+		RegionInfo Begin
+			Type		= Polygon
+			RegionName	= "All"
+			SubRegion	= {
+				0	0
+				0	1500
+				1500	1500
+				1500	0
+			}
+		RegionInfo End
+	RasterInfo End
+DatasetHeader End

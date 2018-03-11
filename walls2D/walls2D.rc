@@ -66,6 +66,7 @@ END
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\walls.ico"
 
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Accelerator
@@ -94,17 +95,17 @@ END
 // Dialog
 //
 
-IDD_UPDATELINK DIALOG 0, 0, 313, 103
+IDD_UPDATELINK DIALOGEX 0, 0, 313, 114
 STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Update Web Links in About Box"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
 BEGIN
-    EDITTEXT        IDC_ADOBE_URL,61,25,238,13,ES_AUTOHSCROLL
-    EDITTEXT        IDC_WALLS_URL,61,53,238,13,ES_AUTOHSCROLL
-    DEFPUSHBUTTON   "OK",IDOK,98,83,50,14
-    PUSHBUTTON      "Cancel",IDCANCEL,160,83,50,14
-    LTEXT           "Adobe URL:",IDC_STATIC,14,27,42,10
-    LTEXT           "Walls URL:",IDC_STATIC,14,55,42,10
+    EDITTEXT        IDC_ADOBE_URL,61,30,238,13,ES_AUTOHSCROLL
+    EDITTEXT        IDC_WALLS_URL,61,58,238,13,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,98,94,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,160,94,50,14
+    LTEXT           "Adobe URL:",IDC_STATIC,14,32,42,10
+    LTEXT           "Walls URL:",IDC_STATIC,14,60,42,10
 END
 
 IDD_ABOUTBOX DIALOGEX 0, 0, 336, 180
@@ -113,15 +114,15 @@ CAPTION "About Walls2D"
 FONT 8, "MS Shell Dlg", 0, 0, 0x0
 BEGIN
     CTEXT           "Walls Home Page",IDC_WALLS_URL,103,135,127,11
+    CTEXT           "Walls2D Version 1.23 - SVG Map Viewer\nBuild 2016-06-12\nCopyright © 2016 by David McKenzie, Austin TX",IDC_STATIC,51,17,237,28,SS_NOPREFIX
     DEFPUSHBUTTON   "OK",IDOK,172,157,68,14,WS_GROUP
     PUSHBUTTON      "Update Web Links",IDC_LINKUPDATE,97,157,68,14
     ICON            IDR_MAINFRAME,IDC_STATIC,23,20,20,20
-    CTEXT           "Walls2D Version 1.21 - SVG Map Viewer\nBuild 2011-04-06\nCopyright © 2011 by David McKenzie, Austin TX",IDC_STATIC,51,17,237,28,SS_NOPREFIX
     GROUPBOX        "",IDC_STATIC,7,3,322,148
     CTEXT           "To obtain more information and the latest versions of Walls and Walls2D please visit",IDC_STATIC,12,123,311,8
-    EDITTEXT        IDC_WALLS2D_INFO,22,52,290,31,ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY | NOT WS_TABSTOP
-    CTEXT           "Adobe SVG Viewer Download Area",IDC_ADOBE_URL,71,109,185,11
-    LTEXT           "NOTE: This program requires that the Adobe SVG Viewer 3.0 be installed. The viewer is free for download at",IDC_STATIC,22,90,288,17
+    EDITTEXT        IDC_WALLS2D_INFO,22,50,290,28,ES_MULTILINE | ES_AUTOVSCROLL | ES_READONLY | NOT WS_TABSTOP
+    CTEXT           "Adobe SVG Viewer Download Area",IDC_ADOBE_URL,71,108,185,11
+    LTEXT           "NOTE: This program requires that Adobe SVG Viewer be installed. Version 3.03 of the viewer (compatible with Windows XP/Vista/7/8.x/10) is free for download at",IDC_STATIC,27,87,280,17
 END
 
 
@@ -176,7 +177,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 307
         TOPMARGIN, 7
-        BOTTOMMARGIN, 97
+        BOTTOMMARGIN, 108
     END
 
     IDD_ABOUTBOX, DIALOG
@@ -241,7 +242,9 @@ END
 //
 
 IDB_COLDTOOLBAR         BITMAP                  "res\\coldtool.bmp"
+
 IDB_HOTTOOLBAR          BITMAP                  "res\\hottoolb.bmp"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -249,7 +252,25 @@ IDB_HOTTOOLBAR          BITMAP                  "res\\hottoolb.bmp"
 //
 
 WALLS2D.HTM             HTML                    "res\\walls2D.htm"
+
 WALLS2D_IE9.HTM         HTML                    "res\\walls2D_IE9.htm"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_UPDATELINK AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_ABOUTBOX AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -375,7 +396,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_ABOUT_TEXT          "Walls2D is intended for viewing Scalable Vector Graphics (SVG) files that are specially conditioned for use with Walls Project Editor v2. This conditioning allows roundtrip processing between Walls and SVG-capable programs like Adobe Illustrator."
+    IDS_ABOUT_TEXT          "Walls2D is intended for viewing Scalable Vector Graphics (SVG) files that are specially conditioned for use with Walls Project Editor v2. This conditioning allows roundtrip processing between Walls and Adobe Illustrator. See Walls Help for details."
     IDS_ADDRESS             "Address"
 END
 

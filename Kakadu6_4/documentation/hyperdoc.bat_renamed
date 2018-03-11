@@ -1,0 +1,5 @@
+echo off
+echo "Building Documentation and Java Interfaces"
+kdu_hyperdoc -s hyperdoc.src -o html_pages -java ../../java/kdu_jni ../managed/kdu_jni ../managed/kdu_aux ../managed/all_includes
+echo on
+

@@ -1039,7 +1039,9 @@ bool CUpdateTSSDlg::ScanDBF()
 	CNTY_DATA cData;
 
 	double dLength,dDepth;
-	bool bIncluded,bLocated;
+	int iUndef;
+	bool bIncluded,bLocated,bOther;
+	bool bRumored,bSpring,bEntrance;
 
 	for(rec=1;rec<=num_dbfRecs;rec++) {
 
@@ -1047,13 +1049,42 @@ bool CUpdateTSSDlg::ScanDBF()
 		if(m_dbf.IsDeleted()) continue;
 		cData.Clear();
 
-		if(*(char *)m_dbf.FldPtr(dbf_fldnum[f_rumored])=='Y') {
-			mdb_stats[F_ST_RUMORED_COUNT]++;
-			continue;
-		}
-		bIncluded=false;
+		bIncluded=bSpring=bEntrance=bOther=false;
+		bRumored=(*(char *)m_dbf.FldPtr(dbf_fldnum[f_rumored])=='Y');
+
 		m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[f_type]);
-		if(!csVal.Compare("Cave")) {
+		iUndef=csVal.Find('?');
+		if(iUndef>0 && iUndef==csVal.GetLength()-1) {
+			csVal.Truncate(iUndef);
+		}
+		else iUndef=0;
+
+		if(!csVal.Compare("Spring")) {
+			bSpring=true;
+		}
+		else if(!csVal.Compare("Other")) {
+			//ignore all non-karst records
+			bOther=true;
+		}
+
+		if(!bRumored && !bOther && ((bSpring && !iUndef) || (!bSpring &&  *(char *)m_dbf.FldPtr(dbf_fldnum[f_has_spring])=='Y'))) {
+			mdb_stats[F_ST_SPRING_COUNT]++;
+			cData.nSprings++;
+		}
+
+		if(bOther || iUndef || bRumored) {
+		    if(!bOther) {
+				if(iUndef && !bRumored) {
+					mdb_stats[F_ST_UNDEFINED_COUNT]++;
+					cData.nUndefined++;
+				}
+				//county data has no rumored column --
+				if(bRumored)
+				   mdb_stats[F_ST_RUMORED_COUNT]++;
+			}
+			//check maps and photos
+		}
+		else if(!csVal.Compare("Cave")) {
 			mdb_stats[F_ST_CAVE_COUNT]++;
 			cData.nCaves++;
 			m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[f_length]);
@@ -1103,8 +1134,9 @@ bool CUpdateTSSDlg::ScanDBF()
 				}
 			}
 			#endif
-		}
+		} //cave
 		else {
+			//neither a cave, other, rumored, or undefined
 			if(!csVal.Compare("Sink")||!csVal.Compare("Cavity")) {
 				mdb_stats[F_ST_SINK_FEATURE_COUNT]++;
 				cData.nSinks++;
@@ -1114,34 +1146,35 @@ bool CUpdateTSSDlg::ScanDBF()
 				cData.nShelters++;
 			}
 			else if(!csVal.Compare("Spring")) {
-				mdb_stats[F_ST_SPRING_COUNT]++;
-				cData.nSprings++;
+				//already handled;
 			}
-			else if(csVal.Find('?')>0) {
-				mdb_stats[F_ST_UNDEFINED_COUNT]++;
-				cData.nUndefined++;
+			else if(!csVal.Compare("Entrance")) {
+				bEntrance=true;
+				//check photos and maps
 			}
-			else continue;
-		}
+			else {
+				errmsg.Format("Invalid type, \"%s\", assigned to record %u",
+					(LPCSTR)csVal,rec);
+				goto _ret;
+			}
+		} //not a cave
 
-		if(!cData.nSprings && *(char *)m_dbf.FldPtr(dbf_fldnum[f_has_spring])=='Y') {
-			mdb_stats[F_ST_SPRING_COUNT]++;
-			cData.nSprings++;
-		}
-
-		m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[f_county]);
-		if(!IndexCounty(csVal,cData))
-			goto _errTrx;
-
-		m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[f_latitude]);
-		double dLat=atof(csVal);
-		m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[f_longitude]);
-		bLocated=(dLat<32.2 && atof(csVal)>-103.3);
-		if(bLocated) mdb_stats[F_ST_LOCATION_COUNT]++;
-		else {
-			m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[f_quadrangle]);
-			if(!csVal.IsEmpty() && csVal.CompareNoCase("Unknown")) mdb_stats[F_ST_TOPOGRAPHIC_ONLY]++;
-			else mdb_stats[F_ST_LOST_CAVE_COUNT]++;
+		if(!bRumored && !bOther) {
+			//not reporting county counts of entrances or rumored features.
+			if(!bEntrance || bSpring) {
+				m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[f_county]);
+				if(!IndexCounty(csVal, cData)) goto _errTrx;
+			}
+			m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[f_latitude]);
+			double dLat=atof(csVal);
+			m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[f_longitude]);
+			bLocated=(dLat<32.2 && atof(csVal)>-103.3);
+			if(bLocated) mdb_stats[F_ST_LOCATION_COUNT]++;
+			else {
+				m_dbf.GetTrimmedFldStr(csVal,dbf_fldnum[f_quadrangle]);
+				if(!csVal.IsEmpty() && csVal.CompareNoCase("Unknown")) mdb_stats[F_ST_TOPOGRAPHIC_ONLY]++;
+				else mdb_stats[F_ST_LOST_CAVE_COUNT]++;
+			}
 		}
 
 		//Now  scan relevant fields in m_dbf to accumulate additional statistics.
@@ -1184,11 +1217,10 @@ bool CUpdateTSSDlg::ScanDBF()
 						else if(f==f_photos) mdb_stats[F_ST_PHOTOGRAPHED_COUNT]++;
 					}
 				}
-				else if(fTyp=='L') {
+				else if(!bRumored && !bEntrance && fTyp=='L') {
 					LPCSTR pL=(LPCSTR)m_dbf.FldPtr(fn);
 					if(*pL=='Y' || *pL=='T') {
 						switch(f) {
-							case f_rumored : mdb_stats[F_ST_RUMORED_COUNT]++; break;
 							case f_aesthetic : mdb_stats[F_ST_AESTHETIC_COUNT]++; break;
 							case f_archeological : mdb_stats[F_ST_ARCHEOLOGICAL_COUNT]++; break;
 							case f_bad_air : mdb_stats[F_ST_BAD_AIR_COUNT]++; break;
@@ -1199,8 +1231,6 @@ bool CUpdateTSSDlg::ScanDBF()
 							case f_historical : mdb_stats[F_ST_HISTORICAL_COUNT]++; break;
 							case f_hydrological : mdb_stats[F_ST_HYDROLOGICAL_COUNT]++; break;
 							case f_paleontological : mdb_stats[F_ST_PALEONTOLOGICAL_COUNT]++; break;
-							case f_has_spring : break; //already handled
-							default: ASSERT(0);
 						}
 					}
 				} //L

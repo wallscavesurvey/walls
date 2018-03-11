@@ -1,0 +1,13 @@
+-o misc_english.cpp
+-i ../apps/args/args.cpp
+-i ../apps/compressed_io/kdu_file_io.h
+-i ../apps/compressed_io/kdu_video_io.h
+-i ../apps/caching_sources/kdu_cache.cpp
+-i ../apps/support/kdu_stripe_compressor.cpp
+-i ../apps/support/kdu_stripe_decompressor.cpp
+-i ../apps/support/kdu_region_decompressor.cpp
+-i ../apps/support/kdu_region_compositor.cpp
+
+
+
+

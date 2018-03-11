@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Kakadu-demo-apps", "Kakadu-demo-apps-setup\win32_deploy.vdproj", "{BE653412-B0E3-4D5B-8780-999701584B5A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "configure_environment", "Kakadu-demo-apps-setup\configure_environment.vcproj", "{A2919C2B-E910-4BFD-8119-597981F7933D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BE653412-B0E3-4D5B-8780-999701584B5A}.Debug|Win32.ActiveCfg = Debug
+		{BE653412-B0E3-4D5B-8780-999701584B5A}.Debug|Win32.Build.0 = Debug
+		{BE653412-B0E3-4D5B-8780-999701584B5A}.Release|Win32.ActiveCfg = Release
+		{BE653412-B0E3-4D5B-8780-999701584B5A}.Release|Win32.Build.0 = Release
+		{A2919C2B-E910-4BFD-8119-597981F7933D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A2919C2B-E910-4BFD-8119-597981F7933D}.Debug|Win32.Build.0 = Debug|Win32
+		{A2919C2B-E910-4BFD-8119-597981F7933D}.Release|Win32.ActiveCfg = Release|Win32
+		{A2919C2B-E910-4BFD-8119-597981F7933D}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,3 @@
+-o jp2_english.cpp
+-i ../apps/jp2/jp2_shared.h
+-i ../apps/jp2/jp2.cpp

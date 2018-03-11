@@ -34,12 +34,12 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-    <Import Project="..\vs_version.props" />
+    <Import Project="$(SolutionDir)vs_version.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-    <Import Project="..\vs_version.props" />
+    <Import Project="$(SolutionDir)vs_version.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
@@ -243,7 +243,7 @@
     <Image Include="res\tssicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\Samples\IE Programs\mfcie\res\MFC2.AVI" />
+    <None Include="$(WorkDIR)..\Samples\IE Programs\mfcie\res\MFC2.AVI" />
     <None Include="res\reselect.rc2" />
     <None Include="res\bkground.htm">
       <DeploymentContent>true</DeploymentContent>

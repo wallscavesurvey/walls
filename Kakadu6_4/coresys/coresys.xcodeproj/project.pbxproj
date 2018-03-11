@@ -1,0 +1,511 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 44;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		404EB7770E6CC0A0000FA6D1 /* block_coding_common.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB7690E6CC0A0000FA6D1 /* block_coding_common.cpp */; };
+		404EB7780E6CC0A0000FA6D1 /* block_coding_common.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB76A0E6CC0A0000FA6D1 /* block_coding_common.h */; };
+		404EB7790E6CC0A0000FA6D1 /* block_decoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB76B0E6CC0A0000FA6D1 /* block_decoder.cpp */; };
+		404EB77A0E6CC0A0000FA6D1 /* block_encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB76C0E6CC0A0000FA6D1 /* block_encoder.cpp */; };
+		404EB77B0E6CC0A0000FA6D1 /* decoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB76D0E6CC0A0000FA6D1 /* decoder.cpp */; };
+		404EB77C0E6CC0A0000FA6D1 /* encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB76E0E6CC0A0000FA6D1 /* encoder.cpp */; };
+		404EB77E0E6CC0A0000FA6D1 /* mq_decoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB7700E6CC0A0000FA6D1 /* mq_decoder.cpp */; };
+		404EB77F0E6CC0A0000FA6D1 /* mq_decoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB7710E6CC0A0000FA6D1 /* mq_decoder.h */; };
+		404EB7800E6CC0A0000FA6D1 /* mq_encoder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB7720E6CC0A0000FA6D1 /* mq_encoder.cpp */; };
+		404EB7810E6CC0A0000FA6D1 /* mq_encoder.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB7730E6CC0A0000FA6D1 /* mq_encoder.h */; };
+		404EB7840E6CC0A0000FA6D1 /* x86_coder_local.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB7760E6CC0A0000FA6D1 /* x86_coder_local.h */; };
+		404EB7940E6CC0B3000FA6D1 /* kdu_arch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB7870E6CC0B3000FA6D1 /* kdu_arch.cpp */; };
+		404EB7950E6CC0B3000FA6D1 /* kdu_arch.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB7880E6CC0B3000FA6D1 /* kdu_arch.h */; };
+		404EB7960E6CC0B3000FA6D1 /* kdu_block_coding.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB7890E6CC0B3000FA6D1 /* kdu_block_coding.h */; };
+		404EB7970E6CC0B3000FA6D1 /* kdu_compressed.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB78A0E6CC0B3000FA6D1 /* kdu_compressed.h */; };
+		404EB7980E6CC0B3000FA6D1 /* kdu_elementary.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB78B0E6CC0B3000FA6D1 /* kdu_elementary.h */; };
+		404EB7990E6CC0B3000FA6D1 /* kdu_kernels.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB78C0E6CC0B3000FA6D1 /* kdu_kernels.h */; };
+		404EB79B0E6CC0B3000FA6D1 /* kdu_params.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB78E0E6CC0B3000FA6D1 /* kdu_params.h */; };
+		404EB79C0E6CC0B3000FA6D1 /* kdu_roi_processing.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB78F0E6CC0B3000FA6D1 /* kdu_roi_processing.h */; };
+		404EB79D0E6CC0B3000FA6D1 /* kdu_sample_processing.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB7900E6CC0B3000FA6D1 /* kdu_sample_processing.h */; };
+		404EB79E0E6CC0B3000FA6D1 /* kdu_threads.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB7910E6CC0B3000FA6D1 /* kdu_threads.h */; };
+		404EB79F0E6CC0B3000FA6D1 /* kdu_utils.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB7920E6CC0B3000FA6D1 /* kdu_utils.h */; };
+		404EB7A50E6CC0BC000FA6D1 /* blocks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB7A10E6CC0BC000FA6D1 /* blocks.cpp */; };
+		404EB7A60E6CC0BC000FA6D1 /* codestream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB7A20E6CC0BC000FA6D1 /* codestream.cpp */; };
+		404EB7A70E6CC0BC000FA6D1 /* compressed.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB7A30E6CC0BC000FA6D1 /* compressed.cpp */; };
+		404EB7A80E6CC0BC000FA6D1 /* compressed_local.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB7A40E6CC0BC000FA6D1 /* compressed_local.h */; };
+		404EB7AB0E6CC0CC000FA6D1 /* kernels.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB7AA0E6CC0CC000FA6D1 /* kernels.cpp */; };
+		404EB7AE0E6CC0D9000FA6D1 /* messaging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB7AD0E6CC0D9000FA6D1 /* messaging.cpp */; };
+		404EB7B20E6CC0E7000FA6D1 /* params.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB7B00E6CC0E7000FA6D1 /* params.cpp */; };
+		404EB7B30E6CC0E7000FA6D1 /* params_local.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB7B10E6CC0E7000FA6D1 /* params_local.h */; };
+		404EB7B70E6CC0F3000FA6D1 /* roi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB7B50E6CC0F3000FA6D1 /* roi.cpp */; };
+		404EB7B80E6CC0F3000FA6D1 /* roi_local.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB7B60E6CC0F3000FA6D1 /* roi_local.h */; };
+		404EB7BC0E6CC101000FA6D1 /* kdu_threads.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB7BA0E6CC101000FA6D1 /* kdu_threads.cpp */; };
+		404EB7BD0E6CC101000FA6D1 /* threads_local.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB7BB0E6CC101000FA6D1 /* threads_local.h */; };
+		404EB7D10E6CC10B000FA6D1 /* analysis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB7BF0E6CC10B000FA6D1 /* analysis.cpp */; };
+		404EB7D20E6CC10B000FA6D1 /* analysis_local.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB7C00E6CC10B000FA6D1 /* analysis_local.h */; };
+		404EB7D30E6CC10B000FA6D1 /* colour.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB7C10E6CC10B000FA6D1 /* colour.cpp */; };
+		404EB7D40E6CC10B000FA6D1 /* gcc_colour_altivec_local.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB7C20E6CC10B000FA6D1 /* gcc_colour_altivec_local.h */; };
+		404EB7D70E6CC10B000FA6D1 /* gcc_dwt_altivec_local.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB7C50E6CC10B000FA6D1 /* gcc_dwt_altivec_local.h */; };
+		404EB7DC0E6CC10B000FA6D1 /* multi_transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB7CA0E6CC10B000FA6D1 /* multi_transform.cpp */; };
+		404EB7DD0E6CC10B000FA6D1 /* multi_transform_local.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB7CB0E6CC10B000FA6D1 /* multi_transform_local.h */; };
+		404EB7DE0E6CC10B000FA6D1 /* synthesis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB7CC0E6CC10B000FA6D1 /* synthesis.cpp */; };
+		404EB7DF0E6CC10B000FA6D1 /* synthesis_local.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB7CD0E6CC10B000FA6D1 /* synthesis_local.h */; };
+		404EB7E00E6CC10B000FA6D1 /* transform_local.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB7CE0E6CC10B000FA6D1 /* transform_local.h */; };
+		404EB7E10E6CC10B000FA6D1 /* x86_colour_local.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB7CF0E6CC10B000FA6D1 /* x86_colour_local.h */; };
+		404EB7E20E6CC10B000FA6D1 /* x86_dwt_local.h in Headers */ = {isa = PBXBuildFile; fileRef = 404EB7D00E6CC10B000FA6D1 /* x86_dwt_local.h */; };
+		40830A010F70A18E00738F5A /* kdu_messaging.h in Headers */ = {isa = PBXBuildFile; fileRef = 40830A000F70A18E00738F5A /* kdu_messaging.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		404EB7690E6CC0A0000FA6D1 /* block_coding_common.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = block_coding_common.cpp; sourceTree = "<group>"; };
+		404EB76A0E6CC0A0000FA6D1 /* block_coding_common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = block_coding_common.h; sourceTree = "<group>"; };
+		404EB76B0E6CC0A0000FA6D1 /* block_decoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = block_decoder.cpp; sourceTree = "<group>"; };
+		404EB76C0E6CC0A0000FA6D1 /* block_encoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = block_encoder.cpp; sourceTree = "<group>"; };
+		404EB76D0E6CC0A0000FA6D1 /* decoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = decoder.cpp; sourceTree = "<group>"; };
+		404EB76E0E6CC0A0000FA6D1 /* encoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = encoder.cpp; sourceTree = "<group>"; };
+		404EB7700E6CC0A0000FA6D1 /* mq_decoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mq_decoder.cpp; sourceTree = "<group>"; };
+		404EB7710E6CC0A0000FA6D1 /* mq_decoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mq_decoder.h; sourceTree = "<group>"; };
+		404EB7720E6CC0A0000FA6D1 /* mq_encoder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mq_encoder.cpp; sourceTree = "<group>"; };
+		404EB7730E6CC0A0000FA6D1 /* mq_encoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mq_encoder.h; sourceTree = "<group>"; };
+		404EB7760E6CC0A0000FA6D1 /* x86_coder_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x86_coder_local.h; sourceTree = "<group>"; };
+		404EB7870E6CC0B3000FA6D1 /* kdu_arch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_arch.cpp; sourceTree = "<group>"; };
+		404EB7880E6CC0B3000FA6D1 /* kdu_arch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_arch.h; sourceTree = "<group>"; };
+		404EB7890E6CC0B3000FA6D1 /* kdu_block_coding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_block_coding.h; sourceTree = "<group>"; };
+		404EB78A0E6CC0B3000FA6D1 /* kdu_compressed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_compressed.h; sourceTree = "<group>"; };
+		404EB78B0E6CC0B3000FA6D1 /* kdu_elementary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_elementary.h; sourceTree = "<group>"; };
+		404EB78C0E6CC0B3000FA6D1 /* kdu_kernels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_kernels.h; sourceTree = "<group>"; };
+		404EB78E0E6CC0B3000FA6D1 /* kdu_params.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_params.h; sourceTree = "<group>"; };
+		404EB78F0E6CC0B3000FA6D1 /* kdu_roi_processing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_roi_processing.h; sourceTree = "<group>"; };
+		404EB7900E6CC0B3000FA6D1 /* kdu_sample_processing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_sample_processing.h; sourceTree = "<group>"; };
+		404EB7910E6CC0B3000FA6D1 /* kdu_threads.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_threads.h; sourceTree = "<group>"; };
+		404EB7920E6CC0B3000FA6D1 /* kdu_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_utils.h; sourceTree = "<group>"; };
+		404EB7A10E6CC0BC000FA6D1 /* blocks.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = blocks.cpp; sourceTree = "<group>"; };
+		404EB7A20E6CC0BC000FA6D1 /* codestream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = codestream.cpp; sourceTree = "<group>"; };
+		404EB7A30E6CC0BC000FA6D1 /* compressed.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = compressed.cpp; sourceTree = "<group>"; };
+		404EB7A40E6CC0BC000FA6D1 /* compressed_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = compressed_local.h; sourceTree = "<group>"; };
+		404EB7AA0E6CC0CC000FA6D1 /* kernels.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kernels.cpp; sourceTree = "<group>"; };
+		404EB7AD0E6CC0D9000FA6D1 /* messaging.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = messaging.cpp; sourceTree = "<group>"; };
+		404EB7B00E6CC0E7000FA6D1 /* params.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = params.cpp; sourceTree = "<group>"; };
+		404EB7B10E6CC0E7000FA6D1 /* params_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = params_local.h; sourceTree = "<group>"; };
+		404EB7B50E6CC0F3000FA6D1 /* roi.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = roi.cpp; sourceTree = "<group>"; };
+		404EB7B60E6CC0F3000FA6D1 /* roi_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = roi_local.h; sourceTree = "<group>"; };
+		404EB7BA0E6CC101000FA6D1 /* kdu_threads.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_threads.cpp; sourceTree = "<group>"; };
+		404EB7BB0E6CC101000FA6D1 /* threads_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = threads_local.h; sourceTree = "<group>"; };
+		404EB7BF0E6CC10B000FA6D1 /* analysis.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = analysis.cpp; sourceTree = "<group>"; };
+		404EB7C00E6CC10B000FA6D1 /* analysis_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = analysis_local.h; sourceTree = "<group>"; };
+		404EB7C10E6CC10B000FA6D1 /* colour.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = colour.cpp; sourceTree = "<group>"; };
+		404EB7C20E6CC10B000FA6D1 /* gcc_colour_altivec_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gcc_colour_altivec_local.h; sourceTree = "<group>"; };
+		404EB7C50E6CC10B000FA6D1 /* gcc_dwt_altivec_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gcc_dwt_altivec_local.h; sourceTree = "<group>"; };
+		404EB7CA0E6CC10B000FA6D1 /* multi_transform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = multi_transform.cpp; sourceTree = "<group>"; };
+		404EB7CB0E6CC10B000FA6D1 /* multi_transform_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = multi_transform_local.h; sourceTree = "<group>"; };
+		404EB7CC0E6CC10B000FA6D1 /* synthesis.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = synthesis.cpp; sourceTree = "<group>"; };
+		404EB7CD0E6CC10B000FA6D1 /* synthesis_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = synthesis_local.h; sourceTree = "<group>"; };
+		404EB7CE0E6CC10B000FA6D1 /* transform_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = transform_local.h; sourceTree = "<group>"; };
+		404EB7CF0E6CC10B000FA6D1 /* x86_colour_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x86_colour_local.h; sourceTree = "<group>"; };
+		404EB7D00E6CC10B000FA6D1 /* x86_dwt_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x86_dwt_local.h; sourceTree = "<group>"; };
+		40830A000F70A18E00738F5A /* kdu_messaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_messaging.h; sourceTree = "<group>"; };
+		D2AAC09D05546B4700DB518D /* libkdu_v64D.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libkdu_v64D.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D2AAC09B05546B4700DB518D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		034768DDFF38A45A11DB9C8B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D2AAC09D05546B4700DB518D /* libkdu_v64D.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0867D691FE84028FC02AAC07 /* coresys */ = {
+			isa = PBXGroup;
+			children = (
+				5073E0CA09E734BC00EC74B6 /* Configuration Files */,
+				08FB77ACFE841707C02AAC07 /* Source */,
+				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
+				034768DDFF38A45A11DB9C8B /* Products */,
+			);
+			name = coresys;
+			sourceTree = "<group>";
+		};
+		0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "External Frameworks and Libraries";
+			sourceTree = "<group>";
+		};
+		08FB77ACFE841707C02AAC07 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				404EB7850E6CC0B3000FA6D1 /* common */,
+				404EB7B90E6CC101000FA6D1 /* threads */,
+				404EB7AC0E6CC0D9000FA6D1 /* messaging */,
+				404EB7A90E6CC0CC000FA6D1 /* kernels */,
+				404EB7AF0E6CC0E7000FA6D1 /* parameters */,
+				404EB7A00E6CC0BC000FA6D1 /* compressed */,
+				404EB7B40E6CC0F3000FA6D1 /* roi */,
+				404EB7BE0E6CC10B000FA6D1 /* transform */,
+				404EB7680E6CC0A0000FA6D1 /* coding */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		404EB7680E6CC0A0000FA6D1 /* coding */ = {
+			isa = PBXGroup;
+			children = (
+				404EB7690E6CC0A0000FA6D1 /* block_coding_common.cpp */,
+				404EB76A0E6CC0A0000FA6D1 /* block_coding_common.h */,
+				404EB76B0E6CC0A0000FA6D1 /* block_decoder.cpp */,
+				404EB76C0E6CC0A0000FA6D1 /* block_encoder.cpp */,
+				404EB76D0E6CC0A0000FA6D1 /* decoder.cpp */,
+				404EB76E0E6CC0A0000FA6D1 /* encoder.cpp */,
+				404EB7700E6CC0A0000FA6D1 /* mq_decoder.cpp */,
+				404EB7710E6CC0A0000FA6D1 /* mq_decoder.h */,
+				404EB7720E6CC0A0000FA6D1 /* mq_encoder.cpp */,
+				404EB7730E6CC0A0000FA6D1 /* mq_encoder.h */,
+				404EB7760E6CC0A0000FA6D1 /* x86_coder_local.h */,
+			);
+			path = coding;
+			sourceTree = "<group>";
+		};
+		404EB7850E6CC0B3000FA6D1 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				40830A000F70A18E00738F5A /* kdu_messaging.h */,
+				404EB7870E6CC0B3000FA6D1 /* kdu_arch.cpp */,
+				404EB7880E6CC0B3000FA6D1 /* kdu_arch.h */,
+				404EB7890E6CC0B3000FA6D1 /* kdu_block_coding.h */,
+				404EB78A0E6CC0B3000FA6D1 /* kdu_compressed.h */,
+				404EB78B0E6CC0B3000FA6D1 /* kdu_elementary.h */,
+				404EB78C0E6CC0B3000FA6D1 /* kdu_kernels.h */,
+				404EB78E0E6CC0B3000FA6D1 /* kdu_params.h */,
+				404EB78F0E6CC0B3000FA6D1 /* kdu_roi_processing.h */,
+				404EB7900E6CC0B3000FA6D1 /* kdu_sample_processing.h */,
+				404EB7910E6CC0B3000FA6D1 /* kdu_threads.h */,
+				404EB7920E6CC0B3000FA6D1 /* kdu_utils.h */,
+			);
+			path = common;
+			sourceTree = "<group>";
+		};
+		404EB7A00E6CC0BC000FA6D1 /* compressed */ = {
+			isa = PBXGroup;
+			children = (
+				404EB7A10E6CC0BC000FA6D1 /* blocks.cpp */,
+				404EB7A20E6CC0BC000FA6D1 /* codestream.cpp */,
+				404EB7A30E6CC0BC000FA6D1 /* compressed.cpp */,
+				404EB7A40E6CC0BC000FA6D1 /* compressed_local.h */,
+			);
+			path = compressed;
+			sourceTree = "<group>";
+		};
+		404EB7A90E6CC0CC000FA6D1 /* kernels */ = {
+			isa = PBXGroup;
+			children = (
+				404EB7AA0E6CC0CC000FA6D1 /* kernels.cpp */,
+			);
+			path = kernels;
+			sourceTree = "<group>";
+		};
+		404EB7AC0E6CC0D9000FA6D1 /* messaging */ = {
+			isa = PBXGroup;
+			children = (
+				404EB7AD0E6CC0D9000FA6D1 /* messaging.cpp */,
+			);
+			path = messaging;
+			sourceTree = "<group>";
+		};
+		404EB7AF0E6CC0E7000FA6D1 /* parameters */ = {
+			isa = PBXGroup;
+			children = (
+				404EB7B00E6CC0E7000FA6D1 /* params.cpp */,
+				404EB7B10E6CC0E7000FA6D1 /* params_local.h */,
+			);
+			path = parameters;
+			sourceTree = "<group>";
+		};
+		404EB7B40E6CC0F3000FA6D1 /* roi */ = {
+			isa = PBXGroup;
+			children = (
+				404EB7B50E6CC0F3000FA6D1 /* roi.cpp */,
+				404EB7B60E6CC0F3000FA6D1 /* roi_local.h */,
+			);
+			path = roi;
+			sourceTree = "<group>";
+		};
+		404EB7B90E6CC101000FA6D1 /* threads */ = {
+			isa = PBXGroup;
+			children = (
+				404EB7BA0E6CC101000FA6D1 /* kdu_threads.cpp */,
+				404EB7BB0E6CC101000FA6D1 /* threads_local.h */,
+			);
+			path = threads;
+			sourceTree = "<group>";
+		};
+		404EB7BE0E6CC10B000FA6D1 /* transform */ = {
+			isa = PBXGroup;
+			children = (
+				404EB7BF0E6CC10B000FA6D1 /* analysis.cpp */,
+				404EB7C00E6CC10B000FA6D1 /* analysis_local.h */,
+				404EB7C10E6CC10B000FA6D1 /* colour.cpp */,
+				404EB7C20E6CC10B000FA6D1 /* gcc_colour_altivec_local.h */,
+				404EB7C50E6CC10B000FA6D1 /* gcc_dwt_altivec_local.h */,
+				404EB7CA0E6CC10B000FA6D1 /* multi_transform.cpp */,
+				404EB7CB0E6CC10B000FA6D1 /* multi_transform_local.h */,
+				404EB7CC0E6CC10B000FA6D1 /* synthesis.cpp */,
+				404EB7CD0E6CC10B000FA6D1 /* synthesis_local.h */,
+				404EB7CE0E6CC10B000FA6D1 /* transform_local.h */,
+				404EB7CF0E6CC10B000FA6D1 /* x86_colour_local.h */,
+				404EB7D00E6CC10B000FA6D1 /* x86_dwt_local.h */,
+			);
+			path = transform;
+			sourceTree = "<group>";
+		};
+		5073E0CA09E734BC00EC74B6 /* Configuration Files */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Configuration Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D2AAC09905546B4700DB518D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				404EB7780E6CC0A0000FA6D1 /* block_coding_common.h in Headers */,
+				404EB77F0E6CC0A0000FA6D1 /* mq_decoder.h in Headers */,
+				404EB7810E6CC0A0000FA6D1 /* mq_encoder.h in Headers */,
+				404EB7840E6CC0A0000FA6D1 /* x86_coder_local.h in Headers */,
+				404EB7950E6CC0B3000FA6D1 /* kdu_arch.h in Headers */,
+				404EB7960E6CC0B3000FA6D1 /* kdu_block_coding.h in Headers */,
+				404EB7970E6CC0B3000FA6D1 /* kdu_compressed.h in Headers */,
+				404EB7980E6CC0B3000FA6D1 /* kdu_elementary.h in Headers */,
+				404EB7990E6CC0B3000FA6D1 /* kdu_kernels.h in Headers */,
+				404EB79B0E6CC0B3000FA6D1 /* kdu_params.h in Headers */,
+				404EB79C0E6CC0B3000FA6D1 /* kdu_roi_processing.h in Headers */,
+				404EB79D0E6CC0B3000FA6D1 /* kdu_sample_processing.h in Headers */,
+				404EB79E0E6CC0B3000FA6D1 /* kdu_threads.h in Headers */,
+				404EB79F0E6CC0B3000FA6D1 /* kdu_utils.h in Headers */,
+				404EB7A80E6CC0BC000FA6D1 /* compressed_local.h in Headers */,
+				404EB7B30E6CC0E7000FA6D1 /* params_local.h in Headers */,
+				404EB7B80E6CC0F3000FA6D1 /* roi_local.h in Headers */,
+				404EB7BD0E6CC101000FA6D1 /* threads_local.h in Headers */,
+				404EB7D20E6CC10B000FA6D1 /* analysis_local.h in Headers */,
+				404EB7D40E6CC10B000FA6D1 /* gcc_colour_altivec_local.h in Headers */,
+				404EB7D70E6CC10B000FA6D1 /* gcc_dwt_altivec_local.h in Headers */,
+				404EB7DD0E6CC10B000FA6D1 /* multi_transform_local.h in Headers */,
+				404EB7DF0E6CC10B000FA6D1 /* synthesis_local.h in Headers */,
+				404EB7E00E6CC10B000FA6D1 /* transform_local.h in Headers */,
+				404EB7E10E6CC10B000FA6D1 /* x86_colour_local.h in Headers */,
+				404EB7E20E6CC10B000FA6D1 /* x86_dwt_local.h in Headers */,
+				40830A010F70A18E00738F5A /* kdu_messaging.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		D2AAC09C05546B4700DB518D /* coresys */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB916008733D950010E9CD /* Build configuration list for PBXNativeTarget "coresys" */;
+			buildPhases = (
+				D2AAC09905546B4700DB518D /* Headers */,
+				D2AAC09B05546B4700DB518D /* Frameworks */,
+				D2AAC09A05546B4700DB518D /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = coresys;
+			productName = libcoresys;
+			productReference = D2AAC09D05546B4700DB518D /* libkdu_v64D.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0867D690FE84028FC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB916408733D950010E9CD /* Build configuration list for PBXProject "coresys" */;
+			compatibilityVersion = "Xcode 3.0";
+			hasScannedForEncodings = 1;
+			mainGroup = 0867D691FE84028FC02AAC07 /* coresys */;
+			productRefGroup = 034768DDFF38A45A11DB9C8B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D2AAC09C05546B4700DB518D /* coresys */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D2AAC09A05546B4700DB518D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				404EB7770E6CC0A0000FA6D1 /* block_coding_common.cpp in Sources */,
+				404EB7790E6CC0A0000FA6D1 /* block_decoder.cpp in Sources */,
+				404EB77A0E6CC0A0000FA6D1 /* block_encoder.cpp in Sources */,
+				404EB77B0E6CC0A0000FA6D1 /* decoder.cpp in Sources */,
+				404EB77C0E6CC0A0000FA6D1 /* encoder.cpp in Sources */,
+				404EB77E0E6CC0A0000FA6D1 /* mq_decoder.cpp in Sources */,
+				404EB7800E6CC0A0000FA6D1 /* mq_encoder.cpp in Sources */,
+				404EB7940E6CC0B3000FA6D1 /* kdu_arch.cpp in Sources */,
+				404EB7A50E6CC0BC000FA6D1 /* blocks.cpp in Sources */,
+				404EB7A60E6CC0BC000FA6D1 /* codestream.cpp in Sources */,
+				404EB7A70E6CC0BC000FA6D1 /* compressed.cpp in Sources */,
+				404EB7AB0E6CC0CC000FA6D1 /* kernels.cpp in Sources */,
+				404EB7AE0E6CC0D9000FA6D1 /* messaging.cpp in Sources */,
+				404EB7B20E6CC0E7000FA6D1 /* params.cpp in Sources */,
+				404EB7B70E6CC0F3000FA6D1 /* roi.cpp in Sources */,
+				404EB7BC0E6CC101000FA6D1 /* kdu_threads.cpp in Sources */,
+				404EB7D10E6CC10B000FA6D1 /* analysis.cpp in Sources */,
+				404EB7D30E6CC10B000FA6D1 /* colour.cpp in Sources */,
+				404EB7DC0E6CC10B000FA6D1 /* multi_transform.cpp in Sources */,
+				404EB7DE0E6CC10B000FA6D1 /* synthesis.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB916108733D950010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH_32_BIT)";
+				CONFIGURATION_BUILD_DIR = ../../bin;
+				CONFIGURATION_TEMP_DIR = ../../xcode/coresys/Debug;
+				COPY_PHASE_STRIP = NO;
+				GCC_ALTIVEC_EXTENSIONS = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_ENABLE_SSE3_EXTENSIONS = YES;
+				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_ONE_BYTE_BOOL = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					KDU_MAC_SPEEDUPS,
+					"_GLIBCXX_DEBUG=1",
+					"_GLIBCXX_DEBUG_PEDANTIC=1",
+				);
+				LD_DYLIB_INSTALL_NAME = "$(DYLIB_INSTALL_NAME_BASE:standardizepath)/$(EXECUTABLE_PATH)";
+				OBJROOT = ../../xcode/coresys;
+				SYMROOT = ../../bin;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		1DEB916208733D950010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					i386,
+					ppc,
+					x86_64,
+				);
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)";
+				CONFIGURATION_TEMP_DIR = ../../xcode/coresys/Release;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ALTIVEC_EXTENSIONS = YES;
+				GCC_ENABLE_SSE3_EXTENSIONS = YES;
+				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G4;
+				GCC_ONE_BYTE_BOOL = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					KDU_MAC_SPEEDUPS,
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = NO;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = NO;
+				GCC_WARN_FOUR_CHARACTER_CONSTANTS = NO;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SHADOW = NO;
+				GCC_WARN_SIGN_COMPARE = YES;
+				OBJROOT = ../../xcode/coresys;
+				STRIP_INSTALLED_PRODUCT = YES;
+				STRIP_STYLE = "non-global";
+				SYMROOT = ../../bin;
+			};
+			name = Release;
+		};
+		1DEB916508733D950010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CONFIGURATION_BUILD_DIR = ../../bin;
+				CONFIGURATION_TEMP_DIR = ../../xcode/coresys/Debug;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OBJROOT = ../../xcode/coresys;
+				PREBINDING = NO;
+				PRODUCT_NAME = libkdu_v64D;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+				SYMROOT = ../../bin;
+			};
+			name = Debug;
+		};
+		1DEB916608733D950010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)";
+				CONFIGURATION_TEMP_DIR = ../../xcode/coresys/Release;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OBJROOT = ../../xcode/coresys;
+				PREBINDING = NO;
+				PRODUCT_NAME = libkdu_v64R;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+				SYMROOT = ../../bin;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB916008733D950010E9CD /* Build configuration list for PBXNativeTarget "coresys" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB916108733D950010E9CD /* Debug */,
+				1DEB916208733D950010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB916408733D950010E9CD /* Build configuration list for PBXProject "coresys" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB916508733D950010E9CD /* Debug */,
+				1DEB916608733D950010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0867D690FE84028FC02AAC07 /* Project object */;
+}

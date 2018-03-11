@@ -1,0 +1,107 @@
+KDU_GLIBS =
+# KDU_GLIBS += -static -static-libgcc # This option is for static builds, but
+         # might be problematic on the MAC; use xcode for exotic configurations
+
+CC = g++
+
+INCLUDES = -I../common
+C_OPT = -O3 -DNDEBUG -Wall -Wno-uninitialized $(KDU_GLIBS)
+C_OPT += -DKDU_NO_CPUID_TEST  # You should be able to comment this line out,
+                        # but CPUID tests should not be required on the
+                        # MAC since it will not use older Intel processors
+C_OPT += -msse2 -DKDU_X86_INTRINSICS # Comment out for no MMX/SSE2 speedups
+C_OPT += -fPIC -m32
+# C_OPT += -DKDU_PENTIUM_GCC # Use in place of the above if stack alignment
+                 # problems arise when a shared library is used in conjunction
+                 # with a third party application which does not guarantee the
+                 # alignment expected of the "-msse2" option.  This problem
+                 # should not apply to 64-bit builds.
+#C_OPT += -DKDU_CUSTOM_TEXT   # See "Internationalization" in "Compilation_Instructions.txt"
+#C_OPT += -DKDU_NO_THREADS    # Uncomment to compile without multi-threading
+CFLAGS = $(INCLUDES) $(C_OPT)
+
+BIN_DIR = ../../bin/Mac-x86-32-gcc
+LIB_DIR = ../../lib/Mac-x86-32-gcc
+
+all :: libkdu.a libkdu_v64R.so
+
+clean:
+	rm -f *.o *.so *.a
+
+libkdu.a :: block_coding_common.o block_decoder.o block_encoder.o decoder.o encoder.o mq_decoder.o mq_encoder.o blocks.o codestream.o compressed.o kernels.o messaging.o params.o colour.o analysis.o synthesis.o multi_transform.o roi.o kdu_arch.o kdu_threads.o
+	ar -rv $(LIB_DIR)/libkdu.a *.o
+	ranlib $(LIB_DIR)/libkdu.a
+
+libkdu_v64R.so :: block_coding_common.o block_decoder.o block_encoder.o decoder.o encoder.o mq_decoder.o mq_encoder.o blocks.o codestream.o compressed.o kernels.o messaging.o params.o colour.o analysis.o synthesis.o multi_transform.o roi.o kdu_arch.o kdu_threads.o
+	$(CC) $(CFLAGS) -dynamiclib -o $(LIB_DIR)/libkdu_v64R.so *.o
+
+kdu_arch.o :: ../common/kdu_arch.cpp
+	$(CC) $(CFLAGS) -c ../common/kdu_arch.cpp \
+	      -o kdu_arch.o
+
+kdu_threads.o :: ../threads/kdu_threads.cpp
+	$(CC) $(CFLAGS) -c ../threads/kdu_threads.cpp \
+	      -o kdu_threads.o
+
+mq_encoder.o :: ../coding/mq_encoder.cpp
+	$(CC) $(CFLAGS) -c ../coding/mq_encoder.cpp \
+	      -o mq_encoder.o
+mq_decoder.o :: ../coding/mq_decoder.cpp
+	$(CC) $(CFLAGS) -c ../coding/mq_decoder.cpp \
+	      -o mq_decoder.o
+
+block_coding_common.o :: ../coding/block_coding_common.cpp
+	$(CC) $(CFLAGS) -c ../coding/block_coding_common.cpp \
+	      -o block_coding_common.o
+block_encoder.o :: ../coding/block_encoder.cpp
+	$(CC) $(CFLAGS) -c ../coding/block_encoder.cpp \
+	      -o block_encoder.o
+block_decoder.o :: ../coding/block_decoder.cpp
+	$(CC) $(CFLAGS) -c ../coding/block_decoder.cpp \
+	      -o block_decoder.o
+
+encoder.o :: ../coding/encoder.cpp
+	$(CC) $(CFLAGS) -c ../coding/encoder.cpp \
+	      -o encoder.o
+decoder.o :: ../coding/decoder.cpp
+	$(CC) $(CFLAGS) -c ../coding/decoder.cpp \
+	      -o decoder.o
+
+codestream.o :: ../compressed/codestream.cpp
+	$(CC) $(CFLAGS) -c ../compressed/codestream.cpp \
+	      -o codestream.o
+compressed.o :: ../compressed/compressed.cpp
+	$(CC) $(CFLAGS) -c ../compressed/compressed.cpp \
+	      -o compressed.o
+blocks.o :: ../compressed/blocks.cpp
+	$(CC) $(CFLAGS) -c ../compressed/blocks.cpp \
+	      -o blocks.o
+
+kernels.o :: ../kernels/kernels.cpp
+	$(CC) $(CFLAGS) -c ../kernels/kernels.cpp \
+	      -o kernels.o
+
+messaging.o :: ../messaging/messaging.cpp
+	$(CC) $(CFLAGS) -c ../messaging/messaging.cpp \
+	      -o messaging.o
+
+params.o :: ../parameters/params.cpp
+	$(CC) $(CFLAGS) -c ../parameters/params.cpp \
+
+
+colour.o :: ../transform/colour.cpp
+	$(CC) $(CFLAGS) -c ../transform/colour.cpp \
+	      -o colour.o
+analysis.o :: ../transform/analysis.cpp
+	$(CC) $(CFLAGS) -c ../transform/analysis.cpp \
+	      -o analysis.o
+synthesis.o :: ../transform/synthesis.cpp
+	$(CC) $(CFLAGS) -c ../transform/synthesis.cpp \
+	      -o synthesis.o
+multi_transform.o :: ../transform/multi_transform.cpp
+	$(CC) $(CFLAGS) -c ../transform/multi_transform.cpp \
+	      -o multi_transform.o
+
+roi.o :: ../roi/roi.cpp
+	$(CC) $(CFLAGS) -c ../roi/roi.cpp \
+	      -o roi.o

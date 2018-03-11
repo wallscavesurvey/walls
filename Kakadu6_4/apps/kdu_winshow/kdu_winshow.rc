@@ -1,0 +1,907 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\kdu_winshow.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\kdu_winshow.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "&Open File(s)\t^O",           ID_FILE_OPEN
+        MENUITEM "Open JPIP &URL\t^U",          ID_FILE_OPENURL
+        MENUITEM "&Disconnect JPIP request queue\tAlt-^U", ID_FILE_DISCONNECT
+        MENUITEM SEPARATOR
+        MENUITEM "&Save As\t^S",                ID_FILE_SAVE_AS
+        MENUITEM "Save and &Reload\tAlt-^S",    ID_FILE_SAVEANDRELOAD
+        MENUITEM "Save As (codestreams as &links)", ID_FILE_SAVEASLINKED
+        MENUITEM "Save As (codestreams &embedded)", ID_FILE_SAVEASEMBEDDED
+        MENUITEM SEPARATOR
+        MENUITEM "&Properties\t^P",             ID_FILE_PROPERTIES
+        MENUITEM SEPARATOR
+        MENUITEM "Close Window\t^W",            ID_WINDOW_CLOSE
+        MENUITEM "&Quit Application\t^Q",       ID_APP_EXIT
+    END
+    POPUP "&View"
+    BEGIN
+        MENUITEM "&Horiz. flip\t_",             ID_VIEW_HFLIP
+        MENUITEM "&Vert flip\t|",               ID_VIEW_VFLIP
+        MENUITEM "&Rotate clockwise\t]",        ID_VIEW_ROTATE
+        MENUITEM "R&otate c-clockwise\t[",      ID_VIEW_COUNTER_ROTATE
+        MENUITEM SEPARATOR
+        MENUITEM "Zoom in\tZ",                  ID_VIEW_ZOOM_IN
+        MENUITEM "Zoom out\t^Z",                ID_VIEW_ZOOM_OUT
+        MENUITEM "Zoom in slightly\tShift-Z",   ID_VIEW_ZOOM_IN_SLIGHTLY
+        MENUITEM "Zoom out slightly\tShift-^Z", ID_VIEW_ZOOM_OUT_SLIGHTLY
+        MENUITEM "Optimize Scale\tAlt-Z",       ID_VIEW_OPTIMIZESCALE
+        MENUITEM SEPARATOR
+        MENUITEM "Restore orientation\t=",      ID_VIEW_RESTORE
+        MENUITEM "Refresh display\tR",          ID_VIEW_REFRESH
+        MENUITEM SEPARATOR
+        MENUITEM "Quality Layers (less)\t<",    ID_LAYERS_LESS
+        MENUITEM "Quality Layers (more)\t>",    ID_LAYERS_MORE
+        MENUITEM SEPARATOR
+        MENUITEM "Toggle Status display\t^T",   ID_VIEW_TOGGLESTATUSDISPLAY
+        MENUITEM SEPARATOR
+        MENUITEM "&Widen\tW",                   ID_VIEW_WIDEN
+        MENUITEM "&Shrink\tS",                  ID_VIEW_SHRINK
+        MENUITEM "Scale Pixels &x2\tX",         ID_VIEW_SCALE_X2
+        MENUITEM "&Scale Pixels x1\tAlt-X",     ID_VIEW_SCALE_X1
+        MENUITEM SEPARATOR
+        MENUITEM "Component-&1\t1",             ID_COMPONENT1
+        MENUITEM "Component-&next\t+",          ID_COMPONENT_NEXT
+        MENUITEM "Component-&prev\t-",          ID_COMPONENT_PREV
+        MENUITEM "Single compositing &layer\tL", ID_COMPOSITING_LAYER
+        MENUITEM "&Composite\tC",               ID_MULTI_COMPONENT
+        MENUITEM "&Track-next\tT",              ID_TRACK_NEXT
+        MENUITEM SEPARATOR
+        MENUITEM "Image-next\tENTER",           ID_IMAGE_NEXT
+        MENUITEM "Image-prev\tBKSPC",           ID_IMAGE_PREV
+    END
+    POPUP "F&ocus"
+    BEGIN
+        MENUITEM "Focus &Off\tF",               ID_FOCUS_OFF
+        MENUITEM "&Highlighting\tH",            ID_FOCUS_HIGHLIGHTING, CHECKED
+        MENUITEM "&Widen\tShift-W",             ID_FOCUS_WIDEN
+        MENUITEM "Shrink\tShift-S",             ID_FOCUS_SHRINK
+        MENUITEM "Focus left\tShift-ArrowLeft", ID_FOCUS_LEFT
+        MENUITEM "Focus right\tShift-ArrowRight", ID_FOCUS_RIGHT
+        MENUITEM "Focus up\tShift-ArrowUp",     ID_FOCUS_UP
+        MENUITEM "Focus down\tShift-ArrowDown", ID_FOCUS_DOWN
+    END
+    POPUP "&Modes"
+    BEGIN
+        MENUITEM "F&ussy",                      ID_MODE_FUSSY
+        MENUITEM "R&esilient",                  ID_MODE_RESILIENT
+        MENUITEM "Resilient+&SOP assumption",   ID_MODE_RESILIENT_SOP
+        MENUITEM "F&ast",                       ID_MODE_FAST
+        MENUITEM SEPARATOR
+        MENUITEM "Recommended",                 ID_MODE_RECOMMENDED_THREADS
+        MENUITEM "Process single-threaded",     ID_MODE_SINGLETHREADED
+        MENUITEM "Multi-threaded",              ID_MODE_MULTITHREADED
+        MENUITEM "Increase number of threads",  ID_MODE_MORETHREADS
+        MENUITEM "Decrease number of threads",  ID_MODE_LESSTHREADS
+    END
+    POPUP "Meta&data"
+    BEGIN
+        MENUITEM "Show/hide metadata catalog\tShift-^C", ID_METADATA_CATALOG
+        MENUITEM "Swap focus (image view<->catalog)\tAlt-^C", ID_METADATA_SWAPFOCUS
+        MENUITEM "Add metadata\t^A",            ID_METADATA_ADD
+        MENUITEM "Edit metadata (also right click)\t^E", ID_METADATA_EDIT
+        MENUITEM "Delete metadata\tDEL",        ID_METADATA_DELETE
+        MENUITEM "Copy label text to paste bar\t^C", ID_METADATA_COPYLABEL
+        MENUITEM "Copy metadata as link to paste bar\t^L", ID_METADATA_COPYLINK
+        MENUITEM "Cut metadata to paste bar\t^X", ID_METADATA_CUT
+        MENUITEM "Insert metadata from paste bar\t^V", ID_METADATA_PASTENEW
+        MENUITEM SEPARATOR
+        MENUITEM "Open metashow\t^M",           ID_METADATA_SHOW
+        MENUITEM SEPARATOR
+        MENUITEM "Overlays enabled",            ID_OVERLAY_ENABLED
+        MENUITEM "Flashing overlays",           ID_OVERLAY_FLASHING
+        MENUITEM "Toggle overlay mode\tAlt-^T", ID_OVERLAY_TOGGLE
+        MENUITEM "Restrict overlay to catalog selection\t^R", ID_OVERLAY_RESTRICT
+        MENUITEM SEPARATOR
+        MENUITEM "Ovelays lighter",             ID_OVERLAY_LIGHTER
+        MENUITEM "Overlays heavier",            ID_OVERLAY_HEAVIER
+        MENUITEM SEPARATOR
+        MENUITEM "Double overlay size threshold", ID_OVERLAY_DOUBLESIZE
+        MENUITEM "Halve overlay size threshold", ID_OVERLAY_HALVESIZE
+    END
+    POPUP "&Play"
+    BEGIN
+        MENUITEM "Play forwards\tAlt-ENTER",    ID_PLAY_STARTFORWARD
+        MENUITEM "Play backwards\tAlt-BKSPC",   ID_PLAY_STARTBACKWARD
+        MENUITEM "Stop\tAlt-.",                 ID_PLAY_STOP
+        MENUITEM "Repeat\tAlt-*",               ID_PLAY_REPEAT
+        MENUITEM SEPARATOR
+        MENUITEM "Use native timing\tAlt-=",    ID_PLAY_NATIVE
+        MENUITEM "Custom frame rate",           ID_PLAY_CUSTOM
+        MENUITEM "Scale play rate up\tAlt-ArrowUp", ID_PLAY_FRAMERATEUP
+        MENUITEM "Scale play rate down\tAlt-ArrowDn", ID_PLAY_FRAMERATEDOWN
+    END
+    POPUP "&Windows"
+    BEGIN
+        MENUITEM "New empty window\t^N",        ID_WINDOW_NEW
+        MENUITEM "Arrange all windows\tShift-^A", ID_WINDOW_ARRANGE
+        MENUITEM "Broadcast menu actions\tShift-^B", ID_WINDOW_BROADCAST
+        MENUITEM "Duplicate window\t^D",        ID_WINDOW_DUPLICATE
+        MENUITEM "Next window\tAlt-^TAB",       ID_WINDOW_NEXT
+        MENUITEM "Close this window\t^W",       ID_WINDOW_CLOSE
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About kdu_show...",          ID_APP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS 
+BEGIN
+    "Q",            ID_APP_EXIT,            VIRTKEY, CONTROL, NOINVERT
+    "1",            ID_COMPONENT1,          VIRTKEY, NOINVERT
+    "+",            ID_COMPONENT_NEXT,      ASCII,  NOINVERT
+    "-",            ID_COMPONENT_PREV,      ASCII,  NOINVERT
+    "L",            ID_COMPOSITING_LAYER,   VIRTKEY, NOINVERT
+    "U",            ID_FILE_DISCONNECT,     VIRTKEY, CONTROL, ALT, NOINVERT
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    "U",            ID_FILE_OPENURL,        VIRTKEY, CONTROL, NOINVERT
+    "P",            ID_FILE_PROPERTIES,     VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_SAVE_AS,        VIRTKEY, CONTROL, NOINVERT
+    "S",            ID_FILE_SAVEANDRELOAD,  VIRTKEY, CONTROL, ALT, NOINVERT
+    VK_DOWN,        ID_FOCUS_DOWN,          VIRTKEY, SHIFT, NOINVERT
+    "H",            ID_FOCUS_HIGHLIGHTING,  VIRTKEY, NOINVERT
+    VK_LEFT,        ID_FOCUS_LEFT,          VIRTKEY, SHIFT, NOINVERT
+    "F",            ID_FOCUS_OFF,           VIRTKEY, NOINVERT
+    VK_RIGHT,       ID_FOCUS_RIGHT,         VIRTKEY, SHIFT, NOINVERT
+    "S",            ID_FOCUS_SHRINK,        VIRTKEY, SHIFT, NOINVERT
+    VK_UP,          ID_FOCUS_UP,            VIRTKEY, SHIFT, NOINVERT
+    "W",            ID_FOCUS_WIDEN,         VIRTKEY, SHIFT, NOINVERT
+    "<",            ID_LAYERS_LESS,         ASCII,  NOINVERT
+    ">",            ID_LAYERS_MORE,         ASCII,  NOINVERT
+    "A",            ID_METADATA_ADD,        VIRTKEY, CONTROL, NOINVERT
+    "C",            ID_METADATA_CATALOG,    VIRTKEY, SHIFT, CONTROL, NOINVERT
+    "C",            ID_METADATA_COPYLABEL,  VIRTKEY, CONTROL, NOINVERT
+    "L",            ID_METADATA_COPYLINK,   VIRTKEY, CONTROL, NOINVERT
+    "X",            ID_METADATA_CUT,        VIRTKEY, CONTROL, NOINVERT
+    VK_DELETE,      ID_METADATA_DELETE,     VIRTKEY, NOINVERT
+    "E",            ID_METADATA_EDIT,       VIRTKEY, CONTROL, NOINVERT
+    "V",            ID_METADATA_PASTENEW,   VIRTKEY, CONTROL, NOINVERT
+    "M",            ID_METADATA_SHOW,       VIRTKEY, CONTROL, NOINVERT
+    "C",            ID_METADATA_SWAPFOCUS,  VIRTKEY, CONTROL, ALT, NOINVERT
+    "C",            ID_MULTI_COMPONENT,     VIRTKEY, NOINVERT
+    "R",            ID_OVERLAY_RESTRICT,    VIRTKEY, CONTROL, NOINVERT
+    "T",            ID_OVERLAY_TOGGLE,      VIRTKEY, CONTROL, ALT, NOINVERT
+    VK_DOWN,        ID_PLAY_FRAMERATEDOWN,  VIRTKEY, ALT, NOINVERT
+    VK_UP,          ID_PLAY_FRAMERATEUP,    VIRTKEY, ALT, NOINVERT
+    "=",            ID_PLAY_NATIVE,         ASCII,  ALT, NOINVERT
+    "*",            ID_PLAY_REPEAT,         ASCII,  ALT, NOINVERT
+    VK_BACK,        ID_PLAY_STARTBACKWARD,  VIRTKEY, ALT, NOINVERT
+    VK_RETURN,      ID_PLAY_STARTFORWARD,   VIRTKEY, ALT, NOINVERT
+    ".",            ID_PLAY_STOP,           ASCII,  ALT, NOINVERT
+    "T",            ID_STATUS_TOGGLE,       VIRTKEY, CONTROL, NOINVERT
+    "T",            ID_TRACK_NEXT,          VIRTKEY, NOINVERT
+    "[",            ID_VIEW_COUNTER_ROTATE, ASCII,  NOINVERT
+    "_",            ID_VIEW_HFLIP,          ASCII,  NOINVERT
+    "Z",            ID_VIEW_OPTIMIZESCALE,  VIRTKEY, ALT, NOINVERT
+    "R",            ID_VIEW_REFRESH,        VIRTKEY, NOINVERT
+    "=",            ID_VIEW_RESTORE,        ASCII,  NOINVERT
+    "]",            ID_VIEW_ROTATE,         ASCII,  NOINVERT
+    "X",            ID_VIEW_SCALE_X1,       VIRTKEY, ALT, NOINVERT
+    "X",            ID_VIEW_SCALE_X2,       VIRTKEY, NOINVERT
+    "S",            ID_VIEW_SHRINK,         VIRTKEY, NOINVERT
+    "|",            ID_VIEW_VFLIP,          ASCII,  NOINVERT
+    "W",            ID_VIEW_WIDEN,          VIRTKEY, NOINVERT
+    "Z",            ID_VIEW_ZOOM_IN,        VIRTKEY, NOINVERT
+    "Z",            ID_VIEW_ZOOM_IN_SLIGHTLY, VIRTKEY, SHIFT, NOINVERT
+    "Z",            ID_VIEW_ZOOM_OUT,       VIRTKEY, CONTROL, NOINVERT
+    "Z",            ID_VIEW_ZOOM_OUT_SLIGHTLY, VIRTKEY, SHIFT, CONTROL, NOINVERT
+    "A",            ID_WINDOW_ARRANGE,      VIRTKEY, SHIFT, CONTROL, NOINVERT
+    "B",            ID_WINDOW_BROADCAST,    VIRTKEY, SHIFT, CONTROL, NOINVERT
+    "W",            ID_WINDOW_CLOSE,        VIRTKEY, CONTROL, NOINVERT
+    "D",            ID_WINDOW_DUPLICATE,    VIRTKEY, CONTROL, NOINVERT
+    "N",            ID_WINDOW_NEW,          VIRTKEY, CONTROL, NOINVERT
+    VK_TAB,         ID_WINDOW_NEXT,         VIRTKEY, CONTROL, ALT, NOINVERT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 244, 103
+STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About kdu_show"
+FONT 8, "MS Sans Serif", 0, 0, 0x0
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,10,13,20,20
+    CONTROL         "kdu_show (V6.4) -- an MFC application built using",IDC_STATIC,
+                    "Static",SS_LEFTNOWORDWRAP | SS_NOPREFIX | WS_GROUP,36,12,201,8
+    LTEXT           "Copyright (C) 2001, David Taubman",IDC_STATIC,10,38,119,8
+    DEFPUSHBUTTON   "OK",IDOK,187,82,50,14,WS_GROUP
+    LTEXT           "The University of New South Wales, Sydney, Australia",IDC_STATIC,10,50,165,8
+    CTEXT           "Kakadu: A foundation for JPEG2000 applications",IDC_STATIC,35,22,202,8,SS_NOPREFIX
+    LTEXT           "For licensing, visit ""http://www.kakadusoftware.com""",IDC_STATIC,10,72,177,21
+END
+
+IDD_PROPERTIESBOX DIALOG  0, 0, 237, 119
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Code-Stream Properties  [double click items for more information]"
+FONT 10, "MS Sans Serif"
+BEGIN
+    LISTBOX         IDC_PROPERTIES_LIST,7,7,223,105,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | WS_TABSTOP
+END
+
+IDD_PROPERTYHELP DIALOGEX 0, 0, 272, 154
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_OVERLAPPEDWINDOW
+CAPTION "Explanation of code-stream property"
+FONT 9, "Courier New", 0, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_MESSAGE,7,1,255,140,ES_MULTILINE | ES_AUTOHSCROLL | ES_READONLY | WS_VSCROLL
+END
+
+IDD_CORE_MESSAGES DIALOGEX 0, 0, 208, 126
+STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CLIENTEDGE
+CAPTION "Kakadu Core System Message"
+FONT 10, "Courier", 0, 0, 0x1
+BEGIN
+    LTEXT           "12345678901234567890123456789012345678901234567890",IDC_MESSAGE,2,7,203,119
+END
+
+IDD_JPIP_OPEN DIALOGEX 0, 0, 239, 127
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Open URL for JPIP browsing"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    GROUPBOX        "Server (<hostname/IP addr>[:<port>])",IDC_STATIC,5,5,149,27
+    DEFPUSHBUTTON   "OK",IDOK,181,84,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,181,107,50,14
+    EDITTEXT        IDC_JPIP_SERVER,9,15,141,15,ES_AUTOHSCROLL
+    RTEXT           "Proxy name:",IDC_STATIC,6,86,41,8
+    EDITTEXT        IDC_JPIP_PROXY,51,84,116,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_JPIP_REQUEST,8,44,221,14,ES_AUTOHSCROLL
+    COMBOBOX        IDC_JPIP_CHANNEL_TYPE,167,16,61,46,CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    RTEXT           "Cache dir:",IDC_STATIC,6,109,41,8
+    EDITTEXT        IDC_JPIP_CACHE_DIR,51,107,116,14,ES_AUTOHSCROLL
+    GROUPBOX        "Transport protocol",IDC_STATIC,162,5,71,27
+    CONTROL         "Force interactive",IDC_JPIP_FORCE_INTERACTIVE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,162,64,72,10
+    LTEXT           "Resource or request string (<resource>[<query>[&<query>...]]):",IDC_STATIC,9,35,192,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 6,3,1,0
+ PRODUCTVERSION 6,3,1,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "For licensing, visit http://www.kakadusoftware.com"
+            VALUE "CompanyName", "The University of New South Wales (UNSW), Sydney, Australia"
+            VALUE "FileDescription", "kdu_show MFC Application"
+            VALUE "FileVersion", "6, 3, 1, 0"
+            VALUE "InternalName", "kdu_winshow"
+            VALUE "LegalCopyright", "Copyright (C) 2001, David Taubman, UNSW"
+            VALUE "OriginalFilename", "kdu_show.exe"
+            VALUE "ProductName", "kdu_show Application"
+            VALUE "ProductVersion", "6, 3, 1, 0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 237
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 96
+    END
+
+    IDD_PROPERTIESBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 230
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 112
+    END
+
+    IDD_PROPERTYHELP, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 262
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 147
+    END
+
+    IDD_CORE_MESSAGES, DIALOG
+    BEGIN
+        LEFTMARGIN, 2
+        RIGHTMARGIN, 205
+        TOPMARGIN, 7
+    END
+
+    IDD_JPIP_OPEN, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 234
+        TOPMARGIN, 2
+        BOTTOMMARGIN, 123
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_JPIP_OPEN DLGINIT
+BEGIN
+    IDC_JPIP_CHANNEL_TYPE, 0x403, 1, 0
+"\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "kdu_show"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "kdu_show"
+    AFX_IDS_IDLEMESSAGE     "Ready"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_APP_ABOUT            "Display program information, version number and copyright\nAbout"
+    ID_APP_EXIT             "Quits the entire application; not just this window."
+END
+
+STRINGTABLE 
+BEGIN
+    ID_NEXT_PANE            "Switch to the next window pane\nNext Pane"
+    ID_PREV_PANE            "Switch back to the previous window pane\nPrevious Pane"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_WINDOW_SPLIT         "Split the active window into panes\nSplit"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_EDIT_CLEAR           "Erase the selection\nErase"
+    ID_EDIT_CLEAR_ALL       "Erase everything\nErase All"
+    ID_EDIT_COPY            "Copy the selection and put it on the Clipboard\nCopy"
+    ID_EDIT_CUT             "Cut the selection and put it on the Clipboard\nCut"
+    ID_EDIT_FIND            "Find the specified text\nFind"
+    ID_EDIT_PASTE           "Insert Clipboard contents\nPaste"
+    ID_EDIT_REPEAT          "Repeat the last action\nRepeat"
+    ID_EDIT_REPLACE         "Replace specific text with different text\nReplace"
+    ID_EDIT_SELECT_ALL      "Select the entire document\nSelect All"
+    ID_EDIT_UNDO            "Undo the last action\nUndo"
+    ID_EDIT_REDO            "Redo the previously undone action\nRedo"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "Show or hide the toolbar\nToggle ToolBar"
+    ID_VIEW_STATUS_BAR      "Show or hide the status bar\nToggle StatusBar"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "Change the window size"
+    AFX_IDS_SCMOVE          "Change the window position"
+    AFX_IDS_SCMINIMIZE      "Reduce the window to an icon"
+    AFX_IDS_SCMAXIMIZE      "Enlarge the window to full size"
+    AFX_IDS_SCNEXTWINDOW    "Switch to the next document window"
+    AFX_IDS_SCPREVWINDOW    "Switch to the previous document window"
+    AFX_IDS_SCCLOSE         "Close the active window and prompts to save the documents"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "Restore the window to normal size"
+    AFX_IDS_SCTASKLIST      "Activate Task List"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_OPEN            "Open new JPEG2000 image/video (will close any existing open file)"
+    ID_FILE_CLOSE           "Close current file"
+    ID_FILE_SAVE_AS         "If codestreams (the imagery) were embedded originally, they will be embedded in the saved result.  If codestreams were previously represented by links to external files, they will be saved as links to the same files."
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_HFLIP           "Flip image about the vertical axis"
+    ID_VIEW_VFLIP           "Flip image about the horizontal axis"
+    ID_VIEW_ROTATE          "Rotate image clockwise by 90 degrees"
+    ID_VIEW_COUNTER_ROTATE  "Rotate image counter-clockwise by 90 degrees"
+    ID_VIEW_RESTORE         "Restore view to the original orientation"
+    ID_VIEW_ZOOM_OUT        "Zoom out -- reduce resolution by approximately 50%, while trying to snap to a native scale"
+    ID_VIEW_ZOOM_IN         "Zoom in -- increase resolution approximately two fold, while trying to snap to a native scale"
+    ID_MODE_FUSSY           "Will generate an error if consistency tests discover a problem"
+    ID_MODE_RESILIENT       "Should not fail if there is only one tile-part and no errors in main or tile headers."
+    ID_MODE_FAST            "Skips some consistency tests, to save time.  Fails if an error is encountered."
+    ID_VIEW_WIDEN           "Widens (and lengthens) window by 50% up to the max. image size"
+    ID_VIEW_SHRINK          "Shrink window by about 50%"
+    ID_FILE_PROPERTIES      "Show properties of the most relevant current codestream in a separate dialog.  You can click on entries in the dialog to find out even more information.  These properies are codestream parameter attributes, as opposed to file format metadata."
+END
+
+STRINGTABLE 
+BEGIN
+    ID_COMPONENT1           "Show only individual codestream image components as raw samples, starting from the first component in the codestream."
+    ID_MULTI_COMPONENT      "Render the fully composited result.  For JPX files, the fully composited result may be constructed from multiple compositing layers.  An animation (or video) is a sequence of such fully composited frames."
+    ID_LAYERS_LESS          "Reduce number of quality layers processed by decompressor"
+    ID_MODE_RESILIENT_SOP   "Same as the ""resilient"", except all packets are assumed to have been assigned SOP markers.  If true, recovery is enhanced."
+    ID_MODE_SEEKABLE        "Permits random access when sufficient pointer info available in code-stream."
+    ID_STATUS_TOGGLE        "Change the type of information displayed in the status panel"
+    ID_VIEW_REFRESH         "Decompress and render the current view again from scratch."
+    ID_FILE_DISCONNECT      "Each open window to a JPIP resource has exactly one request queue.  Closing the request queue means you can no longer issue requests from new data from this window.  However, if there are other windows open to the same resource, the content see in this window may continue to be augmented based on user interaction within those windows."
+    ID_JPIP_OPEN            "Remotely browse an image using JPIP."
+    ID_COMPONENT_PREV       "Display the previous image component in sequence, as raw samples."
+    ID_COMPONENT_NEXT       "Display the next image component in sequence, as raw samples."
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FOCUS_OFF            "Turn off focus box.  May not be allowed when interacting with a JPIP server."
+    ID_FOCUS_CENTRE         "Centre focus box within display"
+    ID_FOCUS_HIGHLIGHTING   "Enables/disables highlighting of the focus box region"
+    ID_FOCUS_WIDEN          "Widen the focus box by 50%"
+    ID_FOCUS_SHRINK         "Shrink the focus box by 25%"
+    ID_FOCUS_LEFT           "Pan the focus box around -- pans the view too if you push up against the edge of the image view."
+    ID_FOCUS_RIGHT          "Pan the focus box around -- pans the view too if you push up against the edge of the image view."
+    ID_FOCUS_UP             "Pan the focus box around -- pans the view too if you push up against the edge of the image view."
+    ID_FOCUS_DOWN           "Pan the focus box around -- pans the view too if you push up against the edge of the image view."
+    ID_FILE_COMMENTS        "Display text found in code-stream comment marker segments"
+    ID_VIEW_METADATA        "Activate the auxiliary metadata display dialog"
+    ID_IMAGE_NEXT           "Advance to the next compositing layer, codestream or fully composed frame, depending on the mode established by the above options."
+    ID_IMAGE_PREV           "Advance to the previous compositing layer, codestream or fully composed frame, depending on the mode established by the above options."
+    ID_COMPOSITING_LAYER    "Enter compositing layer/track view mode.  JPX files consist of a sequence of compositing layers, each of which is constructed from coestream components."
+    ID_META_ADD             "Add metadata to describe focus region or whole image entities"
+    ID_OVERLAY_ENABLED      "Enable the display of regions of interest as partially transparent overlays."
+END
+
+STRINGTABLE 
+BEGIN
+    ID_OVERLAY_FLASHING     "Cause regions of interest, shown as partially transparent overlays, to periodically change their appearance so as to make them more noticeable."
+    ID_OVERLAY_TOGGLE       "Toggle between overlays-off, overlays-on and overlays-flashing."
+    ID_OVERLAY_DOUBLESIZE   "Double the size threshold, which governs the minimum size at which a region of interest is shown as overlay transparencies within the display.  This can help to de-clutter an image which is rich in regions of interest."
+    ID_OVERLAY_HALVESIZE    "Halves the size threshold, which governs the minimum size at which a region of interest is shown as overlay transparencies within the display."
+    ID_VIEW_OPTIMIZESCALE   "Makes fine adjustments to the zoom factor, if necessary, to optimize rendering"
+    ID_VIEW_SINGLETRACK     "View next single video track"
+    ID_TRACK_NEXT           "Advance (cyclically) to next presentation track in a video."
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_ZOOM_IN_SLIGHTLY "Increase resolution by about 20%"
+    ID_VIEW_ZOOM_OUT_SLIGHTLY "Decrease resolution by about 20%"
+    ID_OVERLAY_LIGHTER      "Make the region-of-interest overlays more transparent."
+    ID_OVERLAY_HEAVIER      "Make region-of-interest overlays more opaque."
+END
+
+STRINGTABLE 
+BEGIN
+    ID_MODE_WANT_CODESTREAM_COMPONENTS 
+                            "Skips multi-component/colour transformation steps when in single component mode."
+    ID_FILE_SAVEASLINKED    "Saves just the metadata; codestreams (i.e., the imagery) are represented through links into the original files from which they came.  You need to be careful not to delete or modify those files of course.  Link paths are absolute."
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_SAVEASEMBEDDED  "Embeds codestreams (the imagery) within the saved file, as opposed to links to the original locations of the codestreams in your file system."
+    ID_FILE_SAVEANDRELOAD   "Effectively saves the image, closes it and re-opens it in the same window, thereby importing the effects of saved changes.  This can be useful if you have been editing metadata, with some of the items kept in temporary files."
+    ID_Menu                 "Use the status display with this option, to see how many quality layers there actually are."
+    ID_VIEW_TOGGLESTATUSDISPLAY 
+                            "Toggles the set of information displayed in the status panes at the bottom of the window."
+END
+
+STRINGTABLE 
+BEGIN
+    ID_METADATA_CATALOG     "Opens/closes a catalog panel at the right-hand side of the image.  Reveals textual metadata and links which can help with navigation in a richly annotated JPX file."
+    ID_METADATA_ADD         "Adds a region of interest if the image has an active focus box; otherwise adds unassociated (index) metadata or metadata which describes the currently displayed image entity (codestream / compositing layer)."
+    ID_METADATA_EDIT        "Edits any metadata for the image regions or image entity in which the mouse pointer was last found or, if the catalog has keyboard focus, edits the item currently selected in the catalog."
+    ID_METADATA_DELETE      "Deletes the item currently selected within the metadata catalog, along with all its descendants."
+    ID_METADATA_COPYLABEL   "Puts a copy of the label currently selected in the metadata catalog into the paste bar (you can find this just above the catalog)."
+    ID_METADATA_COPYLINK    "Puts a reference to the metadata item currently selected in the catalog into the paste bar (you can find this just above the catalog).  You use this to create links to the referenced metadata."
+    ID_METADATA_CUT         "Use this to mark the node selected in the catalog for moving to another location by a subsequent paste operation (^V).  Does nothing if you subsequently put something else in the paste bar."
+    ID_METADATA_PASTENEW    "Inserts new metadata based on the contents of the catalog paste bar (just above the catalog).  The new metadata is inserted as a descendant of the item currently selected in the catalog."
+    ID_OVERLAY_RESTRICT     "Enables overlays if necessary and limits the displayed regions of interest to those which are related to the metadata item currently selected in the catalog. Selecting this menu option a second time removes the restriction."
+END
+
+STRINGTABLE 
+BEGIN
+    ID_METADATA_SHOW        "Opens a window to view the original layout of any JP2-family file.  This layout cannot reflect newly added metadata but it highlights any original items which are changed or deleted by editing operations."
+END
+
+STRINGTABLE 
+BEGIN
+    IDC_JPIP_REQUEST        "Typically just the filename on the remote host, but you can also enter a full request string, complete with query fields -- if you the JPIP request syntax."
+    IDC_META_LABEL          "Labels hold UTF-8 text, which means that foreign scripts are supported.  You can use the ""file edit"" option above to edit the label contents using a more sophisticated text editor."
+END
+
+STRINGTABLE 
+BEGIN
+    IDC_META_IS_LINK        "Indicates whether or not the node you have open is a link to another node in the metadata hierarchy.  If so, this dialog displays the properties of the link target, which you cannot edit here."
+    IDC_META_INTERNALIZE_LABEL 
+                            "If you have edited a label using an external file editor, you can bring it back into local view by clicking this button (or by saving and reloading the entire file).  Until this is done, you will not be able to see the label text in the metadata catalog."
+    IDC_META_PASTE          "Replaces the node you are currently editing with the contents of the catalog paste bar.  If the contents of the paste bar hold a reference (link) to another node, the current node will become a link."
+    IDC_META_COPY_LINK      "Puts a reference to the node you are currently editing into the catalog paste bar.  Later, you can insert this reference as link node."
+    IDC_META_COPY_DESCENDANTS 
+                            "Copies all descendants of the node you are currently editing, making the copied nodes descendants of the node that is currently referenced (as a link) from the catalog paste bar.  This button was introduced to allow an extensive collection of metadata to be copied in one fell swoop, so that the copies can be translated to another language."
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_OPENURL         "Use this to open a remotely located image via JPIP."
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_CLOSEWINDOW     "Will not close other top-level image windows open in the application."
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_SCALE_X2        "Causes the number of pixels occupied by an image region to be twice as large as the number of samples at that resolution/zoom factor (horizontally and vertically)."
+END
+
+STRINGTABLE 
+BEGIN
+    IDC_JPIP_FORCE_INTERACTIVE 
+                            "If unchecked AND the supplied request string contains query fields other than ""target"" and ""subtarget"", JPIP communications will be non-interactive -- i.e., user navigation will not generate further requests to the server."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (Australia) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENA)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_AUS
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_META_STRUCTURE DIALOG  0, 0, 309, 170
+STYLE DS_SETFONT | DS_3DLOOK | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Metadata Structure and Contents"
+FONT 10, "Courier New"
+BEGIN
+    CONTROL         "Tree1",IDC_META_TREE,"SysTreeView32",TVS_HASBUTTONS | TVS_HASLINES | TVS_LINESATROOT | WS_BORDER | WS_TABSTOP,7,7,114,156
+    EDITTEXT        IDC_META_TEXT,129,7,173,156,ES_MULTILINE | ES_READONLY | WS_VSCROLL | WS_HSCROLL
+END
+
+IDD_METAEDIT DIALOGEX 0, 0, 371, 244
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Associated Metadata Editor"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    GROUPBOX        "Associated Image Entities",IDC_STATIC,210,9,158,101
+    DEFPUSHBUTTON   "Apply and Exit",IDC_META_APPLY_AND_EXIT,10,229,68,12
+    PUSHBUTTON      "Delete",IDC_META_DELETE,10,203,50,11
+    EDITTEXT        IDC_META_LABEL,11,186,190,12,ES_AUTOHSCROLL
+    GROUPBOX        "Label text (no external file)",IDC_STATIC,9,177,195,25
+    GROUPBOX        "Spatial Region",IDC_STATIC,10,9,193,68,BS_CENTER
+    EDITTEXT        IDC_META_XPOS,38,20,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_META_YPOS,38,34,40,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_META_WIDTH,110,20,40,12,ES_AUTOHSCROLL
+    RTEXT           "width:",IDC_STATIC,87,21,20,8
+    EDITTEXT        IDC_META_HEIGHT,110,34,40,12,ES_AUTOHSCROLL
+    RTEXT           "height:",IDC_STATIC,85,35,22,8
+    CONTROL         "Elliptical",IDC_META_ELLIPTICAL,"Button",BS_AUTORADIOBUTTON,81,50,41,10
+    CONTROL         "Rectangular",IDC_META_RECTANGULAR,"Button",BS_AUTORADIOBUTTON,14,50,51,10
+    LISTBOX         IDC_META_STREAMS,213,20,61,35,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    RTEXT           "x-pos:",IDC_STATIC,14,21,20,8
+    RTEXT           "y-pos:",IDC_STATIC,14,35,20,8
+    PUSHBUTTON      "add codestream",IDC_META_ADD_STREAM,291,45,71,11
+    CONTROL         "Spin1",IDC_META_SPIN_STREAM,"msctls_updown32",UDS_ARROWKEYS,277,41,10,14
+    PUSHBUTTON      "remove codestream",IDC_META_REMOVE_STREAM,291,27,71,12
+    LISTBOX         IDC_META_LAYERS,213,60,61,36,LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "add layer",IDC_META_ADD_LAYER,292,84,59,11
+    CONTROL         "Spin1",IDC_META_SPIN_LAYER,"msctls_updown32",UDS_ARROWKEYS,278,81,10,14
+    PUSHBUTTON      "remove layer",IDC_META_REMOVE_LAYER,292,67,59,11
+    PUSHBUTTON      "Exit",IDC_META_CANCEL,83,203,50,11
+    CONTROL         "Multi-region",IDC_META_MULTI_REGION,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,62,51,10
+    CONTROL         "Encoded ROI",IDC_META_ENCODED,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,81,63,57,10
+    GROUPBOX        "Box-type (4cc)",IDC_STATIC,7,78,52,70
+    GROUPBOX        "External File",IDC_STATIC,65,78,139,70
+    EDITTEXT        IDC_META_EXTERNAL_FILE,68,88,134,12,ES_AUTOHSCROLL | ES_READONLY
+    PUSHBUTTON      "Save to file",IDC_META_SAVE_TO_FILE,68,105,42,12
+    PUSHBUTTON      "Choose file",IDC_META_CHOOSE_FILE,68,119,42,12
+    PUSHBUTTON      "Edit file",IDC_META_EDIT_FILE,68,133,42,12
+    CHECKBOX        "File is temporary",IDC_META_TEMPORARY_FILE,132,105,66,10
+    GROUPBOX        "Choose editor",IDC_STATIC,117,119,84,27
+    PUSHBUTTON      "Revert",IDC_META_REVERT,154,203,50,11
+    PUSHBUTTON      "Apply",IDC_META_APPLY,10,216,68,11
+    LTEXT           "NB: metashow can't show new data until you save and re-load the file.",IDC_STATIC,86,224,121,18
+    GROUPBOX        "Navigation",IDC_STATIC,211,148,157,60
+    PUSHBUTTON      "Up to parent",IDC_META_PARENT,238,160,47,12
+    PUSHBUTTON      "Previous sibling",IDC_META_PREV,219,176,54,12
+    PUSHBUTTON      "Next sibling",IDC_META_NEXT,307,176,55,12
+    PUSHBUTTON      "Descendants",IDC_META_DESCENDANTS,295,160,47,12
+    PUSHBUTTON      "Add child",IDC_META_ADD_CHILD,219,192,55,12
+    PUSHBUTTON      "Find in Metashow",IDC_META_METASHOW,218,130,61,14
+    COMBOBOX        IDC_META_BOX_TYPE,9,88,47,44,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_META_BOX_EDITOR,119,130,80,47,CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Whole Image",IDC_META_WHOLE_IMAGE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,145,53,58,10
+    CONTROL         "Associate with rendered result",IDC_META_RENDERED,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,214,99,110,10
+    PUSHBUTTON      "Internalize label",IDC_META_INTERNALIZE_LABEL,9,158,99,13
+    PUSHBUTTON      "Find in Catalog",IDC_META_CATALOG,289,130,70,14
+    PUSHBUTTON      "Insert parent",IDC_META_ADD_PARENT,307,192,56,12
+    PUSHBUTTON      "Copy Descendants",IDC_META_COPY_DESCENDANTS,253,209,70,14
+    PUSHBUTTON      "Replace using paste bar",IDC_META_PASTE,119,165,86,13
+    PUSHBUTTON      "Copy to pastebar as link",IDC_META_COPY_LINK,119,150,86,13
+    LTEXT           "Copies descendants to item currently linked from the catalog paste bar",IDC_STATIC,228,224,125,18
+    CHECKBOX        "Is link",IDC_META_IS_LINK,237,114,120,10
+END
+
+IDD_PLAY_CONTROL DIALOGEX 0, 0, 374, 50
+STYLE DS_SETFONT | DS_MODALFRAME | DS_3DLOOK | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Animation/Video Play Control"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CTEXT           "----",IDC_PLAY_TRACK,8,15,27,12,WS_BORDER,WS_EX_CLIENTEDGE
+    PUSHBUTTON      "next",IDC_PLAY_NEXT_TRACK,16,30,18,11
+    GROUPBOX        "Track",IDC_STATIC,7,3,30,40
+    GROUPBOX        "Timing Base",IDC_STATIC,39,3,73,40
+    CONTROL         "Native",IDC_PLAY_BASE_NATIVE,"Button",BS_AUTORADIOBUTTON,41,12,36,10
+    CONTROL         "Frames/s:",IDC_PLAY_BASE_CUSTOM,"Button",BS_AUTORADIOBUTTON,41,25,47,8
+    EDITTEXT        IDC_PLAY_BASE_FPS,88,23,23,13,ES_AUTOHSCROLL
+    GROUPBOX        "Play Speed",IDC_STATIC,113,3,54,40
+    CONTROL         "x1",IDC_PLAY_X1,"Button",BS_AUTORADIOBUTTON | WS_GROUP,115,13,23,10
+    CONTROL         "x2",IDC_PLAY_X2,"Button",BS_AUTORADIOBUTTON,115,27,23,10
+    CONTROL         "1/2",IDC_PLAY_D2,"Button",BS_AUTORADIOBUTTON,141,13,24,10
+    CONTROL         "1/4",IDC_PLAY_D4,"Button",BS_AUTORADIOBUTTON,141,27,24,10
+    GROUPBOX        "Control",IDC_STATIC,169,3,93,40
+    PUSHBUTTON      "+1",IDC_PLAY_FWD1,208,28,12,14
+    PUSHBUTTON      "play",IDC_PLAY_PLAY,189,28,17,14
+    PUSHBUTTON      "stop",IDC_PLAY_STOP,171,28,16,14
+    PUSHBUTTON      "+5",IDC_PLAY_FWD5,221,28,12,14
+    PUSHBUTTON      "-1",IDC_PLAY_BACK1,234,28,12,14
+    PUSHBUTTON      "-5",IDC_PLAY_BACK5,248,28,12,14
+    LTEXT           "Frame:",IDC_STATIC,172,13,25,8
+    PUSHBUTTON      "reset",IDC_PLAY_RESET,240,11,20,14
+    EDITTEXT        IDC_PLAY_FRAME,197,12,42,12,ES_AUTOHSCROLL | ES_READONLY
+    RADIOBUTTON     "Repeat",IDC_PLAY_REPEAT,301,32,39,10
+    RTEXT           "Frame time left (s):",IDC_STATIC,262,9,66,8
+    RTEXT           "On track (%):",IDC_STATIC,282,21,46,8
+    LTEXT           "",IDC_PLAY_FRAME_PERIOD,329,7,37,12,WS_BORDER,WS_EX_CLIENTEDGE
+    CTEXT           "100",IDC_PLAY_ONTRACK_PERCENT,329,20,21,12,WS_BORDER,WS_EX_CLIENTEDGE
+END
+
+IDD_METADATA_CATALOG DIALOGEX 0, 0, 186, 94
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,129,7,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,129,24,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_META_STRUCTURE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 302
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 163
+    END
+
+    IDD_METAEDIT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 368
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 241
+    END
+
+    IDD_PLAY_CONTROL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 367
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 43
+    END
+
+    IDD_METADATA_CATALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 87
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_METAEDIT DLGINIT
+BEGIN
+    IDC_META_BOX_TYPE, 0x403, 7, 0
+0x6946, 0x6c65, 0x3164, "\000" 
+    IDC_META_BOX_TYPE, 0x403, 7, 0
+0x6966, 0x6c65, 0x3264, "\000" 
+    IDC_META_BOX_TYPE, 0x403, 7, 0
+0x6966, 0x6c65, 0x3364, "\000" 
+    IDC_META_BOX_TYPE, 0x403, 7, 0
+0x6966, 0x6c65, 0x3464, "\000" 
+    IDC_META_BOX_EDITOR, 0x403, 6, 0
+0x7469, 0x6d65, 0x0031, 
+    IDC_META_BOX_EDITOR, 0x403, 7, 0
+0x6920, 0x6574, 0x326d, "\000" 
+    IDC_META_BOX_EDITOR, 0x403, 7, 0
+0x6920, 0x6574, 0x336d, "\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Cursor
+//
+
+IDC_META_CURSOR         CURSOR                  "res\\cursor1.cur"
+#endif    // English (Australia) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\kdu_winshow.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

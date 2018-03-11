@@ -1,0 +1,382 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug_XP|Win32">
+      <Configuration>Debug_XP</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>libecwj2S</ProjectName>
+    <ProjectGuid>{A6103D1E-3E79-33F6-A4C9-19CE5E183F65}</ProjectGuid>
+    <RootNamespace>ecw</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_XP|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\..\..\trx\vs_version.props" />
+    <Import Project="..\..\..\trx\zlib.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_XP|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\..\..\trx\vs_version.props" />
+    <Import Project="..\..\..\trx\zlib.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+    <Import Project="..\..\..\trx\vs_version.props" />
+    <Import Project="..\..\..\trx\zlib.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(WorkLIB)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(WorkLIB)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug_XP|Win32'">$(WorkLIB)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug_XP|Win32'">$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName)D</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug_XP|Win32'">$(ProjectName)D</TargetName>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(WorkINC);$(IncludePath)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug_XP|Win32'">$(WorkINC);$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(WorkLIB);$(LibraryPath)</LibraryPath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug_XP|Win32'">$(WorkLIB);$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <WarningLevel>0</WarningLevel>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>-Zm200 -EHsc -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <AdditionalIncludeDirectories>..\..\Source\include;..\..\Source\C\NCSEcw\lcms\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_MBCS;LIBECWJ2;NCSECW_STATIC_LIBS;_LIB;_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_SWPRINTFS;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <AssemblerListingLocation>..\..\obj\win32-msvc.net\static\</AssemblerListingLocation>
+      <ObjectFileName>..\..\obj\win32-msvc.net\static\</ObjectFileName>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <DisableSpecificWarnings>4091;4189;4996;4100;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>
+      </Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <WarningLevel>0</WarningLevel>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>-Zm200 -EHsc -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\Source\include;..\..\Source\C\NCSEcw\lcms\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;WIN32;_MBCS;LIBECWJ2;NCSECW_STATIC_LIBS;_LIB;_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_SWPRINTFS;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <AssemblerListingLocation>Debug\</AssemblerListingLocation>
+      <ObjectFileName>Debug\</ObjectFileName>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4091;4189;4996;4100;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>
+      </Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_XP|Win32'">
+    <Midl>
+      <WarningLevel>0</WarningLevel>
+      <DefaultCharType>Unsigned</DefaultCharType>
+      <EnableErrorChecks>None</EnableErrorChecks>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>-Zm200 -EHsc -w34100 -w34189 %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\Source\include;..\..\Source\C\NCSEcw\lcms\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;WIN32;_MBCS;LIBECWJ2;NCSECW_STATIC_LIBS;_LIB;_CRT_SECURE_NO_WARNINGS;_CRT_NON_CONFORMING_SWPRINTFS;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessToFile>false</PreprocessToFile>
+      <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
+      <MinimalRebuild>true</MinimalRebuild>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <BufferSecurityCheck>false</BufferSecurityCheck>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <AssemblerListingLocation>Debug\</AssemblerListingLocation>
+      <ObjectFileName>Debug\</ObjectFileName>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4091;4189;4996;4100;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Lib>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Lib>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>
+      </Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\C\NCSEcw\shared_src\build_pyr.c" />
+    <ClCompile Include="..\C\NCSEcw\lcms\src\cmscnvrt.c" />
+    <ClCompile Include="..\C\NCSEcw\lcms\src\cmserr.c" />
+    <ClCompile Include="..\C\NCSEcw\lcms\src\cmsgamma.c" />
+    <ClCompile Include="..\C\NCSEcw\lcms\src\cmsgmt.c" />
+    <ClCompile Include="..\C\NCSEcw\lcms\src\cmsintrp.c" />
+    <ClCompile Include="..\C\NCSEcw\lcms\src\cmsio1.c" />
+    <ClCompile Include="..\C\NCSEcw\lcms\src\cmslut.c" />
+    <ClCompile Include="..\C\NCSEcw\lcms\src\cmsmatsh.c" />
+    <ClCompile Include="..\C\NCSEcw\lcms\src\cmsmtrx.c" />
+    <ClCompile Include="..\C\NCSEcw\lcms\src\cmsnamed.c" />
+    <ClCompile Include="..\C\NCSEcw\lcms\src\cmspack.c" />
+    <ClCompile Include="..\C\NCSEcw\lcms\src\cmspcs.c" />
+    <ClCompile Include="..\C\NCSEcw\lcms\src\cmssamp.c" />
+    <ClCompile Include="..\C\NCSEcw\lcms\src\cmsvirt.c" />
+    <ClCompile Include="..\C\NCSEcw\lcms\src\cmswtpnt.c" />
+    <ClCompile Include="..\C\NCSEcw\lcms\src\cmsxform.c" />
+    <ClCompile Include="..\C\NCSUtil\CNCSBase64Coder.cpp" />
+    <ClCompile Include="..\C\NCSUtil\CNCSMetabaseEdit.cpp" />
+    <ClCompile Include="..\C\NCSnet\NCScnet2\cnet2util.c" />
+    <ClCompile Include="..\C\NCSEcw\shared_src\collapse_pyr.c" />
+    <ClCompile Include="..\C\NCSEcw\shared_src\compress.cpp" />
+    <ClCompile Include="..\C\NCSnet\NCScnet2\connect.c" />
+    <ClCompile Include="..\C\NCSUtil\dynamiclib.c" />
+    <ClCompile Include="..\C\NCSEcw\shared_src\ecw_open.c" />
+    <ClCompile Include="..\C\NCSEcw\shared_src\ecw_read.c" />
+    <ClCompile Include="..\C\NCSUtil\error.c" />
+    <ClCompile Include="..\C\NCSUtil\exception_catch.c" />
+    <ClCompile Include="..\C\NCSUtil\file.c" />
+    <ClCompile Include="..\C\NCSEcw\shared_src\fileio_compress.c" />
+    <ClCompile Include="..\C\NCSEcw\shared_src\fileio_decompress.c" />
+    <ClCompile Include="..\C\NCSUtil\log.cpp" />
+    <ClCompile Include="..\C\NCSUtil\malloc.c" />
+    <ClCompile Include="..\C\NCSUtil\mutex.c" />
+    <ClCompile Include="..\C\NCSEcw\NCSEcw\NCSAffineTransform.cpp" />
+    <ClCompile Include="..\C\NCSUtil\NCSBase64.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSEcw\NCSBlockFile.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSEcw\ncscbm.c" />
+    <ClCompile Include="..\C\NCSEcw\NCSEcw\ncscbmidwt.c" />
+    <ClCompile Include="..\C\NCSEcw\NCSEcw\ncscbmnet.c" />
+    <ClCompile Include="..\C\NCSEcw\NCSEcw\ncscbmopen.c" />
+    <ClCompile Include="..\C\NCSEcw\NCSEcw\ncscbmpurge.c" />
+    <ClCompile Include="..\C\NCSnet\NCScnet2\NCScnet.c" />
+    <ClCompile Include="..\C\NCSUtil\NCSCoordinateConverter.cpp" />
+    <ClCompile Include="..\C\NCSUtil\NCSCoordinateSystem.cpp" />
+    <ClCompile Include="..\C\NCSUtil\NCSCoordinateTransform.cpp" />
+    <ClCompile Include="..\C\NCSUtil\NCSCrypto.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSEcw\NCSEcw.cpp" />
+    <ClCompile Include="..\C\NCSUtil\NCSError.cpp" />
+    <ClCompile Include="..\C\NCSUtil\NCSEvent.cpp" />
+    <ClCompile Include="..\C\NCSUtil\NCSExtent.cpp" />
+    <ClCompile Include="..\C\NCSUtil\NCSExtents.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSEcw\NCSFile.cpp" />
+    <ClCompile Include="..\C\NCSGDT2\NCSGDTEpsg.cpp" />
+    <ClCompile Include="..\C\NCSGDT2\NCSGDTEPSGKey.cpp" />
+    <ClCompile Include="..\C\NCSGDT2\NCSGDTLocation.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSEcw\NCSHuffmanCoder.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2BitsPerComponentBox.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2Box.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2CaptureResolutionBox.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2ChannelDefinitionBox.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2ColorSpecificationBox.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2ComponentMappingBox.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2ContiguousCodestreamBox.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2DataEntryURLBox.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2DefaultDisplayResolutionBox.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2File.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2FileTypeBox.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2FileView.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2GMLGeoLocationBox.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2HeaderBox.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2ImageHeaderBox.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2IntellectualPropertyBox.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2PaletteBox.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2PCSBox.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2ResolutionBox.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2SignatureBox.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2SuperBox.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2UUIDBox.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2UUIDInfoBox.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2UUIDListBox.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2WorldBox.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJP2XMLBox.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPC.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCBuffer.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCCOCMarker.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCCodeBlock.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCCodingStyleParameter.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCCODMarker.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCCOMMarker.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCComponent.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCComponentDepthType.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCCRGMarker.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCDCShiftNode.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCDump.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCEcwpIOStream.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCEOCMarker.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCEPHMarker.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCFileIOStream.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCICCNode.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCIOStream.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCMainHeader.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCMarker.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCMCTNode.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCMemoryIOStream.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCMQCoder.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCNode.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCNodeTiler.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCPacket.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCPacketLengthType.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCPaletteNode.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCPLMMarker.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCPLTMarker.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCPOCMarker.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCPPMMarker.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCPPTMarker.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCPrecinct.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCProgression.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCProgressionOrderType.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCQCCMarker.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCQCDMarker.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCQuantizationParameter.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCResample.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCResolution.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCRGNMarker.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCSegment.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCSIZMarker.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCSOCMarker.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCSODMarker.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCSOPMarker.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCSOTMarker.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCSubBand.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCT1Coder.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCTagTree.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCTilePartHeader.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCTLMMarker.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSJP2\NCSJPCYCbCrNode.cpp" />
+    <ClCompile Include="..\C\NCSUtil\NCSLog.cpp" />
+    <ClCompile Include="..\C\NCSUtil\NCSMutex.cpp" />
+    <ClCompile Include="..\C\NCSUtil\NCSObject.cpp" />
+    <ClCompile Include="..\C\NCSUtil\NCSObjectList.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSEcw\NCSOutputFile.cpp" />
+    <ClCompile Include="..\C\NCSUtil\NCSPoint.cpp" />
+    <ClCompile Include="..\C\NCSUtil\NCSPrefs.cpp" />
+    <ClCompile Include="..\C\NCSUtil\NCSPrefsWin.cpp" />
+    <ClCompile Include="..\C\NCSUtil\NCSRasterCoordinateConverter.cpp" />
+    <ClCompile Include="..\C\NCSEcw\NCSEcw\NCSRenderer.cpp" />
+    <ClCompile Include="..\C\NCSUtil\NCSScreenPoint.cpp" />
+    <ClCompile Include="..\C\NCSUtil\NCSServerState.cpp" />
+    <ClCompile Include="..\C\NCSUtil\NCSString.cpp" />
+    <ClCompile Include="..\C\NCSUtil\NCSThread.cpp" />
+    <ClCompile Include="..\C\NCSnet\NCScnet2\NCSWinHttp.c" />
+    <ClCompile Include="..\C\NCSEcw\NCSEcw\NCSWorldFile.cpp" />
+    <ClCompile Include="..\C\NCSUtil\NCSWorldPoint.cpp" />
+    <ClCompile Include="..\C\NCSEcw\shared_src\pack.c" />
+    <ClCompile Include="..\C\NCSnet\NCScnet2\packet.c" />
+    <ClCompile Include="..\C\NCSUtil\pool.c" />
+    <ClCompile Include="..\C\NCSEcw\shared_src\qmf_util.c" />
+    <ClCompile Include="..\C\NCSUtil\quadtree.cpp" />
+    <ClCompile Include="..\C\NCSEcw\shared_src\quantize.c" />
+    <ClCompile Include="..\C\NCSUtil\queue.c" />
+    <ClCompile Include="..\C\NCSUtil\thread.c" />
+    <ClCompile Include="..\C\NCSUtil\timer.c" />
+    <ClCompile Include="..\C\NCSEcw\shared_src\unpack.c" />
+    <ClCompile Include="..\C\NCSUtil\util.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\ECW.h" />
+    <ClInclude Include="..\include\NCSJPCBuffer.h" />
+    <ClInclude Include="..\include\NCSMisc.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

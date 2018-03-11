@@ -1,0 +1,211 @@
+KDU_GLIBS =
+# KDU_GLIBS += -xarch=v9       # Uncomment for a full 64-bit build
+			       # Provides access to >4 GB RAM (if present)
+	    		       # Always REMOVE *.o files after changing this!!
+ISADIR = 
+ONEUP =
+# Uncomment 2 below to make 64-bit build separate from 32-bit builds
+# ISADIR = sparcv9
+# ONEUP = ..
+
+# KDU_GLIBS += -staticlib=Crun # Uncomment this to get a static 32-bit build
+			       # Static libraries not allowed for 64-bit
+
+CC = CC
+
+INCLUDES = -I../../coresys/common -I../args -I../image -I../compressed_io -I../support -I../client_server
+C_OPT = -O2 -DNDEBUG -w $(KDU_GLIBS) 
+# To get 64-bit I/O while still maintaining a 32-bit build.  
+DEFINES = -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 # Remove for 32-bit I/O
+#DEFINES += -DKDU_CUSTOM_TEXT   # See "Internationalization" in "Compilation_Instructions.txt"
+
+CFLAGS = $(INCLUDES) $(C_OPT) $(DEFINES)
+LIBS = -lm -lpthread # You may comment out "-lpthreads" if coresys was
+                     # built using -DKDU_NO_THREADS
+
+BIN_DIR = ../../bin/Solaris-sunpro/$(ISADIR)
+LIB_DIR = ../../lib/Solaris-sunpro/$(ISADIR)
+LIB_SRC = $(LIB_DIR)/libkdu_v64R.so  #Change to $(LIB_DIR)/libkdu.a for static
+#LIB_SRC = $(LIB_DIR)/libkdu.a  
+
+LDFLAGS = -R'$$ORIGIN'/$(ONEUP)/$(LIB_DIR)     # For dynamic linking
+CFLAGS += $(LDFLAGS)
+
+clean:
+	rm -f *.o *.so *.a
+
+all :: kdu_compress kdu_expand kdu_buffered_compress kdu_buffered_expand kdu_transcoder kdu_maketlm kdu_render simple_example_c simple_example_d kdu_v_compress kdu_v_expand kdu_merge kdu_server kdu_server_admin kdu_vex_fast kdu_hyperdoc kdu_text_extractor
+
+all_but_hyperdoc :: kdu_compress kdu_expand kdu_buffered_compress kdu_buffered_expand kdu_transcoder kdu_maketlm kdu_render simple_example_c simple_example_d kdu_v_compress kdu_v_expand kdu_merge kdu_server kdu_server_admin kdu_vex_fast kdu_text_extractor
+
+kdu_compress :: args.o image_in.o kdu_tiff.o palette.o jp2.o roi_sources.o jpx.o ../kdu_compress/kdu_compress.cpp $(LIB_SRC)
+	$(CC) $(CFLAGS) ../kdu_compress/kdu_compress.cpp \
+	      args.o image_in.o kdu_tiff.o palette.o jp2.o jpx.o \
+	      roi_sources.o  $(LIB_SRC) \
+	      -o $(BIN_DIR)/kdu_compress $(LIBS) 
+
+kdu_expand :: args.o image_out.o kdu_tiff.o jp2.o jpx.o ../kdu_expand/kdu_expand.cpp $(LIB_SRC)
+	$(CC) $(CFLAGS) ../kdu_expand/kdu_expand.cpp \
+	      args.o image_out.o kdu_tiff.o jp2.o jpx.o $(LIB_SRC) \
+	      -o $(BIN_DIR)/kdu_expand $(LIBS) 
+
+kdu_buffered_compress :: kdu_stripe_compressor.o args.o jp2.o ../kdu_buffered_compress/kdu_buffered_compress.cpp $(LIB_SRC)
+	$(CC) $(CFLAGS) ../kdu_buffered_compress/kdu_buffered_compress.cpp \
+	      args.o jp2.o kdu_stripe_compressor.o $(LIB_SRC) \
+	      -o $(BIN_DIR)/kdu_buffered_compress $(LIBS) 
+
+kdu_buffered_expand :: kdu_stripe_decompressor.o args.o jp2.o ../kdu_buffered_expand/kdu_buffered_expand.cpp $(LIB_SRC)
+	$(CC) $(CFLAGS) ../kdu_buffered_expand/kdu_buffered_expand.cpp \
+	      args.o jp2.o kdu_stripe_decompressor.o $(LIB_SRC) \
+	      -o $(BIN_DIR)/kdu_buffered_expand $(LIBS) 
+
+kdu_transcoder :: args.o jp2.o ../kdu_transcode/kdu_transcode.cpp $(LIB_SRC)
+	$(CC) $(CFLAGS) ../kdu_transcode/kdu_transcode.cpp \
+	      args.o jp2.o $(LIB_SRC) \
+	      -o $(BIN_DIR)/kdu_transcode $(LIBS) 
+
+kdu_maketlm :: ../kdu_maketlm/kdu_maketlm.cpp ../../coresys/messaging/messaging.cpp
+	$(CC) $(CFLAGS) ../kdu_maketlm/kdu_maketlm.cpp \
+	      ../../coresys/messaging/messaging.cpp \
+	      -o $(BIN_DIR)/kdu_maketlm -lm 
+
+kdu_render :: kdu_region_decompressor.o kdu_region_compositor.o args.o jp2.o jpx.o mj2.o ../kdu_render/kdu_render.cpp $(LIB_SRC)
+	$(CC) $(CFLAGS) ../kdu_render/kdu_render.cpp \
+	      args.o kdu_region_decompressor.o kdu_region_compositor.o \
+	      jp2.o jpx.o mj2.o $(LIB_SRC) \
+	      -o $(BIN_DIR)/kdu_render $(LIBS) 
+
+kdu_v_compress :: args.o mj2.o jp2.o ../kdu_v_compress/kdu_v_compress.cpp $(LIB_SRC)
+	$(CC) $(CFLAGS) ../kdu_v_compress/kdu_v_compress.cpp \
+	      args.o mj2.o jp2.o $(LIB_SRC) \
+	      -o $(BIN_DIR)/kdu_v_compress $(LIBS) 
+
+kdu_v_expand :: args.o mj2.o jp2.o ../kdu_v_expand/kdu_v_expand.cpp $(LIB_SRC)
+	$(CC) $(CFLAGS) ../kdu_v_expand/kdu_v_expand.cpp \
+	      args.o mj2.o jp2.o $(LIB_SRC) \
+	      -o $(BIN_DIR)/kdu_v_expand $(LIBS) 
+
+kdu_merge :: args.o mj2.o jp2.o jpx.o ../kdu_merge/kdu_merge.cpp $(LIB_SRC)
+	$(CC) $(CFLAGS) ../kdu_merge/kdu_merge.cpp \
+	      args.o mj2.o jp2.o jpx.o $(LIB_SRC) \
+	      -o $(BIN_DIR)/kdu_merge $(LIBS) 
+
+kdu_server :: args.o jp2.o kdcs_comms.o kdu_client_window.o kdu_security.o ../kdu_server/kdu_server.cpp ../kdu_server/connection.cpp ../kdu_server/sources.cpp ../kdu_server/kdu_serve.cpp ../kdu_server/kdu_servex.cpp $(LIB_SRC)
+	$(CC) $(CFLAGS) -I../jp2 ../kdu_server/kdu_server.cpp ../kdu_server/connection.cpp \
+	                ../kdu_server/sources.cpp ../kdu_server/kdu_serve.cpp \
+	                ../kdu_server/kdu_servex.cpp \
+	      args.o jp2.o kdcs_comms.o kdu_client_window.o kdu_security.o $(LIB_SRC) \
+	      -o $(BIN_DIR)/kdu_server $(LIBS)
+
+kdu_server_admin :: args.o kdcs_comms.o kdu_security.o ../kdu_server_admin/kdu_server_admin.cpp $(LIB_SRC)
+	$(CC) $(CFLAGS) -I../kdu_server ../kdu_server_admin/kdu_server_admin.cpp \
+	      args.o kdcs_comms.o kdu_security.o $(LIB_SRC) \
+	      -o $(BIN_DIR)/kdu_server_admin $(LIBS)
+        
+simple_example_c :: kdu_stripe_compressor.o ../simple_example/simple_example_c.cpp $(LIB_SRC)
+	$(CC) $(CFLAGS) ../simple_example/simple_example_c.cpp \
+	      kdu_stripe_compressor.o $(LIB_SRC) \
+	      -o $(BIN_DIR)/simple_example_c $(LIBS) 
+
+simple_example_d :: kdu_stripe_decompressor.o ../simple_example/simple_example_d.cpp $(LIB_SRC)
+	$(CC) $(CFLAGS) ../simple_example/simple_example_d.cpp \
+	      kdu_stripe_decompressor.o $(LIB_SRC) \
+	      -o $(BIN_DIR)/simple_example_d $(LIBS) 
+
+kdu_vex_fast :: args.o jp2.o mj2.o ../kdu_vex_fast/kdu_vex_fast.cpp ../kdu_vex_fast/kdu_vex.cpp $(LIB_SRC)
+	$(CC) $(CFLAGS) ../kdu_vex_fast/kdu_vex_fast.cpp \
+	                ../kdu_vex_fast/kdu_vex.cpp \
+	      args.o jp2.o mj2.o $(LIB_SRC) \
+	      -o $(BIN_DIR)/kdu_vex_fast $(LIBS)
+
+kdu_hyperdoc :: args.o ../kdu_hyperdoc/kdu_hyperdoc.cpp ../kdu_hyperdoc/jni_builder.cpp ../kdu_hyperdoc/mni_builder.cpp ../kdu_hyperdoc/aux_builder.cpp ../../coresys/messaging/messaging.cpp
+	$(CC) $(CFLAGS) ../kdu_hyperdoc/kdu_hyperdoc.cpp \
+	      ../kdu_hyperdoc/jni_builder.cpp \
+	      ../kdu_hyperdoc/mni_builder.cpp \
+	      ../kdu_hyperdoc/aux_builder.cpp \
+	      args.o ../../coresys/messaging/messaging.cpp \
+	      -o $(BIN_DIR)/kdu_hyperdoc -lm
+	echo Building Documentation and Java Native API ...
+	cd ../../documentation;	\
+	   ../apps/make/$(BIN_DIR)/kdu_hyperdoc -o html_pages -s hyperdoc.src \
+	      -java ../../java/kdu_jni ../managed/kdu_jni ../managed/kdu_aux \
+	     ../managed/all_includes
+
+kdu_text_extractor :: args.o ../kdu_text_extractor/kdu_text_extractor.cpp ../../coresys/messaging/messaging.cpp
+	$(CC) $(CFLAGS) ../kdu_text_extractor/kdu_text_extractor.cpp \
+	      args.o ../../coresys/messaging/messaging.cpp \
+	      -o $(BIN_DIR)/kdu_text_extractor -lm
+	cd ../../language; \
+	   ../apps/make/$(BIN_DIR)/kdu_text_extractor -quiet -s coresys.src; \
+	   ../apps/make/$(BIN_DIR)/kdu_text_extractor -quiet -s jp2.src; \
+	   ../apps/make/$(BIN_DIR)/kdu_text_extractor -quiet -s jpx.src; \
+	   ../apps/make/$(BIN_DIR)/kdu_text_extractor -quiet -s mj2.src; \
+	   ../apps/make/$(BIN_DIR)/kdu_text_extractor -quiet -s client.src; \
+	   ../apps/make/$(BIN_DIR)/kdu_text_extractor -quiet -s misc.src
+
+libkdu_v64R.so :: $(LIB_DIR)/libkdu_v64R.so
+	cp $(LIB_DIR)/libkdu_v64R.so .
+
+args.o :: ../args/args.cpp
+	$(CC) $(CFLAGS) -c ../args/args.cpp \
+	      -o args.o
+
+image_in.o :: ../image/image_in.cpp
+	$(CC) $(CFLAGS) -c ../image/image_in.cpp \
+	      -o image_in.o
+
+image_out.o :: ../image/image_out.cpp
+	$(CC) $(CFLAGS) -c ../image/image_out.cpp \
+	      -o image_out.o
+
+kdu_tiff.o :: ../image/kdu_tiff.cpp
+	$(CC) $(CFLAGS) -c ../image/kdu_tiff.cpp \
+	      -o kdu_tiff.o
+
+palette.o :: ../image/palette.cpp
+	$(CC) $(CFLAGS) -c ../image/palette.cpp \
+	      -o palette.o
+
+kdu_region_decompressor.o :: ../support/kdu_region_decompressor.cpp
+	$(CC) $(CFLAGS) -c ../support/kdu_region_decompressor.cpp \
+	      -o kdu_region_decompressor.o
+
+kdu_region_compositor.o :: ../support/kdu_region_compositor.cpp
+	$(CC) $(CFLAGS) -c ../support/kdu_region_compositor.cpp \
+	      -o kdu_region_compositor.o
+
+kdu_stripe_decompressor.o :: ../support/kdu_stripe_decompressor.cpp
+	$(CC) $(CFLAGS) -c ../support/kdu_stripe_decompressor.cpp \
+	      -o kdu_stripe_decompressor.o
+
+kdu_stripe_compressor.o :: ../support/kdu_stripe_compressor.cpp
+	$(CC) $(CFLAGS) -c ../support/kdu_stripe_compressor.cpp \
+	      -o kdu_stripe_compressor.o
+
+jp2.o :: ../jp2/jp2.cpp
+	$(CC) $(CFLAGS) -c ../jp2/jp2.cpp \
+	      -o jp2.o
+
+jpx.o :: ../jp2/jpx.cpp
+	$(CC) $(CFLAGS) -c ../jp2/jpx.cpp \
+	      -o jpx.o
+
+mj2.o :: ../jp2/mj2.cpp
+	$(CC) $(CFLAGS) -c ../jp2/mj2.cpp \
+	      -o mj2.o
+
+roi_sources.o :: ../kdu_compress/roi_sources.cpp
+	$(CC) $(CFLAGS) -c ../kdu_compress/roi_sources.cpp \
+	      -o roi_sources.o
+
+kdcs_comms.o :: ../client_server/kdcs_comms.cpp
+	$(CC) $(CFLAGS) -c ../client_server/kdcs_comms.cpp \
+	      -o kdcs_comms.o
+        
+kdu_client_window.o :: ../client_server/kdu_client_window.cpp
+	$(CC) $(CFLAGS) -c ../client_server/kdu_client_window.cpp \
+	      -o kdu_client_window.o
+
+kdu_security.o :: ../kdu_server/kdu_security.cpp
+	$(CC) $(CFLAGS) -c ../kdu_server/kdu_security.cpp \
+	      -o kdu_security.o

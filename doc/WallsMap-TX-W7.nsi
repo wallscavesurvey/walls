@@ -1,11 +1,11 @@
 
 !define PRODUCT_NAME "WallsMap"
-;This nsi file normally located in \Work12\WallsMap\doc, with binaries in \Work12\bin
-!define BIN_DIR "\Work12\bin"
-!define DOC_DIR "\Work12\trx\doc"
+!define PRODUCT_SFX ""
+!define PRODUCT_ALTSFX "-TSS"
+!define PRODUCT_WEB_SITE "http://texasspeleologicalsurvey.org/software/wallsmap/"
+!define BIN_DIR "\Work14\bin"
 !define PRODUCT_VERSION "0.3"
 !define PRODUCT_PUBLISHER "David McKenzie"
-!define PRODUCT_WEB_SITE "http://www.texasspeleologicalsurvey.org/software/wallsmap/wallsmap.php"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\WallsMap.exe"
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}"
 !define PRODUCT_UNINST_ROOT_KEY "HKLM"
@@ -14,7 +14,7 @@
 !include "MUI2.nsh"
 
 !ifndef BUILD_DATE
-  !define BUILD_DATE '2015-03-09'
+  !define BUILD_DATE '2016-10-25'
 !endif
 
 !define WNDCLASS "WallsMapClass"
@@ -23,7 +23,7 @@
 Var DATA
 
 Function .onInit
- ReadRegStr $0 HKLM "SOFTWARE\Microsoft\Windows NT\CurrentVersion" "ProductName"
+ReadRegStr $0 HKLM "SOFTWARE\Microsoft\Windows NT\CurrentVersion" "ProductName"
 ; ReadRegStr $1 HKLM "SYSTEM\CurrentControlSet\Control\Windows" "CSDVersion"
 ; MessageBox MB_ICONSTOP|MB_OK "$0 SP Level $1"
 StrCmp $0 "" noInstall 0
@@ -82,10 +82,12 @@ FunctionEnd
   !insertmacro MUI_PAGE_INSTFILES
   
 ; Finish page
-!define MUI_FINISHPAGE_RUN "$INSTDIR\WallsMap.exe"
-!define MUI_FINISHPAGE_RUN_PARAMETERS "$\"$DATA\Texas Public Caves\Texas Public Caves.ntl$\""
-; !define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\WallsMap.chm"
-!define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\WallsMap_ReadMe.txt"
+!define MUI_FINISHPAGE_RUN
+!define MUI_FINISHPAGE_RUN_TEXT "Launch project Texas Public Caves"
+!define MUI_FINISHPAGE_RUN_FUNCTION "LaunchNTL"
+;!define MUI_FINISHPAGE_RUN_PARAMETERS "$\"$DATA\Texas Public Caves\Texas Public Caves.ntl$\""
+;!define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\WallsMap.chm"
+!define MUI_FINISHPAGE_SHOWREADME "$INSTDIR\WallsMap${PRODUCT_SFX}_ReadMe.html"
 !insertmacro MUI_PAGE_FINISH
 
 ; Uninstaller pages
@@ -95,7 +97,9 @@ FunctionEnd
 ; Language files
 !insertmacro MUI_LANGUAGE "English"
 
-OutFile "${BIN_DIR}\WallsMap-TX_setup.exe"
+; MUI end ------
+
+OutFile "${BIN_DIR}\WallsMap${PRODUCT_SFX}_setup.exe"
 InstallDir "$PROGRAMFILES\WallsMap"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
@@ -107,7 +111,7 @@ Section "MainSection" SEC01
   File "${BIN_DIR}\WallsMap.exe"
   File "${BIN_DIR}\WallsMap_sid.dll"
   File "${BIN_DIR}\WallsMap.chm"
-  File "${DOC_DIR}\WallsMap_ReadMe.txt"
+  File "${BIN_DIR}\WallsMap${PRODUCT_SFX}_ReadMe.html"
   SetOutPath "$DATA"
   File /r "${BIN_DIR}\Public_caves\*.*"
 ; Shortcuts
@@ -117,6 +121,12 @@ Section "MainSection" SEC01
 SectionEnd
 
 Section -Post
+  
+  Delete "$INSTDIR\WallsMap${PRODUCT_SFX}_ReadMe.txt"
+  Delete "$INSTDIR\WallsMap${PRODUCT_ALTSFX}_ReadMe.txt"
+  Delete "$INSTDIR\WallsMap${PRODUCT_ALTSFX}_ReadMe.html"
+  Delete "$INSTDIR\WallsMap${PRODUCT_ALTSFX}.url"
+
   WriteUninstaller "$INSTDIR\uninst.exe"
  
   WriteRegStr HKLM "${PRODUCT_DIR_REGKEY}" "" "$INSTDIR\WallsMap.exe"
@@ -171,6 +181,11 @@ Section -Post
   System::Call 'Shell32::SHChangeNotify(i 0x8000000, i 0, i 0, i 0)'
 SectionEnd
 
+Function LaunchNTL
+  ; MessageBox MB_OK "Reached LaunchNTL $\r$\nInstallDirectory: $INSTDIR "
+  ShellExecAsUser::ShellExecAsUser "" "$DATA\Texas Public Caves\Texas Public Caves.ntl"
+FunctionEnd
+
 Function un.onUninstSuccess
   HideWindow
   MessageBox MB_ICONINFORMATION|MB_OK "$(^Name) was successfully removed from your computer."
@@ -196,11 +211,11 @@ Section Uninstall
   ; !insertmacro MUI_STARTMENU_GETFOLDER "Application" $ICONS_GROUP
   ; Delete "$INSTDIR\${PRODUCT_NAME}.url"
   Delete "$INSTDIR\uninst.exe"
-  Delete "$INSTDIR\WallsMap_ReadMe.txt"
+  Delete "$INSTDIR\WallsMap${PRODUCT_SFX}_ReadMe.html"
   Delete "$INSTDIR\WallsMap.chm"
   Delete "$INSTDIR\WallsMap.exe"
   Delete "$INSTDIR\WallsMap_sid.dll"
-  Delete "$INSTDIR\WallsMap.url"
+  Delete "$INSTDIR\WallsMap${PRODUCT_SFX}.url"
   Delete "$DESKTOP\WallsMap.lnk"
   RMDir /r "$DATA\Texas Public Caves"
   RMDir "$DATA"

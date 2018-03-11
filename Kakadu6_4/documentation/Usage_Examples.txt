@@ -1,0 +1,1522 @@
+----------------------------------------------------------------------------
+ Usage Examples for the Demonstration Applications Supplied with Kakadu V6.3
+----------------------------------------------------------------------------
+
+To help you get started right away, we provide some simple examples
+demonstrating the use of the Kakadu example applications.  These are
+far from exhaustive and the Kakadu software framework itself is intended
+to be used in building more extensive applications than these
+demonstration applications.  Nevertheless, the demonstration applications
+are quite powerful.  Licensed versions of the Kakadu system ship with
+some additional, much simpler demonstration applications for dydactic
+purposes.
+
+kdu_compress
+------------
+  Note: you may find it very useful to examine the attributes used by
+  the compressor by supplying a `-record' argument on the command
+  line.  You may also find it very useful to open up a code-stream
+  (optionally embedded inside a JP2 file) using "kdu_show" and to
+  examine the properties (use menu or "p" accelerator) -- note that
+  some of the attributes used by the compressor cannot be preserved
+  in the code-stream (e.g., visual weights), so will show up only when
+  you use `-record' with the compressor.
+
+ a) kdu_compress -i image.pgm -o out.j2c -rate 1.0
+    -- irreversible compression to 1 bit/sample.
+ b) kdu_compress -i image.pgm -o out.j2c -rate 1.0,0.5,0.25
+    -- irreversible compression to a 3 layer code-stream (3 embedded bit-rates)
+ c) kdu_compress -i image.pgm -o out.j2c Creversible=yes -rate -,1,0.5,0.25
+    -- reversible (lossless) compression with a progressive lossy to
+       lossless code-stream having 4 layers.  Note the use of the dash, '-',
+       to specify that the final layer should include all remaining
+       compressed bits, not included in previous layers.  Specifying a
+       large bit-rate for one of the layers does not have exactly the
+       same effect and may leave the code-stream not quite lossless.  See
+       usage statement for a more detailed explanation.
+ d) kdu_compress -i red.pgm,green.pgm,blue.pgm -o out.j2c -rate 0.5
+    -- irreversible colour compression (with visual weights) to 0.5 bit/pixel
+    -- may use image.ppm or image.bmp if you want to start with a colour image
+ e) kdu_compress -i image.pgm -o out.j2c Creversible=yes Clayers=9
+                -rate 1.0,0.04 Stiles={711,393} Sorigin={39,71}
+                Stile_origin{17,69} Cprecincts={128,128},{64,64}
+                Corder=PCRL
+    -- spatially progressive code-stream with 9 embedded quality layers,
+       roughly logarithmically spaced between 0.04 and 1.0 bits per pixel,
+       with some interesting canvas coordinates and weird tile sizes.
+ f) kdu_compress -i image.pgm -o out.j2c Corder
+    -- type this sort of thing when you can't remember the format or
+       description of some element of the parameter specification language.
+       In this case, you get an error message with an informative description
+       of the "Corder" code-stream parameter attribute.
+    -- you may find out all about the code-stream specification language
+       by typing "kdu_compress -usage".
+ g) kdu_compress -i image.bmp -o out.j2c -rate 0.5 -rotate 90
+    -- compresses monochrome or colour bottom-up BMP file with 90 degree
+       rotation.  Note that file organization geometry is folded into other
+       geometric transformations, which are all performed without any
+       buffering of uncompressed data.
+ h) kdu_compress -i image.ppm -o out.j2c Stiles={171,191}
+                 Clevels:T0C1=0 Cuse_sop:T4=yes Cycc:T2=no
+    -- Use only 0 levels (instead of the default 5) of DWT for the second
+       component (C1) of the first tile.  Put SOP markers in front of each
+       packet of the fifth tile.  Turn off colour transformation (used by
+       default for compatible 3-component images) in the third tile.
+    -- Command lines used to specify complex code-stream parameter
+       configurations can become very long.  As an alternative, you may
+       place parameters into one or more switch files and load them from
+       the command line using the "-s" option.
+ i) kdu_compress -i image.pgm -o out.j2c -rate 1.0,0.3,0.07 Stiles={300,200}
+                 Clayers=3 Clayers:T0=2 Clayers:T1=7 Cuse_sop=yes Cuse_eph=yes
+    -- Rate allocation is performed across 3 quality layers.  Since the
+       first tile is assigned only 2 layers, its quality will not improve
+       beyond that associated with the second global bit-rate, 0.3 bps.
+       The extra 4 layers for the second tile (T1) will receive empty
+       packets without any SOP markers.  EPH markers are included with all
+       packets, as mandated by the standard (see corrigendum).
+ j) kdu_compress -i image.pgm -o out.j2c -rate 1.0,0.5,0.1,0.03
+                 Stiles={300,200} Corder=LRCP
+                 Porder:T1={0,0,2,10,10,LRCP} Porder:T1={0,0,4,10,10,PCRL}
+                 -record log.txt
+    -- Tile 1 (the second tile) gets two tile-parts.  The first tile-part of
+       tile 1 includes the first 2 layers (0.1 bits per sample) and has a
+       layer progressive order (LRCP).  The second tile-part contains the
+       final two quality layers and has a resolution-progressive order (RLCP).
+       The first tile-part of every tile appears first, followed by the extra
+       tile-part of tile 1 (interleaved tile-parts).  Interesting things happen
+       when you truncate the code-stream to a bit-rate below 1.0 -- you
+       should be able to guess.
+    -- The log file generated using "-record" is very useful for interpreting
+       the results of complex command lines.  It uses Kakadu's uniform
+       parameter language to report the code-stream parameter configuration.
+ k) kdu_compress -i image.pgm -o out.bits -rate 1.0 Cprecincts={128,128}
+                 Cuse_sop=yes Cuse_eph=yes "Cmodes=RESTART|ERTERM"
+    -- Generates a code-stream with various error resilience features
+       enabled.  Use "kdu_expand -resilient" with such code-streams for the
+       best results in the event of transmission error.
+ l) kdu_compress -i image.raw -o out.bits Sprecision=16 Ssigned=no
+                 Sdims={1024,800} Qstep=0.0001 -rate 1.0
+    -- Process a raw 16-bit image.
+    -- Big-endian byte order is assumed for files with the ".raw" suffix,
+       whereas little-endian byte order is assumed if the file has a ".rawl"
+       suffix.  Pay special attention to this, since the native byte order
+       varies from platform to platform -- we don't want our files to have
+       platform-dependent interpretations now, do we!
+    -- Note that for raw images you need to
+       supply all of the dimensional information: image dimensions, bit-depth
+       and whether the image samples are signed 2's complement or unsigned
+       values.  Note also that the irreversible processing path chooses
+       a default set of quantization parameters based on a single scaling
+       parameter (Qstep) -- you can specify individual subband quantization
+       factors if you really know what you are doing.  The Qstep value is
+       interpreted relative to the nominal range of the data which is from
+       -2^{B-1} to 2^{B-1}-1 where B is the bit-depth (Sprecision).  If your
+       data is represented as 16-bit words, but all the information resides
+       in the least significant 10 bits of these words, the default value
+       of Qstep=1/256 may not be appropriate.  In this case, the best thing
+       to do would be to specify the actual number of least significant
+       bits which are being used (e.g., Sprecision=10 -- it assumes that
+       the data is the least significant B bits of a ceil(B/8) byte
+       word).  Alternatively, you may leave the most significant bits
+       empty, but you should choose a smaller value for Qstep (as suggested
+       by the example).  Remember that rate control is performed
+       independently of quantization step size selection, except that if
+       the quantization steps are too course, not enough bits will be
+       produced by the entropy coder for the rate controller to achieve
+       the target.  To see how many bits are being produced in any
+       given case, run the compressor without a `-rate' argument.
+ m) kdu_compress -i image_y.pgm,image_cb.pgm,image_cr.pgm -o out.jp2
+                 -jp2_space sYCC CRGoffset={0,0},{0.25,0.25},{0.25,0.25}
+                 -rate 1,0.5,0.2
+    -- Compresses a YCbCr image directly, having chrominance components
+       sub-sampled by a factor of 2 in each direction.  The CRGoffset
+       argument aligns the chrominance samples in the middle of each
+       2x2 block of luminance samples.  You may work with any sub-sampling
+       factors you like, of course, and they may be different in each
+       direction and for each component.  As a general rule, the mid-point
+       registration of sub-sampled chrominance components requires
+       CRGoffset values of 0.5-1/(2S), where S is the relevant
+       sub-sampling factor.
+          Identifies the colour space as sYCC through a containing JP2
+       file's colour box so that the image can be correctly rendered
+       (including all appropriate interpolation, component alignment and
+       colour conversion operations) by the "kdu_show" application or any
+       other conforming JP2 rendering application.
+ n) kdu_compress -i image.pgm -o out.jp2 Creversible=yes -rate -,1,0.5
+                 -jp2_space iccLUM,2.2,0.099
+    -- Embeds the compressed image within a JP2 file having an embedded
+       ICC profile identifying the image as having the tone reproduction
+       curve defined by the NTSC standard (gamma curve for sRGB has
+       parameters gamma=2.4 and beta=0.055 instead of 2.2 and 0.099).
+ o) kdu_compress -i image.ppm -o out.jp2 -rate 2,1,0.5
+                 -jp2_space iccRGB,3,0.16,0.9642,0,0,0,1,0,0,0,0.8249 Cycc=yes
+    -- The embedded ICC profile inserted into the JP2 file describes the
+       colour channels as G(X/X0), G(Y/Y0) and G(Z/Z0) where (X0,Y0,Z0)
+       are the whitepoint of the D50 profile connection space and G() is
+       the standard CIELab gamma function having parameters gamma=3.0 and
+       beta=0.16.  The YCC transform applied to these colour channels for
+       compression is not all that radically different from the linear
+       opponent transform applied to the gamma corrected colour channels
+       in the CIELab colour space.  It follows that this representation
+       should have properties similar to Lab at D50 and can easily be
+       converted (by means of a well conditioned linear transform) into
+       a true D50 Lab space.
+ p) kdu_compress -i image.ppm -o out.jp2 -rate -,0.05 Clayers=30
+                 Creversible=yes Rshift=12 Rlevels=5 -roi {0.3,0.1},{0.5,0.5}
+    -- Compresses a colour image losslessly using the max-shift ROI method
+       to ensure that a square region of is assigned much higher priority
+       in the layer generation process.  The region represents one quarter of
+       the total number of image pixels and starts 30% of the way down and
+       10% of the way across from the left of the image.  Reconstructing the
+       initial layers (you can use kdu_show, kdu_expand or kdu_transcode to
+       partially reconstructing or pair down the image) leaves an extremely
+       low quality in the background (everything other than the region of
+       interest) but a rapidly improving quality in the foreground as more
+       and more layers arrive.  The foreground becomes lossless before
+       the background improves substantially -- it eventually becomes lossless
+       too.
+ q) kdu_compress -i image.ppm -o out.jp2 -rate -,0.5 Clayers 20 Cblk={32,32}
+                 Creversible=yes Rweight=7 Rlevels=5 -roi mask.pgm,0.5
+    -- Another region of interest encoding example.  In this case the region
+       is found from the mask image -- the foreground corresponds to the
+       mask pixels whose values exceed 50% of the dynamic range (i.e., 128).
+       The mask image is automatically scaled to fit the dimensions of each
+       image component (scaling and region propogation are done incrementally
+       so as to minimize memory consumption).  In this case, the max-shift
+       method is not used. Instead, the distortion cost function which drives
+       the PCRD-opt layer formation algorithm is modulated by the region
+       characteristics.  The transition from background to foreground is
+       softer than in the max-shift case and may be controlled by `Rweight'.
+       Region definition is poorer than with the max-shift method, but a
+       number of important disadvantages are avoided.  For more on this,
+       consult the "kakadu.pdf" document.
+ r) kdu_compress -i huge.pgm -o huge.jp2 -rate 1.5 Clayers=20 Creversible=yes
+                 Clevels=8 Cprecincts={256,256},{256,256},{128,128}
+                 Corder=RPCL ORGgen_plt=yes ORGtparts=R Cblk={32,32}
+    -- I have used this exact command to successfully compress a very large
+       geospatial image (> 500 MByte BMP file).  The entire image is compressed
+       without any tiling whatsoever.  The compressed image may subsequently
+       be viewed quickly and efficiently using "kdu_show", at any resolution.
+       The key elements here are: 1) the generation of PLT marker segments
+       (ORGgen_plt=yes); 2) the use of a packet sequence (RPCL) which places
+       all packets of each precinct consecutively within the code-stream
+       (otherwise, it is hard to efficiently represent or use the PLT
+       marker information); and 3) the use of relatively small precincts.
+       The additional "ORGtparts=R" attribute introduces tile-part headers
+       immediately before each resolution level and locates the packet length
+       information with the header of the tile-part to which the packets
+       belong.  This has the effect of delaying the loading and parsing of
+       packet length identifiers (hundreds of thousands of packets were
+       generated in the 500 MByte image example) until an interactive
+       viewer or browser requests the relevant resolution.
+s) kdu_compress -i small.pgm -o small.jp2 -rate 1 Clayers 5 -no_info
+   -- The `-no_info' option prevents Kakadu from including a comment (COM)
+      marker segment in the code-stream to identify the rate-distortion slope
+      and size associated with each quality layer.  This information is
+      generated by default, starting from v3.3, since it allows rendering
+      and serving applications to customize their behaviour to the properties
+      of the image.  The only reason to turn off this feature is if you
+      are processing very small images and are interested in minimizing the
+      size of the code-stream.
+t) kdu_compress -i massive.ppm -o massive.jp2 -rate -,0.001 Clayers=28
+                Creversible=yes Clevels=8 Corder=PCRL ORGgen_plt=yes
+                Cprecincts={256,256},{256,256},{128,128},{64,128},{32,128},
+                           {16,128},{8,128},{4,128},{2,128} -flush_period 1024
+   -- You might use this type of command to compress a really massive image,
+      e.g. 64Kx64K or larger, without requiring the use of tiles.  The
+      code-stream is incrementally flushed out using the `-flush_period'
+      argument to indicate that an attempt should be made to apply incremental
+      rate control procedures and flush as much of the generated data to the
+      output file as possible, roughly every 1024 lines.  The result is that
+      you will only need about 1000*L bytes of memory to perform all
+      relevant processing and code-stream management, where L is the image
+      width.  It follows that a computer with 256MBytes of RAM could
+      losslessly an image measuring as much as 256Kx256K without
+      resorting to vertical tiling.  The resulting code-stream can be
+      efficiently served up to a remote client using `kdu_server'.
+u) kdu_compress -i im32.bmp -o im32.jp2 -jp2_alpha -jp2_box xml.box
+   -- Demonstrates the fact that "kdu_compress" can read 32-bit BMP files
+      and that you can tell it to regard the fourth component as an alpha
+      channel, to be marked as such in the JP2 header.  The "kdu_show"
+      application ignores alpha channels only because alpha blending is
+      not uniformly supported across the various WIN32 platforms.  The
+      Java demo application "KduRender.java" will use an image's alpha
+      channel, if any, to customize the display.
+   -- The example also demonstrates the inclusion of additional meta-data
+      within the file.  Consult the usage statement for more on the structure
+      of the files supplied with the `-jp2_box' argument.  To reveal the
+      meta-data structure of a JP2 file, use "kdu_show"'s new "meta-show"
+      capability, accessed via the `m' accelerator or the view menu.
+v) kdu_compress -i im.ppm -o im.jpx -jpx_space ROMMRGB
+   -- demonstrates the generation of a true JPX file.
+   -- demonstrates the fact that any of the JPX enumerated colour space
+      descriptions can now be used; assumes, of course, that the input image
+      does have a ROMM RGB colour representation (in this case).
+   -- you can actually provide multiple colour spaces now, using `-jp2_space'
+      and/or `-jpx_space', with the latter allowing you to provide
+      precedence information to indicate preferences for readers which are
+      able to interpret more than one of the representations.
+w) kdu_compress -i frag1.pgm -o massive.jp2 Creversible=yes
+                 Clevels=12 Stiles={32768,32768} Clayers=30
+                 -rate -,0.0000001 Cprecincts={256,256},{256,256},{128,128}
+                 Corder=RPCL ORGgen_plt=yes ORGtparts=R Cblk={32,32}
+                 ORGgen_tlm=13 -frag 0,0,1,1 Sdims={1500000,2300000}
+   kdu_compress -i frag2.pgm -o massive.jp2 Creversible=yes
+                 Clevels=12 Stiles={32768,32768} Clayers=30
+                 -rate -,0.0000001 Cprecincts={256,256},{256,256},{128,128}
+                 Corder=RPCL ORGgen_plt=yes ORGtparts=R Cblk={32,32}
+                 ORGgen_tlm=13 -frag 0,1,1,1
+   kdu_compress -i frag3.pgm -o massive.jp2 Creversible=yes
+                 Clevels=12 Stiles={32768,32768} Clayers=30
+                 -rate -,0.0000001 Cprecincts={256,256},{256,256},{128,128}
+                 Corder=RPCL ORGgen_plt=yes ORGtparts=R Cblk={32,32}
+                 ORGgen_tlm=13 -frag 0,0,2,1
+   ...
+   -- demonstrates the compression of a massive image (about 3.5 Tera-pixels
+      in this case) in fragments.  Each fragment represents a whole number of
+      tiles (in this case only one tile, each of which contains 1 Giga-pixel)
+      from the entire canavs.  The canvas dimensions must be explicitly
+      given so that the fragmented generation process can work correctly.
+   -- To view the codestream produced at any intermediate step, after
+      compressing some initial number of fragments, you can use
+      "kdu_expand" or "kdu_show".  Note, however, that while this will work
+      with kakadu, you might not be able to view a partial codestream using
+      other manufacturers' tools, since the codestream will not generally
+      be legal until all fragments have been compressed.
+   -- To understand more about fragmented compression, see the usage statement
+      for the `-frag' argument in "kdu_compress" or, for a thorough
+      picture, you can check out the definition of `kdu_compress::create'.
+   -- In this example, the codestream generation machinery itself produces
+      TLM (tile-part-length) marker segments.  This is done by selectively
+      overwriting an initially empty sandpit for TLM marker segments in the
+      main header.  TLM information makes it easier to efficiently access
+      selected regions of a tiled image.
+   -- As an alterative to providing separate input files for each source
+      fragment, you can supply a single common input file for all fragments
+      and use the "-icrop" argument to automatically crop out just the
+      region of the image which you need to create each fragment.  The
+      "-icrop" feature is not necessarily supported by all image file format
+      reading tools used by the "kdu_compress" demo application, but it should
+      be supported by the TIFF reading code, which also supports the new
+      BigTIFF file format.
+
+x) kdu_compress -i volume.rawl*100@524288 -o volume.jpx -jp2_space sLUM
+                -jpx_layers * Clayers=16 Creversible=yes Sdims={512,512}
+                Sprecision=12 Ssigned=no Cycc=no
+   -- Compresses an image volume consisting of 100 slices, all of which are
+      packed into a single raw file, containing 12-bit samples, in the
+      least-significant bits of each 2-byte word with little-endian byte order
+      (note the ".rawl" suffix means little-endian, while ".raw" means
+      big-endian).
+   -- The expression "*100@524288" means that the single file "volume.rawl"
+      should be unpacked into 100 consecutive images, each separated by
+      524288 bytes (this happens to be 512x512x2 bytes).  Of course, we
+      could always provide 100 separate input files on the command-line but
+      this is pretty tedious.
+   -- The "-jpx_layers *" command instructs the compressor to create one
+      JPX compositing layer for each image component (each slice of the
+      volume).  This will prove particularly interesting when multi-component
+      transforms are added (see examples Ai to Ak below).  Take a look at
+      the usage statement for other ways to use the new "-jpx_layers" switch.
+
+y) kdu_compress -i geo.tif -o geo.jp2 Creversible=yes Clayers=16 -num_threads 2
+   -- Compress a GeoTIFF image, recording the geographical information tags
+      in a GeoJP2 box within the resulting JP2 file.  Kakadu can natively
+      read a wide range of exotic TIFF files, but not ones which contain
+      compressed imagery.  For these, you need to compile against the public
+      domain LIBTIFF library (see "Compilation_Instructions.txt").
+   -- From version 5.1, Kakadu provides extensive support for multi-threaded
+      processing, to leverage parallel processing resources (multiple
+      CPU's, multi-core CPU's and/or hyperthreading CPU's).  In this example,
+      the `-num_threads' argument is explicitly used to control threading.
+      The application selects the number of threads to match the number of
+      available CPU's by default, but it is not always possible to detect
+      the number of CPU's on all platforms.  To force use of the single
+      threaded processing model from previous versions of Kakadu, specify
+      "-num_threads 0".  To use the multi-threading framework of v5.1 but
+      populate the environment with only 1 thread, specify "-num_threads 1";
+      in this latter case, there is still only one thread of execution in
+      the program, but the order in which processing steps are performed
+      is driven by Kakadu's thread scheduler, rather than the rigid order
+      associated with function invocation.
+
+z) kdu_compress -i frame.tif -o dci_frame.jp2 Sprofile=CINEMA4K
+                Creslengths=1302083, Creslengths:C0=1302083,1041666
+                Creslengths:C1=1302083,1041666 Creslengths:C2=1302083,1041666
+   -- Compresses a 3-plane 12-bit per sample TIF image to a JP2 file whose
+      embedded codestream is compliant with the 4K digital cinema profile,
+      with rate constraints adjusted for a 24fps projection environment.
+   -- This example demonstrates use of the new "Creslengths" parameter
+      attribute for constraining the compressed size associated with
+      resolution-specific and/or component-specific subsets of the
+      codestream.  You can combine Creslengths with -rate or -slope, so that
+      Creslengths just acts as a guard to prevent violation of constraints
+      under unusual circumstances.  This is probably the best way to use
+      Kakadu to generate Digital Cinema content.  The "Creslengths" attribute
+      provides a rich set of potential constraints, well beyond what is
+      required by Digital Cinema.  It allows you to bound the compressed size
+      of any image resolution (globally), any image component at any resolution
+      (globally), any resolution of any tile or any resolution of any
+      tile-component (image component of a tile).  Moreover, it allows you to
+      provide bounds (or omit bounds) for any or all of the quality layers
+      you want to generate.
+
+kdu_compress advanced Part-2 Features
+-------------------------------------
+    These additional examples look a lot more complex than the ones above,
+    because they exercise rich features from Part-2 of the JPEG2000 standard.
+    The signalling syntax becomes complex and may be difficult to fully
+    understand without carefully reading the usage statements printed by
+    "kdu_compress -usage", possibly in conjunction with IS15444-2 itself.
+    In the specific applications which require these options, you would
+    probably configure the relevant codestream parameter attributes directly
+    from the application using the binary set/get methods offered by
+    `kdu_params', rather than parsing complex text expressions from the
+    command-line, as given here.  Nevertheless, everything can be
+    prototyped using command-line arguments.
+
+Aa) kdu_compress -i image.pgm -o image.jpx
+                 Cdecomp=B(V--:H--:-),B(V--:H--:-),B(-:-:-)
+    -- Uses Part-2 arbitrary decomposition styles (ADS) features to describe
+       a packet wavelet transform structure, in which the highest two
+       resolution levels of HL (horizontally high-pass) and LH (vertically
+       high-pass) subbands are further subdivided vertically (HL) and
+       horizontally (LH) respectively.  Subsequent DWT levels use the
+       regular Mallat decomposition structure of Part-1.
+    -- The decomposition structure given here is usually a little more
+       efficient than the standard Mallat structure from Part-1.  This
+       structure is also compatible with compressed-domain flipping
+       functionalities which Kakadu uses to implement efficient rotation
+       (for transcoding or rendering).
+    -- Much richer splitting structures can be described using the `Cdecomp'
+       syntax, but compressed domain flipping becomes fundamentally impossible
+       if any final subband involves more than one high-pass filtering
+       step in either direction.
+
+Ab) kdu_compress -i image.ppm -o image.jpx
+                 Cdecomp=B(BBBBB:BBBBB:B----),B(B----:B----:B----),B(-:-:-)
+    -- Similar to example Aa), except that the primary (HL, LH and HH)
+       subbands produced by the first two DWT levels are each subjected to
+       a variety of further splitting operations.  In this case, the highest
+       frequency primary HL and LH subbands are each split horizontally and
+       vertically into 4 secondary subbands, and these are each split again
+       into 4 tertiary subbands.  The highest frequency primary HH subband
+       is split into just 4 secondary subbands, leaving a total of 36
+       subbands in the highest resolution level.  In the second DWT level,
+       the primary HL, LH and HH subbands are each split horizontally and
+       vertically, for a total of 12 subbands.  All subsequent DWT levels
+       follow the usual Mallat decomposition structure.
+
+Ac) kdu_compress -i y.pgm,cb.pgm,cr.pgm -o image.jpx
+                 Cdecomp:C1=V(-),B(-:-:-) Cdecomp:C2=V(-),B(-:-:-)
+    -- Uses Part-2 downsampling factor styles (DFS) features to describe
+       a transform in which the first DWT level splits the Cb and Cr image
+       components (2'nd and 3'rd components, as supplied by "cb.pgm" and
+       "cr.pgm") only in the vertical direction.  Subsequence DWT levels
+       use full horizontal and vertical splitting (a la Part-1) for all
+       image components.
+    -- This sort of thing can be useful for applications in which the
+       chrominance components have previously been subsampled horizontally
+       (e.g., a 4:2:2 video frame).  In particular, it ensures that whenever
+       the image is reconstructed at resolutions (e.g., at half or
+       quarter resolution for the luminance), the chrominance components
+       can be reconstructed at exactly the same size as the luminance
+       component.
+
+Ad) kdu_compress -i image.pgm -o image.jpx  Catk=2
+                 Kextension:I2=SYM Kreversible:I2=no
+                 Ksteps:I2={2,0,0,0},{2,-1,0,0}
+                 Kcoeffs:I2=-0.5,-0.5,0.25,0.25
+    -- Uses Part-2 arbitrary transform kernel (ATK) features to describe
+       an irreversible version of the spline 5/3 DWT kernel -- Part-1
+       uses the reversible version of this kernel for its reversible
+       compression path, but does not provide an irreversible version.
+    -- For a full understanding of the `Ksteps' and `Kcoeffs' parameter
+       attribute syntax, refer to the usage statement printed by
+       "kdu_compress -usage".
+    -- Note that the `Catk' attribute identifies the kernel to be used
+       via its instance index (2 in this case).  The kernel is then
+       given by the `Kextension', `Kreversible', `Ksteps' and `Kcoeffs'
+       attributes with this instance index (:I2).
+
+Ad) kdu_compress -i image.ppm -o image.jpx  Catk=2
+                 Kextension:I2=CON Kreversible:I2=yes
+                 Ksteps:I2={1,0,0,0},{1,0,1,1}
+                 Kcoeffs:I2=-1.0,0.5
+    -- Another example of Part-2 arbitrary transform kernel (ATK) features,
+       this time specifying the well-known Haar (2x2) transform kernel, for
+       lossless processing; the reversible Haar DWT is also known as the
+       "S-transform" in the literature.
+
+Ae) kdu_compress -i image.bmp -o image.j2c Catk=2
+        Kextension:I2=SYM Kreversible:I2=yes
+        Ksteps:I2={4,-1,4,8},{4,-2,4,8}
+        Kcoeffs:I2=0.0625,-0.5625,-0.5625,0.0625,-0.0625,0.3125,0.3125,-0.0625
+    -- Another example of Part-2 arbitrary transform kernel (ATK) features,
+       this time specifying a reversible 13x7 kernel (13-tap symmetric low-pass
+       analysis filter, 7-tap symmetric high-pass analysis filter) with two
+       lifting steps.
+
+Af) kdu_compress -i image.ppm -o image.jpx  -jp2_space sRGB  Mcomponents=3
+                 Sprecision=8,8,8  Ssigned=no,yes,yes  Mmatrix_size:I7=9
+                 Mmatrix_coeffs:I7=1,0,1.402,1,-0.344136,-0.714136,1,1.772,0
+                 Mvector_size:I1=3  Mvector_coeffs:I1=128,128,128
+                 Mstage_inputs:I16={0,2}  Mstage_outputs:I16={0,2}
+                 Mstage_collections:I16={3,3}
+                 Mstage_xforms:I16={MATRIX,7,1,0,0} Mnum_stages=1 Mstages=16
+    -- Compresses an RGB colour image using the conventional RGB to YCbCr
+       transform to approximately decorrelate the colour channels, implemented
+       here as a Part-2 multi-component transform.  The colour transform is
+       actually identical to the Part-1 ICT (Irreversible Colour Transform),
+       but this example is provided mainly to demonstrate the use of the
+       multi-component transform.
+    -- To decode the above parameter attributes, note that:
+       a) There is only one multi-component transform stage, whose instance
+          index is 16 (this is the I16 suffix found on the descriptive
+          attributes for this stage).  The value 16 is entirely arbitrary.  I
+          picked it to make things interesting.  There can, in general, be
+          any number of transform stages.
+       b) The single transform stage consists of only one transform block,
+          defined by the `Mstage_xforms:I16' attribute -- there can be
+          any number of transform blocks, in general.
+       c) This block takes 3 input components and produces 3 output
+          components, as indicated by the `Mstage_collections:I16' attribute.
+       d) The stage inputs and stage outputs are not permuted in this example;
+          they are enumerated as 0-2 in each case, as given by the
+          `Mstage_inputs:I16' and `Mstage_outputs:I16' attributes.
+       e) The transform block itself is implemented using an irreversible
+          matrix decorrelation operator.  More specifically, the transform
+          block belongs to the class of matrix decorrelation operators
+          (1'st field of `Mstage_xforms:I16' record is "MATRIX"), with
+          matrix coefficients taken from the `Mmatrix_size' and
+          `Mmatrix_coeffs' attributes with instance index 7 (2'nd field of
+          `Mstage_xforms:I16' is 7), using irreversible processing
+          (4'th field of `Mstage_xforms:I16' is 0 -- irreversible).  Block
+          outputs are added to the offset vector whose instance index is 1
+          (3'rd field of `Mstage_xforms:I16' is 1), as given by the
+          `Mvector_size:I1' and `Mvector_coeffs:I1' attributes.
+       f) The mapping from YCbCr to RGB is performed using the 3x3 matrix,
+          whose coefficients appear in raster order within the
+          `Mmatrix_coeffs:I1' attribute.
+       g) Since a multi-component transform is being used, the precision
+          and signed/unsigned properties of the final decompressed (or
+          original compressed) image components are given by `Mprecision'
+          and `Msigned' (8-bit unsigned image samples in this case), while
+          their number is given by `Mcomponents'.
+       h) The `Sprecision' and `Ssigned' attributes record the precision
+          and signed/unsigned characteristics of what we call the codestream
+          components -- i.e., the components which are obtained by block
+          decoding and spatial inverse wavelet transformation.  In this
+          case, these are the Y, Cb and Cr components.  The RGB to YCbCr
+          transform has the property that these are also 8-bit quantities
+          (no range expansion), with Cb and Cr holding signed quantities
+          and Y (luminance) unsigned.
+
+Ag) kdu_compress -i image.bmp -o image.jpx  -jp2_space sRGB  Mcomponents=4
+                 Sprecision=8,8,8  Ssigned=no,yes,yes  Mmatrix_size:I7=9
+                 Mmatrix_coeffs:I7=1,0,1.402,1,-0.344136,-0.714136,1,1.772,0
+                 Mvector_size:I1=3  Mvector_coeffs:I1=128,128,128
+                 Mvector_size:I2=1  Mvector_coeffs:I2=128
+                 Mstage_inputs:I16={0,2},{0,0}  Mstage_outputs:I16={0,3}
+                 Mstage_collections:I16={3,3},{1,1}
+                 Mstage_xforms:I16={MATRIX,7,1,0,0},{MATRIX,0,2,0,0}
+                 Mnum_stages=1 Mstages=16
+    -- Same as example Af), except that the multi-component transform defines
+       an extra output component, which is created by a second transform
+       block in the single multi-component transform stage.
+          This extra transform block is described by the second record in
+       each of `Mstage_collections' and `Mstage_xforms'; it takes only 1 input
+       and 1 output and uses a null-transform (2'nd field in the second record
+       of `Mstage_xforms:I16' is 0).  This means that the extra transform
+       block simply passes its input through to its output, adding the
+       offset described by `Mvector_size:I2' and `Mvector_coeffs:I2' (3'rd
+       field of the second recrod in `Mstage_xforms:I16' is 2).
+          The bottom line is that the 4'th output component is simply a
+       replica of the 1'st raw codestream component -- the Y (luminance)
+       component.  In order, the output components are R, G, B and Y.
+    -- This example shows how multi-component transforms can have more
+       output components than the number of codestream components -- i.e.
+       the components which are actually encoded.  In fact, they can also
+       have fewer components.  When confronted with this situation, the
+       "kdu_compress" example associates the input image file's N components
+       (N=3 here) with the first N output image components, and then figures
+       out how to work back through the multi-component transform network,
+       inverting or partially inverting an appropriate subset of the
+       transform blocks so as to obtain the codestream components which
+       must be encoded.  If there is a way of doing this, Kakadu should
+       be able to find it.
+
+Ah) kdu_compress -i image.ppm -o image.jpx  -jp2_space sRGB
+                 Mcomponents=3  Creversible=yes
+                 Sprecision=8,8,8  Ssigned=no,yes,yes  Mmatrix_size:I7=12
+                 Mmatrix_coeffs:I7=1,1,4,0,1,-1,1,0,-1,0,0,1
+                 Mvector_size:I1=3  Mvector_coeffs:I1=128,128,128
+                 Mstage_inputs:I25={1,1},{2,2},{0,0}
+                 Mstage_outputs:I25={2,2},{0,0},{1,1}
+                 Mstage_collections:I25={3,3}
+                 Mstage_xforms:I25={MATRIX,7,1,1,0}
+                 Mnum_stages=1  Mstages=25
+    -- Same as example Af), except that processing is performed reversibly
+       and the Part-1 RCT (reversible colour transform) is implemented as a
+       multi-component transform to demonstrate reversible matrix
+       decorrelation transforms.
+    -- To understand the reversible decorrelation transform block, observe
+       firstly that the coefficients from `Mmatrix_coeffs:I7' belong to
+       the following 4x3 array:
+                        | 1   1   4 |
+                    M = | 0   1  -1 |
+                        | 1   0  -1 |
+                        | 0   0   1 |
+       Let I0, I1 and I2 denote the inputs to this transform block.  The
+       reversible transform operator transforms these inputs into outputs
+       via the following steps (one step per row in the matrix, M):
+          i)   I2 <- I2 - round[(1*I0 +  1*I1) / 4]  = I2 - round((I0+I1)/4)
+          ii)  I1 <- I1 - round[(0*I0 + -1*I2) / 1]  = I1 + I2
+          iii) I0 <- I0 - round[(0*I0 + -1*I2) / 1]  = I0 + I2
+          iV)  I2 <- I2 - round[(0*I0 +  0*I1) / 1]  = I2
+       Noting that `Mstage_inputs:I25' associates the block inputs with
+       the raw codestream components I0 -> C1=Db, I1 -> C2=Dr, I2 -> C0=Y,
+       and `Mstage_outputs:I25' associates the block outputs with stage
+       output components I0 -> M2=B, I1 -> M0=R, I2 -> M1=G, the above
+       steps can be written as
+          i)   G <- Y - round((Db + Dr)/4)
+          ii)  R <- Dr + G
+          iii) B <- Db + G
+          iV)  G <- G
+       which is exactly the Part-1 RCT transform mapping YDbDr to RGB -- of
+       course, the fourth step does nothing here, but reversible
+       multi-component decorrelation transforms require this final step.
+    -- For a complete description of reversible multi-component decorrelation
+       transforms, consult Part-2 of the JPEG2000 standard, or the interface
+       description for Kakadu function `kdu_tile::get_mct_rxform_info'.
+
+Ai) kdu_compress -i catscan.rawl*35@524288 -o catscan.jpx -jpx_layers *
+                 -jpx_space sLUM Creversible=yes Sdims={512,512} Clayers=16
+                 Mcomponents=35  Msigned=no  Mprecision=12
+                 Sprecision=12,12,12,12,12,13  Ssigned=no,no,no,no,no,yes
+                 Mvector_size:I4=35 Mvector_coeffs:I4=2048
+                 Mstage_inputs:I25={0,34}  Mstage_outputs:I25={0,34}
+                 Mstage_collections:I25={35,35}
+                 Mstage_xforms:I25={DWT,1,4,3,0}
+                 Mnum_stages=1  Mstages=25
+    -- Compresses a medical volume consisting of 35 slices, each 512x512,
+       represented in raw little-endian format with 12-bits per sample,
+       packed into 2 bytes per sample.  This example follows example (x)
+       above, but adds a multi-component transform, which is implemented
+       using a 3 level DWT, based on the 5/3 reversible kernel (the kernel-id
+       is 1, which is found in the second field of the `Mstage_xforms' record.
+    -- To decode the above parameter attributes, note that:
+       a) There is only one multi-component transform stage, whose instance
+          index is 25 (this is the I25 suffix found on the descriptive
+          attributes for this stage).  The value 25 is entirely arbitrary.  I
+          picked it to make things interesting.  There can, in general, be
+          any number of transform stages.
+       b) The single transform stage consists of only one transform block,
+          defined by the `Mstage_xforms:I25' attribute -- there can be
+          any number of transform blocks, in general.
+       c) This block takes 35 input components and produces 35 output
+          components, as indicated by the `Mstage_collections:I25' attribute.
+       d) The stage inputs and stage outputs are not permuted in this example;
+          they are enumerated as 0-34 in each case, as given by the
+          `Mstage_inputs:I25' and `Mstage_outputs:I25' attributes.
+       e) The transform block itself is implemented using a DWT, whose kernel
+          ID is 1 (this is the Part-1 5/3 reversible DWT kernel).  Block
+          outputs are added to the offset vector whose instance index is 4
+          (as given by `Mvector_size:I4' and `Mvector_coeffs:I4') and the
+          DWT has 3 levels.  The final field in the `Mstage_xforms' record
+          is set to 0, meaning that the canvas origin for the multi-component
+          DWT is to be taken as 0.
+       f) Since a multi-component transform is being used, the precision
+          and signed/unsigned properties of the final decompressed (or
+          original compressed) image components are given by `Mprecision'
+          and `Msigned', while their number is given by `Mcomponents'.
+       g) The `Sprecision' and `Ssigned' attributes record the precision
+          and signed/unsigned characteristics of what we call the codestream
+          components -- i.e., the components which are obtained by block
+          decoding and spatial inverse wavelet transformation.  In this
+          case, the first 5 are low-pass subband components, at the bottom
+          of the DWT tree; the next 4 are high-pass subband components
+          from level 3; then come 9 high-pass components from level 2 of
+          the DWT; and finally the 17 high-pass components belonging to
+          the first DWT level.  DWT normalization conventions for both
+          reversible and irreversible multi-component transforms dictate
+          that all high-pass subbands have a passband gain of 2, while
+          low-pass subbands have a passband gain of 1.  This is why all
+          but the first 5 `Sprecision' values have an extra bit -- remember
+          that missing entries in the `Sprecision' and `Ssigned' arrays
+          are obtained by replicating the last supplied value.
+
+Aj) kdu_compress -i catscan.rawl*35@524288 -o catscan.jpx -jpx_layers *
+                 -jpx_space sLUM Sdims={512,512} Clayers 14 -rate 70
+                 Mcomponents=35  Msigned=no  Mprecision=12
+                 Sprecision=12,12,12,12,12,13  Ssigned=no,no,no,no,no,yes
+                 Kextension:I2=CON  Kreversible:I2=no
+                 Ksteps:I2={1,0,0,0},{1,0,0,0}  Kcoeffs:I2=-1.0,0.5
+                 Mvector_size:I4=35 Mvector_coeffs:I4=2048
+                 Mstage_inputs:I25={0,34}  Mstage_outputs:I25={0,34}
+                 Mstage_collections:I25={35,35}
+                 Mstage_xforms:I25={DWT,2,4,3,0}
+                 Mnum_stages=1  Mstages=25
+    -- Same as example Ai), except in this case the compression processes
+       are irreversible, and a custom DWT transform kernel is used,
+       described by the `Kextension', `Kreversible', `Ksteps' and
+       `Kcoeffs' parameter attributes, having instance index 2 (i.e., ":I2").
+       The DWT kernel used here is the Haar, having 2-tap low- and high-pass
+       filters.
+    -- Note that "kdu_compress" consistently expresses bit-rate in terms
+       of bits-per-pixel.  In this case, each pixel is associated with 35
+       image planes, so "-rate 70" sets the maximum bit-rate to 2 bits
+       per sample.
+
+Ak) kdu_compress -i confocal.ppm*12@786597 -o confocal.jpx -jpx_layers *
+                 -jpx_space sRGB Cblk={32,32} Cprecincts={64,64}
+                 ORGgen_plt=yes Corder=RPCL Clayers 12 -rate 24
+                 Mcomponents=36 Sprecision=8,8,8,9,9,9,9,9,9,9,9,9,8
+                 Ssigned=no,no,no,yes
+                 Kextension:I2=CON  Kreversible:I2=no
+                 Ksteps:I2={1,0,0,0},{1,0,0,0}  Kcoeffs:I2=-1.0,0.5
+                 Mmatrix_size:I7=9
+                 Mmatrix_coeffs:I7=1,0,1.402,1,-0.344136,-0.714136,1,1.772,0
+                 Mvector_size:I7=3  Mvector_coeffs:I7=128,128,128
+                 Mstage_inputs:I25={0,35}  Mstage_outputs:I25={0,35}
+                 Mstage_collections:I25={12,12},{24,24}
+                 Mstage_xforms:I25={DWT,2,0,2,0},{MAT,0,0,0,0}
+                 Mstage_inputs:I26={0,0},{12,13},{1,1},{14,15},{2,2},{16,17},
+                                  {3,3},{18,19},{4,4},{20,21},{5,5},{22,23},
+                                  {6,6},{24,25},{7,7},{26,27},{8,8},{28,29},
+                                  {9,9},{30,31},{10,10},{32,33},{11,11},{34,35}
+                 Mstage_outputs:I26={0,35}
+                 Mstage_collections:I26={3,3},{3,3},{3,3},{3,3},{3,3},{3,3},
+                                        {3,3},{3,3},{3,3},{3,3},{3,3},{3,3}
+                 Mstage_xforms:I26={MATRIX,7,7,0,0},{MATRIX,7,7,0,0},
+                                   {MATRIX,7,7,0,0},{MATRIX,7,7,0,0},
+                                   {MATRIX,7,7,0,0},{MATRIX,7,7,0,0},
+                                   {MATRIX,7,7,0,0},{MATRIX,7,7,0,0},
+                                   {MATRIX,7,7,0,0},{MATRIX,7,7,0,0},
+                                   {MATRIX,7,7,0,0},{MATRIX,7,7,0,0}
+                 Mnum_stages=2  Mstages=25,26
+    -- This real doozy of an example can be used to compress a sequence
+       of 12 related colour images; these might be colour scans from a
+       confocal microscope at consecutive focal depths, for example.  The
+       original 12 colour images are found in a single file, "confocal.ppm",
+       which is actually a concatenation of 12 PPM files, each of size
+       786597 bytes.  12 JPX compositing layers will be created, each
+       having the sRGB colour space.  In the example, two multi-component
+       transform stages are used.  These stages are most easily understood
+       by working backwards from the second stage.
+        * The second stage has 12 transform blocks, each of which implements
+          the conventional YCbCr to RGB transform, producing 12 RGB triplets
+          (with appropriate offsets to make unsigned data) from the 36 input
+          components to the stage.  The luminance inputs to these 12
+          transform blocks are derived from outputs 0 through 11 from the
+          first stage.  The chrominance inputs are derived from outputs
+          12 through 35 (in pairs) from the first stage.
+        * The first stage has 2 transform blocks.  The first is a DWT block
+          with 2 levels, which implements the irreversible Haar (2x2)
+          transform.  It synthesizes the 12 luminance components from its
+          12 subband inputs, the first 3 of which are low-pass luminance
+          subbands, followed by 3 high-pass luminance subbands from the
+          lowest DWT level and then 6 high-pass luminance subbands from
+          the first DWT level.  The chrominance components are passed
+          straight through the first stage its NULL transform block.
+    -- All in all, then, this example employs the conventional YCbCr
+       transform to exploit correlation amongst the colour channels in
+       each image, while it uses a 2 level Haar wavelet transform to
+       exploit correlation amongst the luminance channels of successive
+       images.
+    -- Try creating an image like this and viewing it with "kdu_show".  You
+       will also find you can serve it up beautifully using "kdu_server" for
+       terrific remote browsing experience.
+
+kdu_maketlm
+-----------
+ a) kdu_maketlm input.j2c output.j2c
+ b) kdu_maketlm input.jp2 output.jp2
+    -- You can add TLM marker segments to an existing raw code-stream file
+       or wrapped JP2 file.  This can be useful for random access into large
+       compressed images which have been tiled; it is of marginal value when
+       an untiled image has multiple tile-parts.
+    -- Starting from v4.3, TLM information can be included directly by the
+       codestream generation machinery, which saves resource-hungry file
+       reading and re-writing operations.  Note, however, that the
+       "kdu_maketlm" facility can often provide a more efficient TLM
+       representation, or find a legal TLM representation where none can
+       be determined ahead of time by the codestream generation machinery.
+
+kdu_v_compress
+--------------
+    Accepts similar arguments to `kdu_compress', but the input format
+    must be a "vix" file (read usage statement to find a detailed description
+    of this trivial raw video file format -- you can build a vix file by
+    concatenating raw video frames with a simple text header).  The output
+    format must be one of "*.mj2" or "*.mjc", where the latter is a simple
+    compressed video format, developed for illustration purposes, while
+    the former is the Motion JPEG2000 file format described by ISO/IEC 15444-4.
+
+ a) kdu_v_compress -i in.vix -o out.mj2 -rate 1 -cpu
+    -- Compress to a Motion JPEG2000 file, with a bit-rate of 1 bit per pixel
+       enforced over each individual frame (not including file format wrappers)
+       and reports the per-frame CPU processing time.  For meaningful CPU
+       times, make sure the input contains a decent number of frames (e.g.,
+       10 or more)
+ b) kdu_v_compress -i in.vix -o out.mj2 -rate 1,0.5 -cpu -no_slope_prediction
+    -- See the effects of slope prediction of compressor processing time.
+
+kdu_merge
+---------
+ a) kdu_merge -i im1.jp2,im2.jp2 -o merge.jpx
+    -- probably the simplest example of this useful tool.  Creates a
+       single JPX file with two compositing layers, corresponding to the
+       two input images.  Try opening `merge.jpx' in "kdu_show" and using
+       the "enter" and "backspace" keys to step through the compositing
+       layers
+ b) kdu_merge -i video.mj2 -o video.jpx
+    -- Assigns each codestream of the input MJ2 file to a separate compositing
+       layer in the output JPX file.  Try stepping through the video frames
+       in "kdu_show".
+ c) kdu_merge -i video.mj2 -o video.jpx -composit 300@24.0*0+1
+    -- Same as above, but adds a composition box, containing instructions to
+       play through the first 300 images (or as many as there are) at a
+       rate of 24 frames per second.
+    -- The expression, "0+1" means that the first frame correspondings to
+       compositing layer 0 (the first one) and that each successive frame
+       is obtained by incrementing the compositing layer index by 1.
+ d) kdu_merge -i background.jp2,video.mj2 -o out.jpx
+              -composit 0@0*0 150@24*1+2@(0.5,0.5,1.71),2+2@(2.3,3.2,1)
+    -- Demonstrates a persistent background (0 for the iteration count makes
+       it persistent), on top of which we write 150 frames (to be played at
+       24 frames per second), each consisting of 2 compositing layers,
+       overlayed at different positions and scales.  The first frame
+       overlays compositing layers 1 and 2 (0 is the background), after
+       which each new frame is obtained by adding 2 to the compositing
+       layer indices used in the previous frames.  The odd-indexed
+       compositing layers are scaled by 1.71 and positioned half their scaled
+       with to the right and half their scaled height below the origin
+       of the compositing canvas.  The others are scaled by 1 and positioned
+       2.3 times their width to the right and 3.2 times their height below
+       the origin.
+    -- The kdu_merge utility also supports cropping of layers prior to
+       composition and scaling.
+ e) kdu_merge -i im1.jp2,im2,jp2,alpha.jp2 -o out.jpx
+              -jpx_layers 2:0 sRGB,alpha,1:0/0,1:0/1,1:0/2,3:0/3
+                              sRGB,alpha,1:0/0,1:0/1,1:0/2,3:0/0
+              -composit 0@(0,0,2),1@(0.5,0.5,1),2:(0.3,0.3,0.4,0.4)@(1.2,1.2,1)
+    -- This demonstrates the creation of a single complex image from 3
+       original images.  im1.jp2 and im2.jp2 contain the colour imagery,
+       while alpha.jp2 is an image with 4 components, which we selectively
+       associate with the other images as alpha blending channels.
+       * Three custom compositing layers are created using the `-jpx_layers'
+         command.  The first just consists of the first compositing layer
+         from the second image file (note that file numbers all start from 1
+         while everything else starts fro 0) -- of course, JP2 files have
+         only one compositing layer.  The second custom compositing layer
+         has four channels (3 sRGB channels and 1 alpha channel), extracted
+         from image components 0-2 of codestream 0 in file 1 and image
+         component 3 (the 4'th one) of codestream 0 in file 3 (the alpha
+         image).  The relevant codestream colour transforms are applied
+         automatically during the rendering process, so that even though the
+         components have been compressed using the codestream ICT, they may
+         be treated as RGB components.  The third compositing layer is
+         similar to the second, but it uses the second component of
+         the alpha image for its alpha blending.
+       * One composited image is created by combining the 3 layers.  The
+         first layer is scaled by 2 and placed at the origin of the
+         composition canvas.  The second layer is placed over this, scaled
+         by 1 and shifted by half its height and width, below and to the
+         right of the composition canvas.  The third layer is placed on top
+         after first cropping it (removing 30% of its width and height from
+         the left, and preserving 40% of its original with and height) and
+         then shifted it by 1.2 times its cropped height and width.
+    -- It is worth noting that the final image does not contain multiple
+       copies of any of the original imagery; each original image codestream
+       is copied once into the merged image and then referenced from
+       custom compositing layer header boxes, which are in turn referenced
+       from the composition box.  This avoids inefficiencies in the file
+       representation and also avoids computational inefficiencies during
+       rendering.  Each codestream is opened only once within "kdu_show"
+       (actually inside `kdu_region_compositor') but may be used by
+       multiple rendering contexts.  One interesting side effect of this is
+       that if you attach a metadata label to one of the codestreams in
+       the merged file it will appear in all elements of the composited
+       result which use that codestream.  You can attach such metadata
+       labels using the metadata editing facilities of "kdu_show".
+ f) kdu_merge -i im1.jpx,im2.jpx,im3.jpx -o album.jpx -album
+    -- Make a "photo album" containing the supplied input images (keeps all
+       their individual metadata, correctly cross-referenced to the images
+       from which it came).  The album is an animation, whose initial frame(s)
+       contain all images, arranged in tiles, with borders, scaled to
+       similar sizes -- these are essentially photo index pages.  The index
+       pages are followed by one frame for each image.  This
+       is a great way to create albums of photos to be served up for remote
+       interactive access via JPIP.  Even better, the tool automatically
+       inserts metadata labels to get you started with adding your own more
+       meaningful metadata when you open the album in "kdu_show".
+ g) kdu_merge -i im1.jpx,im2.jpx,im3.jpx -o album.jpx -album 10 -links
+    -- As in (f), but the period between frames (during animated playback)
+       is set to 10 seconds, and individual photos are not copied into the
+       album.  Instead they are simply referenced by fragment table boxes
+       (ftbl) in the merged JPX file.  This allows you to present imagery in
+       lots of different ways without actually copying it into each
+       presentation.  Linked codestreams are properly supported by all Kakadu
+       objects and demo apps, including client-server communications using
+       "kdu_server".
+ h) kdu_merge -i im1.jp2,im2.jp2,im3.jp2 -o video.mj2 -mj2_tracks P:0-2@30
+    -- Merges three still images into a single Motion JPEG2000 video track,
+       with a nominal play-back frame rate of 30 frames/second.
+ i) kdu_merge -i im1.jpx,im2.jpx,... -o video.mj2 -mj2_tracks P:0-@30,1-1@0.5
+    -- As above, but merges the compositing layers from all of the input
+       files, with a final frame (having 2 seconds duration -- 0.5 frames/s)
+       repeating the second actual compositing layer in the input
+       collection.
+ j) kdu_merge -i vid1.mj2:1,vid1.mj2:0,vid2.mj2 -o out.mj2
+    -- Merges the second video track encountered in "vid1.mj2" with
+       the first video track encountered in "vid1.mj2" and the first
+       video track encountered in "vid2.mj2".  In this case, there is no
+       need to explicitly include a -mj2_tracks argument, since timing
+       information can be taken from the input video sources.  The
+       tracks must be all either progressive or interlaced.
+ k) kdu_merge -i im1.j2c,im2,j2c,im3.j2c -o out.jpx -raw_proto proto.jp2
+    -- Merges three raw codestream files (not embedded inside any JP2
+       file wrapper) into a single JXP file which will have three
+       compositing layers (one for each source codestream), taking the
+       rendering information (colour description, channel assignment,
+       rendering resolution and potentially a colour palette) from the
+       `proto.jp2' file, which acts as a prototype.  You can use and JP2 or
+       JPX file as a prototype, allowing you to add potentially very
+       complex rendering descriptions to the raw codestreams.  You can merge
+       any number of raw codestreams in one go, since the app only
+       opens raw codestreams one at a time.  All other input sources are
+       kept open from the time the command line is read until the output file
+       has been generated, limiting the number of input files to around 500
+       on some operating systems, but this limit does not apply to raw
+       codestreams.  You can use similar commands to create JPX files which
+       link (rather than embed) raw codestream files or to create MJ2 files
+       from raw codestreams.
+l) kdu_merge -i in1.jpx,in2.jpx -o out.jpx -jpx_meta_swap 2 -jpx_layers 1:0
+   -- Creates a JPX output file containing a single compositing layer, whose
+      codestream and rendering information are taken from the first compositing
+      layer of `in.jpx', but whose auxiliary metadata (everything managed
+      by `jpx_meta_manager', such as labels, ROI descriptions, xml, etc.) are
+      imported from `in2.jpx'.  This provides a useful way of modifying the
+      imagery associated with an existing file, without changing its metadata,
+      or vice-versa.  The `jpx_meta_swap' feature is more powerful than
+      you might guess from this simple example.  You can use it to merge
+      the auxiliary metadata from any set of files with the imagery from any
+      (potentially different) set of files, or to clear metadata; all
+      codestream and compositing layers in the swapped metadata will be fixed
+      up to point to the correct entities in the generated output file.
+ k) kdu_merge -i im01.j2c+29 -o out.mj2 -raw_proto p.jp2 -mj2_tracks P:0-@30
+    -- Merges 30 raw codestream files, with names im01.j2c through im30.j2c,
+       into a single MJ2 file, with one video track and a playback rate of
+       30 frames/second, taking the colour specifications from "p.jp2".
+       This example demonstrates the [+<extend>] suffix which may be appended
+       to any file name supplied with the "-i" argument to expand it into
+       multiple filenames, all of which differ only through successive
+       incrementing of the numerical suffix found within the supplied filename.
+
+kdu_expand
+----------
+ a) kdu_expand -i in.j2c -o out.pgm
+    -- decompress input code-stream (or first image component thereof).
+ b) kdu_expand -i in.j2c -o out.pgm -rate 0.7
+    -- read only the initial portion of the code-stream, corresponding to
+       an overall bit-rate of 0.7 bits/sample.  It is generally preferrable
+       to use the transcoder to generate a reduced rate code-stream first,
+       but direct truncation works very well so long as the code-stream has
+       a layer-progressive organization with only one tile (unless
+       interleaved tile-parts are used).
+ c) kdu_expand -i in.j2c -o out.pgm -region {0.3,0.2},{0.6,0.4} -rotate 90
+    -- decompress a limited region of the original image (starts 30% down
+       and 20% in from left, extends for 60% of the original height and
+       40% of the original width).  Concurrently rotates decompressed
+       image by 90 degrees clockwise (no extra memory or computational
+       resources required for rotation).
+    -- Note that the whole code-stream if often not loaded when a region
+       of interest is specified, as may be determined by observing the
+       reported bit-rate.  This is particularly true of code-streams with
+       multiple tiles or spatially progressive packet sequencing.
+ d) kdu_expand -i in.j2c -o out.pgm -fussy
+    -- most careful to check for conformance with standard.  Checks for
+       appearance of marker codes in the wrong places and so forth.
+ e) kdu_expand -i in.j2c -o out.pgm -resilient
+    -- similar to fussy, but should not fail if a problem is encountered
+       (except when problem concerns main or tile headers -- these can all
+       be put up front) -- recovers from and/or conceals errors to the
+       best of its ability.
+ f) kdu_expand -i in.j2c -o out.pgm -reduce 2
+    -- discard 2 resolution levels to generate an image whose dimensions
+       are each divided by 4.
+ g) kdu_expand -i in.j2c -o out.pgm -record log.txt
+    -- generate a log file containing all parameter attributes associated
+       with the compressed code-stream.  Any or all of these may be
+       supplied to "kdu_compress" (often via a switch file).
+    -- note that the log file may be incomplete if you instruct
+       the decompressor to decompress only a limited region of interest
+       so that one or more tiles may never be parsed.
+ h) kdu_expand -i in.j2c -cpu 0
+    -- measure end-to-end processing time, excluding only the writing of
+       the decompressed file (specifying an output file will cause the
+       measurement to be excessively influenced by the I/O associated
+       with file writing)
+ i) kdu_expand -i in.j2c -o out.pgm -precise
+    -- force the use of higher precision numerics than are probably
+       required (the implementation makes its own decisions based on
+       the output bit-depth).  The same argument, supplied to the compressor
+       can also have some minor beneficial effect.  Use the `-precise'
+       argument during compression and decompression to get reference
+       compression performance figures.
+ j) kdu_expand -i in.jp2 -o out.ppm
+    -- decompress a colour image wrapped up inside a JP2 file.  Note that
+       sub-sampled colour components will not be interpolated nor will
+       any colour appearance transform be applied to the data.  However,
+       palette indices will be de-palettized.  This is probably the most
+       appropriate behaviour for an application which decompresses to a
+       file output.  Renderers, such as "kdu_show" should do much more.
+ k) kdu_expand -i huge.jp2 -o out.ppm -region {0.5,0.3},{0.1,0.15}
+               -no_seek -cpu 0
+    -- You could try applying this to a huge compressed image, generated in
+       a manner similar to that of "kdu_compress" Example (r).  By default,
+       the decompressor will efficiently seek over all the elements of
+       the code-stream which are not required to reconstruct the small
+       subset of the entire image being requested here.  Specifying `-no_seek'
+       enables you to disable seekability for the compressed data source,
+       forcing linear parsing of the code-stream until all required
+       data has been collected.  You might like to use this to compare the
+       time taken to decompress an image region with and without parsing.
+ l) kdu_expand -i video.jpx -o frame.ppm -jpx_layer 2
+    -- Decompresses the first codestream (in many cases, there will be only
+       one) used by compositing layer 2 (the 3'rd compositing layer).
+ m) kdu_expand -i video.jpx -o out.pgm -raw_components 5 -skip_components 2
+    -- Decompresses the 3'rd component of the 6'th codestream in the file.
+    -- If any colour transforms (or other multi-component transforms) are
+       involved, this may result in the decompression of a larger number of
+       raw codestream components, so that the colour/multi-component transform
+       can be inverted to recover the required component.  If, instead, you
+       want the raw codestream component prior to any colour/multi-component
+       transform inversion, you should also specify the
+       `-codestream_components' command-line argument.
+ n) kdu_expand -i geo.jp2 -o geo.tif -num_threads 2
+    -- Decompresses a JP2 file, writing the result in the TIFF format, while
+       attempting to record useful JP2 boxes in TIFF tags.  This is only a
+       demonstration, rather than a comprehensive attempt to convert all
+       possible boxes to tags.  However, one useful box which is converted
+       (if present) is the GeoJP2 box, which may be used to store geographical
+       information.
+    -- See "kdu_compress" example (y) for a discussion of the "-num_threads"
+       argument.
+ m) kdu_expand -i in.jp2 -o out.tif -stats -reduce 2
+    -- The `-stats' option causes the application to report statistics on
+       the amount of compressed data which has been parsed, in each successive
+       quality layer, at the resolution of interes (in this case, one quarter
+       the resolution of the original image, due to the "-reduce 2" option).
+       The application also reports the number of additional bytes which were
+       parsed from each higher resolution than that required for decompression
+       (in this case, there are two higher resolution levels, due to the
+       "-reduce 2" option).  This depends upon codestream organization and
+       whether or not the compressed data in the codestream was randomly
+       accessible.
+
+kdu_v_expand
+------------
+ a) kdu_v_expand -i in.mj2 -o out.vix
+    -- Decompress Motion JPEG2000 file to a raw video output file.  For
+       details of the trival VIX file format, consult the usage statement
+       printed by `kdu_v_compress' with the `-usage' argument.
+ b) kdu_v_expand -i in.mj2 -cpu -quiet
+    -- Use this to measure the speed associated with decompression of
+       the video, avoiding I/O delays which would be incurred if
+       the decompressed video frames had to be written to a file.
+ c) timer kdu_v_expand -i in.mj2 -quiet -overlapped_frames -num_threads 2
+    -- In this example, multi-threaded processing is used to process each
+       frame (actually, the above examples will also do this automatically
+       if there are multiple CPU's in your system).  The "-overlapped_frames"
+       option allows a second frame to be opened while the first is still
+       being processed.  As soon as the number of available jobs on the
+       first frame drops permanently below the number of available working
+       threads (2 in this case), jobs on the second frame become available to
+       Kakadu's scheduler.  This ensures that processing of the first (active)
+       frame is given absolute priority, to be completed as fast as possible
+       by as many processing resources are available, while at the same time
+       providing work to threads which would normally become idle when the
+       processing of a frame is nearly complete (near the end of a frame,
+       only DWT processing often remains to be done).  For an explanation
+       of the term "permanently" in the above description, you should consult
+       the discussion of "dormant queue banks" in the description of
+       the core Kakadu system function, `kdu_thread_entity::add_queue'.
+    -- Note that the "-cpu" option is not the most reliable way to measure
+       processing time when the "-overlapped_frames" option is used; this is
+       because the "-overlapped_frames" option allows some background
+       processing to occur during I/O operations (if you give an output file)
+       during which the timer associated with the "-cpu" option is suspended.
+       This is why we use "timer" in the above command-line, to explicitly
+       time the overall start-to-finish time for the process.
+ d) timer kdu_v_expand -i in.mj2 -quiet -overlapped_frames -in_memory 1
+    -- Same as the above example, except the program automatically chooses
+       the best number of threads to run (based on the number of CPU's in
+       your system) and the compressed data associated with each frame is
+       loaded fully into memory prior to decompression (of that frame).
+    -- The pre-loading of compressed frame data typically provides a small
+       boost in processing speed for video applications, since it reduces the
+       prevalence of disk reading stalls.  Of course, you would not want to
+       do this if you were decompressing only selected regions from a very
+       large set of video frames, since then pre-loading the entire compressed
+       frame contents could be highly wasteful of both memory and disk
+       accesses.
+    -- The "-in_memory" option demonstrates the new `KDU_SOURCE_CAP_IN_MEMORY'
+       capability, which can be advertised by `kdu_compressed_source'-derived
+       objects from Kakadu version 6.0; this capability allows some internal
+       processing stages in the core codestream management machinery to be
+       bypassed.
+
+kdu_vex_fast
+------------
+ a) kdu_vex_fast -i in.mj2 -o out.vix
+    -- Does exactly the same thing as `kdu_v_expand', but in a slighly
+       different way.  On multi-CPU platforms, the default behaviour here
+       is to create a separate frame processing thread for each CPU, so
+       that frames are processed in parallel, rather than processing one
+       frame at a time with parallel processing within the frame.
+ b) kdu_vex_fast -i in.mj2 -quiet
+    -- Use this option to measure CPU time without the overhead of writing
+       decompressed frames to disk.  All processing steps are taken and
+       frames are saved to an intermediate memory buffer, so only the disk
+       writing step is omitted here.
+ c) kdu_vex_fast -i in.mj2 -quiet -engine_threads 2,2
+    -- As above, but in this case 2 parallel frame processing engines are
+       created and each one is assigned a multi-threaded processing
+       environment with 2 threads.  This example would keep a 4-CPU
+       machine busy almost 100% of the time.   The default engine thread
+       assignment for such a machine would be equivalent to
+       "-engine_threads 1,1,1,1" which has more delay and roughly twice
+       the memory consumption.  Which option processes faster depends on
+       your memory bus and cache configuration.
+ d) kdu_vex_fast -i in.mj2 -quiet -engine_threads 2:3,2:12,2:48,2:192
+    -- Similar to the above example, but this example is targeted toward
+       a machine with 8 CPU's, organized as 4 CPU pairs where each pair
+       shares a common L2 cache (a common environment).  Four frame
+       processing engines are created to run in parallel, where each
+       processing engine has 2 threads of execution, for parallel processing
+       within the frame.  To maximize cache utilization efficiency, the
+       pair of threads associated with each engine is assigned to be
+       scheduled on a corresponding pair of CPU's which share the same
+       L2 cache.  The scheduling assignment is identified by the
+       colon-separated affinity mask which follows each engine's thread
+       count.  For more on affinity masks, consult the `-usage' statement.
+       Note that thread affinity masks do not currently do anything on
+       Unix/Linux builds, mainly because they would rely upon a version of
+       "pthreads" which is not universally supported.  The changes can 
+       very easily be made (a few lines of code in the definition of
+       `kdu_thread::set_cpu_affinity' in  "kdu_elementary.h") to support
+       thread affinity on Unix based systems if required.
+ e) kdu_vex_fast -i in.mj2 -quiet -engine_threads 2 -display
+    -- Similar to d), except that the output frame buffers are formatted for
+       dumping directly to a display driver, with a conventional 32-bit/pixel
+       XRGB format.
+ f) kdu_vex_fast -i in.mj2 -quiet -engine_threads 2 -display W30
+    -- As above, but a display window is opened, to which the video is
+       delivered at a constant frame rate of 30 frames/second (if possible)
+       via DirectX9.  This option is supported only on Windows platforms,
+       and then only if the application is compiled against the DirectX 9
+       (or higher) SDK.  The interface is simple, but demonstrative.
+ g) kdu_vex_fast -i in.mj2 -quiet -engine_threads 2 -display F30
+    -- As above, but the video is displayed in full-screen mode with the
+       most appropriate display size (and frame/rate) that can be found.
+       Again, this option is available only when compiled against the
+       DirectX9 SDK or higher.
+ h) kdu_vex_fast -i in.mj2 -quiet -engine_threads 2:3,2:12,2:48 -trunc 3
+    -- Similar to example d), except that not all of the compressed bits
+       are decompressed.  A heuristic is used to strip away some final
+       coding passes from code-blocks in order to trade quality for
+       processing speed.  In this example, roughly 3 final coding passes
+       (one bit-plane) is stripped away from every code-block; the
+       parameter to `-trunc' can be a real-valued number, in which case
+       the heuristic treats some blocks differently to others, based on an
+       internal heuristic.  This method may be used to accelerate
+       decompression in a similar way to stripping away final quality
+       layers, except that the `-trunc' method does not rely upon the
+       content having been created with multiple quality layers.
+
+kdu_transcode
+-------------
+ a) kdu_transcode -i in.j2c -o out.j2c -rate 0.5
+    -- reduce the bit-rate, using as much information as the quality layer
+       structure provides.
+ b) kdu_transcode -i in.j2c -o out.j2c -reduce 1
+    -- reduce image resolution by 2 in each direction
+ c) kdu_transcode -i in.j2c -o out.j2c -rotate 90
+    -- rotate image in compressed domain.  Some minor distortion increase
+       will usually be observed (unless the code-stream was lossless) upon
+       decompression (with -rotate -90), but subsequent rotations or block
+       coder mode changes will not incur any distortion build-up.
+ d) kdu_transcode -i in.j2c -o out.j2c "Cmodes=ERTERM|RESTART" Cuse_eph=yes
+                  Cuse_sop=yes
+    -- Add error resilience information.
+ e) kdu_transcode -i in.j2c -o out.j2c Cprecincts={128,128} Corder=PCRL
+    -- Convert to spatially progressive organization (even if precincts
+       were not originally used).
+ f) kdu_transcode -i in.jp2 -o out.j2c
+    -- Extracts the code-stream from inside a JP2 file.
+ g) kdu_transcode -i in.j2c -o out.j2c Cprecincts={128,128} Corder=RPCL
+                  ORGgen_plt=yes
+    -- You can use something like this to create a new code-stream with
+       all the information of the original, but having an organization
+       (and pointer marker segments) which will enable random access
+       into the code-stream during interactive rendering.  The introduction
+       of precincts, PLT marker segments, and a "layer-last" progression
+       sequence such as RPCL, PCRL or CPRL, can also improve the memory
+       efficiency of the "kdu_server" application when used to serve up
+       a very large image to a remote client.
+
+kdu_show
+--------
+  "kdu_show" is a powerful interactive viewing, browsing and metadata
+  editing application.  Almost all the implementation complexity is
+  buried inside the platform independent `kdu_region_compositor' and
+  `kdu_client' objects.
+     You can learn to use "kdu_show" as you would any interactive application,
+  by following the menu item descriptions and taking advantage of the
+  tooltips and accelerator keys provided for most menu items, as well as just
+  playing around with the mouse (left-clicks, right-clicks, double-clicks,
+  left-mouse drags and shift-left-mouse drags all have useful behaviours).
+  Since "kdu_show" now offers a great deal more than it did originally, we
+  also provide a separate small manual, which may be found in the file,
+  "kdu_show.pdf".  At this point, however, we simply summarize
+  some of the key features and give some useful accelerators which you will
+  probably use a lot.
+  
+  Partial Feature List:
+  * You may open new image files at any time and may drag and drop files
+    onto the application's window.
+  * Opens JP2 files, JPX files, unwrapped JPEG2000 code-streams, and
+    Motion JPEG2000 files, using the file contents (rather than the file
+    name suffix) to distinguish between the different formats.
+  * You may re-open a failed image file (often after setting the "mode" to
+    "resilient" or "resilient+SOP assumption").
+  * You may view code-stream parameters and the tile structure
+    using the File->Properties menu item.
+       -- Note that double-clicking on any code-stream parameter attribute
+          displayed in the popup window will bring up a description of
+          the attribute.
+  * You may examine individual components (typically, the colour components)
+    of an image, individual compositing layers of a multi-layer image, or
+    navigate between composited frames of an animation of video.  Compositing
+    layers, image compositions and animation are JPX features.
+  * You may view the metadata structure of any JP2-family file, using the
+    "metashow" feature, which is accessed via the Metadata menu.
+  * A metadata catalog sidebar automatically opens to display any JPX
+    metadata labels, including cross-links (shown like hyperlinks with
+    colour coded semantics).  The catalog sidebar is tightly integrated
+    with the image view.  Clicking on region-of-interest overlays within the
+    image view takes you to any relevant catalog entry, for example, while
+    double-clicking catalog entries causes the image view window to change
+    (if appropriate) to display associated compositing layers, codestreams
+    and/or regions of interest.
+  * Click and drag in the image window to define a focus box (hit "f"
+    to remove a current focus box or "h" to change the way it is highlighgted).
+    Focus boxes are used to centre "zoom in" operations, to identify regions
+    of interest during JPIP browsing sessions (see below), and to define
+    regions to be labeled with new metadata.
+  * Use the Metadata menu (or appropriate accelerators) as one way to
+    add metadata to the image.  Doing this without a focus box will, by
+    default, associate metadata with the current compositing layer or
+    codestream (depending on the viewing mode).  With a focus box in place,
+    the new metadata will be associated with the corresponding region of
+    the top-most visible codestream, but you can change all the associations
+    manually inside the metadata editor if you like.
+  * The metadata editor provided to enable the above features allows you to
+    navigate amongst sibling and parent/child relationships for the
+    collection of metadata being edited, which depends on how the editor
+    was opened.  It also allows you to save metadata boxes to files, load
+    them from files and change their image entity and/or region of interest
+    associations.  Also, you can edit XML and other types of metadata,
+    rather than just labels, by selecting appropriate external file-based
+    editors from a pop-up list.
+  * You can save the current image as a raw code-stream, a JP2 file or a
+    JPX file, although raw originals must currently be saved as raw outputs
+    and vice-versa.  You can even save over the currently open file -- this
+    actually writes a file with a modified name (appends the emacs "~"
+    character) which is replaced over the current file if all goes well, when
+    the application exits, or the file is closed.  These capabilities allow
+    for convenient interactive editing of a file's metadata, whereby you
+    can mark up regions with arbitrary labels and have the information
+    preserved.  There is also a menu option which allows you to save just
+    the header and metadata structure of an image and reference the
+    codestreams via links into to their original files.  This can be
+    particularly convenient when editing metadata (e.g., marking up regions)
+    for very large images.
+  * There is a special "Scale X2" feature which can be used to represent
+    each rendered image pixel with a 2x2 block of display pixels.  This is
+    similar to zooming, but the key difference is that zooming tries to
+    take advantage of the wavelet transform to render as little data as
+    possible.  Thus, zooming out (say, to 50%) while using the "Scale X2"
+    feature allows you to discard the highest resolution DWT coefficients
+    but still get a displayed image which is large enough to allow you to
+    distinguish the original rendered image pixels on most displays.  The
+    "Scale X2" feature is also faster than "Zoom In" as a mechanism for
+    displaying enlarged images -- this can make a difference in demanding
+    video applications.
+  * You can control the number of threads used for decompression processing
+    through the "Modes" menu. By default, the number of threads used for
+    processing is set based on the number of CPU cores in your machine.
+    Note that a P4 with hyperthreading has 2 virtual CPU's.
+
+  Some useful accelerators:
+  -- w                           -> widens the display
+  -- s                           -> shrinks the display
+  -- arrow keys                  -> rapid navigation
+  -- shift + left mouse button   -> pan view window using the mouse
+  -- ctrl+z                      -> zooms out
+  -- z                           -> zooms in
+  -- shift+ctrl+z                -> zooms out a little bit
+  -- shift+z                     -> zooms in a little bit
+  -- alt+z                       -> find nearest zoom for optimal rendering
+  -- shift+s                     -> shrinks the focus box
+  -- shift+w                     -> widens the focus box
+  -- shift+arrow keys            -> moves the focus box
+  -- f                           -> disables focus box
+  -- h                           -> modify highlighting of focus box
+  -- p                           -> show properties
+  -- ctrl-m (MAC: cmd-m)         -> activate "metashow"; note that clicking on
+                                    various items in the metadata tree can have
+                                    useful navigational side effects, as
+                                    described in parentheses next to those
+                                    items
+  -- ] and [                     -> rotate clockwise and counter-clockwise
+  -- 1,+,-                       -> enter single-codestream, single-component
+                                    mode and display image component 1,
+                                    display the next component (+), or the
+                                    previous component (-)
+  -- L                           -> enter single compositing layer mode
+                                    (equivalent to the full colour image, for
+                                    files with only one compositing layer,
+                                    including JP2 files)
+  -- c                           -> enter composited image mode, displaying
+                                    the complete composited result associated
+                                    with a single animation frame.  If there
+                                    are no composition instructions in the
+                                    file, this is equivalent to "L", displaying
+                                    a full colour image
+  -- <ENTER>,<BACKSPACE>         -> move forward or backward amongst the
+                                    sequence of frames (in composited image
+                                    mode or when viewing Motion JPEG2000
+                                    tracks), the sequence of compositing layers
+                                    (in single layer mode), or the sequence
+                                    of codestreams (in single component mode).
+                                 -> if the metadata catalog sidebar has focus,
+                                    these keys have a different interpretation;
+                                    ENTER navigates the image view to reveal
+                                    imagery associated with currently selected
+                                    metadata, while BACKSPACE deletes selected
+                                    metadata (after raising a confirmation
+                                    dialog to be safe).
+  -- <,>                         -> adjust number of quality layers, refreshing
+                                    the display to reveal the rendered result
+                                    obtained from using only those quality
+                                    layers
+  -- ctrl-t (MAC: cmd-t)         -> toggle the status bar contents
+                                    (lots of useful info here)
+  -- ctrl-a (MAC: cmd-a)         -> add metadata (opens the metadata editing
+                                    dialog box)
+  -- alt-o                       -> toggle metadata overlay mode
+                                    (flashing->static->off)
+  -- ctrl-<left click>           -> edit existing metadata
+  -- <double left click>         -> great for navigating between frames of a
+                                    JPX composition which contain common image
+                                    content -- or navigating the image view
+                                    based on metadata in the catalog view.
+  -- alt-ENTER                   -> Play any available JPX animation or
+                                    Motion JPEG2000 track.
+
+  Invoking kdu_show from the command-line:
+    * The Windows version of kdu_show accepts an optional file name or URL (see
+    below) when invoked from the command-line, which may be used to open an
+    initial image.
+    * The Mac version of kdu_show can also be invoked from the command-line
+    (i.e., from a BSD shell terminal) using the "open" command, as in:
+    "open -a kdu_show" or "open -a kdu_show test.jp2".  If you do a lot of
+    work from the command-line, it could be a good idea to define "kdu_show"
+    as an alias for "open -a kdu_show".
+                                    
+  A few words on JPIP browsing:  
+    "kdu_show" is also a fully fledged remote image browser, capable of
+    communicating with the "kdu_server" application (or any 3'rd party
+    application which provides a sufficiently comprehensive implementation
+    of the JPIP standard (JPEG2000 Part 9).
+    -- To open a connection with a remote server, you can give the URL as
+       an argument to "kdu_show" on start up, or you can use the
+       "File:Open URL" menu item.  The latter option allows you to customize
+       proxy settings (if you need to use a proxy), cache directories, and
+       protocol variants.  These settings are also used when you open
+       a URL directly from the command line using something like
+          kdu_show jpip://kakadu.host.org/huge.jp2
+       or
+          kdu_show http://kakadu.host.org?target=huge.jp2&fsiz=640,480&roff=100,20&rsiz=200,300
+       For specific information on the syntax of JPIP URL's consult the
+       information and links provided in the "jpip-links-and-info.html" file
+       within the "documentation" directory.
+ 
+       The "File:Open URL" menu item brings up a dialog box, which allows
+       you to enter the name of the file you wish to browse.  This is
+       actually the resource component of the JPIP URL and may contain
+       a query sub-string (portion of the URL following a '?' symbol).  Query
+       strings allow you to construct your own explicit JPIP request, so long
+       as you know the JPIP request syntax.  If a non-empty query contains
+       anything other than a target file name (JPIP "target" field), only
+       one request will ever be issued to the server, meaning that interactive
+       requests will not be generated automatically as you navigate around
+       the image.  Otherwise, all the interesting requests are generated
+       for you as you zoom and pan the view window, or a focus window, or
+       as you adjust the image components or number of quality layers to
+       be displayed.  If you are interested in finding out more about the
+       JPIP syntax without reading any documents, you might like to run
+       a copy of the "kdu_server" application locally, specifying the
+       `-record' command line option -- this prints a copy of all requests
+       and all response headers.
+
+       The "File:Open URL" menu item also allows you to select one of three
+       options in the "Channels and Sessions" drop-down list.  For the most
+       efficient client-server communication, with the most compact requests
+       and server administered flow/responsiveness control, select the
+       "http-tcp" option.  This uses HTTP for request/response communication
+       and an auxiliary TCP connection for the server communicated image
+       and meta-data stream.
+
+       All communication uses port 80 by default, to minimize firewall
+       problems, but many organizations insist that all external traffic
+       go through an HTTP proxy.  If this is the case, only pure HTTP
+       communication will work for you, so you should select the "http"
+       option in the "Channels and Sessions" drop-down list.  If the
+       server only supports the "http" option, communications will
+       automatically be downgraded from "http-tcp" to "http" only, if you
+       selected the "http-tcp" option.  However, Kakadu's JPIP server supports
+       all modes.
+       
+       The final option in the "Channels and Sessions" drop-down list is
+       "none", meaning that no attempt will be made to create a JPIP channel
+       for which the server would be obliged to manage a persistent session.
+       In this case, communication with the server proceeds over HTTP, but is
+       stateless, meaning that all requests are idempotent, having no side
+       effects.  In this mode, each request must carry sufficient information
+       to identify the relevant contents of the client's cache, so that the
+       server need only send the missing items.  This is by far the least
+       efficient form of communication from virtually all perspectives:
+       network traffic, client complexity and server complexity/thrashing.
+       It is provided principally to test Kakadu's support for stateless JPIP
+       communication.  Nevertheless, you may find it necessary to use this
+       mode if you have an extremely unreliable network connection and
+       are required to communicate via HTTP/1.0 proxies.
+
+kdu_server
+----------
+  To start an instance of the "kdu_server" application, you need not supply
+any arguments; however, you may find the following command line options
+useful:
+  * kdu_server -u
+    -- Prints a brief usage statement
+  * kdu_server -usage
+    -- Prints a detailed usage statement
+  * kdu_server -address localhost -port 8080
+    -- This sort of thing should always work, even if you're not connected to
+       the internet.  Sets the server to use the local loopback IP address of
+       127.0.0.1 with a port that should not be already taken by another
+       HTTP server you may have running on your machine.
+  * kdu_server -passwd try_me
+    -- Enables remote administration via the "kdu_server_admin" application
+  * kdu_server -wd /users/me/my_images -restrict
+    -- Sets "/users/me/my_images" to be the working directory and restricts
+       access to images in that directory or one of its descendants
+       (sub-directories).
+  * kdu_server -log \my_images\jpip_service.log
+    -- Redirect all logs to the specified log file, rather than having them
+       go to stdout.  If the log file path is not absolute, it is expressed
+       relative to the directory within which "kdu_server" is invoked, not
+       the "-wd" directory.
+  * kdu_server -record
+    -- Sends a record of all human-readable communication (to and from the
+       client) to standard out, intermingled with the regular log file
+       transcripts.  The volume of this communication can be large if the
+       channel transport type selected by the client is "none" or "http".
+  * kdu_server -clients 5
+    -- Set the maximum number of clients which can be served simultaneously
+       to 5.
+  * kdu_server -sources 3 -clients 7
+    -- Serve up to 7 clients at once, but no more than 3 different images at
+       once: the server shares image resources amongst clients.
+  * kdu_server -clients 3 -max_rate 80000
+    -- Set the maximum number of bytes per second at which data will be
+       shipped to any given client.  The limit is currently 10000 bytes/s,
+       which gives quite a convincing (and usable) demonstration of the
+       spatial random access properties of the EBCOT compression paradigm
+       and its incarnation in JPEG2000.
+  * kdu_server -restrict -delegate host1:81*4 -delegate host2:81*8
+    -- Commands like this show off some of the more advanced capabilities of
+       the "kdu_server" application.  The server delegates incoming client
+       requests to alternate hosts.  The "host1" machine is presumably
+       executing an instance of the "kdu_server" application, configured
+       to listen on port 81.  "host2" is presumably doing the same.
+       The "*4" and "*8" suffices are host loading indicators.  The server
+       will delegate 4 consecutive requests to "host1" before moving on to
+       delegate 8 consecutive requests to "host2", returning then to "host1".
+       This sequence is broken if one of the hosts refuses to accept the
+       connection request; in that case, the other host is used and its
+       load counter is started from scratch.  There is no way to predict
+       the real load on the two machines, since they do not provide direct
+       feedback of this form.  Nevertheless, the load sharing algorithm
+       will distribute an expected load in proportion to the supplied load
+       sharing factors.  The algorithm also encourages the frequent re-use
+       of machines which are known to be good, minimizing failed connection
+       attempts to machines which may be temporarily out of service.  The
+       principle server will perform the service itself only if all delegates
+       refuse to accept the connection (either they are out of service, or
+       have reached their connection capacity).
+          It is worth noting that delegation is not used if the client's
+       communication is stateless ("Channels and Sessions" drop-down box in
+       the "File:Open URL" dialog is set to "none").  This is because
+       stateless requests are served immediately, while the first request
+       which specifies a transport type of "http-tcp" or "http" serves to
+       create a new session on the server.  Regardless of the reasons for
+       its existence, this policy may be quite convenient, since it allows
+       you to employ one host to serve stateless requests (these are
+       less efficient, often substantially so) and different hosts to serve
+       session-oriented requests.
+
+  The "kdu_server" application can ship any valid JPEG2000 file to a
+remote client.  However, some tips will help you create (or transcode)
+compressed images which minimize the memory resources and loading burden
+imposed on the server.
+  1) It is generally recommended that you compress the original image
+     using 32x32 code-blocks (Cblk={32,32}) instead of the default 64x64
+     code-blocks.  This can be helpful even for very large images, but if
+     the original uncompressed image size is enormous, larger
+     code-blocks can help reduce the internal state memory resources
+     which the server must dedicate to the client connection.
+  2) If the image is moderate to large (or even huge) in size (say above
+     1Kx1K, but becoming really important above 10Kx10K), it is recommended
+     that you insert information into the code-stream which will enable
+     the server to access it in a random order.  Specifically, you should
+     insert PLT marker segments (ORGgen_plt=yes), use moderate precinct
+     dimensions (Cprecincts={256,256} or Cprecincts={128,128}) and employ
+     a fixed, "layer-last" progression order -- RPCL (preferred), CPRL
+     or PCRL.  The "kdu_compress" examples (r) and (t) and the "kdu_transcode"
+     example (g) should provide you with guidance in these matters.  It
+     currently appears that tiling the image offers no significant
+     advantages for remote browsing of JPEG2000 content.  In my personal
+     experience, untiled images seem to work very well without the ugly
+     tiling artefacts which immediately stand out when tiled images are
+     browsed over low bandwidth connections.  Moreover, the server has
+     to do a lot of extra work to serve low resolution image content from
+     a tiled image.  32x32 code-blocks are still a good idea when working
+     with very large images.  Don't forget to provide lots of quality layers;
+     if you only have one quality layer, the browsing experience will still
+     be effective, but probably not much better than other popular geospatial
+     remote browsing tools, which are not based on JPEG2000.
+     With plent of quality layers, however, the server delivers a truly
+     quality progressive experience over the view window of choice at any
+     resolution of interest, which gives you an effective experience even at
+     extremely low data rates.  Of course, Kakadu's client and server tools
+     do a great deal more than remote image delivery.  3D imagery, compressed
+     using multi-component transforms, for example, is delivered extremely
+     efficiently, taking all the signal processing properties of the
+     3D transforms into account to give you the most relevant information
+     as quickly as possible for the fastest possible incrementally improving
+     result at the client.

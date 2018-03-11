@@ -1,0 +1,78 @@
+Microsoft eMbedded Visual Tools Workspace File, Format Version 3.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "NCSEcw"=.\NCSEcw.vcp - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/NCS/Source/C/NCSEcw/NCSEcwCE", AQFAAAAA
+    .
+    end source code control
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name NCScnet2
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name NCSUtil
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "NCSUtil"=..\..\NCSUtil\NCSUtil.vcp - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/NCS/Source/NCSNightlyBuild", RAIAAAAA
+    ..\..\..\ncsnightlybuild
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "NCScnet2"=..\..\NCSnet\NCScnet2\NCScnet2.vcp - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/NCS/Source/C/NCSnet/NCScnet2", MQFAAAAA
+    ..\..\ncsnet\ncscnet2
+    end source code control
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name NCSUtil
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+    begin source code control
+    NCS/Source/C/NCSEcw/NCSEcwCE
+    .
+    end source code control
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+

@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>cairo</ProjectName>
+    <ProjectGuid>{485FF032-7990-4174-BD1E-F2CE35C2FDB0}</ProjectGuid>
+    <RootNamespace>cairo186</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v140</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)vs_version.props" />
+    <Import Project="$(WorkDIR)zlib.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(SolutionDir)vs_version.props" />
+    <Import Project="$(WorkDIR)zlib.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(WorkLIB)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(WorkLIB)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName)D</TargetName>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(WorkINC);$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(WorkLIB);$(LibraryPath)</LibraryPath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IncludePath)</IncludePath>
+    <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ExtensionsToDeleteOnClean>*.cdf;*.cache;*.obj;*.ilk;*.resources;*.tlb;*.tli;*.tlh;*.tmp;*.rsp;*.pgc;*.pgd;*.meta;*.tlog;*.manifest;*.res;*.pch;*.exp;*.idb;*.rep;*.xdc;*_manifest.rc;*.bsc;*.sbr;*.xml;*.metagen;*.bi</ExtensionsToDeleteOnClean>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(ZLibSrcDir);$(WorkDIR)libpng164;$(WorkDIR)pixman\pixman;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;CAIRO_WIN32_STATIC_BUILD;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <CompileAs>CompileAsC</CompileAs>
+      <DisableSpecificWarnings>4244;4146;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    </Lib>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+      <Message>
+      </Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>$(ZLibSrcDir);$(WorkDIR)libpng164;$(WorkDIR)pixman\pixman;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;CAIRO_WIN32_STATIC_BUILD;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4244;4146;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ProgramDataBaseFileName>$(IntDir)vc$(PlatformToolsetVersion).pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <Lib>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    </Lib>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>
+      </Message>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="src\cairo-atomic-private.h" />
+    <ClInclude Include="src\cairo-compiler-private.h" />
+    <ClInclude Include="src\cairo-deprecated.h" />
+    <ClInclude Include="src\cairo-features.h" />
+    <ClInclude Include="src\cairo-fixed-type-private.h" />
+    <ClInclude Include="src\cairo-pdf.h" />
+    <ClInclude Include="src\cairo-svg-surface-private.h" />
+    <ClInclude Include="src\cairo-svg.h" />
+    <ClInclude Include="src\cairo-types-private.h" />
+    <ClInclude Include="src\cairo-version.h" />
+    <ClInclude Include="src\cairo.h" />
+    <ClInclude Include="src\cairoint.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\cairo-analysis-surface.c" />
+    <ClCompile Include="src\cairo-arc.c" />
+    <ClCompile Include="src\cairo-array.c" />
+    <ClCompile Include="src\cairo-atomic.c" />
+    <ClCompile Include="src\cairo-base85-stream.c" />
+    <ClCompile Include="src\cairo-bentley-ottmann.c" />
+    <ClCompile Include="src\cairo-cache.c" />
+    <ClCompile Include="src\cairo-cff-subset.c" />
+    <ClCompile Include="src\cairo-clip.c" />
+    <ClCompile Include="src\cairo-color.c" />
+    <ClCompile Include="src\cairo-debug.c" />
+    <ClCompile Include="src\cairo-deflate-stream.c" />
+    <ClCompile Include="src\cairo-fixed.c" />
+    <ClCompile Include="src\cairo-font-face-twin-data.c" />
+    <ClCompile Include="src\cairo-font-face-twin.c" />
+    <ClCompile Include="src\cairo-font-face.c" />
+    <ClCompile Include="src\cairo-font-options.c" />
+    <ClCompile Include="src\cairo-freelist.c" />
+    <ClCompile Include="src\cairo-gstate.c" />
+    <ClCompile Include="src\cairo-hash.c" />
+    <ClCompile Include="src\cairo-hull.c" />
+    <ClCompile Include="src\cairo-image-surface.c" />
+    <ClCompile Include="src\cairo-lzw.c" />
+    <ClCompile Include="src\cairo-matrix.c" />
+    <ClCompile Include="src\cairo-meta-surface.c" />
+    <ClCompile Include="src\cairo-misc.c" />
+    <ClCompile Include="src\cairo-mutex.c" />
+    <ClCompile Include="src\cairo-output-stream.c" />
+    <ClCompile Include="src\cairo-paginated-surface.c" />
+    <ClCompile Include="src\cairo-path-bounds.c" />
+    <ClCompile Include="src\cairo-path-fill.c" />
+    <ClCompile Include="src\cairo-path-fixed.c" />
+    <ClCompile Include="src\cairo-path-stroke.c" />
+    <ClCompile Include="src\cairo-path.c" />
+    <ClCompile Include="src\cairo-pattern.c" />
+    <ClCompile Include="src\cairo-pdf-operators.c" />
+    <ClCompile Include="src\cairo-pdf-surface.c" />
+    <ClCompile Include="src\cairo-pen.c" />
+    <ClCompile Include="src\cairo-png.c" />
+    <ClCompile Include="src\cairo-polygon.c" />
+    <ClCompile Include="src\cairo-rectangle.c" />
+    <ClCompile Include="src\cairo-region.c" />
+    <ClCompile Include="src\cairo-scaled-font-subsets.c" />
+    <ClCompile Include="src\cairo-scaled-font.c" />
+    <ClCompile Include="src\cairo-skiplist.c" />
+    <ClCompile Include="src\cairo-slope.c" />
+    <ClCompile Include="src\cairo-spline.c" />
+    <ClCompile Include="src\cairo-stroke-style.c" />
+    <ClCompile Include="src\cairo-surface-fallback.c" />
+    <ClCompile Include="src\cairo-surface.c" />
+    <ClCompile Include="src\cairo-svg-surface.c" />
+    <ClCompile Include="src\cairo-system.c" />
+    <ClCompile Include="src\cairo-traps.c" />
+    <ClCompile Include="src\cairo-truetype-subset.c" />
+    <ClCompile Include="src\cairo-type1-fallback.c" />
+    <ClCompile Include="src\cairo-type1-subset.c" />
+    <ClCompile Include="src\cairo-type3-glyph-surface.c" />
+    <ClCompile Include="src\cairo-unicode.c" />
+    <ClCompile Include="src\cairo-user-font.c" />
+    <ClCompile Include="src\cairo-version.c" />
+    <ClCompile Include="src\cairo-wideint.c" />
+    <ClCompile Include="src\cairo-win32-font.c" />
+    <ClCompile Include="src\cairo-win32-printing-surface.c" />
+    <ClCompile Include="src\cairo-win32-surface.c" />
+    <ClCompile Include="src\cairo.c" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

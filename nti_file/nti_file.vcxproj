@@ -56,23 +56,23 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\vs_version.props" />
-    <Import Project="..\zlib.props" />
+    <Import Project="$(SolutionDir)vs_version.props" />
+    <Import Project="$(WorkDIR)zlib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_XP|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\vs_version.props" />
-    <Import Project="..\zlib.props" />
+    <Import Project="$(SolutionDir)vs_version.props" />
+    <Import Project="$(WorkDIR)zlib.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\vs_version.props" />
-    <Import Project="..\zlib.props" />
+    <Import Project="$(SolutionDir)vs_version.props" />
+    <Import Project="$(WorkDIR)zlib.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release_XP|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\vs_version.props" />
-    <Import Project="..\zlib.props" />
+    <Import Project="$(SolutionDir)vs_version.props" />
+    <Import Project="$(WorkDIR)zlib.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -229,16 +229,16 @@
     <ClCompile Include="nti_zlib_e.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\inc\a__nti.h" />
-    <ClInclude Include="..\inc\GetElapsedSecs.h" />
-    <ClInclude Include="..\inc\liblzma.h">
+    <ClInclude Include="$(WorkINC)\a__nti.h" />
+    <ClInclude Include="$(WorkINC)\GetElapsedSecs.h" />
+    <ClInclude Include="$(WorkINC)\liblzma.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_XP|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release_XP|Win32'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="..\inc\ntifile.h" />
-    <ClInclude Include="..\inc\nti_file.h" />
+    <ClInclude Include="$(WorkINC)\ntifile.h" />
+    <ClInclude Include="$(WorkINC)\nti_file.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

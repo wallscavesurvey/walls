@@ -1,0 +1,2973 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 44;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		40A181990F3E653B00F6BF0C /* Build All */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 40A181C00F3E656400F6BF0C /* Build configuration list for PBXAggregateTarget "Build All" */;
+			buildPhases = (
+			);
+			dependencies = (
+				40A181BF0F3E654600F6BF0C /* PBXTargetDependency */,
+				40A181BD0F3E654600F6BF0C /* PBXTargetDependency */,
+				40A181BB0F3E654600F6BF0C /* PBXTargetDependency */,
+				40A181B90F3E654600F6BF0C /* PBXTargetDependency */,
+				40A181B70F3E654600F6BF0C /* PBXTargetDependency */,
+				40A181B50F3E654600F6BF0C /* PBXTargetDependency */,
+				40A181B30F3E654600F6BF0C /* PBXTargetDependency */,
+				40A181B10F3E654600F6BF0C /* PBXTargetDependency */,
+				40A181AF0F3E654600F6BF0C /* PBXTargetDependency */,
+				40A181AD0F3E654600F6BF0C /* PBXTargetDependency */,
+				40A181AB0F3E654600F6BF0C /* PBXTargetDependency */,
+				40A181A90F3E654600F6BF0C /* PBXTargetDependency */,
+				40A181A70F3E654600F6BF0C /* PBXTargetDependency */,
+				40A181A50F3E654600F6BF0C /* PBXTargetDependency */,
+				40A181A30F3E654600F6BF0C /* PBXTargetDependency */,
+				40A181A10F3E654600F6BF0C /* PBXTargetDependency */,
+				40A1819F0F3E654600F6BF0C /* PBXTargetDependency */,
+				40A1819D0F3E654600F6BF0C /* PBXTargetDependency */,
+			);
+			name = "Build All";
+			productName = "Build All";
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		401191220E4E592700F96122 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 401191100E4E584E00F96122 /* Cocoa.framework */; };
+		402491120EBFB8BC001E7B50 /* APPL.icns in Resources */ = {isa = PBXBuildFile; fileRef = 402491110EBFB8BC001E7B50 /* APPL.icns */; };
+		402B700C0EBEEB3000246D0F /* jp2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8A70E6CD7FA000FA6D1 /* jp2.cpp */; };
+		402B700E0EBEEB3000246D0F /* args.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8E80E6CD908000FA6D1 /* args.cpp */; };
+		402B70120EBEEB3000246D0F /* libkdu_v64D.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 404EB8470E6CD579000FA6D1 /* libkdu_v64D.dylib */; };
+		402B70200EBEEC9900246D0F /* kdu_transcode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 402B701C0EBEEC9900246D0F /* kdu_transcode.cpp */; };
+		402B70240EBEED3F00246D0F /* jp2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8A70E6CD7FA000FA6D1 /* jp2.cpp */; };
+		402B70250EBEED3F00246D0F /* args.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8E80E6CD908000FA6D1 /* args.cpp */; };
+		402B70280EBEED3F00246D0F /* libkdu_v64D.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 404EB8470E6CD579000FA6D1 /* libkdu_v64D.dylib */; };
+		402B702F0EBEED9900246D0F /* jpx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8AA0E6CD7FA000FA6D1 /* jpx.cpp */; };
+		402B70300EBEED9A00246D0F /* mj2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8AC0E6CD7FA000FA6D1 /* mj2.cpp */; };
+		402B70310EBEEDAD00246D0F /* kdu_region_decompressor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8830E6CD787000FA6D1 /* kdu_region_decompressor.cpp */; };
+		402B70320EBEEDB000246D0F /* kdu_region_compositor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8810E6CD787000FA6D1 /* kdu_region_compositor.cpp */; };
+		402B70380EBEEDE700246D0F /* kdu_render.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 402B70340EBEEDE700246D0F /* kdu_render.cpp */; };
+		402B70410EBEEECE00246D0F /* jp2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8A70E6CD7FA000FA6D1 /* jp2.cpp */; };
+		402B70420EBEEECE00246D0F /* args.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8E80E6CD908000FA6D1 /* args.cpp */; };
+		402B70450EBEEECE00246D0F /* libkdu_v64D.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 404EB8470E6CD579000FA6D1 /* libkdu_v64D.dylib */; };
+		402B704C0EBEEF3500246D0F /* mj2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8AC0E6CD7FA000FA6D1 /* mj2.cpp */; };
+		402B70530EBEEF5000246D0F /* kdu_v_compress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 402B704E0EBEEF5000246D0F /* kdu_v_compress.cpp */; };
+		402B70570EBEEF9D00246D0F /* jp2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8A70E6CD7FA000FA6D1 /* jp2.cpp */; };
+		402B70580EBEEF9D00246D0F /* args.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8E80E6CD908000FA6D1 /* args.cpp */; };
+		402B70590EBEEF9D00246D0F /* mj2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8AC0E6CD7FA000FA6D1 /* mj2.cpp */; };
+		402B705C0EBEEF9D00246D0F /* libkdu_v64D.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 404EB8470E6CD579000FA6D1 /* libkdu_v64D.dylib */; };
+		402B706A0EBEEFE200246D0F /* kdu_v_expand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 402B70640EBEEFDC00246D0F /* kdu_v_expand.cpp */; };
+		402B70700EBEF03300246D0F /* args.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8E80E6CD908000FA6D1 /* args.cpp */; };
+		402B70730EBEF03300246D0F /* libkdu_v64D.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 404EB8470E6CD579000FA6D1 /* libkdu_v64D.dylib */; };
+		402B707C0EBEF07E00246D0F /* args.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8E80E6CD908000FA6D1 /* args.cpp */; };
+		402B707E0EBEF07E00246D0F /* libkdu_v64D.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 404EB8470E6CD579000FA6D1 /* libkdu_v64D.dylib */; };
+		402B70850EBEF0AF00246D0F /* kdu_stripe_compressor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8850E6CD787000FA6D1 /* kdu_stripe_compressor.cpp */; };
+		402B70860EBEF0BB00246D0F /* kdu_stripe_decompressor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8870E6CD787000FA6D1 /* kdu_stripe_decompressor.cpp */; };
+		402B70900EBEF0CF00246D0F /* simple_example_c.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 402B70880EBEF0CF00246D0F /* simple_example_c.cpp */; };
+		402B70920EBEF0F800246D0F /* simple_example_d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 402B708C0EBEF0CF00246D0F /* simple_example_d.cpp */; };
+		402B70970EBEF16A00246D0F /* args.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8E80E6CD908000FA6D1 /* args.cpp */; };
+		402B70980EBEF16A00246D0F /* kdu_stripe_decompressor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8870E6CD787000FA6D1 /* kdu_stripe_decompressor.cpp */; };
+		402B709B0EBEF16A00246D0F /* libkdu_v64D.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 404EB8470E6CD579000FA6D1 /* libkdu_v64D.dylib */; };
+		402B70A20EBEF1B500246D0F /* jp2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8A70E6CD7FA000FA6D1 /* jp2.cpp */; };
+		402B70A30EBEF1B600246D0F /* mj2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8AC0E6CD7FA000FA6D1 /* mj2.cpp */; };
+		402B70AB0EBEF1D400246D0F /* kdu_vex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 402B70A50EBEF1D400246D0F /* kdu_vex.cpp */; };
+		402B70AC0EBEF1D400246D0F /* kdu_vex_fast.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 402B70A70EBEF1D400246D0F /* kdu_vex_fast.cpp */; };
+		402B70B20EBEF3D100246D0F /* args.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8E80E6CD908000FA6D1 /* args.cpp */; };
+		402B70C30EBEF42A00246D0F /* kdu_maketlm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 402B70BE0EBEF42A00246D0F /* kdu_maketlm.cpp */; };
+		402B70C90EBEF4C300246D0F /* messaging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 402B70C80EBEF4C300246D0F /* messaging.cpp */; };
+		402B70CE0EBEF52B00246D0F /* args.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8E80E6CD908000FA6D1 /* args.cpp */; };
+		402B70D00EBEF52B00246D0F /* messaging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 402B70C80EBEF4C300246D0F /* messaging.cpp */; };
+		402B70DE0EBEF57800246D0F /* kdu_text_extractor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 402B70D90EBEF57800246D0F /* kdu_text_extractor.cpp */; };
+		402B710F0EBEFAC000246D0F /* args.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8E80E6CD908000FA6D1 /* args.cpp */; };
+		402B71110EBEFAC000246D0F /* messaging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 402B70C80EBEF4C300246D0F /* messaging.cpp */; };
+		402B71220EBEFB0D00246D0F /* aux_builder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 402B711A0EBEFB0D00246D0F /* aux_builder.cpp */; };
+		402B71230EBEFB0D00246D0F /* jni_builder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 402B711C0EBEFB0D00246D0F /* jni_builder.cpp */; };
+		402B71240EBEFB0D00246D0F /* kdu_hyperdoc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 402B711D0EBEFB0D00246D0F /* kdu_hyperdoc.cpp */; };
+		402B71250EBEFB0D00246D0F /* mni_builder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 402B71210EBEFB0D00246D0F /* mni_builder.cpp */; };
+		402E17DF0F40E8E9002C6F06 /* kdu_client_window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40F3AC230F0CE3A100945685 /* kdu_client_window.cpp */; };
+		402E17E60F40E906002C6F06 /* kdu_client.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 402E17E40F40E906002C6F06 /* kdu_client.cpp */; };
+		402E17E70F40E906002C6F06 /* kdu_clientx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 402E17E50F40E906002C6F06 /* kdu_clientx.cpp */; };
+		4048B7A20E8F1D7400AB7C06 /* kdms_metadata_editor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4048B7A10E8F1D7400AB7C06 /* kdms_metadata_editor.mm */; };
+		404EB8560E6CD5D7000FA6D1 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 404EB8490E6CD5D6000FA6D1 /* Credits.rtf */; };
+		404EB8570E6CD5D7000FA6D1 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 404EB84B0E6CD5D6000FA6D1 /* MainMenu.nib */; };
+		404EB8580E6CD5D7000FA6D1 /* kdms_controller.mm in Sources */ = {isa = PBXBuildFile; fileRef = 404EB84E0E6CD5D6000FA6D1 /* kdms_controller.mm */; };
+		404EB8590E6CD5D7000FA6D1 /* kdms_properties.mm in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8500E6CD5D6000FA6D1 /* kdms_properties.mm */; };
+		404EB85A0E6CD5D7000FA6D1 /* kdms_renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8520E6CD5D6000FA6D1 /* kdms_renderer.mm */; };
+		404EB85C0E6CD5D7000FA6D1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8550E6CD5D7000FA6D1 /* main.m */; };
+		404EB86D0E6CD6D5000FA6D1 /* kdu_buffered_compress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB85E0E6CD67A000FA6D1 /* kdu_buffered_compress.cpp */; };
+		404EB86E0E6CD6DE000FA6D1 /* kdu_buffered_expand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8680E6CD6A5000FA6D1 /* kdu_buffered_expand.cpp */; };
+		404EB8770E6CD733000FA6D1 /* kdu_compress.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8710E6CD733000FA6D1 /* kdu_compress.cpp */; };
+		404EB8780E6CD733000FA6D1 /* roi_sources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8750E6CD733000FA6D1 /* roi_sources.cpp */; };
+		404EB87F0E6CD75B000FA6D1 /* kdu_expand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB87B0E6CD75B000FA6D1 /* kdu_expand.cpp */; };
+		404EB89B0E6CD787000FA6D1 /* kdu_stripe_compressor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8850E6CD787000FA6D1 /* kdu_stripe_compressor.cpp */; };
+		404EB8A10E6CD787000FA6D1 /* kdu_region_compositor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8810E6CD787000FA6D1 /* kdu_region_compositor.cpp */; };
+		404EB8A20E6CD787000FA6D1 /* kdu_region_decompressor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8830E6CD787000FA6D1 /* kdu_region_decompressor.cpp */; };
+		404EB8A50E6CD7CE000FA6D1 /* kdu_stripe_decompressor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8870E6CD787000FA6D1 /* kdu_stripe_decompressor.cpp */; };
+		404EB8AE0E6CD7FA000FA6D1 /* jp2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8A70E6CD7FA000FA6D1 /* jp2.cpp */; };
+		404EB8AF0E6CD7FA000FA6D1 /* jpx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8AA0E6CD7FA000FA6D1 /* jpx.cpp */; };
+		404EB8B10E6CD7FA000FA6D1 /* jp2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8A70E6CD7FA000FA6D1 /* jp2.cpp */; };
+		404EB8B20E6CD7FA000FA6D1 /* jpx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8AA0E6CD7FA000FA6D1 /* jpx.cpp */; };
+		404EB8BA0E6CD7FA000FA6D1 /* jp2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8A70E6CD7FA000FA6D1 /* jp2.cpp */; };
+		404EB8BB0E6CD7FA000FA6D1 /* jpx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8AA0E6CD7FA000FA6D1 /* jpx.cpp */; };
+		404EB8BC0E6CD7FA000FA6D1 /* mj2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8AC0E6CD7FA000FA6D1 /* mj2.cpp */; };
+		404EB8BD0E6CD851000FA6D1 /* jp2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8A70E6CD7FA000FA6D1 /* jp2.cpp */; };
+		404EB8BE0E6CD85C000FA6D1 /* jp2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8A70E6CD7FA000FA6D1 /* jp2.cpp */; };
+		404EB8E00E6CD8D4000FA6D1 /* image_out.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8DA0E6CD8D4000FA6D1 /* image_out.cpp */; };
+		404EB8E10E6CD8D4000FA6D1 /* kdu_tiff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8DC0E6CD8D4000FA6D1 /* kdu_tiff.cpp */; };
+		404EB8E30E6CD8D4000FA6D1 /* image_in.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8D80E6CD8D4000FA6D1 /* image_in.cpp */; };
+		404EB8E50E6CD8D4000FA6D1 /* kdu_tiff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8DC0E6CD8D4000FA6D1 /* kdu_tiff.cpp */; };
+		404EB8E60E6CD8D4000FA6D1 /* palette.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8DE0E6CD8D4000FA6D1 /* palette.cpp */; };
+		404EB8EA0E6CD908000FA6D1 /* args.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8E80E6CD908000FA6D1 /* args.cpp */; };
+		404EB8EB0E6CD908000FA6D1 /* args.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8E80E6CD908000FA6D1 /* args.cpp */; };
+		404EB8EC0E6CD908000FA6D1 /* args.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8E80E6CD908000FA6D1 /* args.cpp */; };
+		404EB8ED0E6CD908000FA6D1 /* args.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8E80E6CD908000FA6D1 /* args.cpp */; };
+		404EB8FC0E6CDCB1000FA6D1 /* libkdu_v64D.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 404EB8470E6CD579000FA6D1 /* libkdu_v64D.dylib */; };
+		404EB8FD0E6CDCB7000FA6D1 /* libkdu_v64D.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 404EB8470E6CD579000FA6D1 /* libkdu_v64D.dylib */; };
+		404EB8FE0E6CDCBA000FA6D1 /* libkdu_v64D.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 404EB8470E6CD579000FA6D1 /* libkdu_v64D.dylib */; };
+		404EB8FF0E6CDCBD000FA6D1 /* libkdu_v64D.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 404EB8470E6CD579000FA6D1 /* libkdu_v64D.dylib */; };
+		404EB9000E6CDCC3000FA6D1 /* libkdu_v64D.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 404EB8470E6CD579000FA6D1 /* libkdu_v64D.dylib */; };
+		404EB94A0E7FC6D2000FA6D1 /* jp2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8A70E6CD7FA000FA6D1 /* jp2.cpp */; };
+		404EB94B0E7FC6D2000FA6D1 /* jpx.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8AA0E6CD7FA000FA6D1 /* jpx.cpp */; };
+		404EB94F0E7FC6D2000FA6D1 /* args.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8E80E6CD908000FA6D1 /* args.cpp */; };
+		404EB9510E7FC6D2000FA6D1 /* libkdu_v64D.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 404EB8470E6CD579000FA6D1 /* libkdu_v64D.dylib */; };
+		404EB9580E7FC880000FA6D1 /* mj2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8AC0E6CD7FA000FA6D1 /* mj2.cpp */; };
+		404EB95F0E7FC8B7000FA6D1 /* kdu_merge.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB95A0E7FC8B7000FA6D1 /* kdu_merge.cpp */; };
+		405AF8B00E8D07C000B80F81 /* kdms_window.mm in Sources */ = {isa = PBXBuildFile; fileRef = 405AF8AF0E8D07C000B80F81 /* kdms_window.mm */; };
+		405EA2C70E8E6394001EB31F /* metadata_editor.nib in Resources */ = {isa = PBXBuildFile; fileRef = 405EA2C50E8E6394001EB31F /* metadata_editor.nib */; };
+		4062F55A0E86751D008E2059 /* kdms_metashow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 4062F5590E86751D008E2059 /* kdms_metashow.mm */; };
+		406F90C00F07A158006821B5 /* kdcs_comms.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 406F90BE0F07A158006821B5 /* kdcs_comms.cpp */; };
+		4092C29C0F20CB6400FA2F61 /* connection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4092C2900F20CB6400FA2F61 /* connection.cpp */; };
+		4092C29D0F20CB6400FA2F61 /* kdu_security.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4092C2910F20CB6400FA2F61 /* kdu_security.cpp */; };
+		4092C29E0F20CB6400FA2F61 /* kdu_serve.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4092C2930F20CB6400FA2F61 /* kdu_serve.cpp */; };
+		4092C29F0F20CB6400FA2F61 /* kdu_server.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4092C2950F20CB6400FA2F61 /* kdu_server.cpp */; };
+		4092C2A00F20CB6400FA2F61 /* kdu_servex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4092C2960F20CB6400FA2F61 /* kdu_servex.cpp */; };
+		4092C2A10F20CB6400FA2F61 /* sources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4092C29B0F20CB6400FA2F61 /* sources.cpp */; };
+		4093746D0F5E585500129F28 /* kdu_cache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4093746C0F5E585500129F28 /* kdu_cache.cpp */; };
+		40A1817E0F3E63A800F6BF0C /* args.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8E80E6CD908000FA6D1 /* args.cpp */; };
+		40A1817F0F3E63A800F6BF0C /* kdcs_comms.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 406F90BE0F07A158006821B5 /* kdcs_comms.cpp */; };
+		40A181830F3E63A800F6BF0C /* kdu_security.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4092C2910F20CB6400FA2F61 /* kdu_security.cpp */; };
+		40A181890F3E63A800F6BF0C /* libkdu_v64D.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 404EB8470E6CD579000FA6D1 /* libkdu_v64D.dylib */; };
+		40A181C60F3E65E300F6BF0C /* kdu_server_admin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40A181C20F3E65E300F6BF0C /* kdu_server_admin.cpp */; };
+		40A2FC030F7CD765004A5E99 /* url_dialog.nib in Resources */ = {isa = PBXBuildFile; fileRef = 40A2FC010F7CD765004A5E99 /* url_dialog.nib */; };
+		40A394710FB2DAD9001E1F3D /* kdms_catalog.mm in Sources */ = {isa = PBXBuildFile; fileRef = 40A394700FB2DAD9001E1F3D /* kdms_catalog.mm */; };
+		40A394E30FB31BAB001E1F3D /* kdms_url_dialog.mm in Sources */ = {isa = PBXBuildFile; fileRef = 40A394E20FB31BAB001E1F3D /* kdms_url_dialog.mm */; };
+		40F3ABE90F0CE04200945685 /* args.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8E80E6CD908000FA6D1 /* args.cpp */; };
+		40F3ABED0F0CE04200945685 /* libkdu_v64D.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 404EB8470E6CD579000FA6D1 /* libkdu_v64D.dylib */; };
+		40F3ABF70F0CE0FA00945685 /* kdcs_comms.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 406F90BE0F07A158006821B5 /* kdcs_comms.cpp */; };
+		40F3ABFF0F0CE1FA00945685 /* jp2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 404EB8A70E6CD7FA000FA6D1 /* jp2.cpp */; };
+		40F3AC240F0CE3A100945685 /* kdu_client_window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 40F3AC230F0CE3A100945685 /* kdu_client_window.cpp */; };
+		40FAC8620EDE1CFD00E74462 /* html_help in Resources */ = {isa = PBXBuildFile; fileRef = 40FAC8600EDE1CFD00E74462 /* html_help */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		404EB8460E6CD579000FA6D1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 404EB83F0E6CD579000FA6D1 /* coresys.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC09D05546B4700DB518D;
+			remoteInfo = coresys;
+		};
+		40A1819C0F3E654600F6BF0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 40A1817C0F3E63A800F6BF0C;
+			remoteInfo = kdu_server_admin;
+		};
+		40A1819E0F3E654600F6BF0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 40F3ABE50F0CE04200945685;
+			remoteInfo = kdu_server;
+		};
+		40A181A00F3E654600F6BF0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 402B710D0EBEFAC000246D0F;
+			remoteInfo = kdu_hyperdoc;
+		};
+		40A181A20F3E654600F6BF0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 402B70CC0EBEF52B00246D0F;
+			remoteInfo = kdu_text_extractor;
+		};
+		40A181A40F3E654600F6BF0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 402B70B00EBEF3D100246D0F;
+			remoteInfo = kdu_maketlm;
+		};
+		40A181A60F3E654600F6BF0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 402B70950EBEF16A00246D0F;
+			remoteInfo = kdu_vex_fast;
+		};
+		40A181A80F3E654600F6BF0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 402B707A0EBEF07E00246D0F;
+			remoteInfo = simple_example_d;
+		};
+		40A181AA0F3E654600F6BF0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 402B706D0EBEF03300246D0F;
+			remoteInfo = simple_example_c;
+		};
+		40A181AC0F3E654600F6BF0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 402B70550EBEEF9D00246D0F;
+			remoteInfo = kdu_v_expand;
+		};
+		40A181AE0F3E654600F6BF0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 402B703F0EBEEECE00246D0F;
+			remoteInfo = kdu_v_compress;
+		};
+		40A181B00F3E654600F6BF0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 402B70220EBEED3F00246D0F;
+			remoteInfo = kdu_render;
+		};
+		40A181B20F3E654600F6BF0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 402B700A0EBEEB3000246D0F;
+			remoteInfo = kdu_transcode;
+		};
+		40A181B40F3E654600F6BF0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 401190E80E4E548C00F96122;
+			remoteInfo = kdu_show;
+		};
+		40A181B60F3E654600F6BF0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 404EB9460E7FC6D2000FA6D1;
+			remoteInfo = kdu_merge;
+		};
+		40A181B80F3E654600F6BF0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 401BB26D0E4C76E3008005A5;
+			remoteInfo = kdu_buffered_expand;
+		};
+		40A181BA0F3E654600F6BF0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 401BB25A0E4C76C1008005A5;
+			remoteInfo = kdu_buffered_compress;
+		};
+		40A181BC0F3E654600F6BF0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4077C7390E4BC3BB00667DEC;
+			remoteInfo = kdu_expand;
+		};
+		40A181BE0F3E654600F6BF0C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 08FB7793FE84155DC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 40F831D20E4A32FF0024EC09;
+			remoteInfo = kdu_compress;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		401BB2660E4C76C1008005A5 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		401BB2780E4C76E3008005A5 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		402B70130EBEEB3000246D0F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		402B70290EBEED3F00246D0F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		402B70460EBEEECE00246D0F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		402B705D0EBEEF9D00246D0F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		402B70740EBEF03300246D0F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		402B707F0EBEF07E00246D0F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		402B709C0EBEF16A00246D0F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		402B70B70EBEF3D100246D0F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		402B70D20EBEF52B00246D0F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		402B71130EBEFAC000246D0F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		404EB9520E7FC6D2000FA6D1 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		4077C7450E4BC3BB00667DEC /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		409544570E753B82002270C1 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		40A1818A0F3E63A800F6BF0C /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		40F3ABEE0F0CE04200945685 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		40F831D50E4A32FF0024EC09 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		401190E90E4E548C00F96122 /* kdu_show.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = kdu_show.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		401191100E4E584E00F96122 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		401BB26A0E4C76C1008005A5 /* kdu_buffered_compress */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kdu_buffered_compress; sourceTree = BUILT_PRODUCTS_DIR; };
+		401BB27C0E4C76E3008005A5 /* kdu_buffered_expand */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kdu_buffered_expand; sourceTree = BUILT_PRODUCTS_DIR; };
+		402491110EBFB8BC001E7B50 /* APPL.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = APPL.icns; path = kdu_macshow/APPL.icns; sourceTree = "<group>"; };
+		402A40A411A5551D00207F6A /* comms_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = comms_local.h; sourceTree = "<group>"; };
+		402B70170EBEEB3000246D0F /* kdu_transcode */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kdu_transcode; sourceTree = BUILT_PRODUCTS_DIR; };
+		402B701C0EBEEC9900246D0F /* kdu_transcode.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_transcode.cpp; sourceTree = "<group>"; };
+		402B702D0EBEED3F00246D0F /* kdu_render */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kdu_render; sourceTree = BUILT_PRODUCTS_DIR; };
+		402B70340EBEEDE700246D0F /* kdu_render.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_render.cpp; sourceTree = "<group>"; };
+		402B704A0EBEEECE00246D0F /* kdu_v_compress */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kdu_v_compress; sourceTree = BUILT_PRODUCTS_DIR; };
+		402B704E0EBEEF5000246D0F /* kdu_v_compress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_v_compress.cpp; sourceTree = "<group>"; };
+		402B70520EBEEF5000246D0F /* v_compress_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = v_compress_local.h; sourceTree = "<group>"; };
+		402B70610EBEEF9D00246D0F /* kdu_v_expand */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kdu_v_expand; sourceTree = BUILT_PRODUCTS_DIR; };
+		402B70640EBEEFDC00246D0F /* kdu_v_expand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_v_expand.cpp; sourceTree = "<group>"; };
+		402B70680EBEEFDC00246D0F /* v_expand_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = v_expand_local.h; sourceTree = "<group>"; };
+		402B70780EBEF03300246D0F /* simple_example_c */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = simple_example_c; sourceTree = BUILT_PRODUCTS_DIR; };
+		402B70830EBEF07E00246D0F /* simple_example_d */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = simple_example_d; sourceTree = BUILT_PRODUCTS_DIR; };
+		402B70880EBEF0CF00246D0F /* simple_example_c.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = simple_example_c.cpp; sourceTree = "<group>"; };
+		402B708C0EBEF0CF00246D0F /* simple_example_d.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = simple_example_d.cpp; sourceTree = "<group>"; };
+		402B70A00EBEF16A00246D0F /* kdu_vex_fast */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kdu_vex_fast; sourceTree = BUILT_PRODUCTS_DIR; };
+		402B70A50EBEF1D400246D0F /* kdu_vex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_vex.cpp; sourceTree = "<group>"; };
+		402B70A60EBEF1D400246D0F /* kdu_vex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_vex.h; sourceTree = "<group>"; };
+		402B70A70EBEF1D400246D0F /* kdu_vex_fast.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_vex_fast.cpp; sourceTree = "<group>"; };
+		402B70A90EBEF1D400246D0F /* vex_display.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = vex_display.cpp; sourceTree = "<group>"; };
+		402B70AA0EBEF1D400246D0F /* vex_display.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vex_display.h; sourceTree = "<group>"; };
+		402B70BB0EBEF3D100246D0F /* kdu_maketlm */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kdu_maketlm; sourceTree = BUILT_PRODUCTS_DIR; };
+		402B70BE0EBEF42A00246D0F /* kdu_maketlm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_maketlm.cpp; sourceTree = "<group>"; };
+		402B70C00EBEF42A00246D0F /* kdu_maketlm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_maketlm.h; sourceTree = "<group>"; };
+		402B70C80EBEF4C300246D0F /* messaging.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = messaging.cpp; path = ../coresys/messaging/messaging.cpp; sourceTree = SOURCE_ROOT; };
+		402B70D60EBEF52B00246D0F /* kdu_text_extractor */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kdu_text_extractor; sourceTree = BUILT_PRODUCTS_DIR; };
+		402B70D90EBEF57800246D0F /* kdu_text_extractor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_text_extractor.cpp; sourceTree = "<group>"; };
+		402B70DD0EBEF57800246D0F /* text_extractor_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = text_extractor_local.h; sourceTree = "<group>"; };
+		402B71170EBEFAC000246D0F /* kdu_hyperdoc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kdu_hyperdoc; sourceTree = BUILT_PRODUCTS_DIR; };
+		402B711A0EBEFB0D00246D0F /* aux_builder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = aux_builder.cpp; sourceTree = "<group>"; };
+		402B711B0EBEFB0D00246D0F /* hyperdoc_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hyperdoc_local.h; sourceTree = "<group>"; };
+		402B711C0EBEFB0D00246D0F /* jni_builder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = jni_builder.cpp; sourceTree = "<group>"; };
+		402B711D0EBEFB0D00246D0F /* kdu_hyperdoc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_hyperdoc.cpp; sourceTree = "<group>"; };
+		402B71210EBEFB0D00246D0F /* mni_builder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mni_builder.cpp; sourceTree = "<group>"; };
+		402E17E20F40E906002C6F06 /* client_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = client_local.h; sourceTree = "<group>"; };
+		402E17E30F40E906002C6F06 /* clientx_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = clientx_local.h; sourceTree = "<group>"; };
+		402E17E40F40E906002C6F06 /* kdu_client.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_client.cpp; sourceTree = "<group>"; };
+		402E17E50F40E906002C6F06 /* kdu_clientx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_clientx.cpp; sourceTree = "<group>"; };
+		4048B7A10E8F1D7400AB7C06 /* kdms_metadata_editor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = kdms_metadata_editor.mm; path = kdu_macshow/kdms_metadata_editor.mm; sourceTree = "<group>"; };
+		404EB83F0E6CD579000FA6D1 /* coresys.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = coresys.xcodeproj; path = ../coresys/coresys.xcodeproj; sourceTree = SOURCE_ROOT; };
+		404EB84A0E6CD5D6000FA6D1 /* English */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = English; path = English.lproj/Credits.rtf; sourceTree = "<group>"; };
+		404EB84C0E6CD5D6000FA6D1 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
+		404EB84D0E6CD5D6000FA6D1 /* kdms_controller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kdms_controller.h; path = kdu_macshow/kdms_controller.h; sourceTree = "<group>"; };
+		404EB84E0E6CD5D6000FA6D1 /* kdms_controller.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = kdms_controller.mm; path = kdu_macshow/kdms_controller.mm; sourceTree = "<group>"; };
+		404EB84F0E6CD5D6000FA6D1 /* kdms_properties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kdms_properties.h; path = kdu_macshow/kdms_properties.h; sourceTree = "<group>"; };
+		404EB8500E6CD5D6000FA6D1 /* kdms_properties.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = kdms_properties.mm; path = kdu_macshow/kdms_properties.mm; sourceTree = "<group>"; };
+		404EB8510E6CD5D6000FA6D1 /* kdms_renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kdms_renderer.h; path = kdu_macshow/kdms_renderer.h; sourceTree = "<group>"; };
+		404EB8520E6CD5D6000FA6D1 /* kdms_renderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = kdms_renderer.mm; path = kdu_macshow/kdms_renderer.mm; sourceTree = "<group>"; };
+		404EB8530E6CD5D6000FA6D1 /* kdu_macshow_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kdu_macshow_Prefix.pch; path = kdu_macshow/kdu_macshow_Prefix.pch; sourceTree = "<group>"; };
+		404EB8540E6CD5D7000FA6D1 /* kdu_show-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "kdu_show-Info.plist"; path = "kdu_macshow/kdu_show-Info.plist"; sourceTree = "<group>"; };
+		404EB8550E6CD5D7000FA6D1 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = kdu_macshow/main.m; sourceTree = "<group>"; };
+		404EB85E0E6CD67A000FA6D1 /* kdu_buffered_compress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_buffered_compress.cpp; sourceTree = "<group>"; };
+		404EB8680E6CD6A5000FA6D1 /* kdu_buffered_expand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_buffered_expand.cpp; sourceTree = "<group>"; };
+		404EB8700E6CD733000FA6D1 /* compress_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = compress_local.h; sourceTree = "<group>"; };
+		404EB8710E6CD733000FA6D1 /* kdu_compress.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_compress.cpp; sourceTree = "<group>"; };
+		404EB8750E6CD733000FA6D1 /* roi_sources.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = roi_sources.cpp; sourceTree = "<group>"; };
+		404EB8760E6CD733000FA6D1 /* roi_sources.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = roi_sources.h; sourceTree = "<group>"; };
+		404EB87A0E6CD75B000FA6D1 /* expand_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = expand_local.h; sourceTree = "<group>"; };
+		404EB87B0E6CD75B000FA6D1 /* kdu_expand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_expand.cpp; sourceTree = "<group>"; };
+		404EB8810E6CD787000FA6D1 /* kdu_region_compositor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_region_compositor.cpp; sourceTree = "<group>"; };
+		404EB8820E6CD787000FA6D1 /* kdu_region_compositor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_region_compositor.h; sourceTree = "<group>"; };
+		404EB8830E6CD787000FA6D1 /* kdu_region_decompressor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_region_decompressor.cpp; sourceTree = "<group>"; };
+		404EB8840E6CD787000FA6D1 /* kdu_region_decompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_region_decompressor.h; sourceTree = "<group>"; };
+		404EB8850E6CD787000FA6D1 /* kdu_stripe_compressor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_stripe_compressor.cpp; sourceTree = "<group>"; };
+		404EB8860E6CD787000FA6D1 /* kdu_stripe_compressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_stripe_compressor.h; sourceTree = "<group>"; };
+		404EB8870E6CD787000FA6D1 /* kdu_stripe_decompressor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_stripe_decompressor.cpp; sourceTree = "<group>"; };
+		404EB8880E6CD787000FA6D1 /* kdu_stripe_decompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_stripe_decompressor.h; sourceTree = "<group>"; };
+		404EB88B0E6CD787000FA6D1 /* region_compositor_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = region_compositor_local.h; sourceTree = "<group>"; };
+		404EB88C0E6CD787000FA6D1 /* region_decompressor_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = region_decompressor_local.h; sourceTree = "<group>"; };
+		404EB88D0E6CD787000FA6D1 /* stripe_compressor_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stripe_compressor_local.h; sourceTree = "<group>"; };
+		404EB88E0E6CD787000FA6D1 /* stripe_decompressor_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stripe_decompressor_local.h; sourceTree = "<group>"; };
+		404EB88F0E6CD787000FA6D1 /* x86_region_compositor_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x86_region_compositor_local.h; sourceTree = "<group>"; };
+		404EB8900E6CD787000FA6D1 /* x86_region_decompressor_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = x86_region_decompressor_local.h; sourceTree = "<group>"; };
+		404EB8A70E6CD7FA000FA6D1 /* jp2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = jp2.cpp; sourceTree = "<group>"; };
+		404EB8A80E6CD7FA000FA6D1 /* jp2_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jp2_local.h; sourceTree = "<group>"; };
+		404EB8A90E6CD7FA000FA6D1 /* jp2_shared.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jp2_shared.h; sourceTree = "<group>"; };
+		404EB8AA0E6CD7FA000FA6D1 /* jpx.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = jpx.cpp; sourceTree = "<group>"; };
+		404EB8AB0E6CD7FA000FA6D1 /* jpx_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jpx_local.h; sourceTree = "<group>"; };
+		404EB8AC0E6CD7FA000FA6D1 /* mj2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mj2.cpp; sourceTree = "<group>"; };
+		404EB8AD0E6CD7FA000FA6D1 /* mj2_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mj2_local.h; sourceTree = "<group>"; };
+		404EB8C20E6CD888000FA6D1 /* kdu_arch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_arch.h; sourceTree = "<group>"; };
+		404EB8C30E6CD888000FA6D1 /* kdu_block_coding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_block_coding.h; sourceTree = "<group>"; };
+		404EB8C40E6CD888000FA6D1 /* kdu_compressed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_compressed.h; sourceTree = "<group>"; };
+		404EB8C50E6CD888000FA6D1 /* kdu_elementary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_elementary.h; sourceTree = "<group>"; };
+		404EB8C60E6CD888000FA6D1 /* kdu_kernels.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_kernels.h; sourceTree = "<group>"; };
+		404EB8C70E6CD888000FA6D1 /* kdu_messaging.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_messaging.h; sourceTree = "<group>"; };
+		404EB8C80E6CD888000FA6D1 /* kdu_params.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_params.h; sourceTree = "<group>"; };
+		404EB8C90E6CD888000FA6D1 /* kdu_roi_processing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_roi_processing.h; sourceTree = "<group>"; };
+		404EB8CA0E6CD888000FA6D1 /* kdu_sample_processing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_sample_processing.h; sourceTree = "<group>"; };
+		404EB8CB0E6CD888000FA6D1 /* kdu_threads.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_threads.h; sourceTree = "<group>"; };
+		404EB8CC0E6CD888000FA6D1 /* kdu_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_utils.h; sourceTree = "<group>"; };
+		404EB8D80E6CD8D4000FA6D1 /* image_in.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = image_in.cpp; sourceTree = "<group>"; };
+		404EB8D90E6CD8D4000FA6D1 /* image_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image_local.h; sourceTree = "<group>"; };
+		404EB8DA0E6CD8D4000FA6D1 /* image_out.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = image_out.cpp; sourceTree = "<group>"; };
+		404EB8DB0E6CD8D4000FA6D1 /* kdu_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_image.h; sourceTree = "<group>"; };
+		404EB8DC0E6CD8D4000FA6D1 /* kdu_tiff.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_tiff.cpp; sourceTree = "<group>"; };
+		404EB8DD0E6CD8D4000FA6D1 /* kdu_tiff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_tiff.h; sourceTree = "<group>"; };
+		404EB8DE0E6CD8D4000FA6D1 /* palette.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = palette.cpp; sourceTree = "<group>"; };
+		404EB8E80E6CD908000FA6D1 /* args.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = args.cpp; sourceTree = "<group>"; };
+		404EB8E90E6CD908000FA6D1 /* kdu_args.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_args.h; sourceTree = "<group>"; };
+		404EB8EF0E6CD937000FA6D1 /* jp2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jp2.h; sourceTree = "<group>"; };
+		404EB8F00E6CD937000FA6D1 /* jpx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jpx.h; sourceTree = "<group>"; };
+		404EB8F10E6CD937000FA6D1 /* kdu_cache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_cache.h; sourceTree = "<group>"; };
+		404EB8F20E6CD937000FA6D1 /* kdu_client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_client.h; sourceTree = "<group>"; };
+		404EB8F30E6CD937000FA6D1 /* kdu_client_window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_client_window.h; sourceTree = "<group>"; };
+		404EB8F40E6CD937000FA6D1 /* kdu_clientx.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_clientx.h; sourceTree = "<group>"; };
+		404EB8F50E6CD937000FA6D1 /* kdu_file_io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_file_io.h; sourceTree = "<group>"; };
+		404EB8F60E6CD937000FA6D1 /* kdu_video_io.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_video_io.h; sourceTree = "<group>"; };
+		404EB8F70E6CD937000FA6D1 /* mj2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mj2.h; sourceTree = "<group>"; };
+		404EB9560E7FC6D2000FA6D1 /* kdu_merge */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kdu_merge; sourceTree = BUILT_PRODUCTS_DIR; };
+		404EB95A0E7FC8B7000FA6D1 /* kdu_merge.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_merge.cpp; sourceTree = "<group>"; };
+		404EB95C0E7FC8B7000FA6D1 /* kdu_merge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_merge.h; sourceTree = "<group>"; };
+		405AF8A90E8D05D800B80F81 /* kdms_window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kdms_window.h; path = kdu_macshow/kdms_window.h; sourceTree = "<group>"; };
+		405AF8AF0E8D07C000B80F81 /* kdms_window.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = kdms_window.mm; path = kdu_macshow/kdms_window.mm; sourceTree = "<group>"; };
+		405EA2C20E8E634F001EB31F /* kdms_metadata_editor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kdms_metadata_editor.h; path = kdu_macshow/kdms_metadata_editor.h; sourceTree = "<group>"; };
+		405EA2C60E8E6394001EB31F /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = kdu_macshow/English.lproj/metadata_editor.nib; sourceTree = "<group>"; };
+		4062F5580E86751D008E2059 /* kdms_metashow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kdms_metashow.h; path = kdu_macshow/kdms_metashow.h; sourceTree = "<group>"; };
+		4062F5590E86751D008E2059 /* kdms_metashow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = kdms_metashow.mm; path = kdu_macshow/kdms_metashow.mm; sourceTree = "<group>"; };
+		406F90BE0F07A158006821B5 /* kdcs_comms.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdcs_comms.cpp; sourceTree = "<group>"; };
+		406F90BF0F07A158006821B5 /* kdcs_comms.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdcs_comms.h; sourceTree = "<group>"; };
+		4077C7490E4BC3BB00667DEC /* kdu_expand */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kdu_expand; sourceTree = BUILT_PRODUCTS_DIR; };
+		4084D84A0EB59F6900458C52 /* kdms_catalog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kdms_catalog.h; path = kdu_macshow/kdms_catalog.h; sourceTree = "<group>"; };
+		4092C2900F20CB6400FA2F61 /* connection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = connection.cpp; sourceTree = "<group>"; };
+		4092C2910F20CB6400FA2F61 /* kdu_security.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_security.cpp; sourceTree = "<group>"; };
+		4092C2920F20CB6400FA2F61 /* kdu_security.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_security.h; sourceTree = "<group>"; };
+		4092C2930F20CB6400FA2F61 /* kdu_serve.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_serve.cpp; sourceTree = "<group>"; };
+		4092C2940F20CB6400FA2F61 /* kdu_serve.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_serve.h; sourceTree = "<group>"; };
+		4092C2950F20CB6400FA2F61 /* kdu_server.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_server.cpp; sourceTree = "<group>"; };
+		4092C2960F20CB6400FA2F61 /* kdu_servex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_servex.cpp; sourceTree = "<group>"; };
+		4092C2970F20CB6400FA2F61 /* kdu_servex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = kdu_servex.h; sourceTree = "<group>"; };
+		4092C2980F20CB6400FA2F61 /* serve_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = serve_local.h; sourceTree = "<group>"; };
+		4092C2990F20CB6400FA2F61 /* server_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = server_local.h; sourceTree = "<group>"; };
+		4092C29A0F20CB6400FA2F61 /* servex_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = servex_local.h; sourceTree = "<group>"; };
+		4092C29B0F20CB6400FA2F61 /* sources.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sources.cpp; sourceTree = "<group>"; };
+		4093746B0F5E585500129F28 /* cache_local.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = cache_local.h; sourceTree = "<group>"; };
+		4093746C0F5E585500129F28 /* kdu_cache.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_cache.cpp; sourceTree = "<group>"; };
+		40A1818E0F3E63A800F6BF0C /* kdu_server_admin */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kdu_server_admin; sourceTree = BUILT_PRODUCTS_DIR; };
+		40A181C20F3E65E300F6BF0C /* kdu_server_admin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_server_admin.cpp; sourceTree = "<group>"; };
+		40A2FBE10F7CA8D0004A5E99 /* kdms_url_dialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = kdms_url_dialog.h; path = kdu_macshow/kdms_url_dialog.h; sourceTree = "<group>"; };
+		40A2FC020F7CD765004A5E99 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = kdu_macshow/English.lproj/url_dialog.nib; sourceTree = "<group>"; };
+		40A394700FB2DAD9001E1F3D /* kdms_catalog.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = kdms_catalog.mm; path = kdu_macshow/kdms_catalog.mm; sourceTree = "<group>"; };
+		40A394E20FB31BAB001E1F3D /* kdms_url_dialog.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = kdms_url_dialog.mm; path = kdu_macshow/kdms_url_dialog.mm; sourceTree = "<group>"; };
+		40F3ABF20F0CE04200945685 /* kdu_server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kdu_server; sourceTree = BUILT_PRODUCTS_DIR; };
+		40F3AC230F0CE3A100945685 /* kdu_client_window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = kdu_client_window.cpp; sourceTree = "<group>"; };
+		40F831D90E4A32FF0024EC09 /* kdu_compress */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = kdu_compress; sourceTree = BUILT_PRODUCTS_DIR; };
+		40FAC8610EDE1CFD00E74462 /* English */ = {isa = PBXFileReference; lastKnownFileType = folder; name = English; path = kdu_macshow/English.lproj/html_help; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		401190E70E4E548C00F96122 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				401191220E4E592700F96122 /* Cocoa.framework in Frameworks */,
+				404EB9000E6CDCC3000FA6D1 /* libkdu_v64D.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		401BB2640E4C76C1008005A5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				404EB8FE0E6CDCBA000FA6D1 /* libkdu_v64D.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		401BB2760E4C76E3008005A5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				404EB8FF0E6CDCBD000FA6D1 /* libkdu_v64D.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		402B70110EBEEB3000246D0F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				402B70120EBEEB3000246D0F /* libkdu_v64D.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		402B70270EBEED3F00246D0F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				402B70280EBEED3F00246D0F /* libkdu_v64D.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		402B70440EBEEECE00246D0F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				402B70450EBEEECE00246D0F /* libkdu_v64D.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		402B705B0EBEEF9D00246D0F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				402B705C0EBEEF9D00246D0F /* libkdu_v64D.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		402B70720EBEF03300246D0F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				402B70730EBEF03300246D0F /* libkdu_v64D.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		402B707D0EBEF07E00246D0F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				402B707E0EBEF07E00246D0F /* libkdu_v64D.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		402B709A0EBEF16A00246D0F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				402B709B0EBEF16A00246D0F /* libkdu_v64D.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		402B70B50EBEF3D100246D0F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		402B70D10EBEF52B00246D0F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		402B71120EBEFAC000246D0F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		404EB9500E7FC6D2000FA6D1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				404EB9510E7FC6D2000FA6D1 /* libkdu_v64D.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4077C7430E4BC3BB00667DEC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				404EB8FD0E6CDCB7000FA6D1 /* libkdu_v64D.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		40A181880F3E63A800F6BF0C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				40A181890F3E63A800F6BF0C /* libkdu_v64D.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		40F3ABEC0F0CE04200945685 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				40F3ABED0F0CE04200945685 /* libkdu_v64D.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		40F831D40E4A32FF0024EC09 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				404EB8FC0E6CDCB1000FA6D1 /* libkdu_v64D.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08FB7794FE84155DC02AAC07 /* apps */ = {
+			isa = PBXGroup;
+			children = (
+				404EB83F0E6CD579000FA6D1 /* coresys.xcodeproj */,
+				08FB7795FE84155DC02AAC07 /* Source */,
+				C6859E8C029090F304C91782 /* Documentation */,
+				1AB674ADFE9D54B511CA2CBB /* Products */,
+			);
+			name = apps;
+			sourceTree = "<group>";
+		};
+		08FB7795FE84155DC02AAC07 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				402B70870EBEF0CF00246D0F /* simple_example */,
+				404EB8790E6CD75B000FA6D1 /* kdu_expand */,
+				404EB86F0E6CD733000FA6D1 /* kdu_compress */,
+				404EB8670E6CD6A5000FA6D1 /* kdu_buffered_expand */,
+				404EB85D0E6CD67A000FA6D1 /* kdu_buffered_compress */,
+				402B70630EBEEFDC00246D0F /* kdu_v_expand */,
+				402B704D0EBEEF5000246D0F /* kdu_v_compress */,
+				402B70A40EBEF1D400246D0F /* kdu_vex_fast */,
+				402B701B0EBEEC9900246D0F /* kdu_transcode */,
+				402B70330EBEEDE700246D0F /* kdu_render */,
+				404EB9590E7FC8B7000FA6D1 /* kdu_merge */,
+				4011910C0E4E570F00F96122 /* kdu_macshow */,
+				402E17E10F40E906002C6F06 /* kdu_client */,
+				4092C28F0F20CB6400FA2F61 /* kdu_server */,
+				40A181C10F3E65E300F6BF0C /* kdu_server_admin */,
+				402B70BD0EBEF42A00246D0F /* kdu_maketlm */,
+				402B70D80EBEF57800246D0F /* kdu_text_extractor */,
+				402B71190EBEFB0D00246D0F /* kdu_hyperdoc */,
+				404EB8BF0E6CD888000FA6D1 /* common */,
+				404EB8800E6CD787000FA6D1 /* support */,
+				404EB8EE0E6CD937000FA6D1 /* compressed_io */,
+				404EB8A60E6CD7FA000FA6D1 /* jp2 */,
+				404EB8E70E6CD908000FA6D1 /* args */,
+				404EB8D70E6CD8D4000FA6D1 /* image */,
+				4093746A0F5E585500129F28 /* caching_sources */,
+				406F90BD0F07A158006821B5 /* client_server */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		1AB674ADFE9D54B511CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				40F831D90E4A32FF0024EC09 /* kdu_compress */,
+				4077C7490E4BC3BB00667DEC /* kdu_expand */,
+				401BB26A0E4C76C1008005A5 /* kdu_buffered_compress */,
+				401BB27C0E4C76E3008005A5 /* kdu_buffered_expand */,
+				401190E90E4E548C00F96122 /* kdu_show.app */,
+				404EB9560E7FC6D2000FA6D1 /* kdu_merge */,
+				402B70170EBEEB3000246D0F /* kdu_transcode */,
+				402B702D0EBEED3F00246D0F /* kdu_render */,
+				402B704A0EBEEECE00246D0F /* kdu_v_compress */,
+				402B70610EBEEF9D00246D0F /* kdu_v_expand */,
+				402B70780EBEF03300246D0F /* simple_example_c */,
+				402B70830EBEF07E00246D0F /* simple_example_d */,
+				402B70A00EBEF16A00246D0F /* kdu_vex_fast */,
+				402B70BB0EBEF3D100246D0F /* kdu_maketlm */,
+				402B70D60EBEF52B00246D0F /* kdu_text_extractor */,
+				402B71170EBEFAC000246D0F /* kdu_hyperdoc */,
+				40F3ABF20F0CE04200945685 /* kdu_server */,
+				40A1818E0F3E63A800F6BF0C /* kdu_server_admin */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4011910C0E4E570F00F96122 /* kdu_macshow */ = {
+			isa = PBXGroup;
+			children = (
+				405AF8AF0E8D07C000B80F81 /* kdms_window.mm */,
+				405AF8A90E8D05D800B80F81 /* kdms_window.h */,
+				404EB84D0E6CD5D6000FA6D1 /* kdms_controller.h */,
+				404EB84E0E6CD5D6000FA6D1 /* kdms_controller.mm */,
+				404EB84F0E6CD5D6000FA6D1 /* kdms_properties.h */,
+				404EB8500E6CD5D6000FA6D1 /* kdms_properties.mm */,
+				404EB8510E6CD5D6000FA6D1 /* kdms_renderer.h */,
+				404EB8520E6CD5D6000FA6D1 /* kdms_renderer.mm */,
+				4062F5580E86751D008E2059 /* kdms_metashow.h */,
+				4062F5590E86751D008E2059 /* kdms_metashow.mm */,
+				405EA2C20E8E634F001EB31F /* kdms_metadata_editor.h */,
+				4048B7A10E8F1D7400AB7C06 /* kdms_metadata_editor.mm */,
+				40A2FBE10F7CA8D0004A5E99 /* kdms_url_dialog.h */,
+				40A394E20FB31BAB001E1F3D /* kdms_url_dialog.mm */,
+				4084D84A0EB59F6900458C52 /* kdms_catalog.h */,
+				40A394700FB2DAD9001E1F3D /* kdms_catalog.mm */,
+				404EB8530E6CD5D6000FA6D1 /* kdu_macshow_Prefix.pch */,
+				404EB8550E6CD5D7000FA6D1 /* main.m */,
+				401191150E4E589000F96122 /* Resources */,
+				401191120E4E585700F96122 /* Frameworks */,
+			);
+			name = kdu_macshow;
+			sourceTree = "<group>";
+		};
+		401191120E4E585700F96122 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				401191100E4E584E00F96122 /* Cocoa.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		401191150E4E589000F96122 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				40FAC8600EDE1CFD00E74462 /* html_help */,
+				402491110EBFB8BC001E7B50 /* APPL.icns */,
+				405EA2C50E8E6394001EB31F /* metadata_editor.nib */,
+				40A2FC010F7CD765004A5E99 /* url_dialog.nib */,
+				404EB8540E6CD5D7000FA6D1 /* kdu_show-Info.plist */,
+				404EB84B0E6CD5D6000FA6D1 /* MainMenu.nib */,
+				404EB8490E6CD5D6000FA6D1 /* Credits.rtf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		402B701B0EBEEC9900246D0F /* kdu_transcode */ = {
+			isa = PBXGroup;
+			children = (
+				402B701C0EBEEC9900246D0F /* kdu_transcode.cpp */,
+			);
+			path = kdu_transcode;
+			sourceTree = "<group>";
+		};
+		402B70330EBEEDE700246D0F /* kdu_render */ = {
+			isa = PBXGroup;
+			children = (
+				402B70340EBEEDE700246D0F /* kdu_render.cpp */,
+			);
+			path = kdu_render;
+			sourceTree = "<group>";
+		};
+		402B704D0EBEEF5000246D0F /* kdu_v_compress */ = {
+			isa = PBXGroup;
+			children = (
+				402B704E0EBEEF5000246D0F /* kdu_v_compress.cpp */,
+				402B70520EBEEF5000246D0F /* v_compress_local.h */,
+			);
+			path = kdu_v_compress;
+			sourceTree = "<group>";
+		};
+		402B70630EBEEFDC00246D0F /* kdu_v_expand */ = {
+			isa = PBXGroup;
+			children = (
+				402B70640EBEEFDC00246D0F /* kdu_v_expand.cpp */,
+				402B70680EBEEFDC00246D0F /* v_expand_local.h */,
+			);
+			path = kdu_v_expand;
+			sourceTree = "<group>";
+		};
+		402B70870EBEF0CF00246D0F /* simple_example */ = {
+			isa = PBXGroup;
+			children = (
+				402B70880EBEF0CF00246D0F /* simple_example_c.cpp */,
+				402B708C0EBEF0CF00246D0F /* simple_example_d.cpp */,
+			);
+			path = simple_example;
+			sourceTree = "<group>";
+		};
+		402B70A40EBEF1D400246D0F /* kdu_vex_fast */ = {
+			isa = PBXGroup;
+			children = (
+				402B70A50EBEF1D400246D0F /* kdu_vex.cpp */,
+				402B70A60EBEF1D400246D0F /* kdu_vex.h */,
+				402B70A70EBEF1D400246D0F /* kdu_vex_fast.cpp */,
+				402B70A90EBEF1D400246D0F /* vex_display.cpp */,
+				402B70AA0EBEF1D400246D0F /* vex_display.h */,
+			);
+			path = kdu_vex_fast;
+			sourceTree = "<group>";
+		};
+		402B70BD0EBEF42A00246D0F /* kdu_maketlm */ = {
+			isa = PBXGroup;
+			children = (
+				402B70BE0EBEF42A00246D0F /* kdu_maketlm.cpp */,
+				402B70C00EBEF42A00246D0F /* kdu_maketlm.h */,
+			);
+			path = kdu_maketlm;
+			sourceTree = "<group>";
+		};
+		402B70D80EBEF57800246D0F /* kdu_text_extractor */ = {
+			isa = PBXGroup;
+			children = (
+				402B70D90EBEF57800246D0F /* kdu_text_extractor.cpp */,
+				402B70DD0EBEF57800246D0F /* text_extractor_local.h */,
+			);
+			path = kdu_text_extractor;
+			sourceTree = "<group>";
+		};
+		402B71190EBEFB0D00246D0F /* kdu_hyperdoc */ = {
+			isa = PBXGroup;
+			children = (
+				402B711A0EBEFB0D00246D0F /* aux_builder.cpp */,
+				402B711B0EBEFB0D00246D0F /* hyperdoc_local.h */,
+				402B711C0EBEFB0D00246D0F /* jni_builder.cpp */,
+				402B711D0EBEFB0D00246D0F /* kdu_hyperdoc.cpp */,
+				402B71210EBEFB0D00246D0F /* mni_builder.cpp */,
+			);
+			path = kdu_hyperdoc;
+			sourceTree = "<group>";
+		};
+		402E17E10F40E906002C6F06 /* kdu_client */ = {
+			isa = PBXGroup;
+			children = (
+				402E17E20F40E906002C6F06 /* client_local.h */,
+				402E17E30F40E906002C6F06 /* clientx_local.h */,
+				402E17E40F40E906002C6F06 /* kdu_client.cpp */,
+				402E17E50F40E906002C6F06 /* kdu_clientx.cpp */,
+			);
+			path = kdu_client;
+			sourceTree = "<group>";
+		};
+		404EB8400E6CD579000FA6D1 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				404EB8470E6CD579000FA6D1 /* libkdu_v64D.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		404EB85D0E6CD67A000FA6D1 /* kdu_buffered_compress */ = {
+			isa = PBXGroup;
+			children = (
+				404EB85E0E6CD67A000FA6D1 /* kdu_buffered_compress.cpp */,
+			);
+			path = kdu_buffered_compress;
+			sourceTree = "<group>";
+		};
+		404EB8670E6CD6A5000FA6D1 /* kdu_buffered_expand */ = {
+			isa = PBXGroup;
+			children = (
+				404EB8680E6CD6A5000FA6D1 /* kdu_buffered_expand.cpp */,
+			);
+			path = kdu_buffered_expand;
+			sourceTree = "<group>";
+		};
+		404EB86F0E6CD733000FA6D1 /* kdu_compress */ = {
+			isa = PBXGroup;
+			children = (
+				404EB8700E6CD733000FA6D1 /* compress_local.h */,
+				404EB8710E6CD733000FA6D1 /* kdu_compress.cpp */,
+				404EB8750E6CD733000FA6D1 /* roi_sources.cpp */,
+				404EB8760E6CD733000FA6D1 /* roi_sources.h */,
+			);
+			path = kdu_compress;
+			sourceTree = "<group>";
+		};
+		404EB8790E6CD75B000FA6D1 /* kdu_expand */ = {
+			isa = PBXGroup;
+			children = (
+				404EB87A0E6CD75B000FA6D1 /* expand_local.h */,
+				404EB87B0E6CD75B000FA6D1 /* kdu_expand.cpp */,
+			);
+			path = kdu_expand;
+			sourceTree = "<group>";
+		};
+		404EB8800E6CD787000FA6D1 /* support */ = {
+			isa = PBXGroup;
+			children = (
+				404EB8810E6CD787000FA6D1 /* kdu_region_compositor.cpp */,
+				404EB8820E6CD787000FA6D1 /* kdu_region_compositor.h */,
+				404EB8830E6CD787000FA6D1 /* kdu_region_decompressor.cpp */,
+				404EB8840E6CD787000FA6D1 /* kdu_region_decompressor.h */,
+				404EB8850E6CD787000FA6D1 /* kdu_stripe_compressor.cpp */,
+				404EB8860E6CD787000FA6D1 /* kdu_stripe_compressor.h */,
+				404EB8870E6CD787000FA6D1 /* kdu_stripe_decompressor.cpp */,
+				404EB8880E6CD787000FA6D1 /* kdu_stripe_decompressor.h */,
+				404EB88B0E6CD787000FA6D1 /* region_compositor_local.h */,
+				404EB88C0E6CD787000FA6D1 /* region_decompressor_local.h */,
+				404EB88D0E6CD787000FA6D1 /* stripe_compressor_local.h */,
+				404EB88E0E6CD787000FA6D1 /* stripe_decompressor_local.h */,
+				404EB88F0E6CD787000FA6D1 /* x86_region_compositor_local.h */,
+				404EB8900E6CD787000FA6D1 /* x86_region_decompressor_local.h */,
+			);
+			path = support;
+			sourceTree = "<group>";
+		};
+		404EB8A60E6CD7FA000FA6D1 /* jp2 */ = {
+			isa = PBXGroup;
+			children = (
+				404EB8A70E6CD7FA000FA6D1 /* jp2.cpp */,
+				404EB8A80E6CD7FA000FA6D1 /* jp2_local.h */,
+				404EB8A90E6CD7FA000FA6D1 /* jp2_shared.h */,
+				404EB8AA0E6CD7FA000FA6D1 /* jpx.cpp */,
+				404EB8AB0E6CD7FA000FA6D1 /* jpx_local.h */,
+				404EB8AC0E6CD7FA000FA6D1 /* mj2.cpp */,
+				404EB8AD0E6CD7FA000FA6D1 /* mj2_local.h */,
+			);
+			path = jp2;
+			sourceTree = "<group>";
+		};
+		404EB8BF0E6CD888000FA6D1 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				402B70C80EBEF4C300246D0F /* messaging.cpp */,
+				404EB8C20E6CD888000FA6D1 /* kdu_arch.h */,
+				404EB8C30E6CD888000FA6D1 /* kdu_block_coding.h */,
+				404EB8C40E6CD888000FA6D1 /* kdu_compressed.h */,
+				404EB8C50E6CD888000FA6D1 /* kdu_elementary.h */,
+				404EB8C60E6CD888000FA6D1 /* kdu_kernels.h */,
+				404EB8C70E6CD888000FA6D1 /* kdu_messaging.h */,
+				404EB8C80E6CD888000FA6D1 /* kdu_params.h */,
+				404EB8C90E6CD888000FA6D1 /* kdu_roi_processing.h */,
+				404EB8CA0E6CD888000FA6D1 /* kdu_sample_processing.h */,
+				404EB8CB0E6CD888000FA6D1 /* kdu_threads.h */,
+				404EB8CC0E6CD888000FA6D1 /* kdu_utils.h */,
+			);
+			name = common;
+			path = ../coresys/common;
+			sourceTree = SOURCE_ROOT;
+		};
+		404EB8D70E6CD8D4000FA6D1 /* image */ = {
+			isa = PBXGroup;
+			children = (
+				404EB8D80E6CD8D4000FA6D1 /* image_in.cpp */,
+				404EB8D90E6CD8D4000FA6D1 /* image_local.h */,
+				404EB8DA0E6CD8D4000FA6D1 /* image_out.cpp */,
+				404EB8DB0E6CD8D4000FA6D1 /* kdu_image.h */,
+				404EB8DC0E6CD8D4000FA6D1 /* kdu_tiff.cpp */,
+				404EB8DD0E6CD8D4000FA6D1 /* kdu_tiff.h */,
+				404EB8DE0E6CD8D4000FA6D1 /* palette.cpp */,
+			);
+			path = image;
+			sourceTree = "<group>";
+		};
+		404EB8E70E6CD908000FA6D1 /* args */ = {
+			isa = PBXGroup;
+			children = (
+				404EB8E80E6CD908000FA6D1 /* args.cpp */,
+				404EB8E90E6CD908000FA6D1 /* kdu_args.h */,
+			);
+			path = args;
+			sourceTree = "<group>";
+		};
+		404EB8EE0E6CD937000FA6D1 /* compressed_io */ = {
+			isa = PBXGroup;
+			children = (
+				404EB8EF0E6CD937000FA6D1 /* jp2.h */,
+				404EB8F00E6CD937000FA6D1 /* jpx.h */,
+				404EB8F10E6CD937000FA6D1 /* kdu_cache.h */,
+				404EB8F20E6CD937000FA6D1 /* kdu_client.h */,
+				404EB8F30E6CD937000FA6D1 /* kdu_client_window.h */,
+				404EB8F40E6CD937000FA6D1 /* kdu_clientx.h */,
+				404EB8F50E6CD937000FA6D1 /* kdu_file_io.h */,
+				404EB8F60E6CD937000FA6D1 /* kdu_video_io.h */,
+				404EB8F70E6CD937000FA6D1 /* mj2.h */,
+			);
+			path = compressed_io;
+			sourceTree = "<group>";
+		};
+		404EB9590E7FC8B7000FA6D1 /* kdu_merge */ = {
+			isa = PBXGroup;
+			children = (
+				404EB95A0E7FC8B7000FA6D1 /* kdu_merge.cpp */,
+				404EB95C0E7FC8B7000FA6D1 /* kdu_merge.h */,
+			);
+			path = kdu_merge;
+			sourceTree = "<group>";
+		};
+		406F90BD0F07A158006821B5 /* client_server */ = {
+			isa = PBXGroup;
+			children = (
+				40F3AC230F0CE3A100945685 /* kdu_client_window.cpp */,
+				406F90BE0F07A158006821B5 /* kdcs_comms.cpp */,
+				406F90BF0F07A158006821B5 /* kdcs_comms.h */,
+				402A40A411A5551D00207F6A /* comms_local.h */,
+			);
+			path = client_server;
+			sourceTree = "<group>";
+		};
+		4092C28F0F20CB6400FA2F61 /* kdu_server */ = {
+			isa = PBXGroup;
+			children = (
+				4092C2900F20CB6400FA2F61 /* connection.cpp */,
+				4092C2910F20CB6400FA2F61 /* kdu_security.cpp */,
+				4092C2920F20CB6400FA2F61 /* kdu_security.h */,
+				4092C2930F20CB6400FA2F61 /* kdu_serve.cpp */,
+				4092C2940F20CB6400FA2F61 /* kdu_serve.h */,
+				4092C2950F20CB6400FA2F61 /* kdu_server.cpp */,
+				4092C2960F20CB6400FA2F61 /* kdu_servex.cpp */,
+				4092C2970F20CB6400FA2F61 /* kdu_servex.h */,
+				4092C2990F20CB6400FA2F61 /* server_local.h */,
+				4092C2980F20CB6400FA2F61 /* serve_local.h */,
+				4092C29A0F20CB6400FA2F61 /* servex_local.h */,
+				4092C29B0F20CB6400FA2F61 /* sources.cpp */,
+			);
+			path = kdu_server;
+			sourceTree = "<group>";
+		};
+		4093746A0F5E585500129F28 /* caching_sources */ = {
+			isa = PBXGroup;
+			children = (
+				4093746B0F5E585500129F28 /* cache_local.h */,
+				4093746C0F5E585500129F28 /* kdu_cache.cpp */,
+			);
+			path = caching_sources;
+			sourceTree = "<group>";
+		};
+		40A181C10F3E65E300F6BF0C /* kdu_server_admin */ = {
+			isa = PBXGroup;
+			children = (
+				40A181C20F3E65E300F6BF0C /* kdu_server_admin.cpp */,
+			);
+			path = kdu_server_admin;
+			sourceTree = "<group>";
+		};
+		C6859E8C029090F304C91782 /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Documentation;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		401190E80E4E548C00F96122 /* kdu_show */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 401190EE0E4E548D00F96122 /* Build configuration list for PBXNativeTarget "kdu_show" */;
+			buildPhases = (
+				401190E50E4E548C00F96122 /* Resources */,
+				401190E60E4E548C00F96122 /* Sources */,
+				401190E70E4E548C00F96122 /* Frameworks */,
+				409544570E753B82002270C1 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = kdu_show;
+			productName = kdu_show;
+			productReference = 401190E90E4E548C00F96122 /* kdu_show.app */;
+			productType = "com.apple.product-type.application";
+		};
+		401BB25A0E4C76C1008005A5 /* kdu_buffered_compress */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 401BB2670E4C76C1008005A5 /* Build configuration list for PBXNativeTarget "kdu_buffered_compress" */;
+			buildPhases = (
+				401BB25B0E4C76C1008005A5 /* Sources */,
+				401BB2640E4C76C1008005A5 /* Frameworks */,
+				401BB2660E4C76C1008005A5 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = kdu_buffered_compress;
+			productInstallPath = "$(HOME)/bin";
+			productName = apps;
+			productReference = 401BB26A0E4C76C1008005A5 /* kdu_buffered_compress */;
+			productType = "com.apple.product-type.tool";
+		};
+		401BB26D0E4C76E3008005A5 /* kdu_buffered_expand */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 401BB2790E4C76E3008005A5 /* Build configuration list for PBXNativeTarget "kdu_buffered_expand" */;
+			buildPhases = (
+				401BB26E0E4C76E3008005A5 /* Sources */,
+				401BB2760E4C76E3008005A5 /* Frameworks */,
+				401BB2780E4C76E3008005A5 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = kdu_buffered_expand;
+			productInstallPath = "$(HOME)/bin";
+			productName = apps;
+			productReference = 401BB27C0E4C76E3008005A5 /* kdu_buffered_expand */;
+			productType = "com.apple.product-type.tool";
+		};
+		402B700A0EBEEB3000246D0F /* kdu_transcode */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 402B70140EBEEB3000246D0F /* Build configuration list for PBXNativeTarget "kdu_transcode" */;
+			buildPhases = (
+				402B700B0EBEEB3000246D0F /* Sources */,
+				402B70110EBEEB3000246D0F /* Frameworks */,
+				402B70130EBEEB3000246D0F /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = kdu_transcode;
+			productInstallPath = "$(HOME)/bin";
+			productName = apps;
+			productReference = 402B70170EBEEB3000246D0F /* kdu_transcode */;
+			productType = "com.apple.product-type.tool";
+		};
+		402B70220EBEED3F00246D0F /* kdu_render */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 402B702A0EBEED3F00246D0F /* Build configuration list for PBXNativeTarget "kdu_render" */;
+			buildPhases = (
+				402B70230EBEED3F00246D0F /* Sources */,
+				402B70270EBEED3F00246D0F /* Frameworks */,
+				402B70290EBEED3F00246D0F /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = kdu_render;
+			productInstallPath = "$(HOME)/bin";
+			productName = apps;
+			productReference = 402B702D0EBEED3F00246D0F /* kdu_render */;
+			productType = "com.apple.product-type.tool";
+		};
+		402B703F0EBEEECE00246D0F /* kdu_v_compress */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 402B70470EBEEECE00246D0F /* Build configuration list for PBXNativeTarget "kdu_v_compress" */;
+			buildPhases = (
+				402B70400EBEEECE00246D0F /* Sources */,
+				402B70440EBEEECE00246D0F /* Frameworks */,
+				402B70460EBEEECE00246D0F /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = kdu_v_compress;
+			productInstallPath = "$(HOME)/bin";
+			productName = apps;
+			productReference = 402B704A0EBEEECE00246D0F /* kdu_v_compress */;
+			productType = "com.apple.product-type.tool";
+		};
+		402B70550EBEEF9D00246D0F /* kdu_v_expand */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 402B705E0EBEEF9D00246D0F /* Build configuration list for PBXNativeTarget "kdu_v_expand" */;
+			buildPhases = (
+				402B70560EBEEF9D00246D0F /* Sources */,
+				402B705B0EBEEF9D00246D0F /* Frameworks */,
+				402B705D0EBEEF9D00246D0F /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = kdu_v_expand;
+			productInstallPath = "$(HOME)/bin";
+			productName = apps;
+			productReference = 402B70610EBEEF9D00246D0F /* kdu_v_expand */;
+			productType = "com.apple.product-type.tool";
+		};
+		402B706D0EBEF03300246D0F /* simple_example_c */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 402B70750EBEF03300246D0F /* Build configuration list for PBXNativeTarget "simple_example_c" */;
+			buildPhases = (
+				402B706E0EBEF03300246D0F /* Sources */,
+				402B70720EBEF03300246D0F /* Frameworks */,
+				402B70740EBEF03300246D0F /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = simple_example_c;
+			productInstallPath = "$(HOME)/bin";
+			productName = apps;
+			productReference = 402B70780EBEF03300246D0F /* simple_example_c */;
+			productType = "com.apple.product-type.tool";
+		};
+		402B707A0EBEF07E00246D0F /* simple_example_d */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 402B70800EBEF07E00246D0F /* Build configuration list for PBXNativeTarget "simple_example_d" */;
+			buildPhases = (
+				402B707B0EBEF07E00246D0F /* Sources */,
+				402B707D0EBEF07E00246D0F /* Frameworks */,
+				402B707F0EBEF07E00246D0F /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = simple_example_d;
+			productInstallPath = "$(HOME)/bin";
+			productName = apps;
+			productReference = 402B70830EBEF07E00246D0F /* simple_example_d */;
+			productType = "com.apple.product-type.tool";
+		};
+		402B70950EBEF16A00246D0F /* kdu_vex_fast */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 402B709D0EBEF16A00246D0F /* Build configuration list for PBXNativeTarget "kdu_vex_fast" */;
+			buildPhases = (
+				402B70960EBEF16A00246D0F /* Sources */,
+				402B709A0EBEF16A00246D0F /* Frameworks */,
+				402B709C0EBEF16A00246D0F /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = kdu_vex_fast;
+			productInstallPath = "$(HOME)/bin";
+			productName = apps;
+			productReference = 402B70A00EBEF16A00246D0F /* kdu_vex_fast */;
+			productType = "com.apple.product-type.tool";
+		};
+		402B70B00EBEF3D100246D0F /* kdu_maketlm */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 402B70B80EBEF3D100246D0F /* Build configuration list for PBXNativeTarget "kdu_maketlm" */;
+			buildPhases = (
+				402B70B10EBEF3D100246D0F /* Sources */,
+				402B70B50EBEF3D100246D0F /* Frameworks */,
+				402B70B70EBEF3D100246D0F /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = kdu_maketlm;
+			productInstallPath = "$(HOME)/bin";
+			productName = apps;
+			productReference = 402B70BB0EBEF3D100246D0F /* kdu_maketlm */;
+			productType = "com.apple.product-type.tool";
+		};
+		402B70CC0EBEF52B00246D0F /* kdu_text_extractor */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 402B70D30EBEF52B00246D0F /* Build configuration list for PBXNativeTarget "kdu_text_extractor" */;
+			buildPhases = (
+				402B70CD0EBEF52B00246D0F /* Sources */,
+				402B70D10EBEF52B00246D0F /* Frameworks */,
+				402B70D20EBEF52B00246D0F /* CopyFiles */,
+				402B70E80EBEF72F00246D0F /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = kdu_text_extractor;
+			productInstallPath = "$(HOME)/bin";
+			productName = apps;
+			productReference = 402B70D60EBEF52B00246D0F /* kdu_text_extractor */;
+			productType = "com.apple.product-type.tool";
+		};
+		402B710D0EBEFAC000246D0F /* kdu_hyperdoc */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 402B71140EBEFAC000246D0F /* Build configuration list for PBXNativeTarget "kdu_hyperdoc" */;
+			buildPhases = (
+				402B710E0EBEFAC000246D0F /* Sources */,
+				402B71120EBEFAC000246D0F /* Frameworks */,
+				402B71130EBEFAC000246D0F /* CopyFiles */,
+				402B71280EBEFB4100246D0F /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = kdu_hyperdoc;
+			productInstallPath = "$(HOME)/bin";
+			productName = apps;
+			productReference = 402B71170EBEFAC000246D0F /* kdu_hyperdoc */;
+			productType = "com.apple.product-type.tool";
+		};
+		404EB9460E7FC6D2000FA6D1 /* kdu_merge */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 404EB9530E7FC6D2000FA6D1 /* Build configuration list for PBXNativeTarget "kdu_merge" */;
+			buildPhases = (
+				404EB9470E7FC6D2000FA6D1 /* Sources */,
+				404EB9500E7FC6D2000FA6D1 /* Frameworks */,
+				404EB9520E7FC6D2000FA6D1 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = kdu_merge;
+			productInstallPath = "$(HOME)/bin";
+			productName = apps;
+			productReference = 404EB9560E7FC6D2000FA6D1 /* kdu_merge */;
+			productType = "com.apple.product-type.tool";
+		};
+		4077C7390E4BC3BB00667DEC /* kdu_expand */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4077C7460E4BC3BB00667DEC /* Build configuration list for PBXNativeTarget "kdu_expand" */;
+			buildPhases = (
+				4077C73A0E4BC3BB00667DEC /* Sources */,
+				4077C7430E4BC3BB00667DEC /* Frameworks */,
+				4077C7450E4BC3BB00667DEC /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = kdu_expand;
+			productInstallPath = "$(HOME)/bin";
+			productName = apps;
+			productReference = 4077C7490E4BC3BB00667DEC /* kdu_expand */;
+			productType = "com.apple.product-type.tool";
+		};
+		40A1817C0F3E63A800F6BF0C /* kdu_server_admin */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 40A1818B0F3E63A800F6BF0C /* Build configuration list for PBXNativeTarget "kdu_server_admin" */;
+			buildPhases = (
+				40A1817D0F3E63A800F6BF0C /* Sources */,
+				40A181880F3E63A800F6BF0C /* Frameworks */,
+				40A1818A0F3E63A800F6BF0C /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = kdu_server_admin;
+			productInstallPath = "$(HOME)/bin";
+			productName = apps;
+			productReference = 40A1818E0F3E63A800F6BF0C /* kdu_server_admin */;
+			productType = "com.apple.product-type.tool";
+		};
+		40F3ABE50F0CE04200945685 /* kdu_server */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 40F3ABEF0F0CE04200945685 /* Build configuration list for PBXNativeTarget "kdu_server" */;
+			buildPhases = (
+				40F3ABE60F0CE04200945685 /* Sources */,
+				40F3ABEC0F0CE04200945685 /* Frameworks */,
+				40F3ABEE0F0CE04200945685 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = kdu_server;
+			productInstallPath = "$(HOME)/bin";
+			productName = apps;
+			productReference = 40F3ABF20F0CE04200945685 /* kdu_server */;
+			productType = "com.apple.product-type.tool";
+		};
+		40F831D20E4A32FF0024EC09 /* kdu_compress */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 40F831D60E4A32FF0024EC09 /* Build configuration list for PBXNativeTarget "kdu_compress" */;
+			buildPhases = (
+				40F831D30E4A32FF0024EC09 /* Sources */,
+				40F831D40E4A32FF0024EC09 /* Frameworks */,
+				40F831D50E4A32FF0024EC09 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = kdu_compress;
+			productInstallPath = "$(HOME)/bin";
+			productName = apps;
+			productReference = 40F831D90E4A32FF0024EC09 /* kdu_compress */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "apps" */;
+			compatibilityVersion = "Xcode 3.0";
+			hasScannedForEncodings = 1;
+			mainGroup = 08FB7794FE84155DC02AAC07 /* apps */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 404EB8400E6CD579000FA6D1 /* Products */;
+					ProjectRef = 404EB83F0E6CD579000FA6D1 /* coresys.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				40F831D20E4A32FF0024EC09 /* kdu_compress */,
+				4077C7390E4BC3BB00667DEC /* kdu_expand */,
+				401BB25A0E4C76C1008005A5 /* kdu_buffered_compress */,
+				401BB26D0E4C76E3008005A5 /* kdu_buffered_expand */,
+				404EB9460E7FC6D2000FA6D1 /* kdu_merge */,
+				401190E80E4E548C00F96122 /* kdu_show */,
+				402B700A0EBEEB3000246D0F /* kdu_transcode */,
+				402B70220EBEED3F00246D0F /* kdu_render */,
+				402B703F0EBEEECE00246D0F /* kdu_v_compress */,
+				402B70550EBEEF9D00246D0F /* kdu_v_expand */,
+				402B706D0EBEF03300246D0F /* simple_example_c */,
+				402B707A0EBEF07E00246D0F /* simple_example_d */,
+				402B70950EBEF16A00246D0F /* kdu_vex_fast */,
+				402B70B00EBEF3D100246D0F /* kdu_maketlm */,
+				402B70CC0EBEF52B00246D0F /* kdu_text_extractor */,
+				402B710D0EBEFAC000246D0F /* kdu_hyperdoc */,
+				40F3ABE50F0CE04200945685 /* kdu_server */,
+				40A1817C0F3E63A800F6BF0C /* kdu_server_admin */,
+				40A181990F3E653B00F6BF0C /* Build All */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		404EB8470E6CD579000FA6D1 /* libkdu_v64D.dylib */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.dylib";
+			path = libkdu_v64D.dylib;
+			remoteRef = 404EB8460E6CD579000FA6D1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXResourcesBuildPhase section */
+		401190E50E4E548C00F96122 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				404EB8560E6CD5D7000FA6D1 /* Credits.rtf in Resources */,
+				404EB8570E6CD5D7000FA6D1 /* MainMenu.nib in Resources */,
+				405EA2C70E8E6394001EB31F /* metadata_editor.nib in Resources */,
+				402491120EBFB8BC001E7B50 /* APPL.icns in Resources */,
+				40FAC8620EDE1CFD00E74462 /* html_help in Resources */,
+				40A2FC030F7CD765004A5E99 /* url_dialog.nib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		402B70E80EBEF72F00246D0F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd ../language\n../../bin/kdu_text_extractor -quiet -s coresys.src\n../../bin/kdu_text_extractor -quiet -s jp2.src\n../../bin/kdu_text_extractor -quiet -s jpx.src\n../../bin/kdu_text_extractor -quiet -s mj2.src\n../../bin/kdu_text_extractor -quiet -s client.src\n../../bin/kdu_text_extractor -quiet -s misc.src";
+		};
+		402B71280EBEFB4100246D0F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "echo \"Building Documentation and Java Native API ...\"\ncd ../documentation\n../../bin/kdu_hyperdoc -o html_pages -s hyperdoc.src -java ../../java/kdu_jni ../managed/kdu_jni ../managed/kdu_aux ../managed/all_includes";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		401190E60E4E548C00F96122 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				404EB8580E6CD5D7000FA6D1 /* kdms_controller.mm in Sources */,
+				404EB8590E6CD5D7000FA6D1 /* kdms_properties.mm in Sources */,
+				404EB85A0E6CD5D7000FA6D1 /* kdms_renderer.mm in Sources */,
+				404EB85C0E6CD5D7000FA6D1 /* main.m in Sources */,
+				404EB8A10E6CD787000FA6D1 /* kdu_region_compositor.cpp in Sources */,
+				404EB8A20E6CD787000FA6D1 /* kdu_region_decompressor.cpp in Sources */,
+				404EB8BA0E6CD7FA000FA6D1 /* jp2.cpp in Sources */,
+				404EB8BB0E6CD7FA000FA6D1 /* jpx.cpp in Sources */,
+				404EB8BC0E6CD7FA000FA6D1 /* mj2.cpp in Sources */,
+				4062F55A0E86751D008E2059 /* kdms_metashow.mm in Sources */,
+				405AF8B00E8D07C000B80F81 /* kdms_window.mm in Sources */,
+				4048B7A20E8F1D7400AB7C06 /* kdms_metadata_editor.mm in Sources */,
+				406F90C00F07A158006821B5 /* kdcs_comms.cpp in Sources */,
+				402E17DF0F40E8E9002C6F06 /* kdu_client_window.cpp in Sources */,
+				402E17E60F40E906002C6F06 /* kdu_client.cpp in Sources */,
+				402E17E70F40E906002C6F06 /* kdu_clientx.cpp in Sources */,
+				4093746D0F5E585500129F28 /* kdu_cache.cpp in Sources */,
+				40A394710FB2DAD9001E1F3D /* kdms_catalog.mm in Sources */,
+				40A394E30FB31BAB001E1F3D /* kdms_url_dialog.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		401BB25B0E4C76C1008005A5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				404EB86D0E6CD6D5000FA6D1 /* kdu_buffered_compress.cpp in Sources */,
+				404EB89B0E6CD787000FA6D1 /* kdu_stripe_compressor.cpp in Sources */,
+				404EB8BD0E6CD851000FA6D1 /* jp2.cpp in Sources */,
+				404EB8EC0E6CD908000FA6D1 /* args.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		401BB26E0E4C76E3008005A5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				404EB86E0E6CD6DE000FA6D1 /* kdu_buffered_expand.cpp in Sources */,
+				404EB8A50E6CD7CE000FA6D1 /* kdu_stripe_decompressor.cpp in Sources */,
+				404EB8BE0E6CD85C000FA6D1 /* jp2.cpp in Sources */,
+				404EB8ED0E6CD908000FA6D1 /* args.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		402B700B0EBEEB3000246D0F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				402B700C0EBEEB3000246D0F /* jp2.cpp in Sources */,
+				402B700E0EBEEB3000246D0F /* args.cpp in Sources */,
+				402B70200EBEEC9900246D0F /* kdu_transcode.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		402B70230EBEED3F00246D0F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				402B70240EBEED3F00246D0F /* jp2.cpp in Sources */,
+				402B70250EBEED3F00246D0F /* args.cpp in Sources */,
+				402B702F0EBEED9900246D0F /* jpx.cpp in Sources */,
+				402B70300EBEED9A00246D0F /* mj2.cpp in Sources */,
+				402B70310EBEEDAD00246D0F /* kdu_region_decompressor.cpp in Sources */,
+				402B70320EBEEDB000246D0F /* kdu_region_compositor.cpp in Sources */,
+				402B70380EBEEDE700246D0F /* kdu_render.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		402B70400EBEEECE00246D0F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				402B70410EBEEECE00246D0F /* jp2.cpp in Sources */,
+				402B70420EBEEECE00246D0F /* args.cpp in Sources */,
+				402B704C0EBEEF3500246D0F /* mj2.cpp in Sources */,
+				402B70530EBEEF5000246D0F /* kdu_v_compress.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		402B70560EBEEF9D00246D0F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				402B70570EBEEF9D00246D0F /* jp2.cpp in Sources */,
+				402B70580EBEEF9D00246D0F /* args.cpp in Sources */,
+				402B70590EBEEF9D00246D0F /* mj2.cpp in Sources */,
+				402B706A0EBEEFE200246D0F /* kdu_v_expand.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		402B706E0EBEF03300246D0F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				402B70700EBEF03300246D0F /* args.cpp in Sources */,
+				402B70850EBEF0AF00246D0F /* kdu_stripe_compressor.cpp in Sources */,
+				402B70900EBEF0CF00246D0F /* simple_example_c.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		402B707B0EBEF07E00246D0F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				402B707C0EBEF07E00246D0F /* args.cpp in Sources */,
+				402B70860EBEF0BB00246D0F /* kdu_stripe_decompressor.cpp in Sources */,
+				402B70920EBEF0F800246D0F /* simple_example_d.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		402B70960EBEF16A00246D0F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				402B70970EBEF16A00246D0F /* args.cpp in Sources */,
+				402B70980EBEF16A00246D0F /* kdu_stripe_decompressor.cpp in Sources */,
+				402B70A20EBEF1B500246D0F /* jp2.cpp in Sources */,
+				402B70A30EBEF1B600246D0F /* mj2.cpp in Sources */,
+				402B70AB0EBEF1D400246D0F /* kdu_vex.cpp in Sources */,
+				402B70AC0EBEF1D400246D0F /* kdu_vex_fast.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		402B70B10EBEF3D100246D0F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				402B70B20EBEF3D100246D0F /* args.cpp in Sources */,
+				402B70C30EBEF42A00246D0F /* kdu_maketlm.cpp in Sources */,
+				402B70C90EBEF4C300246D0F /* messaging.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		402B70CD0EBEF52B00246D0F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				402B70CE0EBEF52B00246D0F /* args.cpp in Sources */,
+				402B70D00EBEF52B00246D0F /* messaging.cpp in Sources */,
+				402B70DE0EBEF57800246D0F /* kdu_text_extractor.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		402B710E0EBEFAC000246D0F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				402B710F0EBEFAC000246D0F /* args.cpp in Sources */,
+				402B71110EBEFAC000246D0F /* messaging.cpp in Sources */,
+				402B71220EBEFB0D00246D0F /* aux_builder.cpp in Sources */,
+				402B71230EBEFB0D00246D0F /* jni_builder.cpp in Sources */,
+				402B71240EBEFB0D00246D0F /* kdu_hyperdoc.cpp in Sources */,
+				402B71250EBEFB0D00246D0F /* mni_builder.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		404EB9470E7FC6D2000FA6D1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				404EB94A0E7FC6D2000FA6D1 /* jp2.cpp in Sources */,
+				404EB94B0E7FC6D2000FA6D1 /* jpx.cpp in Sources */,
+				404EB94F0E7FC6D2000FA6D1 /* args.cpp in Sources */,
+				404EB9580E7FC880000FA6D1 /* mj2.cpp in Sources */,
+				404EB95F0E7FC8B7000FA6D1 /* kdu_merge.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4077C73A0E4BC3BB00667DEC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				404EB87F0E6CD75B000FA6D1 /* kdu_expand.cpp in Sources */,
+				404EB8AE0E6CD7FA000FA6D1 /* jp2.cpp in Sources */,
+				404EB8AF0E6CD7FA000FA6D1 /* jpx.cpp in Sources */,
+				404EB8E00E6CD8D4000FA6D1 /* image_out.cpp in Sources */,
+				404EB8E10E6CD8D4000FA6D1 /* kdu_tiff.cpp in Sources */,
+				404EB8EA0E6CD908000FA6D1 /* args.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		40A1817D0F3E63A800F6BF0C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				40A1817E0F3E63A800F6BF0C /* args.cpp in Sources */,
+				40A1817F0F3E63A800F6BF0C /* kdcs_comms.cpp in Sources */,
+				40A181830F3E63A800F6BF0C /* kdu_security.cpp in Sources */,
+				40A181C60F3E65E300F6BF0C /* kdu_server_admin.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		40F3ABE60F0CE04200945685 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				40F3ABE90F0CE04200945685 /* args.cpp in Sources */,
+				40F3ABF70F0CE0FA00945685 /* kdcs_comms.cpp in Sources */,
+				40F3ABFF0F0CE1FA00945685 /* jp2.cpp in Sources */,
+				40F3AC240F0CE3A100945685 /* kdu_client_window.cpp in Sources */,
+				4092C29C0F20CB6400FA2F61 /* connection.cpp in Sources */,
+				4092C29D0F20CB6400FA2F61 /* kdu_security.cpp in Sources */,
+				4092C29E0F20CB6400FA2F61 /* kdu_serve.cpp in Sources */,
+				4092C29F0F20CB6400FA2F61 /* kdu_server.cpp in Sources */,
+				4092C2A00F20CB6400FA2F61 /* kdu_servex.cpp in Sources */,
+				4092C2A10F20CB6400FA2F61 /* sources.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		40F831D30E4A32FF0024EC09 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				404EB8770E6CD733000FA6D1 /* kdu_compress.cpp in Sources */,
+				404EB8780E6CD733000FA6D1 /* roi_sources.cpp in Sources */,
+				404EB8B10E6CD7FA000FA6D1 /* jp2.cpp in Sources */,
+				404EB8B20E6CD7FA000FA6D1 /* jpx.cpp in Sources */,
+				404EB8E30E6CD8D4000FA6D1 /* image_in.cpp in Sources */,
+				404EB8E50E6CD8D4000FA6D1 /* kdu_tiff.cpp in Sources */,
+				404EB8E60E6CD8D4000FA6D1 /* palette.cpp in Sources */,
+				404EB8EB0E6CD908000FA6D1 /* args.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		40A1819D0F3E654600F6BF0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 40A1817C0F3E63A800F6BF0C /* kdu_server_admin */;
+			targetProxy = 40A1819C0F3E654600F6BF0C /* PBXContainerItemProxy */;
+		};
+		40A1819F0F3E654600F6BF0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 40F3ABE50F0CE04200945685 /* kdu_server */;
+			targetProxy = 40A1819E0F3E654600F6BF0C /* PBXContainerItemProxy */;
+		};
+		40A181A10F3E654600F6BF0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 402B710D0EBEFAC000246D0F /* kdu_hyperdoc */;
+			targetProxy = 40A181A00F3E654600F6BF0C /* PBXContainerItemProxy */;
+		};
+		40A181A30F3E654600F6BF0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 402B70CC0EBEF52B00246D0F /* kdu_text_extractor */;
+			targetProxy = 40A181A20F3E654600F6BF0C /* PBXContainerItemProxy */;
+		};
+		40A181A50F3E654600F6BF0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 402B70B00EBEF3D100246D0F /* kdu_maketlm */;
+			targetProxy = 40A181A40F3E654600F6BF0C /* PBXContainerItemProxy */;
+		};
+		40A181A70F3E654600F6BF0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 402B70950EBEF16A00246D0F /* kdu_vex_fast */;
+			targetProxy = 40A181A60F3E654600F6BF0C /* PBXContainerItemProxy */;
+		};
+		40A181A90F3E654600F6BF0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 402B707A0EBEF07E00246D0F /* simple_example_d */;
+			targetProxy = 40A181A80F3E654600F6BF0C /* PBXContainerItemProxy */;
+		};
+		40A181AB0F3E654600F6BF0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 402B706D0EBEF03300246D0F /* simple_example_c */;
+			targetProxy = 40A181AA0F3E654600F6BF0C /* PBXContainerItemProxy */;
+		};
+		40A181AD0F3E654600F6BF0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 402B70550EBEEF9D00246D0F /* kdu_v_expand */;
+			targetProxy = 40A181AC0F3E654600F6BF0C /* PBXContainerItemProxy */;
+		};
+		40A181AF0F3E654600F6BF0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 402B703F0EBEEECE00246D0F /* kdu_v_compress */;
+			targetProxy = 40A181AE0F3E654600F6BF0C /* PBXContainerItemProxy */;
+		};
+		40A181B10F3E654600F6BF0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 402B70220EBEED3F00246D0F /* kdu_render */;
+			targetProxy = 40A181B00F3E654600F6BF0C /* PBXContainerItemProxy */;
+		};
+		40A181B30F3E654600F6BF0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 402B700A0EBEEB3000246D0F /* kdu_transcode */;
+			targetProxy = 40A181B20F3E654600F6BF0C /* PBXContainerItemProxy */;
+		};
+		40A181B50F3E654600F6BF0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 401190E80E4E548C00F96122 /* kdu_show */;
+			targetProxy = 40A181B40F3E654600F6BF0C /* PBXContainerItemProxy */;
+		};
+		40A181B70F3E654600F6BF0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 404EB9460E7FC6D2000FA6D1 /* kdu_merge */;
+			targetProxy = 40A181B60F3E654600F6BF0C /* PBXContainerItemProxy */;
+		};
+		40A181B90F3E654600F6BF0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 401BB26D0E4C76E3008005A5 /* kdu_buffered_expand */;
+			targetProxy = 40A181B80F3E654600F6BF0C /* PBXContainerItemProxy */;
+		};
+		40A181BB0F3E654600F6BF0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 401BB25A0E4C76C1008005A5 /* kdu_buffered_compress */;
+			targetProxy = 40A181BA0F3E654600F6BF0C /* PBXContainerItemProxy */;
+		};
+		40A181BD0F3E654600F6BF0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4077C7390E4BC3BB00667DEC /* kdu_expand */;
+			targetProxy = 40A181BC0F3E654600F6BF0C /* PBXContainerItemProxy */;
+		};
+		40A181BF0F3E654600F6BF0C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 40F831D20E4A32FF0024EC09 /* kdu_compress */;
+			targetProxy = 40A181BE0F3E654600F6BF0C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		404EB8490E6CD5D6000FA6D1 /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				404EB84A0E6CD5D6000FA6D1 /* English */,
+			);
+			name = Credits.rtf;
+			path = kdu_macshow;
+			sourceTree = "<group>";
+		};
+		404EB84B0E6CD5D6000FA6D1 /* MainMenu.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				404EB84C0E6CD5D6000FA6D1 /* English */,
+			);
+			name = MainMenu.nib;
+			path = kdu_macshow;
+			sourceTree = "<group>";
+		};
+		405EA2C50E8E6394001EB31F /* metadata_editor.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				405EA2C60E8E6394001EB31F /* English */,
+			);
+			name = metadata_editor.nib;
+			sourceTree = "<group>";
+		};
+		40A2FC010F7CD765004A5E99 /* url_dialog.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				40A2FC020F7CD765004A5E99 /* English */,
+			);
+			name = url_dialog.nib;
+			sourceTree = "<group>";
+		};
+		40FAC8600EDE1CFD00E74462 /* html_help */ = {
+			isa = PBXVariantGroup;
+			children = (
+				40FAC8610EDE1CFD00E74462 /* English */,
+			);
+			name = html_help;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB923608733DC60010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)";
+				CONFIGURATION_TEMP_DIR = ../../xcode/apps/Debug;
+				GCC_ENABLE_SSE3_EXTENSIONS = YES;
+				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = KDU_MAC_SPEEDUPS;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LD_MAP_FILE_PATH = "$(TARGET_TEMP_DIR)/$(PRODUCT_NAME)-LinkMap-$(CURRENT_VARIANT)-$(CURRENT_ARCH).txt";
+				OBJROOT = ../../xcode/apps;
+				PREBINDING = NO;
+				PRODUCT_NAME = kdu_compress_dbg;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+				SYMROOT = ../../bin;
+			};
+			name = Debug;
+		};
+		1DEB923708733DC60010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					x86_64,
+				);
+				CONFIGURATION_BUILD_DIR = ../../bin;
+				CONFIGURATION_TEMP_DIR = ../../xcode/apps/Release;
+				GCC_ENABLE_SSE3_EXTENSIONS = YES;
+				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_PREPROCESSOR_DEFINITIONS = KDU_MAC_SPEEDUPS;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = NO;
+				GCC_WARN_NON_VIRTUAL_DESTRUCTOR = YES;
+				GCC_WARN_SIGN_COMPARE = NO;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OBJROOT = ../../xcode/apps;
+				PREBINDING = NO;
+				PRODUCT_NAME = kdu_compress;
+				SDKROOT = "$(DEVELOPER_SDK_DIR)/MacOSX10.5.sdk";
+				SYMROOT = ../../bin;
+			};
+			name = Release;
+		};
+		401190EC0E4E548D00F96122 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				COPY_PHASE_STRIP = NO;
+				GCC_ALTIVEC_EXTENSIONS = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_ENABLE_SSE3_EXTENSIONS = YES;
+				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = kdu_macshow/kdu_macshow_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = KDU_MAC_SPEEDUPS;
+				INFOPLIST_FILE = "kdu_macshow/kdu_show-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = kdu_show_dbg;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		401190ED0E4E548D00F96122 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					x86_64,
+				);
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ALTIVEC_EXTENSIONS = YES;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_SSE3_EXTENSIONS = YES;
+				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = kdu_macshow/kdu_macshow_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					KDU_MAC_SPEEDUPS,
+				);
+				INFOPLIST_FILE = "kdu_macshow/kdu_show-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = kdu_show;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		401BB2680E4C76C1008005A5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					KDU_MAC_SPEEDUPS,
+					"_GLIBCXX_DEBUG=1",
+					"_GLIBCXX_DEBUG_PEDANTIC=1",
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_buffered_compress_dbg;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		401BB2690E4C76C1008005A5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					x86_64,
+				);
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G4;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					KDU_MAC_SPEEDUPS,
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_buffered_compress;
+			};
+			name = Release;
+		};
+		401BB27A0E4C76E3008005A5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					KDU_MAC_SPEEDUPS,
+					"_GLIBCXX_DEBUG=1",
+					"_GLIBCXX_DEBUG_PEDANTIC=1",
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_buffered_expand_dbg;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		401BB27B0E4C76E3008005A5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					x86_64,
+				);
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G4;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					KDU_MAC_SPEEDUPS,
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_buffered_expand;
+			};
+			name = Release;
+		};
+		402B70150EBEEB3000246D0F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					KDU_MAC_SPEEDUPS,
+					"_GLIBCXX_DEBUG=1",
+					"_GLIBCXX_DEBUG_PEDANTIC=1",
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_transcode_dbg;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		402B70160EBEEB3000246D0F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					x86_64,
+				);
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G4;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					KDU_MAC_SPEEDUPS,
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_transcode;
+			};
+			name = Release;
+		};
+		402B702B0EBEED3F00246D0F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_ENABLE_SSE3_EXTENSIONS = YES;
+				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					KDU_MAC_SPEEDUPS,
+					"_GLIBCXX_DEBUG=1",
+					"_GLIBCXX_DEBUG_PEDANTIC=1",
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_render_dbg;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		402B702C0EBEED3F00246D0F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					x86_64,
+				);
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_SSE3_EXTENSIONS = YES;
+				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					KDU_MAC_SPEEDUPS,
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_render;
+			};
+			name = Release;
+		};
+		402B70480EBEEECE00246D0F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					KDU_MAC_SPEEDUPS,
+					"_GLIBCXX_DEBUG=1",
+					"_GLIBCXX_DEBUG_PEDANTIC=1",
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_v_compress_dbg;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		402B70490EBEEECE00246D0F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					x86_64,
+				);
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G4;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					KDU_MAC_SPEEDUPS,
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_v_compress;
+			};
+			name = Release;
+		};
+		402B705F0EBEEF9D00246D0F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					KDU_MAC_SPEEDUPS,
+					"_GLIBCXX_DEBUG=1",
+					"_GLIBCXX_DEBUG_PEDANTIC=1",
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_v_expand_dbg;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		402B70600EBEEF9D00246D0F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					x86_64,
+				);
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G4;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					KDU_MAC_SPEEDUPS,
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_v_expand;
+			};
+			name = Release;
+		};
+		402B70760EBEF03300246D0F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					KDU_MAC_SPEEDUPS,
+					"_GLIBCXX_DEBUG=1",
+					"_GLIBCXX_DEBUG_PEDANTIC=1",
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = simple_example_c_dbg;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		402B70770EBEF03300246D0F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					x86_64,
+				);
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G4;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					KDU_MAC_SPEEDUPS,
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = simple_example_c;
+			};
+			name = Release;
+		};
+		402B70810EBEF07E00246D0F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					KDU_MAC_SPEEDUPS,
+					"_GLIBCXX_DEBUG=1",
+					"_GLIBCXX_DEBUG_PEDANTIC=1",
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = simple_example_d_dbg;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		402B70820EBEF07E00246D0F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					x86_64,
+				);
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G4;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					KDU_MAC_SPEEDUPS,
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = simple_example_d;
+			};
+			name = Release;
+		};
+		402B709E0EBEF16A00246D0F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					KDU_MAC_SPEEDUPS,
+					"_GLIBCXX_DEBUG=1",
+					"_GLIBCXX_DEBUG_PEDANTIC=1",
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_vex_fast_dbg;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		402B709F0EBEF16A00246D0F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					x86_64,
+				);
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G4;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					KDU_MAC_SPEEDUPS,
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_vex_fast;
+			};
+			name = Release;
+		};
+		402B70B90EBEF3D100246D0F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					KDU_MAC_SPEEDUPS,
+					"_GLIBCXX_DEBUG=1",
+					"_GLIBCXX_DEBUG_PEDANTIC=1",
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_maketlm_dbg;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		402B70BA0EBEF3D100246D0F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					x86_64,
+				);
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G4;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					KDU_MAC_SPEEDUPS,
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_maketlm;
+			};
+			name = Release;
+		};
+		402B70D40EBEF52B00246D0F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					KDU_MAC_SPEEDUPS,
+					"_GLIBCXX_DEBUG=1",
+					"_GLIBCXX_DEBUG_PEDANTIC=1",
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_text_extractor;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		402B70D50EBEF52B00246D0F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					x86_64,
+				);
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G4;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					KDU_MAC_SPEEDUPS,
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_text_extractor;
+			};
+			name = Release;
+		};
+		402B71150EBEFAC000246D0F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					KDU_MAC_SPEEDUPS,
+					"_GLIBCXX_DEBUG=1",
+					"_GLIBCXX_DEBUG_PEDANTIC=1",
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_hyperdoc;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		402B71160EBEFAC000246D0F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					x86_64,
+				);
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G4;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					KDU_MAC_SPEEDUPS,
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_hyperdoc;
+			};
+			name = Release;
+		};
+		404EB9540E7FC6D2000FA6D1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					KDU_MAC_SPEEDUPS,
+					"_GLIBCXX_DEBUG=1",
+					"_GLIBCXX_DEBUG_PEDANTIC=1",
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_merge_dbg;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		404EB9550E7FC6D2000FA6D1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					x86_64,
+				);
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G4;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					KDU_MAC_SPEEDUPS,
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_merge;
+			};
+			name = Release;
+		};
+		4077C7470E4BC3BB00667DEC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					KDU_MAC_SPEEDUPS,
+					"_GLIBCXX_DEBUG=1",
+					"_GLIBCXX_DEBUG_PEDANTIC=1",
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_expand_dbg;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		4077C7480E4BC3BB00667DEC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					x86_64,
+				);
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G4;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					KDU_MAC_SPEEDUPS,
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_expand;
+			};
+			name = Release;
+		};
+		40A1818C0F3E63A800F6BF0C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					KDU_MAC_SPEEDUPS,
+					"_GLIBCXX_DEBUG=1",
+					"_GLIBCXX_DEBUG_PEDANTIC=1",
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_server_admin_dbg;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		40A1818D0F3E63A800F6BF0C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					x86_64,
+				);
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G4;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					KDU_MAC_SPEEDUPS,
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_server_admin;
+			};
+			name = Release;
+		};
+		40A1819A0F3E653B00F6BF0C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = "Build All";
+			};
+			name = Debug;
+		};
+		40A1819B0F3E653B00F6BF0C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = "Build All";
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
+		40F3ABF00F0CE04200945685 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					KDU_MAC_SPEEDUPS,
+					"_GLIBCXX_DEBUG=1",
+					"_GLIBCXX_DEBUG_PEDANTIC=1",
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_server_dbg;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		40F3ABF10F0CE04200945685 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					x86_64,
+				);
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G4;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					KDU_MAC_SPEEDUPS,
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_server;
+			};
+			name = Release;
+		};
+		40F831D70E4A32FF0024EC09 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G4;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					KDU_MAC_SPEEDUPS,
+					"_GLIBCXX_DEBUG=1",
+					"_GLIBCXX_DEBUG_PEDANTIC=1",
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_compress_dbg;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		40F831D80E4A32FF0024EC09 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					x86_64,
+				);
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G4;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NDEBUG,
+					KDU_MAC_SPEEDUPS,
+				);
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = "";
+				PRODUCT_NAME = kdu_compress;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "apps" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB923608733DC60010E9CD /* Debug */,
+				1DEB923708733DC60010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		401190EE0E4E548D00F96122 /* Build configuration list for PBXNativeTarget "kdu_show" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				401190EC0E4E548D00F96122 /* Debug */,
+				401190ED0E4E548D00F96122 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		401BB2670E4C76C1008005A5 /* Build configuration list for PBXNativeTarget "kdu_buffered_compress" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				401BB2680E4C76C1008005A5 /* Debug */,
+				401BB2690E4C76C1008005A5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		401BB2790E4C76E3008005A5 /* Build configuration list for PBXNativeTarget "kdu_buffered_expand" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				401BB27A0E4C76E3008005A5 /* Debug */,
+				401BB27B0E4C76E3008005A5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		402B70140EBEEB3000246D0F /* Build configuration list for PBXNativeTarget "kdu_transcode" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				402B70150EBEEB3000246D0F /* Debug */,
+				402B70160EBEEB3000246D0F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		402B702A0EBEED3F00246D0F /* Build configuration list for PBXNativeTarget "kdu_render" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				402B702B0EBEED3F00246D0F /* Debug */,
+				402B702C0EBEED3F00246D0F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		402B70470EBEEECE00246D0F /* Build configuration list for PBXNativeTarget "kdu_v_compress" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				402B70480EBEEECE00246D0F /* Debug */,
+				402B70490EBEEECE00246D0F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		402B705E0EBEEF9D00246D0F /* Build configuration list for PBXNativeTarget "kdu_v_expand" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				402B705F0EBEEF9D00246D0F /* Debug */,
+				402B70600EBEEF9D00246D0F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		402B70750EBEF03300246D0F /* Build configuration list for PBXNativeTarget "simple_example_c" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				402B70760EBEF03300246D0F /* Debug */,
+				402B70770EBEF03300246D0F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		402B70800EBEF07E00246D0F /* Build configuration list for PBXNativeTarget "simple_example_d" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				402B70810EBEF07E00246D0F /* Debug */,
+				402B70820EBEF07E00246D0F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		402B709D0EBEF16A00246D0F /* Build configuration list for PBXNativeTarget "kdu_vex_fast" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				402B709E0EBEF16A00246D0F /* Debug */,
+				402B709F0EBEF16A00246D0F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		402B70B80EBEF3D100246D0F /* Build configuration list for PBXNativeTarget "kdu_maketlm" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				402B70B90EBEF3D100246D0F /* Debug */,
+				402B70BA0EBEF3D100246D0F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		402B70D30EBEF52B00246D0F /* Build configuration list for PBXNativeTarget "kdu_text_extractor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				402B70D40EBEF52B00246D0F /* Debug */,
+				402B70D50EBEF52B00246D0F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		402B71140EBEFAC000246D0F /* Build configuration list for PBXNativeTarget "kdu_hyperdoc" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				402B71150EBEFAC000246D0F /* Debug */,
+				402B71160EBEFAC000246D0F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		404EB9530E7FC6D2000FA6D1 /* Build configuration list for PBXNativeTarget "kdu_merge" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				404EB9540E7FC6D2000FA6D1 /* Debug */,
+				404EB9550E7FC6D2000FA6D1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4077C7460E4BC3BB00667DEC /* Build configuration list for PBXNativeTarget "kdu_expand" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4077C7470E4BC3BB00667DEC /* Debug */,
+				4077C7480E4BC3BB00667DEC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		40A1818B0F3E63A800F6BF0C /* Build configuration list for PBXNativeTarget "kdu_server_admin" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				40A1818C0F3E63A800F6BF0C /* Debug */,
+				40A1818D0F3E63A800F6BF0C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		40A181C00F3E656400F6BF0C /* Build configuration list for PBXAggregateTarget "Build All" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				40A1819A0F3E653B00F6BF0C /* Debug */,
+				40A1819B0F3E653B00F6BF0C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		40F3ABEF0F0CE04200945685 /* Build configuration list for PBXNativeTarget "kdu_server" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				40F3ABF00F0CE04200945685 /* Debug */,
+				40F3ABF10F0CE04200945685 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		40F831D60E4A32FF0024EC09 /* Build configuration list for PBXNativeTarget "kdu_compress" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				40F831D70E4A32FF0024EC09 /* Debug */,
+				40F831D80E4A32FF0024EC09 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}

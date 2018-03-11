@@ -1,0 +1,48 @@
+DatasetHeader Begin
+	Version		= "6.0"
+	Name		= "RGBImage.ers"
+	LastUpdated	= Wed Jun 23 03:28:04 GMT 1999
+	DataFile	= "RGBImage.ecw"
+	DataSetType	= Translated
+	DataType	= Raster
+	ByteOrder	= LSBFirst
+	CoordinateSpace Begin
+		Datum		= "WGS84"
+		Projection	= "GEODETIC"
+		CoordinateType	= EN
+		Rotation	= 0:0:0.0
+	CoordinateSpace End
+	RasterInfo Begin
+		CellType	= Unsigned8BitInteger
+		CellInfo Begin
+			Xdimension	= 0.083333333333332649
+			Ydimension	= 0.083333333333332649
+		CellInfo End
+		NrOfLines	= 2160
+		NrOfCellsPerLine	= 4320
+		RegistrationCoord Begin
+			Eastings	= -180.00000000000011
+			Northings	= 90.000000000000043
+		RegistrationCoord End
+		NrOfBands	= 3
+		BandId Begin
+			Value		= "Red"
+		BandId End
+		BandId Begin
+			Value		= "Green"
+		BandId End
+		BandId Begin
+			Value		= "Blue"
+		BandId End
+		RegionInfo Begin
+			Type		= Polygon
+			RegionName	= "All"
+			SubRegion	= {
+				0	0
+				0	2160
+				4320	2160
+				4320	0
+			}
+		RegionInfo End
+	RasterInfo End
+DatasetHeader End

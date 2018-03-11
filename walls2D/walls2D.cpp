@@ -20,9 +20,12 @@
 
 #include <trx_str.h>
 
-#define WALLS_URL "http://www.utexas.edu/depts/tnhc/.www/tss/Walls/tsswalls.htm"
+#define PREV_WALLS_URL1 "http://www.utexas.edu/tmm/sponsored_sites/tss/Walls/tsswalls.htm"
+#define PREV_WALLS_URL0 "http://www.utexas.edu/depts/tnhc/.www/tss/Walls/tsswalls.htm"
+#define WALLS_URL "http://www.texasspeleologicalsurvey.org/software/walls/tsswalls.php"
 
-#define ADOBE_URL "http://www.adobe.com/svg/viewer/install/main.html"
+#define PREV_ADOBE_URL "http://www.adobe.com/svg/viewer/install/main.html"
+#define ADOBE_URL "http://www.adobe.com/devnet/svg/adobe-svg-viewer-download-area.html"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -128,10 +131,12 @@ BOOL CWalls2DApp::InitInstance()
 	CWalls2DView::Initialize();
 
 	m_wallsLink=GetProfileString("Url","Walls",NULL);
-	if(m_wallsLink.IsEmpty()) m_wallsLink=WALLS_URL;
+	if(m_wallsLink.IsEmpty() || !m_wallsLink.CompareNoCase(PREV_WALLS_URL0) || !m_wallsLink.CompareNoCase(PREV_WALLS_URL1))
+		m_wallsLink=WALLS_URL;
 
 	m_adobeLink=GetProfileString("Url","Adobe",NULL);
-	if(m_adobeLink.IsEmpty()) m_adobeLink=ADOBE_URL;
+	if(m_adobeLink.IsEmpty() || !m_adobeLink.CompareNoCase(PREV_ADOBE_URL))
+	    m_adobeLink=ADOBE_URL;
 
 	// Parse command line for standard shell commands, DDE, file open
 	CCommandLineInfo cmdInfo;

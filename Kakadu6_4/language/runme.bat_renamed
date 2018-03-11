@@ -1,0 +1,10 @@
+echo off
+echo Building Original Language Source Files
+kdu_text_extractor -s coresys.src -quiet
+kdu_text_extractor -s jp2.src -quiet
+kdu_text_extractor -s jpx.src -quiet
+kdu_text_extractor -s mj2.src -quiet
+kdu_text_extractor -s client.src -quiet
+kdu_text_extractor -s misc.src -quiet
+echo on
+

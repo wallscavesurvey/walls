@@ -1,0 +1,9 @@
+-o coresys_english.cpp
+-i ../coresys/coding/block_decoder.cpp
+-i ../coresys/coding/decoder.cpp
+-i ../coresys/coding/encoder.cpp
+-i ../coresys/compressed/codestream.cpp
+-i ../coresys/compressed/compressed.cpp
+-i ../coresys/kernels/kernels.cpp
+-i ../coresys/parameters/params.cpp
+-i ../coresys/transform/multi_transform.cpp

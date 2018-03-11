@@ -1,0 +1,117 @@
+AC_INIT(libecwj2,3.3)
+# Load system type in $target
+AC_CANONICAL_TARGET
+AM_INIT_AUTOMAKE
+# AM_MAINTAINER_MODE
+
+AC_CONFIG_HEADERS([Source/NCSBuildGnu/NCSGnuConfig.h])
+
+# Check for programs
+AC_PROG_CC
+AC_PROG_CC_STDC
+AC_PROG_CPP
+AM_PROG_LD
+AC_PROG_LIBTOOL
+AC_SUBST(LD)
+AC_PROG_INSTALL
+AC_PROG_MAKE_SET
+AC_PROG_LN_S
+AC_PROG_CXX
+
+# Checks for header files.
+AC_STDC_HEADERS
+
+# Configure libtool
+AC_ENABLE_SHARED
+AC_ENABLE_STATIC
+
+# Handle inline keyword
+AC_C_INLINE
+AC_SUBST(inline)
+
+# Build some standard absolute include paths for the build
+
+MAIN_INCLUDE_DIR="$PWD/Source/include"
+LCMS_INCLUDE_DIR="$PWD/Source/C/NCSEcw/lcms/include"
+
+# Run configure in the LCMS directory (using LCMS's own configure script) 
+# to initialise any platform dependent settings that it uses 
+# (e.g. typedefs for int types)
+
+THISDIR=$PWD
+cd Source/C/NCSEcw/lcms
+chmod +x configure
+./configure
+cd $THISDIR
+
+# Build LIBECWJ2_DEFS with all defines, and NCSGnuSystemDefs.h with defines
+# needed by apps building against libecwj2.
+
+PLATFORM_CFLAGS="-Wall -Wno-long-long -fno-common"
+PLATFORM_SHARED_LDFLAGS="-version-info 0:0:0"
+
+case "$target" in
+	*linux*)
+		PLATFORM_DEFS="LINUX _LARGEFILE_SOURCE _LARGEFILE64_SOURCE _FILE_OFFSET_BITS=64"
+		PLATFORM_CFLAGS="$PLATFORM_CFLAGS -fpic"
+		PLATFORM_STATIC_LDFLAGS=""
+		PLATFORM_SHARED_LDFLAGS="$PLATFORM_SHARED_LDFLAGS $PLATFORM_STATIC_LDFLAGS -lm -lc -ldl -lrt -R/usr/local/lib"
+		;;
+        *sparc-sun-solaris*)
+		PLATFORM_DEFS="SOLARIS _LARGEFILE_SOURCE _FILE_OFFSET_BITS=64 _LARGEFILE64_SOURCE=1"
+		PLATFORM_CFLAGS="$PLATFORM_CFLAGS -fpic -mno-app-regs"
+		PLATFORM_STATIC_LDFLAGS="$PLATFORM_STATIC_LDFLAGS -lnsl -lsocket -G -z defs"
+		PLATFORM_SHARED_LDFLAGS="$PLATFORM_SHARED_LDFLAGS $PLATFORM_STATIC_LDFLAGS -lm -lc -ldl -lrt -R/usr/local/lib"
+		;;
+	*i386-solaris*)
+		PLATFORM_DEFS="SOLARIS X86 _LARGEFILE_SOURCE _FILE_OFFSET_BITS=64 _LARGEFILE64_SOURCE=1"
+		PLATFORM_CFLAGS="$PLATFORM_CFLAGS -fpic"
+		PLATFORM_STATIC_LDFLAGS="$PLATFORM_STATIC_LDFLAGS -lnsl -lsocket -G -z defs"
+		PLATFORM_SHARED_LDFLAGS="$PLATFORM_SHARED_LDFLAGS $PLATFORM_STATIC_LDFLAGS -lm -lc -ldl -lrt -R/usr/local/lib"
+		;;
+        *darwin*)
+		PLATFORM_DEFS="MACOSX"
+		PLATFORM_CFLAGS="$PLATFORM_CFLAGS -fPIC"
+		PLATFORM_STATIC_LDFLAGS="$PLATFORM_STATIC_LDFLAGS -L/usr/lib -L/usr/local/lib"
+		PLATFORM_STATIC_LDFLAGS="$PLATFORM_STATIC_LDFLAGS -L/System/Library/Frameworks/Carbon.framework/Carbon"
+		PLATFORM_SHARED_LDFLAGS="$PLATFORM_SHARED_LDFLAGS $PLATFORM_STATIC_LDFLAGS -dynamiclib -single_module"
+		;;
+        *)
+		PLATFORM_DEFS=""
+		PLATFORM_STATIC_LDFLAGS=""
+		;;
+esac																				
+EXTERNAL_DEFS="LIBECWJ2"
+INTERNAL_DEFS="-D_GNU_SOURCE -D_REENTRANT"
+EXTERNAL_DEFS="$EXTERNAL_DEFS $PLATFORM_DEFS POSIX"
+LIBECWJ2_DEFS="$INTERNAL_DEFS"
+
+LIBECWJ2_CFLAGS="$PLATFORM_CFLAGS"
+LIBECWJ2_STATIC_LDFLAGS="$PLATFORM_STATIC_LDFLAGS"
+LIBECWJ2_SHARED_LDFLAGS="$PLATFORM_SHARED_LDFLAGS"
+LIBECWJ2_INCLUDES="-I$MAIN_INCLUDE_DIR -I$LCMS_INCLUDE_DIR"
+
+rm -f Source/NCSBuildGnu/NCSGnuSystemDefs.h
+echo "#ifndef LIBECWJ2" > Source/NCSBuildGnu/NCSGnuSystemDefs.h
+
+for item in $EXTERNAL_DEFS ; do
+    LIBECWJ2_DEFS="$LIBECWJ2_DEFS -D$item" ;
+    echo "#  define $item" >> Source/NCSBuildGnu/NCSGnuSystemDefs.h ;
+done
+
+echo "#endif" >> Source/NCSBuildGnu/NCSGnuSystemDefs.h
+
+export LIBECWJ2_DEFS
+export LIBECWJ2_STATIC_LDFLAGS
+export LIBECWJ2_SHARED_LDFLAGS
+export LIBECWJ2_CFLAGS
+export LIBECWJ2_INCLUDES
+
+AC_SUBST([LIBECWJ2_STATIC_LDFLAGS])
+AC_SUBST([LIBECWJ2_SHARED_LDFLAGS])
+AC_SUBST([LIBECWJ2_CFLAGS])
+AC_SUBST([LIBECWJ2_INCLUDES])
+AC_SUBST([LIBECWJ2_DEFS])
+
+# Make the necessary substitutions in the Makefile.in templates used by the SDK
+AC_OUTPUT([Makefile Source/Makefile Source/NCSBuildGnu/Makefile])

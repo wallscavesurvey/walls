@@ -35,13 +35,13 @@
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
-    <Import Project="..\zlib.props" />
-    <Import Project="..\vs_version.props" />
+    <Import Project="$(SolutionDir)zlib.props" />
+    <Import Project="$(SolutionDir)vs_version.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\zlib.props" />
-    <Import Project="..\vs_version.props" />
+    <Import Project="$(SolutionDir)zlib.props" />
+    <Import Project="$(SolutionDir)vs_version.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
@@ -71,7 +71,7 @@
     </Midl>
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(ZLibSrcDir);$(WorkDIR)trx\Serial;$(WorkDIR)libgdal_1110\port;$(WorkDIR)libgdal_1110\gcore;$(WorkDIR)libgdal_1110\ogr;$(WorkDIR)libgdal_1110\frmts\gtiff\libtiff;$(WorkDIR)libgdal_1110\frmts\gtiff\libgeotiff;$(WorkDIR)libpng164;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ZLibSrcDir);$(WorkDIR)Serial;$(WorkDIR)libgdal_1110\port;$(WorkDIR)libgdal_1110\gcore;$(WorkDIR)libgdal_1110\ogr;$(WorkDIR)libgdal_1110\frmts\gtiff\libtiff;$(WorkDIR)libgdal_1110\frmts\gtiff\libgeotiff;$(WorkDIR)libpng164;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_USE_THEMES;PSAPI_VERSION=1;CPL_DISABLE_DLL;WIN32;_WINDOWS;NO_WARN_MBCS_MFC_DEPRECATION;_DEBUG;_CRT_SECURE_NO_WARNINGS;ZLIB_WINAPI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <ExceptionHandling>Async</ExceptionHandling>
@@ -121,7 +121,7 @@
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(ZLibSrcDir);$(WorkDIR)trx\Serial;$(WorkDIR)libgdal_1110\port;$(WorkDIR)libgdal_1110\gcore;$(WorkDIR)libgdal_1110\ogr;$(WorkDIR)libgdal_1110\frmts\gtiff\libtiff;$(WorkDIR)libgdal_1110\frmts\gtiff\libgeotiff;$(WorkDIR)libpng164;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ZLibSrcDir);$(WorkDIR)Serial;$(WorkDIR)libgdal_1110\port;$(WorkDIR)libgdal_1110\gcore;$(WorkDIR)libgdal_1110\ogr;$(WorkDIR)libgdal_1110\frmts\gtiff\libtiff;$(WorkDIR)libgdal_1110\frmts\gtiff\libgeotiff;$(WorkDIR)libpng164;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>NODLLEXP;_USE_THEMES;PSAPI_VERSION=1;CPL_DISABLE_DLL;WIN32;_WINDOWS;NO_WARN_MBCS_MFC_DEPRECATION;ZLIB_WINAPI;NDEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>false</MinimalRebuild>
@@ -175,7 +175,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\inc\ShpDBF.cpp" />
+    <ClCompile Include="$(WorkINC)\ShpDBF.cpp" />
     <ClCompile Include="aboutdlg.cpp" />
     <ClCompile Include="AdvSearchDlg.cpp" />
     <ClCompile Include="BackClrDlg.cpp" />
@@ -232,7 +232,7 @@
     <ClCompile Include="ftracker.cpp" />
     <ClCompile Include="GdalLayer.cpp" />
     <ClCompile Include="GEDefaultsDlg.cpp" />
-    <ClCompile Include="..\inc\GetElapsedSecs.cpp">
+    <ClCompile Include="$(WorkINC)\GetElapsedSecs.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -325,13 +325,13 @@
     <ClCompile Include="ZipDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\inc\dbfile.h" />
-    <ClInclude Include="..\inc\dbf_file.h" />
-    <ClInclude Include="..\inc\FltPoint.h" />
-    <ClInclude Include="..\inc\ShpDBF.h" />
-    <ClInclude Include="..\inc\trxfile.h" />
-    <ClInclude Include="..\inc\Trx_file.h" />
-    <ClInclude Include="..\inc\trx_str.h" />
+    <ClInclude Include="$(WorkINC)\dbfile.h" />
+    <ClInclude Include="$(WorkINC)\dbf_file.h" />
+    <ClInclude Include="$(WorkINC)\FltPoint.h" />
+    <ClInclude Include="$(WorkINC)\ShpDBF.h" />
+    <ClInclude Include="$(WorkINC)\trxfile.h" />
+    <ClInclude Include="$(WorkINC)\Trx_file.h" />
+    <ClInclude Include="$(WorkINC)\trx_str.h" />
     <ClInclude Include="BasicExcel.hpp" />
     <ClInclude Include="CenterViewDlg.h" />
     <ClInclude Include="ColumnTreeCtrl.h" />
@@ -357,7 +357,7 @@
     <ClInclude Include="ColorButton.h" />
     <ClInclude Include="ColorPopup.h" />
     <ClInclude Include="ColumnDlg.h" />
-    <ClInclude Include="..\inc\dbfile_shp.h" />
+    <ClInclude Include="$(WorkINC)\dbfile_shp.h" />
     <ClInclude Include="DBGridDlg.h" />
     <ClInclude Include="DbtEditDlg.h" />
     <ClInclude Include="DIBWrapper.h" />
@@ -380,7 +380,7 @@
     <ClInclude Include="ftracker.h" />
     <ClInclude Include="GdalLayer.h" />
     <ClInclude Include="GEDefaultsDlg.h" />
-    <ClInclude Include="..\inc\GetElapsedSecs.h" />
+    <ClInclude Include="$(WorkINC)\GetElapsedSecs.h" />
     <ClInclude Include="GPSOptionsDlg.h" />
     <ClInclude Include="GPSPortSettingDlg.h" />
     <ClInclude Include="GPSView.h" />
@@ -461,7 +461,7 @@
     <ClInclude Include="ZipDlg.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\walls32\res\UTM_UPS_Buttons.bmp" />
+    <None Include="$(WorkDIR)walls32\res\UTM_UPS_Buttons.bmp" />
     <None Include="res\bitmap1.bmp" />
     <None Include="res\bmp00001.bmp" />
     <None Include="res\bmp00002.bmp" />

@@ -62,15 +62,15 @@ function setPixSize(evt)
 }
 
 function w2dInit() {
-    alert('Init called!');
+    //alert('Init called!');
 	svgDoc=document.svgMap.getSVGDocument();
 	if(!svgDoc) {
-		alert('No svgDoc!');
+		//alert('No svgDoc!');
 		return 0;
 	}
 	svgRoot=svgDoc.getDocumentElement();
 	if(!svgRoot) {
-		alert('No svgRoot!');
+		//alert('No svgRoot!');
 		return 0;
 	}
 	var viewbox=new String(svgRoot.getAttribute('viewBox'));
@@ -116,9 +116,7 @@ function onChgCoords(evt)
 function w2dShow(id,checkVal) {
 	if(checkVal>-2) {
 		var t=document.svgMap.getSVGDocument();
-		if(!t) {
-			return 0;
-		}
+		if(!t) return 0;
 		t=t.getElementById(id);
 		if(!t) return 0;
 		if(checkVal==-1) {
@@ -146,14 +144,13 @@ function w2dShow(id,checkVal) {
 	}
 	version=SVGControlVersion();
 	if(version && version.substring(0,7)=='Adobe; ' && version.substring(7,8)>='3') {
-		w2dInit();
-		return 1;
+		return w2dInit();
 	}
 	return 0;
 }
 </script>
 </head>
 <body scroll="no" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<embed name="svgMap" width="100%%" height="100%%" src="%s" type="image/svg-xml"/>
+<embed name="svgMap" width="100%%" height="100%%" src="%s" type="image/svg+xml"/>
 </body>
 </html>

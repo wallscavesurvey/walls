@@ -1,0 +1,103 @@
+Lossless rotation to correct orientation requires use of both
+jpegexiforient and jpegtran:
+
+jpegexiforient -n c:\test\IMG_0860.jpg
+
+This writes 6 (no crlf) to stdout, indicating clockwise 90 deg rotation needed
+for proper display.
+
+Possible return values and corresponding argument for jpegtran:
+
+ 1 - (no rotation needed)
+ 2 - "-flip horizontal"
+ 3 - "-rotate 180"
+ 4 - "-flip vertical"
+ 5 - "-transpose"
+ 6 - "-rotate 90"
+ 7 - "-transverse"
+ 8 - "-rotate 270"
+
+C:\test>jhead IMG_0860.JPG
+
+Note that "rotate 90" for orientation:
+
+File name    : IMG_0860.JPG
+File size    : 144955 bytes
+File date    : 2015:05:29 23:49:12
+Camera make  : Apple
+Camera model : iPhone 5s
+Date/Time    : 2015:05:10 12:14:58
+Resolution   : 640 x 480
+Orientation  : rotate 90
+Flash used   : No (auto)
+Focal length :  4.2mm  (35mm equivalent: 85mm)
+Digital Zoom : 2.928x
+Exposure time: 0.0009 s  (1/1080)
+Aperture     : f/2.2
+ISO equiv.   : 32
+Whitebalance : Auto
+Metering Mode: pattern
+Exposure     : program (auto)
+GPS Latitude : N 37d 18m 25.03s
+GPS Longitude: W 106d 59m 14.38s
+GPS Altitude :  2271.62m
+JPEG Quality : 95
+
+jpegtran -copy all -rotate 90 -outfile c:\test\IMG_0860_rot.jpg IMG_0860.jpg
+
+Image data is now rotated with no change to tag:
+
+C:\test>jhead IMG_0860_rot.jpg
+
+File name    : IMG_0860_rot.jpg
+File size    : 144820 bytes
+File date    : 2015:05:30 14:16:36
+Camera make  : Apple
+Camera model : iPhone 5s
+Date/Time    : 2015:05:10 12:14:58
+Resolution   : 480 x 640
+Orientation  : rotate 90
+Flash used   : No (auto)
+Focal length :  4.2mm  (35mm equivalent: 85mm)
+Digital Zoom : 2.928x
+Exposure time: 0.0009 s  (1/1080)
+Aperture     : f/2.2
+ISO equiv.   : 32
+Whitebalance : Auto
+Metering Mode: pattern
+Exposure     : program (auto)
+GPS Latitude : N 37d 18m 25.03s
+GPS Longitude: W 106d 59m 14.38s
+GPS Altitude :  2271.62m
+JPEG Quality : 95
+
+jpegexiforient -1 c:\test\IMG_0860_rot.jpg
+
+Now correct tag value (1) is installed. jhead displays no orintation:
+
+C:\test>jhead IMG_0860_rot.jpg
+File name    : IMG_0860_rot.jpg
+File size    : 144820 bytes
+File date    : 2015:05:30 14:43:23
+Camera make  : Apple
+Camera model : iPhone 5s
+Date/Time    : 2015:05:10 12:14:58
+Resolution   : 480 x 640
+Flash used   : No (auto)
+Focal length :  4.2mm  (35mm equivalent: 85mm)
+Digital Zoom : 2.928x
+Exposure time: 0.0009 s  (1/1080)
+Aperture     : f/2.2
+ISO equiv.   : 32
+Whitebalance : Auto
+Metering Mode: pattern
+Exposure     : program (auto)
+GPS Latitude : N 37d 18m 25.03s
+GPS Longitude: W 106d 59m 14.38s
+GPS Altitude :  2271.62m
+JPEG Quality : 95
+
+ 
+
+
+

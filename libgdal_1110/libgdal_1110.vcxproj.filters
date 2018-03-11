@@ -1,0 +1,768 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="alg">
+      <UniqueIdentifier>{e0d30c32-99e1-455f-a319-f98b031bcae4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frmts">
+      <UniqueIdentifier>{4606ee1a-d575-4998-9dc6-c55ac4c5ec4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frmts\bmp">
+      <UniqueIdentifier>{fe730404-8311-4c09-a692-75382279b5b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frmts\ecw">
+      <UniqueIdentifier>{333e78e9-1c60-4ff2-a0e2-0ac9515de10b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frmts\gif">
+      <UniqueIdentifier>{88f88f41-ac37-4ff3-972e-cf94f536d6cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frmts\gif\giflib">
+      <UniqueIdentifier>{9772c0a5-ba5b-49ec-8bc0-0d19e425af0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frmts\gtiff">
+      <UniqueIdentifier>{74133cc6-ef19-4232-9067-6d5c809568e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frmts\gtiff\libtiff">
+      <UniqueIdentifier>{78fd9533-db2a-48d2-ab92-85f3e5f9c4f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frmts\gtiff\libgeotiff">
+      <UniqueIdentifier>{070c5a8d-487e-4721-b9ab-3c0994bc3cd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frmts\jp2kak">
+      <UniqueIdentifier>{9c8edd2c-4ce5-43cb-89f6-163cd018def9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frmts\jpeg">
+      <UniqueIdentifier>{4f359622-2989-4b5e-af0e-ae93652846c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frmts\mrsid">
+      <UniqueIdentifier>{a72a989f-f961-4e4d-ac1a-cf2caa5eb271}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frmts\png">
+      <UniqueIdentifier>{4f471544-a6bc-4f16-b417-6aeaa4edb257}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gcore">
+      <UniqueIdentifier>{274f9fe6-7744-4eaa-a73a-0e06342b5846}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ogr">
+      <UniqueIdentifier>{daedb936-f6a5-494b-9193-b6614f2aa2c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="port">
+      <UniqueIdentifier>{92de3434-f9e9-4dc8-a1f0-75cdbdf5fae3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frmts\hfa">
+      <UniqueIdentifier>{fcbb485f-e96b-4132-83aa-4120eeb7f1d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frmts\webp">
+      <UniqueIdentifier>{372a6515-679a-4109-8dd4-d060c08c978c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frmts\pds">
+      <UniqueIdentifier>{055c4ebf-c998-4113-8773-bb76e6578b59}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="frmts\raw">
+      <UniqueIdentifier>{7382c27f-5d26-47fd-a891-d4f825c677e2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="alg\contour.cpp">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="alg\gdal_crs.c">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="alg\gdal_rpc.cpp">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="alg\gdal_tps.cpp">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="alg\gdalchecksum.cpp">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="alg\gdalcutline.cpp">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="alg\gdaldither.cpp">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="alg\gdalgeoloc.cpp">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="alg\gdalgrid.cpp">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="alg\gdalmediancut.cpp">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="alg\gdalproximity.cpp">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="alg\gdalrasterize.cpp">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="alg\gdalrasterpolygonenumerator.cpp">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="alg\gdalsievefilter.cpp">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="alg\gdalsimplewarp.cpp">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="alg\gdaltransformer.cpp">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="alg\gdalwarper.cpp">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="alg\gdalwarpkernel.cpp">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="alg\gdalwarpkernel_opencl.c">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="alg\gdalwarpoperation.cpp">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="alg\llrasterize.cpp">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="alg\polygonize.cpp">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="alg\rasterfill.cpp">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="alg\thinplatespline.cpp">
+      <Filter>alg</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\bmp\bmpdataset.cpp">
+      <Filter>frmts\bmp</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\ecw\ecwdataset.cpp">
+      <Filter>frmts\ecw</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gif\giflib\dgif_lib.c">
+      <Filter>frmts\gif\giflib</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gif\giflib\gifalloc.c">
+      <Filter>frmts\gif\giflib</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gif\giflib\egif_lib.c">
+      <Filter>frmts\gif\giflib</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gif\giflib\gif_err.c">
+      <Filter>frmts\gif\giflib</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gif\giflib\gif_hash.c">
+      <Filter>frmts\gif\giflib</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gif\biggifdataset.cpp">
+      <Filter>frmts\gif</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gif\gifdataset.cpp">
+      <Filter>frmts\gif</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\geotiff.cpp">
+      <Filter>frmts\gtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\gt_citation.cpp">
+      <Filter>frmts\gtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\gt_overview.cpp">
+      <Filter>frmts\gtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\gt_wkt_srs.cpp">
+      <Filter>frmts\gtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\tif_float.c">
+      <Filter>frmts\gtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\tifvsi.cpp">
+      <Filter>frmts\gtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_aux.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_close.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_codec.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_color.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_compress.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_dir.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_dirinfo.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_dirread.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_dirwrite.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_dumpmode.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_error.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_extension.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_fax3.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_fax3sm.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_flush.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_getimage.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_jpeg.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_jpeg_12.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_luv.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_lzma.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_lzw.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_next.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_ojpeg.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_open.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_packbits.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_pixarlog.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_predict.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_print.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_read.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_strip.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_swab.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_thunder.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_tile.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_version.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_vsi.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_warning.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_write.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libtiff\tif_zip.c">
+      <Filter>frmts\gtiff\libtiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_extra.c">
+      <Filter>frmts\gtiff\libgeotiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_free.c">
+      <Filter>frmts\gtiff\libgeotiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_get.c">
+      <Filter>frmts\gtiff\libgeotiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_names.c">
+      <Filter>frmts\gtiff\libgeotiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_new.c">
+      <Filter>frmts\gtiff\libgeotiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_normalize.c">
+      <Filter>frmts\gtiff\libgeotiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_print.c">
+      <Filter>frmts\gtiff\libgeotiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_set.c">
+      <Filter>frmts\gtiff\libgeotiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_simpletags.c">
+      <Filter>frmts\gtiff\libgeotiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_tiffp.c">
+      <Filter>frmts\gtiff\libgeotiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_trans.c">
+      <Filter>frmts\gtiff\libgeotiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libgeotiff\geo_write.c">
+      <Filter>frmts\gtiff\libgeotiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libgeotiff\geotiff_proj4.c">
+      <Filter>frmts\gtiff\libgeotiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gtiff\libgeotiff\xtiff.c">
+      <Filter>frmts\gtiff\libgeotiff</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\jp2kak\jp2kakdataset.cpp">
+      <Filter>frmts\jp2kak</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\jpeg\jpgdataset.cpp">
+      <Filter>frmts\jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\jpeg\vsidataio.cpp">
+      <Filter>frmts\jpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\mrsid\mrsiddataset.cpp">
+      <Filter>frmts\mrsid</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\mrsid\mrsidstream.cpp">
+      <Filter>frmts\mrsid</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\png\pngdataset.cpp">
+      <Filter>frmts\png</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gdalallregister.cpp">
+      <Filter>frmts</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdal_misc.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdal_rat.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdal_rpcimdio.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdalallvalidmaskband.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdalcolortable.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdaldataset.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdaldefaultasync.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdaldefaultoverviews.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdaldllmain.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdaldriver.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdaldrivermanager.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdalgmlcoverage.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdaljp2box.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdaljp2metadata.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdalmajorobject.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdalmultidomainmetadata.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdalnodatamaskband.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdalnodatavaluesmaskband.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdalopeninfo.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdalpamdataset.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdalpamproxydb.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdalpamrasterband.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdalproxydataset.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdalproxypool.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdalrasterband.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdalrasterblock.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\overview.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\rasterio.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\gml2ogrgeometry.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogr_api.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogr_expat.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogr_fromepsg.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogr_opt.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogr_srs_dict.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogr_srs_erm.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogr_srs_esri.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogr_srs_ozi.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogr_srs_panorama.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogr_srs_pci.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogr_srs_proj4.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogr_srs_usgs.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogr_srs_validate.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogr_srs_xml.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogr_srsnode.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogr2gmlgeometry.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ograssemblepolygon.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogrct.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogrcurve.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogrfeature.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogrfeaturedefn.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogrfeaturequery.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogrfeaturestyle.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogrfielddefn.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogrgeomediageometry.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogrgeometry.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogrgeometrycollection.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogrgeometryfactory.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogrlinearring.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogrlinestring.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogrmultilinestring.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogrmultipoint.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogrmultipolygon.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogrpgeogeometry.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogrpoint.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogrpolygon.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogrspatialreference.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\ogrutils.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\swq.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\swq_expr_node.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\swq_op_general.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\swq_op_registrar.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\swq_parser.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="ogr\swq_select.cpp">
+      <Filter>ogr</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_atomic_ops.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_conv.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_csv.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_error.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_findfile.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_getexecpath.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_hash_set.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_http.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_list.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_minixml.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_minizip_ioapi.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_minizip_unzip.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_minizip_zip.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_multiproc.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_odbc.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_path.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_quad_tree.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_recode.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_recode_stub.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_string.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_strtod.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_time.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_vsi_mem.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_vsil.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_vsil_abstract_archive.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_vsil_buffered_reader.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_vsil_cache.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_vsil_curl.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_vsil_gzip.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_vsil_sparsefile.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_vsil_stdin.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_vsil_stdout.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_vsil_subfile.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_vsil_tar.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_vsil_win32.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_vsisimple.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cplgetsymbol.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cplkeywordparser.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cplstring.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cplstringlist.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\hfa\hfa_overviews.cpp">
+      <Filter>frmts\hfa</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\gif\gifabstractdataset.cpp">
+      <Filter>frmts\gif</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\webp\webpdataset.cpp">
+      <Filter>frmts\webp</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_progress.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdalclientserver.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdalvirtualmem.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdalgeorefpamdataset.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdaljp2abstractdataset.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_spawn.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_virtualmem.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="port\cpl_base64.cpp">
+      <Filter>port</Filter>
+    </ClCompile>
+    <ClCompile Include="gcore\gdalexif.cpp">
+      <Filter>gcore</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\pds\pdsdataset.cpp">
+      <Filter>frmts\pds</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\pds\nasakeywordhandler.cpp">
+      <Filter>frmts\pds</Filter>
+    </ClCompile>
+    <ClCompile Include="frmts\raw\rawdataset.cpp">
+      <Filter>frmts\raw</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="alg\thinplatespline.h">
+      <Filter>alg</Filter>
+    </ClInclude>
+    <ClInclude Include="alg\gdal_alg.h">
+      <Filter>alg</Filter>
+    </ClInclude>
+    <ClInclude Include="alg\gdal_alg_priv.h">
+      <Filter>alg</Filter>
+    </ClInclude>
+    <ClInclude Include="alg\gdalgrid.h">
+      <Filter>alg</Filter>
+    </ClInclude>
+    <ClInclude Include="alg\gdalwarper.h">
+      <Filter>alg</Filter>
+    </ClInclude>
+    <ClInclude Include="alg\gdalwarpkernel_opencl.h">
+      <Filter>alg</Filter>
+    </ClInclude>
+    <ClInclude Include="alg\gvgcpfit.h">
+      <Filter>alg</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

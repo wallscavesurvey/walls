@@ -1,0 +1,25 @@
+
+ New in ver 1.14
+ ===============
+
+    linux & windows packages are now joined into a single package.
+    Improved (and now fast!) gamut checking.
+    New virtual NULL profile for building gamut check transforms.
+	CGATS.13/IT8 parser now supports multiple tables and other goodies like specifying flot format.
+    More python support.
+    New Matlab wrapper. Matlab is a commercial scientific language widely used in industry. 
+    Matlab comes form Mathworks (http://www.mathworks.com) Thanks to Ignacio Ruiz de Conejo 
+    for providing the code. 
+    Revamped icctrans
+    Improved jpegicc. Thanks to Arnaud Janc for providing CMYK and subsampling improvements.
+    jpegicc and tifficc now can save (grab) embedded profiles.    
+    tifficc now supports up to 15 channels.
+    Improved Lab prelinearization.
+    Fixed absolute intent on PostScript CRD
+    Man pages for utilities.
+    Access to creation & calibration date time.
+    Lots of bug fixes
+
+
+		
+  

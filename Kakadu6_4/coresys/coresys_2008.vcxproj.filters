@@ -1,0 +1,217 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="common">
+      <UniqueIdentifier>{41b93f89-8c62-4b9a-858b-fd5b258034f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="parameters">
+      <UniqueIdentifier>{53796a34-5a00-486f-b5cc-327bfbc09e56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="compressed">
+      <UniqueIdentifier>{ab16fb0f-87a1-412c-92ab-6b5da4e2646d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="coding">
+      <UniqueIdentifier>{bc65d9d1-7ff4-4fa6-82c5-29266ce7d821}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="transform">
+      <UniqueIdentifier>{721be221-9c15-42cc-98e4-deddc14fd67d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="kernels">
+      <UniqueIdentifier>{f60524d5-64dc-4eaa-95a1-81cec410c4e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="messaging">
+      <UniqueIdentifier>{4bbe446b-258f-45fd-abac-1acb3a66cd25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="roi">
+      <UniqueIdentifier>{f9de8cb3-4429-4c70-bebb-793225417923}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{d186d298-de05-4761-8a29-9bf849885bf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="threads">
+      <UniqueIdentifier>{b672016f-cc88-416d-90f0-1ff0b59e5616}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="apps">
+      <UniqueIdentifier>{5d246030-97f0-47a3-a0c9-c0780becf6a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="apps\jp2">
+      <UniqueIdentifier>{3e2e5e49-f47f-47b8-b79e-a282ca437954}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="apps\support">
+      <UniqueIdentifier>{19fe764a-cebf-4dc8-b3cd-0994fc5a3ce9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="apps\kdu_compress">
+      <UniqueIdentifier>{d87bd4b6-0558-4950-a1f9-b4f853e004c5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="common\kdu_arch.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="parameters\params.cpp">
+      <Filter>parameters</Filter>
+    </ClCompile>
+    <ClCompile Include="compressed\blocks.cpp">
+      <Filter>compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="compressed\codestream.cpp">
+      <Filter>compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="compressed\compressed.cpp">
+      <Filter>compressed</Filter>
+    </ClCompile>
+    <ClCompile Include="coding\block_coding_common.cpp">
+      <Filter>coding</Filter>
+    </ClCompile>
+    <ClCompile Include="coding\block_decoder.cpp">
+      <Filter>coding</Filter>
+    </ClCompile>
+    <ClCompile Include="coding\block_encoder.cpp">
+      <Filter>coding</Filter>
+    </ClCompile>
+    <ClCompile Include="coding\decoder.cpp">
+      <Filter>coding</Filter>
+    </ClCompile>
+    <ClCompile Include="coding\encoder.cpp">
+      <Filter>coding</Filter>
+    </ClCompile>
+    <ClCompile Include="coding\mq_decoder.cpp">
+      <Filter>coding</Filter>
+    </ClCompile>
+    <ClCompile Include="coding\mq_encoder.cpp">
+      <Filter>coding</Filter>
+    </ClCompile>
+    <ClCompile Include="transform\analysis.cpp">
+      <Filter>transform</Filter>
+    </ClCompile>
+    <ClCompile Include="transform\colour.cpp">
+      <Filter>transform</Filter>
+    </ClCompile>
+    <ClCompile Include="transform\multi_transform.cpp">
+      <Filter>transform</Filter>
+    </ClCompile>
+    <ClCompile Include="transform\synthesis.cpp">
+      <Filter>transform</Filter>
+    </ClCompile>
+    <ClCompile Include="kernels\kernels.cpp">
+      <Filter>kernels</Filter>
+    </ClCompile>
+    <ClCompile Include="messaging\messaging.cpp">
+      <Filter>messaging</Filter>
+    </ClCompile>
+    <ClCompile Include="roi\roi.cpp">
+      <Filter>roi</Filter>
+    </ClCompile>
+    <ClCompile Include="threads\kdu_threads.cpp">
+      <Filter>threads</Filter>
+    </ClCompile>
+    <ClCompile Include="..\apps\jp2\jp2.cpp">
+      <Filter>apps\jp2</Filter>
+    </ClCompile>
+    <ClCompile Include="..\apps\support\kdu_stripe_decompressor.cpp">
+      <Filter>apps\support</Filter>
+    </ClCompile>
+    <ClCompile Include="..\apps\kdu_compress\roi_sources.cpp">
+      <Filter>apps\kdu_compress</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common\kdu_arch.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\kdu_block_coding.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\kdu_compressed.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\kdu_elementary.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\kdu_kernels.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\kdu_messaging.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\kdu_params.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\kdu_roi_processing.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\kdu_sample_processing.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\kdu_threads.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\kdu_utils.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="parameters\params_local.h">
+      <Filter>parameters</Filter>
+    </ClInclude>
+    <ClInclude Include="compressed\compressed_local.h">
+      <Filter>compressed</Filter>
+    </ClInclude>
+    <ClInclude Include="coding\block_coding_common.h">
+      <Filter>coding</Filter>
+    </ClInclude>
+    <ClInclude Include="coding\mq_decoder.h">
+      <Filter>coding</Filter>
+    </ClInclude>
+    <ClInclude Include="coding\mq_encoder.h">
+      <Filter>coding</Filter>
+    </ClInclude>
+    <ClInclude Include="coding\msvc_block_decode_asm.h">
+      <Filter>coding</Filter>
+    </ClInclude>
+    <ClInclude Include="coding\msvc_coder_mmx_local.h">
+      <Filter>coding</Filter>
+    </ClInclude>
+    <ClInclude Include="coding\x86_coder_local.h">
+      <Filter>coding</Filter>
+    </ClInclude>
+    <ClInclude Include="transform\analysis_local.h">
+      <Filter>transform</Filter>
+    </ClInclude>
+    <ClInclude Include="transform\msvc_colour_mmx_local.h">
+      <Filter>transform</Filter>
+    </ClInclude>
+    <ClInclude Include="transform\msvc_dwt_mmx_local.h">
+      <Filter>transform</Filter>
+    </ClInclude>
+    <ClInclude Include="transform\multi_transform_local.h">
+      <Filter>transform</Filter>
+    </ClInclude>
+    <ClInclude Include="transform\synthesis_local.h">
+      <Filter>transform</Filter>
+    </ClInclude>
+    <ClInclude Include="transform\transform_local.h">
+      <Filter>transform</Filter>
+    </ClInclude>
+    <ClInclude Include="transform\x86_colour_local.h">
+      <Filter>transform</Filter>
+    </ClInclude>
+    <ClInclude Include="transform\x86_dwt_local.h">
+      <Filter>transform</Filter>
+    </ClInclude>
+    <ClInclude Include="roi\roi_local.h">
+      <Filter>roi</Filter>
+    </ClInclude>
+    <ClInclude Include="threads\threads_local.h">
+      <Filter>threads</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="coresys.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="common\arch_masm64.asm">
+      <Filter>common</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,5 @@
+echo off
+echo "Building Documentation, Java and Managed (C#/VB) Interfaces"
+kdu_hyperdoc -s hyperdoc_windows.src -o html_pages -java ../../java/kdu_jni ../managed/kdu_jni ../managed/kdu_aux ../managed/all_includes -managed ../managed/kdu_mni ../managed/kdu_aux ../managed/all_includes
+echo on
+

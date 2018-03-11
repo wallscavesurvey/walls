@@ -1,0 +1,849 @@
+COMPILATION INSTRUCTIONS FOR KAKADU V6.3
+
+-------------------------------------------------------------------------------
+CONTENTS:
+    1) Source Structure
+    2) Build Environments for Native Code
+    3) Building Java, C# and Visual Basic interfaces
+    4) Internationalization
+    5) List of all Compilation Directives
+    6) Source files
+
+-------------------------------------------------------------------------------
+SECTION 1: SOURCE STRUCTURE
+---------------------------
+Source and header files are organized logically in directories which
+suggest their function.  It is suggested that you retain this structure.
+Broadly speaking, the code is organized into "coresys", "apps" and "managed"
+directories.
+
+  -- "coresys" contains code which is shared by most applications and may
+be used to build a static or dynamically linked library.  Use the
+make files (Linux, Unix, Solaris or MAC), the xcode project files (MAC) or
+the .NET build environments (Windows) found in this directory
+to build the core system first.  Typically, you use these to build the
+core DLL "kdu_v62R.dll" (and debug version "kdu_v62D.dll"), the Unix
+shared library "libkdu_v62R.so", or the MAC OSX dynamic library
+"libkdu_v61R.dylib" (and debug version "libkdu_v62D.dylib").
+
+  -- "apps" code includes both the source files which are specific to
+individual applications, as well as quite a few more generic objects
+which are shared by multiple applications, but are not required by
+all (and hence are not considered core).  Again, use the make files, xcode
+project files, or the .NET build environments found in this directory
+to build the various demo applications, after first building the core system.
+These applications are all linked against the core DLL or shared library
+described above.  The "kdu_hyperdoc" application plays an important
+role in automatically generating the API documentation (found in the
+"documentation" directory) AND in building all source and header files
+for the "managed" directory.  This tool is built both under "apps"
+and "managed", for convenience.
+
+  -- The "managed" directory exists to provide a convenient set of
+managed interfaces to the entire Kakadu framework.  This includes
+a complete set of native interface bindings for Java applications,
+and a corresponding set of managed interfaces for use with Microsoft's
+C# and Visual Basic languages (amongst others).  It also includes a
+unified collection of header files in "managed/all_includes".  These
+are copied from other places by "kdu_hyperdoc", so as to provide
+you with convenient access to all public classes and functions.  You can
+use these header files with your C++ applications.
+
+   As before, use the make files (Unix/Linux/MAC), the xcode project files
+(MAC), or the .NET build environments (Windows) found in
+the "managed" directory to build the various native interface bindings
+("kdu_jni" for Java and "kdu_mni" for C# and Visual Basic).  These build
+environments also create an auxiliary DLL, "kdu_a62R.dll" (debug version
+"kdu_a62D.dll") or shared library "libkdu_a62R.so" ("libkdu_a62R.dylib" and
+"libkdu_a62D.dylib" on the MAC), which contains the implementation of all
+the generic API classes and functions found in the "apps" directory.
+   By linking your C++ applications against this DLL/shared library, together
+with the core system DLL/shared library, you should not need to directly
+include any of the source files found in the "apps" or "coresys" directories.
+The "kdu_a61R.dll" dynamic library is also imported by "kdu_jni.dll" and
+"kdu_mni.dll" to implement Java, C# and Visual Basic interfaces on Windows
+platforms.  Similarly, "libkdu_a62R.dylib" imports "libkdu_v62R.dylib" on
+the MAC.
+
+   Kakadu's automatic documentation builder, "kdu_hyperdoc", is used to
+fill out the HTML documentation in the "documentation" directory, as well
+as building all C++ source and header files in the "managed" directory.
+This tool draws from the extensive comments kept in the public header
+files (both those in "coresys" and those in the "apps" directories),
+using consistent conventions in those comments.
+
+   To use the "kdu_hyperdoc" utility, you must first compile it, using the
+make files, xcode projects, or the .NET build environments found in
+either the "apps" or the "managed" directory -- the actual source code lives
+under "apps" but is built from both places for convenience.  These build
+environments all also execute the tool to build all the relevant documentation
+and interfaces.  However, if you wish to run the tool manually, you can use
+the commands found in the "hyperdoc.bat_saved" or "hyperdoc_windows.bat_saved"
+files -- for Windows systems, remove the "_renamed" suffix and execute.
+The only difference between "hyperdoc.bat" and "hyperdoc_windows.bat" is that
+the latter includes the few additional objects which exist only on Windows
+platforms and also builds the interfaces for .NET languages C# and Visual
+Basic.  Note, however, that you may need to add the command-line argument
+"-old_managed_syntax" to the command in "hyperdoc_windows.bat_renamed" if
+you want to build interfaces for .NET languages which will compile under
+Visual Studio 2003 -- the syntax changed subtantially in Visual Studio 2005
+as a result of an effort to standardize the Managed Extensions to C++.
+
+The various build environments, expect the following directory structure.
+
+ java     <distribution>    bin   bin_x86   lib_x86   bin_x64   lib_x64
+ |        |
+ kdu_jni  coresys  apps  managed documentation language make bin lib
+
+Here, <distribution> represents the directory within which these
+instructions reside -- e.g., "v6_2".  The various makefiles write their
+library and executable outputs to the "<distribution>/bin" and
+"<distribution>/lib" directories.  The .NET build environments write
+their 32-bit output to the "bin_x86" and "lib_x86" directories, while the
+results from 64-bit builds are written to the "bin_x64" and "lib_x64"
+directories.  The xcode project files write their
+output to the "bin" directory at the same level as the "distribution"
+directory.
+
+   When executed using the makefiles, xcode project files or .NET build
+environments in "apps", or using the commands in "hyperdoc.bat" or
+"hyperdoc_windows.bat" commands, the "kdu_hyperdoc" tool writes Java class
+files to the "java/kdu_jni" directory, which is outside the "<distribution>"
+directory you received with your license.  If any of these directories do not
+exist, they will be created automatically, but some conditions associated with
+the creation of these directories might be reported as though they were errors
+in some build environments (depending on how the build environment interprets
+outputs from the scripts it runs).
+
+   Kakadu also comes with a tool named "kdu_text_extractor" which
+may be used to populate the "language" directory in the above structure
+with original (english) versions of all the text used in error and
+warning messages.  The various build environments compile and execute
+this tool automatically.  You can make your own instances of these
+language files, containing versions of the text translated into different
+languages.  To internationalize your application, all you have to do is
+to compile the Kakadu source with "KDU_CUSTOM_TEXT" defined, and then
+include the relevant language files into the application as-is (no need
+to explicitly call any functions).  You can, optionally, create separate
+DLL's or shared libraries to hold the language files produced for each
+language, and have your application load the relevant DLL or shared
+library dynamically, based on internationalization settings.
+
+-------------------------------------------------------------------------------
+SECTION 2: BUILD ENVIRONMENTS FOR NATIVE CODE
+---------------------------------------------
+Four build environments are provided for your convenience:
+
+  * Microsoft .NET
+    -- Note that the libraries and executables are placed in directories
+       which sit immediately outside the Kakadu directory, as explained above.
+    -- The workspace files "coresys/coresys_2005.sln" and
+       "coresys/coresys_2008.sln" may be used to build
+       release and debug versions of the Kakadu core system DLL.  Be sure
+       to build this first.  You will note that these workspaces
+       can be used to build both 32-bit and 64-bit DLL's.
+    -- The workspace files "apps/apps_2005.sln" and "apps/apps_2008.sln" may
+       be used to build the example applications, linking them against
+       the core system DLL.  These workspace files also build the
+       "kdu_hyperdoc" and "kdu_text_extractor" tools and run them to fill
+       out the contents of the "documentation" and "language" directories,
+       as well as deriving code for the "managed" directory.  Be sure to
+       build the core system first.  As for the core system, the Visual
+       workspaces can be used to build both 32-bit and 64-bit
+       DLL's, except for the "kdu_hyperdoc" and "kdu_text_extractor" tools
+       for which only 32-bit executables are built.  This avoids the
+       confusion which might otherwise be caused by building and executing
+       64-bit versions of the tools on 32-bit platforms.
+    -- The workspace files "managed/kdu_managed_2005.sln" and
+       "managed/kdu_managed_2008.sln" may be used to build the
+       managed interfaces to Java, C# and Visual Basic, as well as the
+       C# example applications.  After you have built "kdu_jni.dll", you can
+       build the Java examples using the standard publically available "javac"
+       compiler from Sun Microsystems.  The managed workspaces are configured
+       to build only 32-bit binaries, for maximum compatibility, although
+       it would be reasonable to add a 64-bit build configuration for the
+       "kdu_aux" project.
+    -- Build the release configurations for speed, since the debug
+       configurations include a lot of consistency checking code.
+    -- If you create your own build environment, be sure to define the
+       symbol, KDU_PENTIUM_MSVC or KDU_X86_INTRINSICS, to incorporate MMX,
+       SSExx and other Pentium processor optimizations.  You should note
+       that the `KDU_NO_SSSE3' macro may need to be defined in compilation
+       environments where "tmmintrin.h" is not available (enables support
+       for SSSE3 intrinsics).
+    -- If the C++ pre-processor encounters difficulties including the file
+       "jni.h" or "md.h" when compiling "kdu_jni.cpp" in the "managed"
+       directory, the problem is almost certainly that you need to
+       define the environment variable "JAVA_HOME" to hold the path of
+       the Java SDK installation on your platform, so that
+       "%JAVA_HOME%\include" is the root path for JNI include files.  If you
+       have not installed the Java SDK, download it from Sun Microsystems,
+       or else just don't build "kdu_jni.dll".  If you have installed the
+       Java SDK and JAVA_HOME is not defined, go to
+       "Control Panel -> System -> Advanced -> Environment Variables"
+       and define it.
+
+  * XCODE
+    -- Starting from Kakadu version 6.1, we recommend that you use the supplied
+       xcode project files to build Kakadu under MAC OSX, rather than running
+       the makefiles directly in a BSD shell, as was done in previous versions.
+       The xcode project files provided in the "coresys", "apps" and "managed"
+       directories create both debug and release code.  Moreover, the release
+       versions of the dynamic libraries and binaries are built as universal
+       binaries to support PowerPC and Intel processors.  The dynamic libraries
+       support 32-bit G4/G5 processors, 32-bit Intel and 64-bit Intel modes.
+       The demo executables are build to run in 32-bit mode on G4/G5
+       processors and 64-bit mode on Intel processors.  The JNI library needs
+       to support 32-bit G4/G5 and Intel flavours, since the JVM is usually
+       a 32-bit app.
+    -- All you need to do is open the relevant project file with xcode, select
+       the "Build All" target, then click on the "build" icon.  Build either
+       the "Debug" versions, the "Release" versions or both (the relevant
+       executables and libraries all have distinct names, so debug and release
+       versions can co-exist).  If at first you obtain link errors in building
+       the "apps", this is almost certainly caused by a small bug in xcode;
+       the problem is readily fixed by changing to debug mode, building
+       everything, then changing back to release mode and building everything
+       (or vice-versa).
+    -- The XCODE project files come ready to build against the OSX 10.5 SDK,
+       and are compatible with XCODE 3.0 and up.
+
+  * Makefiles
+    -- Unix style Makefiles are provided in the "make", "coresys/make",
+       "apps/make" and "managed/make" directories.  You can use the makefiles
+       in the top-level "make" directory to build everything -- these just
+       invoke the more specific makefiles in the "coresys", "apps" and
+       "managed" directories.  If you do not use the top-level makefiles, be
+       sure to build in the following order: "coresys" then "apps" then
+       "managed" (actually, you can omit "apps" if you like).
+    -- Error and warning free compilation should occur using any recent
+       release of the GCC compiler.
+    -- As with the .NET build environments, you will find that the "managed"
+       makefiles rely upon the environment variable "JAVA_HOME" to locate
+       the standard JNI include files in the Java SDK.  If you wish to build
+       "libkdu_jni.so" ("libkdu_jni.jnilib" for MAC builds), you should
+       first make sure that you have the Java SDK installed (if necessary,
+       download it from Sun Microsystems).  In many cases, installing the
+       Java SDK from a suitable RPM source will cause the "JAVA_HOME"
+       environment variable to be set up for you.  If not, define (and export)
+       it to your profile (e.g., your ".bash_profile" script) to hold the
+       absolute path of the active Java SDK installation so that
+       "$JAVA_HOME/include" is the root path for JNI include files.
+    -- If your platform does not support multi-threading (i.e., it does not
+       support the POSIX "pthreads" interface), you should
+       define the symbol "KDU_NO_THREADS" when compiling.  You may need to
+       do this if the attempt to link against the pthreads library
+       ("-lpthreads" in the "apps/make" makefiles) does not work.  You
+       can still compile and test applications which use Kakadu's
+       multi-threading environment (`kdu_thread_entity' and
+       `kdu_thread_entity') facilities, but `kdu_thread_entity::add_thread'
+       will never add extra threads to the environment.
+    -- To get 64-bit addressing of compressed files (e.g., when compressing
+       or expanding huge images), make sure you define _FILE_OFFSET_BITS=64,
+       when invoking GCC.  You may also need to define _LARGEFILE64_SOURCE.
+       See "Makefile-Linux-x86-32-gcc" for an example.  For more information on
+       how Kakadu handles very large files, offsets and other potentially huge
+       quantities, take a look at the "kdu_elementary.h" header file, as well
+       as "kdu_file_io.h".
+    -- 32- and 64-bit compilation for Intel and AMD Linux platforms under gcc
+       has been tested.  For these, use "Makefile-Linux-x86-32-gcc" and
+       "Makefile-Linux-x86-64-gcc", respectively.
+    -- 32- and 64-bit compilation for Solaris platforms under gcc has been
+       tested.  For these, use "Makefile-Solaris-gcc".  To get 64-bit
+       compilation, use "-mcpu=ultrasparc3", as suggested by the comments.
+    -- Compilation for the PowerPC G5 processor, with Altivec SIMD
+       optimizations has been tested by third parties.  For these, use
+       "Makefile-MAC-PPC-gcc".  To build for the G4 processor,
+       uncomment line 8 of "coresys/make/Makefile-MAC-PPC-gcc" which
+       contains the switch "-mtune=G4".
+    -- To compile for Intel MAC platforms, use the "Makefile-MAC-x86-32-gcc"
+       and "Makefile-MAC-x86-64-gcc" make files.  These have been fully tested.
+    -- When compiling for Intel-based targets, you may need to define
+       the symbol "KDU_NO_SSSE3" if your build environment does not offer
+       "tmmintrin.h".  This will become readily apparent if the compiler
+       complains about instructions like "_mm_alignr_epi8".  Recent versions
+       of gcc should not have such problems.
+    -- 32- and 64-bit compilation under the SunPro compiler has been
+       tested by a third party.  The relevant makefiles are also included
+       for convenience, although not specifically supported.
+    -- By and large the makefiles generate executables which dynamically
+       link to the core system library.  To enable Unix/Linux systems
+       to find this library, you will need to define the environment
+       variable "LD_LIBRARY_PATH" to point to the relevant sub-directory of
+       your Kakadu distribution's "lib" directory, or else move its
+       contents to a location which is on the dynamic load path.  For MAC
+       systems, the relevant environment variable is "DYLD_LIBRARY_PATH".
+    -- The "kdu_show" and "kdu_macshow" applications cannot be built using
+       these make files.  You can build all applications for the MAC apart
+       from "kdu_macshow", using the makefiles.  To build all applications
+       for the MAC, including "kdu_macshow", you should use the xcode
+       project files. 
+
+To facilitate construction on Unix, MAC and Win32/Win64 platforms, all source
+files (and the Makefiles) employ the Unix line breaking convention (i.e.,
+no ctrl-M characters at the end of lines).  This should not cause any
+problems for Win32/Win64 based compilers.
+
+-------------------------------------------------------------------------------
+SECTION 3: BUILDING JAVA, C# AND VISUAL BASIC INTERFACES
+--------------------------------------------------------
+There are two components in a JNI (Java Native Interface) implementation:
+1) the Java classes which expose the relevant interfaces to Java applications;
+and 2) the C++ implementation of the Java native functions.  Both components
+may be constructed automatically using the "kdu_hyperdoc" utility.  To see
+how this is done, you may read the usage statements produced by "kdu_hyperdoc"
+or see how the utility is invoked from "apps/documentation/hyperdoc.bat"
+or "apps/documentation/hyperdoc_windows.bat", or in any of the make files,
+xcode project files or VC6/.NET build environments in the "apps" directory.
+
+Note that you can omit the "-o <html directory>" arguments from the
+"kdu_hyperdoc" command line if you do not want to build HTML documentation
+at the same time as the Java interfaces.  You can also exercise some
+control over the classes for which Java interfaces are built by
+carefully selecting the header files supplied to "kdu_hyperdoc".  For
+precise control, however, use the "-bind" argument, which can be
+used to specify a minimal set of classes, global functions or even
+class member functions, for which you want to generate language bindings.
+Regardless of whether you use the "-bind" argument or not, the only
+classes for which bindings can be created are those whose declaration
+contains one of the strings, "[BIND: reference]", "[BIND: interface]" or
+"[BIND: copy]".  These constructs are explained more carefully in the
+"java-and-managed-interfaces.pdf" document, which also suggests how you
+can use the utility to automatically build Java and other language
+interfaces for your own C++ objects.
+
+Once you have built the Java class declarations and JNI implementation
+source files, you need to compile both.  For this, you will need to have
+installed a recent JDK distribution from SUN Microsystems.  The Java classes
+can be compiled by issuing the command "javac *.java" within the
+"java/kdu_jni" directory (see Section 1).
+
+To compile the JNI source and header files created by "kdu_hyperdoc",
+go to the "managed" directory and use the supplied makefiles in
+"managed/make" or the xcode project file "managed.xcodeproj", or the VC6
+or .NET workspace files "kdu_managed.dsw", "kdu_managed_2003.sln" or
+"kdu_managed_2005.sln".  Some build environments include a reference
+to an assumed location for the standard JNI include files (e.g., "jni.h")
+supplied by SUN Microsystems, which is obtained by expanding the environment
+variable "JAVA_HOME".  As noted above in the description of the various build
+environments, you may need to define this environment variable yourself
+if it was not defined when you installed the Java SDK.
+
+The final steps to configure your JNI interfaces are:
+a) Ensure that the "libkdu_jni.so" shared library (Unix/Linux),
+   "libkdu_jni.jnilib" shared library (MAC OSX) or "kdu_jni.dll" DLL
+   (Windows), as appropriate, is included in the load path -- this is
+   defined by the LD_LIBRARY_PATH environment variable on Unix systems, by
+   the DYLD_LIBRARY_PATH environment variable on MAC systems, and by the
+   PATH variable on Windows systems.
+b) Ensure that the "java" directory (see directory structure in Section 1)
+   is included in the "CLASSPATH" environment variable (Windows, Unix and
+   MAC operating systems).
+
+You may find it convenient to archive the native interface classes into a
+single JAR file, but this is not necessary.
+
+On Windows platforms, you can also build a complete set of interfaces
+for use with the C# and Visual Basic programming languages.  In fact,
+the "managed/kdu_managed_2005.sln" and "managed/kdu_managed_2008.sln"
+.NET workspaces build interfaces for all of these languages, including Java,
+and also build a couple of C# demonstration applications, which exactly
+parallel the Java demonstration applications -- you will notice that things
+look even more natural in C# than they do in Java.  The C# and Visual
+Basic support is achieved through a single interface DLL, "kdu_mni.dll",
+which is built using Microsoft's Managed Extensions to C++.  To gain full
+access to the Kakadu interfaces from C#, just add a reference to this
+DLL (or to the "kdu_mni" project) from your C# project and also
+import the "kdu_constants.cs" file from the "managed/kdu_mni" directory.
+The process is the same from Visual Basic.  Actually, apart from the
+fact that a "kdu_constants" file is not generated by "kdu_hyperdoc"
+for other languages, all of the same interface bindings should be
+available from any of Microsoft's managed languages, which share the
+same common runtime environment.
+
+It is worth noting that the "managed/kdu_managed_2005.sln" and
+"managed/kdu_managed_2008.sln" workspaces actually build three DLL's,
+"kdu_jni.dll" (for Java), "kdu_mni.dll" (for C# and Visual Basic) and
+"kdu_a62R.dll" ("kdu_a62D.dll" in debug mode).  This
+last DLL is shared by both "kdu_jni.dll" and "kdu_mni.dll" so that
+you can more efficiently construct systems which use multiple
+languages simultaneously.
+
+-------------------------------------------------------------------------------
+SECTION 4: INTERNATIONALIZATION
+-------------------------------
+To create applications with internationalized text, the following
+procedure may be used:
+1) Compile the Kakadu core system and all relevant application components
+   with the symbol KDU_CUSTOM_TEXT defined -- this symbol is not defined
+   by default in the build environments described above.
+2) Compile the "kdu_text_extractor" tool and use it to populate the
+   "language" directory with language files.  These are platform
+   independent C++ source files.  You can build a single language file
+   by specifying all of the Kakadu (or your own) source files via the
+   "-i" switch.  However, we recommend that you invoke the
+   "kdu_text_extractor" tool in the same way as is done in the
+   standard build environments -- take a look at any of the "apps/make"
+   makefiles, the post build project settings in the MSVC or .NET
+   "apps" workspace, or the post build script in "apps.xcodeproj".
+3) Copy the language source files produced using the
+   "kdu_text_extractor" tool into new versions, with names which
+   identify the language you want.  So, for example, you might
+   copy "coresys_english.cpp" into "coresys_italian.cpp" or
+   "coresys_chinese.cpp".  Edit the new language file, translating all
+   text strings of interest into the target language.  For languages
+   with rich alphabets, such as Chinese, you may need to create Unicode
+   translations and register the text using the Unicode version of
+   `kdu_customize_text', rather than the ASCII version, which is invoked
+   by the original language files created by "kdu_text_extractor".
+   You will also need to implement the Unicode version of
+   `put_text' in the derived version of `kdu_message' that your
+   application uses to render text.  Alternatively, you might use
+   UTF8-encoded text and ensure that your implementation of
+   `kdu_message::put_text' interprets its strings as UTF-8, rather than
+   ASCII.
+4) Include the relevant language files into your application (compiling
+   and linking them in is enough).  Alternatively, compile each set
+   of language files into a separate language-specific DLL or shared
+   library, to be loaded dynamically by your application, depending on
+   language settings.
+
+Note: you may wonder whether or not your translation efforts will be
+wasted if something changes in a new version of Kakadu.  However,
+a quick review of the `kdu_error', `kdu_warning' and `kdu_customize_text'
+functions in "kdu_messaging.h" should put your fears to rest.  Text
+registration is based upon the uniqueness of context/id pairs, which
+are provided in the `kdu_error' or `kdu_warning' constructor and are
+also recorded in the language files.  If new calls to `kdu_error'
+or `kdu_warning' are introduced in future versions of the Kakadu toolkit,
+the most you have to do is to translate this new text at your leisure.
+Not doing so, just means that untranslated warnings will not
+be seen by the end application, and untranslated errors will produce a
+message which refers the end user to you (the vendor).  If pre-existing
+error/warning messages are changed in Kakadu, they will be assigned
+new ID values -- all text registered against the old context/id values
+will be useless, but harmless.
+
+-------------------------------------------------------------------------------
+SECTION 5: LIST OF ALL COMPILATION DIRECTIVES
+---------------------------------------------
+
+A) Processor-specific speedups
+   -- You should define at most one of the following
+      * KDU_X86_INTRINSICS
+           -- Includes the most generic implementation of MMX/SSE/SSE2
+              instruction support for x86-family processors, including
+              Intel and AMD processors.  The included speedups use
+              processor intrinsics, which should compile on 32- and 64-bit
+              platforms under both GCC and Microsoft's .NET compiler.
+           -- There are two weaknesses to the X86_INTRINSICS implementations,
+              however: a) they do not include some speedups to the block
+              decoder, which yield about 10% improvement on 32-bit platforms
+              but are unhelpful on 64-bit platforms; and b) GCC compilation
+              with these intrinsics may require 16-byte stack alignment, which
+              might not be guaranteed if the code is invoked as a DLL or
+              shared library, from a separately compiled executable (e.g.,
+              a Java Virtual Machine) which has less strict stack alignment.
+           -- On the other hand, the X86_INTRINSICS implementations offer the
+              most comprehensive support for SIMD speedups in the 32-bit
+              sample precision processing path -- all SIMD offerings speed
+              the processing of 16-bit precision sample data.
+      * KDU_PENTIUM_GCC
+           -- Provides MXX/SSE/SSE2 speedups which work for 32-bit and 64-bit
+              builds under GCC.  These have been widely tested and are
+              probably slightly faster than the KDU_X86_INTRINSICS code
+              under 32-bit builds, since they incorporate hand-optimized
+              deployment of registers.
+           -- All speedups in the Kakadu core system have versions which are
+              accessible using KDU_PENTIUM_GCC, with the exception of:
+              a) SIMD speedups for the 32-bit precision sample processing path
+                 (use KDU_X86_INTRINSICS to get these); and
+              b) the block decoder speedups for X86-32 architectures (typically
+                 about 10% improvement), which can be accessed only with
+                 KDU_PENTIUM_MSVC.
+      * KDU_PENTIUM_MSVC
+           -- Provides MMX/SSE/SSE2 speedups which work for 32-bit builds
+              under Microsoft Visual C++ (version 6) or .NET compilation
+              environments.  With the sole exception of 32-bit precision
+              colour transforms, all speedups are available with this option,
+              with hand optimized register deployment.  As a result, this is
+              the preferred option for 32-bit builds under the Microsoft
+              development environments.  For 64-bit builds under .NET, this
+              option is automatically converted into KDU_X86_INTRINSICS for
+              you, so that you can get the best of both worlds.  For this
+              reason, the currently recommended build configurations for
+              all Windows systems should define KDU_PENTIUM_MSVC.
+      * KDU_ALTIVEC_GCC
+           -- Povides speedups for the "Altivec" vector processing engine on
+              PowerPC (G4 and G5) processors.  Most of the speedups available
+              through KDU_PENTIUM_GCC are also available for G4/G5
+              processors through KDU_ALTIVEC_GCC, with the exception of:
+              a) SIMD speedups for the 32-bit precision sample processing
+                 path; and
+              b) some code which accelerates quantization/dequantization
+                 processes only on X86 processors.
+      * KDU_SPARCVIS_GCC
+           -- Provides speedups for the "Visual" vector processing engine on
+              Ultrasparc processors.  Many of the speedups available
+              through KDU_PENTIUM_GCC are also available for Sparc's
+              through KDU_SPARCVIS_GCC, with the exception of:
+              a) SIMD speedups for the 32-bit precision sample processing
+                 path;
+              b) Sample interleaving/deinterleaving between DWT transform
+                 stages; and
+              c) some code which accelerates quantization/dequantization
+                 processes only on X86 processors.
+              Note also that the Sparc vector processor is only 64 bits wide,
+              unlike the G4/G5 and modern X86 processors, which offer
+              128-bit processing.
+      * KDU_MAC_SPEEDUPS
+           -- Selects the most appropriate speedup options from the above,
+              based upon the target architecture, for MAC OSX.  This simplifies
+              the process of building universal binaries to support multiple
+              CPU architectures.
+   -- Customizations for the above:
+      * KDU_NO_SSE
+           -- When used with any of KDU_X86_INTRINSICS, KDU_PENTIUM_GCC,
+              KDU_PENTIUM_MSVC or KDU_MAC_SPEEDUPS, this directive disables
+              the use of SSE/SSE2 instructions, allowing only the plain MMX
+              variants.
+           -- There is no need to do this just to get things to run properly
+              on older X86 processors, since the right code path is
+              automatically selected at run-time based on the instructions
+              supported by the processor.
+           -- You can use this option to see what advantage in speed is
+              offered by SSE/SSE2 instructions over plain MMX.
+           -- When compiling with KDU_PENTIUM_MSVC under Microsoft Visual
+              C++ (Version 6) you may need this option to eliminate the
+              SSE/SSE2 code segments which are not supported by the compiler
+              as originally distributed.  A better approach, however, is
+              to download and install the "Visual C++ 6.0 Processor Pack",
+              as suggested in Section 2.
+           -- By using this switch to disable SSE/SSE2 portions of the code,
+              you can safely use the KDU_X86_INTRINSICS option with GCC,
+              even when the code might be invoked from an environment
+              (e.g., a Java Virtual Machine) which does not offer 16-byte
+              stack alignment.  This allows you to incorporate all of the
+              MMX-based speedups for the `kdu_region_compositor' object
+              defined in "apps/support".  To see how this is used, see the
+              various makefiles in "managed/make".  For an explanation of the
+              stack alignment problem with GCC processor intrinsics, see
+              the discussion of KDU_X86_INTRINSICS above.
+      * KDU_NO_SSSE3
+           -- Similar to KDU_NO_SSE, except that it disables attempts to use
+              the Intel SSSE3 instructions in build configurations which
+              would otherwise attempt to use them.  You should define this
+              macro if your build environment does not yet offer "tmmintrin.h".
+      * KDU_NO_CPUID_TEST
+           -- When used with any of KDU_X86_INTRINSICS, KDU_PENTIUM_GCC or
+              KDU_PENTIUM_MSVC, this directive bypasses the static
+              initialization code in "kdu_arch.cpp" which examines the CPUID
+              instruction to test for the availability of MMX instructions
+              as well as the more advanced SSE and SSE2 instruction sets.
+              Instead, support for MMX instructions will be assumed and
+              support for SSE/SSE2 instructions will be assumed on 64-bit
+              platforms.  Use of this option is not recommended, but provides
+              a simple fix to any problems you might possibly encounter with
+              Kakadu code crashing on start-up (all such problems should by
+              now have been fixed).
+
+B) Internationalization
+      * KDU_CUSTOM_TEXT
+           -- Define this symbol if you intend to include all error/warning
+              text via separately compiled source files or libraries, built
+              from the contents of the "language" directory.  This is
+              explained more thoroughly in Section 4 above.
+
+C) LIBTIFF inclusion options for the "kdu_compress" example application
+      * KDU_INCLUDE_TIFF
+           -- This is only required to enable integration of the "libtiff"
+              library into "kdu_compress", not to enable reading/writing of
+              TIFF files per se.
+           -- From v5.1, Kakadu comes with its own native TIFF directory
+              read/write/edit implementation, in the form of the `kdu_tiffdir'
+              class.  This object may be used to manipulate TIFF structures
+              embedded in JP2/JPX boxes (e.g., GeoJP2 boxes) or to read/write
+              TIFF files themselves.  As a result, the "kdu_compress" and
+              "kdu_expand" demo applications now natively support reading and
+              writing of TIFF files; however, since these are only
+              demonstrations, they do not provide any support for reading
+              compressed data samples found within TIFF files (e.g., packbits,
+              LZ or JPEG compressed TIFF's).  You can, however, add support
+              for reading such files to "kdu_compress", as follows: obtain the
+              "libtiff" package yourself (it is publically available
+              from the web) and compile and link "kdu_compress" against it,
+              defining KDU_INCLUDE_TIFF.
+
+D) DirectX inclusion options for the "kdu_vex_fast" example application
+      * KDU_DX9
+           -- This is required if you wish to enable the highly efficient
+              real-time display demonstration code in "kdu_vex_fast".  It
+              should be provided only for Win32/Win64 builds.
+           -- If you have not yet installed the DirectX SDK, version 9 or
+              above, you will want to remove this symbol from the
+              pre-processor definitions in .NET 2005 build environments.
+
+E) Miscellaneous
+      * KDU_NO_SCHED_SUPPORT
+           -- Define this on Unix systems which offer pthreads support
+              do not support the "sched_..." functions encountered in
+              "kdu_elementary.h".  At least older versions of solaris
+              appear to be in this category, which is why this macro
+              is defined in the Solaris makefiles provided.
+
+-------------------------------------------------------------------------------
+SECTION 6: Source Files
+-----------------------
+  * "coresys/common"
+      kdu_arch.h               -- Architecture-specific definitions
+      kdu_arch.cpp             -- Architecture-specific startup tests
+      kdu_elementary.h         -- Definitions of elementary quantities
+      kdu_threads.h            -- Definitions used for multi-threading
+      kdu_messaging.h          -- Dynamically customizable messaging services
+      kdu_utils.h              -- Some convenient utilities.
+      kdu_params.h             -- Access the parameter sub-system
+      kdu_compressed.h         -- Access the compressed data sub-system     
+      kdu_sample_processing.h  -- Access the sample data processing sub-system
+      kdu_block_coding.h       -- Access the coding sub-system
+      kdu_kernels.h     -- Methods for generating DWT kernel information
+  * "coresys/threads"
+      threads_local.h
+      kdu_threads.cpp
+  * "coresys/messaging"
+      messaging.cpp
+  * "coresys/parameters"
+      params_local.h
+      params.cpp
+  * "coresys/compressed"
+      compressed_local.h
+      codestream.cpp
+      compressed.cpp
+      blocks.cpp
+  * "coresys/transform"
+      multi_transform_local.h
+      transform_local.h
+      analysis_local.h
+      synthesis_local.h
+      colour.cpp
+      analysis.cpp
+      synthesis.cpp
+      multi_transform.cpp
+      x86_dwt_local.h -- Included by KDU_X86_INTRINSICS (see Section 5)
+      x86_colour_local.h -- Included by KDU_X86_INTRINSICS (see Section 5)
+      msvc_dwt_mmx_local.h -- Included by KDU_PENTIUM_MSVC (see Section 5)
+      msvc_colour_mmx_local.h -- Included by KDU_PENTIUM_MSVC (see Section 5)
+      gcc_dwt_mmx_local.h -- Included by KDU_PENTIUM_GCC (see Section 5)
+      gcc_colour_mmx_local.h -- Included by KDU_PENTIUM_GCC (see Section 5)
+      gcc_dwt_altivec_local.h -- Included by KDU_ALTIVEC_GCC (see Section 5)
+      gcc_colour_altivec_local.h -- Included by KDU_ALTIVEC_GCC (see Section 5)
+      gcc_dwt_sparcvis_local.h -- Included by KDU_SPARCVIS_GCC (see Section 5)
+      gcc_colour_sparcvis_local.h -- Included by KDU_SPARCVIS_GCC (see Sec. 5)
+  * "coresys/coding"
+      mq_decoder.h
+      mq_decoder.cpp
+      mq_encoder.h
+      mq_encoder.cpp
+      block_coding_common.h
+      block_coding_common.cpp -- Common to block_encoder and block_decoder
+      decoder.cpp
+      block_decoder.cpp
+      encoder.cpp
+      block_encoder.cpp
+      x86_coder_local.h -- Included by KDU_X86_INTRINSICS (see Section 5)
+      msvc_coder_mmx_local.h -- Included by KDU_PENTIUM_MSVC (see Section 5)
+      gcc_coder_mmx_local.h -- Included by KDU_PENTIUM_GCC (see Section 5)
+      msvc_block_decode_asm.h -- Included by KDU_PENTIUM_MSVC (see Section 5)
+
+  * "apps/args"
+      kdu_args.h          -- Command-line argument processing declarations
+      args.cpp            -- Command-line argument processing implementation
+
+  * "apps/compressed-io"
+      kdu_file_io.h  -- Objects for interfacing with raw code-stream files
+      kdu_video_io.h -- Interfaces to a simple code-stream video file format
+      jp2.h          -- Rational interface to the JP2 file format
+      jpx.h          -- Rational interface to the JPX file format
+      mj2.h          -- Rational interface to the Motion JPEG2000 file format
+      kdu_cache.h    -- Public interface for "kdu_cache" caching data source
+      kdu_client.h   -- Public interface to the derived "kdu_client" source
+      kdu_clientx.h  -- Public interface to the "kdu_clientx" client translator
+      kdu_client_window.h -- Used extensively for client-server communications
+
+  * "apps/caching_sources"
+      kdu_cache.cpp      -- Platform independent, flexible caching data source
+      cache_local.h
+
+  * "apps/client_server"
+      kdcs_comms.cpp     -- Platform neutral tools for network comms
+      kdcs_comms.h       -- header for the above
+      kdu_client_window.cpp -- Window-of-interest for JPIP clients and servers
+
+  * "apps/kdu_client"
+      kdu_client.cpp     -- Powerful platform neutral JPIP client
+      client_local.h
+      kdu_clientx.cpp    -- Platform independent translator for sophsiticated
+      clientx_local.h       efficient JPIP cache re-use with complex JPX files
+
+  * "apps/image"
+      kdu_image.h    -- Abstract image file I/O declarations
+      image_local.h  -- Implementation specific headers
+      image_in.cpp   -- Implements readers for various image file formats
+      image_out.cpp  -- Implements writers for various image file formats
+      palette.cpp    -- Implements colour palette rearrangement heuristics
+      kdu_tiff.h     -- Defines `kdu_tiffdir' for manipulating TIFF directories
+      kdu_tiff.cpp   -- Implements the `kdu_tiffdir' class
+
+  * "apps/jp2"
+      jp2_shared.h  -- Services shared between JP2, JPX and MJ2
+      jp2_local.h
+      jp2.cpp       -- JP2 file format and core JP2-family services
+      jpx_local.h
+      jpx.cpp       -- Extensions for JPX (animations/composition/metadata/...)
+      mj2_local.h
+      mj2.cpp       -- Extensions for MJ2 (motion JPEG2000)
+
+  * "apps/kdu_buffered_compress"
+      kdu_buffered_compress.cpp -- Main application (buffer-based compressor)
+
+  * "apps/kdu_buffered_expand"
+      kdu_buffered_expand.cpp -- Main application (buffer-based decompressor)
+
+  * "apps/kdu_compress"
+      kdu_compress.cpp    -- Main application (File-based compressor)
+      compress_local.h    -- Private header for above
+      roi_sources.h       -- Defines interfaces to useful ROI mask sources
+      roi_sources.cpp     -- Implements two useful ROI geometry engines
+
+  * "apps/kdu_expand"
+      kdu_expand.cpp -- Main application (File-based decompressor)
+      expand_local.h
+
+  * "apps/kdu_hyperdoc"
+      kdu_hyperdoc.cpp -- Main documentation compiler
+      jni_builder.cpp  -- Extra elements for building Java native interfaces
+      mni_builder.cpp -- Extra elements for building C#/Visual Basic interfaces
+      aux_builder.cpp -- Builds auxiliary API interfaces used by JNI and MNI.
+      hyperdoc_local.h -- Local headers used by above
+
+  * "apps/kdu_maketlm"
+      kdu_maketlm    -- Main application (adds TLM markers to existing stream)
+      kdu_maketlm.h
+
+  * "apps/kdu_merge"
+      kdu_merge.cpp -- Main app (merge multiple JP2, JPX, MJ2 files into single
+      kdu_merge.h      JPX file, allowing custom layers with codestream mixing)
+
+  * "apps/kdu_render"
+      kdu_render.cpp -- Main app (contains 6 rendering demos to get you
+                        up and running with the greatest of ease)
+
+  * "apps/kdu_server"
+      kdu_server.cpp -- Main application (Platform neutral JPIP server)
+      server_local.h -- Private header for above
+      connection.cpp -- Manages connections
+      sources.cpp    -- Manages sources and source serving threads
+
+      kdu_serve.cpp  -- Powerful generic object(s) for building image servers
+      kdu_serve.h    -- Public header describing interfaces to above object(s)
+      serve_local.h  -- Private header for above implementation
+
+      kdu_security.cpp  -- AES (Rijndael) encryption services
+      kdu_security.h    -- Public header for above
+
+      kdu_servex.cpp -- Digests JP2/JPX files & raw codestreams for kdu_serve
+      kdu_servex.h   -- Public header for above
+      servex_local.h -- Private header for above implementation
+
+  * "apps/kdu_server_admin"
+      kdu_server_admin.cpp  -- Main application (remote admin for server)
+
+  * apps/kdu_macshow"
+      main.m
+      kdms_window.h
+      kdms_window.mm
+      kdms_renderer.h
+      kdms_renderer.mm
+      kdms_controller.h
+      kdms_controller.mm
+      kdms_properties.h
+      kdms_properties.mm
+      kdms_metashow.h
+      kdms_metashow.mm
+      kdms_metadata_editor.h
+      kdms_metadata_editor.mm
+      kdms_catalog.h
+      kdms_catalog.mm
+
+  * apps/kdu_winshow"
+      kdws_window.h
+      kdws_window.cpp
+      kdws_renderer.h
+      kdws_renderer.cpp
+      kdws_manager.h
+      kdws_manager.cpp
+      kdws_properties.h
+      kdws_properties.cpp
+      kdws_metashow.h
+      kdws_metashow.cpp
+      kdws_metadata_editor.h
+      kdws_metadata_editor.cpp
+      kdws_catalog.h
+      kdws_catalog.cpp
+      menu_tips.h
+      menu_tips.cpp
+      resource.h
+      StdAfx.cpp
+      StdAfx.h
+
+  * "apps/support" -- Contains high level interfaces for conveniently
+                      interacting with the Kakadu system
+
+      kdu_region_compositor.cpp      -- Very extensive support for interactive
+      kdu_region_compositor.h           applications, compositing, animation,
+      region_compositor_local.h         metadata overlays, etc.
+      x86_region_compositor_local.h -- included by KDU_X86_INTRINSICS (Sec 5)
+      msvc_region_compositor_local.h -- included by KDU_PENTIUM_MSVC (Sec 5)
+
+      kdu_region_decompressor.cpp -- Key to building interactive applications
+      kdu_region_decompressor.h   -- Public header for above
+      region_decompressor_local.h -- Local header for above
+      x86_region_decompressor_local.h -- included by KDU_X86_INTRINSICS (Sec 5)
+      msvc_region_decompressor_local.h -- included by KDU_PENTIUM_MSVC (Sec 5)
+
+      kdu_stripe_compressor.cpp -- Memory-buffered compression
+      kdu_stripe_compressor.h   -- Public header for above
+      stripe_compressor_local.h -- Local header for above
+
+      kdu_stripe_decompressor.cpp -- Memory-buffered decompression
+      kdu_stripe_decompressor.h   -- Public header for above
+      stripe_decompressor_local.h -- Local header for above
+
+  * "apps/kdu_text_extractor"
+      kdu_text_extractor.cpp -- Tool to populate the "language" directory
+      text_extractor_local.h
+
+  * "apps/kdu_transcode"
+      kdu_transcode.cpp  -- Main application
+
+  * "apps/kdu_v_compress"
+      kdu_v_compress.cpp -- Simple video compressor
+      v_compress_local.h
+
+  * "apps/kdu_v_expand"
+      kdu_v_expand.cpp   -- Simple video decompressor
+      v_expand_local.h
+
+  * "apps/kdu_vex_fast"
+      kdu_vex_fast.cpp -- High performance video decompressor demo app
+      kdu_vex.cpp -- Re-usable objects for high performance video rendering
+      kdu_vex.h -- Public header for objects implemented in "kdu_vex.cpp"
+      vex_display.cpp -- DirectX 9 display and frame timing objects
+      vex_display.h -- Header for above
+
+  * "managed/java_samples"
+      KduRender.java -- Simple demo of incremental image rendering in Java
+      KduRender2.java -- As above but uses the powerful `kdu_region_compositor'
+
+  * "managed/csharp_samples"
+      KduRender.cs -- Same as KduRender.java, but implemented in C#
+      KduRender2.cs -- Same as KduRender2.java, but implemented in C#

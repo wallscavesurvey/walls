@@ -1,0 +1,69 @@
+<HTML>
+<HEAD>
+<TITLE>Kakadu Hyper-Doc (Blank)</TITLE>
+</HEAD>
+<BODY TEXT="#000000" LINK="#0000ff" BGCOLOR="#FFFFFF">
+<H2>You have not yet compiled the Kakadu documentation</H2>
+<DIR><H3>Run "kdu_hyperdoc" using one of the following methods</H3>
+<UL>
+<LI>
+    On Unix/Linux/MAC platforms:
+    <UL>
+    <LI>
+        First invoke the relevant makefile from <B>"coresys/make"</B> to
+        build the core system -- this first step is not strictly necessary,
+        but it allows you to build all applications (not just "kdu_hyperdoc")
+        in the next step.
+    </LI><LI>
+        Next, invoke the relevant makefile from <B>"apps/make"</B>.  This
+        will build all example applications and also build and run
+        "kdu_hyperdoc", generating all HTML documentation and Java language
+        bindings.
+    </LI>
+    </UL>
+</LI><LI>
+    On Windows platforms with .NET:
+    <UL>
+    <LI>
+        First open the <B>"coresys/coresys.sln"</B> workspace and navigate to
+        menu item "build->batch build", clicking "rebuild all" after checking
+        both the "debug" and "release" versions -- this first step is not
+        strictly necessary if you only want to run "kdu_hyperdoc", but it
+        is required to build most of the applications later on.
+    </LI><LI>
+        Next, open the <B>"apps/apps.sln"</B> workspace and build the
+        applications of interest.  To build and run "kdu_hyperdoc", it is
+        sufficient to build only the "kdu_hyperdoc" project in the
+        workspace -- a post-build operation will construct all HTML
+        documentation, plus Java, C# and Visual Basic language bindings.  To
+        batch-build all applications, go to menu item "build->batch build" and
+        check only the release versions (fastest and smallest), or only the
+        debug versions, then click "rebuild all".
+    </LI>
+    </UL>
+</LI><LI>
+    On Windows platforms with Visual C++ version 6:
+    <UL>
+    <LI>
+        First open the <B>"coresys/coresys.dsw"</B> workspace and navigate to
+        menu item "build->batch build", clicking "rebuild all" after checking
+        both the "debug" and "release" versions -- this first step is not
+        strictly necessary if you only want to run "kdu_hyperdoc", but it
+        is required to build most of the applications later on.
+    </LI><LI>
+        Next, open the <B>"apps/apps.dsw"</B> workspace and build the
+        applications of interest.  To build and run "kdu_hyperdoc", it is
+        sufficient to build only the "kdu_hyperdoc" project in the
+        workspace -- a post-build operation will construct all HTML
+        documentation, plus Java, C# and Visual Basic language bindings.  To
+        batch-build all applications, go to menu item "build->batch build" and
+        check only the release versions (fastest and smallest), or only the
+        debug versions, then click "rebuild all".
+    </LI>
+    </UL>
+</LI><LI>
+    For more information, read the <B>"Compiling_Instructions.txt"</B> file.
+</LI>
+</UL>
+</BODY>
+</HTML>

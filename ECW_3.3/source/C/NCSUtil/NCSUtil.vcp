@@ -1,0 +1,3565 @@
+# Microsoft eMbedded Visual Tools Project File - Name="NCSUtil" - Package Owner=<4>
+# Microsoft eMbedded Visual Tools Generated Build File, Format Version 6.02
+# ** DO NOT EDIT **
+
+# TARGTYPE "Win32 (WCE x86em) Dynamic-Link Library" 0x7f02
+# TARGTYPE "Win32 (WCE SH3) Dynamic-Link Library" 0x8102
+# TARGTYPE "Win32 (WCE x86) Dynamic-Link Library" 0x8302
+# TARGTYPE "Win32 (WCE ARM) Dynamic-Link Library" 0x8502
+# TARGTYPE "Win32 (WCE SH4) Dynamic-Link Library" 0x8602
+# TARGTYPE "Win32 (WCE MIPS) Dynamic-Link Library" 0x8202
+
+CFG=NCSUtil - Win32 (WCE MIPS) Debug
+!MESSAGE This is not a valid makefile. To build this project using NMAKE,
+!MESSAGE use the Export Makefile command and run
+!MESSAGE 
+!MESSAGE NMAKE /f "NCSUtil.vcn".
+!MESSAGE 
+!MESSAGE You can specify a configuration when running NMAKE
+!MESSAGE by defining the macro CFG on the command line. For example:
+!MESSAGE 
+!MESSAGE NMAKE /f "NCSUtil.vcn" CFG="NCSUtil - Win32 (WCE MIPS) Debug"
+!MESSAGE 
+!MESSAGE Possible choices for configuration are:
+!MESSAGE 
+!MESSAGE "NCSUtil - Win32 (WCE MIPS) Release" (based on "Win32 (WCE MIPS) Dynamic-Link Library")
+!MESSAGE "NCSUtil - Win32 (WCE MIPS) Debug" (based on "Win32 (WCE MIPS) Dynamic-Link Library")
+!MESSAGE "NCSUtil - Win32 (WCE SH4) Release" (based on "Win32 (WCE SH4) Dynamic-Link Library")
+!MESSAGE "NCSUtil - Win32 (WCE SH4) Debug" (based on "Win32 (WCE SH4) Dynamic-Link Library")
+!MESSAGE "NCSUtil - Win32 (WCE SH3) Release" (based on "Win32 (WCE SH3) Dynamic-Link Library")
+!MESSAGE "NCSUtil - Win32 (WCE SH3) Debug" (based on "Win32 (WCE SH3) Dynamic-Link Library")
+!MESSAGE "NCSUtil - Win32 (WCE ARM) Release" (based on "Win32 (WCE ARM) Dynamic-Link Library")
+!MESSAGE "NCSUtil - Win32 (WCE ARM) Debug" (based on "Win32 (WCE ARM) Dynamic-Link Library")
+!MESSAGE "NCSUtil - Win32 (WCE x86) Release" (based on "Win32 (WCE x86) Dynamic-Link Library")
+!MESSAGE "NCSUtil - Win32 (WCE x86) Debug" (based on "Win32 (WCE x86) Dynamic-Link Library")
+!MESSAGE "NCSUtil - Win32 (WCE x86em) Release" (based on "Win32 (WCE x86em) Dynamic-Link Library")
+!MESSAGE "NCSUtil - Win32 (WCE x86em) Debug" (based on "Win32 (WCE x86em) Dynamic-Link Library")
+!MESSAGE 
+
+# Begin Project
+# PROP AllowPerConfigDependencies 0
+# PROP Scc_ProjName ""$/NCS/Source/NCSNightlyBuild", RAIAAAAA"
+# PROP Scc_LocalPath "..\..\ncsnightlybuild"
+# PROP ATL_Project 2
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "MIPSRel"
+# PROP BASE Intermediate_Dir "MIPSRel"
+# PROP BASE CPU_ID "{D6519010-710F-11D3-99F2-00105A0DF099}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "MIPSRel"
+# PROP Intermediate_Dir "MIPSRel"
+# PROP CPU_ID "{D6519010-710F-11D3-99F2-00105A0DF099}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+RSC=rc.exe
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "NDEBUG" /d "$(CePlatform)" /d "MIPS" /d "_MIPS_" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "NDEBUG" /d "$(CePlatform)" /d "MIPS" /d "_MIPS_" /r
+CPP=clmips.exe
+# ADD BASE CPP /nologo /W3 /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "MIPS" /D "_MIPS_" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "NDEBUG" /D "_USRDLL" /D "NCSUTIL_EXPORTS" /YX /Oxs /M$(CECrtMT) /c
+# ADD CPP /nologo /W3 /D "WIN32" /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "MIPS" /D "_MIPS_" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "NDEBUG" /D "_USRDLL" /D "NCSUTIL_EXPORTS" /Oxs /M$(CECrtMT) /c
+# SUBTRACT CPP /YX
+MTL=midl.exe
+# ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 commctrl.lib coredll.lib /nologo /base:"0x00100000" /stack:0x10000,0x1000 /entry:"_DllMainCRTStartup" /dll /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /MACHINE:MIPS
+# ADD LINK32 commctrl.lib coredll.lib oleaut32.lib /nologo /base:"0x00100000" /stack:0x10000,0x1000 /entry:"_DllMainCRTStartup" /dll /pdb:"../../../bin/WinCE/MIPS/NCSUtil.pdb" /nodefaultlib:"$(CENoDefaultLib)" /out:"../../../bin/WinCE/MIPS/NCSUtil.dll" /implib:"../../../lib/WinCE/MIPS/NCSUtil.lib" /subsystem:$(CESubsystem) /MACHINE:MIPS
+# SUBTRACT LINK32 /pdb:none
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 1
+# PROP BASE Output_Dir "MIPSDbg"
+# PROP BASE Intermediate_Dir "MIPSDbg"
+# PROP BASE CPU_ID "{D6519010-710F-11D3-99F2-00105A0DF099}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 1
+# PROP Output_Dir "MIPSDbg"
+# PROP Intermediate_Dir "MIPSDbg"
+# PROP CPU_ID "{D6519010-710F-11D3-99F2-00105A0DF099}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+RSC=rc.exe
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "DEBUG" /d "$(CePlatform)" /d "MIPS" /d "_MIPS_" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "DEBUG" /d "$(CePlatform)" /d "MIPS" /d "_MIPS_" /r
+CPP=clmips.exe
+# ADD BASE CPP /nologo /W3 /Zi /Od /D "DEBUG" /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "MIPS" /D "_MIPS_" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "_USRDLL" /D "NCSUTIL_EXPORTS" /YX /M$(CECrtMTDebug) /c
+# ADD CPP /nologo /W3 /Zi /Od /D "WIN32" /D "DEBUG" /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "MIPS" /D "_MIPS_" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "_USRDLL" /D "NCSUTIL_EXPORTS" /M$(CECrtMTDebug) /c
+# SUBTRACT CPP /YX
+MTL=midl.exe
+# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 commctrl.lib coredll.lib /nologo /base:"0x00100000" /stack:0x10000,0x1000 /entry:"_DllMainCRTStartup" /dll /debug /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /MACHINE:MIPS
+# ADD LINK32 commctrl.lib coredll.lib oleaut32.lib /nologo /base:"0x00100000" /stack:0x10000,0x1000 /entry:"_DllMainCRTStartup" /dll /pdb:"../../../bin/WinCE/MIPS/NCSUtild.pdb" /debug /nodefaultlib:"$(CENoDefaultLib)" /out:"../../../bin/WinCE/MIPS/NCSUtild.dll" /implib:"../../../lib/WinCE/MIPS/NCSUtild.lib" /subsystem:$(CESubsystem) /MACHINE:MIPS
+# SUBTRACT LINK32 /pdb:none
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "SH4Rel"
+# PROP BASE Intermediate_Dir "SH4Rel"
+# PROP BASE CPU_ID "{D6519021-710F-11D3-99F2-00105A0DF099}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "SH4Rel"
+# PROP Intermediate_Dir "SH4Rel"
+# PROP CPU_ID "{D6519021-710F-11D3-99F2-00105A0DF099}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+RSC=rc.exe
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "NDEBUG" /d "UNICODE" /d "_UNICODE" /d "$(CePlatform)" /d "SHx" /d "SH4" /d "_SH4_" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "NDEBUG" /d "UNICODE" /d "_UNICODE" /d "$(CePlatform)" /d "SHx" /d "SH4" /d "_SH4_" /r
+CPP=shcl.exe
+# ADD BASE CPP /nologo /W3 /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "SHx" /D "SH4" /D "_SH4_" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "NDEBUG" /D "_USRDLL" /D "NCSUTIL_EXPORTS" /YX /Qsh4 /Oxs /M$(CECrtMT) /c
+# ADD CPP /nologo /W3 /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "SHx" /D "SH4" /D "_SH4_" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "NDEBUG" /D "_USRDLL" /D "NCSUTIL_EXPORTS" /YX /Qsh4 /Oxs /M$(CECrtMT) /c
+MTL=midl.exe
+# ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 commctrl.lib coredll.lib /nologo /base:"0x00100000" /stack:0x10000,0x1000 /entry:"_DllMainCRTStartup" /dll /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /MACHINE:SH4
+# ADD LINK32 commctrl.lib coredll.lib /nologo /base:"0x00100000" /stack:0x10000,0x1000 /entry:"_DllMainCRTStartup" /dll /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /MACHINE:SH4
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 1
+# PROP BASE Output_Dir "SH4Dbg"
+# PROP BASE Intermediate_Dir "SH4Dbg"
+# PROP BASE CPU_ID "{D6519021-710F-11D3-99F2-00105A0DF099}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 1
+# PROP Output_Dir "SH4Dbg"
+# PROP Intermediate_Dir "SH4Dbg"
+# PROP CPU_ID "{D6519021-710F-11D3-99F2-00105A0DF099}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+RSC=rc.exe
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "DEBUG" /d "UNICODE" /d "_UNICODE" /d "$(CePlatform)" /d "SHx" /d "SH4" /d "_SH4_" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "DEBUG" /d "UNICODE" /d "_UNICODE" /d "$(CePlatform)" /d "SHx" /d "SH4" /d "_SH4_" /r
+CPP=shcl.exe
+# ADD BASE CPP /nologo /W3 /Zi /Od /D "DEBUG" /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "SHx" /D "SH4" /D "_SH4_" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "_USRDLL" /D "NCSUTIL_EXPORTS" /YX /Qsh4 /M$(CECrtMTDebug) /c
+# ADD CPP /nologo /W3 /Zi /Od /D "DEBUG" /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "SHx" /D "SH4" /D "_SH4_" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "_USRDLL" /D "NCSUTIL_EXPORTS" /YX /Qsh4 /M$(CECrtMTDebug) /c
+MTL=midl.exe
+# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 commctrl.lib coredll.lib /nologo /base:"0x00100000" /stack:0x10000,0x1000 /entry:"_DllMainCRTStartup" /dll /debug /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /MACHINE:SH4
+# ADD LINK32 commctrl.lib coredll.lib /nologo /base:"0x00100000" /stack:0x10000,0x1000 /entry:"_DllMainCRTStartup" /dll /debug /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /MACHINE:SH4
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "SH3Rel"
+# PROP BASE Intermediate_Dir "SH3Rel"
+# PROP BASE CPU_ID "{D6519020-710F-11D3-99F2-00105A0DF099}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "SH3Rel"
+# PROP Intermediate_Dir "SH3Rel"
+# PROP CPU_ID "{D6519020-710F-11D3-99F2-00105A0DF099}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Target_Dir ""
+RSC=rc.exe
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "NDEBUG" /d "$(CePlatform)" /d "SHx" /d "SH3" /d "_SH3_" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "NDEBUG" /d "$(CePlatform)" /d "SHx" /d "SH3" /d "_SH3_" /r
+CPP=shcl.exe
+# ADD BASE CPP /nologo /W3 /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "SHx" /D "SH3" /D "_SH3_" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "NDEBUG" /D "_USRDLL" /D "NCSUTIL_EXPORTS" /YX /Oxs /M$(CECrtMT) /c
+# ADD CPP /nologo /W3 /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "SHx" /D "SH3" /D "_SH3_" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "NDEBUG" /D "_USRDLL" /D "NCSUTIL_EXPORTS" /YX /Oxs /M$(CECrtMT) /c
+MTL=midl.exe
+# ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 commctrl.lib coredll.lib /nologo /base:"0x00100000" /stack:0x10000,0x1000 /entry:"_DllMainCRTStartup" /dll /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /MACHINE:SH3
+# ADD LINK32 commctrl.lib coredll.lib /nologo /base:"0x00100000" /stack:0x10000,0x1000 /entry:"_DllMainCRTStartup" /dll /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /MACHINE:SH3
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 1
+# PROP BASE Output_Dir "SH3Dbg"
+# PROP BASE Intermediate_Dir "SH3Dbg"
+# PROP BASE CPU_ID "{D6519020-710F-11D3-99F2-00105A0DF099}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 1
+# PROP Output_Dir "SH3Dbg"
+# PROP Intermediate_Dir "SH3Dbg"
+# PROP CPU_ID "{D6519020-710F-11D3-99F2-00105A0DF099}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Target_Dir ""
+RSC=rc.exe
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "DEBUG" /d "$(CePlatform)" /d "SHx" /d "SH3" /d "_SH3_" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "DEBUG" /d "$(CePlatform)" /d "SHx" /d "SH3" /d "_SH3_" /r
+CPP=shcl.exe
+# ADD BASE CPP /nologo /W3 /Zi /Od /D "DEBUG" /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "SHx" /D "SH3" /D "_SH3_" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "_USRDLL" /D "NCSUTIL_EXPORTS" /YX /M$(CECrtMTDebug) /c
+# ADD CPP /nologo /W3 /Zi /Od /D "DEBUG" /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "SHx" /D "SH3" /D "_SH3_" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "_USRDLL" /D "NCSUTIL_EXPORTS" /YX /M$(CECrtMTDebug) /c
+MTL=midl.exe
+# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 commctrl.lib coredll.lib /nologo /base:"0x00100000" /stack:0x10000,0x1000 /entry:"_DllMainCRTStartup" /dll /debug /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /MACHINE:SH3
+# ADD LINK32 commctrl.lib coredll.lib /nologo /base:"0x00100000" /stack:0x10000,0x1000 /entry:"_DllMainCRTStartup" /dll /debug /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /MACHINE:SH3
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "ARMRel"
+# PROP BASE Intermediate_Dir "ARMRel"
+# PROP BASE CPU_ID "{D6518FFC-710F-11D3-99F2-00105A0DF099}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "ARMRel"
+# PROP Intermediate_Dir "ARMRel"
+# PROP CPU_ID "{D6518FFC-710F-11D3-99F2-00105A0DF099}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+RSC=rc.exe
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "NDEBUG" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "NDEBUG" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /r
+CPP=clarm.exe
+# ADD BASE CPP /nologo /W3 /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "ARM" /D "_ARM_" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "NDEBUG" /D "_USRDLL" /D "NCSUTIL_EXPORTS" /YX /Oxs /M$(CECrtMT) /c
+# ADD CPP /nologo /W3 /D "WIN32" /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "ARM" /D "_ARM_" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "NDEBUG" /D "_USRDLL" /D "NCSUTIL_EXPORTS" /YX /Oxs /M$(CECrtMT) /c
+MTL=midl.exe
+# ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 commctrl.lib coredll.lib /nologo /base:"0x00100000" /stack:0x10000,0x1000 /entry:"_DllMainCRTStartup" /dll /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+# ADD LINK32 commctrl.lib coredll.lib oleaut32.lib shlwapi.lib /nologo /base:"0x00100000" /stack:0x10000,0x1000 /entry:"_DllMainCRTStartup" /dll /pdb:"../../../bin/WinCE/TMP/NCSUtil.pdb" /nodefaultlib:"$(CENoDefaultLib)" /out:"../../../bin/WinCE/TMP/NCSUtil.dll" /implib:"../../../lib/WinCE/TMP/NCSUtil.lib" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+# SUBTRACT LINK32 /pdb:none
+# Begin Special Build Tool
+SOURCE="$(InputPath)"
+PostBuild_Cmds=mkdir "..\..\..\bin\WinCE\$(CEConfigName)"	mkdir "..\..\..\bin\WinCE\$(CEConfigName)\ARM"	mkdir "..\..\..\lib\WinCE\$(CEConfigName)\ARM"	copy ..\..\..\bin\WinCE\TMP\NCSUtil.dll "../../../bin/WinCE\$(CEConfigName)\ARM\NCSUtil.dll"	copy ..\..\..\lib\WinCE\TMP\NCSUtil.lib "../../../lib/WinCE\$(CEConfigName)\ARM\NCSUtil.lib"	del ..\..\..\lib\WinCE\TMP\NCSUtil.exp
+# End Special Build Tool
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 1
+# PROP BASE Output_Dir "ARMDbg"
+# PROP BASE Intermediate_Dir "ARMDbg"
+# PROP BASE CPU_ID "{D6518FFC-710F-11D3-99F2-00105A0DF099}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 1
+# PROP Output_Dir "ARMDbg"
+# PROP Intermediate_Dir "ARMDbg"
+# PROP CPU_ID "{D6518FFC-710F-11D3-99F2-00105A0DF099}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+RSC=rc.exe
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "DEBUG" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "DEBUG" /d "$(CePlatform)" /d "ARM" /d "_ARM_" /r
+CPP=clarm.exe
+# ADD BASE CPP /nologo /W3 /Zi /Od /D "DEBUG" /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "ARM" /D "_ARM_" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "_USRDLL" /D "NCSUTIL_EXPORTS" /YX /M$(CECrtMTDebug) /c
+# ADD CPP /nologo /W3 /Zi /Od /D "WIN32" /D "DEBUG" /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "ARM" /D "_ARM_" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "_USRDLL" /D "NCSUTIL_EXPORTS" /YX /M$(CECrtMTDebug) /c
+MTL=midl.exe
+# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 commctrl.lib coredll.lib /nologo /base:"0x00100000" /stack:0x10000,0x1000 /entry:"_DllMainCRTStartup" /dll /debug /nodefaultlib:"$(CENoDefaultLib)" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+# ADD LINK32 commctrl.lib coredll.lib oleaut32.lib /nologo /base:"0x00100000" /stack:0x10000,0x1000 /entry:"_DllMainCRTStartup" /dll /pdb:"../../../bin/WinCE/TMP/NCSUtild.pdb" /debug /nodefaultlib:"$(CENoDefaultLib)" /def:".\NCSUtilce.def" /out:"../../../bin/WinCE\TMP\NCSUtild.dll" /implib:"../../../lib/WinCE/TMP/NCSUtild.lib" /subsystem:$(CESubsystem) /align:"4096" /MACHINE:ARM
+# SUBTRACT LINK32 /pdb:none
+# Begin Special Build Tool
+SOURCE="$(InputPath)"
+PostBuild_Cmds=mkdir "..\..\..\bin\WinCE\$(CEConfigName)"	mkdir "..\..\..\bin\WinCE\$(CEConfigName)\ARM"	mkdir "..\..\..\lib\WinCE\$(CEConfigName)\ARM"	copy ..\..\..\bin\WinCE\TMP\NCSUtild.dll "../../../bin/WinCE\$(CEConfigName)\ARM\NCSUtild.dll"	copy ..\..\..\bin\WinCE\TMP\NCSUtild.pdb "../../../bin/WinCE\$(CEConfigName)\ARM\NCSUtild.pdb"	copy ..\..\..\lib\WinCE\TMP\NCSUtild.lib "../../../lib/WinCE\$(CEConfigName)\ARM\NCSUtild.lib"	del ..\..\..\lib\WinCE\TMP\NCSUtild.exp
+# End Special Build Tool
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "X86Rel"
+# PROP BASE Intermediate_Dir "X86Rel"
+# PROP BASE CPU_ID "{D6518FF3-710F-11D3-99F2-00105A0DF099}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "X86Rel"
+# PROP Intermediate_Dir "X86Rel"
+# PROP CPU_ID "{D6518FF3-710F-11D3-99F2-00105A0DF099}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+RSC=rc.exe
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "NDEBUG" /d "$(CePlatform)" /d "_X86_" /d "x86" /d "_i386_" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "NDEBUG" /d "$(CePlatform)" /d "_X86_" /d "x86" /d "_i386_" /r
+# SUBTRACT RSC /x
+CPP=cl.exe
+# ADD BASE CPP /nologo /W3 /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "_i386_" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "_X86_" /D "x86" /D "NDEBUG" /D "_USRDLL" /D "NCSUTIL_EXPORTS" /YX /Gs8192 /GF /Oxs /c
+# ADD CPP /nologo /W3 /O2 /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "_i386_" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "_X86_" /D "x86" /D "NDEBUG" /D "_USRDLL" /D "NCSUTIL_EXPORTS" /YX /Gs8192 /c
+MTL=midl.exe
+# ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 commctrl.lib coredll.lib $(CEx86Corelibc) /nologo /base:"0x00100000" /stack:0x10000,0x1000 /entry:"_DllMainCRTStartup" /dll /nodefaultlib:"OLDNAMES.lib" /nodefaultlib:$(CENoDefaultLib) /subsystem:$(CESubsystem) /MACHINE:IX86
+# ADD LINK32 oleaut32.lib commctrl.lib coredll.lib $(CEx86Corelibc) /nologo /base:"0x00100000" /stack:0x10000,0x1000 /entry:"_DllMainCRTStartup" /dll /pdb:"../../../bin/WinCE/TMP/NCSUtil.pdb" /nodefaultlib:"OLDNAMES.lib" /nodefaultlib:$(CENoDefaultLib) /def:".\NCSUtilce.def" /out:"../../../bin/WinCE/TMP/NCSUtil.dll" /implib:"../../../lib/WinCE/TMP/NCSUtil.lib" /subsystem:$(CESubsystem) /MACHINE:IX86
+# SUBTRACT LINK32 /pdb:none
+# Begin Special Build Tool
+SOURCE="$(InputPath)"
+PostBuild_Cmds=mkdir "..\..\..\bin\WinCE\$(CEConfigName)"	mkdir "..\..\..\bin\WinCE\$(CEConfigName)\x86"	mkdir "..\..\..\lib\WinCE\$(CEConfigName)\x86"	copy ..\..\..\bin\WinCE\TMP\NCSUtil.dll "../../../bin/WinCE\$(CEConfigName)\x86\NCSUtil.dll"	copy ..\..\..\lib\WinCE\TMP\NCSUtil.lib "../../../lib/WinCE\$(CEConfigName)\x86\NCSUtil.lib"	del ..\..\..\lib\WinCE\TMP\NCSUtil.exp
+# End Special Build Tool
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 1
+# PROP BASE Output_Dir "X86Dbg"
+# PROP BASE Intermediate_Dir "X86Dbg"
+# PROP BASE CPU_ID "{D6518FF3-710F-11D3-99F2-00105A0DF099}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 1
+# PROP Output_Dir "X86Dbg"
+# PROP Intermediate_Dir "X86Dbg"
+# PROP CPU_ID "{D6518FF3-710F-11D3-99F2-00105A0DF099}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+RSC=rc.exe
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "DEBUG" /d "$(CePlatform)" /d "_X86_" /d "x86" /d "_i386_" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "DEBUG" /d "$(CePlatform)" /d "_X86_" /d "x86" /d "_i386_" /r
+CPP=cl.exe
+# ADD BASE CPP /nologo /W3 /Zi /Od /D "DEBUG" /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "_i386_" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "_X86_" /D "x86" /D "_USRDLL" /D "NCSUTIL_EXPORTS" /YX /Gs8192 /GF /c
+# ADD CPP /nologo /W3 /Zi /D "DEBUG" /D _WIN32_WCE=$(CEVersion) /D "$(CePlatform)" /D "_i386_" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "_X86_" /D "x86" /D "_USRDLL" /D "NCSUTIL_EXPORTS" /YX /Gs8192 /GF /c
+MTL=midl.exe
+# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 commctrl.lib coredll.lib $(CEx86Corelibc) /nologo /base:"0x00100000" /stack:0x10000,0x1000 /entry:"_DllMainCRTStartup" /dll /debug /nodefaultlib:"OLDNAMES.lib" /nodefaultlib:$(CENoDefaultLib) /subsystem:$(CESubsystem) /MACHINE:IX86
+# ADD LINK32 commctrl.lib coredll.lib $(CEx86Corelibc) oleaut32.lib /nologo /base:"0x00100000" /stack:0x10000,0x1000 /entry:"_DllMainCRTStartup" /dll /pdb:"../../../bin/WinCE/TMP/NCSUtild.pdb" /debug /nodefaultlib:"OLDNAMES.lib" /nodefaultlib:$(CENoDefaultLib) /def:".\NCSUtilce.def" /out:"../../../bin/WinCE/TMP/NCSUtild.dll" /implib:"../../../lib/WinCE/TMP/NCSUtild.lib" /subsystem:$(CESubsystem) /MACHINE:IX86
+# SUBTRACT LINK32 /pdb:none
+# Begin Special Build Tool
+SOURCE="$(InputPath)"
+PostBuild_Cmds=mkdir "..\..\..\bin\WinCE\$(CEConfigName)"	mkdir "..\..\..\bin\WinCE\$(CEConfigName)\x86"	mkdir "..\..\..\lib\WinCE\$(CEConfigName)\x86"	copy ..\..\..\bin\WinCE\TMP\NCSUtild.dll "../../../bin/WinCE\$(CEConfigName)\x86\NCSUtild.dll"	copy ..\..\..\bin\WinCE\TMP\NCSUtild.pdb "../../../bin/WinCE\$(CEConfigName)\x86\NCSUtild.pdb"	copy ..\..\..\lib\WinCE\TMP\NCSUtild.lib "../../../lib/WinCE\$(CEConfigName)\x86\NCSUtild.lib"	del ..\..\..\lib\WinCE\TMP\NCSUtild.exp
+# End Special Build Tool
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 0
+# PROP BASE Output_Dir "X86EMRel"
+# PROP BASE Intermediate_Dir "X86EMRel"
+# PROP BASE CPU_ID "{D6518FF4-710F-11D3-99F2-00105A0DF099}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 0
+# PROP Output_Dir "X86EMRel"
+# PROP Intermediate_Dir "X86EMRel"
+# PROP CPU_ID "{D6518FF4-710F-11D3-99F2-00105A0DF099}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+RSC=rc.exe
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "NDEBUG" /d "$(CePlatform)" /d "_X86_" /d "x86" /d "i486" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "NDEBUG" /d "$(CePlatform)" /d "_X86_" /d "x86" /d "i486" /r
+CPP=cl.exe
+# ADD BASE CPP /nologo /W3 /D _WIN32_WCE=$(CEVersion) /D "WIN32" /D "STRICT" /D "_WIN32_WCE_EMULATION" /D "INTERNATIONAL" /D "USA" /D "INTLMSG_CODEPAGE" /D "$(CePlatform)" /D "i486" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "_X86_" /D "x86" /D "NDEBUG" /YX /Gz /Oxs /c
+# ADD CPP /nologo /W3 /D _WIN32_WCE=$(CEVersion) /D "WIN32" /D "STRICT" /D "_WIN32_WCE_EMULATION" /D "INTERNATIONAL" /D "USA" /D "INTLMSG_CODEPAGE" /D "$(CePlatform)" /D "i486" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "_X86_" /D "x86" /D "NDEBUG" /YX /Gz /Oxs /c
+MTL=midl.exe
+# ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "NDEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 commctrl.lib coredll.lib $(CEx86Corelibc) /nologo /stack:0x10000,0x1000 /dll /nodefaultlib:"OLDNAMES.lib" /nodefaultlib:$(CENoDefaultLib) /windowsce:emulation /MACHINE:IX86
+# ADD LINK32 oleaut32.lib commctrl.lib coredll.lib $(CEx86Corelibc) /nologo /stack:0x10000,0x1000 /dll /pdb:"../../../../bin/WinCE\TMP\NCSUtil.pdb" /nodefaultlib:"OLDNAMES.lib" /nodefaultlib:$(CENoDefaultLib) /out:"../../../bin/WinCE/TMP/NCSUtil.dll" /implib:"../../../lib/WinCE/TMP/NCSUtil.lib" /windowsce:emulation /MACHINE:IX86
+# SUBTRACT LINK32 /pdb:none
+# Begin Special Build Tool
+SOURCE="$(InputPath)"
+PostBuild_Cmds=mkdir "..\..\..\bin\WinCE\$(CEConfigName)"	mkdir "..\..\..\bin\WinCE\$(CEConfigName)\x86"	mkdir "..\..\..\lib\WinCE\$(CEConfigName)\x86"	copy ..\..\..\bin\WinCE\TMP\NCSUtil.dll "../../../bin/WinCE\$(CEConfigName)\x86\NCSUtil.dll"	copy ..\..\..\lib\WinCE\TMP\NCSUtil.lib "../../../lib/WinCE\$(CEConfigName)\x86\NCSUtil.lib"	del ..\..\..\lib\WinCE\TMP\NCSUtil.exp
+# End Special Build Tool
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+# PROP BASE Use_MFC 0
+# PROP BASE Use_Debug_Libraries 1
+# PROP BASE Output_Dir "X86EMDbg"
+# PROP BASE Intermediate_Dir "X86EMDbg"
+# PROP BASE CPU_ID "{D6518FF4-710F-11D3-99F2-00105A0DF099}"
+# PROP BASE Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP BASE Target_Dir ""
+# PROP Use_MFC 0
+# PROP Use_Debug_Libraries 1
+# PROP Output_Dir "X86EMDbg"
+# PROP Intermediate_Dir "X86EMDbg"
+# PROP CPU_ID "{D6518FF4-710F-11D3-99F2-00105A0DF099}"
+# PROP Platform_ID "{8A9A2F80-6887-11D3-842E-005004848CBA}"
+# PROP Ignore_Export_Lib 0
+# PROP Target_Dir ""
+RSC=rc.exe
+# ADD BASE RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "DEBUG" /d "$(CePlatform)" /d "_X86_" /d "x86" /d "i486" /r
+# ADD RSC /l 0x409 /d UNDER_CE=$(CEVersion) /d _WIN32_WCE=$(CEVersion) /d "UNICODE" /d "_UNICODE" /d "DEBUG" /d "$(CePlatform)" /d "_X86_" /d "x86" /d "i486" /r
+CPP=cl.exe
+# ADD BASE CPP /nologo /W3 /Zi /Od /D "DEBUG" /D _WIN32_WCE=$(CEVersion) /D "WIN32" /D "STRICT" /D "_WIN32_WCE_EMULATION" /D "INTERNATIONAL" /D "USA" /D "INTLMSG_CODEPAGE" /D "$(CePlatform)" /D "i486" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "_X86_" /D "x86" /YX /Gz /c
+# ADD CPP /nologo /W3 /Zi /Od /D "DEBUG" /D _WIN32_WCE=$(CEVersion) /D "WIN32" /D "STRICT" /D "_WIN32_WCE_EMULATION" /D "INTERNATIONAL" /D "USA" /D "INTLMSG_CODEPAGE" /D "$(CePlatform)" /D "i486" /D UNDER_CE=$(CEVersion) /D "UNICODE" /D "_UNICODE" /D "_X86_" /D "x86" /YX /Gz /c
+MTL=midl.exe
+# ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+# ADD MTL /nologo /D "_DEBUG" /mktyplib203 /o "NUL" /win32
+BSC32=bscmake.exe
+# ADD BASE BSC32 /nologo
+# ADD BSC32 /nologo
+LINK32=link.exe
+# ADD BASE LINK32 commctrl.lib coredll.lib $(CEx86Corelibc) /nologo /stack:0x10000,0x1000 /dll /debug /nodefaultlib:"OLDNAMES.lib" /nodefaultlib:$(CENoDefaultLib) /windowsce:emulation /MACHINE:IX86
+# ADD LINK32 commctrl.lib coredll.lib $(CEx86Corelibc) oleaut32.lib /nologo /stack:0x10000,0x1000 /dll /pdb:"../../../bin/WinCE/TMP/NCSUtild.pdb" /debug /nodefaultlib:"OLDNAMES.lib" /nodefaultlib:$(CENoDefaultLib) /out:"../../../bin/WinCE/TMP/NCSUtild.dll" /implib:"../../../lib/WinCE/TMP/NCSUtild.lib" /windowsce:emulation /MACHINE:IX86
+# SUBTRACT LINK32 /pdb:none
+# Begin Special Build Tool
+SOURCE="$(InputPath)"
+PostBuild_Cmds=mkdir "..\..\..\bin\WinCE\$(CEConfigName)"	mkdir "..\..\..\bin\WinCE\$(CEConfigName)\x86"	mkdir "..\..\..\lib\WinCE\$(CEConfigName)\x86"	copy ..\..\..\bin\WinCE\TMP\NCSUtild.dll "../../../bin/WinCE\$(CEConfigName)\x86\NCSUtild.dll"	copy ..\..\..\lib\WinCE\TMP\NCSUtild.lib "../../../lib/WinCE\$(CEConfigName)\x86\NCSUtild.lib"	del ..\..\..\lib\WinCE\TMP\NCSUtild.exp
+# End Special Build Tool
+
+!ENDIF 
+
+# Begin Target
+
+# Name "NCSUtil - Win32 (WCE MIPS) Release"
+# Name "NCSUtil - Win32 (WCE MIPS) Debug"
+# Name "NCSUtil - Win32 (WCE SH4) Release"
+# Name "NCSUtil - Win32 (WCE SH4) Debug"
+# Name "NCSUtil - Win32 (WCE SH3) Release"
+# Name "NCSUtil - Win32 (WCE SH3) Debug"
+# Name "NCSUtil - Win32 (WCE ARM) Release"
+# Name "NCSUtil - Win32 (WCE ARM) Debug"
+# Name "NCSUtil - Win32 (WCE x86) Release"
+# Name "NCSUtil - Win32 (WCE x86) Debug"
+# Name "NCSUtil - Win32 (WCE x86em) Release"
+# Name "NCSUtil - Win32 (WCE x86em) Debug"
+# Begin Group "Source Files"
+
+# PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+# Begin Source File
+
+SOURCE=.\CNCSBase64Coder.cpp
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+DEP_CPP_CNCSB=\
+	".\CNCSBase64Coder.h"\
+	
+NODEP_CPP_CNCSB=\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+DEP_CPP_CNCSB=\
+	".\CNCSBase64Coder.h"\
+	
+NODEP_CPP_CNCSB=\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+DEP_CPP_CNCSB=\
+	".\CNCSBase64Coder.h"\
+	
+NODEP_CPP_CNCSB=\
+	".\CSArray.h"\
+	".\CSDefs.h"\
+	".\CSDynamicLib.h"\
+	".\CSErrors.h"\
+	".\CSFileIO.h"\
+	".\CSMalloc.h"\
+	".\CSMemPool.h"\
+	".\CSMisc.h"\
+	".\CSMutex.h"\
+	".\CSPackets.h"\
+	".\CSPrefs.h"\
+	".\CSQueue.h"\
+	".\CSThread.h"\
+	".\CSTimer.h"\
+	".\CSTimeStamp.h"\
+	".\CSTypes.h"\
+	".\CSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+DEP_CPP_CNCSB=\
+	".\CNCSBase64Coder.h"\
+	
+NODEP_CPP_CNCSB=\
+	".\CSArray.h"\
+	".\CSDefs.h"\
+	".\CSDynamicLib.h"\
+	".\CSErrors.h"\
+	".\CSFileIO.h"\
+	".\CSMalloc.h"\
+	".\CSMemPool.h"\
+	".\CSMisc.h"\
+	".\CSMutex.h"\
+	".\CSPackets.h"\
+	".\CSPrefs.h"\
+	".\CSQueue.h"\
+	".\CSThread.h"\
+	".\CSTimer.h"\
+	".\CSTimeStamp.h"\
+	".\CSTypes.h"\
+	".\CSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+DEP_CPP_CNCSB=\
+	".\CNCSBase64Coder.h"\
+	
+NODEP_CPP_CNCSB=\
+	".\CSArray.h"\
+	".\CSDefs.h"\
+	".\CSDynamicLib.h"\
+	".\CSErrors.h"\
+	".\CSFileIO.h"\
+	".\CSMalloc.h"\
+	".\CSMemPool.h"\
+	".\CSMisc.h"\
+	".\CSMutex.h"\
+	".\CSPackets.h"\
+	".\CSPrefs.h"\
+	".\CSQueue.h"\
+	".\CSThread.h"\
+	".\CSTimer.h"\
+	".\CSTimeStamp.h"\
+	".\CSTypes.h"\
+	".\CSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+DEP_CPP_CNCSB=\
+	".\CNCSBase64Coder.h"\
+	
+NODEP_CPP_CNCSB=\
+	".\CSArray.h"\
+	".\CSDefs.h"\
+	".\CSDynamicLib.h"\
+	".\CSErrors.h"\
+	".\CSFileIO.h"\
+	".\CSMalloc.h"\
+	".\CSMemPool.h"\
+	".\CSMisc.h"\
+	".\CSMutex.h"\
+	".\CSPackets.h"\
+	".\CSPrefs.h"\
+	".\CSQueue.h"\
+	".\CSThread.h"\
+	".\CSTimer.h"\
+	".\CSTimeStamp.h"\
+	".\CSTypes.h"\
+	".\CSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+DEP_CPP_CNCSB=\
+	".\CNCSBase64Coder.h"\
+	
+NODEP_CPP_CNCSB=\
+	".\CSArray.h"\
+	".\CSDefs.h"\
+	".\CSDynamicLib.h"\
+	".\CSErrors.h"\
+	".\CSFileIO.h"\
+	".\CSMalloc.h"\
+	".\CSMemPool.h"\
+	".\CSMisc.h"\
+	".\CSMutex.h"\
+	".\CSPackets.h"\
+	".\CSPrefs.h"\
+	".\CSQueue.h"\
+	".\CSThread.h"\
+	".\CSTimer.h"\
+	".\CSTimeStamp.h"\
+	".\CSTypes.h"\
+	".\CSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+DEP_CPP_CNCSB=\
+	".\CNCSBase64Coder.h"\
+	
+NODEP_CPP_CNCSB=\
+	".\CSArray.h"\
+	".\CSDefs.h"\
+	".\CSDynamicLib.h"\
+	".\CSErrors.h"\
+	".\CSFileIO.h"\
+	".\CSMalloc.h"\
+	".\CSMemPool.h"\
+	".\CSMisc.h"\
+	".\CSMutex.h"\
+	".\CSPackets.h"\
+	".\CSPrefs.h"\
+	".\CSQueue.h"\
+	".\CSThread.h"\
+	".\CSTimer.h"\
+	".\CSTimeStamp.h"\
+	".\CSTypes.h"\
+	".\CSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+DEP_CPP_CNCSB=\
+	".\CNCSBase64Coder.h"\
+	
+NODEP_CPP_CNCSB=\
+	".\CSArray.h"\
+	".\CSDefs.h"\
+	".\CSDynamicLib.h"\
+	".\CSErrors.h"\
+	".\CSFileIO.h"\
+	".\CSMalloc.h"\
+	".\CSMemPool.h"\
+	".\CSMisc.h"\
+	".\CSMutex.h"\
+	".\CSPackets.h"\
+	".\CSPrefs.h"\
+	".\CSQueue.h"\
+	".\CSThread.h"\
+	".\CSTimer.h"\
+	".\CSTimeStamp.h"\
+	".\CSTypes.h"\
+	".\CSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+DEP_CPP_CNCSB=\
+	".\CNCSBase64Coder.h"\
+	
+NODEP_CPP_CNCSB=\
+	".\CSArray.h"\
+	".\CSDefs.h"\
+	".\CSDynamicLib.h"\
+	".\CSErrors.h"\
+	".\CSFileIO.h"\
+	".\CSMalloc.h"\
+	".\CSMemPool.h"\
+	".\CSMisc.h"\
+	".\CSMutex.h"\
+	".\CSPackets.h"\
+	".\CSPrefs.h"\
+	".\CSQueue.h"\
+	".\CSThread.h"\
+	".\CSTimer.h"\
+	".\CSTimeStamp.h"\
+	".\CSTypes.h"\
+	".\CSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+DEP_CPP_CNCSB=\
+	".\CNCSBase64Coder.h"\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+DEP_CPP_CNCSB=\
+	".\CNCSBase64Coder.h"\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\dynamiclib.c
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+NODEP_CPP_DYNAM=\
+	".\NCSDefs.h"\
+	".\NCSDynamicLib.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+NODEP_CPP_DYNAM=\
+	".\NCSDefs.h"\
+	".\NCSDynamicLib.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+NODEP_CPP_DYNAM=\
+	".\NCSDefs.h"\
+	".\NCSDynamicLib.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+NODEP_CPP_DYNAM=\
+	".\NCSDefs.h"\
+	".\NCSDynamicLib.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+NODEP_CPP_DYNAM=\
+	".\NCSDefs.h"\
+	".\NCSDynamicLib.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+NODEP_CPP_DYNAM=\
+	".\NCSDefs.h"\
+	".\NCSDynamicLib.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+NODEP_CPP_DYNAM=\
+	".\NCSDefs.h"\
+	".\NCSDynamicLib.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+NODEP_CPP_DYNAM=\
+	".\NCSDefs.h"\
+	".\NCSDynamicLib.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+NODEP_CPP_DYNAM=\
+	".\NCSDefs.h"\
+	".\NCSDynamicLib.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+NODEP_CPP_DYNAM=\
+	".\NCSDefs.h"\
+	".\NCSDynamicLib.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+DEP_CPP_DYNAM=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+DEP_CPP_DYNAM=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\error.c
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+NODEP_CPP_ERROR=\
+	".\NCSErrors.h"\
+	".\NCSThread.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+NODEP_CPP_ERROR=\
+	".\NCSErrors.h"\
+	".\NCSThread.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+NODEP_CPP_ERROR=\
+	".\NCSErrors.h"\
+	".\NCSThread.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+NODEP_CPP_ERROR=\
+	".\NCSErrors.h"\
+	".\NCSThread.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+NODEP_CPP_ERROR=\
+	".\NCSErrors.h"\
+	".\NCSThread.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+NODEP_CPP_ERROR=\
+	".\NCSErrors.h"\
+	".\NCSThread.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+NODEP_CPP_ERROR=\
+	".\NCSErrors.h"\
+	".\NCSThread.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+NODEP_CPP_ERROR=\
+	".\NCSErrors.h"\
+	".\NCSThread.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+NODEP_CPP_ERROR=\
+	".\NCSErrors.h"\
+	".\NCSThread.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+NODEP_CPP_ERROR=\
+	".\NCSErrors.h"\
+	".\NCSThread.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+DEP_CPP_ERROR=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+DEP_CPP_ERROR=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\exception_catch.c
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\file.c
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+NODEP_CPP_FILE_=\
+	".\CoreServices\CoreServices.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+NODEP_CPP_FILE_=\
+	".\CoreServices\CoreServices.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+NODEP_CPP_FILE_=\
+	".\CoreServices\CoreServices.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+NODEP_CPP_FILE_=\
+	".\CoreServices\CoreServices.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+NODEP_CPP_FILE_=\
+	".\CoreServices\CoreServices.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+NODEP_CPP_FILE_=\
+	".\CoreServices\CoreServices.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+NODEP_CPP_FILE_=\
+	".\CoreServices\CoreServices.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+NODEP_CPP_FILE_=\
+	".\CoreServices\CoreServices.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+NODEP_CPP_FILE_=\
+	".\CoreServices\CoreServices.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+NODEP_CPP_FILE_=\
+	".\CoreServices\CoreServices.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+DEP_CPP_FILE_=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+NODEP_CPP_FILE_=\
+	".\CoreServices\CoreServices.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+DEP_CPP_FILE_=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+NODEP_CPP_FILE_=\
+	".\CoreServices\CoreServices.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\log.cpp
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+NODEP_CPP_LOG_C=\
+	".\NCSBuildNumber.h"\
+	".\NCSLog.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+NODEP_CPP_LOG_C=\
+	".\NCSBuildNumber.h"\
+	".\NCSLog.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+NODEP_CPP_LOG_C=\
+	".\NCSBuildNumber.h"\
+	".\NCSLog.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+NODEP_CPP_LOG_C=\
+	".\NCSBuildNumber.h"\
+	".\NCSLog.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+NODEP_CPP_LOG_C=\
+	".\NCSBuildNumber.h"\
+	".\NCSLog.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+NODEP_CPP_LOG_C=\
+	".\NCSBuildNumber.h"\
+	".\NCSLog.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+NODEP_CPP_LOG_C=\
+	".\NCSBuildNumber.h"\
+	".\NCSLog.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+NODEP_CPP_LOG_C=\
+	".\NCSBuildNumber.h"\
+	".\NCSLog.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+NODEP_CPP_LOG_C=\
+	".\NCSBuildNumber.h"\
+	".\NCSLog.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+NODEP_CPP_LOG_C=\
+	".\NCSBuildNumber.h"\
+	".\NCSLog.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+DEP_CPP_LOG_C=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSBuildNumber.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSLog.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSObject.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+DEP_CPP_LOG_C=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSBuildNumber.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSLog.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSObject.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\main.c
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+NODEP_CPP_MAIN_=\
+	".\NCSThread.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+NODEP_CPP_MAIN_=\
+	".\NCSThread.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+NODEP_CPP_MAIN_=\
+	".\NCSThread.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+NODEP_CPP_MAIN_=\
+	".\NCSThread.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+NODEP_CPP_MAIN_=\
+	".\NCSThread.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+NODEP_CPP_MAIN_=\
+	".\NCSThread.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+NODEP_CPP_MAIN_=\
+	".\NCSThread.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+NODEP_CPP_MAIN_=\
+	".\NCSThread.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+NODEP_CPP_MAIN_=\
+	".\NCSThread.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+NODEP_CPP_MAIN_=\
+	".\NCSThread.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+DEP_CPP_MAIN_=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+DEP_CPP_MAIN_=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\malloc.c
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+NODEP_CPP_MALLO=\
+	".\NCSDefs.h"\
+	".\NCSLog.h"\
+	".\NCSMalloc.h"\
+	".\NCSMisc.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+NODEP_CPP_MALLO=\
+	".\NCSDefs.h"\
+	".\NCSLog.h"\
+	".\NCSMalloc.h"\
+	".\NCSMisc.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+NODEP_CPP_MALLO=\
+	".\NCSDefs.h"\
+	".\NCSLog.h"\
+	".\NCSMalloc.h"\
+	".\NCSMisc.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+NODEP_CPP_MALLO=\
+	".\NCSDefs.h"\
+	".\NCSLog.h"\
+	".\NCSMalloc.h"\
+	".\NCSMisc.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+NODEP_CPP_MALLO=\
+	".\NCSDefs.h"\
+	".\NCSLog.h"\
+	".\NCSMalloc.h"\
+	".\NCSMisc.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+NODEP_CPP_MALLO=\
+	".\NCSDefs.h"\
+	".\NCSLog.h"\
+	".\NCSMalloc.h"\
+	".\NCSMisc.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+NODEP_CPP_MALLO=\
+	".\NCSDefs.h"\
+	".\NCSLog.h"\
+	".\NCSMalloc.h"\
+	".\NCSMisc.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+NODEP_CPP_MALLO=\
+	".\NCSDefs.h"\
+	".\NCSLog.h"\
+	".\NCSMalloc.h"\
+	".\NCSMisc.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+NODEP_CPP_MALLO=\
+	".\NCSDefs.h"\
+	".\NCSLog.h"\
+	".\NCSMalloc.h"\
+	".\NCSMisc.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+NODEP_CPP_MALLO=\
+	".\NCSDefs.h"\
+	".\NCSLog.h"\
+	".\NCSMalloc.h"\
+	".\NCSMisc.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+DEP_CPP_MALLO=\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSLog.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSObject.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+DEP_CPP_MALLO=\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSLog.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSObject.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\mutex.c
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+NODEP_CPP_MUTEX=\
+	".\NCSMalloc.h"\
+	".\NCSMutex.h"\
+	".\NCSUtil.h"\
+	".\pure_api.c"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+NODEP_CPP_MUTEX=\
+	".\NCSMalloc.h"\
+	".\NCSMutex.h"\
+	".\NCSUtil.h"\
+	".\pure_api.c"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+NODEP_CPP_MUTEX=\
+	".\NCSMalloc.h"\
+	".\NCSMutex.h"\
+	".\NCSUtil.h"\
+	".\pure_api.c"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+NODEP_CPP_MUTEX=\
+	".\NCSMalloc.h"\
+	".\NCSMutex.h"\
+	".\NCSUtil.h"\
+	".\pure_api.c"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+NODEP_CPP_MUTEX=\
+	".\NCSMalloc.h"\
+	".\NCSMutex.h"\
+	".\NCSUtil.h"\
+	".\pure_api.c"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+NODEP_CPP_MUTEX=\
+	".\NCSMalloc.h"\
+	".\NCSMutex.h"\
+	".\NCSUtil.h"\
+	".\pure_api.c"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+NODEP_CPP_MUTEX=\
+	".\NCSMalloc.h"\
+	".\NCSMutex.h"\
+	".\NCSUtil.h"\
+	".\pure_api.c"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+NODEP_CPP_MUTEX=\
+	".\NCSMalloc.h"\
+	".\NCSMutex.h"\
+	".\NCSUtil.h"\
+	".\pure_api.c"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+NODEP_CPP_MUTEX=\
+	".\NCSMalloc.h"\
+	".\NCSMutex.h"\
+	".\NCSUtil.h"\
+	".\pure_api.c"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+NODEP_CPP_MUTEX=\
+	".\NCSMalloc.h"\
+	".\NCSMutex.h"\
+	".\NCSUtil.h"\
+	".\pure_api.c"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+DEP_CPP_MUTEX=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	{$(INCLUDE)}"pure_api.c"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+DEP_CPP_MUTEX=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	{$(INCLUDE)}"pure_api.c"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\NCSBase64.cpp
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+DEP_CPP_NCSBA=\
+	".\CNCSBase64Coder.h"\
+	
+NODEP_CPP_NCSBA=\
+	".\NCSBase64.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+DEP_CPP_NCSBA=\
+	".\CNCSBase64Coder.h"\
+	
+NODEP_CPP_NCSBA=\
+	".\NCSBase64.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+DEP_CPP_NCSBA=\
+	".\CNCSBase64Coder.h"\
+	
+NODEP_CPP_NCSBA=\
+	".\CSArray.h"\
+	".\CSBase64.h"\
+	".\CSDefs.h"\
+	".\CSDynamicLib.h"\
+	".\CSErrors.h"\
+	".\CSFileIO.h"\
+	".\CSMalloc.h"\
+	".\CSMemPool.h"\
+	".\CSMisc.h"\
+	".\CSMutex.h"\
+	".\CSPackets.h"\
+	".\CSPrefs.h"\
+	".\CSQueue.h"\
+	".\CSThread.h"\
+	".\CSTimer.h"\
+	".\CSTimeStamp.h"\
+	".\CSTypes.h"\
+	".\CSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+DEP_CPP_NCSBA=\
+	".\CNCSBase64Coder.h"\
+	
+NODEP_CPP_NCSBA=\
+	".\CSArray.h"\
+	".\CSBase64.h"\
+	".\CSDefs.h"\
+	".\CSDynamicLib.h"\
+	".\CSErrors.h"\
+	".\CSFileIO.h"\
+	".\CSMalloc.h"\
+	".\CSMemPool.h"\
+	".\CSMisc.h"\
+	".\CSMutex.h"\
+	".\CSPackets.h"\
+	".\CSPrefs.h"\
+	".\CSQueue.h"\
+	".\CSThread.h"\
+	".\CSTimer.h"\
+	".\CSTimeStamp.h"\
+	".\CSTypes.h"\
+	".\CSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+DEP_CPP_NCSBA=\
+	".\CNCSBase64Coder.h"\
+	
+NODEP_CPP_NCSBA=\
+	".\CSArray.h"\
+	".\CSBase64.h"\
+	".\CSDefs.h"\
+	".\CSDynamicLib.h"\
+	".\CSErrors.h"\
+	".\CSFileIO.h"\
+	".\CSMalloc.h"\
+	".\CSMemPool.h"\
+	".\CSMisc.h"\
+	".\CSMutex.h"\
+	".\CSPackets.h"\
+	".\CSPrefs.h"\
+	".\CSQueue.h"\
+	".\CSThread.h"\
+	".\CSTimer.h"\
+	".\CSTimeStamp.h"\
+	".\CSTypes.h"\
+	".\CSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+DEP_CPP_NCSBA=\
+	".\CNCSBase64Coder.h"\
+	
+NODEP_CPP_NCSBA=\
+	".\CSArray.h"\
+	".\CSBase64.h"\
+	".\CSDefs.h"\
+	".\CSDynamicLib.h"\
+	".\CSErrors.h"\
+	".\CSFileIO.h"\
+	".\CSMalloc.h"\
+	".\CSMemPool.h"\
+	".\CSMisc.h"\
+	".\CSMutex.h"\
+	".\CSPackets.h"\
+	".\CSPrefs.h"\
+	".\CSQueue.h"\
+	".\CSThread.h"\
+	".\CSTimer.h"\
+	".\CSTimeStamp.h"\
+	".\CSTypes.h"\
+	".\CSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+DEP_CPP_NCSBA=\
+	".\CNCSBase64Coder.h"\
+	
+NODEP_CPP_NCSBA=\
+	".\CSArray.h"\
+	".\CSBase64.h"\
+	".\CSDefs.h"\
+	".\CSDynamicLib.h"\
+	".\CSErrors.h"\
+	".\CSFileIO.h"\
+	".\CSMalloc.h"\
+	".\CSMemPool.h"\
+	".\CSMisc.h"\
+	".\CSMutex.h"\
+	".\CSPackets.h"\
+	".\CSPrefs.h"\
+	".\CSQueue.h"\
+	".\CSThread.h"\
+	".\CSTimer.h"\
+	".\CSTimeStamp.h"\
+	".\CSTypes.h"\
+	".\CSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+DEP_CPP_NCSBA=\
+	".\CNCSBase64Coder.h"\
+	
+NODEP_CPP_NCSBA=\
+	".\CSArray.h"\
+	".\CSBase64.h"\
+	".\CSDefs.h"\
+	".\CSDynamicLib.h"\
+	".\CSErrors.h"\
+	".\CSFileIO.h"\
+	".\CSMalloc.h"\
+	".\CSMemPool.h"\
+	".\CSMisc.h"\
+	".\CSMutex.h"\
+	".\CSPackets.h"\
+	".\CSPrefs.h"\
+	".\CSQueue.h"\
+	".\CSThread.h"\
+	".\CSTimer.h"\
+	".\CSTimeStamp.h"\
+	".\CSTypes.h"\
+	".\CSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+DEP_CPP_NCSBA=\
+	".\CNCSBase64Coder.h"\
+	
+NODEP_CPP_NCSBA=\
+	".\CSArray.h"\
+	".\CSBase64.h"\
+	".\CSDefs.h"\
+	".\CSDynamicLib.h"\
+	".\CSErrors.h"\
+	".\CSFileIO.h"\
+	".\CSMalloc.h"\
+	".\CSMemPool.h"\
+	".\CSMisc.h"\
+	".\CSMutex.h"\
+	".\CSPackets.h"\
+	".\CSPrefs.h"\
+	".\CSQueue.h"\
+	".\CSThread.h"\
+	".\CSTimer.h"\
+	".\CSTimeStamp.h"\
+	".\CSTypes.h"\
+	".\CSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+DEP_CPP_NCSBA=\
+	".\CNCSBase64Coder.h"\
+	
+NODEP_CPP_NCSBA=\
+	".\CSArray.h"\
+	".\CSBase64.h"\
+	".\CSDefs.h"\
+	".\CSDynamicLib.h"\
+	".\CSErrors.h"\
+	".\CSFileIO.h"\
+	".\CSMalloc.h"\
+	".\CSMemPool.h"\
+	".\CSMisc.h"\
+	".\CSMutex.h"\
+	".\CSPackets.h"\
+	".\CSPrefs.h"\
+	".\CSQueue.h"\
+	".\CSThread.h"\
+	".\CSTimer.h"\
+	".\CSTimeStamp.h"\
+	".\CSTypes.h"\
+	".\CSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+DEP_CPP_NCSBA=\
+	".\CNCSBase64Coder.h"\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSBase64.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+DEP_CPP_NCSBA=\
+	".\CNCSBase64Coder.h"\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSBase64.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\NCSCrypto.cpp
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+DEP_CPP_NCSCR=\
+	{$(INCLUDE)}"NCSCrypto.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+DEP_CPP_NCSCR=\
+	{$(INCLUDE)}"NCSCrypto.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\NCSError.cpp
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+NODEP_CPP_NCSER=\
+	".\NCSError.h"\
+	".\NCSTypes.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+NODEP_CPP_NCSER=\
+	".\NCSError.h"\
+	".\NCSTypes.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+NODEP_CPP_NCSER=\
+	".\NCSError.h"\
+	".\NCSTypes.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+NODEP_CPP_NCSER=\
+	".\NCSError.h"\
+	".\NCSTypes.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+NODEP_CPP_NCSER=\
+	".\NCSError.h"\
+	".\NCSTypes.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+NODEP_CPP_NCSER=\
+	".\NCSError.h"\
+	".\NCSTypes.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+NODEP_CPP_NCSER=\
+	".\NCSError.h"\
+	".\NCSTypes.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+NODEP_CPP_NCSER=\
+	".\NCSError.h"\
+	".\NCSTypes.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+NODEP_CPP_NCSER=\
+	".\NCSError.h"\
+	".\NCSTypes.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+NODEP_CPP_NCSER=\
+	".\NCSError.h"\
+	".\NCSTypes.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+DEP_CPP_NCSER=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSError.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSLog.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSObject.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+DEP_CPP_NCSER=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSError.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSLog.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSObject.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\NCSLog.cpp
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+NODEP_CPP_NCSLO=\
+	".\NCSLog.h"\
+	".\NCSPrefs.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+NODEP_CPP_NCSLO=\
+	".\NCSLog.h"\
+	".\NCSPrefs.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+NODEP_CPP_NCSLO=\
+	".\NCSLog.h"\
+	".\NCSPrefs.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+NODEP_CPP_NCSLO=\
+	".\NCSLog.h"\
+	".\NCSPrefs.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+NODEP_CPP_NCSLO=\
+	".\NCSLog.h"\
+	".\NCSPrefs.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+NODEP_CPP_NCSLO=\
+	".\NCSLog.h"\
+	".\NCSPrefs.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+NODEP_CPP_NCSLO=\
+	".\NCSLog.h"\
+	".\NCSPrefs.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+NODEP_CPP_NCSLO=\
+	".\NCSLog.h"\
+	".\NCSPrefs.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+NODEP_CPP_NCSLO=\
+	".\NCSLog.h"\
+	".\NCSPrefs.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+NODEP_CPP_NCSLO=\
+	".\NCSLog.h"\
+	".\NCSPrefs.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+DEP_CPP_NCSLO=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSLog.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSObject.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+DEP_CPP_NCSLO=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSLog.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSObject.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\NCSMutex.cpp
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+NODEP_CPP_NCSMU=\
+	".\NCSMutex.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+NODEP_CPP_NCSMU=\
+	".\NCSMutex.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+NODEP_CPP_NCSMU=\
+	".\NCSMutex.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+NODEP_CPP_NCSMU=\
+	".\NCSMutex.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+NODEP_CPP_NCSMU=\
+	".\NCSMutex.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+NODEP_CPP_NCSMU=\
+	".\NCSMutex.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+NODEP_CPP_NCSMU=\
+	".\NCSMutex.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+NODEP_CPP_NCSMU=\
+	".\NCSMutex.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+NODEP_CPP_NCSMU=\
+	".\NCSMutex.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+NODEP_CPP_NCSMU=\
+	".\NCSMutex.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+DEP_CPP_NCSMU=\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+DEP_CPP_NCSMU=\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\NCSObject.cpp
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+NODEP_CPP_NCSOB=\
+	".\NCSLog.h"\
+	".\NCSObject.h"\
+	".\NCSTimeStamp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+NODEP_CPP_NCSOB=\
+	".\NCSLog.h"\
+	".\NCSObject.h"\
+	".\NCSTimeStamp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+NODEP_CPP_NCSOB=\
+	".\NCSLog.h"\
+	".\NCSObject.h"\
+	".\NCSTimeStamp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+NODEP_CPP_NCSOB=\
+	".\NCSLog.h"\
+	".\NCSObject.h"\
+	".\NCSTimeStamp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+NODEP_CPP_NCSOB=\
+	".\NCSLog.h"\
+	".\NCSObject.h"\
+	".\NCSTimeStamp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+NODEP_CPP_NCSOB=\
+	".\NCSLog.h"\
+	".\NCSObject.h"\
+	".\NCSTimeStamp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+NODEP_CPP_NCSOB=\
+	".\NCSLog.h"\
+	".\NCSObject.h"\
+	".\NCSTimeStamp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+NODEP_CPP_NCSOB=\
+	".\NCSLog.h"\
+	".\NCSObject.h"\
+	".\NCSTimeStamp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+NODEP_CPP_NCSOB=\
+	".\NCSLog.h"\
+	".\NCSObject.h"\
+	".\NCSTimeStamp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+NODEP_CPP_NCSOB=\
+	".\NCSLog.h"\
+	".\NCSObject.h"\
+	".\NCSTimeStamp.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+DEP_CPP_NCSOB=\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSLog.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSObject.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+DEP_CPP_NCSOB=\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSLog.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSObject.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\NCSServerState.cpp
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+NODEP_CPP_NCSSE=\
+	".\CNCSMetabaseEdit.h"\
+	".\NCSError.h"\
+	".\NCSServerState.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+NODEP_CPP_NCSSE=\
+	".\CNCSMetabaseEdit.h"\
+	".\NCSError.h"\
+	".\NCSServerState.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+NODEP_CPP_NCSSE=\
+	".\CNCSMetabaseEdit.h"\
+	".\NCSError.h"\
+	".\NCSServerState.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+NODEP_CPP_NCSSE=\
+	".\CNCSMetabaseEdit.h"\
+	".\NCSError.h"\
+	".\NCSServerState.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+NODEP_CPP_NCSSE=\
+	".\CNCSMetabaseEdit.h"\
+	".\NCSError.h"\
+	".\NCSServerState.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+NODEP_CPP_NCSSE=\
+	".\CNCSMetabaseEdit.h"\
+	".\NCSError.h"\
+	".\NCSServerState.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+NODEP_CPP_NCSSE=\
+	".\CNCSMetabaseEdit.h"\
+	".\NCSError.h"\
+	".\NCSServerState.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+NODEP_CPP_NCSSE=\
+	".\CNCSMetabaseEdit.h"\
+	".\NCSError.h"\
+	".\NCSServerState.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+NODEP_CPP_NCSSE=\
+	".\CNCSMetabaseEdit.h"\
+	".\NCSError.h"\
+	".\NCSServerState.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+NODEP_CPP_NCSSE=\
+	".\CNCSMetabaseEdit.h"\
+	".\NCSError.h"\
+	".\NCSServerState.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+DEP_CPP_NCSSE=\
+	{$(INCLUDE)}"CNCSMetabaseEdit.h"\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSError.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSLog.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSObject.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSServerState.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+DEP_CPP_NCSSE=\
+	{$(INCLUDE)}"CNCSMetabaseEdit.h"\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSError.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSLog.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSObject.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSServerState.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\NCSThread.cpp
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+NODEP_CPP_NCSTH=\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+NODEP_CPP_NCSTH=\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+NODEP_CPP_NCSTH=\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+NODEP_CPP_NCSTH=\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+NODEP_CPP_NCSTH=\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+NODEP_CPP_NCSTH=\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+NODEP_CPP_NCSTH=\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+NODEP_CPP_NCSTH=\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+NODEP_CPP_NCSTH=\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+NODEP_CPP_NCSTH=\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+DEP_CPP_NCSTH=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+DEP_CPP_NCSTH=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\NCSUtil.def
+# End Source File
+# Begin Source File
+
+SOURCE=.\ncsutil.rc
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\pool.c
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+NODEP_CPP_POOL_=\
+	".\NCSMemPool.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+NODEP_CPP_POOL_=\
+	".\NCSMemPool.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+NODEP_CPP_POOL_=\
+	".\NCSMemPool.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+NODEP_CPP_POOL_=\
+	".\NCSMemPool.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+NODEP_CPP_POOL_=\
+	".\NCSMemPool.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+NODEP_CPP_POOL_=\
+	".\NCSMemPool.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+NODEP_CPP_POOL_=\
+	".\NCSMemPool.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+NODEP_CPP_POOL_=\
+	".\NCSMemPool.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+NODEP_CPP_POOL_=\
+	".\NCSMemPool.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+NODEP_CPP_POOL_=\
+	".\NCSMemPool.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+DEP_CPP_POOL_=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+DEP_CPP_POOL_=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\prefs.c
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+NODEP_CPP_PREFS=\
+	".\NCSPrefs.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+NODEP_CPP_PREFS=\
+	".\NCSPrefs.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+NODEP_CPP_PREFS=\
+	".\NCSPrefs.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+NODEP_CPP_PREFS=\
+	".\NCSPrefs.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+NODEP_CPP_PREFS=\
+	".\NCSPrefs.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+NODEP_CPP_PREFS=\
+	".\NCSPrefs.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+NODEP_CPP_PREFS=\
+	".\NCSPrefs.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+NODEP_CPP_PREFS=\
+	".\NCSPrefs.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+NODEP_CPP_PREFS=\
+	".\NCSPrefs.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+NODEP_CPP_PREFS=\
+	".\NCSPrefs.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+DEP_CPP_PREFS=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+DEP_CPP_PREFS=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\queue.c
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+NODEP_CPP_QUEUE=\
+	".\NCSQueue.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+NODEP_CPP_QUEUE=\
+	".\NCSQueue.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+NODEP_CPP_QUEUE=\
+	".\NCSQueue.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+NODEP_CPP_QUEUE=\
+	".\NCSQueue.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+NODEP_CPP_QUEUE=\
+	".\NCSQueue.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+NODEP_CPP_QUEUE=\
+	".\NCSQueue.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+NODEP_CPP_QUEUE=\
+	".\NCSQueue.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+NODEP_CPP_QUEUE=\
+	".\NCSQueue.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+NODEP_CPP_QUEUE=\
+	".\NCSQueue.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+NODEP_CPP_QUEUE=\
+	".\NCSQueue.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+DEP_CPP_QUEUE=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+DEP_CPP_QUEUE=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\thread.c
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+NODEP_CPP_THREA=\
+	".\NCSBuildNumber.h"\
+	".\NCSLog.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+NODEP_CPP_THREA=\
+	".\NCSBuildNumber.h"\
+	".\NCSLog.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+NODEP_CPP_THREA=\
+	".\NCSBuildNumber.h"\
+	".\NCSLog.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+NODEP_CPP_THREA=\
+	".\NCSBuildNumber.h"\
+	".\NCSLog.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+NODEP_CPP_THREA=\
+	".\NCSBuildNumber.h"\
+	".\NCSLog.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+NODEP_CPP_THREA=\
+	".\NCSBuildNumber.h"\
+	".\NCSLog.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+NODEP_CPP_THREA=\
+	".\NCSBuildNumber.h"\
+	".\NCSLog.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+NODEP_CPP_THREA=\
+	".\NCSBuildNumber.h"\
+	".\NCSLog.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+NODEP_CPP_THREA=\
+	".\NCSBuildNumber.h"\
+	".\NCSLog.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+NODEP_CPP_THREA=\
+	".\NCSBuildNumber.h"\
+	".\NCSLog.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+DEP_CPP_THREA=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSBuildNumber.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSLog.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSObject.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+DEP_CPP_THREA=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSBuildNumber.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSLog.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSObject.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\timer.c
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+NODEP_CPP_TIMER=\
+	".\NCSTimer.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+NODEP_CPP_TIMER=\
+	".\NCSTimer.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+NODEP_CPP_TIMER=\
+	".\NCSTimer.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+NODEP_CPP_TIMER=\
+	".\NCSTimer.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+NODEP_CPP_TIMER=\
+	".\NCSTimer.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+NODEP_CPP_TIMER=\
+	".\NCSTimer.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+NODEP_CPP_TIMER=\
+	".\NCSTimer.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+NODEP_CPP_TIMER=\
+	".\NCSTimer.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+NODEP_CPP_TIMER=\
+	".\NCSTimer.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+NODEP_CPP_TIMER=\
+	".\NCSTimer.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+DEP_CPP_TIMER=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+DEP_CPP_TIMER=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# Begin Source File
+
+SOURCE=.\util.c
+
+!IF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Release"
+
+NODEP_CPP_UTIL_=\
+	".\NCSLog.h"\
+	".\NCSModule.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE MIPS) Debug"
+
+NODEP_CPP_UTIL_=\
+	".\NCSLog.h"\
+	".\NCSModule.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Release"
+
+NODEP_CPP_UTIL_=\
+	".\NCSLog.h"\
+	".\NCSModule.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH4) Debug"
+
+NODEP_CPP_UTIL_=\
+	".\NCSLog.h"\
+	".\NCSModule.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Release"
+
+NODEP_CPP_UTIL_=\
+	".\NCSLog.h"\
+	".\NCSModule.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE SH3) Debug"
+
+NODEP_CPP_UTIL_=\
+	".\NCSLog.h"\
+	".\NCSModule.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Release"
+
+NODEP_CPP_UTIL_=\
+	".\NCSLog.h"\
+	".\NCSModule.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE ARM) Debug"
+
+NODEP_CPP_UTIL_=\
+	".\NCSLog.h"\
+	".\NCSModule.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Release"
+
+NODEP_CPP_UTIL_=\
+	".\NCSLog.h"\
+	".\NCSModule.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86) Debug"
+
+NODEP_CPP_UTIL_=\
+	".\NCSLog.h"\
+	".\NCSModule.h"\
+	".\NCSUtil.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Release"
+
+DEP_CPP_UTIL_=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSLog.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSObject.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+NODEP_CPP_UTIL_=\
+	".\NCSModule.h"\
+	
+
+!ELSEIF  "$(CFG)" == "NCSUtil - Win32 (WCE x86em) Debug"
+
+DEP_CPP_UTIL_=\
+	{$(INCLUDE)}"NCSArray.h"\
+	{$(INCLUDE)}"NCSDefs.h"\
+	{$(INCLUDE)}"NCSDynamicLib.h"\
+	{$(INCLUDE)}"NCSErrors.h"\
+	{$(INCLUDE)}"NCSFileIO.h"\
+	{$(INCLUDE)}"NCSLog.h"\
+	{$(INCLUDE)}"NCSMalloc.h"\
+	{$(INCLUDE)}"NCSMemPool.h"\
+	{$(INCLUDE)}"NCSMisc.h"\
+	{$(INCLUDE)}"NCSMutex.h"\
+	{$(INCLUDE)}"NCSObject.h"\
+	{$(INCLUDE)}"NCSPackets.h"\
+	{$(INCLUDE)}"NCSPrefs.h"\
+	{$(INCLUDE)}"NCSQueue.h"\
+	{$(INCLUDE)}"NCSThread.h"\
+	{$(INCLUDE)}"NCSTimer.h"\
+	{$(INCLUDE)}"NCSTimeStamp.h"\
+	{$(INCLUDE)}"NCSTypes.h"\
+	{$(INCLUDE)}"NCSUtil.h"\
+	
+NODEP_CPP_UTIL_=\
+	".\NCSModule.h"\
+	
+
+!ENDIF 
+
+# End Source File
+# End Group
+# Begin Group "Header Files"
+
+# PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=.\CNCSBase64Coder.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\NCSArray.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\NCSBase64.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\NCSDefs.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\NCSDynamicLib.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\NCSErrors.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\NCSFileIO.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\NCSLog.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\NCSMalloc.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\NCSMemPool.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\NCSMisc.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\NCSMutex.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\NCSObject.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\NCSPrefs.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\NCSThread.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\NCSTimer.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\NCSTimeStamp.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\NCSTypes.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\include\NCSUtil.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\resource.h
+# End Source File
+# End Group
+# Begin Group "Resource Files"
+
+# PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+# End Group
+# End Target
+# End Project

@@ -1,0 +1,3 @@
+-o mj2_english.cpp
+-i ../apps/jp2/mj2_local.h
+-i ../apps/jp2/mj2.cpp

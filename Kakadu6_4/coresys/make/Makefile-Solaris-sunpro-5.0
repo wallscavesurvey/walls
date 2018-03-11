@@ -1,0 +1,105 @@
+KDU_GLIBS =
+# KDU_GLIBS += -xarch=v9       # Uncomment this for a 64-bit build
+			       # Provides access to >4 GB RAM (if present)
+			       # apps must be compiled with the same option
+	    		       # Always REMOVE *.o files after changing this!!
+
+ISADIR = 
+# Uncomment if making 64-bit build separate from 32-bit builds
+# ISADIR = sparcv9
+
+
+CC = CC
+
+INCLUDES = -I../common
+C_OPT = -O2 -DNDEBUG -w $(KDU_GLIBS)
+#C_OPT += -DKDU_CUSTOM_TEXT   # See "Internationalization" in "Compilation_Instructions.txt"
+#C_OPT += -DKDU_NO_THREADS    # Uncomment to compile without multi-threading
+CFLAGS = $(INCLUDES) $(C_OPT)
+
+BIN_DIR = ../../bin/Solaris-sunpro/$(ISADIR)
+LIB_DIR = ../../lib/Solaris-sunpro/$(ISADIR)
+
+all :: libkdu_v64R.so libkdu.a   # libkdu.a cannot be made for 64-bit compiles
+
+clean:
+	rm -f *.o *.so *.a
+
+libkdu.a :: block_coding_common.o block_decoder.o block_encoder.o decoder.o encoder.o mq_decoder.o mq_encoder.o blocks.o codestream.o compressed.o kernels.o messaging.o params.o colour.o analysis.o synthesis.o multi_transform.o roi.o kdu_arch.o kdu_threads.o
+	ar -rv $(LIB_DIR)/libkdu.a *.o
+	ranlib $(LIB_DIR)/libkdu.a
+
+libkdu_v64R.so :: block_coding_common.o block_decoder.o block_encoder.o decoder.o encoder.o mq_decoder.o mq_encoder.o blocks.o codestream.o compressed.o kernels.o messaging.o params.o colour.o analysis.o synthesis.o multi_transform.o roi.o kdu_arch.o kdu_threads.o
+	$(CC) $(CFLAGS) -G -o $(LIB_DIR)/libkdu_v64R.so -h libkdu_v64R.so *.o
+
+kdu_arch.o :: ../common/kdu_arch.cpp
+	$(CC) $(CFLAGS) -c ../common/kdu_arch.cpp \
+	      -o kdu_arch.o
+
+kdu_threads.o :: ../threads/kdu_threads.cpp
+	$(CC) $(CFLAGS) -c ../threads/kdu_threads.cpp \
+	      -o kdu_threads.o
+
+mq_encoder.o :: ../coding/mq_encoder.cpp
+	$(CC) $(CFLAGS) -c ../coding/mq_encoder.cpp \
+	      -o mq_encoder.o
+mq_decoder.o :: ../coding/mq_decoder.cpp
+	$(CC) $(CFLAGS) -c ../coding/mq_decoder.cpp \
+	      -o mq_decoder.o
+
+block_coding_common.o :: ../coding/block_coding_common.cpp
+	$(CC) $(CFLAGS) -c ../coding/block_coding_common.cpp \
+	      -o block_coding_common.o
+block_encoder.o :: ../coding/block_encoder.cpp
+	$(CC) $(CFLAGS) -c ../coding/block_encoder.cpp \
+	      -o block_encoder.o
+block_decoder.o :: ../coding/block_decoder.cpp
+	$(CC) $(CFLAGS) -c ../coding/block_decoder.cpp \
+	      -o block_decoder.o
+
+encoder.o :: ../coding/encoder.cpp
+	$(CC) $(CFLAGS) -c ../coding/encoder.cpp \
+	      -o encoder.o
+decoder.o :: ../coding/decoder.cpp
+	$(CC) $(CFLAGS) -c ../coding/decoder.cpp \
+	      -o decoder.o
+
+codestream.o :: ../compressed/codestream.cpp
+	$(CC) $(CFLAGS) -c ../compressed/codestream.cpp \
+	      -o codestream.o
+compressed.o :: ../compressed/compressed.cpp
+	$(CC) $(CFLAGS) -c ../compressed/compressed.cpp \
+	      -o compressed.o
+blocks.o :: ../compressed/blocks.cpp
+	$(CC) $(CFLAGS) -c ../compressed/blocks.cpp \
+	      -o blocks.o
+
+kernels.o :: ../kernels/kernels.cpp
+	$(CC) $(CFLAGS) -c ../kernels/kernels.cpp \
+	      -o kernels.o
+
+messaging.o :: ../messaging/messaging.cpp
+	$(CC) $(CFLAGS) -c ../messaging/messaging.cpp \
+	      -o messaging.o
+
+params.o :: ../parameters/params.cpp
+	$(CC) $(CFLAGS) -c ../parameters/params.cpp \
+
+
+colour.o :: ../transform/colour.cpp
+	$(CC) $(CFLAGS) -c ../transform/colour.cpp \
+	      -o colour.o
+analysis.o :: ../transform/analysis.cpp
+	$(CC) $(CFLAGS) -c ../transform/analysis.cpp \
+	      -o analysis.o
+synthesis.o :: ../transform/synthesis.cpp
+	$(CC) $(CFLAGS) -c ../transform/synthesis.cpp \
+	      -o synthesis.o
+multi_transform.o :: ../transform/multi_transform.cpp
+	$(CC) $(CFLAGS) -c ../transform/multi_transform.cpp \
+	      -o multi_transform.o
+
+roi.o :: ../roi/roi.cpp
+	$(CC) $(CFLAGS) -c ../roi/roi.cpp \
+	      -o roi.o
+
