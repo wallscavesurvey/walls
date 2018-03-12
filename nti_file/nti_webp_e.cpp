@@ -1,7 +1,7 @@
 //webp encoder for nti_file.lib
 #include <assert.h>
-#include <webp31\types.h>
-#include <webp31\encode.h>
+#include <webp\types.h>
+#include <webp\encode.h>
 #include <nti_file.h>
 
 LPBYTE webp_buffer;

@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <assert.h>
-#include <webp31/decode.h>
+#include <webp/decode.h>
 #include <nti_file.h>
 
 extern LPBYTE webp_buffer;

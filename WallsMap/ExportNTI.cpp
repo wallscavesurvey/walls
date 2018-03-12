@@ -12,7 +12,7 @@
 #include "ExportNTI_Adv.h"
 #include <gdal_priv.h>
 #include <ntifile.h>
-#include <webp31/encode.h>
+#include <webp/encode.h>
 /*
   WEBP_PRESET_DEFAULT = 0,  // default preset.
   WEBP_PRESET_PICTURE,      // digital picture, like portrait, inner shot

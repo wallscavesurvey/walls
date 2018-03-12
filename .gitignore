@@ -340,3 +340,12 @@ $RECYCLE.BIN/
 # Mac desktop service store files
 .DS_Store
 
+# ==========================
+# CMake
+# ==========================
+
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+cmake_install.cmake
+CTestTestfile.cmake

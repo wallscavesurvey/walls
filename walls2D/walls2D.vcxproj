@@ -160,7 +160,8 @@
     </Link>
     <PostBuildEvent>
       <Command>call "$(DevEnvDir)..\tools\vsvars32.bat"
-editbin.exe /NXCOMPAT:NO "$(TargetPath)"</Command>
+editbin.exe /NXCOMPAT:NO "$(TargetPath)"
+copy "$(TargetPath)" "$(WorkBIN)"</Command>
       <Message>call editbin.exe to disable DEP</Message>
     </PostBuildEvent>
     <Manifest>
