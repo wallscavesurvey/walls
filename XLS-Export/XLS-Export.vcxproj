@@ -123,12 +123,6 @@
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
-    <PostBuildEvent>
-      <Command>call copy_to_install.bat</Command>
-    </PostBuildEvent>
-    <PostBuildEvent>
-      <Message>Copy exe to \Table2Shp subfolders</Message>
-    </PostBuildEvent>
     <Manifest>
       <EnableDpiAwareness>false</EnableDpiAwareness>
     </Manifest>
