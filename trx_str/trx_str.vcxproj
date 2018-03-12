@@ -208,16 +208,16 @@
   <ItemGroup>
     <CustomBuild Include="mapxmod.asm">
       <FileType>Document</FileType>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\bin\nasm -o $(OutDir)\mapxmod.obj -f win32 -d _MSC_ mapxmod.asm</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_XP|Win32'">C:\bin\nasm -o $(OutDir)\mapxmod.obj -f win32 -d _MSC_ mapxmod.asm</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">nasm -o $(OutDir)\mapxmod.obj -f win32 -d _MSC_ mapxmod.asm</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_XP|Win32'">nasm -o $(OutDir)\mapxmod.obj -f win32 -d _MSC_ mapxmod.asm</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Performing Custom Build Tools (nasm)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug_XP|Win32'">Performing Custom Build Tools (nasm)</Message>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(OutDir)\mapxmod.obj</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_XP|Win32'">$(OutDir)\mapxmod.obj</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(OutDir)\mapxmod.obj</Outputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release_XP|Win32'">$(OutDir)\mapxmod.obj</Outputs>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\bin\nasm -o $(OutDir)\mapxmod.obj -f win32 -d _MSC_ mapxmod.asm</Command>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release_XP|Win32'">C:\bin\nasm -o $(OutDir)\mapxmod.obj -f win32 -d _MSC_ mapxmod.asm</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">nasm -o $(OutDir)\mapxmod.obj -f win32 -d _MSC_ mapxmod.asm</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release_XP|Win32'">nasm -o $(OutDir)\mapxmod.obj -f win32 -d _MSC_ mapxmod.asm</Command>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Performing Custom Build Tools (nasm)</Message>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release_XP|Win32'">Performing Custom Build Tools (nasm)</Message>
     </CustomBuild>

@@ -479,7 +479,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>pcrelibXPd.lib;wallnetXPd.lib;trx_fileXPd.lib;dbf_fileXPd.lib;trx_cshXPd.lib;trx_strXPd.lib;gziplibXPd.lib;afxnmcdd.lib;nafxcwd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>pcrelibd.lib;wallnetd.lib;trx_filed.lib;dbf_filed.lib;trx_cshd.lib;trx_strd.lib;gziplibd.lib;afxnmcdd.lib;nafxcwd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>afxnmcdd.lib;nafxcwd.lib</IgnoreSpecificDefaultLibraries>
     </Link>
     <Midl>
