@@ -1,34 +1,34 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\cjpeg.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\cjpeg.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\cdjpeg.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\cdjpeg.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\rdgif.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\rdgif.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\rdppm.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\rdppm.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\rdswitch.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\rdswitch.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\rdbmp.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\rdbmp.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\rdtarga.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\rdtarga.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="F:\Work14\libjpeg-turbo\sharedlib\CMakeLists.txt" />
+    <CustomBuild Include="Y:\Documents\trx\libjpeg-turbo\sharedlib\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{5CD6688F-0201-4E08-9D67-AB4A3F50922E}</UniqueIdentifier>
+      <UniqueIdentifier>{34C034DC-331A-4645-8BFB-AFF1659F480C}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -1,279 +1,279 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jcapimin.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcapimin.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jcapistd.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcapistd.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jccoefct.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jccoefct.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jccolor.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jccolor.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jcdctmgr.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcdctmgr.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jchuff.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jchuff.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jcinit.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcinit.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jcmainct.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcmainct.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jcmarker.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcmarker.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jcmaster.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcmaster.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jcomapi.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcomapi.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jcparam.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcparam.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jcphuff.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcphuff.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jcprepct.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcprepct.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jcsample.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcsample.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jctrans.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jctrans.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jdapimin.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdapimin.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jdapistd.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdapistd.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jdatadst.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdatadst.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jdatasrc.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdatasrc.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jdcoefct.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdcoefct.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jdcolor.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdcolor.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jddctmgr.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jddctmgr.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jdhuff.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdhuff.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jdinput.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdinput.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jdmainct.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdmainct.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jdmarker.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdmarker.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jdmaster.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdmaster.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jdmerge.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdmerge.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jdphuff.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdphuff.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jdpostct.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdpostct.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jdsample.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdsample.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jdtrans.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdtrans.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jerror.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jerror.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jfdctflt.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jfdctflt.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jfdctfst.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jfdctfst.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jfdctint.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jfdctint.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jidctflt.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jidctflt.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jidctfst.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jidctfst.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jidctint.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jidctint.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jidctred.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jidctred.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jquant1.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jquant1.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jquant2.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jquant2.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jutils.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jutils.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jmemmgr.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jmemmgr.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jmemnobs.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jmemnobs.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jaricom.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jaricom.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jcarith.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcarith.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jdarith.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdarith.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\simd\jsimd_i386.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\simd\jsimd_i386.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\turbojpeg.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\turbojpeg.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\transupp.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\transupp.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jdatadst-tj.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdatadst-tj.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="F:\Work14\libjpeg-turbo\jdatasrc-tj.c">
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdatasrc-tj.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="F:\Work14\libjpeg-turbo\CMakeLists.txt" />
+    <CustomBuild Include="Y:\Documents\trx\libjpeg-turbo\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jsimdcpu.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jsimdcpu.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jfdctflt-3dn.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jfdctflt-3dn.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jidctflt-3dn.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jidctflt-3dn.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jquant-3dn.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jquant-3dn.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jccolor-mmx.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jccolor-mmx.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jcgray-mmx.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jcgray-mmx.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jcsample-mmx.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jcsample-mmx.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jdcolor-mmx.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jdcolor-mmx.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jdmerge-mmx.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jdmerge-mmx.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jdsample-mmx.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jdsample-mmx.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jfdctfst-mmx.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jfdctfst-mmx.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jfdctint-mmx.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jfdctint-mmx.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jidctfst-mmx.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jidctfst-mmx.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jidctint-mmx.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jidctint-mmx.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jidctred-mmx.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jidctred-mmx.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jquant-mmx.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jquant-mmx.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jfdctflt-sse.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jfdctflt-sse.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jidctflt-sse.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jidctflt-sse.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jquant-sse.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jquant-sse.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jccolor-sse2.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jccolor-sse2.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jcgray-sse2.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jcgray-sse2.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jcsample-sse2.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jcsample-sse2.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jdcolor-sse2.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jdcolor-sse2.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jdmerge-sse2.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jdmerge-sse2.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jdsample-sse2.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jdsample-sse2.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jfdctfst-sse2.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jfdctfst-sse2.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jfdctint-sse2.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jfdctint-sse2.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jidctflt-sse2.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jidctflt-sse2.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jidctfst-sse2.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jidctfst-sse2.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jidctint-sse2.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jidctint-sse2.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jidctred-sse2.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jidctred-sse2.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jquantf-sse2.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jquantf-sse2.obj">
       <Filter>Object Files</Filter>
     </Object>
-    <Object Include="F:\Work14\libjpegtbo\simd\$(Configuration)\jquanti-sse2.obj">
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jquanti-sse2.obj">
       <Filter>Object Files</Filter>
     </Object>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{5CD6688F-0201-4E08-9D67-AB4A3F50922E}</UniqueIdentifier>
+      <UniqueIdentifier>{34C034DC-331A-4645-8BFB-AFF1659F480C}</UniqueIdentifier>
     </Filter>
     <Filter Include="Object Files">
-      <UniqueIdentifier>{E2DA60C5-DA2F-437C-A714-67F96099FB25}</UniqueIdentifier>
+      <UniqueIdentifier>{62F497DE-8767-4F4D-B993-9161FDE896CD}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

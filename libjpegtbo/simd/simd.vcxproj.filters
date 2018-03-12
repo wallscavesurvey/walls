@@ -1,116 +1,116 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <CustomBuild Include="F:\Work14\libjpeg-turbo\simd\CMakeLists.txt" />
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jsimdcpu.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpeg-turbo\simd\CMakeLists.txt" />
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jsimdcpu.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jfdctflt-3dn.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jfdctflt-3dn.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jidctflt-3dn.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jidctflt-3dn.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jquant-3dn.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jquant-3dn.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jccolor-mmx.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jccolor-mmx.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jcgray-mmx.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jcgray-mmx.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jcsample-mmx.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jcsample-mmx.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jdcolor-mmx.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jdcolor-mmx.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jdmerge-mmx.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jdmerge-mmx.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jdsample-mmx.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jdsample-mmx.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jfdctfst-mmx.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jfdctfst-mmx.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jfdctint-mmx.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jfdctint-mmx.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jidctfst-mmx.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jidctfst-mmx.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jidctint-mmx.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jidctint-mmx.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jidctred-mmx.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jidctred-mmx.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jquant-mmx.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jquant-mmx.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jfdctflt-sse.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jfdctflt-sse.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jidctflt-sse.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jidctflt-sse.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jquant-sse.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jquant-sse.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jccolor-sse2.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jccolor-sse2.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jcgray-sse2.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jcgray-sse2.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jcsample-sse2.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jcsample-sse2.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jdcolor-sse2.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jdcolor-sse2.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jdmerge-sse2.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jdmerge-sse2.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jdsample-sse2.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jdsample-sse2.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jfdctfst-sse2.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jfdctfst-sse2.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jfdctint-sse2.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jfdctint-sse2.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jidctflt-sse2.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jidctflt-sse2.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jidctfst-sse2.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jidctfst-sse2.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jidctint-sse2.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jidctint-sse2.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jidctred-sse2.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jidctred-sse2.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jquantf-sse2.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jquantf-sse2.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b0d6464223367bd6990be7ef03b4950a\jquanti-sse2.obj.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\86859ed354f2b03dad3630bce11f7125\jquanti-sse2.obj.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
-    <CustomBuild Include="F:\Work14\libjpegtbo\CMakeFiles\b2cfd199c136992f5f5c3403e8de1b22\simd.rule">
+    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\f2e2d23e861fe7f6c0f5f1c2d0f42960\simd.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <None Include="F:\Work14\libjpegtbo\simd\CMakeFiles\simd" />
+    <None Include="Y:\Documents\trx\libjpegtbo\simd\CMakeFiles\simd" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="CMake Rules">
-      <UniqueIdentifier>{AAFE08D4-3F01-4DB0-978C-8FC0DA2A8EE4}</UniqueIdentifier>
+      <UniqueIdentifier>{095D734E-33D4-485D-826B-572283B0DBF3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

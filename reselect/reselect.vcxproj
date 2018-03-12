@@ -88,7 +88,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalOptions>/IGNORE:4049 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>trx_fileXP.lib;dbf_fileXP.lib;trx_cshXP.lib;trx_strXP.lib;Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>trx_file.lib;dbf_file.lib;trx_csh.lib;trx_str.lib;Wininet.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <ProgramDatabaseFile>.\Release/reselect.pdb</ProgramDatabaseFile>

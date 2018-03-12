@@ -1,4 +1,4 @@
-# Install script for directory: F:/Work14/libjpeg-turbo/simd
+# Install script for directory: Y:/Documents/trx/libjpeg-turbo/simd
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

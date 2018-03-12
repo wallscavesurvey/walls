@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -19,11 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGUID>{CD558924-C0A1-4587-9C7C-49910B445D28}</ProjectGUID>
+    <ProjectGUID>{7BFF3C4C-7663-4427-9C9B-2DF0388DE429}</ProjectGUID>
     <Keyword>Win32Proj</Keyword>
     <Platform>Win32</Platform>
     <ProjectName>turbojpeg-static</ProjectName>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -56,41 +55,29 @@
   <ImportGroup Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
-    <Import Project="$(SolutionDir)\vs_version.props" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Import Project="$(SolutionDir)\vs_version.props" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
-    <Import Project="$(SolutionDir)\vs_version.props" />
-  </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(SolutionDir)\vs_version.props" />
-  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup>
-    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(WorkLIB)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">turbojpeg-static.dir\Debug\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">libjpegtboD</TargetName>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.lib</TargetExt>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(WorkLIB)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">turbojpeg-static.dir\Release\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">libjpegtbo</TargetName>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.lib</TargetExt>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">$(SolutionDir)\libjpegtbo\MinSizeRel\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">turbojpeg-static.dir\MinSizeRel\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">turbojpeg-static</TargetName>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.lib</TargetExt>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">$(SolutionDir)\libjpegtbo\RelWithDebInfo\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">turbojpeg-static.dir\RelWithDebInfo\</IntDir>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">turbojpeg-static</TargetName>
-    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.lib</TargetExt>
-  </PropertyGroup>
+    <PropertyGroup>
+      <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Y:\Documents\trx\libjpegtbo\Debug\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">turbojpeg-static.dir\Debug\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">turbojpeg-static</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.lib</TargetExt>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Y:\Documents\trx\libjpegtbo\Release\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">turbojpeg-static.dir\Release\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">turbojpeg-static</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.lib</TargetExt>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Y:\Documents\trx\libjpegtbo\MinSizeRel\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">turbojpeg-static.dir\MinSizeRel\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">turbojpeg-static</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.lib</TargetExt>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Y:\Documents\trx\libjpegtbo\RelWithDebInfo\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">turbojpeg-static.dir\RelWithDebInfo\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">turbojpeg-static</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.lib</TargetExt>
+    </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Debug/</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <CompileAs>CompileAsC</CompileAs>
@@ -108,10 +95,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;WITH_SIMD;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -121,7 +108,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Release/</AssemblerListingLocation>
       <CompileAs>CompileAsC</CompileAs>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
@@ -134,15 +121,14 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;WITH_SIMD;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
-      <DebugInformationFormat>
-      </DebugInformationFormat>
+      <DebugInformationFormat></DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;WITH_SIMD;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -152,7 +138,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>MinSizeRel/</AssemblerListingLocation>
       <CompileAs>CompileAsC</CompileAs>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
@@ -165,15 +151,14 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;WITH_SIMD;CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ObjectFileName>$(IntDir)</ObjectFileName>
-      <DebugInformationFormat>
-      </DebugInformationFormat>
+      <DebugInformationFormat></DebugInformationFormat>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;WITH_SIMD;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -183,7 +168,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
       <CompileAs>CompileAsC</CompileAs>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -200,10 +185,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;WITH_SIMD;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -212,10 +197,10 @@
     </Midl>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="$(SolutionDir)\libjpeg-turbo\CMakeLists.txt">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule $(SolutionDir)/libjpeg-turbo/CMakeLists.txt</Message>
+    <CustomBuild Include="Y:\Documents\trx\libjpeg-turbo\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule Y:/Documents/trx/libjpeg-turbo/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
-"$(MSBuildProgramFiles32)\Cmake\bin\cmake.exe" -H$(SolutionDir)/libjpeg-turbo -B$(SolutionDir)/libjpegtbo --check-stamp-file $(SolutionDir)\libjpegtbo\CMakeFiles\generate.stamp
+"C:\Program Files (x86)\Cmake\bin\cmake.exe" -HY:/Documents/trx/libjpeg-turbo -BY:/Documents/trx/libjpegtbo --check-stamp-file Y:\Documents\trx\libjpegtbo\CMakeFiles\generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -223,12 +208,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)/libjpeg-turbo/CMakeLists.txt;$(SolutionDir)\libjpeg-turbo\CMakeLists.txt;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineSystem.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeSystem.cmake.in;$(SolutionDir)\libjpegtbo\CMakeFiles\3.3.1\CMakeSystem.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeSystemSpecificInitialize.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompilerId.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCompilerIdDetection.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeParseArguments.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\ADSP-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\AppleClang-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Borland-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Compaq-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Cray-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Embarcadero-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Fujitsu-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\GHS-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\GNU-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\HP-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\IAR-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Intel-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\MIPSpro-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\MSVC-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\OpenWatcom-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\PathScale-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\PGI-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\SCO-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\SDCC-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\SunPro-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\TI-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\TinyCC-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\VisualAge-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Watcom-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\XL-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\zOS-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CompilerId\VS-10.vcxproj.in;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeFindBinUtils.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeClDeps.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCCompiler.cmake.in;$(SolutionDir)\libjpegtbo\CMakeFiles\3.3.1\CMakeCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeSystemSpecificInformation.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeGenericSystem.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Platform\Windows.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Platform\WindowsPaths.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCInformation.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Platform\Windows-MSVC-C.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Platform\Windows-MSVC.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineRCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeRCCompiler.cmake.in;$(SolutionDir)\libjpegtbo\CMakeFiles\3.3.1\CMakeRCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeRCInformation.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeTestRCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCommonLanguageInclude.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeTestCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeTestCompilerCommon.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompilerABI.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeParseImplicitLinkInfo.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCCompilerABI.c;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompileFeatures.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCCompiler.cmake.in;$(SolutionDir)\libjpegtbo\CMakeFiles\3.3.1\CMakeCCompiler.cmake;$(SolutionDir)\libjpeg-turbo\win\jconfig.h.in;$(SolutionDir)\libjpeg-turbo\win\jconfigint.h.in;$(SolutionDir)\libjpeg-turbo\release\libjpeg-turbo.nsi.in;$(SolutionDir)\libjpeg-turbo\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\libjpegtbo\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Y:/Documents/trx/libjpeg-turbo/CMakeLists.txt;Y:\Documents\trx\libjpeg-turbo\CMakeLists.txt;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeSystem.cmake.in;Y:\Documents\trx\libjpegtbo\CMakeFiles\3.3.2\CMakeSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompilerId.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCompilerIdDetection.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\ADSP-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\AppleClang-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Borland-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Compaq-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Cray-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Embarcadero-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Fujitsu-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\GHS-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\GNU-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\HP-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\IAR-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Intel-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\MIPSpro-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\MSVC-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\OpenWatcom-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\PathScale-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\PGI-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\SCO-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\SDCC-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\SunPro-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\TI-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\TinyCC-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\VisualAge-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Watcom-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\XL-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\zOS-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CompilerId\VS-10.vcxproj.in;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeFindBinUtils.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeClDeps.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCCompiler.cmake.in;Y:\Documents\trx\libjpegtbo\CMakeFiles\3.3.2\CMakeCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Platform\WindowsPaths.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeRCCompiler.cmake.in;Y:\Documents\trx\libjpegtbo\CMakeFiles\3.3.2\CMakeRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeTestRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeTestCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeTestCompilerCommon.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompilerABI.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeParseImplicitLinkInfo.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCCompilerABI.c;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompileFeatures.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCCompiler.cmake.in;Y:\Documents\trx\libjpegtbo\CMakeFiles\3.3.2\CMakeCCompiler.cmake;Y:\Documents\trx\libjpeg-turbo\win\jconfig.h.in;Y:\Documents\trx\libjpeg-turbo\win\jconfigint.h.in;Y:\Documents\trx\libjpeg-turbo\release\libjpeg-turbo.nsi.in;Y:\Documents\trx\libjpeg-turbo\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Y:\Documents\trx\libjpegtbo\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule $(SolutionDir)/libjpeg-turbo/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule Y:/Documents/trx/libjpeg-turbo/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
-"$(MSBuildProgramFiles32)\Cmake\bin\cmake.exe" -H$(SolutionDir)/libjpeg-turbo -B$(SolutionDir)/libjpegtbo --check-stamp-file $(SolutionDir)\libjpegtbo\CMakeFiles\generate.stamp
+"C:\Program Files (x86)\Cmake\bin\cmake.exe" -HY:/Documents/trx/libjpeg-turbo -BY:/Documents/trx/libjpegtbo --check-stamp-file Y:\Documents\trx\libjpegtbo\CMakeFiles\generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -236,12 +221,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)/libjpeg-turbo/CMakeLists.txt;$(SolutionDir)\libjpeg-turbo\CMakeLists.txt;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineSystem.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeSystem.cmake.in;$(SolutionDir)\libjpegtbo\CMakeFiles\3.3.1\CMakeSystem.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeSystemSpecificInitialize.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompilerId.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCompilerIdDetection.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeParseArguments.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\ADSP-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\AppleClang-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Borland-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Compaq-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Cray-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Embarcadero-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Fujitsu-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\GHS-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\GNU-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\HP-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\IAR-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Intel-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\MIPSpro-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\MSVC-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\OpenWatcom-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\PathScale-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\PGI-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\SCO-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\SDCC-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\SunPro-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\TI-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\TinyCC-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\VisualAge-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Watcom-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\XL-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\zOS-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CompilerId\VS-10.vcxproj.in;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeFindBinUtils.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeClDeps.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCCompiler.cmake.in;$(SolutionDir)\libjpegtbo\CMakeFiles\3.3.1\CMakeCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeSystemSpecificInformation.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeGenericSystem.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Platform\Windows.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Platform\WindowsPaths.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCInformation.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Platform\Windows-MSVC-C.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Platform\Windows-MSVC.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineRCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeRCCompiler.cmake.in;$(SolutionDir)\libjpegtbo\CMakeFiles\3.3.1\CMakeRCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeRCInformation.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeTestRCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCommonLanguageInclude.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeTestCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeTestCompilerCommon.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompilerABI.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeParseImplicitLinkInfo.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCCompilerABI.c;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompileFeatures.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCCompiler.cmake.in;$(SolutionDir)\libjpegtbo\CMakeFiles\3.3.1\CMakeCCompiler.cmake;$(SolutionDir)\libjpeg-turbo\win\jconfig.h.in;$(SolutionDir)\libjpeg-turbo\win\jconfigint.h.in;$(SolutionDir)\libjpeg-turbo\release\libjpeg-turbo.nsi.in;$(SolutionDir)\libjpeg-turbo\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\libjpegtbo\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Y:/Documents/trx/libjpeg-turbo/CMakeLists.txt;Y:\Documents\trx\libjpeg-turbo\CMakeLists.txt;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeSystem.cmake.in;Y:\Documents\trx\libjpegtbo\CMakeFiles\3.3.2\CMakeSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompilerId.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCompilerIdDetection.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\ADSP-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\AppleClang-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Borland-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Compaq-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Cray-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Embarcadero-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Fujitsu-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\GHS-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\GNU-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\HP-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\IAR-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Intel-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\MIPSpro-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\MSVC-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\OpenWatcom-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\PathScale-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\PGI-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\SCO-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\SDCC-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\SunPro-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\TI-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\TinyCC-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\VisualAge-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Watcom-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\XL-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\zOS-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CompilerId\VS-10.vcxproj.in;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeFindBinUtils.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeClDeps.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCCompiler.cmake.in;Y:\Documents\trx\libjpegtbo\CMakeFiles\3.3.2\CMakeCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Platform\WindowsPaths.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeRCCompiler.cmake.in;Y:\Documents\trx\libjpegtbo\CMakeFiles\3.3.2\CMakeRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeTestRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeTestCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeTestCompilerCommon.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompilerABI.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeParseImplicitLinkInfo.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCCompilerABI.c;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompileFeatures.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCCompiler.cmake.in;Y:\Documents\trx\libjpegtbo\CMakeFiles\3.3.2\CMakeCCompiler.cmake;Y:\Documents\trx\libjpeg-turbo\win\jconfig.h.in;Y:\Documents\trx\libjpeg-turbo\win\jconfigint.h.in;Y:\Documents\trx\libjpeg-turbo\release\libjpeg-turbo.nsi.in;Y:\Documents\trx\libjpeg-turbo\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Y:\Documents\trx\libjpegtbo\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule $(SolutionDir)/libjpeg-turbo/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule Y:/Documents/trx/libjpeg-turbo/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
-"$(MSBuildProgramFiles32)\Cmake\bin\cmake.exe" -H$(SolutionDir)/libjpeg-turbo -B$(SolutionDir)/libjpegtbo --check-stamp-file $(SolutionDir)\libjpegtbo\CMakeFiles\generate.stamp
+"C:\Program Files (x86)\Cmake\bin\cmake.exe" -HY:/Documents/trx/libjpeg-turbo -BY:/Documents/trx/libjpegtbo --check-stamp-file Y:\Documents\trx\libjpegtbo\CMakeFiles\generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -249,12 +234,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">$(SolutionDir)/libjpeg-turbo/CMakeLists.txt;$(SolutionDir)\libjpeg-turbo\CMakeLists.txt;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineSystem.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeSystem.cmake.in;$(SolutionDir)\libjpegtbo\CMakeFiles\3.3.1\CMakeSystem.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeSystemSpecificInitialize.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompilerId.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCompilerIdDetection.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeParseArguments.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\ADSP-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\AppleClang-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Borland-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Compaq-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Cray-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Embarcadero-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Fujitsu-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\GHS-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\GNU-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\HP-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\IAR-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Intel-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\MIPSpro-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\MSVC-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\OpenWatcom-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\PathScale-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\PGI-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\SCO-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\SDCC-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\SunPro-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\TI-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\TinyCC-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\VisualAge-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Watcom-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\XL-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\zOS-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CompilerId\VS-10.vcxproj.in;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeFindBinUtils.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeClDeps.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCCompiler.cmake.in;$(SolutionDir)\libjpegtbo\CMakeFiles\3.3.1\CMakeCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeSystemSpecificInformation.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeGenericSystem.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Platform\Windows.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Platform\WindowsPaths.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCInformation.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Platform\Windows-MSVC-C.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Platform\Windows-MSVC.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineRCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeRCCompiler.cmake.in;$(SolutionDir)\libjpegtbo\CMakeFiles\3.3.1\CMakeRCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeRCInformation.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeTestRCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCommonLanguageInclude.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeTestCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeTestCompilerCommon.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompilerABI.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeParseImplicitLinkInfo.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCCompilerABI.c;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompileFeatures.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCCompiler.cmake.in;$(SolutionDir)\libjpegtbo\CMakeFiles\3.3.1\CMakeCCompiler.cmake;$(SolutionDir)\libjpeg-turbo\win\jconfig.h.in;$(SolutionDir)\libjpeg-turbo\win\jconfigint.h.in;$(SolutionDir)\libjpeg-turbo\release\libjpeg-turbo.nsi.in;$(SolutionDir)\libjpeg-turbo\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">$(SolutionDir)\libjpegtbo\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Y:/Documents/trx/libjpeg-turbo/CMakeLists.txt;Y:\Documents\trx\libjpeg-turbo\CMakeLists.txt;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeSystem.cmake.in;Y:\Documents\trx\libjpegtbo\CMakeFiles\3.3.2\CMakeSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompilerId.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCompilerIdDetection.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\ADSP-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\AppleClang-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Borland-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Compaq-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Cray-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Embarcadero-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Fujitsu-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\GHS-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\GNU-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\HP-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\IAR-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Intel-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\MIPSpro-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\MSVC-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\OpenWatcom-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\PathScale-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\PGI-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\SCO-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\SDCC-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\SunPro-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\TI-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\TinyCC-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\VisualAge-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Watcom-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\XL-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\zOS-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CompilerId\VS-10.vcxproj.in;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeFindBinUtils.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeClDeps.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCCompiler.cmake.in;Y:\Documents\trx\libjpegtbo\CMakeFiles\3.3.2\CMakeCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Platform\WindowsPaths.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeRCCompiler.cmake.in;Y:\Documents\trx\libjpegtbo\CMakeFiles\3.3.2\CMakeRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeTestRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeTestCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeTestCompilerCommon.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompilerABI.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeParseImplicitLinkInfo.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCCompilerABI.c;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompileFeatures.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCCompiler.cmake.in;Y:\Documents\trx\libjpegtbo\CMakeFiles\3.3.2\CMakeCCompiler.cmake;Y:\Documents\trx\libjpeg-turbo\win\jconfig.h.in;Y:\Documents\trx\libjpeg-turbo\win\jconfigint.h.in;Y:\Documents\trx\libjpeg-turbo\release\libjpeg-turbo.nsi.in;Y:\Documents\trx\libjpeg-turbo\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Y:\Documents\trx\libjpegtbo\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule $(SolutionDir)/libjpeg-turbo/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule Y:/Documents/trx/libjpeg-turbo/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
-"$(MSBuildProgramFiles32)\Cmake\bin\cmake.exe" -H$(SolutionDir)/libjpeg-turbo -B$(SolutionDir)/libjpegtbo --check-stamp-file $(SolutionDir)\libjpegtbo\CMakeFiles\generate.stamp
+"C:\Program Files (x86)\Cmake\bin\cmake.exe" -HY:/Documents/trx/libjpeg-turbo -BY:/Documents/trx/libjpegtbo --check-stamp-file Y:\Documents\trx\libjpegtbo\CMakeFiles\generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -262,99 +247,107 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">$(SolutionDir)/libjpeg-turbo/CMakeLists.txt;$(SolutionDir)\libjpeg-turbo\CMakeLists.txt;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineSystem.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeSystem.cmake.in;$(SolutionDir)\libjpegtbo\CMakeFiles\3.3.1\CMakeSystem.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeSystemSpecificInitialize.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompilerId.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCompilerIdDetection.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeParseArguments.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\ADSP-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\AppleClang-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Borland-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Compaq-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Cray-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Embarcadero-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Fujitsu-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\GHS-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\GNU-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\HP-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\IAR-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Intel-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\MIPSpro-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\MSVC-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\OpenWatcom-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\PathScale-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\PGI-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\SCO-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\SDCC-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\SunPro-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\TI-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\TinyCC-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\VisualAge-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\Watcom-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\XL-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\zOS-C-DetermineCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CompilerId\VS-10.vcxproj.in;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeFindBinUtils.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeClDeps.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCCompiler.cmake.in;$(SolutionDir)\libjpegtbo\CMakeFiles\3.3.1\CMakeCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeSystemSpecificInformation.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeGenericSystem.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Platform\Windows.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Platform\WindowsPaths.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCInformation.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Platform\Windows-MSVC-C.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\Platform\Windows-MSVC.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineRCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeRCCompiler.cmake.in;$(SolutionDir)\libjpegtbo\CMakeFiles\3.3.1\CMakeRCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeRCInformation.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeTestRCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCommonLanguageInclude.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeTestCCompiler.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeTestCompilerCommon.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompilerABI.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeParseImplicitLinkInfo.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCCompilerABI.c;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompileFeatures.cmake;$(MSBuildProgramFiles32)\CMake\share\cmake-3.3\Modules\CMakeCCompiler.cmake.in;$(SolutionDir)\libjpegtbo\CMakeFiles\3.3.1\CMakeCCompiler.cmake;$(SolutionDir)\libjpeg-turbo\win\jconfig.h.in;$(SolutionDir)\libjpeg-turbo\win\jconfigint.h.in;$(SolutionDir)\libjpeg-turbo\release\libjpeg-turbo.nsi.in;$(SolutionDir)\libjpeg-turbo\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">$(SolutionDir)\libjpegtbo\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Y:/Documents/trx/libjpeg-turbo/CMakeLists.txt;Y:\Documents\trx\libjpeg-turbo\CMakeLists.txt;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeSystem.cmake.in;Y:\Documents\trx\libjpegtbo\CMakeFiles\3.3.2\CMakeSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeSystemSpecificInitialize.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompilerId.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCompilerIdDetection.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeParseArguments.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\ADSP-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\AppleClang-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Borland-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Clang-DetermineCompilerInternal.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Compaq-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Cray-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Embarcadero-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Fujitsu-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\GHS-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\GNU-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\HP-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\IAR-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Intel-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\MIPSpro-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\MSVC-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\OpenWatcom-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\PathScale-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\PGI-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\SCO-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\SDCC-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\SunPro-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\TI-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\TinyCC-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\VisualAge-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\Watcom-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\XL-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\zOS-C-DetermineCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Compiler\IBMCPP-C-DetermineVersionInternal.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CompilerId\VS-10.vcxproj.in;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeFindBinUtils.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeClDeps.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCCompiler.cmake.in;Y:\Documents\trx\libjpegtbo\CMakeFiles\3.3.2\CMakeCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeSystemSpecificInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeGenericSystem.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Platform\Windows.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Platform\WindowsPaths.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Platform\Windows-MSVC-C.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\Platform\Windows-MSVC.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeRCCompiler.cmake.in;Y:\Documents\trx\libjpegtbo\CMakeFiles\3.3.2\CMakeRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeRCInformation.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeTestRCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCommonLanguageInclude.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeTestCCompiler.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeTestCompilerCommon.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompilerABI.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeParseImplicitLinkInfo.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCCompilerABI.c;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeDetermineCompileFeatures.cmake;C:\Program Files (x86)\CMake\share\cmake-3.3\Modules\CMakeCCompiler.cmake.in;Y:\Documents\trx\libjpegtbo\CMakeFiles\3.3.2\CMakeCCompiler.cmake;Y:\Documents\trx\libjpeg-turbo\win\jconfig.h.in;Y:\Documents\trx\libjpeg-turbo\win\jconfigint.h.in;Y:\Documents\trx\libjpeg-turbo\release\libjpeg-turbo.nsi.in;Y:\Documents\trx\libjpeg-turbo\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Y:\Documents\trx\libjpegtbo\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jcapimin.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jcapistd.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jccoefct.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jccolor.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jcdctmgr.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jchuff.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jcinit.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jcmainct.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jcmarker.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jcmaster.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jcomapi.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jcparam.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jcphuff.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jcprepct.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jcsample.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jctrans.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jdapimin.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jdapistd.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jdatadst.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jdatasrc.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jdcoefct.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jdcolor.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jddctmgr.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jdhuff.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jdinput.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jdmainct.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jdmarker.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jdmaster.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jdmerge.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jdphuff.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jdpostct.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jdsample.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jdtrans.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jerror.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jfdctflt.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jfdctfst.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jfdctint.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jidctflt.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jidctfst.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jidctint.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jidctred.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jquant1.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jquant2.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jutils.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jmemmgr.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jmemnobs.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jaricom.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jcarith.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jdarith.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\simd\jsimd_i386.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\turbojpeg.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\transupp.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jdatadst-tj.c" />
-    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jdatasrc-tj.c" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jsimdcpu.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jfdctflt-3dn.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jidctflt-3dn.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jquant-3dn.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jccolor-mmx.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jcgray-mmx.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jcsample-mmx.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jdcolor-mmx.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jdmerge-mmx.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jdsample-mmx.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jfdctfst-mmx.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jfdctint-mmx.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jidctfst-mmx.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jidctint-mmx.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jidctred-mmx.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jquant-mmx.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jfdctflt-sse.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jidctflt-sse.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jquant-sse.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jccolor-sse2.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jcgray-sse2.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jcsample-sse2.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jdcolor-sse2.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jdmerge-sse2.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jdsample-sse2.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jfdctfst-sse2.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jfdctint-sse2.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jidctflt-sse2.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jidctfst-sse2.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jidctint-sse2.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jidctred-sse2.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jquantf-sse2.obj" />
-    <Object Include="$(SolutionDir)\libjpegtbo\simd\$(Configuration)\jquanti-sse2.obj" />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcapimin.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcapistd.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jccoefct.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jccolor.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcdctmgr.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jchuff.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcinit.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcmainct.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcmarker.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcmaster.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcomapi.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcparam.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcphuff.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcprepct.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcsample.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jctrans.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdapimin.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdapistd.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdatadst.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdatasrc.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdcoefct.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdcolor.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jddctmgr.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdhuff.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdinput.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdmainct.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdmarker.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdmaster.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdmerge.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdphuff.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdpostct.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdsample.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdtrans.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jerror.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jfdctflt.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jfdctfst.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jfdctint.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jidctflt.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jidctfst.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jidctint.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jidctred.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jquant1.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jquant2.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jutils.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jmemmgr.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jmemnobs.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jaricom.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jcarith.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdarith.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\simd\jsimd_i386.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\turbojpeg.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\transupp.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdatadst-tj.c"  />
+    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jdatasrc-tj.c"  />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jsimdcpu.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jfdctflt-3dn.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jidctflt-3dn.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jquant-3dn.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jccolor-mmx.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jcgray-mmx.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jcsample-mmx.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jdcolor-mmx.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jdmerge-mmx.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jdsample-mmx.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jfdctfst-mmx.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jfdctint-mmx.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jidctfst-mmx.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jidctint-mmx.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jidctred-mmx.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jquant-mmx.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jfdctflt-sse.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jidctflt-sse.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jquant-sse.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jccolor-sse2.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jcgray-sse2.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jcsample-sse2.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jdcolor-sse2.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jdmerge-sse2.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jdsample-sse2.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jfdctfst-sse2.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jfdctint-sse2.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jidctflt-sse2.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jidctfst-sse2.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jidctint-sse2.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jidctred-sse2.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jquantf-sse2.obj" />
+    <Object Include="Y:\Documents\trx\libjpegtbo\simd\$(Configuration)\jquanti-sse2.obj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Y:/Documents/trx/libjpegtbo/ZERO_CHECK.vcxproj">
+      <Project>18650EC4-BAF5-4ACC-9910-8A026EBC5301</Project>
+    </ProjectReference>
+    <ProjectReference Include="Y:/Documents/trx/libjpegtbo/simd/simd.vcxproj">
+      <Project>6627761B-B9DD-4374-B00F-A4D5C63956E2</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

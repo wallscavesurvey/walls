@@ -1,6 +1,6 @@
 !include x64.nsh
 Name "libjpeg-turbo SDK for Visual C++"
-OutFile "F:/Work14/libjpegtbo\${BUILDDIR}libjpeg-turbo-1.4.1-vc.exe"
+OutFile "Y:/Documents/trx/libjpegtbo\${BUILDDIR}libjpeg-turbo-1.4.1-vc.exe"
 InstallDir c:\libjpeg-turbo
 
 SetCompressor bzip2
@@ -35,57 +35,57 @@ Section "libjpeg-turbo SDK for Visual C++ (required)"
 	notexists:
 	SetOutPath $SYSDIR
 !ifdef GCC
-	File "F:/Work14/libjpegtbo\libturbojpeg.dll"
+	File "Y:/Documents/trx/libjpegtbo\libturbojpeg.dll"
 !else
-	File "F:/Work14/libjpegtbo\${BUILDDIR}turbojpeg.dll"
+	File "Y:/Documents/trx/libjpegtbo\${BUILDDIR}turbojpeg.dll"
 !endif
 	SetOutPath $INSTDIR\bin
 !ifdef GCC
-	File "F:/Work14/libjpegtbo\libturbojpeg.dll"
+	File "Y:/Documents/trx/libjpegtbo\libturbojpeg.dll"
 !else
-	File "F:/Work14/libjpegtbo\${BUILDDIR}turbojpeg.dll"
+	File "Y:/Documents/trx/libjpegtbo\${BUILDDIR}turbojpeg.dll"
 !endif
 !ifdef GCC
-	File "/oname=libjpeg-62.dll" "F:/Work14/libjpegtbo\sharedlib\libjpeg-*.dll"
+	File "/oname=libjpeg-62.dll" "Y:/Documents/trx/libjpegtbo\sharedlib\libjpeg-*.dll"
 !else
-	File "F:/Work14/libjpegtbo\sharedlib\${BUILDDIR}jpeg62.dll"
+	File "Y:/Documents/trx/libjpegtbo\sharedlib\${BUILDDIR}jpeg62.dll"
 !endif
-	File "F:/Work14/libjpegtbo\sharedlib\${BUILDDIR}cjpeg.exe"
-	File "F:/Work14/libjpegtbo\sharedlib\${BUILDDIR}djpeg.exe"
-	File "F:/Work14/libjpegtbo\sharedlib\${BUILDDIR}jpegtran.exe"
-	File "F:/Work14/libjpegtbo\${BUILDDIR}tjbench.exe"
-	File "F:/Work14/libjpegtbo\${BUILDDIR}rdjpgcom.exe"
-	File "F:/Work14/libjpegtbo\${BUILDDIR}wrjpgcom.exe"
+	File "Y:/Documents/trx/libjpegtbo\sharedlib\${BUILDDIR}cjpeg.exe"
+	File "Y:/Documents/trx/libjpegtbo\sharedlib\${BUILDDIR}djpeg.exe"
+	File "Y:/Documents/trx/libjpegtbo\sharedlib\${BUILDDIR}jpegtran.exe"
+	File "Y:/Documents/trx/libjpegtbo\${BUILDDIR}tjbench.exe"
+	File "Y:/Documents/trx/libjpegtbo\${BUILDDIR}rdjpgcom.exe"
+	File "Y:/Documents/trx/libjpegtbo\${BUILDDIR}wrjpgcom.exe"
 	SetOutPath $INSTDIR\lib
 !ifdef GCC
-	File "F:/Work14/libjpegtbo\libturbojpeg.dll.a"
-	File "F:/Work14/libjpegtbo\libturbojpeg.a"
-	File "F:/Work14/libjpegtbo\sharedlib\libjpeg.dll.a"
-	File "F:/Work14/libjpegtbo\libjpeg.a"
+	File "Y:/Documents/trx/libjpegtbo\libturbojpeg.dll.a"
+	File "Y:/Documents/trx/libjpegtbo\libturbojpeg.a"
+	File "Y:/Documents/trx/libjpegtbo\sharedlib\libjpeg.dll.a"
+	File "Y:/Documents/trx/libjpegtbo\libjpeg.a"
 !else
-	File "F:/Work14/libjpegtbo\${BUILDDIR}turbojpeg.lib"
-	File "F:/Work14/libjpegtbo\${BUILDDIR}turbojpeg-static.lib"
-	File "F:/Work14/libjpegtbo\sharedlib\${BUILDDIR}jpeg.lib"
-	File "F:/Work14/libjpegtbo\${BUILDDIR}jpeg-static.lib"
+	File "Y:/Documents/trx/libjpegtbo\${BUILDDIR}turbojpeg.lib"
+	File "Y:/Documents/trx/libjpegtbo\${BUILDDIR}turbojpeg-static.lib"
+	File "Y:/Documents/trx/libjpegtbo\sharedlib\${BUILDDIR}jpeg.lib"
+	File "Y:/Documents/trx/libjpegtbo\${BUILDDIR}jpeg-static.lib"
 !endif
 !ifdef JAVA
 	SetOutPath $INSTDIR\classes
-	File "F:/Work14/libjpegtbo\java\${BUILDDIR}turbojpeg.jar"
+	File "Y:/Documents/trx/libjpegtbo\java\${BUILDDIR}turbojpeg.jar"
 !endif
 	SetOutPath $INSTDIR\include
-	File "F:/Work14/libjpegtbo\jconfig.h"
-	File "F:/Work14/libjpeg-turbo\jerror.h"
-	File "F:/Work14/libjpeg-turbo\jmorecfg.h"
-	File "F:/Work14/libjpeg-turbo\jpeglib.h"
-	File "F:/Work14/libjpeg-turbo\turbojpeg.h"
+	File "Y:/Documents/trx/libjpegtbo\jconfig.h"
+	File "Y:/Documents/trx/libjpeg-turbo\jerror.h"
+	File "Y:/Documents/trx/libjpeg-turbo\jmorecfg.h"
+	File "Y:/Documents/trx/libjpeg-turbo\jpeglib.h"
+	File "Y:/Documents/trx/libjpeg-turbo\turbojpeg.h"
 	SetOutPath $INSTDIR\doc
-	File "F:/Work14/libjpeg-turbo\README"
-	File "F:/Work14/libjpeg-turbo\README-turbo.txt"
-	File "F:/Work14/libjpeg-turbo\example.c"
-	File "F:/Work14/libjpeg-turbo\libjpeg.txt"
-	File "F:/Work14/libjpeg-turbo\structure.txt"
-	File "F:/Work14/libjpeg-turbo\usage.txt"
-	File "F:/Work14/libjpeg-turbo\wizard.txt"
+	File "Y:/Documents/trx/libjpeg-turbo\README"
+	File "Y:/Documents/trx/libjpeg-turbo\README-turbo.txt"
+	File "Y:/Documents/trx/libjpeg-turbo\example.c"
+	File "Y:/Documents/trx/libjpeg-turbo\libjpeg.txt"
+	File "Y:/Documents/trx/libjpeg-turbo\structure.txt"
+	File "Y:/Documents/trx/libjpeg-turbo\usage.txt"
+	File "Y:/Documents/trx/libjpeg-turbo\wizard.txt"
 
 	WriteRegStr HKLM "SOFTWARE\libjpeg-turbo 1.4.1" "Install_Dir" "$INSTDIR"
 

@@ -134,7 +134,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>trx_str.lib;dbf_file.lib;trx_fille.lib;trx_csh.lib</AdditionalDependencies>
+      <AdditionalDependencies>trx_str.lib;dbf_file.lib;trx_file.lib;trx_csh.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
