@@ -16,9 +16,9 @@ and possibly other projects in this repo as well.
 
 ## Quick Start for Developers
 
-* Install the latest version of [Visual Studio](https://www.visualstudio.com/downloads/) (community edition is fine)
+'m not sure * Install [Visual Studio 2015](https://www.visualstudio.com/downloads/) (community edition is fine.  Newer versions of Visual Studio may work, but I'm not sure)
 * Install the [`nasm` assembler](http://www.nasm.us/) and make sure it's on your `PATH` 
-* Install CMake 3.3 in C:\Program Files (x86)\CMake\share\cmake-3.3
+* Install 32-bit CMake 3.3, afterward there should be files in C:\Program Files (x86)\CMake\share\cmake-3.3
 * Install the latest [Windows SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk)
 * Install the [OpenGL extension headers](https://www.khronos.org/registry/khronos_headers.zip).  These go in the same
 directory as gl.h, which is something like `C:\Program Files (x86)\Windows Kits\8.1\Include\um\gl` (depending on the
