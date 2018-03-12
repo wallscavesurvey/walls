@@ -349,3 +349,6 @@ CMakeFiles
 CMakeScripts
 cmake_install.cmake
 CTestTestfile.cmake
+
+lib/*
+!lib/WallsMap_sid*
