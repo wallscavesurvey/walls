@@ -185,6 +185,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libecwj2S", "ECW_3.3\source
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlibstat", "zlib-1.2.8\contrib\vstudio\vc11\zlibstat.vcxproj", "{745DEC58-EBB3-47A9-A9B8-4C6627C01BF8}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "WallsInstaller", "WallsInstaller\WallsInstaller.vdproj", "{18FD886C-966C-487F-8E75-99FF0DA77D4D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_XP|ARM = Debug_XP|ARM
@@ -2057,6 +2059,30 @@ Global
 		{745DEC58-EBB3-47A9-A9B8-4C6627C01BF8}.RelWithDebInfo|x64.Build.0 = Debug_XP|Win32
 		{745DEC58-EBB3-47A9-A9B8-4C6627C01BF8}.RelWithDebInfo|x86.ActiveCfg = Release|Win32
 		{745DEC58-EBB3-47A9-A9B8-4C6627C01BF8}.RelWithDebInfo|x86.Build.0 = Release|Win32
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.Debug_XP|ARM.ActiveCfg = Debug
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.Debug_XP|Win32.ActiveCfg = Debug
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.Debug_XP|x64.ActiveCfg = Debug
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.Debug_XP|x86.ActiveCfg = Debug
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.Debug|ARM.ActiveCfg = Debug
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.Debug|Win32.ActiveCfg = Debug
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.Debug|x64.ActiveCfg = Debug
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.Debug|x86.ActiveCfg = Debug
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.MinSizeRel|ARM.ActiveCfg = Release
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.MinSizeRel|Win32.ActiveCfg = Release
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.MinSizeRel|x64.ActiveCfg = Release
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.MinSizeRel|x86.ActiveCfg = Release
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.Release_XP|ARM.ActiveCfg = Release
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.Release_XP|Win32.ActiveCfg = Release
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.Release_XP|x64.ActiveCfg = Release
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.Release_XP|x86.ActiveCfg = Release
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.Release|ARM.ActiveCfg = Release
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.Release|Win32.ActiveCfg = Release
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.Release|x64.ActiveCfg = Release
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.Release|x86.ActiveCfg = Release
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.RelWithDebInfo|ARM.ActiveCfg = Release
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.RelWithDebInfo|Win32.ActiveCfg = Release
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.RelWithDebInfo|x64.ActiveCfg = Release
+		{18FD886C-966C-487F-8E75-99FF0DA77D4D}.RelWithDebInfo|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
