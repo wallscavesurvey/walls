@@ -188,6 +188,7 @@ int zip_Export(LPCSTR pathname,char **pFile,int iFileCnt,UINT flags)
 	HZIP hz;
 
 	char rootPath[MAX_PATH],prjBuffer[MAX_PATH];
+	char canonicalAddFile[MAX_PATH];
 	size_t rootPathLen;
 
 	*errmsg=0;
@@ -228,8 +229,11 @@ int zip_Export(LPCSTR pathname,char **pFile,int iFileCnt,UINT flags)
 				replaceChr(prjBuffer,':','$');
 				iExternalFiles++;
 			}
+			PathCanonicalize(canonicalAddFile, pAddFile);
+			char *pCanonicalAddFile = canonicalAddFile;
+			if (*pCanonicalAddFile == '\\') pCanonicalAddFile++;
 
-			if(ZR_OK==ZipAdd(hz,pAddFile,pFilePath)) {
+			if(ZR_OK==ZipAdd(hz,pCanonicalAddFile,pFilePath)) {
 				if(IsNTA(pFilePath)) numNTA++;
 				else numData++;
 			}
