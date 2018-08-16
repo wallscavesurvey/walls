@@ -23,10 +23,9 @@ and possibly other projects in this repo as well.
 * Install the [OpenGL extension headers](https://www.khronos.org/registry/khronos_headers.zip).  These go in the same
 directory as gl.h, which is something like `C:\Program Files (x86)\Windows Kits\8.1\Include\um\gl` (depending on the
 Windows SDK version)
+* Install the [Visual Studio Installer Projects Extension](https://marketplace.visualstudio.com/items?itemName=VisualStudioClient.MicrosoftVisualStudio2015InstallerProjects)
 * Open `Walls.sln`
 * Select a build configuration: `Debug_XP` if you're on Windows XP, or `Debug` otherwise.
 * Cross your fingers
 * Hit F7 to build the solution
 * Run the project!
-
-Install nasm and make sure it's on your path
