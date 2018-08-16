@@ -97,6 +97,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -113,6 +121,22 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.5"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.5 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.5"
+                    }
+                }
+            }
         }
     }
     "Deployable"
@@ -137,6 +161,52 @@
         }
         "FileType"
         {
+            "{5EB83D71-FA18-4901-BE56-DE22E13CC478}:_86F84905BB814C6D80717C18C77812F6"
+            {
+            "Name" = "8:WPJFileType"
+            "Description" = "8:Walls Project File"
+            "Extensions" = "8:.wpj"
+            "MIME" = "8:"
+            "Icon" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
+            "IconIndex" = "3:2"
+                "Command"
+                {
+                "Command" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
+                }
+                "Verbs"
+                {
+                    "{95C0C507-CBF0-42B8-B119-07219E384A4A}:_05C2AC17FBE047B9A4159E2FA0BC5A5B"
+                    {
+                    "Command" = "8:&Open"
+                    "Verb" = "8:open"
+                    "Arguments" = "8:\"%1\""
+                    "Order" = "3:0"
+                    }
+                }
+            }
+            "{5EB83D71-FA18-4901-BE56-DE22E13CC478}:_A2E792F2536C4EC8B2B2A4A53E06BDFC"
+            {
+            "Name" = "8:SRVFileType"
+            "Description" = "8:Walls Survey File"
+            "Extensions" = "8:.srv"
+            "MIME" = "8:"
+            "Icon" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
+            "IconIndex" = "3:2"
+                "Command"
+                {
+                "Command" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
+                }
+                "Verbs"
+                {
+                    "{95C0C507-CBF0-42B8-B119-07219E384A4A}:_BEA749D3FBA84F7AB18491D8D3B94EB0"
+                    {
+                    "Command" = "8:&Open"
+                    "Verb" = "8:open"
+                    "Arguments" = "8:\"%1\""
+                    "Order" = "3:0"
+                    }
+                }
+            }
         }
         "Folder"
         {
@@ -153,7 +223,7 @@
             }
             "{3C67513D-01DD-4637-8A68-80971EB9504F}:_B04DF6F6362A4E2590545F30A8853A9C"
             {
-            "DefaultLocation" = "8:[ProgramFiles64Folder][Manufacturer]\\[ProductName]"
+            "DefaultLocation" = "8:[ProgramFilesFolder][Manufacturer]\\[ProductName]"
             "Name" = "8:#1925"
             "AlwaysCreate" = "11:FALSE"
             "Condition" = "8:"
@@ -202,7 +272,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Walls v2"
         "ProductCode" = "8:{E891C7EB-389A-4F08-8526-F9DC2F19DE9B}"
-        "PackageCode" = "8:{1E28C046-B474-4A59-98C8-2309C30CFBA7}"
+        "PackageCode" = "8:{5EE46AA3-02B5-4B80-A4FF-C48D099F9C53}"
         "UpgradeCode" = "8:{B8B0A649-478B-4F72-B710-B10AA12ACCA6}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -210,12 +280,12 @@
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
         "ProductVersion" = "8:2.0.0"
-        "Manufacturer" = "8:"
+        "Manufacturer" = "8:Walls Cave Survey"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://github.com/wallscavesurvey/walls/issues"
         "Title" = "8:Walls v2"
         "Subject" = "8:"
-        "ARPCONTACT" = "8:Walls Cave Survey"
+        "ARPCONTACT" = "8:David MacKenzie"
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"
@@ -223,7 +293,7 @@
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
-        "TargetPlatform" = "3:1"
+        "TargetPlatform" = "3:0"
         "PreBuildEvent" = "8:"
         "PostBuildEvent" = "8:"
         "RunPostBuildEvent" = "3:0"
@@ -807,7 +877,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_032407C853734B2889E1BB7CC4090E00"
             {
-            "SourcePath" = "8:..\\bin\\wallsef.dll"
+            "SourcePath" = "8:\\\\Mac\\Home\\Documents\\trx\\bin\\wallsef.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -919,7 +989,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_2866F21F21654213B103F72CC4B89690"
             {
-            "SourcePath" = "8:..\\bin\\Shp2Grid.exe"
+            "SourcePath" = "8:\\\\Mac\\Home\\Documents\\trx\\bin\\Shp2Grid.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -975,7 +1045,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_2D776B216C874E44AE4F5F58C2BE6537"
             {
-            "SourcePath" = "8:..\\bin\\Walls32.exe"
+            "SourcePath" = "8:\\\\Mac\\Home\\Documents\\trx\\bin\\Walls32.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -1171,7 +1241,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_6704107C4AF24631ACE010D2EEB75C0E"
             {
-            "SourcePath" = "8:..\\bin\\wallgps.dll"
+            "SourcePath" = "8:\\\\Mac\\Home\\Documents\\trx\\bin\\wallgps.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -1227,7 +1297,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_6DAABEB434184776A5FFCB9180C36B33"
             {
-            "SourcePath" = "8:..\\bin\\wallsvg.dll"
+            "SourcePath" = "8:\\\\Mac\\Home\\Documents\\trx\\bin\\wallsvg.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -1395,7 +1465,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_8079ECCAB4D3469497657642CC93FA18"
             {
-            "SourcePath" = "8:..\\bin\\walls3d.exe"
+            "SourcePath" = "8:\\\\Mac\\Home\\Documents\\trx\\bin\\walls3d.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -1479,7 +1549,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_9AF66B1327EE411AA98EEE3A2218570C"
             {
-            "SourcePath" = "8:..\\walls2D\\Release\\walls2D.exe"
+            "SourcePath" = "8:\\\\Mac\\Home\\Documents\\trx\\walls2D\\Release\\walls2D.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -1507,7 +1577,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_BDB1FA731F37435F8F2A67472E5A192D"
             {
-            "SourcePath" = "8:..\\bin\\D2D-Sym.exe"
+            "SourcePath" = "8:\\\\Mac\\Home\\Documents\\trx\\bin\\D2D-Sym.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -1563,7 +1633,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_C3DD1C9C0B7444AFB132662BB0802B5A"
             {
-            "SourcePath" = "8:..\\bin\\wallcss.dll"
+            "SourcePath" = "8:\\\\Mac\\Home\\Documents\\trx\\bin\\wallcss.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -1619,7 +1689,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_D932DC6DC5BA4C689F217F4EDDC2F56D"
             {
-            "SourcePath" = "8:..\\Walls_Setup\\runwalls.exe"
+            "SourcePath" = "8:\\\\Mac\\Home\\Documents\\trx\\Walls_Setup\\runwalls.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -1647,7 +1717,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_DE890C42A1F4453589475158C4BDE380"
             {
-            "SourcePath" = "8:..\\bin\\wallshp.dll"
+            "SourcePath" = "8:\\\\Mac\\Home\\Documents\\trx\\bin\\wallshp.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
