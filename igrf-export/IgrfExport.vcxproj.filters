@@ -74,12 +74,10 @@
     <None Include="res\IgrfExport.rc2">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\walls32\geomod\IGRF10">
-      <Filter>Data</Filter>
-    </None>
     <None Include="igrf11.xls">
       <Filter>Data</Filter>
     </None>
+    <None Include="$(WorkDIR)walls32\geomod\IGRF10" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />

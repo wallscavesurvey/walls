@@ -1,2 +1,2 @@
 # CMake generation dependency list for this directory.
-Y:/Documents/trx/libjpeg-turbo/sharedlib/CMakeLists.txt
+$(SolutionDir)/libjpeg-turbo/sharedlib/CMakeLists.txt

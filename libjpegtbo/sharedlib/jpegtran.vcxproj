@@ -58,25 +58,25 @@
   <PropertyGroup Label="UserMacros" />
     <PropertyGroup>
       <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Y:\Documents\trx\libjpegtbo\sharedlib\Debug\</OutDir>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\libjpegtbo\sharedlib\Debug\</OutDir>
       <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">jpegtran.dir\Debug\</IntDir>
       <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">jpegtran</TargetName>
       <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.exe</TargetExt>
       <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
       <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Y:\Documents\trx\libjpegtbo\sharedlib\Release\</OutDir>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\libjpegtbo\sharedlib\Release\</OutDir>
       <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">jpegtran.dir\Release\</IntDir>
       <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">jpegtran</TargetName>
       <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.exe</TargetExt>
       <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
       <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Y:\Documents\trx\libjpegtbo\sharedlib\MinSizeRel\</OutDir>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">$(SolutionDir)\libjpegtbo\sharedlib\MinSizeRel\</OutDir>
       <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">jpegtran.dir\MinSizeRel\</IntDir>
       <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">jpegtran</TargetName>
       <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.exe</TargetExt>
       <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkIncremental>
       <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">true</GenerateManifest>
-      <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Y:\Documents\trx\libjpegtbo\sharedlib\RelWithDebInfo\</OutDir>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">$(SolutionDir)\libjpegtbo\sharedlib\RelWithDebInfo\</OutDir>
       <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">jpegtran.dir\RelWithDebInfo\</IntDir>
       <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">jpegtran</TargetName>
       <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.exe</TargetExt>
@@ -85,7 +85,7 @@
     </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Debug/</AssemblerListingLocation>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <CompileAs>CompileAsC</CompileAs>
@@ -103,10 +103,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;USE_SETMODE;WITH_SIMD;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -119,8 +119,8 @@
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>Y:/Documents/trx/libjpegtbo/sharedlib/Debug/jpegtran.lib</ImportLibrary>
-      <ProgramDataBaseFile>Y:/Documents/trx/libjpegtbo/sharedlib/Debug/jpegtran.pdb</ProgramDataBaseFile>
+      <ImportLibrary>$(SolutionDir)/libjpegtbo/sharedlib/Debug/jpegtran.lib</ImportLibrary>
+      <ProgramDataBaseFile>$(SolutionDir)/libjpegtbo/sharedlib/Debug/jpegtran.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
       <Version></Version>
     </Link>
@@ -130,7 +130,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>Release/</AssemblerListingLocation>
       <CompileAs>CompileAsC</CompileAs>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
@@ -147,10 +147,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;USE_SETMODE;WITH_SIMD;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -163,8 +163,8 @@
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>Y:/Documents/trx/libjpegtbo/sharedlib/Release/jpegtran.lib</ImportLibrary>
-      <ProgramDataBaseFile>Y:/Documents/trx/libjpegtbo/sharedlib/Release/jpegtran.pdb</ProgramDataBaseFile>
+      <ImportLibrary>$(SolutionDir)/libjpegtbo/sharedlib/Release/jpegtran.lib</ImportLibrary>
+      <ProgramDataBaseFile>$(SolutionDir)/libjpegtbo/sharedlib/Release/jpegtran.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
       <Version></Version>
     </Link>
@@ -174,7 +174,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>MinSizeRel/</AssemblerListingLocation>
       <CompileAs>CompileAsC</CompileAs>
       <DisableSpecificWarnings>4996</DisableSpecificWarnings>
@@ -191,10 +191,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;USE_SETMODE;WITH_SIMD;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -207,8 +207,8 @@
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>Y:/Documents/trx/libjpegtbo/sharedlib/MinSizeRel/jpegtran.lib</ImportLibrary>
-      <ProgramDataBaseFile>Y:/Documents/trx/libjpegtbo/sharedlib/MinSizeRel/jpegtran.pdb</ProgramDataBaseFile>
+      <ImportLibrary>$(SolutionDir)/libjpegtbo/sharedlib/MinSizeRel/jpegtran.lib</ImportLibrary>
+      <ProgramDataBaseFile>$(SolutionDir)/libjpegtbo/sharedlib/MinSizeRel/jpegtran.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
       <Version></Version>
     </Link>
@@ -218,7 +218,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
       <CompileAs>CompileAsC</CompileAs>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
@@ -235,10 +235,10 @@
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;USE_SETMODE;WITH_SIMD;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Midl>
-      <AdditionalIncludeDirectories>Y:\Documents\trx\libjpegtbo;Y:\Documents\trx\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\libjpegtbo;$(SolutionDir)\libjpeg-turbo;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
       <HeaderFileName>%(Filename).h</HeaderFileName>
       <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
@@ -251,8 +251,8 @@
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
-      <ImportLibrary>Y:/Documents/trx/libjpegtbo/sharedlib/RelWithDebInfo/jpegtran.lib</ImportLibrary>
-      <ProgramDataBaseFile>Y:/Documents/trx/libjpegtbo/sharedlib/RelWithDebInfo/jpegtran.pdb</ProgramDataBaseFile>
+      <ImportLibrary>$(SolutionDir)/libjpegtbo/sharedlib/RelWithDebInfo/jpegtran.lib</ImportLibrary>
+      <ProgramDataBaseFile>$(SolutionDir)/libjpegtbo/sharedlib/RelWithDebInfo/jpegtran.pdb</ProgramDataBaseFile>
       <SubSystem>Console</SubSystem>
       <Version></Version>
     </Link>
@@ -261,10 +261,10 @@
     </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="Y:\Documents\trx\libjpeg-turbo\sharedlib\CMakeLists.txt">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule Y:/Documents/trx/libjpeg-turbo/sharedlib/CMakeLists.txt</Message>
+    <CustomBuild Include="$(SolutionDir)\libjpeg-turbo\sharedlib\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule $(SolutionDir)/libjpeg-turbo/sharedlib/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
-"C:\Program Files (x86)\Cmake\bin\cmake.exe" -HY:/Documents/trx/libjpeg-turbo -BY:/Documents/trx/libjpegtbo --check-stamp-file Y:\Documents\trx\libjpegtbo\sharedlib\CMakeFiles\generate.stamp
+"C:\Program Files (x86)\Cmake\bin\cmake.exe" -H$(SolutionDir)/libjpeg-turbo -B$(SolutionDir)/libjpegtbo --check-stamp-file $(SolutionDir)\libjpegtbo\sharedlib\CMakeFiles\generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -272,12 +272,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Y:/Documents/trx/libjpeg-turbo/sharedlib/CMakeLists.txt;Y:\Documents\trx\libjpeg-turbo\sharedlib\CMakeLists.txt;Y:\Documents\trx\libjpeg-turbo\sharedlib\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Y:\Documents\trx\libjpegtbo\sharedlib\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)/libjpeg-turbo/sharedlib/CMakeLists.txt;$(SolutionDir)\libjpeg-turbo\sharedlib\CMakeLists.txt;$(SolutionDir)\libjpeg-turbo\sharedlib\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)\libjpegtbo\sharedlib\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule Y:/Documents/trx/libjpeg-turbo/sharedlib/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule $(SolutionDir)/libjpeg-turbo/sharedlib/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
-"C:\Program Files (x86)\Cmake\bin\cmake.exe" -HY:/Documents/trx/libjpeg-turbo -BY:/Documents/trx/libjpegtbo --check-stamp-file Y:\Documents\trx\libjpegtbo\sharedlib\CMakeFiles\generate.stamp
+"C:\Program Files (x86)\Cmake\bin\cmake.exe" -H$(SolutionDir)/libjpeg-turbo -B$(SolutionDir)/libjpegtbo --check-stamp-file $(SolutionDir)\libjpegtbo\sharedlib\CMakeFiles\generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -285,12 +285,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Y:/Documents/trx/libjpeg-turbo/sharedlib/CMakeLists.txt;Y:\Documents\trx\libjpeg-turbo\sharedlib\CMakeLists.txt;Y:\Documents\trx\libjpeg-turbo\sharedlib\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Y:\Documents\trx\libjpegtbo\sharedlib\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)/libjpeg-turbo/sharedlib/CMakeLists.txt;$(SolutionDir)\libjpeg-turbo\sharedlib\CMakeLists.txt;$(SolutionDir)\libjpeg-turbo\sharedlib\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)\libjpegtbo\sharedlib\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule Y:/Documents/trx/libjpeg-turbo/sharedlib/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule $(SolutionDir)/libjpeg-turbo/sharedlib/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
-"C:\Program Files (x86)\Cmake\bin\cmake.exe" -HY:/Documents/trx/libjpeg-turbo -BY:/Documents/trx/libjpegtbo --check-stamp-file Y:\Documents\trx\libjpegtbo\sharedlib\CMakeFiles\generate.stamp
+"C:\Program Files (x86)\Cmake\bin\cmake.exe" -H$(SolutionDir)/libjpeg-turbo -B$(SolutionDir)/libjpegtbo --check-stamp-file $(SolutionDir)\libjpegtbo\sharedlib\CMakeFiles\generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -298,12 +298,12 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Y:/Documents/trx/libjpeg-turbo/sharedlib/CMakeLists.txt;Y:\Documents\trx\libjpeg-turbo\sharedlib\CMakeLists.txt;Y:\Documents\trx\libjpeg-turbo\sharedlib\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Y:\Documents\trx\libjpegtbo\sharedlib\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">$(SolutionDir)/libjpeg-turbo/sharedlib/CMakeLists.txt;$(SolutionDir)\libjpeg-turbo\sharedlib\CMakeLists.txt;$(SolutionDir)\libjpeg-turbo\sharedlib\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">$(SolutionDir)\libjpegtbo\sharedlib\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
-      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule Y:/Documents/trx/libjpeg-turbo/sharedlib/CMakeLists.txt</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule $(SolutionDir)/libjpeg-turbo/sharedlib/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
-"C:\Program Files (x86)\Cmake\bin\cmake.exe" -HY:/Documents/trx/libjpeg-turbo -BY:/Documents/trx/libjpegtbo --check-stamp-file Y:\Documents\trx\libjpegtbo\sharedlib\CMakeFiles\generate.stamp
+"C:\Program Files (x86)\Cmake\bin\cmake.exe" -H$(SolutionDir)/libjpeg-turbo -B$(SolutionDir)/libjpegtbo --check-stamp-file $(SolutionDir)\libjpegtbo\sharedlib\CMakeFiles\generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -311,22 +311,22 @@ endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
 exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Y:/Documents/trx/libjpeg-turbo/sharedlib/CMakeLists.txt;Y:\Documents\trx\libjpeg-turbo\sharedlib\CMakeLists.txt;Y:\Documents\trx\libjpeg-turbo\sharedlib\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Y:\Documents\trx\libjpegtbo\sharedlib\CMakeFiles\generate.stamp</Outputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">$(SolutionDir)/libjpeg-turbo/sharedlib/CMakeLists.txt;$(SolutionDir)\libjpeg-turbo\sharedlib\CMakeLists.txt;$(SolutionDir)\libjpeg-turbo\sharedlib\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">$(SolutionDir)\libjpegtbo\sharedlib\CMakeFiles\generate.stamp</Outputs>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\jpegtran.c"  />
-    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\cdjpeg.c"  />
-    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\rdswitch.c"  />
-    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\transupp.c"  />
+    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\jpegtran.c"  />
+    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\cdjpeg.c"  />
+    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\rdswitch.c"  />
+    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\transupp.c"  />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="Y:/Documents/trx/libjpegtbo/ZERO_CHECK.vcxproj">
+    <ProjectReference Include="$(SolutionDir)/libjpegtbo/ZERO_CHECK.vcxproj">
       <Project>18650EC4-BAF5-4ACC-9910-8A026EBC5301</Project>
     </ProjectReference>
-    <ProjectReference Include="Y:/Documents/trx/libjpegtbo/sharedlib/jpeg.vcxproj">
+    <ProjectReference Include="$(SolutionDir)/libjpegtbo/sharedlib/jpeg.vcxproj">
       <Project>8B26FACD-EBA1-4C89-BD73-7C7E01ECB65C</Project>
     </ProjectReference>
   </ItemGroup>

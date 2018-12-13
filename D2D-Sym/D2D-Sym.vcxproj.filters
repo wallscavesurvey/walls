@@ -25,15 +25,13 @@
     <ClCompile Include="ColorPopup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\inc\GetElapsedSecs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NiceSlider.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SymDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="$(WorkINC)\GetElapsedSecs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D2D-Sym.h">
@@ -57,9 +55,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\GetElapsedSecs.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ColorPopup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -78,6 +73,7 @@
     <ClInclude Include="SymDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="$(WorkINC)\GetElapsedSecs.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\D2D-SymDoc.ico">

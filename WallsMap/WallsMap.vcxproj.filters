@@ -111,9 +111,6 @@
     <ClCompile Include="GEDefaultsDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\inc\GetElapsedSecs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="HeaderCtrlEx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -342,9 +339,6 @@
     <ClCompile Include="HScrollListBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\inc\ShpDBF.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UpdZipDlg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -399,6 +393,12 @@
     <ClCompile Include="dbtfile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="$(WorkINC)\ShpDBF.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="$(WorkINC)\GetElapsedSecs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FontComboBox.h">
@@ -426,9 +426,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ColumnDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\inc\dbfile_shp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DBGridDlg.h">
@@ -495,9 +492,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GEDefaultsDlg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\inc\GetElapsedSecs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="HeaderCtrlEx.h">
@@ -707,24 +701,6 @@
     <ClInclude Include="HScrollListBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\dbf_file.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\inc\dbfile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\inc\Trx_file.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\inc\trx_str.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\inc\trxfile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\inc\ShpDBF.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UpdZipDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -738,9 +714,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GPSView.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\inc\FltPoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GPSOptionsDlg.h">
@@ -780,6 +753,33 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="TableReplDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(WorkINC)\dbfile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(WorkINC)\dbf_file.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(WorkINC)\FltPoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(WorkINC)\ShpDBF.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(WorkINC)\trxfile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(WorkINC)\Trx_file.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(WorkINC)\trx_str.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(WorkINC)\dbfile_shp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(WorkINC)\GetElapsedSecs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -823,9 +823,6 @@
     <None Include="res\Toolbar.bmp">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="..\walls32\res\UTM_UPS_Buttons.bmp">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="res\bmp00003.bmp">
       <Filter>Resource Files</Filter>
     </None>
@@ -849,6 +846,9 @@
     </None>
     <None Include="res\checkbox.bmp">
       <Filter>Header Files</Filter>
+    </None>
+    <None Include="$(WorkDIR)walls32\res\UTM_UPS_Buttons.bmp">
+      <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>

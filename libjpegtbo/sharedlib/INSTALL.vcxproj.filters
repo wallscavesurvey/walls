@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <CustomBuild Include="Y:\Documents\trx\libjpegtbo\CMakeFiles\9a983656f39a8e69156bce9f1886ba73\INSTALL_force.rule">
+    <CustomBuild Include="$(SolutionDir)\libjpegtbo\CMakeFiles\9a983656f39a8e69156bce9f1886ba73\INSTALL_force.rule">
       <Filter>CMake Rules</Filter>
     </CustomBuild>
   </ItemGroup>

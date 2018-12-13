@@ -6,21 +6,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\inc\trx_type.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\inc\trx_str.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\wallisef.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClInclude Include="$(WorkINC)\trx_str.h" />
+    <ClInclude Include="$(WorkINC)\trx_type.h" />
+    <ClInclude Include="wallisef.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="wallisef.cpp" />

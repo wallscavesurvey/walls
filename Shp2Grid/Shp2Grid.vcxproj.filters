@@ -41,7 +41,7 @@
     <ClCompile Include="shpfile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\inc\ShpDBF.cpp">
+    <ClCompile Include="$(WorkINC)\ShpDBF.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

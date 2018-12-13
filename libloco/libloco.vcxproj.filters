@@ -47,7 +47,7 @@
     <ClInclude Include="global_ed.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\libloco.h">
+    <ClInclude Include="$(WorkDIR)inc\libloco.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

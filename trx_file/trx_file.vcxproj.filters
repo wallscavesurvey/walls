@@ -21,7 +21,7 @@
     <ClInclude Include="A__trx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\Trx_file.h">
+    <ClInclude Include="$(WorkINC)\Trx_file.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
