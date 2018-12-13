@@ -191,13 +191,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\inc\a__dbf.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\inc\dbf_file.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(WorkINC)\a__dbf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(WorkINC)\dbf_file.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

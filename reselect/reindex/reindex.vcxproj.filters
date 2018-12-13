@@ -32,32 +32,14 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="..\..\..\nwbb\NWBB_e\NWBB.LOG">
-      <Filter>output</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\..\..\nwbb\NWBB_e\NWBB.LST">
-      <Filter>output</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\..\..\nwbb\NWBB_e\nwbb.cfg">
-      <Filter>input</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\..\..\TexBib\2010-11-21\A-F.HTM">
-      <Filter>data</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\..\..\TexBib\2010-11-21\ANON.HTM">
-      <Filter>data</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\..\..\TexBib\2010-11-21\G-L.HTM">
-      <Filter>data</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\..\..\TexBib\2010-11-21\M-Q.HTM">
-      <Filter>data</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\..\..\TexBib\2010-11-21\R-Z.HTM">
-      <Filter>data</Filter>
-    </CustomBuild>
-    <CustomBuild Include="..\..\..\TexBib\2010-11-21\TEXBIB.LST">
-      <Filter>data</Filter>
-    </CustomBuild>
+    <CustomBuild Include="$(WorkDIR)..\nwbb\NWBB_e\NWBB.LOG" />
+    <CustomBuild Include="$(WorkDIR)..\nwbb\NWBB_e\NWBB.LST" />
+    <CustomBuild Include="$(WorkDIR)..\nwbb\NWBB_e\nwbb.cfg" />
+    <CustomBuild Include="$(WorkDIR)..\TexBib\2010-11-21\A-F.HTM" />
+    <CustomBuild Include="$(WorkDIR)..\TexBib\2010-11-21\ANON.HTM" />
+    <CustomBuild Include="$(WorkDIR)..\TexBib\2010-11-21\G-L.HTM" />
+    <CustomBuild Include="$(WorkDIR)..\TexBib\2010-11-21\M-Q.HTM" />
+    <CustomBuild Include="$(WorkDIR)..\TexBib\2010-11-21\R-Z.HTM" />
+    <CustomBuild Include="$(WorkDIR)..\TexBib\2010-11-21\TEXBIB.LST" />
   </ItemGroup>
 </Project>

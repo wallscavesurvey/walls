@@ -1,30 +1,30 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\cjpeg.c">
+    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\cjpeg.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\cdjpeg.c">
+    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\cdjpeg.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\rdgif.c">
+    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\rdgif.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\rdppm.c">
+    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\rdppm.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\rdswitch.c">
+    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\rdswitch.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\rdbmp.c">
+    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\rdbmp.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Y:\Documents\trx\libjpeg-turbo\rdtarga.c">
+    <ClCompile Include="$(SolutionDir)\libjpeg-turbo\rdtarga.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="Y:\Documents\trx\libjpeg-turbo\sharedlib\CMakeLists.txt" />
+    <CustomBuild Include="$(SolutionDir)\libjpeg-turbo\sharedlib\CMakeLists.txt" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">

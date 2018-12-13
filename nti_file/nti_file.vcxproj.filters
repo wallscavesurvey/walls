@@ -65,19 +65,19 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\inc\liblzma.h">
+    <ClInclude Include="$(WorkINC)\a__nti.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\a__nti.h">
+    <ClInclude Include="$(WorkINC)\GetElapsedSecs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\nti_file.h">
+    <ClInclude Include="$(WorkINC)\liblzma.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\ntifile.h">
+    <ClInclude Include="$(WorkINC)\ntifile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\GetElapsedSecs.h">
+    <ClInclude Include="$(WorkINC)\nti_file.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
