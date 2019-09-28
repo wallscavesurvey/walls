@@ -2,9 +2,9 @@
 /*Compare with WALL-SRV.CPP -- Used to generate wallexp.dll*/
 /*======================================================================*/
 
-#include "wall-srv.h"
-#include "expsef.h"
-#include "wall_emsg.h"
+#include "../wall-srv.h"
+#include "../expsef.h"
+#include "../wall_emsg.h"
 #include "assert.h"
 
 typedef struct { //units=deg and m
