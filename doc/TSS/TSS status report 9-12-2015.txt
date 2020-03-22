@@ -1,0 +1,27 @@
+TSS Database Status Report - 9/12/2015
+
+Directors and data managers:
+ 
+At the last meeting we agreed that I would purchase two large-capacity external drives for storing the database-related computer files we’ve been accumulating. The idea is that while one drive resided at the TSS Office, the other would be connected to my home computer where files would be routinely copied  to it. That drive could then be brought to the next board meeting and swapped with the one at the office. After the meeting I would synchronize the drive I take home with the TSS backup stored on my computer, then proceed as before. Also, anyone could add TSS data of various kinds to the drive available at the office.
+ 
+Soon after the meeting, after some research, I purchased a "Seagate Expansion 5 TB Desktop External Hard Drive USB 3.0 (STEB5000100)" for $129 plus tax, tested it and found that it worked fine, as as people have reported. About a week ago I bought another one. I’ll bring it to Saturday’s meeting, though much work remains in collecting and organizing the files I need to store on the two drives.
+ 
+I also experimented with data encryption options. I believe that the open source program, VeraCrypt, is probably our best overkill solution for now. Using it is fairly simple and quick. After plugging the drive into to a power outlet, we would turn the drive on by connecting it to a live USB3 port. Windows recognizes it and assigns it a drive letter, say D. Next, we execute a batch file, say mount-TSS.bat, stored in the root folder of D. This launches a portable version of VeraCrypt, also stored on D. After prompting for and verifying a passphrase, VeraCrypt "mounts" a very large file stored on D, a "container" with the encrypted data. The mounted container would have an assigned drive letter, say T, that we would then access like a normal drive. Although corruption is unlikely (Windows treats T as removable by default), to be safe we would run another batch file, dismount-TSS.bat, before disconnecting the Seagate drive from the port. I think it sufficient that a few TSS officers keep a written copy of the passphrase, which can be a random sequence of six words chosen using the Diceware method.
+ 
+Database Updates
+ 
+Since DB version 2015-04-17 was released at the time of the last meeting, Travis and I have prepared three more releases (2015-07-06, 2015-09-03, and 2015-09-09), the two recent ones containing significant shapefile updates from Joe Mitchell and Jerry Atkinson (as you can see from the UPDATED timestamps).
+ 
+With each database release there has been an update of the website's karst statistics pages. Since those numbers don't seem to match what's shown in WallsMap or the download page summaries, I’ll try describing here how TSS-Export derives them from WallsMap shapefiles. Assuming no bugs, the following statements explain what's now shown in the Texas County Karst Totals and TSS Database Statistics tables:
+ 
+a) Records of TYPE "Other" and "Entrance" affect only a few totals on the Statistics table. Those are the location status counts and the counts of records with attached maps and of records with attached photos. (Photo and map file totals aren't currently listed.)
+ 
+b) On the Database Statistics page, records flagged RUMORED increment a "Rumored" count instead of the count for the assigned type. Rumored feature counts don't appear on the County Karst Totals page.
+ 
+c) A feature that isn't rumored but with a TYPE assignment ending in "?" increments an "Undefined" count instead of the count for the named type. (For example, a "Cave?" doesn't count as a cave.) There are currently 300 such records for which the specific TSS type (e.g., sink vs. cave) is unknown or highly questionable. There are an additional 233 rumored features with "?" appended to the TYPE name. They increment only the "Rumored" count, not the "Undefined" count.
+ 
+d) The "Springs" count is incremented with either a record of type "Spring" or a non-spring, non-rumored record with the "HAS_SPRING" flag checked. An entrance or "undefined" record, if so flagged, can increment the "Springs" count, but a record of type "Other" will not.
+ 
+I wish it were simpler than this.  Let us know if you can think of ways to improve these tables.
+ 
+--David

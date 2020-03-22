@@ -1,0 +1,7 @@
+FILE QUARANTINED
+
+Microsoft Forefront Protection for Exchange Server removed a file since it was found to match a filter.
+File name: "Walls_setup.exe"
+Filter name: "FILE FILTER= Forbidden File Types: *.exe"
+Transport - Scanned on AEMS server EXHUB01.
+For information about the blocking of specific attachments, see http://www.utexas.edu/its/help/messaging/363

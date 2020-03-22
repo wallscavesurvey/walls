@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<title>WallsMap-TSS_Data</title>
+</head>
+
+<body bgcolor="#C0C0C0">
+
+<H2 align=center>WallsMap and TSS Database Downloads</h2>
+<p><hr></p>
+<p><font size="4">This password protected website is for use by
+<i>Texas Speleological Survey</i> directors and associates. Both the special <i>WallsMap</i> setup
+and the database files contain proprietary information and should not be distributed outside this group.</font></p>
+
+<hr>
+<p><font size="4"><strong>WallsMap (TSS Edition)</strong> &nbsp;(Build date: <font color="#990000"><strong>2015-12-04</strong></font>)
+&nbsp;&nbsp;<a href="WallsMap_ReadMe.txt">Release Notes</a></font></p>
+<p><font size="4"><a href="WallsMap-TSS_setup.exe">WallsMap-TSS_setup.exe</a> (6 MB)</font></p>
+
+<p><font size="4"><strong>Note:</strong> This WallsMap release requires graphics technology available only in recent versions of
+Microsoft Windows (Vista/7/8+/10). Windows XP is no longer supported.
+
+<p><font size="4">Please download and install the latest WallsMap release prior to updating the database.
+You can access this page for subsequent updates using a link in the program's About box. The TSS edition
+is the same as the one publicly distributed except that the setup doesn't contain the <i>Texas Public Caves</i>
+project. Also, the About box link will lead you here instead of to a
+<a href="http://www.texasspeleologicalsurvey.org/software/wallsmap/wallsmap.php">download page</a>
+on the TSS website.
+</p><p>
+A PDF version of the help file is also available and will be updated with each new build:
+<a href="WallsMap.pdf">WallsMap.pdf</a> (6.2 MB)</font></p>
+<hr>
+<p><font size="4"><strong>TSS Database Setup</strong> &nbsp;(Release date: <font color="#990000"><strong>2015-09-09</strong></font>)</font></p>
+
+</font></p>
+
+<p><font size="4">
+<a href="TSS_Data_setup.exe">TSS_Data_setup.exe</a> &nbsp;(Size: <b>164</b> MB)<br>
+Shapefile records: TSS All Types_2015-09-09: <b>14725</b>, TSS Caves: <b>6073</b>,
+TSS Sinks and Cavities: <b>4360</b>,<br>TSS Shelters: <b>912</b>, TSS Springs: <b>3149</b>, TSS Other: <b>240</b></p>
+<p><a href="TSS_Maps.101">TSS_Maps.101</a> &nbsp;(Size: <b>212</b> MB,  Maps: <b>3209</b>,  Recs: <b>2696</b>)<br>
+<a href="TSS_Photos.101">TSS_Photos.101</a> &nbsp;(Size: <b>396</b> MB,  Photos: <b>4099</b>,  Recs: <b>1601</b>)<br>
+</font></p>
+
+<p><font size="4">A more detailed summary of database status can be found on the TSS website:
+<a href="http://www.texasspeleologicalsurvey.org/deeplong/longcaves.php">Texas Long Caves</a>,
+<a href="http://www.texasspeleologicalsurvey.org/deeplong/deepcaves.php">Texas Deep Caves</a>,
+<a href="http://www.texasspeleologicalsurvey.org/deeplong/countytotals.php">Karst Totals by County</a>, and
+<a href="http://www.texasspeleologicalsurvey.org/deeplong/statistics.php">Texas Database Statistics</a>.
+</font></p>
+
+<p><font color="#990000" size="4"><strong>Note:</strong></font><font size="4">
+Starting with release 2015-09-09, the project contains a version of Jerry Atkinson's Texas karst map created by Nancy Heger of TPWD. It's the top layer within the project tree's Geology folder.
+</font></p>
+
+<hr>
+<p><font size="4"><strong>Instructions</strong></font>
+</p>
+<p><font size="4">Download all three files to the same location (e.g., Desktop) and run the
+executable, <i>TSS_Data_setup.exe</i>, which in turn processes the two .101 files if they are found. You'll be prompted for the destination folder of
+the extracted data &#150; that is, the parent of the three project folders: <i>TSS_Data</i>, <i>TSS Maps</i>,
+and <i>TSS Photos</i>. The first time you run this setup, a default location such as "C:\TSS" will be
+displayed. For all subsequent installations the location previously used will be the default.
+If you haven't done so, please review the section <i>Texas Speleological Survey Project</i>
+in the WallsMap help file.</font></p>
+
+<p><font size="4"><strong>Caution:</strong> If you're installing over an earlier
+version of the database, folders <i>TSS Maps</i> and <i>TSS Photos</i> will
+either be copied into (if that's your option), or completely replaced, leaving only the
+image files linked to this project release. In folder <i>TSS_Data</i>, only the category
+shapefiles (<i>TSS Caves</i>, <i>TSS Shelters</i>, etc.) will be replaced, but this means you'll
+need to move (or rename by exporting) those existing files if they contain edits that haven't
+yet been submitted.</font></p>
+
+<p><font size="4">As with previous releases, the project contains a new database snapshot, a read-only shapefile
+named <i>TSS All Types_2015-09-09</i>. At any time after you've made changes to any of the five category shapefiles
+(<i>TSS Caves</i>, <i>TSS Shelters</i>, etc.), WallsMap's <i>Compare with other layers</i> function can use it to prepare
+an update archive for submission to the database maintainer (currently Travis Scott and/or David McKenzie). If you've edited
+records in the database since your last submission, please prepare a new update using your current snapshot before
+installing this release. See <i>Submitting a Shapefile Update</i> in online help.</font></p>
+
+<p><font size="4">A project file named <i>TSS_Data_2015-09-09.ntl</i> will also be
+installed in <i>TSS_Data</i> and lanched when setup finishes. Your previous NTL file, however,
+will still be available and you may well want to continue using it provided you add
+<i>TSS All Types_2015-09-09.shp</i> as a layer. The difference is that it will now be linked
+to shapefile layers that are up to date.</font></p>
+
+
+<p><font nt size="4">If upon opening the project WallsMap displays a message box warning you that
+a layer file couldn't be found, it's likely because you haven't installed some of the DEM/DRG
+images linked to the project. These are assumed to be in a folder named <i>TSS_NTI</i> alongside <i>TSS_Data</i>.
+If they're not there, just click the button that lets the program proceed without similar warnings.
+(To avoid losing these image links, you can use the "Save as" feature to work with an incomplete version 
+of the project.) You'll find links to the DEM/DRG images (and also to hi-res orthoimagery) in the
+Help file under <i>Available Background Imagery</i>.</font></p>
+
+<p><font size="4"><b>Additional TSS Data Files:</b> Also available is an optional
+self-extracting archive containing a folder named <i>TSS Info</i>. With a structure similar to that
+of <i>TSS Maps</i> and <i>TSS Photos</i>, it will contain various TSS documents that the Texas WallsMap
+project may or may not link to directly, such as videos and PDF reports:</font></p>
+
+<p><font size="4"><a href="TSS_Info.exe">TSS_Info.exe</a> (50 MB, updated 2012-05-01).
+Instructions are displayed when this setup is run.</font></p>
+
+<hr>
+<p><font size="4">Please contact Travis Scott or David McKenzie if you have suggestions or need additional
+information about the programs or database.</font></p>
+<p><font size="4">Travis Scott <a href="mailto:travis@oztotl.com">Travis@oztotl.com</a></font><br>
+<font size="4">David McKenzie <a href="mailto:davidmck@austin.rr.com">davidmck@austin.rr.com</a></font></p>
+</body>
+</html>
