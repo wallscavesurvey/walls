@@ -33,6 +33,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_3C67DCDCC01B46C996FB68357BD2B37E"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_6704107C4AF24631ACE010D2EEB75C0E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -104,6 +110,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.6.1"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.6.1 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.6.1"
+                    }
+                }
             }
         }
         "Release"
@@ -272,7 +286,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Walls v2"
         "ProductCode" = "8:{E891C7EB-389A-4F08-8526-F9DC2F19DE9B}"
-        "PackageCode" = "8:{5EE46AA3-02B5-4B80-A4FF-C48D099F9C53}"
+        "PackageCode" = "8:{09872045-08A5-4883-8DA5-E61360D56937}"
         "UpgradeCode" = "8:{B8B0A649-478B-4F72-B710-B10AA12ACCA6}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -877,7 +891,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_032407C853734B2889E1BB7CC4090E00"
             {
-            "SourcePath" = "8:\\\\Mac\\Home\\Documents\\trx\\bin\\wallsef.dll"
+            "SourcePath" = "8:..\\bin\\wallsef.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -898,6 +912,34 @@
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{1AF752FA-87B9-43AB-AF5A-616D8682D84B}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_0A7ABA913CAD43E682FD62030E12FA13"
+            {
+            "SourcePath" = "8:"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:ContentFiles"
+            "OutputProjectGuid" = "8:{01C5C176-01DA-4A62-8A6A-77571084E604}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {
@@ -989,7 +1031,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_2866F21F21654213B103F72CC4B89690"
             {
-            "SourcePath" = "8:\\\\Mac\\Home\\Documents\\trx\\bin\\Shp2Grid.exe"
+            "SourcePath" = "8:..\\bin\\Shp2Grid.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -1045,7 +1087,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_2D776B216C874E44AE4F5F58C2BE6537"
             {
-            "SourcePath" = "8:\\\\Mac\\Home\\Documents\\trx\\bin\\Walls32.exe"
+            "SourcePath" = "8:..\\bin\\Walls32.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -1155,6 +1197,34 @@
                 {
                 }
             }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_3C67DCDCC01B46C996FB68357BD2B37E"
+            {
+            "SourcePath" = "8:..\\bin\\wallexp.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:Built"
+            "OutputProjectGuid" = "8:{01C5C176-01DA-4A62-8A6A-77571084E604}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_3D1ABA2608034A7B8FB0386F7EA92A13"
             {
             "SourcePath" = "8:"
@@ -1239,9 +1309,37 @@
                 {
                 }
             }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_6638392008484036B466265F6E12AB25"
+            {
+            "SourcePath" = "8:"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:ContentFiles"
+            "OutputProjectGuid" = "8:{AB6C37BD-E070-4ED5-9F5A-F73F5A22440E}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_6704107C4AF24631ACE010D2EEB75C0E"
             {
-            "SourcePath" = "8:\\\\Mac\\Home\\Documents\\trx\\bin\\wallgps.dll"
+            "SourcePath" = "8:..\\bin\\wallgps.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -1297,7 +1395,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_6DAABEB434184776A5FFCB9180C36B33"
             {
-            "SourcePath" = "8:\\\\Mac\\Home\\Documents\\trx\\bin\\wallsvg.dll"
+            "SourcePath" = "8:..\\bin\\wallsvg.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -1465,7 +1563,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_8079ECCAB4D3469497657642CC93FA18"
             {
-            "SourcePath" = "8:\\\\Mac\\Home\\Documents\\trx\\bin\\walls3d.exe"
+            "SourcePath" = "8:..\\bin\\walls3d.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -1519,6 +1617,34 @@
                 {
                 }
             }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_97FBA8A50899421F82C43E8198C1784D"
+            {
+            "SourcePath" = "8:"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:LocalizedResourceDlls"
+            "OutputProjectGuid" = "8:{01C5C176-01DA-4A62-8A6A-77571084E604}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_998142F769674F838551FBB29022AEBC"
             {
             "SourcePath" = "8:"
@@ -1549,7 +1675,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_9AF66B1327EE411AA98EEE3A2218570C"
             {
-            "SourcePath" = "8:\\\\Mac\\Home\\Documents\\trx\\walls2D\\Release\\walls2D.exe"
+            "SourcePath" = "8:..\\walls2D\\Release\\walls2D.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -1577,7 +1703,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_BDB1FA731F37435F8F2A67472E5A192D"
             {
-            "SourcePath" = "8:\\\\Mac\\Home\\Documents\\trx\\bin\\D2D-Sym.exe"
+            "SourcePath" = "8:..\\bin\\D2D-Sym.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -1633,7 +1759,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_C3DD1C9C0B7444AFB132662BB0802B5A"
             {
-            "SourcePath" = "8:\\\\Mac\\Home\\Documents\\trx\\bin\\wallcss.dll"
+            "SourcePath" = "8:..\\bin\\wallcss.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -1689,7 +1815,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_D932DC6DC5BA4C689F217F4EDDC2F56D"
             {
-            "SourcePath" = "8:\\\\Mac\\Home\\Documents\\trx\\Walls_Setup\\runwalls.exe"
+            "SourcePath" = "8:..\\Walls_Setup\\runwalls.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -1717,7 +1843,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_DE890C42A1F4453589475158C4BDE380"
             {
-            "SourcePath" = "8:\\\\Mac\\Home\\Documents\\trx\\bin\\wallshp.dll"
+            "SourcePath" = "8:..\\bin\\wallshp.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
