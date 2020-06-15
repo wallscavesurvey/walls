@@ -11,7 +11,7 @@
 #ifndef PRJHIER_H
 #include "prjhier.h"
 #endif
- 
+
 #ifndef __HTBUTTON_H
 #include "htbutton.h"
 #endif
@@ -24,11 +24,11 @@
 class CTraView : public CPanelView
 {
 	DECLARE_DYNCREATE(CTraView)
-	
+
 public:
-    enum {NUM_GRD_COLS=3,GRD_LABEL_COL=15,GRD_NAME_COL=18,GRD_ORIG_COL=25,GRD_CORR_COL=21};
+	enum { NUM_GRD_COLS = 3, GRD_LABEL_COL = 15, GRD_NAME_COL = 18, GRD_ORIG_COL = 25, GRD_CORR_COL = 21 };
 	static int m_barCol[NUM_GRD_COLS];
-	
+
 	int m_recNTS;		//NTS record corresponding to current displayed data
 
 protected:
@@ -37,39 +37,39 @@ protected:
 	BOOL m_bFeetUnits;
 
 	CTraView();			// protected constructor used by dynamic creation
-	
-	CPrjDoc *GetDocument() {return (CPrjDoc *)CView::GetDocument();}
-	virtual void OnInitialUpdate();
-	virtual void OnUpdate(CView *pSender,LPARAM lHint,CObject *pHint);
 
-// Form Data
+	CPrjDoc *GetDocument() { return (CPrjDoc *)CView::GetDocument(); }
+	virtual void OnInitialUpdate();
+	virtual void OnUpdate(CView *pSender, LPARAM lHint, CObject *pHint);
+
+	// Form Data
 public:
 	//{{AFX_DATA(CTraView)
 	enum { IDD = IDD_TRAVDLG };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
-	
+	// NOTE: the ClassWizard will add data members here
+//}}AFX_DATA
+
 private:
 	void LabelUnits();
 
-// Operations
+	// Operations
 public:
 	void ClearContents();
 	void ResetContents();
-	void SetF_UVE(char *buf,UINT idc);
-    void SetTotals(double hlen,double vlen,double *cxyz,int sign);
+	void SetF_UVE(char *buf, UINT idc);
+	void SetTotals(double hlen, double vlen, double *cxyz, int sign);
 	void EnableButtons(int iTrav);
-	CReView *GetReView() {return (CReView *)m_pTabView;}
-	CListBox *GetTravLB() {return pLB(IDC_VECLIST);}
+	CReView *GetReView() { return (CReView *)m_pTabView; }
+	CListBox *GetTravLB() { return pLB(IDC_VECLIST); }
 	void UpdateFont();
-    	  
-// Implementation
+
+	// Implementation
 protected:
 	virtual ~CTraView();
 	afx_msg void OnNextTrav();
 	afx_msg void OnPrevTrav();
-    afx_msg void OnSysCommand(UINT nChar,LONG lParam);
-    afx_msg void OnVectorDblClk();
+	afx_msg void OnSysCommand(UINT nChar, LONG lParam);
+	afx_msg void OnVectorDblClk();
 	// Generated message map functions
 	//{{AFX_MSG(CTraView)
 	afx_msg void OnSetFocus(CWnd* pOldWnd);

@@ -9,13 +9,13 @@ extern CTabComboHist hist_pltfind;
 
 class CPltFindDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
 	CPltFindDlg(CWnd* pParent = NULL);	// standard constructor
 	static BOOL m_bMatchCase;
 
-// Dialog Data
-	//{{AFX_DATA(CPltFindDlg)
+	// Dialog Data
+		//{{AFX_DATA(CPltFindDlg)
 	enum { IDD = IDD_PLTFINDDLG };
 	CString	m_Name;
 	BOOL	m_bUseCase;

@@ -10,9 +10,9 @@
 
 class CLineNoDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
-	CLineNoDlg(CWnd* pParent,LINENO nLineNo,LINENO nMaxLineNo);	// standard constructor
+	CLineNoDlg(CWnd* pParent, LINENO nLineNo, LINENO nMaxLineNo);	// standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CLineNoDlg)
@@ -21,11 +21,11 @@ public:
 	//}}AFX_DATA
 	LINENO  m_nMaxLineNo;
 
-// Implementation
+	// Implementation
 protected:
-	
+
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
-    virtual BOOL OnInitDialog();
+	virtual BOOL OnInitDialog();
 
 	// Generated message map functions
 	//{{AFX_MSG(CLineNoDlg)
@@ -37,16 +37,16 @@ protected:
 class CApplyDlg : public CDialog
 {
 public:
-	CApplyDlg(UINT nID,BOOL *pbNoPrompt,LPCSTR pTitle,LPCSTR pMsg=NULL,CWnd* pParent=NULL);	// standard constructor
-	
+	CApplyDlg(UINT nID, BOOL *pbNoPrompt, LPCSTR pTitle, LPCSTR pMsg = NULL, CWnd* pParent = NULL);	// standard constructor
+
 	BOOL *m_pbNoPrompt;
-	
+
 	//{{AFX_DATA(CApplyDlg)
 	//enum { IDD = IDD_APPLYTOALL };
 	BOOL	m_bNoPrompt;
 	//}}AFX_DATA
 protected:
-    LPCSTR m_pTitle,m_pMsg;
+	LPCSTR m_pTitle, m_pMsg;
 	// Generated message map functions
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	//{{AFX_MSG(CApplyDlg)
@@ -59,26 +59,26 @@ protected:
 // CErrorDlg dialog
 class CErrorDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
-	CErrorDlg(LPCSTR msg,CWnd* pParent = NULL,LPCSTR pTitle=NULL);   // standard constructor
+	CErrorDlg(LPCSTR msg, CWnd* pParent = NULL, LPCSTR pTitle = NULL);   // standard constructor
 
 // Dialog Data
-	LPCSTR m_msg,m_title;
+	LPCSTR m_msg, m_title;
 
 	//{{AFX_DATA(CErrorDlg)
 	enum { IDD = IDD_ERRORDLG };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+	// NOTE: the ClassWizard will add data members here
+//}}AFX_DATA
 
-	LRESULT OnRetFocus(WPARAM bSubclass,LPARAM);
+	LRESULT OnRetFocus(WPARAM bSubclass, LPARAM);
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CErrorDlg)
-	//}}AFX_VIRTUAL
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CErrorDlg)
+		//}}AFX_VIRTUAL
 
-// Implementation
+	// Implementation
 protected:
 
 	// Generated message map functions
@@ -93,24 +93,24 @@ protected:
 
 class CMoveDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
 
-// Dialog Data
-	//{{AFX_DATA(CMoveDlg)
+	// Dialog Data
+		//{{AFX_DATA(CMoveDlg)
 	enum { IDD = IDD_MOVEBRANCH };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+	// NOTE: the ClassWizard will add data members here
+//}}AFX_DATA
 
-	CMoveDlg(BOOL bMove,CWnd* pParent = NULL) : 
-		CDialog(CMoveDlg::IDD, pParent),m_bCopy(bMove) {}
+	CMoveDlg(BOOL bMove, CWnd* pParent = NULL) :
+		CDialog(CMoveDlg::IDD, pParent), m_bCopy(bMove) {}
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMoveDlg)
-	//}}AFX_VIRTUAL
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CMoveDlg)
+		//}}AFX_VIRTUAL
 
-// Implementation
+	// Implementation
 protected:
 	BOOL m_bCopy;
 
@@ -127,15 +127,15 @@ protected:
 
 class CMapHelpDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
-	CMapHelpDlg(LPCSTR title,CWnd* pParent = NULL);   // standard constructor
+	CMapHelpDlg(LPCSTR title, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CMapHelpDlg)
 	enum { IDD = IDD_MAPHELP };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+	// NOTE: the ClassWizard will add data members here
+//}}AFX_DATA
 
 
 // Overrides
@@ -158,15 +158,15 @@ protected:
 
 class CFileStatDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
-	CFileStatDlg(LPCSTR pPathName,CWnd* pParent = NULL);   // standard constructor
+	CFileStatDlg(LPCSTR pPathName, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CFileStatDlg)
 	enum { IDD = IDD_FILESTATDLG };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+	// NOTE: the ClassWizard will add data members here
+//}}AFX_DATA
 
 
 // Overrides
@@ -190,15 +190,15 @@ protected:
 
 class CNotLoopDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
-	CNotLoopDlg(LPCSTR pMsg,LPCSTR pButtonMsg,CWnd* pParent = NULL);   // standard constructor
+	CNotLoopDlg(LPCSTR pMsg, LPCSTR pButtonMsg, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CNotLoopDlg)
 	enum { IDD = IDD_NOTINLOOP };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+	// NOTE: the ClassWizard will add data members here
+//}}AFX_DATA
 
 
 // Overrides
@@ -220,17 +220,17 @@ protected:
 
 class COpenExDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
-	COpenExDlg(CString &msg,CWnd* pParent = NULL);   // standard constructor
+	COpenExDlg(CString &msg, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	CString &m_msg;
 
 	//{{AFX_DATA(CErrorDlg)
 	enum { IDD = IDD_OPENEXISTING };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+	// NOTE: the ClassWizard will add data members here
+//}}AFX_DATA
 
 // Overrides
 	// ClassWizard generated virtual function overrides
@@ -259,10 +259,10 @@ class CDeleteDlg : public CDialog
 	DECLARE_DYNAMIC(CDeleteDlg)
 
 public:
-	CDeleteDlg(LPCSTR pName,CWnd* pParent = NULL);   // standard constructor
+	CDeleteDlg(LPCSTR pName, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CDeleteDlg();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_DELETEDLG };
 
 protected:

@@ -38,55 +38,55 @@ CPL_C_START
 
 /** Source of the burn value */
 typedef enum {
-    /*! Use value from padfBurnValue */    GBV_UserBurnValue = 0,
-    /*! Use value from the Z coordinate */    GBV_Z = 1,
-    /*! Use value form the M value */    GBV_M = 2
+	/*! Use value from padfBurnValue */    GBV_UserBurnValue = 0,
+	/*! Use value from the Z coordinate */    GBV_Z = 1,
+	/*! Use value form the M value */    GBV_M = 2
 } GDALBurnValueSrc;
 
 typedef enum {
-    GRMA_Replace = 0,
-    GRMA_Add = 1,
+	GRMA_Replace = 0,
+	GRMA_Add = 1,
 } GDALRasterMergeAlg;
 
 typedef struct {
-    unsigned char * pabyChunkBuf;
-    int nXSize;
-    int nYSize;
-    int nBands;
-    GDALDataType eType;
-    double *padfBurnValue;
-    GDALBurnValueSrc eBurnValueSource;
-    GDALRasterMergeAlg eMergeAlg;
+	unsigned char * pabyChunkBuf;
+	int nXSize;
+	int nYSize;
+	int nBands;
+	GDALDataType eType;
+	double *padfBurnValue;
+	GDALBurnValueSrc eBurnValueSource;
+	GDALRasterMergeAlg eMergeAlg;
 } GDALRasterizeInfo;
 
 /************************************************************************/
 /*      Low level rasterizer API.                                       */
 /************************************************************************/
 
-typedef void (*llScanlineFunc)( void *, int, int, int, double );
-typedef void (*llPointFunc)( void *, int, int, double );
+typedef void(*llScanlineFunc)(void *, int, int, int, double);
+typedef void(*llPointFunc)(void *, int, int, double);
 
-void GDALdllImagePoint( int nRasterXSize, int nRasterYSize,
-                        int nPartCount, int *panPartSize,
-                        double *padfX, double *padfY, double *padfVariant,
-                        llPointFunc pfnPointFunc, void *pCBData );
+void GDALdllImagePoint(int nRasterXSize, int nRasterYSize,
+	int nPartCount, int *panPartSize,
+	double *padfX, double *padfY, double *padfVariant,
+	llPointFunc pfnPointFunc, void *pCBData);
 
-void GDALdllImageLine( int nRasterXSize, int nRasterYSize, 
-                       int nPartCount, int *panPartSize,
-                       double *padfX, double *padfY, double *padfVariant,
-                       llPointFunc pfnPointFunc, void *pCBData );
+void GDALdllImageLine(int nRasterXSize, int nRasterYSize,
+	int nPartCount, int *panPartSize,
+	double *padfX, double *padfY, double *padfVariant,
+	llPointFunc pfnPointFunc, void *pCBData);
 
-void GDALdllImageLineAllTouched(int nRasterXSize, int nRasterYSize, 
-                                int nPartCount, int *panPartSize,
-                                double *padfX, double *padfY,
-                                double *padfVariant,
-                                llPointFunc pfnPointFunc, void *pCBData );
+void GDALdllImageLineAllTouched(int nRasterXSize, int nRasterYSize,
+	int nPartCount, int *panPartSize,
+	double *padfX, double *padfY,
+	double *padfVariant,
+	llPointFunc pfnPointFunc, void *pCBData);
 
-void GDALdllImageFilledPolygon(int nRasterXSize, int nRasterYSize, 
-                               int nPartCount, int *panPartSize,
-                               double *padfX, double *padfY,
-                               double *padfVariant,
-                               llScanlineFunc pfnScanlineFunc, void *pCBData );
+void GDALdllImageFilledPolygon(int nRasterXSize, int nRasterYSize,
+	int nPartCount, int *panPartSize,
+	double *padfX, double *padfY,
+	double *padfVariant,
+	llScanlineFunc pfnScanlineFunc, void *pCBData);
 
 CPL_C_END
 
@@ -98,30 +98,30 @@ class GDALRasterPolygonEnumerator
 
 {
 private:
-    void     MergePolygon( int nSrcId, int nDstId );
-    int      NewPolygon( GInt32 nValue );
+	void     MergePolygon(int nSrcId, int nDstId);
+	int      NewPolygon(GInt32 nValue);
 
 public:  // these are intended to be readonly.
 
-    GInt32   *panPolyIdMap;
-    GInt32   *panPolyValue;
+	GInt32   *panPolyIdMap;
+	GInt32   *panPolyValue;
 
-    int      nNextPolygonId;
-    int      nPolyAlloc;
+	int      nNextPolygonId;
+	int      nPolyAlloc;
 
-    int      nConnectedness;
+	int      nConnectedness;
 
 public:
-             GDALRasterPolygonEnumerator( int nConnectedness=4 );
-            ~GDALRasterPolygonEnumerator();
+	GDALRasterPolygonEnumerator(int nConnectedness = 4);
+	~GDALRasterPolygonEnumerator();
 
-    void     ProcessLine( GInt32 *panLastLineVal, GInt32 *panThisLineVal,
-                          GInt32 *panLastLineId,  GInt32 *panThisLineId, 
-                          int nXSize );
+	void     ProcessLine(GInt32 *panLastLineVal, GInt32 *panThisLineVal,
+		GInt32 *panLastLineId, GInt32 *panThisLineId,
+		int nXSize);
 
-    void     CompleteMerges();
+	void     CompleteMerges();
 
-    void     Clear();
+	void     Clear();
 };
 
 #ifdef OGR_ENABLED
@@ -134,53 +134,53 @@ class GDALRasterFPolygonEnumerator
 
 {
 private:
-    void     MergePolygon( int nSrcId, int nDstId );
-    int      NewPolygon( float fValue );
+	void     MergePolygon(int nSrcId, int nDstId);
+	int      NewPolygon(float fValue);
 
 public:  // these are intended to be readonly.
 
-    GInt32   *panPolyIdMap;
-    float    *pafPolyValue;
+	GInt32   *panPolyIdMap;
+	float    *pafPolyValue;
 
-    int      nNextPolygonId;
-    int      nPolyAlloc;
+	int      nNextPolygonId;
+	int      nPolyAlloc;
 
-    int      nConnectedness;
+	int      nConnectedness;
 
 public:
-             GDALRasterFPolygonEnumerator( int nConnectedness=4 );
-            ~GDALRasterFPolygonEnumerator();
+	GDALRasterFPolygonEnumerator(int nConnectedness = 4);
+	~GDALRasterFPolygonEnumerator();
 
-    void     ProcessLine( float *pafLastLineVal, float *pafThisLineVal,
-                          GInt32 *panLastLineId,  GInt32 *panThisLineId,
-                          int nXSize );
+	void     ProcessLine(float *pafLastLineVal, float *pafThisLineVal,
+		GInt32 *panLastLineId, GInt32 *panThisLineId,
+		int nXSize);
 
-    void     CompleteMerges();
+	void     CompleteMerges();
 
-    void     Clear();
+	void     Clear();
 };
 #endif
 
-typedef void* (*GDALTransformDeserializeFunc)( CPLXMLNode *psTree );
+typedef void* (*GDALTransformDeserializeFunc)(CPLXMLNode *psTree);
 
 void* GDALRegisterTransformDeserializer(const char* pszTransformName,
-                                       GDALTransformerFunc pfnTransformerFunc,
-                                       GDALTransformDeserializeFunc pfnDeserializeFunc);
+	GDALTransformerFunc pfnTransformerFunc,
+	GDALTransformDeserializeFunc pfnDeserializeFunc);
 void GDALUnregisterTransformDeserializer(void* pData);
 
 void GDALCleanupTransformDeserializerMutex();
 
 /* Transformer cloning */
 
-void* GDALCloneTPSTransformer( void *pTransformArg );
-void* GDALCloneGenImgProjTransformer( void *pTransformArg );
-void* GDALCloneApproxTransformer( void *pTransformArg );
-/* TODO : GDALCloneGeoLocTransformer? , GDALCloneRPCTransformer? */ 
+void* GDALCloneTPSTransformer(void *pTransformArg);
+void* GDALCloneGenImgProjTransformer(void *pTransformArg);
+void* GDALCloneApproxTransformer(void *pTransformArg);
+/* TODO : GDALCloneGeoLocTransformer? , GDALCloneRPCTransformer? */
 
-void* GDALCreateTPSTransformerInt( int nGCPCount, const GDAL_GCP *pasGCPList, 
-                                   int bReversed, char** papszOptions );
+void* GDALCreateTPSTransformerInt(int nGCPCount, const GDAL_GCP *pasGCPList,
+	int bReversed, char** papszOptions);
 
-void CPL_DLL * GDALCloneTransformer( void *pTranformerArg );
+void CPL_DLL * GDALCloneTransformer(void *pTranformerArg);
 
 /************************************************************************/
 /*      Float comparison function.                                      */
@@ -190,7 +190,7 @@ void CPL_DLL * GDALCloneTransformer( void *pTranformerArg );
  * Units in the Last Place. This specifies how big an error we are willing to
  * accept in terms of the value of the least significant digit of the floating
  * point number’s representation. MAX_ULPS can also be interpreted in terms of
- * how many representable floats we are willing to accept between A and B. 
+ * how many representable floats we are willing to accept between A and B.
  */
 #define MAX_ULPS 10
 

@@ -19,8 +19,8 @@ struct CharFormat : public CHARFORMAT
 {
 	CharFormat()
 	{
-		memset( this, 0, sizeof ( CharFormat ) );
-		cbSize = sizeof( CharFormat );
+		memset(this, 0, sizeof(CharFormat));
+		cbSize = sizeof(CharFormat);
 	};
 
 };
@@ -29,18 +29,18 @@ struct CharFormat2 : public CHARFORMAT2
 {
 	CharFormat2()
 	{
-		memset( this, 0, sizeof ( CharFormat2 ) );
-		cbSize = sizeof( CharFormat2 );
+		memset(this, 0, sizeof(CharFormat2));
+		cbSize = sizeof(CharFormat2);
 	};
 
 };
 
 struct ParaFormat : public PARAFORMAT
 {
-	ParaFormat( DWORD mask )
+	ParaFormat(DWORD mask)
 	{
-		memset( this, 0, sizeof ( ParaFormat ) );
-		cbSize = sizeof( ParaFormat );
+		memset(this, 0, sizeof(ParaFormat));
+		cbSize = sizeof(ParaFormat);
 		dwMask = mask;
 	}
 };
@@ -69,54 +69,54 @@ class CRulerRichEditCtrl : public CWnd
 {
 
 public:
-// Construction/creation/destruction
+	// Construction/creation/destruction
 	CRulerRichEditCtrl();
 	virtual ~CRulerRichEditCtrl();
-	virtual BOOL Create( DWORD dwStyle, const RECT &rect, CWnd* pParentWnd,
+	virtual BOOL Create(DWORD dwStyle, const RECT &rect, CWnd* pParentWnd,
 		UINT nID, const CLogFont *pFont, COLORREF clrTxt);
 
-// Attributes
-	//Set mode to use, MODE_INCH or MODE_METRIC (default)
-	void	SetMode( int mode ) {m_ruler.SetMode( mode );} 
-	int		GetMode() const {m_ruler.GetMode();}
+	// Attributes
+		//Set mode to use, MODE_INCH or MODE_METRIC (default)
+	void	SetMode(int mode) { m_ruler.SetMode(mode); }
+	int		GetMode() const { m_ruler.GetMode(); }
 
-	void ShowToolbar( BOOL show = TRUE );
-	void ShowRuler( BOOL show = TRUE );
+	void ShowToolbar(BOOL show = TRUE);
+	void ShowRuler(BOOL show = TRUE);
 
-	BOOL CanPaste() {return m_rtf.CanPaste();}
+	BOOL CanPaste() { return m_rtf.CanPaste(); }
 
 	BOOL IsToolbarVisible() const;
 	BOOL IsRulerVisible() const;
 
 	void CloseFindDlg() {
-		if(m_pFindDlg) m_pFindDlg->PostMessage(WM_DESTROY);
+		if (m_pFindDlg) m_pFindDlg->PostMessage(WM_DESTROY);
 		//if(m_pFindDlg) m_pFindDlg->DestroyWindow();
 	}
 
-	UINT GetTextLength() {return m_rtf.GetTextLengthEx(GTL_NUMCHARS|GTL_PRECISE);}
+	UINT GetTextLength() { return m_rtf.GetTextLengthEx(GTL_NUMCHARS | GTL_PRECISE); }
 
-	CRichEditCtrl& GetRichEditCtrl( ) {return m_rtf;}
+	CRichEditCtrl& GetRichEditCtrl() { return m_rtf; }
 
-// Implementation
+	// Implementation
 
 	CDialog *m_pParentDlg;
 	UINT m_idContext;
 
 	CString GetRTF();
 	void GetRTF(CString *pStr);
-	void SetRTF( const CString& rtf );
-	void SetText(LPCSTR pText,BOOL bFormatRTF);
+	void SetRTF(const CString& rtf);
+	void SetText(LPCSTR pText, BOOL bFormatRTF);
 	void GetText(CString &s);
-	BOOL IsFormatRTF() {return m_bFormatRTF;}
+	BOOL IsFormatRTF() { return m_bFormatRTF; }
 
-	BOOL	Save( CString& filename );
-	BOOL	Load( CString& filename );
+	BOOL	Save(CString& filename);
+	BOOL	Load(CString& filename);
 
-	void SetReadOnly( BOOL readOnly );
-	BOOL GetReadOnly() const {return m_readOnly;}
+	void SetReadOnly(BOOL readOnly);
+	BOOL GetReadOnly() const { return m_readOnly; }
 
 	// To turn word wrap on - based on window width
-	void SetWordWrap(BOOL bOn) {m_rtf.SetTargetDevice(NULL, bOn==FALSE);}
+	void SetWordWrap(BOOL bOn) { m_rtf.SetTargetDevice(NULL, bOn == FALSE); }
 
 	// To turn word wrap on - based on target device (e.g. printer)
 	// m_dcTarget is the device context, m_lineWidth is the line width 
@@ -135,18 +135,18 @@ public:
 	virtual void DoOutdent();
 	virtual void DoBullet();
 
-	void SetCurrentFontName( const CString& font );
-	void SetCurrentFontSize( int points );
-	void SetCurrentFontColor( COLORREF color );
+	void SetCurrentFontName(const CString& font);
+	void SetCurrentFontSize(int points);
+	void SetCurrentFontColor(COLORREF color);
 
-	void SetBackgroundColor(COLORREF color) {m_rtf.SetBackgroundColor(FALSE,color);}
+	void SetBackgroundColor(COLORREF color) { m_rtf.SetBackgroundColor(FALSE, color); }
 
 	afx_msg void OnFormatRTF();
 	afx_msg void OnEditPaste(); //needed by TableFillDlg()
 
 protected:
 
-// Overrides
+	// Overrides
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 
 	// Message handlers
@@ -166,9 +166,9 @@ protected:
 	afx_msg void OnButtonBullet();
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	afx_msg LRESULT OnDataChanged(WPARAM, LPARAM);
-	afx_msg LRESULT OnSetText (WPARAM wParam, LPARAM lParam);
-	afx_msg LRESULT OnGetText (WPARAM wParam, LPARAM lParam);
-	afx_msg LRESULT OnGetTextLength (WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnSetText(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnGetText(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnGetTextLength(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg void OnEditUndo();
 	afx_msg void OnEditRedo();
@@ -220,23 +220,23 @@ private:
 	// Handle to the RTF 2.0 dll
 	HINSTANCE		m_richEditModule;
 	CRulerFindDlg *m_pFindDlg;
-	CString m_csLastFind,m_csLastRepl;
+	CString m_csLastFind, m_csLastRepl;
 
 	// Private helpers
-	void	SetTabStops( LPLONG tabs, int size );
+	void	SetTabStops(LPLONG tabs, int size);
 	void	UpdateTabStops();
 
 	BOOL	CreateToolbar();
 	BOOL	CreateRuler();
-	BOOL	CreateRTFControl(const CLogFont *pFont,COLORREF clrTxt);
+	BOOL	CreateRTFControl(const CLogFont *pFont, COLORREF clrTxt);
 	void	CreateMargins();
 
 	void	UpdateToolbarButtons();
 
-	void	SetEffect( int mask, int effect );
-	void	SetAlignment( int alignment );
+	void	SetEffect(int mask, int effect);
+	void	SetAlignment(int alignment);
 
-	void	LayoutControls( int width, int height );
+	void	LayoutControls(int width, int height);
 };
 
 #endif // !defined(AFX_RULERRICHEDITCTRL_H__4CD13283_82E4_484A_83B4_DBAD5B64F17C__INCLUDED_)

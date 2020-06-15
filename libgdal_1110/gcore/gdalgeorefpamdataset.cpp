@@ -1,7 +1,7 @@
 /******************************************************************************
  * $Id: gdalgeorefpamdataset.cpp 26571 2013-10-30 10:59:11Z rouault $
  *
- * Project:  GDAL 
+ * Project:  GDAL
  * Purpose:  GDALPamDataset with internal storage for georeferencing, with
  *           priority for PAM over internal georeferencing
  * Author:   Even Rouault <even dot rouault at mines-paris dot org>
@@ -30,22 +30,22 @@
 
 #include "gdalgeorefpamdataset.h"
 
-/************************************************************************/
-/*                       GDALGeorefPamDataset()                         */
-/************************************************************************/
+ /************************************************************************/
+ /*                       GDALGeorefPamDataset()                         */
+ /************************************************************************/
 
 GDALGeorefPamDataset::GDALGeorefPamDataset()
 {
-    pszProjection = NULL;
-    nGCPCount = 0;
-    pasGCPList = NULL;
-    bGeoTransformValid = FALSE;
-    adfGeoTransform[0] = 0.0;
-    adfGeoTransform[1] = 1.0;
-    adfGeoTransform[2] = 0.0;
-    adfGeoTransform[3] = 0.0;
-    adfGeoTransform[4] = 0.0;
-    adfGeoTransform[5] = 1.0;
+	pszProjection = NULL;
+	nGCPCount = 0;
+	pasGCPList = NULL;
+	bGeoTransformValid = FALSE;
+	adfGeoTransform[0] = 0.0;
+	adfGeoTransform[1] = 1.0;
+	adfGeoTransform[2] = 0.0;
+	adfGeoTransform[3] = 0.0;
+	adfGeoTransform[4] = 0.0;
+	adfGeoTransform[5] = 1.0;
 }
 
 /************************************************************************/
@@ -54,13 +54,13 @@ GDALGeorefPamDataset::GDALGeorefPamDataset()
 
 GDALGeorefPamDataset::~GDALGeorefPamDataset()
 {
-    CPLFree( pszProjection );
+	CPLFree(pszProjection);
 
-    if( nGCPCount > 0 )
-    {
-        GDALDeinitGCPs( nGCPCount, pasGCPList );
-        CPLFree( pasGCPList );
-    }
+	if (nGCPCount > 0)
+	{
+		GDALDeinitGCPs(nGCPCount, pasGCPList);
+		CPLFree(pasGCPList);
+	}
 }
 
 
@@ -74,11 +74,11 @@ GDALGeorefPamDataset::~GDALGeorefPamDataset()
 int GDALGeorefPamDataset::GetGCPCount()
 
 {
-    int nPamGCPCount = GDALPamDataset::GetGCPCount();
-    if( nGCPCount > 0 && nPamGCPCount == 0)
-        return nGCPCount;
-    else
-        return nPamGCPCount;
+	int nPamGCPCount = GDALPamDataset::GetGCPCount();
+	if (nGCPCount > 0 && nPamGCPCount == 0)
+		return nGCPCount;
+	else
+		return nPamGCPCount;
 }
 
 /************************************************************************/
@@ -91,11 +91,11 @@ int GDALGeorefPamDataset::GetGCPCount()
 const char *GDALGeorefPamDataset::GetGCPProjection()
 
 {
-    const char* pszPamPrj = GDALPamDataset::GetGCPProjection();
-    if( pszProjection != NULL && strlen(pszPamPrj) == 0 )
-        return pszProjection;
-    else
-        return pszPamPrj;
+	const char* pszPamPrj = GDALPamDataset::GetGCPProjection();
+	if (pszProjection != NULL && strlen(pszPamPrj) == 0)
+		return pszProjection;
+	else
+		return pszPamPrj;
 }
 
 /************************************************************************/
@@ -108,11 +108,11 @@ const char *GDALGeorefPamDataset::GetGCPProjection()
 const GDAL_GCP *GDALGeorefPamDataset::GetGCPs()
 
 {
-    int nPamGCPCount = GDALPamDataset::GetGCPCount();
-    if( nGCPCount > 0 && nPamGCPCount == 0)
-        return pasGCPList;
-    else
-        return GDALPamDataset::GetGCPs();
+	int nPamGCPCount = GDALPamDataset::GetGCPCount();
+	if (nGCPCount > 0 && nPamGCPCount == 0)
+		return pasGCPList;
+	else
+		return GDALPamDataset::GetGCPs();
 }
 
 /************************************************************************/
@@ -122,18 +122,18 @@ const GDAL_GCP *GDALGeorefPamDataset::GetGCPs()
 /*      our file.                                                       */
 /************************************************************************/
 
-const char *GDALGeorefPamDataset::GetProjectionRef() 
+const char *GDALGeorefPamDataset::GetProjectionRef()
 
 {
-    const char* pszPamPrj = GDALPamDataset::GetProjectionRef();
+	const char* pszPamPrj = GDALPamDataset::GetProjectionRef();
 
-    if( GetGCPCount() > 0 )
-        return "";
+	if (GetGCPCount() > 0)
+		return "";
 
-    if( pszProjection != NULL && strlen(pszPamPrj) == 0 )
-        return pszProjection;
-    else
-        return pszPamPrj;
+	if (pszProjection != NULL && strlen(pszPamPrj) == 0)
+		return pszProjection;
+	else
+		return pszPamPrj;
 }
 
 /************************************************************************/
@@ -143,16 +143,16 @@ const char *GDALGeorefPamDataset::GetProjectionRef()
 /*      available.                                                      */
 /************************************************************************/
 
-CPLErr GDALGeorefPamDataset::GetGeoTransform( double * padfTransform )
+CPLErr GDALGeorefPamDataset::GetGeoTransform(double * padfTransform)
 
 {
-    CPLErr eErr = GDALPamDataset::GetGeoTransform( padfTransform );
+	CPLErr eErr = GDALPamDataset::GetGeoTransform(padfTransform);
 
-    if( eErr != CE_None && bGeoTransformValid )
-    {
-        memcpy( padfTransform, adfGeoTransform, sizeof(double) * 6 );
-        return( CE_None );
-    }
-    else
-        return eErr;
+	if (eErr != CE_None && bGeoTransformValid)
+	{
+		memcpy(padfTransform, adfGeoTransform, sizeof(double) * 6);
+		return(CE_None);
+	}
+	else
+		return eErr;
 }

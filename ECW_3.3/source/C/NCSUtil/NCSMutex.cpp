@@ -2,13 +2,13 @@
 ** Copyright 2001 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:   	NCSUtil\NCSMutex.cpp
@@ -21,9 +21,9 @@
 #include "NCSUtil.h"
 #include "NCSMutex.h"
 
-CNCSMutex::CNCSMutex() 
-{ 
-	NCSMutexInit(&m_Mutex); 
+CNCSMutex::CNCSMutex()
+{
+	NCSMutexInit(&m_Mutex);
 }
 
 //CNCSMutex::CNCSMutex(const CNCSMutex &mMutex)
@@ -31,24 +31,24 @@ CNCSMutex::CNCSMutex()
 //	NCSMutexInit(&m_Mutex); 
 //}
 
-CNCSMutex::~CNCSMutex() 
-{ 
-	NCSMutexFini(&m_Mutex); 
+CNCSMutex::~CNCSMutex()
+{
+	NCSMutexFini(&m_Mutex);
 }
 
-void CNCSMutex::Lock(void) 
-{ 
-	NCSMutexBegin(&m_Mutex); 
+void CNCSMutex::Lock(void)
+{
+	NCSMutexBegin(&m_Mutex);
 }
 
-bool CNCSMutex::TryLock(void) 
-{ 
-	return(NCSMutexTryBegin(&m_Mutex) ? true : false); 
+bool CNCSMutex::TryLock(void)
+{
+	return(NCSMutexTryBegin(&m_Mutex) ? true : false);
 }
 
-void CNCSMutex::UnLock(void) 
-{ 
-	NCSMutexEnd(&m_Mutex); 
+void CNCSMutex::UnLock(void)
+{
+	NCSMutexEnd(&m_Mutex);
 }
 
 #ifdef POSIX

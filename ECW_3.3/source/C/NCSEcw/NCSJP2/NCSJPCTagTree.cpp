@@ -2,13 +2,13 @@
 ** Copyright 2003 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:     $Archive: /NCS/Source/C/NCSEcw/NCSJP2/NCSJPCTagTree.cpp $
@@ -20,34 +20,35 @@
 
 #include "NCSJPCTagTree.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-	/** Default constructor, initialises members */
+ //////////////////////////////////////////////////////////////////////
+ // Construction/Destruction
+ //////////////////////////////////////////////////////////////////////
+	 /** Default constructor, initialises members */
 
 CNCSJPCTagTree::Node::Node()
 {
-	 m_nValue = 0xFFFF;
-	 m_nState = 0;
-	 m_bKnown = false;
+	m_nValue = 0xFFFF;
+	m_nState = 0;
+	m_bKnown = false;
 }
 
 void CNCSJPCTagTree::Node::Dump(void)
 {
-	if(m_bKnown) {
+	if (m_bKnown) {
 		fprintf(stdout, "node %p, parent %p, value %d, state %d, known %s\n",
-						(void *) this, 
-						(void *) m_pParent, 
-						m_nValue, 
-						m_nState, 
-						"true");
-	} else {
+			(void *)this,
+			(void *)m_pParent,
+			m_nValue,
+			m_nState,
+			"true");
+	}
+	else {
 		fprintf(stdout, "node %p, parent %p, value %d, state %d, known %s\n",
-						(void *) this, 
-						(void *) m_pParent, 
-						m_nValue, 
-						m_nState, 
-						"false");
+			(void *)this,
+			(void *)m_pParent,
+			m_nValue,
+			m_nState,
+			"false");
 	}
 }
 
@@ -58,7 +59,7 @@ CNCSJPCTagTree::CNCSJPCTagTree()
 	m_nLevels = 0;
 }
 
-	/** Virtual destructor */
+/** Virtual destructor */
 CNCSJPCTagTree::~CNCSJPCTagTree()
 {
 }
@@ -67,40 +68,40 @@ inline int sizeL(int size) { return (size + 1) / 2; }
 
 // Set the dimensions of the 2D tag tree.
 void CNCSJPCTagTree::SetDimensions(INT32 nWidth, INT32 nHeight)
-{	
-	int levelWidth [32]; // 32 is maximum depht
+{
+	int levelWidth[32]; // 32 is maximum depht
 	int levelHeight[32];
 	int nNodes = 0;
-	
-	m_nWidth  = nWidth;
+
+	m_nWidth = nWidth;
 	m_nHeight = nHeight;
 	m_nLevels = 0;
 
-	levelWidth [0] = nWidth;
+	levelWidth[0] = nWidth;
 	levelHeight[0] = nHeight;
 
-    int n;
+	int n;
 
 	do {
 		n = levelWidth[m_nLevels] * levelHeight[m_nLevels];
-        nNodes += n;
+		nNodes += n;
 
-		levelWidth [m_nLevels + 1] = sizeL(levelWidth [m_nLevels]);
+		levelWidth[m_nLevels + 1] = sizeL(levelWidth[m_nLevels]);
 		levelHeight[m_nLevels + 1] = sizeL(levelHeight[m_nLevels]);
 
-        m_nLevels++;
+		m_nLevels++;
 	} while (n > 1);
 
 	m_Nodes.resize(nNodes);
 
-	if(nNodes) {
-//	Node *node    = &m_Nodes[0];
-//	Node *parent  = &m_Nodes[m_nWidth * m_nHeight];
-//	Node *parent0 = parent;
-		UINT32 nNode    = 0;
-		UINT32 nParent  = m_nWidth * m_nHeight;
+	if (nNodes) {
+		//	Node *node    = &m_Nodes[0];
+		//	Node *parent  = &m_Nodes[m_nWidth * m_nHeight];
+		//	Node *parent0 = parent;
+		UINT32 nNode = 0;
+		UINT32 nParent = m_nWidth * m_nHeight;
 		UINT32 nParent0 = nParent;
-		
+
 		for (int i = 0; i < m_nLevels - 1; i++) {
 			for (int j = 0; j < levelHeight[i]; j++) {
 				int k = levelWidth[i];
@@ -115,7 +116,8 @@ void CNCSJPCTagTree::SetDimensions(INT32 nWidth, INT32 nHeight)
 				}
 				if ((j & 1) || j == levelHeight[i] - 1) {
 					nParent0 = nParent;
-				} else {
+				}
+				else {
 					nParent = nParent0;
 					nParent0 += levelWidth[i];
 				}
@@ -134,24 +136,24 @@ bool CNCSJPCTagTree::Parse(CNCSJPCIOStream &Stream, INT32 nX, INT32 nY, INT32 nA
 	Node *node;
 
 	stkptr = stk;
-	node   = leaf;
+	node = leaf;
 
 	while (node->m_pParent)
-    {
+	{
 		*stkptr++ = node;
 		node = node->m_pParent;
 	}
 
 	int low = 0;
 	for (;;)
-    {
+	{
 		if (low > (int)node->m_nState) node->m_nState = (UINT16)low;
-        else                     low = node->m_nState;
+		else                     low = node->m_nState;
 
 		while (low < nAbort && low < node->m_nValue)
-        {
+		{
 			bool bBit;
-			if(Stream.UnStuff(bBit) == false) {
+			if (Stream.UnStuff(bBit) == false) {
 				return(false);
 			}
 			if (bBit) {
@@ -164,19 +166,19 @@ bool CNCSJPCTagTree::Parse(CNCSJPCIOStream &Stream, INT32 nX, INT32 nY, INT32 nA
 
 		if (stkptr == stk) break;
 
-        node = *--stkptr;
+		node = *--stkptr;
 	}
 	bVal = node->m_nValue < nAbort;
 	return(true);
 }
 
-bool CNCSJPCTagTree::SetValue(INT32 nX, INT32 nY, INT32 nValue) 
+bool CNCSJPCTagTree::SetValue(INT32 nX, INT32 nY, INT32 nValue)
 {
-    Node *node = &m_Nodes[nY * m_nWidth + nX];
+	Node *node = &m_Nodes[nY * m_nWidth + nX];
 	while (node && node->m_nValue > nValue) {
-        node->m_nValue = (UINT16)nValue;
+		node->m_nValue = (UINT16)nValue;
 		node = node->m_pParent;
-    }
+	}
 	return(true);
 }
 
@@ -184,41 +186,42 @@ bool CNCSJPCTagTree::SetValue(INT32 nX, INT32 nY, INT32 nValue)
 bool CNCSJPCTagTree::UnParse(CNCSJPCIOStream &Stream, INT32 nX, INT32 nY, INT32 nThreshold)
 {
 	INT32 nLeaf = nY * m_nWidth + nX;
-    Node *stk[31];
-    Node **stkptr;
-    Node *node;
-    int low;
+	Node *stk[31];
+	Node **stkptr;
+	Node *node;
+	int low;
 	bool bRet = true;
 
-    stkptr = stk;
-    node = &m_Nodes[nLeaf];
-    while(node->m_pParent) {
-        *stkptr++ = node;
-        node = node->m_pParent;
-    }
+	stkptr = stk;
+	node = &m_Nodes[nLeaf];
+	while (node->m_pParent) {
+		*stkptr++ = node;
+		node = node->m_pParent;
+	}
 
-    low=0;
-    for (;;) {
+	low = 0;
+	for (;;) {
 		if (low > node->m_nState) {
-            node->m_nState = (UINT16)low;
-        } else {
-            low = node->m_nState;
-        }
-        while (low < nThreshold) {
-            if (low >= node->m_nValue) {
+			node->m_nState = (UINT16)low;
+		}
+		else {
+			low = node->m_nState;
+		}
+		while (low < nThreshold) {
+			if (low >= node->m_nValue) {
 				if (!node->m_bKnown) {
-                    bRet &= Stream.Stuff(true);
-                    node->m_bKnown = true;
-                }
-                break;
-            }
+					bRet &= Stream.Stuff(true);
+					node->m_bKnown = true;
+				}
+				break;
+			}
 			bRet &= Stream.Stuff(false);
-            ++low;
-        }
+			++low;
+		}
 		node->m_nState = (UINT16)low;
-        if (stkptr == stk) break;
-        node = *--stkptr;
-    }
+		if (stkptr == stk) break;
+		node = *--stkptr;
+	}
 	return(bRet);
 }
 
@@ -228,6 +231,6 @@ bool CNCSJPCTagTree::Dump()
 	for (UINT32 i = 0; i < m_Nodes.size(); i++) {
 		m_Nodes[i].Dump();
 	}
-		
+
 	return(true);
 }

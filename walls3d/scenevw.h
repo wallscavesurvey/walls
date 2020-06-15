@@ -17,24 +17,24 @@ class CSceneView : public CView
 {
 public:
 protected: // create from serialization only
-  CSceneView();
-  DECLARE_DYNCREATE(CSceneView)
+	CSceneView();
+	DECLARE_DYNCREATE(CSceneView)
 
-// Attributes
+	// Attributes
 public:
-  CSceneDoc* GetDocument();
+	CSceneDoc* GetDocument();
 
-// Operations
+	// Operations
 public:
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CSceneView)
-	public:
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CSceneView)
+public:
 	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
 	virtual void OnInitialUpdate();
-  virtual BOOL OnIdle(LONG lCount);
-	protected:
+	virtual BOOL OnIdle(LONG lCount);
+protected:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
@@ -44,26 +44,26 @@ public:
 // Implementation
 	void afx_msg OnTileVert();
 public:
-		virtual ~CSceneView();
-	#ifdef _DEBUG
-		virtual void AssertValid() const;
-		virtual void Dump(CDumpContext& dc) const;
-	#endif
-	void DoDraw(int iMode,CPoint& cpNew);
+	virtual ~CSceneView();
+#ifdef _DEBUG
+	virtual void AssertValid() const;
+	virtual void Dump(CDumpContext& dc) const;
+#endif
+	void DoDraw(int iMode, CPoint& cpNew);
 	enum nav_mode
 	{
-	  WALK,FLY,FLYTO,FLIP,HEADSUP
+		WALK, FLY, FLYTO, FLIP, HEADSUP
 	};
 	enum button_state
 	{
-	  NONE,LEFT,RIGHT,BOTH,REDRAW
+		NONE, LEFT, RIGHT, BOTH, REDRAW
 	};
 
 	enum
 	{
-	  _icon_none=-1,_icon_eyes,_icon_body,_icon_lift,_icon_fly2,
-	  _icon_num,  // number of icons
-	  halficonsize_ = 16
+		_icon_none = -1, _icon_eyes, _icon_body, _icon_lift, _icon_fly2,
+		_icon_num,  // number of icons
+		halficonsize_ = 16
 	};
 
 
@@ -86,13 +86,13 @@ protected:
 	float m_fFlyspeed;
 	// handle for MESA GL context
 #ifdef __MESA__
-  WMesaContext m_hmglrc;
+	WMesaContext m_hmglrc;
 #endif
 	// handle for NT GL context
 	HGLRC m_hglrc;
 	HPALETTE m_hPal;
 	// midpoint of the icons (y coord. in pixels from center)
-	float m_fHuIconpos[_icon_num];      
+	float m_fHuIconpos[_icon_num];
 	colorRGB m_rgbColHudisplay;
 	colorRGB m_rgbBackGround;
 	// buffer for coors head up
@@ -122,7 +122,7 @@ protected:
 	// true if poitarget_ set
 	int m_iPoiset;
 	// true if keeping velocity
-	BOOL m_bKeep; 
+	BOOL m_bKeep;
 	// stores mode for velocity
 	int m_iFlipMode;
 	int m_iFlyMode;
@@ -159,18 +159,18 @@ private:
 	BOOL GLSwapBuffers(CDC* pDC);
 	void GLSetupContext(CDC* pDC);
 
-	void DrawFly(int iMode,CPoint& cpNew);
-	void DrawFlyto(int iMode,CPoint& cpNew);
-	void DrawWalk(int iMode,CPoint& cpNew);
-	void DrawHeadsup(int iMode,CPoint& cpNew);
-	void DrawFlip(int iMode,float dx,float dy);
-	void fly1_next_frame(int iMode,CPoint& cpNew);
+	void DrawFly(int iMode, CPoint& cpNew);
+	void DrawFlyto(int iMode, CPoint& cpNew);
+	void DrawWalk(int iMode, CPoint& cpNew);
+	void DrawHeadsup(int iMode, CPoint& cpNew);
+	void DrawFlip(int iMode, float dx, float dy);
+	void fly1_next_frame(int iMode, CPoint& cpNew);
 	void drawui();
-	void fly2_hold_button(int iMode,CPoint& cpNew);
-	void hu_hold_button(int icon,float dx,float dy);
+	void fly2_hold_button(int iMode, CPoint& cpNew);
+	void hu_hold_button(int icon, float dx, float dy);
 
 #ifdef __MESA__
-	#define NCOLORS 256
+#define NCOLORS 256
 	//static float tkRGBMap[NCOLORS][3];
 	//static BYTE tkRGBMap[NCOLORS][3];
 #else
@@ -207,7 +207,7 @@ private:
 	static float m_fVelocityTurnHor3;
 	static float m_fVelocityTurnVert3;
 
-// Generated message map functions
+	// Generated message map functions
 protected:
 	//{{AFX_MSG(CSceneView)
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
@@ -284,7 +284,9 @@ protected:
 
 #ifndef _DEBUG  // debug version in scenevw.cpp
 inline CSceneDoc* CSceneView::GetDocument()
-   { return (CSceneDoc*)m_pDocument; }
+{
+	return (CSceneDoc*)m_pDocument;
+}
 #endif
 
 #endif

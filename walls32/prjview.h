@@ -5,103 +5,103 @@
 #define PRJVIEW_H
 
 #if !defined(PRJHIER_H)
- #include "prjhier.h"
+#include "prjhier.h"
 #endif
 
 #ifndef __PRJFONT_H
- #include "prjfont.h"
+#include "prjfont.h"
 #endif
 
 #ifndef BUTTONB_H
- #include "buttonb.h"
+#include "buttonb.h"
 #endif
 
 class CItemProp;
 
 class CPrjView : public CView
 {
-friend class CPrjList;
+	friend class CPrjList;
 
 public:
-	    CPrjList m_PrjList;       //Constructed after CView()
-        static int     m_LineHeight;
+	CPrjList m_PrjList;       //Constructed after CView()
+	static int     m_LineHeight;
 #ifdef _USE_BORDER
-        enum {BorderHeight=10};
+	enum { BorderHeight = 10 };
 #else
-        enum {BorderHeight=0};
+	enum { BorderHeight = 0 };
 #endif
-        static PRJFONT m_BookFont;
-        static PRJFONT m_SurveyFont;
-        
+	static PRJFONT m_BookFont;
+	static PRJFONT m_SurveyFont;
+
 private:
-		//These constants are in dialog box size units (obtained from WALLS.RC) --
-		enum {BUTTON_COUNT=4,BUTTON_WIDTH=44,BUTTON_HEIGHT=13};
-		enum {SIZ_PRJWINPOS=5};
-        
-        CButtonBar *m_pPrjDlgBar; //Set to parent frame's m_PrjDlgBar in On_Create()
+	//These constants are in dialog box size units (obtained from WALLS.RC) --
+	enum { BUTTON_COUNT = 4, BUTTON_WIDTH = 44, BUTTON_HEIGHT = 13 };
+	enum { SIZ_PRJWINPOS = 5 };
 
-		static int m_nPrjWinPos[SIZ_PRJWINPOS];
-		int m_nWinOffset;
-        
-// create from serialization only
-	    CPrjView() {m_nWinOffset=0;}
-	    
-	    DECLARE_DYNCREATE(CPrjView)
+	CButtonBar *m_pPrjDlgBar; //Set to parent frame's m_PrjDlgBar in On_Create()
 
-//Overrides --
-        virtual void OnUpdate(CView *pSender,LPARAM lHint,CObject *pHint);
+	static int m_nPrjWinPos[SIZ_PRJWINPOS];
+	int m_nWinOffset;
 
-// Attributes
+	// create from serialization only
+	CPrjView() { m_nWinOffset = 0; }
+
+	DECLARE_DYNCREATE(CPrjView)
+
+	//Overrides --
+	virtual void OnUpdate(CView *pSender, LPARAM lHint, CObject *pHint);
+
+	// Attributes
 public:
-        void UpdateButtons() {m_pPrjDlgBar->OnUpdateCmdUI((CFrameWnd *)AfxGetMainWnd(),TRUE);}
-        
-        //Accessed from CPrjDoc --
-        void RefreshDependentItems(CPrjListNode *pNode)
-        {
-        	m_PrjList.RefreshDependentItems(pNode);
-        }
+	void UpdateButtons() { m_pPrjDlgBar->OnUpdateCmdUI((CFrameWnd *)AfxGetMainWnd(), TRUE); }
 
-        void RefreshBranch(CPrjListNode *pNode,BOOL bIgnoreFloating)
-		{
-			m_PrjList.RefreshBranch(pNode,bIgnoreFloating);
-		}
+	//Accessed from CPrjDoc --
+	void RefreshDependentItems(CPrjListNode *pNode)
+	{
+		m_PrjList.RefreshDependentItems(pNode);
+	}
 
-		void OpenLeaf(CPrjListNode *pNode);
-        void EditItem(CPrjListNode *pNode);
-		void OpenProperties() {OnEditItem();}
-		void UpdateProperties(CItemProp *pDlg);
+	void RefreshBranch(CPrjListNode *pNode, BOOL bIgnoreFloating)
+	{
+		m_PrjList.RefreshBranch(pNode, bIgnoreFloating);
+	}
 
-		CPrjListNode *GetSelectedNode() { return m_PrjList.GetSelectedNode();}
-	    static void Initialize();
-        static void Terminate();
-		static void ChangeFont(PRJFONT *pf);
-		static void SaveAndClose(CPrjListNode *pNode);
-        CPrjDoc* GetDocument();
-		void OnSearch();
-		static void OnTerminateSearch() {StatusClear();}
-        
+	void OpenLeaf(CPrjListNode *pNode);
+	void EditItem(CPrjListNode *pNode);
+	void OpenProperties() { OnEditItem(); }
+	void UpdateProperties(CItemProp *pDlg);
+
+	CPrjListNode *GetSelectedNode() { return m_PrjList.GetSelectedNode(); }
+	static void Initialize();
+	static void Terminate();
+	static void ChangeFont(PRJFONT *pf);
+	static void SaveAndClose(CPrjListNode *pNode);
+	CPrjDoc* GetDocument();
+	void OnSearch();
+	static void OnTerminateSearch() { StatusClear(); }
+
 private:
-		BOOL IsExportedAvail(UINT typ);
+	BOOL IsExportedAvail(UINT typ);
 
-		void PurgeDependentFiles(CPrjListNode *pNode);
-		void PurgeWorkFiles(CPrjListNode *pNode,BOOL bIncludeNTA=FALSE)
-		{
-			GetDocument()->PurgeWorkFiles(pNode,bIncludeNTA);
-		}
-		void PurgeAllWorkFiles(CPrjListNode *pNode,BOOL bIncludeNTA=FALSE,BOOL bIgnoreFloating=FALSE)
-		{
-			GetDocument()->PurgeAllWorkFiles(pNode,bIncludeNTA,bIgnoreFloating);
-		}
-	    static void ReviseLineHeight();
-        void SetListFonts();
-		BOOL SetBranchCheckmarks(CPrjListNode *pNode,WORD findflags);
-		void SortBranch(BOOL bNameRev);
-		void SetReadOnly(BOOL bReadOnly);
+	void PurgeDependentFiles(CPrjListNode *pNode);
+	void PurgeWorkFiles(CPrjListNode *pNode, BOOL bIncludeNTA = FALSE)
+	{
+		GetDocument()->PurgeWorkFiles(pNode, bIncludeNTA);
+	}
+	void PurgeAllWorkFiles(CPrjListNode *pNode, BOOL bIncludeNTA = FALSE, BOOL bIgnoreFloating = FALSE)
+	{
+		GetDocument()->PurgeAllWorkFiles(pNode, bIncludeNTA, bIgnoreFloating);
+	}
+	static void ReviseLineHeight();
+	void SetListFonts();
+	BOOL SetBranchCheckmarks(CPrjListNode *pNode, WORD findflags);
+	void SortBranch(BOOL bNameRev);
+	void SetReadOnly(BOOL bReadOnly);
 
-// Implementation
+	// Implementation
 
 public:
-	virtual ~CPrjView() {m_nPrjWinPos[m_nWinOffset]=0;}
+	virtual ~CPrjView() { m_nPrjWinPos[m_nWinOffset] = 0; }
 	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
 	virtual BOOL PreCreateWindow(CREATESTRUCT&);
 	virtual void OnInitialUpdate();
@@ -110,7 +110,7 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-// Generated message map functions
+	// Generated message map functions
 	afx_msg void OnZipBackup();
 protected:
 	//{{AFX_MSG(CPrjView)
@@ -168,12 +168,12 @@ protected:
 	afx_msg void OnUpdateFindNext(CCmdUI* pCmdUI);
 	afx_msg void OnFindPrev();
 #ifdef _USE_FILETIMER
-	afx_msg LRESULT OnTimerRefresh(WPARAM,LPARAM);
+	afx_msg LRESULT OnTimerRefresh(WPARAM, LPARAM);
 #endif
 	afx_msg void OnPrjOpenfolder();
 	afx_msg void OnUpdatePrjOpenfolder(CCmdUI *pCmdUI);
 	afx_msg void OnSelChanged();
-	afx_msg LRESULT OnPropViewLB(WPARAM wParam,LPARAM lParam);
+	afx_msg LRESULT OnPropViewLB(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnRemoveprotection();
 	afx_msg void OnWriteprotect();
 	DECLARE_MESSAGE_MAP()
@@ -181,7 +181,9 @@ protected:
 
 #ifndef _DEBUG	// debug version in hierlvw.cpp
 inline CPrjDoc* CPrjView::GetDocument()
-   { return (CPrjDoc*) m_pDocument; }
+{
+	return (CPrjDoc*)m_pDocument;
+}
 #endif
 
 /////////////////////////////////////////////////////////////////////////////

@@ -6,7 +6,7 @@
 TRXFCN_DW trx_RevDW(DWORD d)
 {
 	__asm {
-        mov     eax,d
-		bswap	eax	
+		mov     eax, d
+		bswap	eax
 	}
 }

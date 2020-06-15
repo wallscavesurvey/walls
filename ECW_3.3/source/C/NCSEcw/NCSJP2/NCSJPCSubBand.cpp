@@ -2,13 +2,13 @@
 ** Copyright 2003 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:     $Archive: /NCS/Source/C/NCSEcw/NCSJP2/NCSJPCSubBand.cpp $
@@ -44,35 +44,35 @@ CNCSJPCSubBand::CNCSJPCSubBand(CNCSJPCPrecinct *pPrecinct, NCSJPCSubBandType eTy
 	m_pCodeBlocks = new std::vector<class CNCSJPCCodeBlock>(nCB);
 	//m_pCodeBlocks->resize(nCB);
 
-	for(UINT32 c = 0; c < nCB; c++) {
+	for (UINT32 c = 0; c < nCB; c++) {
 		(*m_pCodeBlocks)[c].Init(this, c);
-//		m_CodeBlocks[c] = new CNCSJPCCodeBlock(this, c);
+		//		m_CodeBlocks[c] = new CNCSJPCCodeBlock(this, c);
 	}
 }
 
-	/** Virtual destructor */
+/** Virtual destructor */
 CNCSJPCSubBand::~CNCSJPCSubBand()
 {
-//	if(m_CodeBlocks) {
-//		delete[] m_CodeBlocks;
-//	}
-	if(m_pCodeBlocks) {
+	//	if(m_CodeBlocks) {
+	//		delete[] m_CodeBlocks;
+	//	}
+	if (m_pCodeBlocks) {
 		m_pCodeBlocks->clear();
 		delete m_pCodeBlocks;
 	}
 	sm_Tracker.Remove();
-//	while(m_CodeBlocks.size() > 0) {
-//		CNCSJPCCodeBlock *pCB = m_CodeBlocks[0];
-//		m_CodeBlocks.erase(m_CodeBlocks.begin());
-//		delete pCB;
-//	}
+	//	while(m_CodeBlocks.size() > 0) {
+	//		CNCSJPCCodeBlock *pCB = m_CodeBlocks[0];
+	//		m_CodeBlocks.erase(m_CodeBlocks.begin());
+	//		delete pCB;
+	//	}
 }
 
 // Get X0 of this node.
 INT32 CNCSJPCSubBand::GetX0(CNCSJPCResolution *pResolution, INT32 nPrecinct, NCSJPCSubBandType eType)
 {
 	INT32 px = 0;
-	if(pResolution->GetNumPrecinctsWide()) {
+	if (pResolution->GetNumPrecinctsWide()) {
 		px = nPrecinct % pResolution->GetNumPrecinctsWide();
 	}
 	return(GetX0(pResolution, px, 0, eType));
@@ -81,10 +81,11 @@ INT32 CNCSJPCSubBand::GetX0(CNCSJPCResolution *pResolution, INT32 nPrecinct, NCS
 // Get X0 of this node.
 INT32 CNCSJPCSubBand::GetX0(CNCSJPCResolution *pResolution, INT32 nPrecinctX, INT32 nPrecinctY, NCSJPCSubBandType eType)
 {
-	if(eType == NCSJPC_LL) {
-			// LL SubBand coordinates == Precinct coordinates (r==0)
+	if (eType == NCSJPC_LL) {
+		// LL SubBand coordinates == Precinct coordinates (r==0)
 		return(CNCSJPCPrecinct::GetX0(pResolution, nPrecinctX, nPrecinctY));
-	} else {
+	}
+	else {
 		INT32 nXOb = (eType == NCSJPC_HL || eType == NCSJPC_HH) ? 1 : 0;
 		INT32 nLevel = (INT32)pResolution->m_pComponent->m_Resolutions.size() - pResolution->m_nResolution - 1;
 		INT32 nPX0 = NCSCeilDiv((pResolution->m_pComponent->GetX0() - (1 << nLevel) * nXOb), NCS2Pow(nLevel + 1));
@@ -96,7 +97,7 @@ INT32 CNCSJPCSubBand::GetX0(CNCSJPCResolution *pResolution, INT32 nPrecinctX, IN
 
 INT32 CNCSJPCSubBand::GetX0()
 {
-	if(!m_X0.Cached()) {
+	if (!m_X0.Cached()) {
 		m_X0 = GetX0(m_pPrecinct->m_pResolution, m_pPrecinct->m_nPrecinct, m_eType);
 	}
 	return(m_X0);
@@ -106,7 +107,7 @@ INT32 CNCSJPCSubBand::GetX0()
 INT32 CNCSJPCSubBand::GetY0(CNCSJPCResolution *pResolution, INT32 nPrecinct, NCSJPCSubBandType eType)
 {
 	INT32 py = 0;
-	if(pResolution->GetNumPrecinctsWide()) {
+	if (pResolution->GetNumPrecinctsWide()) {
 		py = nPrecinct / pResolution->GetNumPrecinctsWide();
 	}
 	return(GetY0(pResolution, 0, py, eType));
@@ -115,10 +116,11 @@ INT32 CNCSJPCSubBand::GetY0(CNCSJPCResolution *pResolution, INT32 nPrecinct, NCS
 // Get Y0 of this node.
 INT32 CNCSJPCSubBand::GetY0(CNCSJPCResolution *pResolution, INT32 nPrecinctX, INT32 nPrecinctY, NCSJPCSubBandType eType)
 {
-	if(eType == NCSJPC_LL) {
-			// LL SubBand coordinates == Precinct coordinates (r==0)
+	if (eType == NCSJPC_LL) {
+		// LL SubBand coordinates == Precinct coordinates (r==0)
 		return(CNCSJPCPrecinct::GetY0(pResolution, nPrecinctX, nPrecinctY));
-	} else {
+	}
+	else {
 		INT32 nYOb = (eType == NCSJPC_LH || eType == NCSJPC_HH) ? 1 : 0;
 		INT32 nLevel = (INT32)pResolution->m_pComponent->m_Resolutions.size() - pResolution->m_nResolution - 1;
 		INT32 nPY0 = NCSCeilDiv((pResolution->m_pComponent->GetY0() - (1 << nLevel) * nYOb), NCS2Pow(nLevel + 1));
@@ -130,7 +132,7 @@ INT32 CNCSJPCSubBand::GetY0(CNCSJPCResolution *pResolution, INT32 nPrecinctX, IN
 
 INT32 CNCSJPCSubBand::GetY0()
 {
-	if(!m_Y0.Cached()) {
+	if (!m_Y0.Cached()) {
 		m_Y0 = GetY0(m_pPrecinct->m_pResolution, m_pPrecinct->m_nPrecinct, m_eType);
 	}
 	return(m_Y0);
@@ -140,7 +142,7 @@ INT32 CNCSJPCSubBand::GetY0()
 INT32 CNCSJPCSubBand::GetX1(CNCSJPCResolution *pResolution, INT32 nPrecinct, NCSJPCSubBandType eType)
 {
 	INT32 px = 0;
-	if(pResolution->GetNumPrecinctsWide()) {
+	if (pResolution->GetNumPrecinctsWide()) {
 		px = nPrecinct % pResolution->GetNumPrecinctsWide();
 	}
 	return(GetX1(pResolution, px, 0, eType));
@@ -149,10 +151,11 @@ INT32 CNCSJPCSubBand::GetX1(CNCSJPCResolution *pResolution, INT32 nPrecinct, NCS
 // Get X1 of this node.
 INT32 CNCSJPCSubBand::GetX1(CNCSJPCResolution *pResolution, INT32 nPrecinctX, INT32 nPrecinctY, NCSJPCSubBandType eType)
 {
-	if(eType == NCSJPC_LL) {
-			// LL SubBand coordinates == Precinct coordinates (r==0)
+	if (eType == NCSJPC_LL) {
+		// LL SubBand coordinates == Precinct coordinates (r==0)
 		return(CNCSJPCPrecinct::GetX1(pResolution, nPrecinctX, nPrecinctY));
-	} else {
+	}
+	else {
 		INT32 nXOb = (eType == NCSJPC_HL || eType == NCSJPC_HH) ? 1 : 0;
 		INT32 nLevel = (INT32)pResolution->m_pComponent->m_Resolutions.size() - pResolution->m_nResolution - 1;
 		INT32 nPX1 = NCSCeilDiv((pResolution->m_pComponent->GetX1() - (1 << nLevel) * nXOb), NCS2Pow(nLevel + 1));
@@ -164,7 +167,7 @@ INT32 CNCSJPCSubBand::GetX1(CNCSJPCResolution *pResolution, INT32 nPrecinctX, IN
 
 INT32 CNCSJPCSubBand::GetX1()
 {
-	if(!m_X1.Cached()) {
+	if (!m_X1.Cached()) {
 		m_X1 = GetX1(m_pPrecinct->m_pResolution, m_pPrecinct->m_nPrecinct, m_eType);
 	}
 	return(m_X1);
@@ -174,7 +177,7 @@ INT32 CNCSJPCSubBand::GetX1()
 INT32 CNCSJPCSubBand::GetY1(CNCSJPCResolution *pResolution, INT32 nPrecinct, NCSJPCSubBandType eType)
 {
 	INT32 py = 0;
-	if(pResolution->GetNumPrecinctsWide()) {
+	if (pResolution->GetNumPrecinctsWide()) {
 		py = nPrecinct / pResolution->GetNumPrecinctsWide();
 	}
 	return(GetY1(pResolution, 0, py, eType));
@@ -183,10 +186,11 @@ INT32 CNCSJPCSubBand::GetY1(CNCSJPCResolution *pResolution, INT32 nPrecinct, NCS
 // Get Y1 of this node.
 INT32 CNCSJPCSubBand::GetY1(CNCSJPCResolution *pResolution, INT32 nPrecinctX, INT32 nPrecinctY, NCSJPCSubBandType eType)
 {
-	if(eType == NCSJPC_LL) {
+	if (eType == NCSJPC_LL) {
 		// LL SubBand coordinates == Precinct coordinates (r==0)
 		return(CNCSJPCPrecinct::GetY1(pResolution, nPrecinctX, nPrecinctY));
-	} else {
+	}
+	else {
 		INT32 nYOb = (eType == NCSJPC_LH || eType == NCSJPC_HH) ? 1 : 0;
 		INT32 nLevel = (INT32)pResolution->m_pComponent->m_Resolutions.size() - pResolution->m_nResolution - 1;
 		INT32 nPY1 = NCSCeilDiv((pResolution->m_pComponent->GetY1() - (1 << nLevel) * nYOb), NCS2Pow(nLevel + 1));
@@ -198,11 +202,11 @@ INT32 CNCSJPCSubBand::GetY1(CNCSJPCResolution *pResolution, INT32 nPrecinctX, IN
 
 INT32 CNCSJPCSubBand::GetY1()
 {
-	if(!m_Y1.Cached()) {
+	if (!m_Y1.Cached()) {
 		m_Y1 = GetY1(m_pPrecinct->m_pResolution, m_pPrecinct->m_nPrecinct, m_eType);
 	}
 	return(m_Y1);
-} 
+}
 
 // Get cb Width.
 UINT32 CNCSJPCSubBand::GetCBWidth()
@@ -219,7 +223,7 @@ UINT32 CNCSJPCSubBand::GetCBHeight()
 // Get number of cb wide.
 UINT32 CNCSJPCSubBand::GetNumCBWide()
 {
-	if(!m_NumCBWide.Cached()) {
+	if (!m_NumCBWide.Cached()) {
 		m_NumCBWide = NCSCeilDiv(GetX1(), GetCBWidth()) - NCSFloorDiv(GetX0(), GetCBWidth());
 	}
 	return(m_NumCBWide);
@@ -228,14 +232,14 @@ UINT32 CNCSJPCSubBand::GetNumCBWide()
 // Get number of cb high.
 UINT32 CNCSJPCSubBand::GetNumCBHigh()
 {
-	if(!m_NumCBHigh.Cached()) {
+	if (!m_NumCBHigh.Cached()) {
 		m_NumCBHigh = NCSCeilDiv(GetY1(), GetCBHeight()) - NCSFloorDiv(GetY0(), GetCBHeight());
 	}
 	return(m_NumCBHigh);
 }
 
-CNCSJPCNode *CNCSJPCSubBand::GetNodePtr(UINT32 nNode, UINT16 iComponent) 
+CNCSJPCNode *CNCSJPCSubBand::GetNodePtr(UINT32 nNode, UINT16 iComponent)
 {
 	iComponent;//Keep compiler happy
-	return(&(*m_pCodeBlocks)[nNode]); 
+	return(&(*m_pCodeBlocks)[nNode]);
 }

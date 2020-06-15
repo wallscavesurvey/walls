@@ -8,7 +8,7 @@ typedef VEC_BYTE::iterator it_byte;
 typedef std::vector<LPCSTR> VEC_PCSTR;
 typedef VEC_PCSTR::iterator it_pcstr;
 
-BOOL   DirCheck(LPSTR pathname, BOOL bPrompt=0);
+BOOL   DirCheck(LPSTR pathname, BOOL bPrompt = 0);
 BOOL   IsNumeric(LPCSTR p);
 BOOL   MakeFileDirectoryCurrent(LPCSTR pathName);
 int    MakeNestedDir(char *path);

@@ -51,7 +51,7 @@ struct SHP_POINTZ_REC { //44 bytes
 	double m;
 };
 
-struct  SHP_POINT_XY{
+struct  SHP_POINT_XY {
 	long typ;			//SHP_POINT==1 or SHP_NULL==0
 	CFltPoint fpt;
 };
@@ -66,7 +66,7 @@ struct SHP_POINTZM_REC {
 
 //#define SHP_ZM_FILEOFF(rec) (100+(rec)*sizeof(SHP_POINTZ_REC)-sizeof(CFltPoint))
 
-struct  SHP_POINTZ_XY{
+struct  SHP_POINTZ_XY {
 	long typ;			//SHP_POINT==1 or SHP_NULL==0
 	CFltPoint xy;
 	CFltPoint zm;
@@ -102,9 +102,9 @@ struct SHP_POLYLINE1_REC {
 	int numPoints; //=2
 	int Parts[1];
 	CFltPoint Points[2];
-	double Zmin,Zmax;
+	double Zmin, Zmax;
 	double Z[2];
-	double Mmin,Mmax;
+	double Mmin, Mmax;
 	double M[2];
 };
 #define SHP_POLYLINE1_SIZCONTENT (sizeof(SHP_POLYLINE1_REC)-2*sizeof(int))

@@ -14,16 +14,16 @@
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
  * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  ****************************************************************************/
 
@@ -54,13 +54,13 @@ static GUIntBig nRealPos;
 
 static void VSIStdinInit()
 {
-    if (pabyBuffer == NULL)
-    {
+	if (pabyBuffer == NULL)
+	{
 #ifdef WIN32
-        setmode( fileno( stdin ), O_BINARY );
+		setmode(fileno(stdin), O_BINARY);
 #endif
-        pabyBuffer = (GByte*)CPLMalloc(BUFFER_SIZE);
-    }
+		pabyBuffer = (GByte*)CPLMalloc(BUFFER_SIZE);
+	}
 }
 
 /************************************************************************/
@@ -72,13 +72,13 @@ static void VSIStdinInit()
 class VSIStdinFilesystemHandler : public VSIFilesystemHandler
 {
 public:
-                              VSIStdinFilesystemHandler();
-    virtual                  ~VSIStdinFilesystemHandler();
+	VSIStdinFilesystemHandler();
+	virtual                  ~VSIStdinFilesystemHandler();
 
-    virtual VSIVirtualHandle *Open( const char *pszFilename, 
-                                    const char *pszAccess);
-    virtual int               Stat( const char *pszFilename,
-                                    VSIStatBufL *pStatBuf, int nFlags );
+	virtual VSIVirtualHandle *Open(const char *pszFilename,
+		const char *pszAccess);
+	virtual int               Stat(const char *pszFilename,
+		VSIStatBufL *pStatBuf, int nFlags);
 };
 
 /************************************************************************/
@@ -89,20 +89,20 @@ public:
 
 class VSIStdinHandle : public VSIVirtualHandle
 {
-  private:
-    GUIntBig nCurOff;
-    int               ReadAndCache( void* pBuffer, int nToRead );
+private:
+	GUIntBig nCurOff;
+	int               ReadAndCache(void* pBuffer, int nToRead);
 
-  public:
-                      VSIStdinHandle();
-    virtual          ~VSIStdinHandle();
+public:
+	VSIStdinHandle();
+	virtual          ~VSIStdinHandle();
 
-    virtual int       Seek( vsi_l_offset nOffset, int nWhence );
-    virtual vsi_l_offset Tell();
-    virtual size_t    Read( void *pBuffer, size_t nSize, size_t nMemb );
-    virtual size_t    Write( const void *pBuffer, size_t nSize, size_t nMemb );
-    virtual int       Eof();
-    virtual int       Close();
+	virtual int       Seek(vsi_l_offset nOffset, int nWhence);
+	virtual vsi_l_offset Tell();
+	virtual size_t    Read(void *pBuffer, size_t nSize, size_t nMemb);
+	virtual size_t    Write(const void *pBuffer, size_t nSize, size_t nMemb);
+	virtual int       Eof();
+	virtual int       Close();
 };
 
 /************************************************************************/
@@ -111,7 +111,7 @@ class VSIStdinHandle : public VSIVirtualHandle
 
 VSIStdinHandle::VSIStdinHandle()
 {
-    nCurOff = 0;
+	nCurOff = 0;
 }
 
 /************************************************************************/
@@ -127,95 +127,95 @@ VSIStdinHandle::~VSIStdinHandle()
 /*                              ReadAndCache()                          */
 /************************************************************************/
 
-int VSIStdinHandle::ReadAndCache( void* pBuffer, int nToRead )
+int VSIStdinHandle::ReadAndCache(void* pBuffer, int nToRead)
 {
-    CPLAssert(nCurOff == nRealPos);
+	CPLAssert(nCurOff == nRealPos);
 
-    int nRead = fread(pBuffer, 1, nToRead, stdin);
+	int nRead = fread(pBuffer, 1, nToRead, stdin);
 
-    if (nRealPos < BUFFER_SIZE)
-    {
-        int nToCopy = MIN(BUFFER_SIZE - (int)nRealPos, nRead);
-        memcpy(pabyBuffer + nRealPos, pBuffer, nToCopy);
-        nBufferLen += nToCopy;
-    }
+	if (nRealPos < BUFFER_SIZE)
+	{
+		int nToCopy = MIN(BUFFER_SIZE - (int)nRealPos, nRead);
+		memcpy(pabyBuffer + nRealPos, pBuffer, nToCopy);
+		nBufferLen += nToCopy;
+	}
 
-    nCurOff += nRead;
-    nRealPos = nCurOff;
+	nCurOff += nRead;
+	nRealPos = nCurOff;
 
-    return nRead;
+	return nRead;
 }
 
 /************************************************************************/
 /*                                Seek()                                */
 /************************************************************************/
 
-int VSIStdinHandle::Seek( vsi_l_offset nOffset, int nWhence )
+int VSIStdinHandle::Seek(vsi_l_offset nOffset, int nWhence)
 
 {
-    if (nWhence == SEEK_SET && nOffset == nCurOff)
-        return 0;
+	if (nWhence == SEEK_SET && nOffset == nCurOff)
+		return 0;
 
-    VSIStdinInit();
-    if (nBufferLen == 0)
-        nRealPos = nBufferLen = fread(pabyBuffer, 1, BUFFER_SIZE, stdin);
+	VSIStdinInit();
+	if (nBufferLen == 0)
+		nRealPos = nBufferLen = fread(pabyBuffer, 1, BUFFER_SIZE, stdin);
 
-    if (nWhence == SEEK_END)
-    {
-        if (nOffset != 0)
-        {
-            CPLError(CE_Failure, CPLE_NotSupported,
-                     "Seek(xx != 0, SEEK_END) unsupported on /vsistdin");
-            return -1;
-        }
+	if (nWhence == SEEK_END)
+	{
+		if (nOffset != 0)
+		{
+			CPLError(CE_Failure, CPLE_NotSupported,
+				"Seek(xx != 0, SEEK_END) unsupported on /vsistdin");
+			return -1;
+		}
 
-        if (nBufferLen < BUFFER_SIZE)
-        {
-            nCurOff = nBufferLen;
-            return 0;
-        }
+		if (nBufferLen < BUFFER_SIZE)
+		{
+			nCurOff = nBufferLen;
+			return 0;
+		}
 
-        CPLError(CE_Failure, CPLE_NotSupported,
-                 "Seek(SEEK_END) unsupported on /vsistdin when stdin > 1 MB");
-        return -1;
-    }
+		CPLError(CE_Failure, CPLE_NotSupported,
+			"Seek(SEEK_END) unsupported on /vsistdin when stdin > 1 MB");
+		return -1;
+	}
 
-    if (nWhence == SEEK_CUR)
-        nOffset += nCurOff;
+	if (nWhence == SEEK_CUR)
+		nOffset += nCurOff;
 
-    if (nRealPos > nBufferLen && nOffset < nRealPos)
-    {
-        CPLError(CE_Failure, CPLE_NotSupported,
-                "backward Seek() unsupported on /vsistdin above first MB");
-        return -1;
-    }
+	if (nRealPos > nBufferLen && nOffset < nRealPos)
+	{
+		CPLError(CE_Failure, CPLE_NotSupported,
+			"backward Seek() unsupported on /vsistdin above first MB");
+		return -1;
+	}
 
-    if (nOffset < nBufferLen)
-    {
-        nCurOff = nOffset;
-        return 0;
-    }
+	if (nOffset < nBufferLen)
+	{
+		nCurOff = nOffset;
+		return 0;
+	}
 
-    if (nOffset == nCurOff)
-        return 0;
+	if (nOffset == nCurOff)
+		return 0;
 
-    CPLDebug("VSI", "Forward seek from " CPL_FRMT_GUIB " to " CPL_FRMT_GUIB,
-             nCurOff, nOffset);
+	CPLDebug("VSI", "Forward seek from " CPL_FRMT_GUIB " to " CPL_FRMT_GUIB,
+		nCurOff, nOffset);
 
-    char abyTemp[8192];
-    nCurOff = nRealPos;
-    while(TRUE)
-    {
-        int nToRead = (int) MIN(8192, nOffset - nCurOff);
-        int nRead = ReadAndCache( abyTemp, nToRead );
+	char abyTemp[8192];
+	nCurOff = nRealPos;
+	while (TRUE)
+	{
+		int nToRead = (int)MIN(8192, nOffset - nCurOff);
+		int nRead = ReadAndCache(abyTemp, nToRead);
 
-        if (nRead < nToRead)
-            return -1;
-        if (nToRead < 8192)
-            break;
-    }
+		if (nRead < nToRead)
+			return -1;
+		if (nToRead < 8192)
+			break;
+	}
 
-    return 0;
+	return 0;
 }
 
 /************************************************************************/
@@ -224,53 +224,53 @@ int VSIStdinHandle::Seek( vsi_l_offset nOffset, int nWhence )
 
 vsi_l_offset VSIStdinHandle::Tell()
 {
-    return nCurOff;
+	return nCurOff;
 }
 
 /************************************************************************/
 /*                                Read()                                */
 /************************************************************************/
 
-size_t VSIStdinHandle::Read( void * pBuffer, size_t nSize, size_t nCount )
+size_t VSIStdinHandle::Read(void * pBuffer, size_t nSize, size_t nCount)
 
 {
-    VSIStdinInit();
+	VSIStdinInit();
 
-    if (nCurOff < nBufferLen)
-    {
-        if (nCurOff + nSize * nCount < nBufferLen)
-        {
-            memcpy(pBuffer, pabyBuffer + nCurOff, nSize * nCount);
-            nCurOff += nSize * nCount;
-            return nCount;
-        }
+	if (nCurOff < nBufferLen)
+	{
+		if (nCurOff + nSize * nCount < nBufferLen)
+		{
+			memcpy(pBuffer, pabyBuffer + nCurOff, nSize * nCount);
+			nCurOff += nSize * nCount;
+			return nCount;
+		}
 
-        int nAlreadyCached = (int)(nBufferLen - nCurOff);
-        memcpy(pBuffer, pabyBuffer + nCurOff, nAlreadyCached);
+		int nAlreadyCached = (int)(nBufferLen - nCurOff);
+		memcpy(pBuffer, pabyBuffer + nCurOff, nAlreadyCached);
 
-        nCurOff += nAlreadyCached;
+		nCurOff += nAlreadyCached;
 
-        int nRead = ReadAndCache( (GByte*)pBuffer + nAlreadyCached,
-                                  (int)(nSize*nCount - nAlreadyCached) );
+		int nRead = ReadAndCache((GByte*)pBuffer + nAlreadyCached,
+			(int)(nSize*nCount - nAlreadyCached));
 
-        return ((nRead + nAlreadyCached) / nSize);
-    }
+		return ((nRead + nAlreadyCached) / nSize);
+	}
 
-    int nRead = ReadAndCache( pBuffer, (int)(nSize * nCount) );
-    return nRead / nSize;
+	int nRead = ReadAndCache(pBuffer, (int)(nSize * nCount));
+	return nRead / nSize;
 }
 
 /************************************************************************/
 /*                               Write()                                */
 /************************************************************************/
 
-size_t VSIStdinHandle::Write( const void * pBuffer, size_t nSize, 
-                                  size_t nCount )
+size_t VSIStdinHandle::Write(const void * pBuffer, size_t nSize,
+	size_t nCount)
 
 {
-    CPLError(CE_Failure, CPLE_NotSupported,
-             "Write() unsupported on /vsistdin");
-    return 0;
+	CPLError(CE_Failure, CPLE_NotSupported,
+		"Write() unsupported on /vsistdin");
+	return 0;
 }
 
 /************************************************************************/
@@ -280,9 +280,9 @@ size_t VSIStdinHandle::Write( const void * pBuffer, size_t nSize,
 int VSIStdinHandle::Eof()
 
 {
-    if (nCurOff < nBufferLen)
-        return FALSE;
-    return feof(stdin);
+	if (nCurOff < nBufferLen)
+		return FALSE;
+	return feof(stdin);
 }
 
 /************************************************************************/
@@ -292,7 +292,7 @@ int VSIStdinHandle::Eof()
 int VSIStdinHandle::Close()
 
 {
-    return 0;
+	return 0;
 }
 
 /************************************************************************/
@@ -307,9 +307,9 @@ int VSIStdinHandle::Close()
 
 VSIStdinFilesystemHandler::VSIStdinFilesystemHandler()
 {
-    pabyBuffer = NULL;
-    nBufferLen = 0;
-    nRealPos = 0;
+	pabyBuffer = NULL;
+	nBufferLen = 0;
+	nRealPos = 0;
 }
 
 /************************************************************************/
@@ -318,8 +318,8 @@ VSIStdinFilesystemHandler::VSIStdinFilesystemHandler()
 
 VSIStdinFilesystemHandler::~VSIStdinFilesystemHandler()
 {
-    CPLFree(pabyBuffer);
-    pabyBuffer = NULL;
+	CPLFree(pabyBuffer);
+	pabyBuffer = NULL;
 }
 
 /************************************************************************/
@@ -327,49 +327,49 @@ VSIStdinFilesystemHandler::~VSIStdinFilesystemHandler()
 /************************************************************************/
 
 VSIVirtualHandle *
-VSIStdinFilesystemHandler::Open( const char *pszFilename, 
-                                 const char *pszAccess )
+VSIStdinFilesystemHandler::Open(const char *pszFilename,
+	const char *pszAccess)
 
 {
-    if (strcmp(pszFilename, "/vsistdin/") != 0)
-        return NULL;
+	if (strcmp(pszFilename, "/vsistdin/") != 0)
+		return NULL;
 
-    if ( strchr(pszAccess, 'w') != NULL ||
-         strchr(pszAccess, '+') != NULL )
-    {
-        CPLError(CE_Failure, CPLE_NotSupported,
-                 "Write or update mode not supported on /vsistdin");
-        return NULL;
-    }
+	if (strchr(pszAccess, 'w') != NULL ||
+		strchr(pszAccess, '+') != NULL)
+	{
+		CPLError(CE_Failure, CPLE_NotSupported,
+			"Write or update mode not supported on /vsistdin");
+		return NULL;
+	}
 
-    return new VSIStdinHandle;
+	return new VSIStdinHandle;
 }
 
 /************************************************************************/
 /*                                Stat()                                */
 /************************************************************************/
 
-int VSIStdinFilesystemHandler::Stat( const char * pszFilename,
-                                     VSIStatBufL * pStatBuf,
-                                     int nFlags )
+int VSIStdinFilesystemHandler::Stat(const char * pszFilename,
+	VSIStatBufL * pStatBuf,
+	int nFlags)
 
 {
-    memset( pStatBuf, 0, sizeof(VSIStatBufL) );
+	memset(pStatBuf, 0, sizeof(VSIStatBufL));
 
-    if (strcmp(pszFilename, "/vsistdin/") != 0)
-        return -1;
+	if (strcmp(pszFilename, "/vsistdin/") != 0)
+		return -1;
 
-    if ((nFlags & VSI_STAT_SIZE_FLAG))
-    {
-        VSIStdinInit();
-        if (nBufferLen == 0)
-            nRealPos = nBufferLen = fread(pabyBuffer, 1, BUFFER_SIZE, stdin);
+	if ((nFlags & VSI_STAT_SIZE_FLAG))
+	{
+		VSIStdinInit();
+		if (nBufferLen == 0)
+			nRealPos = nBufferLen = fread(pabyBuffer, 1, BUFFER_SIZE, stdin);
 
-        pStatBuf->st_size = nBufferLen;
-    }
+		pStatBuf->st_size = nBufferLen;
+	}
 
-    pStatBuf->st_mode = S_IFREG;
-    return 0;
+	pStatBuf->st_mode = S_IFREG;
+	return 0;
 }
 
 /************************************************************************/
@@ -390,5 +390,5 @@ int VSIStdinFilesystemHandler::Stat( const char * pszFilename,
 void VSIInstallStdinHandler()
 
 {
-    VSIFileManager::InstallHandler( "/vsistdin/", new VSIStdinFilesystemHandler );
+	VSIFileManager::InstallHandler("/vsistdin/", new VSIStdinFilesystemHandler);
 }

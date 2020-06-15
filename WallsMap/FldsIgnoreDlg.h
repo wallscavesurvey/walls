@@ -12,15 +12,15 @@ class CFldsIgnoreDlg : public CDialog
 	CListBox m_lbFldsIgnored;
 
 public:
-	CFldsIgnoreDlg(CShpLayer *pShp,VEC_WORD &vFldsIgnored,CWnd* pParent = NULL);   // standard constructor
+	CFldsIgnoreDlg(CShpLayer *pShp, VEC_WORD &vFldsIgnored, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CFldsIgnoreDlg();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_FLDS_IGNORED };
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	void Enable(UINT id,BOOL bEnable) {GetDlgItem(id)->EnableWindow(bEnable);}
+	void Enable(UINT id, BOOL bEnable) { GetDlgItem(id)->EnableWindow(bEnable); }
 
 	DECLARE_MESSAGE_MAP()
 
@@ -29,7 +29,7 @@ protected:
 	void UpdateButtons();
 	void UpdateSelFldChange();
 	void MoveAllFields(CListBox &list);
-	void MoveOne(CListBox &list1,CListBox &list2,int iSel1,BOOL bToRight);
+	void MoveOne(CListBox &list1, CListBox &list2, int iSel1, BOOL bToRight);
 
 	afx_msg void OnBnClickedMoveallLeft();
 	afx_msg void OnBnClickedMoveallRight();

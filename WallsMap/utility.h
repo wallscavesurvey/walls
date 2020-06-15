@@ -62,7 +62,7 @@ extern UINT nLayersSkipped;
 template<class Interface>
 inline void SafeRelease(Interface **ppInterfaceToRelease)
 {
-	if (*ppInterfaceToRelease != NULL)	{
+	if (*ppInterfaceToRelease != NULL) {
 		(*ppInterfaceToRelease)->Release();
 		(*ppInterfaceToRelease) = NULL;
 	}
@@ -104,77 +104,77 @@ extern const UINT uCF_RTF;
 
 //bool __inline xisspace(char c) {return isspace((BYTE)c);}
 
-bool	AddFileSize(const char *pszPathName,__int64 &size);
-BOOL	AddFilter(CString &filter,int nIDS);
-BOOL	BrowseFiles(CEdit *pw,CString &path,LPCSTR ext,UINT idType,UINT idBrowse); 
+bool	AddFileSize(const char *pszPathName, __int64 &size);
+BOOL	AddFilter(CString &filter, int nIDS);
+BOOL	BrowseFiles(CEdit *pw, CString &path, LPCSTR ext, UINT idType, UINT idBrowse);
 int		CheckAccess(LPCTSTR fname, int mode);
-int 	CheckCoordinatePair(CString &csSrc,bool &bUtm,double *pf0=0,double *pf1=0);
-int		CheckDirectory(CString &path,BOOL bOpen=FALSE);
-BOOL	CheckFlt(const char *buf,double *pf,double fMin,double fMax,int dec,LPCSTR nam="");
-BOOL	CheckZoomLevel(CDataExchange* pDX,UINT id,LPCSTR s);
-BOOL	ClipboardCopy(const CString &strData,UINT cf=CF_TEXT);
-BOOL	ClipboardPaste(CString &strData,UINT maxLen);
-void	CMsgBox(LPCSTR format,...);
-int		CMsgBox(UINT nType,UINT nIDS,...);
-int		CMsgBox(UINT nType,LPCSTR format,...);
-char *  CommaSep(char *outbuf,__int64 num);
+int 	CheckCoordinatePair(CString &csSrc, bool &bUtm, double *pf0 = 0, double *pf1 = 0);
+int		CheckDirectory(CString &path, BOOL bOpen = FALSE);
+BOOL	CheckFlt(const char *buf, double *pf, double fMin, double fMax, int dec, LPCSTR nam = "");
+BOOL	CheckZoomLevel(CDataExchange* pDX, UINT id, LPCSTR s);
+BOOL	ClipboardCopy(const CString &strData, UINT cf = CF_TEXT);
+BOOL	ClipboardPaste(CString &strData, UINT maxLen);
+void	CMsgBox(LPCSTR format, ...);
+int		CMsgBox(UINT nType, UINT nIDS, ...);
+int		CMsgBox(UINT nType, LPCSTR format, ...);
+char *  CommaSep(char *outbuf, __int64 num);
 LPCSTR  DatumStr(INT8 iNad);
-BOOL	DoPromptPathName(CString& pathName,DWORD lFlags,
-			int numFilters,CString &strFilter,BOOL bOpen,UINT ids_Title,LPCSTR defExt);
-BOOL	DirCheck(LPSTR pathname,BOOL bPrompt);
+BOOL	DoPromptPathName(CString& pathName, DWORD lFlags,
+	int numFilters, CString &strFilter, BOOL bOpen, UINT ids_Title, LPCSTR defExt);
+BOOL	DirCheck(LPSTR pathname, BOOL bPrompt);
 bool	ElimSlash(CString &s);
-bool	ForceExtension(CString &path,LPCSTR ext);
-bool	GetConvertedPoint(CFltPoint &fpt,const int iNad,int *piZone,const int iNadSrc,const int iZoneSrc);
+bool	ForceExtension(CString &path, LPCSTR ext);
+bool	GetConvertedPoint(CFltPoint &fpt, const int iNad, int *piZone, const int iNadSrc, const int iZoneSrc);
 void	OpenContainingFolder(LPCSTR path);
 void	OpenFileAsText(LPCSTR file);
-bool	__inline geo_LatLon2UTM(CFltPoint &fp,int *zone,int datum)
+bool	__inline geo_LatLon2UTM(CFltPoint &fp, int *zone, int datum)
 {
-	return geo_LatLon2UTM(fp.y,fp.x,zone,&fp.x,&fp.y,datum);
+	return geo_LatLon2UTM(fp.y, fp.x, zone, &fp.x, &fp.y, datum);
 }
-void	__inline geo_UTM2LatLon(CFltPoint &fp,int zone,int datum)
+void	__inline geo_UTM2LatLon(CFltPoint &fp, int zone, int datum)
 {
-	geo_UTM2LatLon(zone,fp.x,fp.y,&fp.y,&fp.x,datum);
+	geo_UTM2LatLon(zone, fp.x, fp.y, &fp.y, &fp.x, datum);
 }
-bool	GetCoordinate(CString &csSrc,double &fCoord,bool bFirst,bool bUtm);
-char *	GetFloatStr(double f,int dec);
-LPSTR	GetFullFromRelative(LPSTR buf,LPCSTR pPath,LPCSTR pRefPath);
+bool	GetCoordinate(CString &csSrc, double &fCoord, bool bFirst, bool bUtm);
+char *	GetFloatStr(double f, int dec);
+LPSTR	GetFullFromRelative(LPSTR buf, LPCSTR pPath, LPCSTR pRefPath);
 char *  GetIntStr(__int32 i);
-BOOL	GetKmlPath(CString &path,LPCSTR pLabel);
-struct tm *GetLocalFileTime(const char *pszPathName,__int64 *pSize=NULL,BOOL *pbReadOnly=NULL);
-LPCSTR  GetMediaTyp(LPCSTR sPath,BOOL *pbLocal=NULL);
+BOOL	GetKmlPath(CString &path, LPCSTR pLabel);
+struct tm *GetLocalFileTime(const char *pszPathName, __int64 *pSize = NULL, BOOL *pbReadOnly = NULL);
+LPCSTR  GetMediaTyp(LPCSTR sPath, BOOL *pbLocal = NULL);
 int		GetNad(LPCSTR p);
 //WORD	GetOSVersion();
 char *  GetPercentStr(double f);
-LPSTR   GetRelativePath(LPSTR buf,LPCSTR pPath,LPCSTR pRefPath,BOOL bNoNameOnPath);
+LPSTR   GetRelativePath(LPSTR buf, LPCSTR pPath, LPCSTR pRefPath, BOOL bNoNameOnPath);
 LPSTR	GetLocalTimeStr();
-BOOL	GetTempFilePathWithExtension(CString &csPath,LPCSTR pExt);
-void	GetTimestamp(LPSTR pts,const struct tm &gmt);
-char *	GetTimeStr(struct tm *ptm,__int64 *pSize=NULL);
-int		GetZone(const double &lat,const double &lon);
-int		__inline GetZone(const CFltPoint &fp) {return GetZone(fp.y,fp.x);}
-void	AppendFileTime(CString &cs,LPCSTR lpszPathName,UINT uTyp=0);
-BOOL	InitLabelDC(HDC hdc,CLogFont *pFont=NULL,COLORREF clr=0);
+BOOL	GetTempFilePathWithExtension(CString &csPath, LPCSTR pExt);
+void	GetTimestamp(LPSTR pts, const struct tm &gmt);
+char *	GetTimeStr(struct tm *ptm, __int64 *pSize = NULL);
+int		GetZone(const double &lat, const double &lon);
+int		__inline GetZone(const CFltPoint &fp) { return GetZone(fp.y, fp.x); }
+void	AppendFileTime(CString &cs, LPCSTR lpszPathName, UINT uTyp = 0);
+BOOL	InitLabelDC(HDC hdc, CLogFont *pFont = NULL, COLORREF clr = 0);
 bool	IsNumeric(LPCSTR p);
-LPSTR	LabelToValidFileName(LPCSTR pLabel,LPSTR pBuf,int sizBuf);
+LPSTR	LabelToValidFileName(LPCSTR pLabel, LPSTR pBuf, int sizBuf);
 void	LastErrorBox();
 BOOL	MakeFileDirectoryCurrent(LPCSTR pathname);
 #ifdef _USE_MODELESS
 void    ModelessOpen(LPCSTR title, UINT nDelay, LPCSTR format, ...);
 #endif
 int     MsgCheckDlg(HWND hWnd, UINT mb, LPCSTR msg, LPCSTR title, LPCSTR pDoNotAsk);
-void    MsgInfo(HWND hWnd, LPCSTR msg, LPCSTR title, UINT style=0);
+void    MsgInfo(HWND hWnd, LPCSTR msg, LPCSTR title, UINT style = 0);
 bool    MsgOkCancel(HWND hWnd, LPCSTR msg, LPCSTR title);
 int     MsgYesNoCancelDlg(HWND hWnd, LPCSTR msg, LPCSTR title, LPCSTR pYes, LPCSTR pNo, LPCSTR pCancel);
 void	Pause();
-LPCSTR	ReplacePathExt(CString &path,LPCSTR pExt);
-LPCSTR ReplacePathName(CString &path,LPCSTR name);
+LPCSTR	ReplacePathExt(CString &path, LPCSTR pExt);
+LPCSTR ReplacePathName(CString &path, LPCSTR name);
 BOOL    SaveBitmapToFile(CBitmap *bitmap, CDC* pDC, LPCSTR lpFileName);
-BOOL	SearchDirRecursively(LPSTR pRelPathToSearch,LPCSTR pFileName,LPCSTR pSkipDir);
-BOOL	SearchRelativeDir(CString &sRelPathFound,LPCSTR pRelpathSearchd,LPCSTR pRefPath,LPCSTR pFileName);
+BOOL	SearchDirRecursively(LPSTR pRelPathToSearch, LPCSTR pFileName, LPCSTR pSkipDir);
+BOOL	SearchRelativeDir(CString &sRelPathFound, LPCSTR pRelpathSearchd, LPCSTR pRefPath, LPCSTR pFileName);
 BOOL	SetFileToCurrentTime(LPCSTR path);
-void	SetWndTitle(CWnd *dlg,UINT nIDS,...);
-LPSTR   String128(LPCSTR format,...);
-void	ToolTipCustomize(int nInitial,int nAutopop,int nReshow,CToolTipCtrl* pToolTip);
+void	SetWndTitle(CWnd *dlg, UINT nIDS, ...);
+LPSTR   String128(LPCSTR format, ...);
+void	ToolTipCustomize(int nInitial, int nAutopop, int nReshow, CToolTipCtrl* pToolTip);
 BOOL	TrackMouse(HWND hWnd);
 
 #ifdef _DEBUG

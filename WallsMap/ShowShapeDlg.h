@@ -40,7 +40,7 @@ class CShowShapeDlg : public CResizeDlg
 	CEditLabel m_ceEast;
 	CEditLabel m_ceNorth;
 
-	HTREEITEM	m_hSelRoot,m_hSelItem;
+	HTREEITEM	m_hSelRoot, m_hSelItem;
 	CShpLayer	*m_pSelLayer;
 	UINT		m_uSelRec;
 	LPBYTE		m_pEditBuf;
@@ -62,38 +62,38 @@ class CShowShapeDlg : public CResizeDlg
 
 public:
 	static bool m_bLaunchGE_from_Selelected;
-	CShowShapeDlg(CWallsMapDoc *pDoc,CWnd* pParent = NULL);   // standard constructor
+	CShowShapeDlg(CWallsMapDoc *pDoc, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CShowShapeDlg();
-	void Destroy() {GetWindowRect(&m_rectSaved); DestroyWindow();}
+	void Destroy() { GetWindowRect(&m_rectSaved); DestroyWindow(); }
 	void ReturnFocus() { m_PointTree.SetFocus(); }
 
-	CShpLayer * SelectedLayer() {return m_pSelLayer;}
-	UINT GetSelectedFieldValue(CString &s,int nFld);
-	void InvalidateTree() {m_PointTree.Invalidate();}
+	CShpLayer * SelectedLayer() { return m_pSelLayer; }
+	UINT GetSelectedFieldValue(CString &s, int nFld);
+	void InvalidateTree() { m_PointTree.Invalidate(); }
 
 	void ReInit(CWallsMapDoc *pDoc);
 	int  GetRelocateStr(CString &s);
 	void Relocate(CFltPoint &fpt);
-	void AddShape(CFltPoint &fpt,CShpLayer *pLayer);
-	BOOL UpdateMemo(CShpLayer *pShp,EDITED_MEMO &memo);
+	void AddShape(CFltPoint &fpt, CShpLayer *pLayer);
+	BOOL UpdateMemo(CShpLayer *pShp, EDITED_MEMO &memo);
 	BOOL CancelSelChange();
 	UINT GetDbtRec(int nFld);
-	bool IsEmpty() {return m_hSelItem==NULL;}
+	bool IsEmpty() { return m_hSelItem == NULL; }
 	void OpenMemo(UINT nFld);
-	int CopySelected(CShpLayer *pLayer,LPBYTE pSrcFlds,BOOL bConfirm,HTREEITEM *phDropItem=NULL);
+	int CopySelected(CShpLayer *pLayer, LPBYTE pSrcFlds, BOOL bConfirm, HTREEITEM *phDropItem = NULL);
 
 	HTREEITEM IsLayerSelected(CShpLayer *pShp) const;
 	void UpdateLayerTitle(CShpLayer *pShp);
 	void UpdateCoordFormat();
-	
-	bool IsRecOpen(CShpLayer *pShp,DWORD nRec) const
+
+	bool IsRecOpen(CShpLayer *pShp, DWORD nRec) const
 	{
-		return nRec==m_uSelRec && m_pSelLayer->m_pdb==pShp->m_pdb;
+		return nRec == m_uSelRec && m_pSelLayer->m_pdb == pShp->m_pdb;
 	}
 
 	bool IsRecOpen(CShpLayer *pShp) const
 	{
-		return m_uSelRec && m_pSelLayer->m_pdb==pShp->m_pdb;
+		return m_uSelRec && m_pSelLayer->m_pdb == pShp->m_pdb;
 	}
 
 	bool HasEditedRec(CShpLayer *pShp) const
@@ -108,57 +108,57 @@ public:
 
 	afx_msg void OnExportTreeItems(UINT id);
 	void OnDropTreeItem(HTREEITEM hPrev);
-	UINT CopySelectedItem(CShpLayer *pDropLayer,HTREEITEM *phDropItem);
+	UINT CopySelectedItem(CShpLayer *pDropLayer, HTREEITEM *phDropItem);
 
-	bool IsRecHighlighted(CShpLayer *pShp,UINT rec)
+	bool IsRecHighlighted(CShpLayer *pShp, UINT rec)
 	{
-		return rec==m_uSelRec && pShp==m_pSelLayer;
+		return rec == m_uSelRec && pShp == m_pSelLayer;
 	}
 
 	bool IsAddingRec() const
 	{
-		return m_pNewShpRec && m_pNewShpRec->rec==m_uSelRec;
+		return m_pNewShpRec && m_pNewShpRec->rec == m_uSelRec;
 	}
 
 	bool IsSelMovable()
 	{
 		//No kinds of edits can be pending!
-		if(m_bDlgOpened) {
-			return m_bDlgOpened=false;
+		if (m_bDlgOpened) {
+			return m_bDlgOpened = false;
 		}
 		return !m_bEditShp && !IsDBFEdited() && !HasNewLocFlds();
 	}
 
 	bool IsSelDroppable(HTREEITEM hDropItem)
 	{
-		HTREEITEM hDropRoot=m_PointTree.GetParentItem(hDropItem);
-		if(!hDropRoot) hDropRoot=hDropItem;
-		CShpLayer *pDropLayer=(CShpLayer *)m_PointTree.GetItemData(hDropRoot);
-		return pDropLayer==m_pSelLayer || pDropLayer->CanAppendShpLayer(m_pSelLayer);
+		HTREEITEM hDropRoot = m_PointTree.GetParentItem(hDropItem);
+		if (!hDropRoot) hDropRoot = hDropItem;
+		CShpLayer *pDropLayer = (CShpLayer *)m_PointTree.GetItemData(hDropRoot);
+		return pDropLayer == m_pSelLayer || pDropLayer->CanAppendShpLayer(m_pSelLayer);
 	}
 
 	int GetChildCount(HTREEITEM hItem)
 	{
-	   int count=0;
-	   hItem = m_PointTree.GetChildItem(hItem);
-	   while (hItem != NULL)
-	   {
-		  count++;
-		  hItem = m_PointTree.GetNextItem(hItem, TVGN_NEXT);
-	   }
-	   return count;
+		int count = 0;
+		hItem = m_PointTree.GetChildItem(hItem);
+		while (hItem != NULL)
+		{
+			count++;
+			hItem = m_PointTree.GetNextItem(hItem, TVGN_NEXT);
+		}
+		return count;
 	}
 
 	void ClearVecMemo()
 	{
-		for(it_vMemo it=m_vMemo.begin();it!=m_vMemo.end();it++) {
+		for (it_vMemo it = m_vMemo.begin(); it != m_vMemo.end(); it++) {
 			free(it->pData);
 		}
 		m_vMemo.clear();
 	}
 
 	UINT NumSelected() {
-		return m_PointTree.GetCount()-m_uLayerTotal;
+		return m_PointTree.GetCount() - m_uLayerTotal;
 	}
 
 	void ShowNoMatches();
@@ -183,19 +183,19 @@ private:
 	bool IsFieldEmpty(UINT nFld);
 	void NoSearchableMsg();
 	void GE_Export(bool bOptions);
-	bool IsLocationValid() {return m_uSelRec && m_bValidNorth && m_bValidEast && m_bValidZone;}
+	bool IsLocationValid() { return m_uSelRec && m_bValidNorth && m_bValidEast && m_bValidZone; }
 	bool DiscardShpEditsOK();
-	
-	BYTE & SelEditFlag() {return (*m_pSelLayer->m_vdbe)[m_uSelRec-1];}
+
+	BYTE & SelEditFlag() { return (*m_pSelLayer->m_vdbe)[m_uSelRec - 1]; }
 	bool SelDeleted()
 	{
 #ifdef _DEBUG
-		bool bret=(SelEditFlag()&SHP_EDITDEL)!=0;
-		LPBYTE pData=m_pSelLayer->m_pdb->RecPtr(m_uSelRec);
+		bool bret = (SelEditFlag()&SHP_EDITDEL) != 0;
+		LPBYTE pData = m_pSelLayer->m_pdb->RecPtr(m_uSelRec);
 		//ASSERT(bret==(*pData=='*')); //could be a bad shapefile, deleted recs indicated in shp component
 		return bret;
 #else
-		return (SelEditFlag()&SHP_EDITDEL)!=0;
+		return (SelEditFlag()&SHP_EDITDEL) != 0;
 #endif
 	}
 	void GetBranchRecs(VEC_DWORD &vRec);
@@ -205,21 +205,21 @@ private:
 
 	void ClearFields()
 	{
-		m_bInitFlag=true;
+		m_bInitFlag = true;
 		m_FieldList.DeleteAllItems(); //Clears items
-		m_bInitFlag=false;
+		m_bInitFlag = false;
 	}
 
 	void ClearTree()
 	{
-		m_bInitFlag=true;
+		m_bInitFlag = true;
 		m_PointTree.DeleteAllItems(); //Clears items
-		m_bInitFlag=false;
+		m_bInitFlag = false;
 	}
 
 	BOOL DeleteTreeItem(HTREEITEM h0);
 
-	void UpdateFld(int fnum,LPCSTR text);
+	void UpdateFld(int fnum, LPCSTR text);
 	void CancelAddition();
 	void FlagSelection(bool bUndelete);
 
@@ -227,7 +227,7 @@ private:
 	{
 		ASSERT(!m_vec_relocate.size() || !m_uSelRec || (SelEditFlag()&SHP_EDITSHP));
 
-		if(!m_pSelLayer || !m_uSelRec || !IsAddingRec() && !m_vec_relocate.size() && !(SelEditFlag()&SHP_EDITSHP))
+		if (!m_pSelLayer || !m_uSelRec || !IsAddingRec() && !m_vec_relocate.size() && !(SelEditFlag()&SHP_EDITSHP))
 			return false;
 		return m_pSelLayer->HasLocFlds();
 	}
@@ -237,43 +237,43 @@ private:
 	void RefreshEditCoordinates();
 	void RefreshCoordinates(CFltPoint &fpt);
 	void ApplyChangedPoint(const CFltPoint &fpt);
-	bool ConfirmFlyToEdited(CFltPoint &fpt,bool &bCross);
+	bool ConfirmFlyToEdited(CFltPoint &fpt, bool &bCross);
 	void FlyToWeb(bool bOptions);
 
 	LPBYTE GetRecPtr()
 	{
 		ASSERT(m_pEditBuf || m_uSelRec);
-		return m_pEditBuf?m_pEditBuf:(LPBYTE)m_pSelLayer->m_pdb->RecPtr(m_uSelRec);
+		return m_pEditBuf ? m_pEditBuf : (LPBYTE)m_pSelLayer->m_pdb->RecPtr(m_uSelRec);
 	}
 
-	int GetTrimmedFld(UINT nFld,LPSTR pDest,UINT szDest)
+	int GetTrimmedFld(UINT nFld, LPSTR pDest, UINT szDest)
 	{
-		return m_pSelLayer->m_pdb->GetBufferFld(GetRecPtr(),nFld,pDest,szDest);
+		return m_pSelLayer->m_pdb->GetBufferFld(GetRecPtr(), nFld, pDest, szDest);
 	}
 
 	LPBYTE GetFldPtr(UINT nFld)
 	{
-		return GetRecPtr()+m_pSelLayer->m_pdb->FldOffset(nFld);
+		return GetRecPtr() + m_pSelLayer->m_pdb->FldOffset(nFld);
 	}
 
 	void FlushEdits();
 	void RemoveSelection();
 	bool IsDBFEdited();
-	void Hide(UINT id) {GetDlgItem(id)->ShowWindow(SW_HIDE);}
-	void Show(UINT id) {GetDlgItem(id)->ShowWindow(SW_SHOW);}
-	void Show(UINT id,bool bShow) {GetDlgItem(id)->ShowWindow(bShow?SW_SHOW:SW_HIDE);}
+	void Hide(UINT id) { GetDlgItem(id)->ShowWindow(SW_HIDE); }
+	void Show(UINT id) { GetDlgItem(id)->ShowWindow(SW_SHOW); }
+	void Show(UINT id, bool bShow) { GetDlgItem(id)->ShowWindow(bShow ? SW_SHOW : SW_HIDE); }
 	void SetCoordLabels();
 	void ZoomToPoint(double fZoom);
-	void OnEnChangeEditCoord(bool bValid,bool bValidOther);
+	void OnEnChangeEditCoord(bool bValid, bool bValidOther);
 
-	void SetCheck(UINT id,BOOL bChk)
+	void SetCheck(UINT id, BOOL bChk)
 	{
 		((CButton *)GetDlgItem(id))->SetCheck(bChk);
 	}
 
 	bool IsChecked(UINT id)
 	{
-		return ((CButton *)GetDlgItem(id))->GetCheck()==BST_CHECKED;
+		return ((CButton *)GetDlgItem(id))->GetCheck() == BST_CHECKED;
 	}
 
 	UINT GetEditLabel(CString &text)
@@ -282,18 +282,18 @@ private:
 		text.Trim();
 		return text.GetLength();
 	}
-	BOOL IsEnabled(UINT id) {return GetDlgItem(id)->IsWindowEnabled();}
-	void Disable(UINT id) {GetDlgItem(id)->EnableWindow(FALSE);}
-	void Enable(UINT id) {GetDlgItem(id)->EnableWindow(TRUE);}
-	void Enable(UINT id,bool bEnable) {GetDlgItem(id)->EnableWindow(bEnable==true);}
-	void SetFocus(UINT id) {GetDlgItem(id)->SetFocus();}
-	void SetText(UINT id,LPCSTR text) {m_bInitFlag=true;GetDlgItem(id)->SetWindowText(text);m_bInitFlag=false;}
-	void ClearLabel() {m_ceLabel.SetWindowText(""); Disable(IDC_FINDBYLABEL);}
-	void SetLabel(LPCSTR pText) {m_ceLabel.SetWindowText(pText);}
+	BOOL IsEnabled(UINT id) { return GetDlgItem(id)->IsWindowEnabled(); }
+	void Disable(UINT id) { GetDlgItem(id)->EnableWindow(FALSE); }
+	void Enable(UINT id) { GetDlgItem(id)->EnableWindow(TRUE); }
+	void Enable(UINT id, bool bEnable) { GetDlgItem(id)->EnableWindow(bEnable == true); }
+	void SetFocus(UINT id) { GetDlgItem(id)->SetFocus(); }
+	void SetText(UINT id, LPCSTR text) { m_bInitFlag = true; GetDlgItem(id)->SetWindowText(text); m_bInitFlag = false; }
+	void ClearLabel() { m_ceLabel.SetWindowText(""); Disable(IDC_FINDBYLABEL); }
+	void SetLabel(LPCSTR pText) { m_ceLabel.SetWindowText(pText); }
 
 	void EnableNadToggle()
 	{
-		if(!IsEnabled(IDC_DATUM1)) {
+		if (!IsEnabled(IDC_DATUM1)) {
 			Enable(IDC_DATUM1);
 			Enable(IDC_DATUM2);
 			Enable(IDC_TYPEGEO);
@@ -301,26 +301,26 @@ private:
 		}
 	}
 
-	void GetText(UINT id,CString &s)
+	void GetText(UINT id, CString &s)
 	{
 		GetDlgItem(id)->GetWindowText(s);
 	}
-	void GetText(UINT id,LPSTR buf,UINT sizBuf)
+	void GetText(UINT id, LPSTR buf, UINT sizBuf)
 	{
-		GetDlgItem(id)->GetWindowText(buf,sizBuf);
+		GetDlgItem(id)->GetWindowText(buf, sizBuf);
 	}
 
-	void SetRO(UINT id,BOOL bRO)
+	void SetRO(UINT id, BOOL bRO)
 	{
 		((CEdit *)GetDlgItem(id))->SetReadOnly(bRO);
 	}
 	void ClearText(UINT id)
 	{
-		SetText(id,"");
+		SetText(id, "");
 		Disable(id);
 	}
 	void SetCoordFormat();
-	BOOL GetEditedPoint(CFltPoint &fpt,bool bChkRange=false);
+	BOOL GetEditedPoint(CFltPoint &fpt, bool bChkRange = false);
 	LPSTR GetTreeLabel(UINT i);
 	LPSTR GetTreeLabel(HTREEITEM h)
 	{
@@ -331,14 +331,14 @@ private:
 	void UpdateTotal()
 	{
 		CString s;
-		s.Format("%u",NumSelected());
-		SetText(IDC_ST_TOTAL,s);
+		s.Format("%u", NumSelected());
+		SetText(IDC_ST_TOTAL, s);
 	}
 
 	void RefreshRecNo(UINT rec) {
 		CString s;
-		if(rec) s.Format("#%u%s",rec,m_pSelLayer->IsEditable()?"":" Locked");
-		SetText(IDC_RECNO,s);
+		if (rec) s.Format("#%u%s", rec, m_pSelLayer->IsEditable() ? "" : " Locked");
+		SetText(IDC_RECNO, s);
 	}
 
 protected:
@@ -352,7 +352,7 @@ protected:
 	afx_msg void OnDblClkTree(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnLclickTree(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnSelChangingTree(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnCustomDrawTree( NMHDR* pNMHDR, LRESULT* pResult );
+	afx_msg void OnCustomDrawTree(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnSpinUtm(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnTreeDispInfo(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg LRESULT OnEndEditField(WPARAM wParam, LPARAM lParam);
@@ -404,7 +404,7 @@ private:
 	int m_iZoneDoc; //Zone of view (m_Points)
 	INT8 m_iNadSel; //Datum setting of selection (0 if unsupported)
 	INT8 m_iNadDoc; //Datum setting of view (m_points)
-	bool m_bNadToggle,m_bValidEast,m_bValidNorth,m_bValidZone,m_bDroppingItem,m_bUtmDisplayed;
+	bool m_bNadToggle, m_bValidEast, m_bValidNorth, m_bValidZone, m_bDroppingItem, m_bUtmDisplayed;
 
 	afx_msg void OnZoomView();
 	afx_msg void OnBnClickedMarkselected();
@@ -415,7 +415,7 @@ private:
 	afx_msg void OnLaunchGE();
 	afx_msg void OnOptionsGE();
 	//afx_msg void OnUpdateLaunchGe(CCmdUI *pCmdUI);
-	afx_msg LRESULT OnAdvancedSrch(WPARAM,LPARAM);
+	afx_msg LRESULT OnAdvancedSrch(WPARAM, LPARAM);
 	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 };
 

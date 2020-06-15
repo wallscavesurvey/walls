@@ -2,13 +2,13 @@
 ** Copyright 2002 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:     $Archive: /NCS/Source/C/NCSEcw/NCSJP2/NCSJPCSOTMarker.cpp $
@@ -20,11 +20,11 @@
 
 #include "NCSJPCSOTMarker.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+ //////////////////////////////////////////////////////////////////////
+ // Construction/Destruction
+ //////////////////////////////////////////////////////////////////////
 
-// Constructor
+ // Constructor
 CNCSJPCSOTMarker::CNCSJPCSOTMarker()
 {
 	// Initialise the base marker class members
@@ -51,15 +51,15 @@ CNCSError CNCSJPCSOTMarker::Parse(CNCSJPC &JPC, CNCSJPCIOStream &Stream)
 	m_bHaveMarker = true;
 
 	NCSJP2_CHECKIO_BEGIN(Error, Stream);
-		NCSJP2_CHECKIO(ReadUINT16(m_nLength));
-		NCSJP2_CHECKIO(ReadUINT16(m_nIsot));
-		NCSJP2_CHECKIO(ReadUINT32(m_nPsot));
-		NCSJP2_CHECKIO(ReadUINT8(m_nTPsot));
-		NCSJP2_CHECKIO(ReadUINT8(m_nTNsot));
+	NCSJP2_CHECKIO(ReadUINT16(m_nLength));
+	NCSJP2_CHECKIO(ReadUINT16(m_nIsot));
+	NCSJP2_CHECKIO(ReadUINT32(m_nPsot));
+	NCSJP2_CHECKIO(ReadUINT8(m_nTPsot));
+	NCSJP2_CHECKIO(ReadUINT8(m_nTNsot));
 
-		if(Error == NCS_SUCCESS) {
-			m_bValid = true;
-		}
+	if (Error == NCS_SUCCESS) {
+		m_bValid = true;
+	}
 	NCSJP2_CHECKIO_END();
 	return(Error);
 }
@@ -71,11 +71,11 @@ CNCSError CNCSJPCSOTMarker::UnParse(CNCSJPC &JPC, CNCSJPCIOStream &Stream)
 
 	Error = CNCSJPCMarker::UnParse(JPC, Stream);
 	NCSJP2_CHECKIO_BEGIN(Error, Stream);
-		NCSJP2_CHECKIO(WriteUINT16(m_nLength));
-		NCSJP2_CHECKIO(WriteUINT16(m_nIsot));
-		NCSJP2_CHECKIO(WriteUINT32(m_nPsot));
-		NCSJP2_CHECKIO(WriteUINT8(m_nTPsot));
-		NCSJP2_CHECKIO(WriteUINT8(m_nTNsot));
+	NCSJP2_CHECKIO(WriteUINT16(m_nLength));
+	NCSJP2_CHECKIO(WriteUINT16(m_nIsot));
+	NCSJP2_CHECKIO(WriteUINT32(m_nPsot));
+	NCSJP2_CHECKIO(WriteUINT8(m_nTPsot));
+	NCSJP2_CHECKIO(WriteUINT8(m_nTNsot));
 	NCSJP2_CHECKIO_END();
 	return(Error);
 }

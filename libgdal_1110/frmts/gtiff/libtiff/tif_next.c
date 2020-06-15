@@ -4,33 +4,33 @@
  * Copyright (c) 1988-1997 Sam Leffler
  * Copyright (c) 1991-1997 Silicon Graphics, Inc.
  *
- * Permission to use, copy, modify, distribute, and sell this software and 
+ * Permission to use, copy, modify, distribute, and sell this software and
  * its documentation for any purpose is hereby granted without fee, provided
  * that (i) the above copyright notices and this permission notice appear in
  * all copies of the software and related documentation, and (ii) the names of
  * Sam Leffler and Silicon Graphics may not be used in any advertising or
  * publicity relating to the software without the specific, prior written
  * permission of Sam Leffler and Silicon Graphics.
- * 
- * THE SOFTWARE IS PROVIDED "AS-IS" AND WITHOUT WARRANTY OF ANY KIND, 
- * EXPRESS, IMPLIED OR OTHERWISE, INCLUDING WITHOUT LIMITATION, ANY 
- * WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  
- * 
+ *
+ * THE SOFTWARE IS PROVIDED "AS-IS" AND WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS, IMPLIED OR OTHERWISE, INCLUDING WITHOUT LIMITATION, ANY
+ * WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+ *
  * IN NO EVENT SHALL SAM LEFFLER OR SILICON GRAPHICS BE LIABLE FOR
  * ANY SPECIAL, INCIDENTAL, INDIRECT OR CONSEQUENTIAL DAMAGES OF ANY KIND,
  * OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
- * WHETHER OR NOT ADVISED OF THE POSSIBILITY OF DAMAGE, AND ON ANY THEORY OF 
- * LIABILITY, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE 
+ * WHETHER OR NOT ADVISED OF THE POSSIBILITY OF DAMAGE, AND ON ANY THEORY OF
+ * LIABILITY, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
  * OF THIS SOFTWARE.
  */
 
 #include "tiffiop.h"
 #ifdef NEXT_SUPPORT
-/*
- * TIFF Library.
- *
- * NeXT 2-bit Grey Scale Compression Algorithm Support
- */
+ /*
+  * TIFF Library.
+  *
+  * NeXT 2-bit Grey Scale Compression Algorithm Support
+  */
 
 #define SETPIXEL(op, v) {			\
 	switch (npixels++ & 3) {		\
@@ -54,13 +54,13 @@ NeXTDecode(TIFF* tif, uint8* buf, tmsize_t occ, uint16 s)
 	uint8* row;
 	tmsize_t scanline, n;
 
-	(void) s;
+	(void)s;
 	/*
 	 * Each scanline is assumed to start off as all
 	 * white (we assume a PhotometricInterpretation
 	 * of ``min-is-black'').
 	 */
-	for (op = (unsigned char*) buf, cc = occ; cc-- > 0;)
+	for (op = (unsigned char*)buf, cc = occ; cc-- > 0;)
 		*op++ = 0xff;
 
 	bp = (unsigned char *)tif->tif_rawcp;
@@ -92,11 +92,11 @@ NeXTDecode(TIFF* tif, uint8* buf, tmsize_t occ, uint16 s)
 			 */
 			off = (bp[0] * 256) + bp[1];
 			n = (bp[2] * 256) + bp[3];
-			if (cc < 4+n || off+n > scanline)
+			if (cc < 4 + n || off + n > scanline)
 				goto bad;
-			_TIFFmemcpy(row+off, bp+4, n);
-			bp += 4+n;
-			cc -= 4+n;
+			_TIFFmemcpy(row + off, bp + 4, n);
+			bp += 4 + n;
+			cc -= 4 + n;
 			break;
 		}
 		default: {
@@ -111,7 +111,7 @@ NeXTDecode(TIFF* tif, uint8* buf, tmsize_t occ, uint16 s)
 			 */
 			op = row;
 			for (;;) {
-				grey = (uint32)((n>>6) & 0x3);
+				grey = (uint32)((n >> 6) & 0x3);
 				n &= 0x3f;
 				/*
 				 * Ensure the run does not exceed the scanline
@@ -130,21 +130,21 @@ NeXTDecode(TIFF* tif, uint8* buf, tmsize_t occ, uint16 s)
 		}
 		}
 	}
-	tif->tif_rawcp = (uint8*) bp;
+	tif->tif_rawcp = (uint8*)bp;
 	tif->tif_rawcc = cc;
 	return (1);
 bad:
 	TIFFErrorExt(tif->tif_clientdata, module, "Not enough data for scanline %ld",
-	    (long) tif->tif_row);
+		(long)tif->tif_row);
 	return (0);
 }
 
 int
 TIFFInitNeXT(TIFF* tif, int scheme)
 {
-	(void) scheme;
-	tif->tif_decoderow = NeXTDecode;  
-	tif->tif_decodestrip = NeXTDecode;  
+	(void)scheme;
+	tif->tif_decoderow = NeXTDecode;
+	tif->tif_decodestrip = NeXTDecode;
 	tif->tif_decodetile = NeXTDecode;
 	return (1);
 }

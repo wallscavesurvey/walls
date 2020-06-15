@@ -14,7 +14,7 @@ class CMapDlg : public CDialog
 	DECLARE_DYNAMIC(CMapDlg)
 
 public:
-	CMapDlg(BOOL bPrinter,CWnd* pParent = NULL);	// standard constructor
+	CMapDlg(BOOL bPrinter, CWnd* pParent = NULL);	// standard constructor
 	~CMapDlg();
 	enum { IDD = IDD_MAPFORMAT };
 
@@ -45,36 +45,36 @@ protected:
 	BOOL m_bSwapping;
 	BOOL m_bExport;
 	BOOL m_bFlagChange;
-	BOOL m_bMapsActive,m_bLineChg,m_bLabelChg,m_bApplyActive;
+	BOOL m_bMapsActive, m_bLineChg, m_bLabelChg, m_bApplyActive;
 
 	CFont m_boldFont;
-	
+
 	UINT CheckData();
 	void CMapDlg::InitData();
 	void RefreshFrameSize();
 	void InitControls();
 	void SetSolidText();
-	void Enable(int id,BOOL bEnable)
+	void Enable(int id, BOOL bEnable)
 	{
-	   GetDlgItem(id)->EnableWindow(bEnable);
+		GetDlgItem(id)->EnableWindow(bEnable);
 	}
-    void SetText(UINT id,const char *text)
-    {
-    	GetDlgItem(id)->SetWindowText(text);
-    }
-    void SetCheck(int id,BOOL bChecked)
-    {
-       ((CButton *)GetDlgItem(id))->SetCheck(bChecked);
-    }
-    BOOL GetCheck(int id)
-    {
-       return ((CButton *)GetDlgItem(id))->GetCheck();
-    }
-    	
+	void SetText(UINT id, const char *text)
+	{
+		GetDlgItem(id)->SetWindowText(text);
+	}
+	void SetCheck(int id, BOOL bChecked)
+	{
+		((CButton *)GetDlgItem(id))->SetCheck(bChecked);
+	}
+	BOOL GetCheck(int id)
+	{
+		return ((CButton *)GetDlgItem(id))->GetCheck();
+	}
+
 	virtual BOOL OnInitDialog();
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 	afx_msg void OnFrameFont();
 	afx_msg void OnLabelFont();
 	afx_msg void OnNoteFont();

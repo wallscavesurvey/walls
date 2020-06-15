@@ -27,33 +27,33 @@
 #include <stdio.h>
 #include "pixman-private.h"
 
-/*
- * Compute the smallest value greater than or equal to y which is on a
- * grid row.
- */
+ /*
+  * Compute the smallest value greater than or equal to y which is on a
+  * grid row.
+  */
 
 PIXMAN_EXPORT pixman_fixed_t
-pixman_sample_ceil_y (pixman_fixed_t y, int n)
+pixman_sample_ceil_y(pixman_fixed_t y, int n)
 {
-    pixman_fixed_t f = pixman_fixed_frac (y);
-    pixman_fixed_t i = pixman_fixed_floor (y);
+	pixman_fixed_t f = pixman_fixed_frac(y);
+	pixman_fixed_t i = pixman_fixed_floor(y);
 
-    f = DIV (f - Y_FRAC_FIRST (n) + (STEP_Y_SMALL (n) - pixman_fixed_e), STEP_Y_SMALL (n)) * STEP_Y_SMALL (n) +
-	Y_FRAC_FIRST (n);
-    
-    if (f > Y_FRAC_LAST (n))
-    {
-	if (pixman_fixed_to_int (i) == 0x7fff)
+	f = DIV(f - Y_FRAC_FIRST(n) + (STEP_Y_SMALL(n) - pixman_fixed_e), STEP_Y_SMALL(n)) * STEP_Y_SMALL(n) +
+		Y_FRAC_FIRST(n);
+
+	if (f > Y_FRAC_LAST(n))
 	{
-	    f = 0xffff; /* saturate */
+		if (pixman_fixed_to_int(i) == 0x7fff)
+		{
+			f = 0xffff; /* saturate */
+		}
+		else
+		{
+			f = Y_FRAC_FIRST(n);
+			i += pixman_fixed_1;
+		}
 	}
-	else
-	{
-	    f = Y_FRAC_FIRST (n);
-	    i += pixman_fixed_1;
-	}
-    }
-    return (i | f);
+	return (i | f);
 }
 
 /*
@@ -61,61 +61,61 @@ pixman_sample_ceil_y (pixman_fixed_t y, int n)
  * grid row.
  */
 PIXMAN_EXPORT pixman_fixed_t
-pixman_sample_floor_y (pixman_fixed_t y,
-                       int            n)
+pixman_sample_floor_y(pixman_fixed_t y,
+	int            n)
 {
-    pixman_fixed_t f = pixman_fixed_frac (y);
-    pixman_fixed_t i = pixman_fixed_floor (y);
+	pixman_fixed_t f = pixman_fixed_frac(y);
+	pixman_fixed_t i = pixman_fixed_floor(y);
 
-    f = DIV (f - pixman_fixed_e - Y_FRAC_FIRST (n), STEP_Y_SMALL (n)) * STEP_Y_SMALL (n) +
-	Y_FRAC_FIRST (n);
+	f = DIV(f - pixman_fixed_e - Y_FRAC_FIRST(n), STEP_Y_SMALL(n)) * STEP_Y_SMALL(n) +
+		Y_FRAC_FIRST(n);
 
-    if (f < Y_FRAC_FIRST (n))
-    {
-	if (pixman_fixed_to_int (i) == 0x8000)
+	if (f < Y_FRAC_FIRST(n))
 	{
-	    f = 0; /* saturate */
+		if (pixman_fixed_to_int(i) == 0x8000)
+		{
+			f = 0; /* saturate */
+		}
+		else
+		{
+			f = Y_FRAC_LAST(n);
+			i -= pixman_fixed_1;
+		}
 	}
-	else
-	{
-	    f = Y_FRAC_LAST (n);
-	    i -= pixman_fixed_1;
-	}
-    }
-    return (i | f);
+	return (i | f);
 }
 
 /*
  * Step an edge by any amount (including negative values)
  */
 PIXMAN_EXPORT void
-pixman_edge_step (pixman_edge_t *e,
-                  int            n)
+pixman_edge_step(pixman_edge_t *e,
+	int            n)
 {
-    pixman_fixed_48_16_t ne;
+	pixman_fixed_48_16_t ne;
 
-    e->x += n * e->stepx;
+	e->x += n * e->stepx;
 
-    ne = e->e + n * (pixman_fixed_48_16_t) e->dx;
+	ne = e->e + n * (pixman_fixed_48_16_t)e->dx;
 
-    if (n >= 0)
-    {
-	if (ne > 0)
+	if (n >= 0)
 	{
-	    int nx = (ne + e->dy - 1) / e->dy;
-	    e->e = ne - nx * (pixman_fixed_48_16_t) e->dy;
-	    e->x += nx * e->signdx;
+		if (ne > 0)
+		{
+			int nx = (ne + e->dy - 1) / e->dy;
+			e->e = ne - nx * (pixman_fixed_48_16_t)e->dy;
+			e->x += nx * e->signdx;
+		}
 	}
-    }
-    else
-    {
-	if (ne <= -e->dy)
+	else
 	{
-	    int nx = (-ne) / e->dy;
-	    e->e = ne + nx * (pixman_fixed_48_16_t) e->dy;
-	    e->x -= nx * e->signdx;
+		if (ne <= -e->dy)
+		{
+			int nx = (-ne) / e->dy;
+			e->e = ne + nx * (pixman_fixed_48_16_t)e->dy;
+			e->x -= nx * e->signdx;
+		}
 	}
-    }
 }
 
 /*
@@ -123,26 +123,26 @@ pixman_edge_step (pixman_edge_t *e,
  * elements of an edge structure
  */
 static void
-_pixman_edge_multi_init (pixman_edge_t * e,
-                         int             n,
-                         pixman_fixed_t *stepx_p,
-                         pixman_fixed_t *dx_p)
+_pixman_edge_multi_init(pixman_edge_t * e,
+	int             n,
+	pixman_fixed_t *stepx_p,
+	pixman_fixed_t *dx_p)
 {
-    pixman_fixed_t stepx;
-    pixman_fixed_48_16_t ne;
+	pixman_fixed_t stepx;
+	pixman_fixed_48_16_t ne;
 
-    ne = n * (pixman_fixed_48_16_t) e->dx;
-    stepx = n * e->stepx;
+	ne = n * (pixman_fixed_48_16_t)e->dx;
+	stepx = n * e->stepx;
 
-    if (ne > 0)
-    {
-	int nx = ne / e->dy;
-	ne -= nx * e->dy;
-	stepx += nx * e->signdx;
-    }
+	if (ne > 0)
+	{
+		int nx = ne / e->dy;
+		ne -= nx * e->dy;
+		stepx += nx * e->signdx;
+	}
 
-    *dx_p = ne;
-    *stepx_p = stepx;
+	*dx_p = ne;
+	*stepx_p = stepx;
 }
 
 /*
@@ -150,47 +150,47 @@ _pixman_edge_multi_init (pixman_edge_t * e,
  * starting y value
  */
 PIXMAN_EXPORT void
-pixman_edge_init (pixman_edge_t *e,
-                  int            n,
-                  pixman_fixed_t y_start,
-                  pixman_fixed_t x_top,
-                  pixman_fixed_t y_top,
-                  pixman_fixed_t x_bot,
-                  pixman_fixed_t y_bot)
+pixman_edge_init(pixman_edge_t *e,
+	int            n,
+	pixman_fixed_t y_start,
+	pixman_fixed_t x_top,
+	pixman_fixed_t y_top,
+	pixman_fixed_t x_bot,
+	pixman_fixed_t y_bot)
 {
-    pixman_fixed_t dx, dy;
+	pixman_fixed_t dx, dy;
 
-    e->x = x_top;
-    e->e = 0;
-    dx = x_bot - x_top;
-    dy = y_bot - y_top;
-    e->dy = dy;
-    e->dx = 0;
+	e->x = x_top;
+	e->e = 0;
+	dx = x_bot - x_top;
+	dy = y_bot - y_top;
+	e->dy = dy;
+	e->dx = 0;
 
-    if (dy)
-    {
-	if (dx >= 0)
+	if (dy)
 	{
-	    e->signdx = 1;
-	    e->stepx = dx / dy;
-	    e->dx = dx % dy;
-	    e->e = -dy;
-	}
-	else
-	{
-	    e->signdx = -1;
-	    e->stepx = -(-dx / dy);
-	    e->dx = -dx % dy;
-	    e->e = 0;
-	}
+		if (dx >= 0)
+		{
+			e->signdx = 1;
+			e->stepx = dx / dy;
+			e->dx = dx % dy;
+			e->e = -dy;
+		}
+		else
+		{
+			e->signdx = -1;
+			e->stepx = -(-dx / dy);
+			e->dx = -dx % dy;
+			e->e = 0;
+		}
 
-	_pixman_edge_multi_init (e, STEP_Y_SMALL (n),
-				 &e->stepx_small, &e->dx_small);
+		_pixman_edge_multi_init(e, STEP_Y_SMALL(n),
+			&e->stepx_small, &e->dx_small);
 
-	_pixman_edge_multi_init (e, STEP_Y_BIG (n),
-				 &e->stepx_big, &e->dx_big);
-    }
-    pixman_edge_step (e, y_start - y_top);
+		_pixman_edge_multi_init(e, STEP_Y_BIG(n),
+			&e->stepx_big, &e->dx_big);
+	}
+	pixman_edge_step(e, y_start - y_top);
 }
 
 /*
@@ -198,195 +198,195 @@ pixman_edge_init (pixman_edge_t *e,
  * and a pixel offset for the line
  */
 PIXMAN_EXPORT void
-pixman_line_fixed_edge_init (pixman_edge_t *            e,
-                             int                        n,
-                             pixman_fixed_t             y,
-                             const pixman_line_fixed_t *line,
-                             int                        x_off,
-                             int                        y_off)
+pixman_line_fixed_edge_init(pixman_edge_t *            e,
+	int                        n,
+	pixman_fixed_t             y,
+	const pixman_line_fixed_t *line,
+	int                        x_off,
+	int                        y_off)
 {
-    pixman_fixed_t x_off_fixed = pixman_int_to_fixed (x_off);
-    pixman_fixed_t y_off_fixed = pixman_int_to_fixed (y_off);
-    const pixman_point_fixed_t *top, *bot;
+	pixman_fixed_t x_off_fixed = pixman_int_to_fixed(x_off);
+	pixman_fixed_t y_off_fixed = pixman_int_to_fixed(y_off);
+	const pixman_point_fixed_t *top, *bot;
 
-    if (line->p1.y <= line->p2.y)
-    {
-	top = &line->p1;
-	bot = &line->p2;
-    }
-    else
-    {
-	top = &line->p2;
-	bot = &line->p1;
-    }
-    
-    pixman_edge_init (e, n, y,
-                      top->x + x_off_fixed,
-                      top->y + y_off_fixed,
-                      bot->x + x_off_fixed,
-                      bot->y + y_off_fixed);
+	if (line->p1.y <= line->p2.y)
+	{
+		top = &line->p1;
+		bot = &line->p2;
+	}
+	else
+	{
+		top = &line->p2;
+		bot = &line->p1;
+	}
+
+	pixman_edge_init(e, n, y,
+		top->x + x_off_fixed,
+		top->y + y_off_fixed,
+		bot->x + x_off_fixed,
+		bot->y + y_off_fixed);
 }
 
 PIXMAN_EXPORT void
-pixman_add_traps (pixman_image_t * image,
-                  int16_t          x_off,
-                  int16_t          y_off,
-                  int              ntrap,
-                  pixman_trap_t *  traps)
+pixman_add_traps(pixman_image_t * image,
+	int16_t          x_off,
+	int16_t          y_off,
+	int              ntrap,
+	pixman_trap_t *  traps)
 {
-    int bpp;
-    int width;
-    int height;
+	int bpp;
+	int width;
+	int height;
 
-    pixman_fixed_t x_off_fixed;
-    pixman_fixed_t y_off_fixed;
-    pixman_edge_t l, r;
-    pixman_fixed_t t, b;
+	pixman_fixed_t x_off_fixed;
+	pixman_fixed_t y_off_fixed;
+	pixman_edge_t l, r;
+	pixman_fixed_t t, b;
 
-    _pixman_image_validate (image);
-    
-    width = image->bits.width;
-    height = image->bits.height;
-    bpp = PIXMAN_FORMAT_BPP (image->bits.format);
+	_pixman_image_validate(image);
 
-    x_off_fixed = pixman_int_to_fixed (x_off);
-    y_off_fixed = pixman_int_to_fixed (y_off);
+	width = image->bits.width;
+	height = image->bits.height;
+	bpp = PIXMAN_FORMAT_BPP(image->bits.format);
 
-    while (ntrap--)
-    {
-	t = traps->top.y + y_off_fixed;
-	if (t < 0)
-	    t = 0;
-	t = pixman_sample_ceil_y (t, bpp);
+	x_off_fixed = pixman_int_to_fixed(x_off);
+	y_off_fixed = pixman_int_to_fixed(y_off);
 
-	b = traps->bot.y + y_off_fixed;
-	if (pixman_fixed_to_int (b) >= height)
-	    b = pixman_int_to_fixed (height) - 1;
-	b = pixman_sample_floor_y (b, bpp);
-
-	if (b >= t)
+	while (ntrap--)
 	{
-	    /* initialize edge walkers */
-	    pixman_edge_init (&l, bpp, t,
-	                      traps->top.l + x_off_fixed,
-	                      traps->top.y + y_off_fixed,
-	                      traps->bot.l + x_off_fixed,
-	                      traps->bot.y + y_off_fixed);
+		t = traps->top.y + y_off_fixed;
+		if (t < 0)
+			t = 0;
+		t = pixman_sample_ceil_y(t, bpp);
 
-	    pixman_edge_init (&r, bpp, t,
-	                      traps->top.r + x_off_fixed,
-	                      traps->top.y + y_off_fixed,
-	                      traps->bot.r + x_off_fixed,
-	                      traps->bot.y + y_off_fixed);
+		b = traps->bot.y + y_off_fixed;
+		if (pixman_fixed_to_int(b) >= height)
+			b = pixman_int_to_fixed(height) - 1;
+		b = pixman_sample_floor_y(b, bpp);
 
-	    pixman_rasterize_edges (image, &l, &r, t, b);
+		if (b >= t)
+		{
+			/* initialize edge walkers */
+			pixman_edge_init(&l, bpp, t,
+				traps->top.l + x_off_fixed,
+				traps->top.y + y_off_fixed,
+				traps->bot.l + x_off_fixed,
+				traps->bot.y + y_off_fixed);
+
+			pixman_edge_init(&r, bpp, t,
+				traps->top.r + x_off_fixed,
+				traps->top.y + y_off_fixed,
+				traps->bot.r + x_off_fixed,
+				traps->bot.y + y_off_fixed);
+
+			pixman_rasterize_edges(image, &l, &r, t, b);
+		}
+
+		traps++;
 	}
-
-	traps++;
-    }
 }
 
 #if 0
 static void
-dump_image (pixman_image_t *image,
-            const char *    title)
+dump_image(pixman_image_t *image,
+	const char *    title)
 {
-    int i, j;
+	int i, j;
 
-    if (!image->type == BITS)
-	printf ("%s is not a regular image\n", title);
+	if (!image->type == BITS)
+		printf("%s is not a regular image\n", title);
 
-    if (!image->bits.format == PIXMAN_a8)
-	printf ("%s is not an alpha mask\n", title);
+	if (!image->bits.format == PIXMAN_a8)
+		printf("%s is not an alpha mask\n", title);
 
-    printf ("\n\n\n%s: \n", title);
+	printf("\n\n\n%s: \n", title);
 
-    for (i = 0; i < image->bits.height; ++i)
-    {
-	uint8_t *line =
-	    (uint8_t *)&(image->bits.bits[i * image->bits.rowstride]);
+	for (i = 0; i < image->bits.height; ++i)
+	{
+		uint8_t *line =
+			(uint8_t *)&(image->bits.bits[i * image->bits.rowstride]);
 
-	for (j = 0; j < image->bits.width; ++j)
-	    printf ("%c", line[j] ? '#' : ' ');
+		for (j = 0; j < image->bits.width; ++j)
+			printf("%c", line[j] ? '#' : ' ');
 
-	printf ("\n");
-    }
+		printf("\n");
+	}
 }
 #endif
 
 PIXMAN_EXPORT void
-pixman_add_trapezoids (pixman_image_t *          image,
-                       int16_t                   x_off,
-                       int                       y_off,
-                       int                       ntraps,
-                       const pixman_trapezoid_t *traps)
+pixman_add_trapezoids(pixman_image_t *          image,
+	int16_t                   x_off,
+	int                       y_off,
+	int                       ntraps,
+	const pixman_trapezoid_t *traps)
 {
-    int i;
+	int i;
 
 #if 0
-    dump_image (image, "before");
+	dump_image(image, "before");
 #endif
 
-    for (i = 0; i < ntraps; ++i)
-    {
-	const pixman_trapezoid_t *trap = &(traps[i]);
+	for (i = 0; i < ntraps; ++i)
+	{
+		const pixman_trapezoid_t *trap = &(traps[i]);
 
-	if (!pixman_trapezoid_valid (trap))
-	    continue;
+		if (!pixman_trapezoid_valid(trap))
+			continue;
 
-	pixman_rasterize_trapezoid (image, trap, x_off, y_off);
-    }
+		pixman_rasterize_trapezoid(image, trap, x_off, y_off);
+	}
 
 #if 0
-    dump_image (image, "after");
+	dump_image(image, "after");
 #endif
 }
 
 PIXMAN_EXPORT void
-pixman_rasterize_trapezoid (pixman_image_t *          image,
-                            const pixman_trapezoid_t *trap,
-                            int                       x_off,
-                            int                       y_off)
+pixman_rasterize_trapezoid(pixman_image_t *          image,
+	const pixman_trapezoid_t *trap,
+	int                       x_off,
+	int                       y_off)
 {
-    int bpp;
-    int width;
-    int height;
+	int bpp;
+	int width;
+	int height;
 
-    pixman_fixed_t x_off_fixed;
-    pixman_fixed_t y_off_fixed;
-    pixman_edge_t l, r;
-    pixman_fixed_t t, b;
+	pixman_fixed_t x_off_fixed;
+	pixman_fixed_t y_off_fixed;
+	pixman_edge_t l, r;
+	pixman_fixed_t t, b;
 
-    return_if_fail (image->type == BITS);
+	return_if_fail(image->type == BITS);
 
-    _pixman_image_validate (image);
-    
-    if (!pixman_trapezoid_valid (trap))
-	return;
+	_pixman_image_validate(image);
 
-    width = image->bits.width;
-    height = image->bits.height;
-    bpp = PIXMAN_FORMAT_BPP (image->bits.format);
+	if (!pixman_trapezoid_valid(trap))
+		return;
 
-    x_off_fixed = pixman_int_to_fixed (x_off);
-    y_off_fixed = pixman_int_to_fixed (y_off);
+	width = image->bits.width;
+	height = image->bits.height;
+	bpp = PIXMAN_FORMAT_BPP(image->bits.format);
 
-    t = trap->top + y_off_fixed;
-    if (t < 0)
-	t = 0;
-    t = pixman_sample_ceil_y (t, bpp);
+	x_off_fixed = pixman_int_to_fixed(x_off);
+	y_off_fixed = pixman_int_to_fixed(y_off);
 
-    b = trap->bottom + y_off_fixed;
-    if (pixman_fixed_to_int (b) >= height)
-	b = pixman_int_to_fixed (height) - 1;
-    b = pixman_sample_floor_y (b, bpp);
-    
-    if (b >= t)
-    {
-	/* initialize edge walkers */
-	pixman_line_fixed_edge_init (&l, bpp, t, &trap->left, x_off, y_off);
-	pixman_line_fixed_edge_init (&r, bpp, t, &trap->right, x_off, y_off);
+	t = trap->top + y_off_fixed;
+	if (t < 0)
+		t = 0;
+	t = pixman_sample_ceil_y(t, bpp);
 
-	pixman_rasterize_edges (image, &l, &r, t, b);
-    }
+	b = trap->bottom + y_off_fixed;
+	if (pixman_fixed_to_int(b) >= height)
+		b = pixman_int_to_fixed(height) - 1;
+	b = pixman_sample_floor_y(b, bpp);
+
+	if (b >= t)
+	{
+		/* initialize edge walkers */
+		pixman_line_fixed_edge_init(&l, bpp, t, &trap->left, x_off, y_off);
+		pixman_line_fixed_edge_init(&r, bpp, t, &trap->right, x_off, y_off);
+
+		pixman_rasterize_edges(image, &l, &r, t, b);
+	}
 }

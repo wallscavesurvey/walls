@@ -18,14 +18,14 @@ public:
 	CSymDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CSymDlg();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_SYMBOLOGY };
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	afx_msg LRESULT OnChgColor(WPARAM,LPARAM);
-	afx_msg void OnSymSize(NMHDR* pNMHDR, LRESULT* pResult); 
-	afx_msg void OnOutSize(NMHDR* pNMHDR, LRESULT* pResult); 
+	afx_msg LRESULT OnChgColor(WPARAM, LPARAM);
+	afx_msg void OnSymSize(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnOutSize(NMHDR* pNMHDR, LRESULT* pResult);
 
 	DECLARE_MESSAGE_MAP()
 

@@ -2,5 +2,5 @@
 
 UINT TRXAPI trx_UserTreeFlags(TRX_NO trx)
 {
-  return _GETTRXU?_TRXU->UsrFlags:0;
+	return _GETTRXU ? _TRXU->UsrFlags : 0;
 }

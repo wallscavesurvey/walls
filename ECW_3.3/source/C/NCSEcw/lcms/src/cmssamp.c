@@ -30,11 +30,11 @@
 
 WORD _cmsQuantizeVal(double i, int MaxSamples)
 {
-       double x;
+	double x;
 
-       x = ((double) i * 65535.) / (double) (MaxSamples - 1);
+	x = ((double)i * 65535.) / (double)(MaxSamples - 1);
 
-       return (WORD) floor(x + .5);
+	return (WORD)floor(x + .5);
 }
 
 
@@ -42,17 +42,17 @@ WORD _cmsQuantizeVal(double i, int MaxSamples)
 
 int cmsIsLinear(WORD Table[], int nEntries)
 {
-       register int i;
-       int diff;
+	register int i;
+	int diff;
 
-       for (i=0; i < nEntries; i++) {
+	for (i = 0; i < nEntries; i++) {
 
-           diff = abs((int) Table[i] - (int) _cmsQuantizeVal(i, nEntries));              
-           if (diff > 3)
-                     return 0;
-       }
+		diff = abs((int)Table[i] - (int)_cmsQuantizeVal(i, nEntries));
+		if (diff > 3)
+			return 0;
+	}
 
-       return 1;
+	return 1;
 }
 
 
@@ -62,12 +62,12 @@ int cmsIsLinear(WORD Table[], int nEntries)
 static
 int ipow(int base, int exp)
 {
-        int res = base;
+	int res = base;
 
-        while (--exp)
-               res *= base;
+	while (--exp)
+		res *= base;
 
-        return res;
+	return res;
 }
 
 
@@ -76,12 +76,12 @@ int ipow(int base, int exp)
 static
 int ComponentOf(int n, int clut, int nColorant)
 {
-        if (nColorant <= 0)
-                return (n % clut);
+	if (nColorant <= 0)
+		return (n % clut);
 
-        n /= ipow(clut, nColorant);
+	n /= ipow(clut, nColorant);
 
-        return (n % clut);
+	return (n % clut);
 }
 
 
@@ -91,61 +91,61 @@ int ComponentOf(int n, int clut, int nColorant)
 
 BOOL LCMSEXPORT cmsSample3DGrid(LPLUT Lut, _cmsSAMPLER Sampler, LPVOID Cargo, DWORD dwFlags)
 {
-   int i, t, nTotalPoints, Colorant, index;
-   WORD In[MAXCHANNELS], Out[MAXCHANNELS];
+	int i, t, nTotalPoints, Colorant, index;
+	WORD In[MAXCHANNELS], Out[MAXCHANNELS];
 
-   nTotalPoints = ipow(Lut->cLutPoints, Lut -> InputChan);
+	nTotalPoints = ipow(Lut->cLutPoints, Lut->InputChan);
 
-   index = 0;
-   for (i = 0; i < nTotalPoints; i++) {
+	index = 0;
+	for (i = 0; i < nTotalPoints; i++) {
 
-        for (t=0; t < (int) Lut -> InputChan; t++) {
+		for (t = 0; t < (int)Lut->InputChan; t++) {
 
-                Colorant =  ComponentOf(i, Lut -> cLutPoints, (Lut -> InputChan - t  - 1 ));
-                In[t]    = _cmsQuantizeVal(Colorant, Lut -> cLutPoints);
-        }
-
-
-        if (dwFlags & SAMPLER_HASTL1) {
-
-                 for (t=0; t < (int) Lut -> InputChan; t++)
-                     In[t] = cmsReverseLinearInterpLUT16(In[t],
-                                                Lut -> L1[t],
-                                                &Lut -> In16params);
-        }
+			Colorant = ComponentOf(i, Lut->cLutPoints, (Lut->InputChan - t - 1));
+			In[t] = _cmsQuantizeVal(Colorant, Lut->cLutPoints);
+		}
 
 
-        // if (dwFlags & SAMPLER_INSPECT) {
+		if (dwFlags & SAMPLER_HASTL1) {
 
-             for (t=0; t < (int) Lut -> OutputChan; t++)
-                        Out[t] = Lut->T[index + t];
-        // }
+			for (t = 0; t < (int)Lut->InputChan; t++)
+				In[t] = cmsReverseLinearInterpLUT16(In[t],
+					Lut->L1[t],
+					&Lut->In16params);
+		}
 
 
-        if (!Sampler(In, Out, Cargo))
-                return FALSE;
+		// if (dwFlags & SAMPLER_INSPECT) {
 
-        if (!(dwFlags & SAMPLER_INSPECT)) {
-            
-            if (dwFlags & SAMPLER_HASTL2) {
+		for (t = 0; t < (int)Lut->OutputChan; t++)
+			Out[t] = Lut->T[index + t];
+		// }
 
-                for (t=0; t < (int) Lut -> OutputChan; t++)
-                     Out[t] = cmsReverseLinearInterpLUT16(Out[t],
-                                                   Lut -> L2[t],
-                                                   &Lut -> Out16params);
-                }
 
-        
-            for (t=0; t < (int) Lut -> OutputChan; t++)
-                        Lut->T[index + t] = Out[t];
+		if (!Sampler(In, Out, Cargo))
+			return FALSE;
 
-        }
+		if (!(dwFlags & SAMPLER_INSPECT)) {
 
-        index += Lut -> OutputChan;
+			if (dwFlags & SAMPLER_HASTL2) {
 
-    }
+				for (t = 0; t < (int)Lut->OutputChan; t++)
+					Out[t] = cmsReverseLinearInterpLUT16(Out[t],
+						Lut->L2[t],
+						&Lut->Out16params);
+			}
 
-    return TRUE;
+
+			for (t = 0; t < (int)Lut->OutputChan; t++)
+				Lut->T[index + t] = Out[t];
+
+		}
+
+		index += Lut->OutputChan;
+
+	}
+
+	return TRUE;
 }
 
 
@@ -156,53 +156,53 @@ BOOL LCMSEXPORT cmsSample3DGrid(LPLUT Lut, _cmsSAMPLER Sampler, LPVOID Cargo, DW
 // choose reasonable resolution
 int _cmsReasonableGridpointsByColorspace(icColorSpaceSignature Colorspace, DWORD dwFlags)
 {
-    int nChannels;
+	int nChannels;
 
-    // Already specified?
-    if (dwFlags & 0x00FF0000) {
-            // Yes, grab'em
-            return (dwFlags >> 16) & 0xFF;
-    }
+	// Already specified?
+	if (dwFlags & 0x00FF0000) {
+		// Yes, grab'em
+		return (dwFlags >> 16) & 0xFF;
+	}
 
-    nChannels = _cmsChannelsOf(Colorspace);
+	nChannels = _cmsChannelsOf(Colorspace);
 
-    // HighResPrecalc is maximum resolution
+	// HighResPrecalc is maximum resolution
 
-    if (dwFlags & cmsFLAGS_HIGHRESPRECALC) {
+	if (dwFlags & cmsFLAGS_HIGHRESPRECALC) {
 
-        if (nChannels > 4) 
-                return 7;       // 7 for Hifi
+		if (nChannels > 4)
+			return 7;       // 7 for Hifi
 
-        if (nChannels == 4)     // 23 for CMYK
-                return 23;
-    
-        return 49;      // 49 for RGB and others        
-    }
+		if (nChannels == 4)     // 23 for CMYK
+			return 23;
+
+		return 49;      // 49 for RGB and others        
+	}
 
 
-    // LowResPrecal is stripped resolution
+	// LowResPrecal is stripped resolution
 
-    if (dwFlags & cmsFLAGS_LOWRESPRECALC) {
-        
-        if (nChannels > 4) 
-                return 6;       // 6 for Hifi
+	if (dwFlags & cmsFLAGS_LOWRESPRECALC) {
 
-        if (nChannels == 1) 
-                return 33;      // For monochrome
+		if (nChannels > 4)
+			return 6;       // 6 for Hifi
 
-        return 17;              // 17 for remaining
-    }
+		if (nChannels == 1)
+			return 33;      // For monochrome
 
-    // Default values
+		return 17;              // 17 for remaining
+	}
 
-    if (nChannels > 4) 
-                return 7;       // 7 for Hifi
+	// Default values
 
-    if (nChannels == 4)
-                return 17;      // 17 for CMYK
+	if (nChannels > 4)
+		return 7;       // 7 for Hifi
 
-    return 33;                  // 33 for RGB
-    
+	if (nChannels == 4)
+		return 17;      // 17 for CMYK
+
+	return 33;                  // 33 for RGB
+
 }
 
 // Sampler implemented by another transform. This is a clean way to
@@ -211,8 +211,8 @@ int _cmsReasonableGridpointsByColorspace(icColorSpaceSignature Colorspace, DWORD
 static
 int XFormSampler(register WORD In[], register WORD Out[], register LPVOID Cargo)
 {
-        cmsDoTransform((cmsHTRANSFORM) Cargo, In, Out, 1);
-        return TRUE;
+	cmsDoTransform((cmsHTRANSFORM)Cargo, In, Out, 1);
+	return TRUE;
 }
 
 // This routine does compute the devicelink CLUT containing whole
@@ -220,58 +220,58 @@ int XFormSampler(register WORD In[], register WORD Out[], register LPVOID Cargo)
 
 LPLUT _cmsPrecalculateDeviceLink(cmsHTRANSFORM h, DWORD dwFlags)
 {
-       _LPcmsTRANSFORM p = (_LPcmsTRANSFORM) h;
-       LPLUT Grid;
-       int nGridPoints;
-       DWORD dwFormatIn, dwFormatOut;
-       int ChannelsIn, ChannelsOut;
-       LPLUT SaveGamutLUT;
+	_LPcmsTRANSFORM p = (_LPcmsTRANSFORM)h;
+	LPLUT Grid;
+	int nGridPoints;
+	DWORD dwFormatIn, dwFormatOut;
+	int ChannelsIn, ChannelsOut;
+	LPLUT SaveGamutLUT;
 
-       // Remove any gamut checking
-       SaveGamutLUT = p ->Gamut;
-       p ->Gamut = NULL;
+	// Remove any gamut checking
+	SaveGamutLUT = p->Gamut;
+	p->Gamut = NULL;
 
-       ChannelsIn   = _cmsChannelsOf(p -> EntryColorSpace);
-       ChannelsOut  = _cmsChannelsOf(p -> ExitColorSpace);
-               
-       nGridPoints = _cmsReasonableGridpointsByColorspace(p -> EntryColorSpace, dwFlags);
-     
-       Grid =  cmsAllocLUT();
-       if (!Grid) return NULL;
+	ChannelsIn = _cmsChannelsOf(p->EntryColorSpace);
+	ChannelsOut = _cmsChannelsOf(p->ExitColorSpace);
 
-       Grid = cmsAlloc3DGrid(Grid, nGridPoints, ChannelsIn, ChannelsOut);
+	nGridPoints = _cmsReasonableGridpointsByColorspace(p->EntryColorSpace, dwFlags);
 
-       // Compute device link on 16-bit basis
-       dwFormatIn   = (CHANNELS_SH(ChannelsIn)|BYTES_SH(2));
-       dwFormatOut  = (CHANNELS_SH(ChannelsOut)|BYTES_SH(2));
+	Grid = cmsAllocLUT();
+	if (!Grid) return NULL;
 
-       p -> FromInput = _cmsIdentifyInputFormat(p, dwFormatIn);
-       p -> ToOutput  = _cmsIdentifyOutputFormat(p, dwFormatOut);
+	Grid = cmsAlloc3DGrid(Grid, nGridPoints, ChannelsIn, ChannelsOut);
 
-       // Fix gamut & gamma possible mismatches. 
-           
-       if (!(dwFlags & cmsFLAGS_NOPRELINEARIZATION)) {
+	// Compute device link on 16-bit basis
+	dwFormatIn = (CHANNELS_SH(ChannelsIn) | BYTES_SH(2));
+	dwFormatOut = (CHANNELS_SH(ChannelsOut) | BYTES_SH(2));
 
-           cmsHTRANSFORM hOne[1];
-           hOne[0] = h;
-                
-           _cmsComputePrelinearizationTablesFromXFORM(hOne, 1, Grid);
-       }
-        
-            
-       // Attention to this typecast! we can take the luxury to
-       // do this since cmsHTRANSFORM is only an alias to a pointer
-       // to the transform struct.
+	p->FromInput = _cmsIdentifyInputFormat(p, dwFormatIn);
+	p->ToOutput = _cmsIdentifyOutputFormat(p, dwFormatOut);
 
-       if (!cmsSample3DGrid(Grid, XFormSampler, (LPVOID) p, Grid -> wFlags)) {
+	// Fix gamut & gamma possible mismatches. 
 
-                cmsFreeLUT(Grid);
-                return NULL;
-       }
-      
-      
-       p ->Gamut = SaveGamutLUT;
-       return Grid;
+	if (!(dwFlags & cmsFLAGS_NOPRELINEARIZATION)) {
+
+		cmsHTRANSFORM hOne[1];
+		hOne[0] = h;
+
+		_cmsComputePrelinearizationTablesFromXFORM(hOne, 1, Grid);
+	}
+
+
+	// Attention to this typecast! we can take the luxury to
+	// do this since cmsHTRANSFORM is only an alias to a pointer
+	// to the transform struct.
+
+	if (!cmsSample3DGrid(Grid, XFormSampler, (LPVOID)p, Grid->wFlags)) {
+
+		cmsFreeLUT(Grid);
+		return NULL;
+	}
+
+
+	p->Gamut = SaveGamutLUT;
+	return Grid;
 }
 
 
@@ -282,63 +282,63 @@ LPLUT _cmsPrecalculateDeviceLink(cmsHTRANSFORM h, DWORD dwFlags)
 
 static
 void PatchLUT(LPLUT Grid, WORD At[], WORD Value[],
-                     int nChannelsOut, int nChannelsIn)
+	int nChannelsOut, int nChannelsIn)
 {
-       LPL16PARAMS p16  = &Grid -> CLut16params;
-       double     px, py, pz, pw;
-       int        x0, y0, z0, w0;
-       int        i, index;
+	LPL16PARAMS p16 = &Grid->CLut16params;
+	double     px, py, pz, pw;
+	int        x0, y0, z0, w0;
+	int        i, index;
 
 
-       if (Grid ->wFlags & LUT_HASTL1) return;  // There is a prelinearization
+	if (Grid->wFlags & LUT_HASTL1) return;  // There is a prelinearization
 
-       px = ((double) At[0] * (p16->Domain)) / 65535.0;
-       py = ((double) At[1] * (p16->Domain)) / 65535.0;
-       pz = ((double) At[2] * (p16->Domain)) / 65535.0;
-       pw = ((double) At[3] * (p16->Domain)) / 65535.0;
+	px = ((double)At[0] * (p16->Domain)) / 65535.0;
+	py = ((double)At[1] * (p16->Domain)) / 65535.0;
+	pz = ((double)At[2] * (p16->Domain)) / 65535.0;
+	pw = ((double)At[3] * (p16->Domain)) / 65535.0;
 
-       x0 = (int) floor(px);
-       y0 = (int) floor(py);
-       z0 = (int) floor(pz);
-       w0 = (int) floor(pw);
+	x0 = (int)floor(px);
+	y0 = (int)floor(py);
+	z0 = (int)floor(pz);
+	w0 = (int)floor(pw);
 
-       if (nChannelsIn == 4) {
+	if (nChannelsIn == 4) {
 
-              if (((px - x0) != 0) ||
-                  ((py - y0) != 0) ||
-                  ((pz - z0) != 0) ||
-                  ((pw - w0) != 0)) return; // Not on exact node
+		if (((px - x0) != 0) ||
+			((py - y0) != 0) ||
+			((pz - z0) != 0) ||
+			((pw - w0) != 0)) return; // Not on exact node
 
-              index = p16 -> opta4 * x0 +
-                      p16 -> opta3 * y0 +
-                      p16 -> opta2 * z0 +
-                      p16 -> opta1 * w0;
-       }
-       else 
-	   if (nChannelsIn == 3) {
+		index = p16->opta4 * x0 +
+			p16->opta3 * y0 +
+			p16->opta2 * z0 +
+			p16->opta1 * w0;
+	}
+	else
+		if (nChannelsIn == 3) {
 
-              if (((px - x0) != 0) ||
-                  ((py - y0) != 0) ||
-                  ((pz - z0) != 0)) return;  // Not on exact node
+			if (((px - x0) != 0) ||
+				((py - y0) != 0) ||
+				((pz - z0) != 0)) return;  // Not on exact node
 
-              index = p16 -> opta3 * x0 +
-                      p16 -> opta2 * y0 +
-                      p16 -> opta1 * z0;
-       }
-	   else 
-       if (nChannelsIn == 1) {
+			index = p16->opta3 * x0 +
+				p16->opta2 * y0 +
+				p16->opta1 * z0;
+		}
+		else
+			if (nChannelsIn == 1) {
 
-		      if (((px - x0) != 0)) return;	// Not on exact node
-		                  
-			  index = p16 -> opta1 * x0;	
-	   }
-       else {
-           cmsSignalError(LCMS_ERRC_ABORTED, "(internal) %d Channels are not supported on PatchLUT", nChannelsIn);
-           return;
-       }
+				if (((px - x0) != 0)) return;	// Not on exact node
 
-       for (i=0; i < nChannelsOut; i++)
-              Grid -> T[index + i] = Value[i];
+				index = p16->opta1 * x0;
+			}
+			else {
+				cmsSignalError(LCMS_ERRC_ABORTED, "(internal) %d Channels are not supported on PatchLUT", nChannelsIn);
+				return;
+			}
+
+	for (i = 0; i < nChannelsOut; i++)
+		Grid->T[index + i] = Value[i];
 
 }
 
@@ -347,29 +347,29 @@ void PatchLUT(LPLUT Grid, WORD At[], WORD Value[],
 BOOL _cmsFixWhiteMisalignment(_LPcmsTRANSFORM p)
 {
 
-       WORD *WhitePointIn, *WhitePointOut, *BlackPointIn, *BlackPointOut;
-       int nOuts, nIns;
+	WORD *WhitePointIn, *WhitePointOut, *BlackPointIn, *BlackPointOut;
+	int nOuts, nIns;
 
 
-       if (!p -> DeviceLink) return FALSE;
-       
-       if (p ->Intent == INTENT_ABSOLUTE_COLORIMETRIC) return FALSE;
-       if ((p ->PreviewProfile != NULL) && 
-           (p ->ProofIntent == INTENT_ABSOLUTE_COLORIMETRIC)) return FALSE;
+	if (!p->DeviceLink) return FALSE;
+
+	if (p->Intent == INTENT_ABSOLUTE_COLORIMETRIC) return FALSE;
+	if ((p->PreviewProfile != NULL) &&
+		(p->ProofIntent == INTENT_ABSOLUTE_COLORIMETRIC)) return FALSE;
 
 
-       if (!_cmsEndPointsBySpace(p -> EntryColorSpace,
-                                 &WhitePointIn, &BlackPointIn, &nIns)) return FALSE;
-       
+	if (!_cmsEndPointsBySpace(p->EntryColorSpace,
+		&WhitePointIn, &BlackPointIn, &nIns)) return FALSE;
 
-       if (!_cmsEndPointsBySpace(p -> ExitColorSpace,
-                                   &WhitePointOut, &BlackPointOut, &nOuts)) return FALSE;
-       
-       // Fix white only
 
-       PatchLUT(p -> DeviceLink, WhitePointIn, WhitePointOut, nOuts, nIns);
-       // PatchLUT(p -> DeviceLink, BlackPointIn, BlackPointOut, nOuts, nIns);
+	if (!_cmsEndPointsBySpace(p->ExitColorSpace,
+		&WhitePointOut, &BlackPointOut, &nOuts)) return FALSE;
 
-       return TRUE;
+	// Fix white only
+
+	PatchLUT(p->DeviceLink, WhitePointIn, WhitePointOut, nOuts, nIns);
+	// PatchLUT(p -> DeviceLink, BlackPointIn, BlackPointOut, nOuts, nIns);
+
+	return TRUE;
 }
 

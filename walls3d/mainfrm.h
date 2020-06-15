@@ -8,14 +8,14 @@ class CMainFrame : public CMDIMainFrame
 public:
 	CMainFrame();
 
-// Attributes
+	// Attributes
 public:
-int m_iDDEInst;
+	int m_iDDEInst;
 
-// Operations
+	// Operations
 public:
 
-// Overrides
+	// Overrides
 	BOOL PreCreateWindow(CREATESTRUCT& cs);
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CMainFrame)
@@ -33,14 +33,14 @@ public:  // control bar embedded members
 	CStatusBar  m_wndStatusBar;
 	CToolBar    m_wndToolBar;
 
-// Generated message map functions
+	// Generated message map functions
 protected:
-	afx_msg LONG OnCopyData(WPARAM wParam,LPARAM lParam);
+	afx_msg LONG OnCopyData(WPARAM wParam, LPARAM lParam);
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-    afx_msg LRESULT OnWriteStatus(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnWriteStatus(WPARAM wParam, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()
 
-  void drawProgress(DisplayMethod method);
+	void drawProgress(DisplayMethod method);
 };
 
 /////////////////////////////////////////////////////////////////////////////

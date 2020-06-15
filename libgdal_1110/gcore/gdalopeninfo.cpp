@@ -47,151 +47,151 @@ CPL_CVSID("$Id: gdalopeninfo.cpp 27044 2014-03-16 23:41:27Z rouault $");
 /*                            GDALOpenInfo()                            */
 /************************************************************************/
 
-GDALOpenInfo::GDALOpenInfo( const char * pszFilenameIn, GDALAccess eAccessIn,
-                            char **papszSiblingsIn )
+GDALOpenInfo::GDALOpenInfo(const char * pszFilenameIn, GDALAccess eAccessIn,
+	char **papszSiblingsIn)
 
 {
-/* -------------------------------------------------------------------- */
-/*      Ensure that C: is treated as C:\ so we can stat it on           */
-/*      Windows.  Similar to what is done in CPLStat().                 */
-/* -------------------------------------------------------------------- */
+	/* -------------------------------------------------------------------- */
+	/*      Ensure that C: is treated as C:\ so we can stat it on           */
+	/*      Windows.  Similar to what is done in CPLStat().                 */
+	/* -------------------------------------------------------------------- */
 #ifdef WIN32
-    if( strlen(pszFilenameIn) == 2 && pszFilenameIn[1] == ':' )
-    {
-        char    szAltPath[10];
-        
-        strcpy( szAltPath, pszFilenameIn );
-        strcat( szAltPath, "\\" );
-        pszFilename = CPLStrdup( szAltPath );
-    }
-    else
+	if (strlen(pszFilenameIn) == 2 && pszFilenameIn[1] == ':')
+	{
+		char    szAltPath[10];
+
+		strcpy(szAltPath, pszFilenameIn);
+		strcat(szAltPath, "\\");
+		pszFilename = CPLStrdup(szAltPath);
+	}
+	else
 #endif
-        pszFilename = CPLStrdup( pszFilenameIn );
+		pszFilename = CPLStrdup(pszFilenameIn);
 
-/* -------------------------------------------------------------------- */
-/*      Initialize.                                                     */
-/* -------------------------------------------------------------------- */
+	/* -------------------------------------------------------------------- */
+	/*      Initialize.                                                     */
+	/* -------------------------------------------------------------------- */
 
-    nHeaderBytes = 0;
-    pabyHeader = NULL;
-    bIsDirectory = FALSE;
-    bStatOK = FALSE;
-    eAccess = eAccessIn;
-    fp = NULL;
+	nHeaderBytes = 0;
+	pabyHeader = NULL;
+	bIsDirectory = FALSE;
+	bStatOK = FALSE;
+	eAccess = eAccessIn;
+	fp = NULL;
 
 #ifdef HAVE_READLINK
-    int  bHasRetried = FALSE;
+	int  bHasRetried = FALSE;
 #endif
 
-/* -------------------------------------------------------------------- */
-/*      Collect information about the file.                             */
-/* -------------------------------------------------------------------- */
-    VSIStatBufL  sStat;
+	/* -------------------------------------------------------------------- */
+	/*      Collect information about the file.                             */
+	/* -------------------------------------------------------------------- */
+	VSIStatBufL  sStat;
 
 #ifdef HAVE_READLINK
-retry:
+	retry :
 #endif
-    if( VSIStatExL( pszFilename, &sStat,
-                    VSI_STAT_EXISTS_FLAG | VSI_STAT_NATURE_FLAG ) == 0 )
-    {
-        bStatOK = TRUE;
+		  if (VSIStatExL(pszFilename, &sStat,
+			  VSI_STAT_EXISTS_FLAG | VSI_STAT_NATURE_FLAG) == 0)
+		  {
+			  bStatOK = TRUE;
 
-        if( VSI_ISREG( sStat.st_mode ) )
-        {
-            pabyHeader = (GByte *) CPLCalloc(1025,1);
+			  if (VSI_ISREG(sStat.st_mode))
+			  {
+				  pabyHeader = (GByte *)CPLCalloc(1025, 1);
 
-            fp = VSIFOpen( pszFilename, "rb" );
+				  fp = VSIFOpen(pszFilename, "rb");
 
-            if( fp != NULL )
-            {
-                nHeaderBytes = (int) VSIFRead( pabyHeader, 1, 1024, fp );
+				  if (fp != NULL)
+				  {
+					  nHeaderBytes = (int)VSIFRead(pabyHeader, 1, 1024, fp);
 
-                VSIRewind( fp );
-            }
-            /* XXX: ENOENT is used to catch the case of virtual filesystem
-             * when we do not have a real file with such a name. Under some
-             * circumstances EINVAL reported instead of ENOENT in Windows
-             * (for filenames containing colon, e.g. "smth://name"). 
-             * See also: #2437 */
-            else if( errno == 27 /* "File to large" */ 
-                     || errno == ENOENT || errno == EINVAL
+					  VSIRewind(fp);
+				  }
+				  /* XXX: ENOENT is used to catch the case of virtual filesystem
+				   * when we do not have a real file with such a name. Under some
+				   * circumstances EINVAL reported instead of ENOENT in Windows
+				   * (for filenames containing colon, e.g. "smth://name").
+				   * See also: #2437 */
+				  else if (errno == 27 /* "File to large" */
+					  || errno == ENOENT || errno == EINVAL
 #ifdef EOVERFLOW
-                     || errno == EOVERFLOW
+					  || errno == EOVERFLOW
 #else
-                     || errno == 75 /* Linux EOVERFLOW */
-                     || errno == 79 /* Solaris EOVERFLOW */ 
+					  || errno == 75 /* Linux EOVERFLOW */
+					  || errno == 79 /* Solaris EOVERFLOW */
 #endif
-                     )
-            {
-                VSILFILE* fpL = VSIFOpenL( pszFilename, "rb" );
-                if( fpL != NULL )
-                {
-                    nHeaderBytes = (int) VSIFReadL( pabyHeader, 1, 1024, fpL );
-                    VSIFCloseL( fpL );
-                }
-            }
-        }
-        else if( VSI_ISDIR( sStat.st_mode ) )
-            bIsDirectory = TRUE;
-    }
+					  )
+				  {
+					  VSILFILE* fpL = VSIFOpenL(pszFilename, "rb");
+					  if (fpL != NULL)
+					  {
+						  nHeaderBytes = (int)VSIFReadL(pabyHeader, 1, 1024, fpL);
+						  VSIFCloseL(fpL);
+					  }
+				  }
+			  }
+			  else if (VSI_ISDIR(sStat.st_mode))
+				  bIsDirectory = TRUE;
+		  }
 #ifdef HAVE_READLINK
-    else if (!bHasRetried)
-    {
-        /* If someone creates a file with "ln -sf /vsicurl/http://download.osgeo.org/gdal/data/gtiff/utm.tif my_remote_utm.tif" */
-        /* we will be able to open it by passing my_remote_utm.tif */
-        /* This helps a lot for GDAL based readers that only provide file explorers to open datasets */
-        char szPointerFilename[2048];
-        int nBytes = readlink(pszFilename, szPointerFilename, sizeof(szPointerFilename));
-        if (nBytes != -1)
-        {
-            szPointerFilename[MIN(nBytes, (int)sizeof(szPointerFilename)-1)] = 0;
-            CPLFree(pszFilename);
-            pszFilename = CPLStrdup(szPointerFilename);
-            papszSiblingsIn = NULL;
-            bHasRetried = TRUE;
-            goto retry;
-        }
-    }
+		  else if (!bHasRetried)
+		  {
+			  /* If someone creates a file with "ln -sf /vsicurl/http://download.osgeo.org/gdal/data/gtiff/utm.tif my_remote_utm.tif" */
+			  /* we will be able to open it by passing my_remote_utm.tif */
+			  /* This helps a lot for GDAL based readers that only provide file explorers to open datasets */
+			  char szPointerFilename[2048];
+			  int nBytes = readlink(pszFilename, szPointerFilename, sizeof(szPointerFilename));
+			  if (nBytes != -1)
+			  {
+				  szPointerFilename[MIN(nBytes, (int)sizeof(szPointerFilename) - 1)] = 0;
+				  CPLFree(pszFilename);
+				  pszFilename = CPLStrdup(szPointerFilename);
+				  papszSiblingsIn = NULL;
+				  bHasRetried = TRUE;
+				  goto retry;
+			  }
+		  }
 #endif
 
-/* -------------------------------------------------------------------- */
-/*      Capture sibling list either from passed in values, or by        */
-/*      scanning for them.                                              */
-/* -------------------------------------------------------------------- */
-    if( papszSiblingsIn != NULL )
-    {
-        papszSiblingFiles = CSLDuplicate( papszSiblingsIn );
-    }
-    else if( bStatOK && !bIsDirectory )
-    {
-        const char* pszOptionVal =
-            CPLGetConfigOption( "GDAL_DISABLE_READDIR_ON_OPEN", "NO" );
-        if (EQUAL(pszOptionVal, "EMPTY_DIR"))
-        {
-            papszSiblingFiles = CSLAddString( NULL, CPLGetFilename(pszFilename) );
-        }
-        else if( CSLTestBoolean(pszOptionVal) )
-        {
-            /* skip reading the directory */
-            papszSiblingFiles = NULL;
-        }
-        else
-        {
-            CPLString osDir = CPLGetDirname( pszFilename );
-            papszSiblingFiles = VSIReadDir( osDir );
+		  /* -------------------------------------------------------------------- */
+		  /*      Capture sibling list either from passed in values, or by        */
+		  /*      scanning for them.                                              */
+		  /* -------------------------------------------------------------------- */
+		  if (papszSiblingsIn != NULL)
+		  {
+			  papszSiblingFiles = CSLDuplicate(papszSiblingsIn);
+		  }
+		  else if (bStatOK && !bIsDirectory)
+		  {
+			  const char* pszOptionVal =
+				  CPLGetConfigOption("GDAL_DISABLE_READDIR_ON_OPEN", "NO");
+			  if (EQUAL(pszOptionVal, "EMPTY_DIR"))
+			  {
+				  papszSiblingFiles = CSLAddString(NULL, CPLGetFilename(pszFilename));
+			  }
+			  else if (CSLTestBoolean(pszOptionVal))
+			  {
+				  /* skip reading the directory */
+				  papszSiblingFiles = NULL;
+			  }
+			  else
+			  {
+				  CPLString osDir = CPLGetDirname(pszFilename);
+				  papszSiblingFiles = VSIReadDir(osDir);
 
-            /* Small optimization to avoid unnecessary stat'ing from PAux or ENVI */
-            /* drivers. The MBTiles driver needs no companion file. */
-            if( papszSiblingFiles == NULL &&
-                strncmp(pszFilename, "/vsicurl/", 9) == 0 &&
-                EQUAL(CPLGetExtension( pszFilename ),"mbtiles") )
-            {
-                papszSiblingFiles = CSLAddString( NULL, CPLGetFilename(pszFilename) );
-            }
-        }
-    }
-    else
-        papszSiblingFiles = NULL;
+				  /* Small optimization to avoid unnecessary stat'ing from PAux or ENVI */
+				  /* drivers. The MBTiles driver needs no companion file. */
+				  if (papszSiblingFiles == NULL &&
+					  strncmp(pszFilename, "/vsicurl/", 9) == 0 &&
+					  EQUAL(CPLGetExtension(pszFilename), "mbtiles"))
+				  {
+					  papszSiblingFiles = CSLAddString(NULL, CPLGetFilename(pszFilename));
+				  }
+			  }
+		  }
+		  else
+			  papszSiblingFiles = NULL;
 }
 
 /************************************************************************/
@@ -201,11 +201,11 @@ retry:
 GDALOpenInfo::~GDALOpenInfo()
 
 {
-    VSIFree( pabyHeader );
-    CPLFree( pszFilename );
+	VSIFree(pabyHeader);
+	CPLFree(pszFilename);
 
-    if( fp != NULL )
-        VSIFClose( fp );
-    CSLDestroy( papszSiblingFiles );
+	if (fp != NULL)
+		VSIFClose(fp);
+	CSLDestroy(papszSiblingFiles);
 }
 

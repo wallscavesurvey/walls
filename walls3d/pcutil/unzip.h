@@ -91,12 +91,12 @@ using namespace std;
    an unused code.  If a code with e == 99 is looked up, this implies an
    error in the data. */
 struct huft {
-  unsigned char e;                /* number of extra bits or operation */
-  unsigned char b;                /* number of bits in this code or subcode */
-  union {
-    unsigned short n;              /* literal, length base, or distance base */
-    struct huft *t;     /* pointer to next level of table */
-  } v;
+	unsigned char e;                /* number of extra bits or operation */
+	unsigned char b;                /* number of bits in this code or subcode */
+	union {
+		unsigned short n;              /* literal, length base, or distance base */
+		struct huft *t;     /* pointer to next level of table */
+	} v;
 };
 
 
@@ -106,68 +106,68 @@ struct huft {
 class CUnzip
 {
 private:
-  unsigned long orig_crc;
-  unsigned long orig_len;
-  char m_pcOutName[OUTNAME_SIZE];
-  // file streams
-  ifstream InSt;
-  ofstream OutSt;
-  int ext_header; 
-  // pointer to buffer
-  char* m_pcInBuf;
-  unsigned int m_iInPtr;
-  unsigned int m_iInSize;
-  unsigned char* m_pcOutBuf;
-  unsigned int m_OutCount;
-  unsigned long bytes_out;
-  /*unsigned char* slide;*/
-   // stores used method
-  unsigned char m_iMethod;
+	unsigned long orig_crc;
+	unsigned long orig_len;
+	char m_pcOutName[OUTNAME_SIZE];
+	// file streams
+	ifstream InSt;
+	ofstream OutSt;
+	int ext_header;
+	// pointer to buffer
+	char* m_pcInBuf;
+	unsigned int m_iInPtr;
+	unsigned int m_iInSize;
+	unsigned char* m_pcOutBuf;
+	unsigned int m_OutCount;
+	unsigned long bytes_out;
+	/*unsigned char* slide;*/
+	 // stores used method
+	unsigned char m_iMethod;
 
-  // for inflate:
-  // bit buffer 
-  unsigned long bb;                   
-  // bits in bit buffer      
-  unsigned int bk;                    
-  // bits in base literal/length lookup table 
-  int lbits;          
-  // bits in base distance lookup table 
-  int dbits;          
-  // track memory usage 
-  unsigned hufts;         
+	// for inflate:
+	// bit buffer 
+	unsigned long bb;
+	// bits in bit buffer      
+	unsigned int bk;
+	// bits in base literal/length lookup table 
+	int lbits;
+	// bits in base distance lookup table 
+	int dbits;
+	// track memory usage 
+	unsigned hufts;
 
-// Attributes
+	// Attributes
 public:
 
-// Operations
+	// Operations
 private:
-  unsigned char CUnzip::GetByte(ifstream& InSt);
-  int CUnzip::Inflate(ifstream& InSt);
-  int CUnzip::inflate_block(int* e);
-  int CUnzip::inflate_stored();
-  int CUnzip::inflate_fixed();
-  int CUnzip::inflate_dynamic();
-  void CUnzip::flush_window();
-  unsigned long CUnzip::updcrc(unsigned char* s,unsigned int n);
-  int CUnzip::huft_build(unsigned int* b,unsigned int n,unsigned int s,
-               unsigned short* d,unsigned short* e,struct huft** t,
-               int* m);
-  int CUnzip::huft_free(struct huft* t);
-  int CUnzip::inflate_codes(struct huft* tl,struct huft* td,int bl,int bd);
-  int CUnzip::NeedBits(unsigned int BitNum,unsigned long* pBitBuffer,
-                      unsigned int* pBitNum);
+	unsigned char CUnzip::GetByte(ifstream& InSt);
+	int CUnzip::Inflate(ifstream& InSt);
+	int CUnzip::inflate_block(int* e);
+	int CUnzip::inflate_stored();
+	int CUnzip::inflate_fixed();
+	int CUnzip::inflate_dynamic();
+	void CUnzip::flush_window();
+	unsigned long CUnzip::updcrc(unsigned char* s, unsigned int n);
+	int CUnzip::huft_build(unsigned int* b, unsigned int n, unsigned int s,
+		unsigned short* d, unsigned short* e, struct huft** t,
+		int* m);
+	int CUnzip::huft_free(struct huft* t);
+	int CUnzip::inflate_codes(struct huft* tl, struct huft* td, int bl, int bd);
+	int CUnzip::NeedBits(unsigned int BitNum, unsigned long* pBitBuffer,
+		unsigned int* pBitNum);
 
-// Implementation
+	// Implementation
 public:
-  CUnzip();           
-  virtual ~CUnzip();
-  int CUnzip::Unzip(char* pOutFile,char* pszTempPath, char* pszExt);
-  int CUnzip::CheckMagic(const char* pInFile);
+	CUnzip();
+	virtual ~CUnzip();
+	int CUnzip::Unzip(char* pOutFile, char* pszTempPath, char* pszExt);
+	int CUnzip::CheckMagic(const char* pInFile);
 
-/*#ifdef _DEBUG
-  virtual void AssertValid() const;
-  virtual void Dump(CDumpContext& dc) const;
-#endif*/
+	/*#ifdef _DEBUG
+	  virtual void AssertValid() const;
+	  virtual void Dump(CDumpContext& dc) const;
+	#endif*/
 
 };
 #endif

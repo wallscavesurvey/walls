@@ -35,25 +35,25 @@ BEGIN_INTERFACE_MAP(CCustomControlSite, COleControlSite)
 	INTERFACE_PART(CCustomControlSite, IID_IDocHostUIHandler, DocHostUIHandler)
 END_INTERFACE_MAP()
 
-	
+
 
 ULONG FAR EXPORT  CCustomControlSite::XDocHostUIHandler::AddRef()
 {
 	METHOD_PROLOGUE(CCustomControlSite, DocHostUIHandler)
-	return pThis->ExternalAddRef();
+		return pThis->ExternalAddRef();
 }
 
 
 ULONG FAR EXPORT  CCustomControlSite::XDocHostUIHandler::Release()
-{                            
-    METHOD_PROLOGUE(CCustomControlSite, DocHostUIHandler)
-	return pThis->ExternalRelease();
+{
+	METHOD_PROLOGUE(CCustomControlSite, DocHostUIHandler)
+		return pThis->ExternalRelease();
 }
 
 HRESULT FAR EXPORT  CCustomControlSite::XDocHostUIHandler::QueryInterface(REFIID riid, void **ppvObj)
 {
 	METHOD_PROLOGUE(CCustomControlSite, DocHostUIHandler)
-    HRESULT hr = (HRESULT)pThis->ExternalQueryInterface(&riid, ppvObj);
+		HRESULT hr = (HRESULT)pThis->ExternalQueryInterface(&riid, ppvObj);
 	return hr;
 }
 
@@ -61,14 +61,14 @@ HRESULT FAR EXPORT  CCustomControlSite::XDocHostUIHandler::QueryInterface(REFIID
 // *
 // * Purpose: Called at initialization
 // *
-HRESULT FAR EXPORT  CCustomControlSite::XDocHostUIHandler::GetHostInfo( DOCHOSTUIINFO* pInfo )
+HRESULT FAR EXPORT  CCustomControlSite::XDocHostUIHandler::GetHostInfo(DOCHOSTUIINFO* pInfo)
 {
 
 	METHOD_PROLOGUE(CCustomControlSite, DocHostUIHandler)
-	pInfo->dwFlags = DOCHOSTUIFLAG_NO3DBORDER;
-    pInfo->dwDoubleClick = DOCHOSTUIDBLCLK_DEFAULT;
+		pInfo->dwFlags = DOCHOSTUIFLAG_NO3DBORDER;
+	pInfo->dwDoubleClick = DOCHOSTUIDBLCLK_DEFAULT;
 
-    return S_OK;
+	return S_OK;
 }
 
 // * CImpIDocHostUIHandler::ShowUI
@@ -76,16 +76,16 @@ HRESULT FAR EXPORT  CCustomControlSite::XDocHostUIHandler::GetHostInfo( DOCHOSTU
 // * Purpose: Called when MSHTML.DLL shows its UI
 // *
 HRESULT FAR EXPORT  CCustomControlSite::XDocHostUIHandler::ShowUI(
-				DWORD dwID, 
-				IOleInPlaceActiveObject * /*pActiveObject*/,
-				IOleCommandTarget * pCommandTarget,
-				IOleInPlaceFrame * /*pFrame*/,
-				IOleInPlaceUIWindow * /*pDoc*/)
+	DWORD dwID,
+	IOleInPlaceActiveObject * /*pActiveObject*/,
+	IOleCommandTarget * pCommandTarget,
+	IOleInPlaceFrame * /*pFrame*/,
+	IOleInPlaceUIWindow * /*pDoc*/)
 {
 
 	METHOD_PROLOGUE(CCustomControlSite, DocHostUIHandler)
-	// We've already got our own UI in place so just return S_OK
-    return S_OK;
+		// We've already got our own UI in place so just return S_OK
+		return S_OK;
 }
 
 // * CImpIDocHostUIHandler::HideUI
@@ -95,7 +95,7 @@ HRESULT FAR EXPORT  CCustomControlSite::XDocHostUIHandler::ShowUI(
 HRESULT FAR EXPORT  CCustomControlSite::XDocHostUIHandler::HideUI(void)
 {
 	METHOD_PROLOGUE(CCustomControlSite, DocHostUIHandler)
-    return S_OK;
+		return S_OK;
 }
 
 // * CImpIDocHostUIHandler::UpdateUI
@@ -105,8 +105,8 @@ HRESULT FAR EXPORT  CCustomControlSite::XDocHostUIHandler::HideUI(void)
 HRESULT FAR EXPORT  CCustomControlSite::XDocHostUIHandler::UpdateUI(void)
 {
 	METHOD_PROLOGUE(CCustomControlSite, DocHostUIHandler)
-	// MFC is pretty good about updating it's UI in it's Idle loop so I don't do anything here
-	return S_OK;
+		// MFC is pretty good about updating it's UI in it's Idle loop so I don't do anything here
+		return S_OK;
 }
 
 // * CImpIDocHostUIHandler::EnableModeless
@@ -116,7 +116,7 @@ HRESULT FAR EXPORT  CCustomControlSite::XDocHostUIHandler::UpdateUI(void)
 HRESULT FAR EXPORT  CCustomControlSite::XDocHostUIHandler::EnableModeless(BOOL /*fEnable*/)
 {
 	METHOD_PROLOGUE(CCustomControlSite, DocHostUIHandler)
-    return E_NOTIMPL;
+		return E_NOTIMPL;
 }
 
 // * CImpIDocHostUIHandler::OnDocWindowActivate
@@ -126,7 +126,7 @@ HRESULT FAR EXPORT  CCustomControlSite::XDocHostUIHandler::EnableModeless(BOOL /
 HRESULT FAR EXPORT  CCustomControlSite::XDocHostUIHandler::OnDocWindowActivate(BOOL /*fActivate*/)
 {
 	METHOD_PROLOGUE(CCustomControlSite, DocHostUIHandler)
-    return E_NOTIMPL;
+		return E_NOTIMPL;
 }
 
 // * CImpIDocHostUIHandler::OnFrameWindowActivate
@@ -136,7 +136,7 @@ HRESULT FAR EXPORT  CCustomControlSite::XDocHostUIHandler::OnDocWindowActivate(B
 HRESULT FAR EXPORT  CCustomControlSite::XDocHostUIHandler::OnFrameWindowActivate(BOOL /*fActivate*/)
 {
 	METHOD_PROLOGUE(CCustomControlSite, DocHostUIHandler)
-    return E_NOTIMPL;
+		return E_NOTIMPL;
 }
 
 // * CImpIDocHostUIHandler::ResizeBorder
@@ -144,12 +144,12 @@ HRESULT FAR EXPORT  CCustomControlSite::XDocHostUIHandler::OnFrameWindowActivate
 // * Purpose: Called from MSHTML.DLL's IOleInPlaceActiveObject::ResizeBorder
 // *
 HRESULT FAR EXPORT  CCustomControlSite::XDocHostUIHandler::ResizeBorder(
-				LPCRECT /*prcBorder*/, 
-				IOleInPlaceUIWindow* /*pUIWindow*/,
-				BOOL /*fRameWindow*/)
+	LPCRECT /*prcBorder*/,
+	IOleInPlaceUIWindow* /*pUIWindow*/,
+	BOOL /*fRameWindow*/)
 {
 	METHOD_PROLOGUE(CCustomControlSite, DocHostUIHandler)
-    return E_NOTIMPL;
+		return E_NOTIMPL;
 }
 
 // * CImpIDocHostUIHandler::ShowContextMenu
@@ -157,14 +157,14 @@ HRESULT FAR EXPORT  CCustomControlSite::XDocHostUIHandler::ResizeBorder(
 // * Purpose: Called when MSHTML.DLL would normally display its context menu
 // *
 HRESULT FAR EXPORT  CCustomControlSite::XDocHostUIHandler::ShowContextMenu(
-				DWORD id/*dwID*/, 
-				POINT* /*pptPosition*/,
-				IUnknown* /*pCommandTarget*/,
-				IDispatch* /*pDispatchObjectHit*/)
+	DWORD id/*dwID*/,
+	POINT* /*pptPosition*/,
+	IUnknown* /*pCommandTarget*/,
+	IDispatch* /*pDispatchObjectHit*/)
 {
 	METHOD_PROLOGUE(CCustomControlSite, DocHostUIHandler)
-    //return S_OK; // We've shown our own context menu. MSHTML.DLL will no longer try to show its own.
-	return (id==0)?S_OK:S_FALSE;
+		//return S_OK; // We've shown our own context menu. MSHTML.DLL will no longer try to show its own.
+		return (id == 0) ? S_OK : S_FALSE;
 }
 
 // * CImpIDocHostUIHandler::TranslateAccelerator
@@ -172,11 +172,11 @@ HRESULT FAR EXPORT  CCustomControlSite::XDocHostUIHandler::ShowContextMenu(
 // * Purpose: Called from MSHTML.DLL's TranslateAccelerator routines
 // *
 HRESULT FAR EXPORT  CCustomControlSite::XDocHostUIHandler::TranslateAccelerator(LPMSG lpMsg,
-            /* [in] */ const GUID __RPC_FAR *pguidCmdGroup,
-            /* [in] */ DWORD nCmdID)
+	/* [in] */ const GUID __RPC_FAR *pguidCmdGroup,
+	/* [in] */ DWORD nCmdID)
 {
 	METHOD_PROLOGUE(CCustomControlSite, DocHostUIHandler)
-    return S_FALSE;
+		return S_FALSE;
 }
 
 // * CImpIDocHostUIHandler::GetOptionKeyPath
@@ -188,41 +188,41 @@ HRESULT FAR EXPORT  CCustomControlSite::XDocHostUIHandler::GetOptionKeyPath(BSTR
 {
 
 	METHOD_PROLOGUE(CCustomControlSite, DocHostUIHandler)
-	return E_NOTIMPL;
+		return E_NOTIMPL;
 }
 
-STDMETHODIMP CCustomControlSite::XDocHostUIHandler::GetDropTarget( 
-            /* [in] */ IDropTarget __RPC_FAR *pDropTarget,
-            /* [out] */ IDropTarget __RPC_FAR *__RPC_FAR *ppDropTarget)
+STDMETHODIMP CCustomControlSite::XDocHostUIHandler::GetDropTarget(
+	/* [in] */ IDropTarget __RPC_FAR *pDropTarget,
+	/* [out] */ IDropTarget __RPC_FAR *__RPC_FAR *ppDropTarget)
 {
 	METHOD_PROLOGUE(CCustomControlSite, DocHostUIHandler)
-    return E_NOTIMPL;
+		return E_NOTIMPL;
 }
 
-STDMETHODIMP CCustomControlSite::XDocHostUIHandler::GetExternal( 
-            /* [out] */ IDispatch __RPC_FAR *__RPC_FAR *ppDispatch)
+STDMETHODIMP CCustomControlSite::XDocHostUIHandler::GetExternal(
+	/* [out] */ IDispatch __RPC_FAR *__RPC_FAR *ppDispatch)
 {
 	// return the IDispatch we have for extending the object Model
 	IDispatch* pDisp = (IDispatch*)theApp.m_pDispOM;
 	pDisp->AddRef();
 	*ppDispatch = pDisp;
-    return S_OK;
+	return S_OK;
 }
-        
-STDMETHODIMP CCustomControlSite::XDocHostUIHandler::TranslateUrl( 
-            /* [in] */ DWORD dwTranslate,
-            /* [in] */ OLECHAR __RPC_FAR *pchURLIn,
-            /* [out] */ OLECHAR __RPC_FAR *__RPC_FAR *ppchURLOut)
+
+STDMETHODIMP CCustomControlSite::XDocHostUIHandler::TranslateUrl(
+	/* [in] */ DWORD dwTranslate,
+	/* [in] */ OLECHAR __RPC_FAR *pchURLIn,
+	/* [out] */ OLECHAR __RPC_FAR *__RPC_FAR *ppchURLOut)
 {
 	METHOD_PROLOGUE(CCustomControlSite, DocHostUIHandler)
-    return E_NOTIMPL;
+		return E_NOTIMPL;
 }
-        
-STDMETHODIMP CCustomControlSite::XDocHostUIHandler::FilterDataObject( 
-            /* [in] */ IDataObject __RPC_FAR *pDO,
-            /* [out] */ IDataObject __RPC_FAR *__RPC_FAR *ppDORet)
+
+STDMETHODIMP CCustomControlSite::XDocHostUIHandler::FilterDataObject(
+	/* [in] */ IDataObject __RPC_FAR *pDO,
+	/* [out] */ IDataObject __RPC_FAR *__RPC_FAR *ppDORet)
 {
 	METHOD_PROLOGUE(CCustomControlSite, DocHostUIHandler)
-    return E_NOTIMPL;
+		return E_NOTIMPL;
 }
 

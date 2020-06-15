@@ -15,7 +15,7 @@
 
 #ifdef _DEBUG
 #undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
+static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
 #endif
 
@@ -25,17 +25,17 @@ static char THIS_FILE[]=__FILE__;
 
 /*static*/ const UINT CStdioFileEx::modeWriteUnicode = 0x20000; // Add this flag to write in Unicode
 
-CStdioFileEx::CStdioFileEx(): CStdioFile()
+CStdioFileEx::CStdioFileEx() : CStdioFile()
 {
 	m_bIsUnicodeText = false;
 }
 
-CStdioFileEx::CStdioFileEx(LPCTSTR lpszFileName,UINT nOpenFlags)
-	:CStdioFile(lpszFileName, ProcessFlags(lpszFileName, nOpenFlags))
+CStdioFileEx::CStdioFileEx(LPCTSTR lpszFileName, UINT nOpenFlags)
+	: CStdioFile(lpszFileName, ProcessFlags(lpszFileName, nOpenFlags))
 {
 }
 
-BOOL CStdioFileEx::Open(LPCTSTR lpszFileName,UINT nOpenFlags,CFileException* pError /*=NULL*/)
+BOOL CStdioFileEx::Open(LPCTSTR lpszFileName, UINT nOpenFlags, CFileException* pError /*=NULL*/)
 {
 	// Process any Unicode stuff
 	ProcessFlags(lpszFileName, nOpenFlags);
@@ -57,7 +57,7 @@ BOOL CStdioFileEx::ReadString(CString& rString)
 		Read(&cDummy, sizeof(wchar_t));
 	}
 
-// If compiled for Unicode
+	// If compiled for Unicode
 #ifdef _UNICODE
 	// Do standard stuff -- both ANSI and Unicode cases seem to work OK
 	bReadData = CStdioFile::ReadString(rString);
@@ -71,8 +71,8 @@ BOOL CStdioFileEx::ReadString(CString& rString)
 	else
 	{
 		const int nMAX_LINE_CHARS = 4096;
-		wchar_t* pszUnicodeString = new wchar_t[nMAX_LINE_CHARS]; 
-		char* pszMultiByteString= new char[nMAX_LINE_CHARS];  
+		wchar_t* pszUnicodeString = new wchar_t[nMAX_LINE_CHARS];
+		char* pszMultiByteString = new char[nMAX_LINE_CHARS];
 
 		// Read as Unicode, convert to ANSI; fixed by Dennis Jeryd 6/8/03
 		bReadData = (NULL != fgetws(pszUnicodeString, nMAX_LINE_CHARS, m_pStream));
@@ -98,16 +98,16 @@ BOOL CStdioFileEx::ReadString(CString& rString)
 	{
 		// Copied from FileTxt.cpp but adapted to Unicode and then adapted for end-of-line being just '\r'. 
 		nLen = rString.GetLength();
-		if (nLen > 1 && rString.Mid(nLen-2) == sNEWLINE)
+		if (nLen > 1 && rString.Mid(nLen - 2) == sNEWLINE)
 		{
-			rString.GetBufferSetLength(nLen-2);
+			rString.GetBufferSetLength(nLen - 2);
 		}
 		else
 		{
 			lpsz = rString.GetBuffer(0);
-			if (nLen != 0 && (lpsz[nLen-1] == _T('\r') || lpsz[nLen-1] == _T('\n')))
+			if (nLen != 0 && (lpsz[nLen - 1] == _T('\r') || lpsz[nLen - 1] == _T('\n')))
 			{
-				rString.GetBufferSetLength(nLen-1);
+				rString.GetBufferSetLength(nLen - 1);
 			}
 		}
 	}
@@ -147,7 +147,7 @@ void CStdioFileEx::WriteString(LPCTSTR lpsz)
 		}
 	}
 
-// If compiled in Unicode...
+	// If compiled in Unicode...
 #ifdef _UNICODE
 
 	// If writing Unicode, no conversion needed
@@ -161,55 +161,55 @@ void CStdioFileEx::WriteString(LPCTSTR lpsz)
 	{
 		int		nChars = lstrlen(lpsz) + 1;				// Why plus 1? Because yes
 		int		nBufferSize = nChars * sizeof(char);
-		wchar_t*	pszUnicodeString	= new wchar_t[nChars]; 
-		char	*	pszMultiByteString= new char[nChars];  
+		wchar_t*	pszUnicodeString = new wchar_t[nChars];
+		char	*	pszMultiByteString = new char[nChars];
 		int		nCharsWritten = 0;
 
 		// Copy string to Unicode buffer
 		lstrcpy(pszUnicodeString, lpsz);
 
 		// Get multibyte string
-		nCharsWritten = 
-			GetMultiByteStringFromUnicodeString(pszUnicodeString, pszMultiByteString, ( short ) nBufferSize, GetACP());
-		
+		nCharsWritten =
+			GetMultiByteStringFromUnicodeString(pszUnicodeString, pszMultiByteString, (short)nBufferSize, GetACP());
+
 		if (nCharsWritten > 0)
 		{
 			//   CFile::Write((const void*)pszMultiByteString, lstrlen(lpsz));
 
 			// Do byte-mode write using actual chars written (fix by Howard J Oh)
 			CFile::Write((const void*)pszMultiByteString,
-				nCharsWritten*sizeof(char));
+				nCharsWritten * sizeof(char));
 		}
 
 		if (pszUnicodeString && pszMultiByteString)
 		{
-			delete [] pszUnicodeString;
-			delete [] pszMultiByteString;
+			delete[] pszUnicodeString;
+			delete[] pszMultiByteString;
 		}
 	}
-// Else if *not* compiled in Unicode
+	// Else if *not* compiled in Unicode
 #else
 	// If writing Unicode, need to convert
 	if (m_nFlags & CStdioFileEx::modeWriteUnicode)
 	{
 		int		nChars = lstrlen(lpsz) + 1;	 // Why plus 1? Because yes
-		wchar_t*	pszUnicodeString	= new wchar_t[nChars];
-		char	*	pszMultiByteString= new char[nChars]; 
+		wchar_t*	pszUnicodeString = new wchar_t[nChars];
+		char	*	pszMultiByteString = new char[nChars];
 		int		nCharsWritten = 0;
-		
+
 		// Copy string to multibyte buffer
 		lstrcpy(pszMultiByteString, lpsz);
 
 		nCharsWritten =
 			GetUnicodeStringFromMultiByteString(pszMultiByteString,
-			pszUnicodeString, nChars, GetACP());
-		
+				pszUnicodeString, nChars, GetACP());
+
 		if (nCharsWritten > 0)
 		{
 			//   CFile::Write(pszUnicodeString, lstrlen(lpsz) * sizeof(wchar_t));
 
 			// Write in byte mode. Write actual number of chars written * bytes (fix by Howard J Oh)
-			CFile::Write(pszUnicodeString, nCharsWritten*sizeof(wchar_t));
+			CFile::Write(pszUnicodeString, nCharsWritten * sizeof(wchar_t));
 		}
 		else
 		{
@@ -218,8 +218,8 @@ void CStdioFileEx::WriteString(LPCTSTR lpsz)
 
 		if (pszUnicodeString && pszMultiByteString)
 		{
-			delete [] pszUnicodeString;
-			delete [] pszMultiByteString;
+			delete[] pszUnicodeString;
+			delete[] pszMultiByteString;
 		}
 	}
 	// Else if we don't want to write Unicode, no conversion needed
@@ -227,9 +227,9 @@ void CStdioFileEx::WriteString(LPCTSTR lpsz)
 	{
 		// Do standard stuff
 		//CStdioFile::WriteString(lpsz);
-		
+
 		// Do byte-mode write. This avoids annoying "interpretation" of \n's as	\r\n
-		CFile::Write((const void*)lpsz, lstrlen(lpsz)*sizeof(char));
+		CFile::Write((const void*)lpsz, lstrlen(lpsz) * sizeof(char));
 	}
 
 #endif
@@ -248,7 +248,7 @@ UINT CStdioFileEx::ProcessFlags(const CString& sFilePath, UINT& nOpenFlags)
 #endif
 
 	// If reading in text mode and not creating... ; fixed by Dennis Jeryd 6/8/03
-	if (nOpenFlags & CFile::typeText && !(nOpenFlags & CFile::modeCreate) && !(nOpenFlags & CFile::modeWrite ))
+	if (nOpenFlags & CFile::typeText && !(nOpenFlags & CFile::modeCreate) && !(nOpenFlags & CFile::modeWrite))
 	{
 		m_bIsUnicodeText = IsFileUnicode(sFilePath);
 
@@ -312,11 +312,11 @@ unsigned long CStdioFileEx::GetCharCount()
 	if (m_pStream)
 	{
 		// Get size of chars in file
-		nCharSize = (ULONG)m_bIsUnicodeText ? sizeof(wchar_t): sizeof(char);
+		nCharSize = (ULONG)m_bIsUnicodeText ? sizeof(wchar_t) : sizeof(char);
 
 		// If Unicode, remove byte order mark from count
 		nByteCount = (ULONG)GetLength();
-		
+
 		if (m_bIsUnicodeText)
 		{
 			nByteCount = nByteCount - sizeof(wchar_t);
@@ -349,7 +349,7 @@ unsigned long CStdioFileEx::GetCharCount()
 int CStdioFileEx::GetUnicodeStringFromMultiByteString(IN char * szMultiByteString, OUT wchar_t* szUnicodeString, IN OUT int& nUnicodeBufferSize, IN UINT nCodePage)
 {
 	int		nCharsWritten = 0;
-		
+
 	if (szUnicodeString && szMultiByteString)
 	{
 		// If no code page specified, take default for system
@@ -358,15 +358,15 @@ int CStdioFileEx::GetUnicodeStringFromMultiByteString(IN char * szMultiByteStrin
 			nCodePage = GetACP();
 		}
 
-		try 
+		try
 		{
 			// Zero out buffer first. NB: nUnicodeBufferSize is NUMBER OF CHARS, NOT BYTES!
 			memset((void*)szUnicodeString, '\0', sizeof(wchar_t) *
 				nUnicodeBufferSize);
 
-			nCharsWritten = MultiByteToWideChar(nCodePage,MB_PRECOMPOSED,szMultiByteString,-1,szUnicodeString,nUnicodeBufferSize);
+			nCharsWritten = MultiByteToWideChar(nCodePage, MB_PRECOMPOSED, szMultiByteString, -1, szUnicodeString, nUnicodeBufferSize);
 		}
-		catch(...)
+		catch (...)
 		{
 			TRACE(_T("Controlled exception in MultiByteToWideChar!\n"));
 		}
@@ -377,7 +377,7 @@ int CStdioFileEx::GetUnicodeStringFromMultiByteString(IN char * szMultiByteStrin
 	{
 		nCharsWritten--;
 	}
-	
+
 	ASSERT(nCharsWritten > 0);
 	return nCharsWritten;
 }
@@ -398,39 +398,39 @@ int CStdioFileEx::GetUnicodeStringFromMultiByteString(IN char * szMultiByteStrin
 // Notes:		None.
 // Exceptions:	None.
 //
-int CStdioFileEx::GetMultiByteStringFromUnicodeString(wchar_t * szUnicodeString, char* szMultiByteString, 
-																			short nMultiByteBufferSize, UINT nCodePage)
+int CStdioFileEx::GetMultiByteStringFromUnicodeString(wchar_t * szUnicodeString, char* szMultiByteString,
+	short nMultiByteBufferSize, UINT nCodePage)
 {
-	BOOL		bUsedDefChar	= FALSE;
+	BOOL		bUsedDefChar = FALSE;
 	int		nCharsWritten = 0;
 
-	if (szUnicodeString && szMultiByteString) 
+	if (szUnicodeString && szMultiByteString)
 	{
 		// Zero out buffer first
 		memset((void*)szMultiByteString, '\0', nMultiByteBufferSize);
-		
+
 		// If no code page specified, take default for system
 		if (nCodePage == -1)
 		{
 			nCodePage = GetACP();
 		}
 
-		try 
+		try
 		{
 			nCharsWritten = WideCharToMultiByte(nCodePage, WC_COMPOSITECHECK | WC_SEPCHARS,
-							szUnicodeString,-1, szMultiByteString, nMultiByteBufferSize, sDEFAULT_UNICODE_FILLER_CHAR, &bUsedDefChar);
+				szUnicodeString, -1, szMultiByteString, nMultiByteBufferSize, sDEFAULT_UNICODE_FILLER_CHAR, &bUsedDefChar);
 		}
-		catch(...) 
+		catch (...)
 		{
 			TRACE(_T("Controlled exception in WideCharToMultiByte!\n"));
 		}
-	} 
+	}
 
 	// Now fix nCharsWritten 
 	if (nCharsWritten > 0)
 	{
 		nCharsWritten--;
 	}
-	
+
 	return nCharsWritten;
 }

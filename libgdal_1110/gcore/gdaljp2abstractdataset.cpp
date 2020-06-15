@@ -1,7 +1,7 @@
 /******************************************************************************
  * $Id: gdaljp2abstractdataset.cpp 27181 2014-04-14 19:32:33Z rouault $
  *
- * Project:  GDAL 
+ * Project:  GDAL
  * Purpose:  GDALGeorefPamDataset with helper to read georeferencing and other
  *           metadata from JP2Boxes
  * Author:   Even Rouault <even dot rouault at mines-paris dot org>
@@ -32,9 +32,9 @@
 #include "gdaljp2abstractdataset.h"
 #include "gdaljp2metadata.h"
 
-/************************************************************************/
-/*                     GDALJP2AbstractDataset()                         */
-/************************************************************************/
+ /************************************************************************/
+ /*                     GDALJP2AbstractDataset()                         */
+ /************************************************************************/
 
 GDALJP2AbstractDataset::GDALJP2AbstractDataset()
 {
@@ -53,90 +53,90 @@ GDALJP2AbstractDataset::~GDALJP2AbstractDataset()
 /************************************************************************/
 
 void GDALJP2AbstractDataset::LoadJP2Metadata(GDALOpenInfo* poOpenInfo,
-                                             const char* pszOverideFilename)
+	const char* pszOverideFilename)
 {
-    if( pszOverideFilename == NULL )
-        pszOverideFilename = poOpenInfo->pszFilename;
+	if (pszOverideFilename == NULL)
+		pszOverideFilename = poOpenInfo->pszFilename;
 
-/* -------------------------------------------------------------------- */
-/*      Check for georeferencing information.                           */
-/* -------------------------------------------------------------------- */
-    GDALJP2Metadata oJP2Geo;
+	/* -------------------------------------------------------------------- */
+	/*      Check for georeferencing information.                           */
+	/* -------------------------------------------------------------------- */
+	GDALJP2Metadata oJP2Geo;
 
-    if( oJP2Geo.ReadAndParse( pszOverideFilename ) )
-    {
-        CPLFree(pszProjection);
-        pszProjection = CPLStrdup(oJP2Geo.pszProjection);
-        bGeoTransformValid = oJP2Geo.bHaveGeoTransform;
-        memcpy( adfGeoTransform, oJP2Geo.adfGeoTransform, 
-                sizeof(double) * 6 );
-        nGCPCount = oJP2Geo.nGCPCount;
-        pasGCPList =
-            GDALDuplicateGCPs( oJP2Geo.nGCPCount, oJP2Geo.pasGCPList );
+	if (oJP2Geo.ReadAndParse(pszOverideFilename))
+	{
+		CPLFree(pszProjection);
+		pszProjection = CPLStrdup(oJP2Geo.pszProjection);
+		bGeoTransformValid = oJP2Geo.bHaveGeoTransform;
+		memcpy(adfGeoTransform, oJP2Geo.adfGeoTransform,
+			sizeof(double) * 6);
+		nGCPCount = oJP2Geo.nGCPCount;
+		pasGCPList =
+			GDALDuplicateGCPs(oJP2Geo.nGCPCount, oJP2Geo.pasGCPList);
 
-        if( oJP2Geo.bPixelIsPoint )
-            GDALPamDataset::SetMetadataItem(GDALMD_AREA_OR_POINT, GDALMD_AOP_POINT);
-    }
+		if (oJP2Geo.bPixelIsPoint)
+			GDALPamDataset::SetMetadataItem(GDALMD_AREA_OR_POINT, GDALMD_AOP_POINT);
+	}
 
-    if (oJP2Geo.pszXMPMetadata)
-    {
-        char *apszMDList[2];
-        apszMDList[0] = (char *) oJP2Geo.pszXMPMetadata;
-        apszMDList[1] = NULL;
-        GDALPamDataset::SetMetadata(apszMDList, "xml:XMP");
-    }
+	if (oJP2Geo.pszXMPMetadata)
+	{
+		char *apszMDList[2];
+		apszMDList[0] = (char *)oJP2Geo.pszXMPMetadata;
+		apszMDList[1] = NULL;
+		GDALPamDataset::SetMetadata(apszMDList, "xml:XMP");
+	}
 
-/* -------------------------------------------------------------------- */
-/*      Do we have any XML boxes we would like to treat as special      */
-/*      domain metadata?                                                */
-/* -------------------------------------------------------------------- */
-    int iBox;
+	/* -------------------------------------------------------------------- */
+	/*      Do we have any XML boxes we would like to treat as special      */
+	/*      domain metadata?                                                */
+	/* -------------------------------------------------------------------- */
+	int iBox;
 
-    for( iBox = 0; 
-            oJP2Geo.papszGMLMetadata
-                && oJP2Geo.papszGMLMetadata[iBox] != NULL; 
-            iBox++ )
-    {
-        char *pszName = NULL;
-        const char *pszXML = 
-            CPLParseNameValue( oJP2Geo.papszGMLMetadata[iBox], 
-                                &pszName );
-        CPLString osDomain;
-        char *apszMDList[2];
+	for (iBox = 0;
+		oJP2Geo.papszGMLMetadata
+		&& oJP2Geo.papszGMLMetadata[iBox] != NULL;
+		iBox++)
+	{
+		char *pszName = NULL;
+		const char *pszXML =
+			CPLParseNameValue(oJP2Geo.papszGMLMetadata[iBox],
+				&pszName);
+		CPLString osDomain;
+		char *apszMDList[2];
 
-        osDomain.Printf( "xml:%s", pszName );
-        apszMDList[0] = (char *) pszXML;
-        apszMDList[1] = NULL;
+		osDomain.Printf("xml:%s", pszName);
+		apszMDList[0] = (char *)pszXML;
+		apszMDList[1] = NULL;
 
-        GDALPamDataset::SetMetadata( apszMDList, osDomain );
+		GDALPamDataset::SetMetadata(apszMDList, osDomain);
 
-        CPLFree( pszName );
-    }
+		CPLFree(pszName);
+	}
 
-/* -------------------------------------------------------------------- */
-/*      Do we have other misc metadata?                                 */
-/* -------------------------------------------------------------------- */
-    if( oJP2Geo.papszMetadata != NULL )
-    {
-        char **papszMD = CSLDuplicate(GDALPamDataset::GetMetadata());
+	/* -------------------------------------------------------------------- */
+	/*      Do we have other misc metadata?                                 */
+	/* -------------------------------------------------------------------- */
+	if (oJP2Geo.papszMetadata != NULL)
+	{
+		char **papszMD = CSLDuplicate(GDALPamDataset::GetMetadata());
 
-        papszMD = CSLMerge( papszMD, oJP2Geo.papszMetadata );
-        GDALPamDataset::SetMetadata( papszMD );
+		papszMD = CSLMerge(papszMD, oJP2Geo.papszMetadata);
+		GDALPamDataset::SetMetadata(papszMD);
 
-        CSLDestroy( papszMD );
-    }
+		CSLDestroy(papszMD);
+	}
 
-/* -------------------------------------------------------------------- */
-/*      Check for world file.                                           */
-/* -------------------------------------------------------------------- */
-    if( !bGeoTransformValid )
-    {
-        bGeoTransformValid |=
-            GDALReadWorldFile2( pszOverideFilename, NULL,
-                                adfGeoTransform,
-                                poOpenInfo->papszSiblingFiles, NULL )
-            || GDALReadWorldFile2( pszOverideFilename, ".wld",
-                                   adfGeoTransform,
-                                   poOpenInfo->papszSiblingFiles, NULL );
-    }
+	/* -------------------------------------------------------------------- */
+	/*      Check for world file.                                           */
+	/* -------------------------------------------------------------------- */
+	if (!bGeoTransformValid)
+	{
+		bGeoTransformValid |=
+			GDALReadWorldFile2(pszOverideFilename, NULL,
+				adfGeoTransform,
+				poOpenInfo->papszSiblingFiles, NULL)
+			|| GDALReadWorldFile2(pszOverideFilename, ".wld",
+				adfGeoTransform,
+				poOpenInfo->papszSiblingFiles, NULL);
+	}
 }

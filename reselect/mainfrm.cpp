@@ -41,7 +41,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_DESTROY()
 	ON_UPDATE_COMMAND_UI(ID_EDIT_COPY, OnUpdateEditCopy)
 	//}}AFX_MSG_MAP
-	ON_CBN_SELENDOK(AFX_IDW_TOOLBAR + 1,OnNewAddress)
+	ON_CBN_SELENDOK(AFX_IDW_TOOLBAR + 1, OnNewAddress)
 	ON_COMMAND(IDOK, OnNewAddressEnter)
 	ON_NOTIFY(TBN_DROPDOWN, AFX_IDW_TOOLBAR, OnDropDown)
 	ON_COMMAND(ID_FONT_DROPDOWN, DoNothing)
@@ -97,7 +97,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	img.Detach();
 	m_wndToolBar.ModifyStyle(0, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT);
 
-	m_wndToolBar.SetButtons(NULL,13);
+	m_wndToolBar.SetButtons(NULL, 13);
 
 	// set up each toolbar button
 	m_wndToolBar.SetButtonInfo(0, ID_GO_BACK, TBSTYLE_BUTTON, 0);
@@ -150,7 +150,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	// set up toolbar button sizes
 	m_wndToolBar.GetItemRect(0, &rectToolBar);
-	m_wndToolBar.SetSizes(rectToolBar.Size(), CSize(30,20));
+	m_wndToolBar.SetSizes(rectToolBar.Size(), CSize(30, 20));
 
 	// create a combo box for the address bar
 	if (!m_wndAddress.Create(CBS_DROPDOWN | WS_CHILD, CRect(0, 0, 200, 120), this, AFX_IDW_TOOLBAR + 1))
@@ -190,10 +190,10 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndReBar.GetReBarCtrl().SetBandInfo(2, &rbbi);
 
 	//InitAddressBar();
-	rbbi.wID=WID_ADDRESS;
-	rbbi.fMask=RBBIM_ID;
+	rbbi.wID = WID_ADDRESS;
+	rbbi.fMask = RBBIM_ID;
 	m_wndReBar.GetReBarCtrl().SetBandInfo(2, &rbbi);
-	m_bShowAddress=TRUE;
+	m_bShowAddress = TRUE;
 	OnShowAddress();
 
 	m_wndToolBar.SetBarStyle(m_wndToolBar.GetBarStyle() |
@@ -201,13 +201,13 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	if (!m_wndStatusBar.Create(this) ||
 		!m_wndStatusBar.SetIndicators(indicators,
-		  sizeof(indicators)/sizeof(UINT)))
+			sizeof(indicators) / sizeof(UINT)))
 	{
 		TRACE0("Failed to create status bar\n");
 		return -1;      // fail to create
 	}
 
-    PostMessage(WM_COMMAND,ID_VIEW_STATUS_BAR);
+	PostMessage(WM_COMMAND, ID_VIEW_STATUS_BAR);
 
 	return 0;
 }
@@ -225,58 +225,58 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 ////////////////////////////////////////////////////////////
 HRESULT CMainFrame::ExecCmdTarget(const GUID *pguidCmdGroup, DWORD nCmdID)
 {
-   LPDISPATCH lpDispatch = NULL;
-   LPOLECOMMANDTARGET lpOleCommandTarget = NULL;
-   HRESULT hr = E_FAIL;
+	LPDISPATCH lpDispatch = NULL;
+	LPOLECOMMANDTARGET lpOleCommandTarget = NULL;
+	HRESULT hr = E_FAIL;
 
-   lpDispatch = ((CReselectVw*)GetActiveView())->GetHtmlDocument();
-   ASSERT(lpDispatch);
+	lpDispatch = ((CReselectVw*)GetActiveView())->GetHtmlDocument();
+	ASSERT(lpDispatch);
 
-   if (lpDispatch)
-   {
-      // Get an pointer for the IOleCommandTarget interface.
-      hr = lpDispatch->QueryInterface(IID_IOleCommandTarget, (void**)&lpOleCommandTarget);
-      ASSERT(lpOleCommandTarget);
+	if (lpDispatch)
+	{
+		// Get an pointer for the IOleCommandTarget interface.
+		hr = lpDispatch->QueryInterface(IID_IOleCommandTarget, (void**)&lpOleCommandTarget);
+		ASSERT(lpOleCommandTarget);
 
-      lpDispatch->Release();
+		lpDispatch->Release();
 
-      if (SUCCEEDED(hr))
-      {
-         // Invoke the given command id for the WebBrowser control
-         hr = lpOleCommandTarget->Exec(pguidCmdGroup, nCmdID, 0, NULL, NULL);
-         lpOleCommandTarget->Release();
-      }
-   }
+		if (SUCCEEDED(hr))
+		{
+			// Invoke the given command id for the WebBrowser control
+			hr = lpOleCommandTarget->Exec(pguidCmdGroup, nCmdID, 0, NULL, NULL);
+			lpOleCommandTarget->Release();
+		}
+	}
 
-   return hr;
+	return hr;
 }
 
 BOOL CMainFrame::SelectionPresent(void)
 {
-   HRESULT hr;
-   BOOL bret=FALSE;
-								  
-   IDispatch * pDocDisp = ((CReselectVw*)GetActiveView())->GetHtmlDocument();
-   
-   if (pDocDisp != NULL) {
-	  IHTMLDocument2* pDoc;
-      hr=pDocDisp->QueryInterface(IID_IHTMLDocument2, (void**)&pDoc);
-      if(SUCCEEDED(hr))
-      {
-		  IHTMLSelectionObject *pSel;
-		  hr=pDoc->get_selection(&pSel);
-		  if(SUCCEEDED(hr)) {
-			  BSTR bs;
-			  hr=pSel->get_type(&bs);
-			  if(SUCCEEDED(hr) && CString(bs)=="Text") bret=TRUE;
-			  pSel->Release();
-		  }
-		  pDoc->Release();
-      }
-      pDocDisp->Release();
-   }
-   
-   return bret;
+	HRESULT hr;
+	BOOL bret = FALSE;
+
+	IDispatch * pDocDisp = ((CReselectVw*)GetActiveView())->GetHtmlDocument();
+
+	if (pDocDisp != NULL) {
+		IHTMLDocument2* pDoc;
+		hr = pDocDisp->QueryInterface(IID_IHTMLDocument2, (void**)&pDoc);
+		if (SUCCEEDED(hr))
+		{
+			IHTMLSelectionObject *pSel;
+			hr = pDoc->get_selection(&pSel);
+			if (SUCCEEDED(hr)) {
+				BSTR bs;
+				hr = pSel->get_type(&bs);
+				if (SUCCEEDED(hr) && CString(bs) == "Text") bret = TRUE;
+				pSel->Release();
+			}
+			pDoc->Release();
+		}
+		pDocDisp->Release();
+	}
+
+	return bret;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -304,7 +304,7 @@ void CMainFrame::SetAddress(LPCTSTR lpszUrl)
 	// so make sure the text in the address bar is up to date and stop the
 	// animation.
 	m_wndAddress.SetWindowText(lpszUrl);
-	if(!m_uTimer) StopAnimation();
+	if (!m_uTimer) StopAnimation();
 }
 
 void CMainFrame::StopAnimation()
@@ -317,7 +317,7 @@ void CMainFrame::StartAnimation(BOOL bTimer)
 {
 	// Start the animation.  This is called when the browser begins to
 	// navigate to a new location
-	if(bTimer) m_uTimer=SetTimer(0x128,2000,NULL);
+	if (bTimer) m_uTimer = SetTimer(0x128, 2000, NULL);
 	m_wndAnimate.Play(0, -1, -1);
 }
 
@@ -367,7 +367,7 @@ void CMainFrame::OnDropDown(NMHDR* pNotifyStruct, LRESULT* pResult)
 	m_wndToolBar.GetToolBarCtrl().GetRect(pNMToolBar->iItem, &rect);
 	rect.top = rect.bottom;
 	::ClientToScreen(pNMToolBar->hdr.hwndFrom, &rect.TopLeft());
-	if(pNMToolBar->iItem == ID_FONT_DROPDOWN)
+	if (pNMToolBar->iItem == ID_FONT_DROPDOWN)
 	{
 		CMenu menu;
 		CMenu* pPopup;
@@ -380,66 +380,66 @@ void CMainFrame::OnDropDown(NMHDR* pNotifyStruct, LRESULT* pResult)
 	*pResult = TBDDRET_DEFAULT;
 }
 
-void CMainFrame::OnEditCopy() 
+void CMainFrame::OnEditCopy()
 {
-   ExecCmdTarget(NULL, OLECMDID_COPY);
+	ExecCmdTarget(NULL, OLECMDID_COPY);
 }
 
-void CMainFrame::OnEditFind() 
+void CMainFrame::OnEditFind()
 {
-   // Invoke the find dialog box
-   ExecCmdTarget(&CGID_IWebBrowser, CWBCmdGroup::HTMLID_FIND);
+	// Invoke the find dialog box
+	ExecCmdTarget(&CGID_IWebBrowser, CWBCmdGroup::HTMLID_FIND);
 }
 
-void CMainFrame::OnEditSelectAll() 
+void CMainFrame::OnEditSelectAll()
 {
-   // Select all items in the WebBrowser document
-   ExecCmdTarget(NULL, OLECMDID_SELECTALL);
+	// Select all items in the WebBrowser document
+	ExecCmdTarget(NULL, OLECMDID_SELECTALL);
 }
 
-void CMainFrame::OnShowAddress() 
+void CMainFrame::OnShowAddress()
 {
-	int i=m_wndReBar.GetReBarCtrl().IDToIndex(WID_ADDRESS);
+	int i = m_wndReBar.GetReBarCtrl().IDToIndex(WID_ADDRESS);
 
-	m_bShowAddress=(m_bShowAddress==0);
-	m_wndReBar.GetReBarCtrl().ShowBand(i,m_bShowAddress);
+	m_bShowAddress = (m_bShowAddress == 0);
+	m_wndReBar.GetReBarCtrl().ShowBand(i, m_bShowAddress);
 }
 
-void CMainFrame::OnUpdateShowAddress(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateShowAddress(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck(m_bShowAddress);	
+	pCmdUI->SetCheck(m_bShowAddress);
 }
 
-void CMainFrame::OnTimer(UINT nIDEvent) 
+void CMainFrame::OnTimer(UINT nIDEvent)
 {
 	// TODO: Add your message handler code here and/or call default
-	if(nIDEvent==m_uTimer) {
+	if (nIDEvent == m_uTimer) {
 		KillTimer(nIDEvent);
-		m_uTimer=0;
+		m_uTimer = 0;
 		StopAnimation();
 	}
 	else CFrameWnd::OnTimer(nIDEvent);
 }
 
-void CMainFrame::OnGoTss() 
+void CMainFrame::OnGoTss()
 {
 	theApp.ExecuteUrl(theApp.m_link);
 }
 
 void CMainFrame::RestoreWindow(int nShow)
 {
-  CWindowPlacement wp;
-  if(!wp.Restore(this)) ShowWindow(nShow);
+	CWindowPlacement wp;
+	if (!wp.Restore(this)) ShowWindow(nShow);
 }
 
 void CMainFrame::OnDestroy()
 {
-  CWindowPlacement wp;
-  wp.Save(this);
-  CFrameWnd::OnDestroy();
+	CWindowPlacement wp;
+	wp.Save(this);
+	CFrameWnd::OnDestroy();
 }
 
-void CMainFrame::OnUpdateEditCopy(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateEditCopy(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(SelectionPresent());
 }

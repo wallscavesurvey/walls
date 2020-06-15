@@ -6,22 +6,22 @@ class CCenterViewDlg : public CDialog
 {
 	DECLARE_DYNAMIC(CCenterViewDlg)
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_CENTER_VIEW };
 
 public:
-	CCenterViewDlg(const CFltPoint &fpt,CWnd* pParent = NULL);   // standard constructor
+	CCenterViewDlg(const CFltPoint &fpt, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CCenterViewDlg();
 
 	BOOL m_bMark;
 	bool m_bZoom;
-	CFltPoint m_fpt,m_fptOrg;
+	CFltPoint m_fpt, m_fptOrg;
 
 private:
 	CEditLabel m_ceEast;
 	CEditLabel m_ceNorth;
 
-	double m_f0,m_f1;
+	double m_f0, m_f1;
 
 	CWallsMapView *m_pView;
 	CWallsMapDoc *m_pDoc;
@@ -30,21 +30,21 @@ private:
 	int m_iZoneDoc; //Zone of view
 	INT8 m_iNadSel; //Datum setting of selection (0 if unsupported)
 	INT8 m_iNadDoc; //Datum setting of view (m_points)
-	bool m_bNadToggle,m_bValidEast,m_bValidNorth,m_bValidZone,m_bUtmDisplayed;
-	bool m_bInitFlag,m_bOutOfZone;
+	bool m_bNadToggle, m_bValidEast, m_bValidNorth, m_bValidZone, m_bUtmDisplayed;
+	bool m_bInitFlag, m_bOutOfZone;
 
-	BOOL IsEnabled(UINT id) {return GetDlgItem(id)->IsWindowEnabled();}
-	void Disable(UINT id) {GetDlgItem(id)->EnableWindow(FALSE);}
-	void Enable(UINT id) {GetDlgItem(id)->EnableWindow(TRUE);}
-	void Enable(UINT id,bool bEnable) {GetDlgItem(id)->EnableWindow(bEnable==true);}
-	void SetFocus(UINT id) {GetDlgItem(id)->SetFocus();}
-	void SetText(UINT id,LPCSTR text) {m_bInitFlag=true;GetDlgItem(id)->SetWindowText(text);m_bInitFlag=false;}
-	void Hide(UINT id) {GetDlgItem(id)->ShowWindow(SW_HIDE);}
-	void Show(UINT id) {GetDlgItem(id)->ShowWindow(SW_SHOW);}
-	void Show(UINT id,bool bShow) {GetDlgItem(id)->ShowWindow(bShow?SW_SHOW:SW_HIDE);}
+	BOOL IsEnabled(UINT id) { return GetDlgItem(id)->IsWindowEnabled(); }
+	void Disable(UINT id) { GetDlgItem(id)->EnableWindow(FALSE); }
+	void Enable(UINT id) { GetDlgItem(id)->EnableWindow(TRUE); }
+	void Enable(UINT id, bool bEnable) { GetDlgItem(id)->EnableWindow(bEnable == true); }
+	void SetFocus(UINT id) { GetDlgItem(id)->SetFocus(); }
+	void SetText(UINT id, LPCSTR text) { m_bInitFlag = true; GetDlgItem(id)->SetWindowText(text); m_bInitFlag = false; }
+	void Hide(UINT id) { GetDlgItem(id)->ShowWindow(SW_HIDE); }
+	void Show(UINT id) { GetDlgItem(id)->ShowWindow(SW_SHOW); }
+	void Show(UINT id, bool bShow) { GetDlgItem(id)->ShowWindow(bShow ? SW_SHOW : SW_HIDE); }
 
 	bool InitFormat();
-	bool IsLocationValid() {return m_bValidNorth && m_bValidEast && m_bValidZone;}
+	bool IsLocationValid() { return m_bValidNorth && m_bValidEast && m_bValidZone; }
 	void OnEnChangeEditCoord(bool bValid);
 	void SetCoordLabels();
 	bool SetCoordFormat();
@@ -55,31 +55,31 @@ private:
 
 	int GetTrueZone();
 
-	void SetCheck(UINT id,BOOL bChk)
+	void SetCheck(UINT id, BOOL bChk)
 	{
 		((CButton *)GetDlgItem(id))->SetCheck(bChk);
 	}
 
 	bool IsChecked(UINT id)
 	{
-		return ((CButton *)GetDlgItem(id))->GetCheck()==BST_CHECKED;
+		return ((CButton *)GetDlgItem(id))->GetCheck() == BST_CHECKED;
 	}
 
-	void SetRO(UINT id,BOOL bRO)
+	void SetRO(UINT id, BOOL bRO)
 	{
 		((CEdit *)GetDlgItem(id))->SetReadOnly(bRO);
 	}
 
-	void GetText(UINT id,CString &s)
+	void GetText(UINT id, CString &s)
 	{
 		GetDlgItem(id)->GetWindowText(s);
 	}
-	void GetText(UINT id,LPSTR buf,UINT sizBuf)
+	void GetText(UINT id, LPSTR buf, UINT sizBuf)
 	{
-		GetDlgItem(id)->GetWindowText(buf,sizBuf);
+		GetDlgItem(id)->GetWindowText(buf, sizBuf);
 	}
 
-//==============================================
+	//==============================================
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support

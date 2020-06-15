@@ -6,7 +6,7 @@
 //
 
 #ifndef __AFXWIN_H__
-    #error include 'stdafx.h' before including this file for PCH
+#error include 'stdafx.h' before including this file for PCH
 #endif
 
 #ifndef SC_VIEWER_HGAPP_H
@@ -26,13 +26,13 @@
 class CSceneApp : public CApplication
 {
 public:
-    CSceneApp();
-    ~CSceneApp();
+	CSceneApp();
+	~CSceneApp();
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CSceneApp)
-	public:
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CSceneApp)
+public:
 	virtual BOOL InitInstance();
 	virtual int ExitInstance();
 	virtual BOOL OnIdle(LONG lCount);
@@ -42,23 +42,23 @@ public:
 	virtual BOOL CreateInitialDocument();
 #endif
 
-// members
+	// members
 public:
 	virtual CDocument * OpenDocumentFile(LPCTSTR lpszFileName);
-  // main viewer class
-  //CSceneViewer* scViewer_;
+	// main viewer class
+	//CSceneViewer* scViewer_;
 
-  static bool m_bCmdLineOpen;
+	static bool m_bCmdLineOpen;
 
 protected:
-    BOOL FirstInstance();
+	BOOL FirstInstance();
 
-    //{{AFX_MSG(CSceneApp)
-    afx_msg void OnAppAbout();
-        // NOTE - the ClassWizard will add and remove member functions here.
-        //    DO NOT EDIT what you see in these blocks of generated code !
-    //}}AFX_MSG
-    DECLARE_MESSAGE_MAP()
+	//{{AFX_MSG(CSceneApp)
+	afx_msg void OnAppAbout();
+	// NOTE - the ClassWizard will add and remove member functions here.
+	//    DO NOT EDIT what you see in these blocks of generated code !
+//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
 };
 
 extern CSceneApp NEAR theApp;

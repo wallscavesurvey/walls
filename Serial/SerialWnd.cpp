@@ -63,10 +63,10 @@ CSerialWnd::CSerialWnd()
 	, m_lParam(0)
 	, m_bReceiveAll(0)
 {
-    ghMutex = CreateMutex( 
-        NULL,              // default security attributes
-        FALSE,             // initially not owned
-        NULL);             // unnamed mutex
+	ghMutex = CreateMutex(
+		NULL,              // default security attributes
+		FALSE,             // initially not owned
+		NULL);             // unnamed mutex
 }
 
 CSerialWnd::~CSerialWnd()
@@ -86,17 +86,17 @@ CSerialWnd::~CSerialWnd()
 	CloseHandle(ghMutex);
 }
 
-LONG CSerialWnd::Open (LPCTSTR lpszDevice, EBaudrate eBaudrate, HWND hwndDest, UINT nComMsg, LPARAM lParam, DWORD dwInQueue, DWORD dwOutQueue)
+LONG CSerialWnd::Open(LPCTSTR lpszDevice, EBaudrate eBaudrate, HWND hwndDest, UINT nComMsg, LPARAM lParam, DWORD dwInQueue, DWORD dwOutQueue)
 {
 	// if eBaudrate==EBaudUnknown, no port initialization will occur after CSerialEx::Open() is called
 
-	long lLastError = CSerialEx::Open(lpszDevice,dwInQueue,dwOutQueue);
+	long lLastError = CSerialEx::Open(lpszDevice, dwInQueue, dwOutQueue);
 
 	if (lLastError != ERROR_SUCCESS)
 		return lLastError;
 
-	if(eBaudrate!=EBaudUnknown) {
-		if(Setup(eBaudrate,EData8,EParNone,EStop1)) {
+	if (eBaudrate != EBaudUnknown) {
+		if (Setup(eBaudrate, EData8, EParNone, EStop1)) {
 			Close();
 			return lLastError;
 		}
@@ -104,8 +104,8 @@ LONG CSerialWnd::Open (LPCTSTR lpszDevice, EBaudrate eBaudrate, HWND hwndDest, U
 
 	// Save the window handle, notification message and user message
 	m_hwndDest = hwndDest;
-	m_nComMsg  = nComMsg?nComMsg:mg_nDefaultComMsg;
-	m_lParam   = lParam;
+	m_nComMsg = nComMsg ? nComMsg : mg_nDefaultComMsg;
+	m_lParam = lParam;
 
 	// Start the listener thread
 	lLastError = StartListener();
@@ -124,75 +124,74 @@ LONG CSerialWnd::Open (LPCTSTR lpszDevice, EBaudrate eBaudrate, HWND hwndDest, U
 	return m_lLastError;
 }
 
-LONG CSerialWnd::Close (void)
+LONG CSerialWnd::Close(void)
 {
 	// Reset all members
-	m_hwndDest   = 0;
-	m_nComMsg    = WM_NULL;
+	m_hwndDest = 0;
+	m_nComMsg = WM_NULL;
 
 	// Call the base class
 	return CSerialEx::Close();
 }
 
-void CSerialWnd::OnEvent (EEvent eEvent, EError eError)
+void CSerialWnd::OnEvent(EEvent eEvent, EError eError)
 {
 	static GPS_POSITION gp; //protected by mutex
 
-	m_lParam=0;
+	m_lParam = 0;
 
 	if (eEvent & EEventRecv)
 	{
-		DWORD dwProcessedCount=m_NMEAParser.m_dwProcessedCount;
-		DWORD dwGGACount=m_NMEAParser.m_dwGGACount;
+		DWORD dwProcessedCount = m_NMEAParser.m_dwProcessedCount;
+		DWORD dwGGACount = m_NMEAParser.m_dwGGACount;
 
 		// Create a clean buffer
 		DWORD dwRead;
 		BYTE szData[256];
-		const int nBuflen = sizeof(szData)-1;
+		const int nBuflen = sizeof(szData) - 1;
 
 		// Obtain the data from the serial port
 		do
 		{
-			Read(szData,nBuflen,&dwRead);
+			Read(szData, nBuflen, &dwRead);
 			m_NMEAParser.ParseBuffer(szData, dwRead);
-		}
-		while (dwRead == nBuflen);
+		} while (dwRead == nBuflen);
 
-		if(dwProcessedCount!=m_NMEAParser.m_dwProcessedCount &&
-			(m_bReceiveAll || dwGGACount!=m_NMEAParser.m_dwGGACount))
+		if (dwProcessedCount != m_NMEAParser.m_dwProcessedCount &&
+			(m_bReceiveAll || dwGGACount != m_NMEAParser.m_dwGGACount))
 		{
 			// lock mutex for gp access --
-			DWORD dwWaitResult = ::WaitForSingleObject(ghMutex,1000); //1 sec vs INFINITE
- 
-			switch (dwWaitResult) 
+			DWORD dwWaitResult = ::WaitForSingleObject(ghMutex, 1000); //1 sec vs INFINITE
+
+			switch (dwWaitResult)
 			{
-				case WAIT_OBJECT_0:
-					// The thread got ownership of the mutex
-					gp=m_NMEAParser.m_Pos;
-					ReleaseMutex(ghMutex); 
-					m_lParam=(LPARAM)&gp;
-					break; 
+			case WAIT_OBJECT_0:
+				// The thread got ownership of the mutex
+				gp = m_NMEAParser.m_Pos;
+				ReleaseMutex(ghMutex);
+				m_lParam = (LPARAM)&gp;
+				break;
 
-				case WAIT_TIMEOUT:
-				case WAIT_FAILED:
-					ASSERT(0);
-					return;
+			case WAIT_TIMEOUT:
+			case WAIT_FAILED:
+				ASSERT(0);
+				return;
 
-				case WAIT_ABANDONED: 
-					// The thread got ownership of an abandoned mutex
-					ASSERT(0);
-					ReleaseMutex(ghMutex); //necessary??
-					return;
+			case WAIT_ABANDONED:
+				// The thread got ownership of an abandoned mutex
+				ASSERT(0);
+				ReleaseMutex(ghMutex); //necessary??
+				return;
 
-				default:
-					ASSERT(0);
-					return;
+			default:
+				ASSERT(0);
+				return;
 			}
 		}
 		else return;
 	}
-	else if(!eError) return;
+	else if (!eError) return;
 
 	// Post message to the client window
-	::PostMessage(m_hwndDest,m_nComMsg,MAKEWPARAM(eEvent,eError),m_lParam);
+	::PostMessage(m_hwndDest, m_nComMsg, MAKEWPARAM(eEvent, eError), m_lParam);
 }

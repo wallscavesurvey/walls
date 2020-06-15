@@ -33,13 +33,13 @@
 
 #pragma warning(disable:4305)
 
-Light::Light (int obj_n, int par, const char* name)
-: Object3D (obj_n, par, name)
+Light::Light(int obj_n, int par, const char* name)
+	: Object3D(obj_n, par, name)
 {
-  initRGB (intensity_, 0.7, 0.7, 0.7);  // default intensity
-  // default: positional light source
-  positional_ = 1.0;
-  camlgt_ = 0;
+	initRGB(intensity_, 0.7, 0.7, 0.7);  // default intensity
+	// default: positional light source
+	positional_ = 1.0;
+	camlgt_ = 0;
 }
 
 
@@ -48,34 +48,34 @@ Light::Light (int obj_n, int par, const char* name)
 
 
 
-void Light::print ()
+void Light::print()
 {
-  cout << "Light. ";
+	cout << "Light. ";
 
-  printobj ();
+	printobj();
 
-  cout << "  Intensity (rgb): " 
-    << intensity_.R << ", "
-    << intensity_.G << ", "
-    << intensity_.B << endl;
+	cout << "  Intensity (rgb): "
+		<< intensity_.R << ", "
+		<< intensity_.G << ", "
+		<< intensity_.B << endl;
 
-  cout << "  " << (positional_ ? "positional" : "directional (inifite)") << " light source";
-  if (camlgt_)
-    cout << ", bound to active camera";
-  cout << '.' << endl;
+	cout << "  " << (positional_ ? "positional" : "directional (inifite)") << " light source";
+	if (camlgt_)
+		cout << ", bound to active camera";
+	cout << '.' << endl;
 
-  cout << endl;
+	cout << endl;
 }
 
 
 
-void Light::setlight (int index)
-{ 
-  // note: position cannot be stored, as GL's viewing transformation is stored
-  // in the model matrix and not in the projection matrix
-  // otherwise lighting calculations are incorrect
+void Light::setlight(int index)
+{
+	// note: position cannot be stored, as GL's viewing transformation is stored
+	// in the model matrix and not in the projection matrix
+	// otherwise lighting calculations are incorrect
 
-//cerr << "setting a light source. positional: " << positional_ << ", camera light: " << camlgt_ << endl;
+  //cerr << "setting a light source. positional: " << positional_ << ", camera light: " << camlgt_ << endl;
 
-  ge3dLightSource (index, &intensity_, trfmat_, positional_, camlgt_);
+	ge3dLightSource(index, &intensity_, trfmat_, positional_, camlgt_);
 }

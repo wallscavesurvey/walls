@@ -1,4 +1,4 @@
-/* global.h --- prototypes for functions and global variables 
+/* global.h --- prototypes for functions and global variables
  *
  * Initial code by Alex Jakulin,  Aug. 1995
  *
@@ -13,9 +13,9 @@
 
 #include "global_ed.h"
 
-/****** Function prototypes */
+ /****** Function prototypes */
 
-/* lossless.c */
+ /* lossless.c */
 void lossless_doscanline(pixel *psl, pixel *sl, int no);
 
 /* initialize.c */

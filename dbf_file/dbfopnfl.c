@@ -2,5 +2,5 @@
 
 DWORD DBFAPI dbf_OpenFlags(DBF_NO dbf)
 {
-  return _GETDBFU?_DBFU->U_Mode:0;
+	return _GETDBFU ? _DBFU->U_Mode : 0;
 }

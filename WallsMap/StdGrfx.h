@@ -16,11 +16,11 @@ public:
 	static CBrush* windowBrush();
 	static CBrush* scrollBrush();
 
-	static void drawframed3dBox( CDC* dc, CRect rect );
-	static void draw3dFrame( CDC* dc, CRect rect );
-	static void drawsunken3dFrame( CDC* dc, CRect rect );
-	static void drawdoublesunken3dFrame( CDC* dc, CRect rect );
-	static void drawsunkenframed3dWindow( CDC* dc, CRect rect );
+	static void drawframed3dBox(CDC* dc, CRect rect);
+	static void draw3dFrame(CDC* dc, CRect rect);
+	static void drawsunken3dFrame(CDC* dc, CRect rect);
+	static void drawdoublesunken3dFrame(CDC* dc, CRect rect);
+	static void drawsunkenframed3dWindow(CDC* dc, CRect rect);
 
 private:
 

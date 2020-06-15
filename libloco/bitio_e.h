@@ -16,7 +16,7 @@
 #include "global_e.h"
 
 
-//extern void lco_flushbuff();
+ //extern void lco_flushbuff();
 
 #define PUT_ZEROES(n)									\
 {                                                       \

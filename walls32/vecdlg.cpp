@@ -49,8 +49,8 @@ END_MESSAGE_MAP()
 BOOL CVecDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	
+
 	CenterWindow();
-	
+
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }

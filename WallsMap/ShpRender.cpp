@@ -11,8 +11,8 @@
 #endif
 
 //In centroid.cpp --
-BOOL PolyCentroid(LPPOINT pCentroid,LPPOINT points, LPINT pnPoints,int nPolys);
-BOOL PolyCentroidF(CD2DPointF &pCentroid,CD2DPointF *points, LPINT pnPoints,int nPolys);
+BOOL PolyCentroid(LPPOINT pCentroid, LPPOINT points, LPINT pnPoints, int nPolys);
+BOOL PolyCentroidF(CD2DPointF &pCentroid, CD2DPointF *points, LPINT pnPoints, int nPolys);
 
 #ifdef _USE_CRO
 #define CAIRO_WIN32_STATIC_BUILD
@@ -38,132 +38,132 @@ static int lblFldLen;
 static int lblHeight;
 static int lblOffset;
 
-static double clipXmin,clipXmax,clipYmin,clipYmax,clipScale;
+static double clipXmin, clipXmax, clipYmin, clipYmax, clipScale;
 
 static __inline void SetClipRange(const CFltRect &rect, const double &scale)
 {
-	clipXmin=rect.l;
-	clipXmax=rect.r;
-	clipYmin=rect.b;
-	clipYmax=rect.t;
-	clipScale=scale;
+	clipXmin = rect.l;
+	clipXmax = rect.r;
+	clipYmin = rect.b;
+	clipYmax = rect.t;
+	clipScale = scale;
 }
 
 static __inline CD2DPointF ClippedPtF(const CFltPoint &p)
 {
 	return CD2DPointF((float)(int)(clipScale*(p.x - clipXmin)) + 0.5f,
-		              (float)(int)(clipScale*(clipYmax - p.y)) + 0.5f);
+		(float)(int)(clipScale*(clipYmax - p.y)) + 0.5f);
 }
 
-static void PrintLabel(CDC *pDC,CPoint &pt,LPCSTR pStart)
+static void PrintLabel(CDC *pDC, CPoint &pt, LPCSTR pStart)
 {
-	int len=lblFldLen;
-	while(len && *pStart==' ') {len--; pStart++;}
-	while(len && pStart[len-1]==' ') len--;
-	if(len) ::TextOut(pDC->GetSafeHdc(),pt.x,pt.y,pStart,len);
+	int len = lblFldLen;
+	while (len && *pStart == ' ') { len--; pStart++; }
+	while (len && pStart[len - 1] == ' ') len--;
+	if (len) ::TextOut(pDC->GetSafeHdc(), pt.x, pt.y, pStart, len);
 }
 
-bool CShpLayer::InitTextLabels(CDC *pDC,BOOL bInit)
+bool CShpLayer::InitTextLabels(CDC *pDC, BOOL bInit)
 {
-	HDC hdc=pDC->GetSafeHdc();
-	if(bInit) {
-		if(CLayerSet::m_bExporting) {
-			long lfHeight=m_font.lf.lfHeight;
-			m_font.lf.lfHeight=(long)(CLayerSet::m_fExportScaleRatio*m_font.lf.lfHeight);
-			BOOL ok=InitLabelDC(hdc,&m_font,m_crLbl);
-			m_font.lf.lfHeight=lfHeight;
-			if(!ok) return false;
+	HDC hdc = pDC->GetSafeHdc();
+	if (bInit) {
+		if (CLayerSet::m_bExporting) {
+			long lfHeight = m_font.lf.lfHeight;
+			m_font.lf.lfHeight = (long)(CLayerSet::m_fExportScaleRatio*m_font.lf.lfHeight);
+			BOOL ok = InitLabelDC(hdc, &m_font, m_crLbl);
+			m_font.lf.lfHeight = lfHeight;
+			if (!ok) return false;
 		}
 		else {
-			if(!InitLabelDC(hdc,&m_font,m_crLbl)) return false;
+			if (!InitLabelDC(hdc, &m_font, m_crLbl)) return false;
 		}
-		lblFldLen=m_pdb->FldLen(m_nLblFld);
-		lblOffset=m_pdb->FldOffset(m_nLblFld);
+		lblFldLen = m_pdb->FldLen(m_nLblFld);
+		lblOffset = m_pdb->FldOffset(m_nLblFld);
 		TEXTMETRIC tm;
-		::GetTextMetrics(hdc,&tm);
-		lblHeight=tm.tmHeight/2;
+		::GetTextMetrics(hdc, &tm);
+		lblHeight = tm.tmHeight / 2;
 	}
 	else InitLabelDC(hdc);
 	return true;
 }
 
-HPEN CreateStylePen(const SHP_MRK_STYLE &style,BOOL bNonWhite)
+HPEN CreateStylePen(const SHP_MRK_STYLE &style, BOOL bNonWhite)
 {
-	DWORD dwPenStyle=PS_INSIDEFRAME|PS_GEOMETRIC|PS_ENDCAP_FLAT|PS_JOIN_MITER;
+	DWORD dwPenStyle = PS_INSIDEFRAME | PS_GEOMETRIC | PS_ENDCAP_FLAT | PS_JOIN_MITER;
 	//Small circles look terrible otherwise --
-	if(style.wShape==FST_CIRCLES) dwPenStyle=PS_GEOMETRIC;
+	if (style.wShape == FST_CIRCLES) dwPenStyle = PS_GEOMETRIC;
 
 	LOGBRUSH lb;
-	DWORD pw=bNonWhite?1:(DWORD)(style.fLineWidth+0.5);
-	bNonWhite=bNonWhite && style.crMrk==RGB(255,255,255); 
-	lb.lbColor=bNonWhite?RGB(229,229,229):style.crMrk;
-	lb.lbStyle=BS_SOLID;
-	HPEN hPen=(HPEN)::ExtCreatePen(dwPenStyle,pw,&lb,0,NULL);
-	if(!hPen)
-		hPen=(HPEN)::GetStockObject(BLACK_PEN);
+	DWORD pw = bNonWhite ? 1 : (DWORD)(style.fLineWidth + 0.5);
+	bNonWhite = bNonWhite && style.crMrk == RGB(255, 255, 255);
+	lb.lbColor = bNonWhite ? RGB(229, 229, 229) : style.crMrk;
+	lb.lbStyle = BS_SOLID;
+	HPEN hPen = (HPEN)::ExtCreatePen(dwPenStyle, pw, &lb, 0, NULL);
+	if (!hPen)
+		hPen = (HPEN)::GetStockObject(BLACK_PEN);
 	return hPen;
 }
 
 static HBRUSH CreateStyleBrush(const SHP_MRK_STYLE &style)
 {
-	HBRUSH hBrush=NULL;
+	HBRUSH hBrush = NULL;
 	if (style.wFilled&FSF_FILLED) hBrush = ::CreateSolidBrush(style.crBkg);
-	if(!hBrush)
-		hBrush=(HBRUSH)::GetStockObject(NULL_BRUSH);
+	if (!hBrush)
+		hBrush = (HBRUSH)::GetStockObject(NULL_BRUSH);
 	return hBrush;
 }
 
 #ifdef _USE_PLCLIPPING
-enum e_outcode {O_LEFT=1,O_RIGHT=2,O_BOTTOM=4,O_TOP=8};
+enum e_outcode { O_LEFT = 1, O_RIGHT = 2, O_BOTTOM = 4, O_TOP = 8 };
 
-static UINT OutCode(double x,double y)
+static UINT OutCode(double x, double y)
 {
-	UINT code=0;
-	if(x<clipXmin) code=O_LEFT;
-	else if(x>clipXmax) code=O_RIGHT;
-	if(y<clipYmin) code |= O_TOP;
-	else if(y>clipYmax) code |= O_BOTTOM;
+	UINT code = 0;
+	if (x < clipXmin) code = O_LEFT;
+	else if (x > clipXmax) code = O_RIGHT;
+	if (y < clipYmin) code |= O_TOP;
+	else if (y > clipYmax) code |= O_BOTTOM;
 	return code;
 }
 
-static bool ClipEndpoint(const double &x0,const double &y0,double &x1,double &y1,UINT code)
+static bool ClipEndpoint(const double &x0, const double &y0, double &x1, double &y1, UINT code)
 {
-  //If necessary, adjusts x1,y1 to point on frame without changing slope.
-  //Returns TRUE if successful (line intersects frame), otherwise FALSE.
-  //Assumes code==OutCode(x1,y1) and that OutCode(x0,y0)&code==0;
+	//If necessary, adjusts x1,y1 to point on frame without changing slope.
+	//Returns TRUE if successful (line intersects frame), otherwise FALSE.
+	//Assumes code==OutCode(x1,y1) and that OutCode(x0,y0)&code==0;
 
-  double slope;
+	double slope;
 
-  ASSERT((OutCode(x0,y0)&code)==0);
+	ASSERT((OutCode(x0, y0)&code) == 0);
 
-  if(code&(O_RIGHT|O_LEFT)) {
-	slope=(y1-y0)/(x1-x0);
-    x1=((code&O_RIGHT)?clipXmax:clipXmin);
-    y1=y0+slope*(x1-x0);
-	if(y1<clipYmin) code=O_TOP;
-	else if(y1>clipYmax) code=O_BOTTOM;
-	else code=0;
-  }
+	if (code&(O_RIGHT | O_LEFT)) {
+		slope = (y1 - y0) / (x1 - x0);
+		x1 = ((code&O_RIGHT) ? clipXmax : clipXmin);
+		y1 = y0 + slope * (x1 - x0);
+		if (y1 < clipYmin) code = O_TOP;
+		else if (y1 > clipYmax) code = O_BOTTOM;
+		else code = 0;
+	}
 
-  if(code&(O_TOP|O_BOTTOM)) {
-	slope=(x1-x0)/(y1-y0);
-    y1=((code&O_BOTTOM)?clipYmax:clipYmin);
-    x1=x0+slope*(y1-y0);
-	if(x1<clipXmin) code=O_LEFT;
-	else if(x1>clipXmax) code=O_RIGHT;
-	else code=0;
-  }
+	if (code&(O_TOP | O_BOTTOM)) {
+		slope = (x1 - x0) / (y1 - y0);
+		y1 = ((code&O_BOTTOM) ? clipYmax : clipYmin);
+		x1 = x0 + slope * (y1 - y0);
+		if (x1 < clipXmin) code = O_LEFT;
+		else if (x1 > clipXmax) code = O_RIGHT;
+		else code = 0;
+	}
 
-  return code==0;
+	return code == 0;
 }
 #endif
 
-static __inline int _poly_compact(CPoint *p,int len)
+static __inline int _poly_compact(CPoint *p, int len)
 {
-	CPoint *p0=p;
-	CPoint *pLim=p+len;
-	while(++p<pLim) {
-		if(p->x!=p0->x || p->y!=p0->y) *++p0=*p;
+	CPoint *p0 = p;
+	CPoint *pLim = p + len;
+	while (++p < pLim) {
+		if (p->x != p0->x || p->y != p0->y) *++p0 = *p;
 		else --len;
 	}
 	return len;
@@ -173,7 +173,7 @@ static __inline int _poly_compact(CPoint *p,int len)
 static __inline void cro_Polygon(cairo_t *cr, LPPOINT ppt, int np)
 {
 	cairo_move_to(cr, ppt->x + 0.5, ppt->y + 0.5);
-	for (LPPOINT ppx = ppt + np - 1; ++ppt<ppx;) {
+	for (LPPOINT ppx = ppt + np - 1; ++ppt < ppx;) {
 		cairo_line_to(cr, ppt->x + 0.5, ppt->y + 0.5);
 	}
 	cairo_close_path(cr);
@@ -181,8 +181,8 @@ static __inline void cro_Polygon(cairo_t *cr, LPPOINT ppt, int np)
 
 static __inline void cro_Polyline(cairo_t *cr, LPPOINT ppt, int np)
 {
-	cairo_move_to(cr, ppt->x+0.5, ppt->y+0.5);
-	for (LPPOINT ppx = ppt + np; ++ppt<ppx;) {
+	cairo_move_to(cr, ppt->x + 0.5, ppt->y + 0.5);
+	for (LPPOINT ppx = ppt + np; ++ppt < ppx;) {
 		cairo_line_to(cr, ppt->x + 0.5, ppt->y + 0.5);
 	}
 	//cairo_close_path(cr);
@@ -199,7 +199,7 @@ static __inline ID2D1PathGeometry * OpenPolyPath(ID2D1GeometrySink **ppSink)
 }
 
 
-int CShpLayer::CopyPolylinesToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,double fScale)
+int CShpLayer::CopyPolylinesToDIB(CDIBWrapper *pDestDIB, const CFltRect &geoExt, double fScale)
 {
 	//pDestDIB				- Points to screen bitmap to which image data will be copied.
 	//geoExt				- Geographical extent corresponding to bitmap.
@@ -211,31 +211,31 @@ int CShpLayer::CopyPolylinesToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,d
 
 	if (!m_nNumRecs || !m_mstyle.fLineWidth || !m_mstyle.iOpacityVec) return 2;
 
-	SHP_POLY_DATA *ppoly=Init_ppoly();
+	SHP_POLY_DATA *ppoly = Init_ppoly();
 	SHP_POLY_DATA *pp = ppoly;
 
 	if (!pp) return 2;
 
-	bool bLabeling=(m_uFlags&((m_pDoc->m_uEnableFlags&NTL_FLG_LABELS)|NTL_FLG_SHOWLABELS))!=0 &&
+	bool bLabeling = (m_uFlags&((m_pDoc->m_uEnableFlags&NTL_FLG_LABELS) | NTL_FLG_SHOWLABELS)) != 0 &&
 		LabelScaleRangeOK(CLayerSet::m_uScaleDenom);
 
-	CDC *pDC=NULL;
-	HPEN hPen=NULL, hPenOld=NULL;
-	bool bInsideFrm=geoExt.ContainsRect(m_extent);
+	CDC *pDC = NULL;
+	HPEN hPen = NULL, hPenOld = NULL;
+	bool bInsideFrm = geoExt.ContainsRect(m_extent);
 #ifdef _USE_QTFLG
-	BYTE *pFlg=(m_bQTusing && !bInsideFrame)?m_pQT->InitFlags(geoExt):NULL;
+	BYTE *pFlg = (m_bQTusing && !bInsideFrame) ? m_pQT->InitFlags(geoExt) : NULL;
 #endif
 #ifdef _USE_CRO
-	cairo_surface_t *cs=NULL;
-	cairo_t *cr=NULL;
+	cairo_surface_t *cs = NULL;
+	cairo_t *cr = NULL;
 #else
 	ID2D1DCRenderTarget *pRT = NULL; //will call pRT=pDestDIB->InitRT()
 	ID2D1SolidColorBrush *pBR = NULL; //will call pBR=pDestDIB->InitBR()
 	ID2D1PathGeometry *pPath = NULL;
 	ID2D1GeometrySink *pSink = NULL;
 #endif
-	
-	SetClipRange(geoExt,fScale);
+
+	SetClipRange(geoExt, fScale);
 
 	bool bD2D = (m_mstyle.wFilled&FSF_USED2D) != 0;
 	bool bConvert = m_bConverted && (m_iZone != m_iZoneOrg || m_iNad != m_iNadOrg);
@@ -244,47 +244,47 @@ int CShpLayer::CopyPolylinesToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,d
 	if (bLabeling) {
 		//reserve space for label locations --
 		UINT sz = 0;
-		if(bInsideFrm) sz=m_nNumRecs;
+		if (bInsideFrm) sz = m_nNumRecs;
 		else {
-            #ifdef _USE_QTFLG
-			if(pFlg) {
-				BYTE *pF=pFlg+m_nNumRecs;
-				for(BYTE *p=pFlg;p<pF;p++) sz+=*p;
+#ifdef _USE_QTFLG
+			if (pFlg) {
+				BYTE *pF = pFlg + m_nNumRecs;
+				for (BYTE *p = pFlg; p < pF; p++) sz += *p;
 			}
-		    else {
+			else {
 				for (it_rect it = m_ext.begin(); it != m_ext.end(); it++, pp++) {
 					if (!pp->IsDeleted() && !geoExt.IsRectOutside(*it)) sz++;
 				}
-			    pp = ppoly;
+				pp = ppoly;
 			}
-		    #else
+#else
 			for (it_rect it = m_ext.begin(); it != m_ext.end(); it++, pp++) {
 				if (!pp->IsDeleted() && !geoExt.IsRectOutside(*it)) sz++;
 			}
 			pp = ppoly;
-            #endif
+#endif
 		}
 		vLblPos.reserve(sz);
 	}
 
-	CFileMap &cf=*m_pdbfile->pfShp;
+	CFileMap &cf = *m_pdbfile->pfShp;
 	VEC_CPOINT vp;
-    UINT nRecsValid=0,nRecsVisible=0;
-	
+	UINT nRecsValid = 0, nRecsVisible = 0;
+
 	START_NTI_TM(0);
 
 	try {
-		for(it_rect it_ext=m_ext.begin();it_ext!=m_ext.end();it_ext++,pp++) {
-            #ifdef _USE_QTFLG
-			if(pFlg) {
-			    ASSERT((*pFlg==0)==(pp->IsDeleted() || geoExt.IsRectOutside(*it_ext)));
-				if(!*pFlg++) continue;
+		for (it_rect it_ext = m_ext.begin(); it_ext != m_ext.end(); it_ext++, pp++) {
+#ifdef _USE_QTFLG
+			if (pFlg) {
+				ASSERT((*pFlg == 0) == (pp->IsDeleted() || geoExt.IsRectOutside(*it_ext)));
+				if (!*pFlg++) continue;
 			}
 			else
-			#endif
-			if(pp->IsDeleted() || !bInsideFrm && geoExt.IsRectOutside(*it_ext))
-				continue;
-	
+#endif
+				if (pp->IsDeleted() || !bInsideFrm && geoExt.IsRectOutside(*it_ext))
+					continue;
+
 			nRecsValid++;
 
 			int *parts = (int *)m_pdbfile->pbuf;
@@ -313,14 +313,14 @@ int CShpLayer::CopyPolylinesToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,d
 				if (!pDC) return 2;
 
 				if (bD2D) {
-					#ifdef _USE_CRO
+#ifdef _USE_CRO
 					cs = cairo_win32_surface_create(pDC->GetSafeHdc());
 					cr = cairo_create(cs);
 					cairo_set_antialias(cr, (m_mstyle.wFilled&FSF_ANTIALIAS) ? CAIRO_ANTIALIAS_DEFAULT : CAIRO_ANTIALIAS_NONE);
 					cairo_set_line_width(cr, m_mstyle.fLineWidth);
 					cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
-					cairo_set_source_rgba(cr,GetR_f(m_mstyle.crMrk),GetG_f(m_mstyle.crMrk),	GetB_f(m_mstyle.crMrk),	m_mstyle.iOpacityVec*0.01);
-					#else
+					cairo_set_source_rgba(cr, GetR_f(m_mstyle.crMrk), GetG_f(m_mstyle.crMrk), GetB_f(m_mstyle.crMrk), m_mstyle.iOpacityVec*0.01);
+#else
 					pRT = pDestDIB->InitRT();
 					if (!pRT) {
 						ASSERT(0);
@@ -333,7 +333,7 @@ int CShpLayer::CopyPolylinesToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,d
 						return 2;
 					}
 					pRT->BeginDraw();
-					#endif
+#endif
 				}
 				else {
 					hPen = CreateStylePen(m_mstyle);
@@ -351,7 +351,7 @@ int CShpLayer::CopyPolylinesToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,d
 
 #ifdef _USE_PLCLIPPING
 			//Currently not working -- excludes lines or line segments
-			if(!geoExt.IsRectInside(*it_ext)) {
+			if (!geoExt.IsRectInside(*it_ext)) {
 				//polyline not entirely inside DIB, clipping could help with determining label position and may guard against float overflow.
 				//evidently not significantly faster!!
 
@@ -359,89 +359,89 @@ int CShpLayer::CopyPolylinesToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,d
 				double x0, y0, x1, y1;
 				int ix, ix0, iy, iy0;
 
-				for(int iPart=0;iPart<=iLastPart;iPart++) {
-					int iLimit=(iPart<iLastPart)?parts[iPart+1]:numPoints; ///one past index of last pt in this part
-					int i=parts[iPart]; //index of first pt in this part
-					double *p=&pt[i].x;
+				for (int iPart = 0; iPart <= iLastPart; iPart++) {
+					int iLimit = (iPart < iLastPart) ? parts[iPart + 1] : numPoints; ///one past index of last pt in this part
+					int i = parts[iPart]; //index of first pt in this part
+					double *p = &pt[i].x;
 					bool bBeginFigure = false;
 
-					x0=*p++; y0=*p++;
-					if(!(uClip0=OutCode(x0,y0))) {
+					x0 = *p++; y0 = *p++;
+					if (!(uClip0 = OutCode(x0, y0))) {
 						//First point is inside window. Cairo and pDC will Move to (ix0,iy0)
 						if (bD2D) {
 							ix0 = ix = (int)(clipScale*(x0 - clipXmin));
 							iy0 = iy = (int)(clipScale*(clipYmax - y0));
-							#ifdef _USE_CRO
-							cairo_move_to(cr,ix+0.5,iy+0.5);
-							#else
-							pSink->BeginFigure(D2D1::Point2F(ix+0.5f,iy+0.5f), D2D1_FIGURE_BEGIN_HOLLOW);
+#ifdef _USE_CRO
+							cairo_move_to(cr, ix + 0.5, iy + 0.5);
+#else
+							pSink->BeginFigure(D2D1::Point2F(ix + 0.5f, iy + 0.5f), D2D1_FIGURE_BEGIN_HOLLOW);
 							bBeginFigure = true;
-							#endif
+#endif
 						}
 						else {
-							ix0 = ix = (int)(clipScale*(x0 - clipXmin)+0.5);
-							iy0 = iy = (int)(clipScale*(clipYmax - y0)+0.5);
+							ix0 = ix = (int)(clipScale*(x0 - clipXmin) + 0.5);
+							iy0 = iy = (int)(clipScale*(clipYmax - y0) + 0.5);
 							pDC->MoveTo(ix, iy);
 						}
 					}
-					while(++i<iLimit) {
-						x1=*p++; y1=*p++;
-						uClip1=OutCode(x1,y1);
-						if(!(uClip0 & uClip1)) {
+					while (++i < iLimit) {
+						x1 = *p++; y1 = *p++;
+						uClip1 = OutCode(x1, y1);
+						if (!(uClip0 & uClip1)) {
 							//either both inside (uClip0=clip1=0) or in different regions (9 regions total incl center)
-							if(uClip0) {
+							if (uClip0) {
 								//Point (x0,y0) was outside frame and (x1,y1) is in a different region -- inside frame if uClip1=0.
 								//Change it to point where line enters frame and move to it
-								if(!ClipEndpoint(x1,y1,x0,y0,uClip0)) goto _next;
+								if (!ClipEndpoint(x1, y1, x0, y0, uClip0)) goto _next;
 								if (bD2D) {
 									ix0 = ix = (int)(clipScale*(x0 - clipXmin));
 									iy0 = iy = (int)(clipScale*(clipYmax - y0));
-									#ifdef _USE_CRO
-									cairo_move_to(cr, ix+0.5, iy+0.5);
-									#else
+#ifdef _USE_CRO
+									cairo_move_to(cr, ix + 0.5, iy + 0.5);
+#else
 									if (bBeginFigure) {
 										pSink->EndFigure(D2D1_FIGURE_END_OPEN);
 									}
-									pSink->BeginFigure(D2D1::Point2F(ix+0.5f, iy+0.5f), D2D1_FIGURE_BEGIN_HOLLOW);
+									pSink->BeginFigure(D2D1::Point2F(ix + 0.5f, iy + 0.5f), D2D1_FIGURE_BEGIN_HOLLOW);
 									bBeginFigure = true;
-									#endif
+#endif
 								}
 								else {
-									ix0 = ix = (int)(clipScale*(x0 - clipXmin)+0.5);
-									iy0 = iy = (int)(clipScale*(clipYmax - y0)+0.5);
+									ix0 = ix = (int)(clipScale*(x0 - clipXmin) + 0.5);
+									iy0 = iy = (int)(clipScale*(clipYmax - y0) + 0.5);
 									pDC->MoveTo(ix, iy);
 								}
 							}
-							ASSERT(!OutCode(x0,y0));
-							if(!uClip1 || ClipEndpoint(x0,y0,x1,y1,uClip1)) {
+							ASSERT(!OutCode(x0, y0));
+							if (!uClip1 || ClipEndpoint(x0, y0, x1, y1, uClip1)) {
 								if (ix != ix0 || iy != iy0) {
 									if (bD2D) {
-										ix=(int)(clipScale*(x1-clipXmin));
-										iy=(int)(clipScale*(clipYmax-y1));
-										#ifdef _USE_CRO
-										cairo_line_to(cr, (ix0 = ix)+0.5, (iy0 = iy)+0.5);
-										#else
+										ix = (int)(clipScale*(x1 - clipXmin));
+										iy = (int)(clipScale*(clipYmax - y1));
+#ifdef _USE_CRO
+										cairo_line_to(cr, (ix0 = ix) + 0.5, (iy0 = iy) + 0.5);
+#else
 										ASSERT(bBeginFigure);
 										pSink->AddLine(D2D1::Point2F((ix0 = ix) + 0.5f, (iy0 = iy) + 0.5f));
-										#endif
+#endif
 									}
 									else {
-										ix = (int)(clipScale*(x1 - clipXmin)+0.5);
-										iy = (int)(clipScale*(clipYmax - y1)+0.5);
+										ix = (int)(clipScale*(x1 - clipXmin) + 0.5);
+										iy = (int)(clipScale*(clipYmax - y1) + 0.5);
 										pDC->LineTo(ix0 = ix, iy0 = iy);
 									}
 								}
 							}
 						}
 					_next:
-						uClip0=uClip1;
-						x0=x1; y0=y1;
+						uClip0 = uClip1;
+						x0 = x1; y0 = y1;
 					}
-					#ifndef _USE_CRO
+#ifndef _USE_CRO
 					if (bBeginFigure) {
 						pSink->EndFigure(D2D1_FIGURE_END_OPEN);
 					}
-					#endif
+#endif
 				}
 			}
 			else
@@ -449,61 +449,61 @@ int CShpLayer::CopyPolylinesToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,d
 #endif			
 			{
 
-				#ifdef _USE_CRO
-					CFltPoint *p = pt;
-					vp.clear();
-					vp.reserve(numPoints);
-					double fInc = bD2D ? 0.0 : 0.5;
-					for (int ix = numPoints; ix--; p++) {
-						vp.push_back(CPoint((int)(clipScale*(p->x - clipXmin)+fInc), (int)(clipScale*(clipYmax - p->y)+fInc)));
-					}
+#ifdef _USE_CRO
+				CFltPoint *p = pt;
+				vp.clear();
+				vp.reserve(numPoints);
+				double fInc = bD2D ? 0.0 : 0.5;
+				for (int ix = numPoints; ix--; p++) {
+					vp.push_back(CPoint((int)(clipScale*(p->x - clipXmin) + fInc), (int)(clipScale*(clipYmax - p->y) + fInc)));
+				}
 
-					//Draw polyine parts --
-					int *ipLast = parts + iLastPart;
-					for (int *ip = parts; ip <= ipLast; ip++) {
-						int ix = ((ip<ipLast) ? ip[1] : numPoints) - *ip; //no. of points in this part
-						CPoint *cp = &vp[*ip];
-						if ((ix = _poly_compact(cp, ix))>1)
+				//Draw polyine parts --
+				int *ipLast = parts + iLastPart;
+				for (int *ip = parts; ip <= ipLast; ip++) {
+					int ix = ((ip < ipLast) ? ip[1] : numPoints) - *ip; //no. of points in this part
+					CPoint *cp = &vp[*ip];
+					if ((ix = _poly_compact(cp, ix)) > 1)
 						if (bD2D)
 							cro_Polyline(cr, cp, ix);
 						else
 							pDC->Polyline(cp, ix);
-					}
+				}
 
-					if (bD2D) cairo_stroke(cr);
-				#else
-					//Draw all polyline parts --
-					CFltPoint *p = pt;
-					if (!bD2D) {
-						vp.clear();
-						vp.reserve(numPoints);
-						for (int ix = numPoints; ix--; p++) {
-							vp.push_back(CPoint((int)(clipScale*(p->x - clipXmin) + 0.5), (int)(clipScale*(clipYmax - p->y) + 0.5)));
-						}
-						p = pt;
+				if (bD2D) cairo_stroke(cr);
+#else
+				//Draw all polyline parts --
+				CFltPoint *p = pt;
+				if (!bD2D) {
+					vp.clear();
+					vp.reserve(numPoints);
+					for (int ix = numPoints; ix--; p++) {
+						vp.push_back(CPoint((int)(clipScale*(p->x - clipXmin) + 0.5), (int)(clipScale*(clipYmax - p->y) + 0.5)));
 					}
+					p = pt;
+				}
 
-					int *ipLast = parts + iLastPart;
+				int *ipLast = parts + iLastPart;
 
-					for (int *ip = parts; ip <= ipLast; ip++) {
-						int ix = ((ip < ipLast) ? ip[1] : numPoints) - *ip; //no. of points in this part
-						ASSERT(ix>1);
-						if (ix < 2) continue;
-						if (bD2D) {
-							pSink->BeginFigure(ClippedPtF(*p), D2D1_FIGURE_BEGIN_HOLLOW);
-							for (++p; --ix; p++) {
-								pSink->AddLine(ClippedPtF(*p));
-							}
-							pSink->EndFigure(D2D1_FIGURE_END_OPEN);
+				for (int *ip = parts; ip <= ipLast; ip++) {
+					int ix = ((ip < ipLast) ? ip[1] : numPoints) - *ip; //no. of points in this part
+					ASSERT(ix > 1);
+					if (ix < 2) continue;
+					if (bD2D) {
+						pSink->BeginFigure(ClippedPtF(*p), D2D1_FIGURE_BEGIN_HOLLOW);
+						for (++p; --ix; p++) {
+							pSink->AddLine(ClippedPtF(*p));
 						}
-						else {
-							CPoint *cp = &vp[*ip];
-							if ((ix = _poly_compact(cp, ix))>1) {
-								pDC->Polyline(cp, ix);
-							}
+						pSink->EndFigure(D2D1_FIGURE_END_OPEN);
+					}
+					else {
+						CPoint *cp = &vp[*ip];
+						if ((ix = _poly_compact(cp, ix)) > 1) {
+							pDC->Polyline(cp, ix);
 						}
 					}
-				#endif
+				}
+#endif
 			}
 
 #ifndef _USE_CRO
@@ -526,7 +526,7 @@ int CShpLayer::CopyPolylinesToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,d
 
 		} //polyline record loop
 	}
-	catch(...) {
+	catch (...) {
 		ASSERT(0);
 	}
 
@@ -561,10 +561,10 @@ int CShpLayer::CopyPolylinesToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,d
 		}
 	}
 
-	return (nRecsVisible==nRecsValid)?2:(nRecsVisible>0);
+	return (nRecsVisible == nRecsValid) ? 2 : (nRecsVisible > 0);
 }
 
-int CShpLayer::CopyPolygonsToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,double fScale)
+int CShpLayer::CopyPolygonsToDIB(CDIBWrapper *pDestDIB, const CFltRect &geoExt, double fScale)
 {
 	//pDestDIB				- Points to screen bitmap to which image data will be copied.
 	//geoExt				- Geographical extent corresponding to bitmap.
@@ -577,18 +577,18 @@ int CShpLayer::CopyPolygonsToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,do
 	if (!m_nNumRecs || !((m_mstyle.wFilled&FSF_FILLED) && m_mstyle.iOpacitySym) && !(m_mstyle.fLineWidth && m_mstyle.iOpacityVec))
 		return 2;
 
-	SHP_POLY_DATA *ppoly=Init_ppoly();
-	if(!ppoly) return 2;
+	SHP_POLY_DATA *ppoly = Init_ppoly();
+	if (!ppoly) return 2;
 	SHP_POLY_DATA *pp = ppoly;
 
-	ASSERT(m_ext.size()==m_nNumRecs);
+	ASSERT(m_ext.size() == m_nNumRecs);
 
-	CDC *pDC=NULL;
+	CDC *pDC = NULL;
 
 #ifdef _USE_CRO
 	cairo_surface_t *cs = NULL;
 	cairo_t *cr = NULL;
-	double mred=0,mgreen=0,mblue=0,fred=0,fgreen=0,fblue=0;
+	double mred = 0, mgreen = 0, mblue = 0, fred = 0, fgreen = 0, fblue = 0;
 #else
 	ID2D1DCRenderTarget *pRT = NULL; //will call pRT=pDestDIB->InitRT()
 	ID2D1SolidColorBrush *pBR = NULL; //will call pBR=pDestDIB->InitBR()
@@ -597,87 +597,87 @@ int CShpLayer::CopyPolygonsToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,do
 	ID2D1GeometrySink *pSink = NULL;
 #endif
 
-	bool bLabeling=(m_uFlags&((m_pDoc->m_uEnableFlags&NTL_FLG_LABELS)|NTL_FLG_SHOWLABELS))!=0 &&
+	bool bLabeling = (m_uFlags&((m_pDoc->m_uEnableFlags&NTL_FLG_LABELS) | NTL_FLG_SHOWLABELS)) != 0 &&
 		LabelScaleRangeOK(CLayerSet::m_uScaleDenom);
 
 	bool bD2D = (m_mstyle.wFilled&FSF_USED2D) != 0;
 	HPEN hPen = NULL, hPenOld = NULL;
-	HBRUSH hBrush=NULL,hBrushOld=NULL;
-	VEC_CPOINT vPolyPt; 
+	HBRUSH hBrush = NULL, hBrushOld = NULL;
+	VEC_CPOINT vPolyPt;
 
 	VEC_LBLPOS vLblPos;
 	VEC_INT vPolyCnt;
 	CRect clipRect;
 
-	bool bInsideFrm=geoExt.ContainsRect(m_extent);
-	#ifdef _USE_QTFLG
-		BYTE *pFlg=(m_bQTusing && !bInsideFrame)?m_pQT->InitFlags(geoExt):NULL;
-	#endif
+	bool bInsideFrm = geoExt.ContainsRect(m_extent);
+#ifdef _USE_QTFLG
+	BYTE *pFlg = (m_bQTusing && !bInsideFrame) ? m_pQT->InitFlags(geoExt) : NULL;
+#endif
 
 	if (bLabeling) {
 		//Rect that must contain centroid --
-		clipRect=CRect(0, 0, //left,top,right,bottom
+		clipRect = CRect(0, 0, //left,top,right,bottom
 			(long)(fScale*(geoExt.r - geoExt.l)),
 			(long)(fScale*(geoExt.t - geoExt.b)));
 
 		//reserve space for label locations --
 		UINT sz = 0;
-		if(bInsideFrm) sz=m_nNumRecs;
+		if (bInsideFrm) sz = m_nNumRecs;
 		else {
-            #ifdef _USE_QTFLG
-			if(pFlg) {
-				BYTE *pF=pFlg+m_nNumRecs;
-				for(BYTE *p=pFlg;p<pF;p++) sz+=*p;
+#ifdef _USE_QTFLG
+			if (pFlg) {
+				BYTE *pF = pFlg + m_nNumRecs;
+				for (BYTE *p = pFlg; p < pF; p++) sz += *p;
 			}
-		    else {
+			else {
 				for (it_rect it = m_ext.begin(); it != m_ext.end(); it++, pp++) {
 					if (!pp->IsDeleted() && !geoExt.IsRectOutside(*it)) sz++;
 				}
-			    pp = ppoly;
+				pp = ppoly;
 			}
-		    #else
+#else
 			for (it_rect it = m_ext.begin(); it != m_ext.end(); it++, pp++) {
 				if (!pp->IsDeleted() && !geoExt.IsRectOutside(*it)) sz++;
 			}
 			pp = ppoly;
-            #endif
+#endif
 		}
 		vLblPos.reserve(sz);
 	}
 
-	SetClipRange(geoExt,fScale);
+	SetClipRange(geoExt, fScale);
 
-	CFileMap &cf=*m_pdbfile->pfShp;
+	CFileMap &cf = *m_pdbfile->pfShp;
 	UINT nRecsValid = 0, nRecsVisible = 0;
 
 	START_NTI_TM(6);
 
 	try {
-		for(it_rect it_ext=m_ext.begin();it_ext!=m_ext.end();it_ext++,pp++) {
-            #ifdef _USE_QTFLG
-			if(pFlg) {
-				ASSERT((*pFlg==0)==(pp->IsDeleted() || geoExt.IsRectOutside(*it_ext)));
-				if(!*pFlg++) continue;
+		for (it_rect it_ext = m_ext.begin(); it_ext != m_ext.end(); it_ext++, pp++) {
+#ifdef _USE_QTFLG
+			if (pFlg) {
+				ASSERT((*pFlg == 0) == (pp->IsDeleted() || geoExt.IsRectOutside(*it_ext)));
+				if (!*pFlg++) continue;
 			}
 			else
-			#endif
-			if(pp->IsDeleted() || !bInsideFrm && geoExt.IsRectOutside(*it_ext))
-				continue;
+#endif
+				if (pp->IsDeleted() || !bInsideFrm && geoExt.IsRectOutside(*it_ext))
+					continue;
 
 			nRecsValid++;
 
-			int *parts=(int *)m_pdbfile->pbuf;
+			int *parts = (int *)m_pdbfile->pbuf;
 
-			if(!parts || pp->Len()>m_pdbfile->pbuflen) {
-				parts=(int *)Realloc_pbuf(pp->Len());
-				if(!parts) throw 0;
+			if (!parts || pp->Len() > m_pdbfile->pbuflen) {
+				parts = (int *)Realloc_pbuf(pp->Len());
+				if (!parts) throw 0;
 			}
 
-			cf.Seek(pp->off,CFile::begin);
-			if(cf.Read(parts,pp->Len())!=pp->Len()) throw 0; //error
+			cf.Seek(pp->off, CFile::begin);
+			if (cf.Read(parts, pp->Len()) != pp->Len()) throw 0; //error
 
-			int iLastPart=*parts++; //numParts
-			int numPoints=*parts++; //numPoints
+			int iLastPart = *parts++; //numParts
+			int numPoints = *parts++; //numPoints
 
 			vPolyPt.clear(); vPolyPt.reserve(numPoints);
 			vPolyCnt.clear(); vPolyCnt.reserve(iLastPart);
@@ -695,7 +695,7 @@ int CShpLayer::CopyPolygonsToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,do
 
 				if (bD2D) {
 
-					#ifdef _USE_CRO
+#ifdef _USE_CRO
 					cs = cairo_win32_surface_create(pDC->GetSafeHdc());
 					cr = cairo_create(cs);
 					cairo_set_fill_rule(cr, CAIRO_FILL_RULE_EVEN_ODD); //same as qgis but shouldn't matter for clean polys
@@ -717,7 +717,7 @@ int CShpLayer::CopyPolygonsToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,do
 						fgreen = GetG_f(m_mstyle.crBkg);
 						fblue = GetB_f(m_mstyle.crBkg);
 					}
-					#else
+#else
 
 					//D2D ---
 					if (!(pRT = pDestDIB->InitRT())) {
@@ -733,7 +733,7 @@ int CShpLayer::CopyPolygonsToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,do
 						VERIFY(0 <= pRT->CreateSolidColorBrush(RGBAtoD2D(m_mstyle.crBkg, m_mstyle.iOpacitySym / 100.f), &pBRF));
 					}
 					pRT->BeginDraw();
-					#endif
+#endif
 
 				}
 				else { //gdi
@@ -755,11 +755,11 @@ int CShpLayer::CopyPolygonsToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,do
 			//Store polypolygon screen coordinates --
 
 			for (int iPart = 0; iPart <= iLastPart; iPart++) {
-				int iLimit = (iPart<iLastPart) ? parts[iPart + 1] : numPoints;
+				int iLimit = (iPart < iLastPart) ? parts[iPart + 1] : numPoints;
 				int i = parts[iPart];
 				vPolyCnt.push_back(iLimit - i);
 				//double perim=0.0;
-				for (; i<iLimit; i++) {
+				for (; i < iLimit; i++) {
 					/*
 					if(i>0) {
 					double x2=pt[i].X-pt[i-1].X;
@@ -791,7 +791,7 @@ int CShpLayer::CopyPolygonsToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,do
 
 				if (bD2D) {
 #ifdef _USE_CRO
-					for (int i = 0; i<iLastPart; i++, lp++) {
+					for (int i = 0; i < iLastPart; i++, lp++) {
 						ASSERT(*lp >= 4);
 						cro_Polygon(cr, lpp, *lp);
 						lpp += *lp;
@@ -811,11 +811,11 @@ int CShpLayer::CopyPolygonsToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,do
 #else
 					if ((pPath = OpenPolyPath(&pSink))) {
 						//pSink->SetFillMode(D2D1_FILL_MODE_WINDING); //default: D2D1_FILL_MODE_ALTERNATE
-						for (int i = 0; i<iLastPart; i++, lp++, lpp++) {
+						for (int i = 0; i < iLastPart; i++, lp++, lpp++) {
 							ASSERT(*lp >= 4); //point count first==last
 							pSink->BeginFigure(CD2DPointF(lpp->x + 0.5f, lpp->y + 0.5f), pBRF ? D2D1_FIGURE_BEGIN_FILLED : D2D1_FIGURE_BEGIN_HOLLOW);
 							lpp++;
-							for (int ii = *lp - 1; ii>1; ii--, lpp++) pSink->AddLine(CD2DPointF(lpp->x + 0.5f, lpp->y + 0.5f));
+							for (int ii = *lp - 1; ii > 1; ii--, lpp++) pSink->AddLine(CD2DPointF(lpp->x + 0.5f, lpp->y + 0.5f));
 							pSink->EndFigure(D2D1_FIGURE_END_CLOSED);
 						}
 						pSink->Close();
@@ -829,11 +829,11 @@ int CShpLayer::CopyPolygonsToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,do
 				else
 				{
 					//NOTE: PolyPolygon() is many times slower than Polygon(), but required for proper filling!
-					if ((m_mstyle.wFilled&FSF_FILLED) && iLastPart>1) {
+					if ((m_mstyle.wFilled&FSF_FILLED) && iLastPart > 1) {
 						pDC->PolyPolygon(lpp, lp, iLastPart);
 					}
 					else {
-						for (int i = 0; i<iLastPart; i++, lp++) {
+						for (int i = 0; i < iLastPart; i++, lp++) {
 							pDC->Polygon(lpp, *lp); //*lp-1 no faster
 							lpp += *lp;
 						}
@@ -853,11 +853,11 @@ int CShpLayer::CopyPolygonsToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,do
 			}
 		} //polygon loop
 	}
-	catch(...) {
+	catch (...) {
 		ASSERT(0);
 	}
 
-	if(pDC) {
+	if (pDC) {
 
 		if (bD2D) {
 
@@ -888,7 +888,7 @@ int CShpLayer::CopyPolygonsToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,do
 	} //pDC
 
 	STOP_NTI_TM(6);
-	return (nRecsVisible==nRecsValid)?2:(nRecsVisible>0);
+	return (nRecsVisible == nRecsValid) ? 2 : (nRecsVisible > 0);
 }
 
 int CShpLayer::CopyToDIB(CDIBWrapper *pDestDIB, const CFltRect &geoExt, double fScale)
@@ -936,7 +936,7 @@ int CShpLayer::CopyToDIB(CDIBWrapper *pDestDIB, const CFltRect &geoExt, double f
 				pRT->BeginDraw();
 			}
 
-			CPoint pt((int)(fScale*(p->x - geoExt.l)+0.5), (int)(fScale*(geoExt.t - p->y)+0.5));
+			CPoint pt((int)(fScale*(p->x - geoExt.l) + 0.5), (int)(fScale*(geoExt.t - p->y) + 0.5));
 			symbol.Plot(pRT, pt);
 
 			if (m_pPtNode && !(m_uFlags&NTL_FLG_NONSELECTABLE))
@@ -952,7 +952,7 @@ int CShpLayer::CopyToDIB(CDIBWrapper *pDestDIB, const CFltRect &geoExt, double f
 	}
 
 	if (bLabeling) {
-		rec = nPoints = nVisible=0; //compute these again
+		rec = nPoints = nVisible = 0; //compute these again
 		CDC *pDC = NULL;
 		for (it_fltpt p = m_fpt.begin(); p != m_fpt.end(); p++, rec++) {
 			if ((m_pdbfile->vdbe[rec] & SHP_EDITDEL) || !geoExt.IsPtInside(*p)) continue;
@@ -963,9 +963,9 @@ int CShpLayer::CopyToDIB(CDIBWrapper *pDestDIB, const CFltRect &geoExt, double f
 					pDC = NULL;
 					break;
 				}
-				::SetTextAlign(pDC->GetSafeHdc(), TA_TOP | TA_LEFT| TA_NOUPDATECP); //TA_CENTER for polylines and polygons
+				::SetTextAlign(pDC->GetSafeHdc(), TA_TOP | TA_LEFT | TA_NOUPDATECP); //TA_CENTER for polylines and polygons
 			}
-			CPoint pt((int)(fScale*(p->x - geoExt.l)+0.5), (int)(fScale*(geoExt.t - p->y)+0.5));
+			CPoint pt((int)(fScale*(p->x - geoExt.l) + 0.5), (int)(fScale*(geoExt.t - p->y) + 0.5));
 			CPoint textOff;
 			textOff.x = textOff.y = max(m_mstyle.wSize / 2, 1);
 			pt.Offset(textOff);
@@ -981,23 +981,23 @@ int CShpLayer::CopyToDIB(CDIBWrapper *pDestDIB, const CFltRect &geoExt, double f
 				ASSERT(0);
 			}
 		}
-		if(pDC) InitTextLabels(pDC, FALSE);
+		if (pDC) InitTextLabels(pDC, FALSE);
 	}
-	return (nPoints == nVisible) ? 2 : (nPoints>0);
+	return (nPoints == nVisible) ? 2 : (nPoints > 0);
 }
 
-static POINT ptPolygon[6]={{4,7},{8,7},{8,3},{13,3},{13,12},{4,12}};
-static POINT ptPolyline1[4]={{7,3},{7,8},{4,8},{4,13}};
-static POINT ptPolyline2[4]={{13,2},{13,7},{10,7},{10,12}};
+static POINT ptPolygon[6] = { {4,7},{8,7},{8,3},{13,3},{13,12},{4,12} };
+static POINT ptPolyline1[4] = { {7,3},{7,8},{4,8},{4,13} };
+static POINT ptPolyline2[4] = { {13,2},{13,7},{10,7},{10,12} };
 
 void CShpLayer::UpdateImage(CImageList *pImageList)
 {
-	if(!pImageList) {
+	if (!pImageList) {
 		ASSERT(FALSE);
 		return;
 	}
 
-	if(!HBITMAP(m_bmImage)) {
+	if (!HBITMAP(m_bmImage)) {
 		VERIFY(m_bmImage.LoadBitmap(IDB_WHITE));
 	}
 
@@ -1005,38 +1005,38 @@ void CShpLayer::UpdateImage(CImageList *pImageList)
 	CDC dcMem;
 	VERIFY(dcMem.CreateCompatibleDC(&dc));
 	HBITMAP hBitmapOld;
-	VERIFY(hBitmapOld=(HBITMAP)::SelectObject(dcMem.m_hDC,m_bmImage.GetSafeHandle()));
-	HPEN hPen,hPenOld;
-	HBRUSH hBrush,hBrushOld;
-	VERIFY(hBrushOld=(HBRUSH)::SelectObject(dcMem.m_hDC,::GetStockObject(WHITE_BRUSH)));
-	VERIFY(dcMem.PatBlt(0,0,20,18,PATCOPY));
+	VERIFY(hBitmapOld = (HBITMAP)::SelectObject(dcMem.m_hDC, m_bmImage.GetSafeHandle()));
+	HPEN hPen, hPenOld;
+	HBRUSH hBrush, hBrushOld;
+	VERIFY(hBrushOld = (HBRUSH)::SelectObject(dcMem.m_hDC, ::GetStockObject(WHITE_BRUSH)));
+	VERIFY(dcMem.PatBlt(0, 0, 20, 18, PATCOPY));
 
-	if(ShpType()!=SHP_POINT) {
-		VERIFY(hPen=CreateStylePen(m_mstyle,TRUE));
-		VERIFY(hPenOld=(HPEN)::SelectObject(dcMem.m_hDC,hPen));
-		if(ShpType()==SHP_POLYGON) {
-			VERIFY(hBrush=CreateStyleBrush(m_mstyle));
-			VERIFY(::SelectObject(dcMem.m_hDC,hBrush));
-			dcMem.Polygon(ptPolygon,6);
-			VERIFY(DeleteObject(::SelectObject(dcMem.m_hDC,hBrushOld)));
+	if (ShpType() != SHP_POINT) {
+		VERIFY(hPen = CreateStylePen(m_mstyle, TRUE));
+		VERIFY(hPenOld = (HPEN)::SelectObject(dcMem.m_hDC, hPen));
+		if (ShpType() == SHP_POLYGON) {
+			VERIFY(hBrush = CreateStyleBrush(m_mstyle));
+			VERIFY(::SelectObject(dcMem.m_hDC, hBrush));
+			dcMem.Polygon(ptPolygon, 6);
+			VERIFY(DeleteObject(::SelectObject(dcMem.m_hDC, hBrushOld)));
 		}
 		else {
-			dcMem.Polyline(ptPolyline1,4);
-			dcMem.Polyline(ptPolyline2,4);
+			dcMem.Polyline(ptPolyline1, 4);
+			dcMem.Polyline(ptPolyline2, 4);
 		}
-		VERIFY(DeleteObject(::SelectObject(dcMem.m_hDC,hPenOld)));
+		VERIFY(DeleteObject(::SelectObject(dcMem.m_hDC, hPenOld)));
 	}
 	else {
-		if(m_uFlags&NTL_FLG_MARKERS) {
+		if (m_uFlags&NTL_FLG_MARKERS) {
 			float fLineWidth;
-			WORD wSize=0;
-			ID2D1DCRenderTarget *prt=NULL;
-			if (m_mstyle.wSize>17) {
-				wSize=m_mstyle.wSize;
-				m_mstyle.wSize=17;
-				if((fLineWidth=m_mstyle.fLineWidth)>3) m_mstyle.fLineWidth=3;
+			WORD wSize = 0;
+			ID2D1DCRenderTarget *prt = NULL;
+			if (m_mstyle.wSize > 17) {
+				wSize = m_mstyle.wSize;
+				m_mstyle.wSize = 17;
+				if ((fLineWidth = m_mstyle.fLineWidth) > 3) m_mstyle.fLineWidth = 3;
 			}
-			if (0 <= d2d_pFactory->CreateDCRenderTarget(&d2d_props,&prt) && 0 <= prt->BindDC(dcMem, CRect(0, 0, 20, 18))) {
+			if (0 <= d2d_pFactory->CreateDCRenderTarget(&d2d_props, &prt) && 0 <= prt->BindDC(dcMem, CRect(0, 0, 20, 18))) {
 				prt->BeginDraw();
 				CPlaceMark::PlotStyleSymbol(prt, m_mstyle, CPoint(10, 8));
 				VERIFY(0 <= prt->EndDraw());
@@ -1045,30 +1045,30 @@ void CShpLayer::UpdateImage(CImageList *pImageList)
 			else ASSERT(0);
 #endif
 			SafeRelease(&prt);
-			if(wSize) {
-				m_mstyle.wSize=wSize;
-				m_mstyle.fLineWidth=fLineWidth;
+			if (wSize) {
+				m_mstyle.wSize = wSize;
+				m_mstyle.fLineWidth = fLineWidth;
 			}
 		}
 	}
-	VERIFY(::SelectObject(dcMem.m_hDC,hBrushOld)); //dcMem still OK?
-	::SelectObject(dcMem.m_hDC,hBitmapOld);
+	VERIFY(::SelectObject(dcMem.m_hDC, hBrushOld)); //dcMem still OK?
+	::SelectObject(dcMem.m_hDC, hBitmapOld);
 
 #ifdef _DEBUG
-	int iCount=pImageList->GetImageCount();
+	int iCount = pImageList->GetImageCount();
 #endif
 
-	if(m_nImage==2) {
-		m_nImage=pImageList->Add(&m_bmImage,(CBitmap *)NULL);
-		ASSERT(m_nImage>2);
+	if (m_nImage == 2) {
+		m_nImage = pImageList->Add(&m_bmImage, (CBitmap *)NULL);
+		ASSERT(m_nImage > 2);
 	}
 	else {
-		ASSERT(m_nImage>2);
-		VERIFY(pImageList->Replace(m_nImage,&m_bmImage,(CBitmap *)NULL));
+		ASSERT(m_nImage > 2);
+		VERIFY(pImageList->Replace(m_nImage, &m_bmImage, (CBitmap *)NULL));
 	}
 #ifdef _DEBUG
-	iCount=pImageList->GetImageCount();
-	iCount=0;
+	iCount = pImageList->GetImageCount();
+	iCount = 0;
 #endif
 }
 

@@ -4,7 +4,7 @@
  * Project:  GDAL Core
  * Purpose:  Implementation of GDALPamRasterBand, a raster band base class
  *           that knows how to persistently store auxilary metadata in an
- *           external xml file. 
+ *           external xml file.
  * Author:   Frank Warmerdam, warmerdam@pobox.com
  *
  ******************************************************************************
@@ -43,8 +43,8 @@ CPL_CVSID("$Id: gdalpamrasterband.cpp 27044 2014-03-16 23:41:27Z rouault $");
 GDALPamRasterBand::GDALPamRasterBand()
 
 {
-    psPam = NULL;
-    SetMOFlags( GetMOFlags() | GMO_PAM_CLASS );
+	psPam = NULL;
+	SetMOFlags(GetMOFlags() | GMO_PAM_CLASS);
 }
 
 /************************************************************************/
@@ -54,186 +54,186 @@ GDALPamRasterBand::GDALPamRasterBand()
 GDALPamRasterBand::~GDALPamRasterBand()
 
 {
-    PamClear();
+	PamClear();
 }
 
 /************************************************************************/
 /*                           SerializeToXML()                           */
 /************************************************************************/
 
-CPLXMLNode *GDALPamRasterBand::SerializeToXML( const char *pszUnused )
+CPLXMLNode *GDALPamRasterBand::SerializeToXML(const char *pszUnused)
 
 {
-    if( psPam == NULL )
-        return NULL;
+	if (psPam == NULL)
+		return NULL;
 
-/* -------------------------------------------------------------------- */
-/*      Setup root node and attributes.                                 */
-/* -------------------------------------------------------------------- */
-    CPLString oFmt;
+	/* -------------------------------------------------------------------- */
+	/*      Setup root node and attributes.                                 */
+	/* -------------------------------------------------------------------- */
+	CPLString oFmt;
 
-    CPLXMLNode *psTree;
+	CPLXMLNode *psTree;
 
-    psTree = CPLCreateXMLNode( NULL, CXT_Element, "PAMRasterBand" );
+	psTree = CPLCreateXMLNode(NULL, CXT_Element, "PAMRasterBand");
 
-    if( GetBand() > 0 )
-        CPLSetXMLValue( psTree, "#band", oFmt.Printf( "%d", GetBand() ) );
+	if (GetBand() > 0)
+		CPLSetXMLValue(psTree, "#band", oFmt.Printf("%d", GetBand()));
 
-/* -------------------------------------------------------------------- */
-/*      Serialize information of interest.                              */
-/* -------------------------------------------------------------------- */
-    if( strlen(GetDescription()) > 0 )
-        CPLSetXMLValue( psTree, "Description", GetDescription() );
+	/* -------------------------------------------------------------------- */
+	/*      Serialize information of interest.                              */
+	/* -------------------------------------------------------------------- */
+	if (strlen(GetDescription()) > 0)
+		CPLSetXMLValue(psTree, "Description", GetDescription());
 
-    if( psPam->bNoDataValueSet )
-    {
-        if (CPLIsNan(psPam->dfNoDataValue))
-            CPLSetXMLValue( psTree, "NoDataValue",  "nan" );
-        else
-            CPLSetXMLValue( psTree, "NoDataValue", 
-                            oFmt.Printf( "%.14E", psPam->dfNoDataValue ) );
+	if (psPam->bNoDataValueSet)
+	{
+		if (CPLIsNan(psPam->dfNoDataValue))
+			CPLSetXMLValue(psTree, "NoDataValue", "nan");
+		else
+			CPLSetXMLValue(psTree, "NoDataValue",
+				oFmt.Printf("%.14E", psPam->dfNoDataValue));
 
-        /* hex encode real floating point values */
-        if( psPam->dfNoDataValue != floor(psPam->dfNoDataValue) 
-            || psPam->dfNoDataValue != atof(oFmt) )
-        {
-            double dfNoDataLittleEndian;
+		/* hex encode real floating point values */
+		if (psPam->dfNoDataValue != floor(psPam->dfNoDataValue)
+			|| psPam->dfNoDataValue != atof(oFmt))
+		{
+			double dfNoDataLittleEndian;
 
-            dfNoDataLittleEndian = psPam->dfNoDataValue;
-            CPL_LSBPTR64( &dfNoDataLittleEndian );
+			dfNoDataLittleEndian = psPam->dfNoDataValue;
+			CPL_LSBPTR64(&dfNoDataLittleEndian);
 
-            char *pszHexEncoding = 
-                CPLBinaryToHex( 8, (GByte *) &dfNoDataLittleEndian );
-            CPLSetXMLValue( psTree, "NoDataValue.#le_hex_equiv",pszHexEncoding);
-            CPLFree( pszHexEncoding );
-        }
-    }
+			char *pszHexEncoding =
+				CPLBinaryToHex(8, (GByte *)&dfNoDataLittleEndian);
+			CPLSetXMLValue(psTree, "NoDataValue.#le_hex_equiv", pszHexEncoding);
+			CPLFree(pszHexEncoding);
+		}
+	}
 
-    if( psPam->pszUnitType != NULL )
-        CPLSetXMLValue( psTree, "UnitType", psPam->pszUnitType );
+	if (psPam->pszUnitType != NULL)
+		CPLSetXMLValue(psTree, "UnitType", psPam->pszUnitType);
 
-    if( psPam->dfOffset != 0.0 )
-        CPLSetXMLValue( psTree, "Offset", 
-                        oFmt.Printf( "%.16g", psPam->dfOffset ) );
+	if (psPam->dfOffset != 0.0)
+		CPLSetXMLValue(psTree, "Offset",
+			oFmt.Printf("%.16g", psPam->dfOffset));
 
-    if( psPam->dfScale != 1.0 )
-        CPLSetXMLValue( psTree, "Scale", 
-                        oFmt.Printf( "%.16g", psPam->dfScale ) );
+	if (psPam->dfScale != 1.0)
+		CPLSetXMLValue(psTree, "Scale",
+			oFmt.Printf("%.16g", psPam->dfScale));
 
-    if( psPam->eColorInterp != GCI_Undefined )
-        CPLSetXMLValue( psTree, "ColorInterp", 
-                        GDALGetColorInterpretationName( psPam->eColorInterp ));
+	if (psPam->eColorInterp != GCI_Undefined)
+		CPLSetXMLValue(psTree, "ColorInterp",
+			GDALGetColorInterpretationName(psPam->eColorInterp));
 
-/* -------------------------------------------------------------------- */
-/*      Category names.                                                 */
-/* -------------------------------------------------------------------- */
-    if( psPam->papszCategoryNames != NULL )
-    {
-        CPLXMLNode *psCT_XML = CPLCreateXMLNode( psTree, CXT_Element, 
-                                                 "CategoryNames" );
-        CPLXMLNode* psLastChild = NULL;
+	/* -------------------------------------------------------------------- */
+	/*      Category names.                                                 */
+	/* -------------------------------------------------------------------- */
+	if (psPam->papszCategoryNames != NULL)
+	{
+		CPLXMLNode *psCT_XML = CPLCreateXMLNode(psTree, CXT_Element,
+			"CategoryNames");
+		CPLXMLNode* psLastChild = NULL;
 
-        for( int iEntry=0; psPam->papszCategoryNames[iEntry] != NULL; iEntry++)
-        {
-            CPLXMLNode *psNode = CPLCreateXMLElementAndValue( NULL, "Category",
-                                         psPam->papszCategoryNames[iEntry] );
-            if( psLastChild == NULL )
-                psCT_XML->psChild = psNode;
-            else
-                psLastChild->psNext = psNode;
-            psLastChild = psNode;
-        }
-    }
+		for (int iEntry = 0; psPam->papszCategoryNames[iEntry] != NULL; iEntry++)
+		{
+			CPLXMLNode *psNode = CPLCreateXMLElementAndValue(NULL, "Category",
+				psPam->papszCategoryNames[iEntry]);
+			if (psLastChild == NULL)
+				psCT_XML->psChild = psNode;
+			else
+				psLastChild->psNext = psNode;
+			psLastChild = psNode;
+		}
+	}
 
-/* -------------------------------------------------------------------- */
-/*      Color Table.                                                    */
-/* -------------------------------------------------------------------- */
-    if( psPam->poColorTable != NULL )
-    {
-        CPLXMLNode *psCT_XML = CPLCreateXMLNode( psTree, CXT_Element, 
-                                                 "ColorTable" );
-        CPLXMLNode* psLastChild = NULL;
+	/* -------------------------------------------------------------------- */
+	/*      Color Table.                                                    */
+	/* -------------------------------------------------------------------- */
+	if (psPam->poColorTable != NULL)
+	{
+		CPLXMLNode *psCT_XML = CPLCreateXMLNode(psTree, CXT_Element,
+			"ColorTable");
+		CPLXMLNode* psLastChild = NULL;
 
-        for( int iEntry=0; iEntry < psPam->poColorTable->GetColorEntryCount(); 
-             iEntry++ )
-        {
-            GDALColorEntry sEntry;
-            CPLXMLNode *psEntry_XML = CPLCreateXMLNode( NULL, CXT_Element,
-                                                        "Entry" );
-            if( psLastChild == NULL )
-                psCT_XML->psChild = psEntry_XML;
-            else
-                psLastChild->psNext = psEntry_XML;
-            psLastChild = psEntry_XML;
+		for (int iEntry = 0; iEntry < psPam->poColorTable->GetColorEntryCount();
+			iEntry++)
+		{
+			GDALColorEntry sEntry;
+			CPLXMLNode *psEntry_XML = CPLCreateXMLNode(NULL, CXT_Element,
+				"Entry");
+			if (psLastChild == NULL)
+				psCT_XML->psChild = psEntry_XML;
+			else
+				psLastChild->psNext = psEntry_XML;
+			psLastChild = psEntry_XML;
 
-            psPam->poColorTable->GetColorEntryAsRGB( iEntry, &sEntry );
-            
-            CPLSetXMLValue( psEntry_XML, "#c1", oFmt.Printf("%d",sEntry.c1) );
-            CPLSetXMLValue( psEntry_XML, "#c2", oFmt.Printf("%d",sEntry.c2) );
-            CPLSetXMLValue( psEntry_XML, "#c3", oFmt.Printf("%d",sEntry.c3) );
-            CPLSetXMLValue( psEntry_XML, "#c4", oFmt.Printf("%d",sEntry.c4) );
-        }
-    }
+			psPam->poColorTable->GetColorEntryAsRGB(iEntry, &sEntry);
 
-/* -------------------------------------------------------------------- */
-/*      Min/max.                                                        */
-/* -------------------------------------------------------------------- */
-    if( psPam->bHaveMinMax )
-    {
-        CPLSetXMLValue( psTree, "Minimum", 
-                        oFmt.Printf( "%.16g", psPam->dfMin ) );
-        CPLSetXMLValue( psTree, "Maximum", 
-                        oFmt.Printf( "%.16g", psPam->dfMax ) );
-    }
+			CPLSetXMLValue(psEntry_XML, "#c1", oFmt.Printf("%d", sEntry.c1));
+			CPLSetXMLValue(psEntry_XML, "#c2", oFmt.Printf("%d", sEntry.c2));
+			CPLSetXMLValue(psEntry_XML, "#c3", oFmt.Printf("%d", sEntry.c3));
+			CPLSetXMLValue(psEntry_XML, "#c4", oFmt.Printf("%d", sEntry.c4));
+		}
+	}
 
-/* -------------------------------------------------------------------- */
-/*      Statistics                                                      */
-/* -------------------------------------------------------------------- */
-    if( psPam->bHaveStats )
-    {
-        CPLSetXMLValue( psTree, "Mean", 
-                        oFmt.Printf( "%.16g", psPam->dfMean ) );
-        CPLSetXMLValue( psTree, "StandardDeviation", 
-                        oFmt.Printf( "%.16g", psPam->dfStdDev ) );
-    }
+	/* -------------------------------------------------------------------- */
+	/*      Min/max.                                                        */
+	/* -------------------------------------------------------------------- */
+	if (psPam->bHaveMinMax)
+	{
+		CPLSetXMLValue(psTree, "Minimum",
+			oFmt.Printf("%.16g", psPam->dfMin));
+		CPLSetXMLValue(psTree, "Maximum",
+			oFmt.Printf("%.16g", psPam->dfMax));
+	}
 
-/* -------------------------------------------------------------------- */
-/*      Histograms.                                                     */
-/* -------------------------------------------------------------------- */
-    if( psPam->psSavedHistograms != NULL )
-        CPLAddXMLChild( psTree, CPLCloneXMLTree( psPam->psSavedHistograms ) );
+	/* -------------------------------------------------------------------- */
+	/*      Statistics                                                      */
+	/* -------------------------------------------------------------------- */
+	if (psPam->bHaveStats)
+	{
+		CPLSetXMLValue(psTree, "Mean",
+			oFmt.Printf("%.16g", psPam->dfMean));
+		CPLSetXMLValue(psTree, "StandardDeviation",
+			oFmt.Printf("%.16g", psPam->dfStdDev));
+	}
 
-/* -------------------------------------------------------------------- */
-/*      Raster Attribute Table                                          */
-/* -------------------------------------------------------------------- */
-    if( psPam->poDefaultRAT != NULL )
-        CPLAddXMLChild( psTree, psPam->poDefaultRAT->Serialize() );
+	/* -------------------------------------------------------------------- */
+	/*      Histograms.                                                     */
+	/* -------------------------------------------------------------------- */
+	if (psPam->psSavedHistograms != NULL)
+		CPLAddXMLChild(psTree, CPLCloneXMLTree(psPam->psSavedHistograms));
 
-/* -------------------------------------------------------------------- */
-/*      Metadata.                                                       */
-/* -------------------------------------------------------------------- */
-    CPLXMLNode *psMD;
+	/* -------------------------------------------------------------------- */
+	/*      Raster Attribute Table                                          */
+	/* -------------------------------------------------------------------- */
+	if (psPam->poDefaultRAT != NULL)
+		CPLAddXMLChild(psTree, psPam->poDefaultRAT->Serialize());
 
-    psMD = oMDMD.Serialize();
-    if( psMD != NULL )
-    {
-        if( psMD->psChild == NULL )
-            CPLDestroyXMLNode( psMD );
-        else
-            CPLAddXMLChild( psTree, psMD );
-    }
+	/* -------------------------------------------------------------------- */
+	/*      Metadata.                                                       */
+	/* -------------------------------------------------------------------- */
+	CPLXMLNode *psMD;
 
-/* -------------------------------------------------------------------- */
-/*      We don't want to return anything if we had no metadata to       */
-/*      attach.                                                         */
-/* -------------------------------------------------------------------- */
-    if( psTree->psChild == NULL || psTree->psChild->psNext == NULL )
-    {
-        CPLDestroyXMLNode( psTree );
-        psTree = NULL;
-    }
+	psMD = oMDMD.Serialize();
+	if (psMD != NULL)
+	{
+		if (psMD->psChild == NULL)
+			CPLDestroyXMLNode(psMD);
+		else
+			CPLAddXMLChild(psTree, psMD);
+	}
 
-    return psTree;
+	/* -------------------------------------------------------------------- */
+	/*      We don't want to return anything if we had no metadata to       */
+	/*      attach.                                                         */
+	/* -------------------------------------------------------------------- */
+	if (psTree->psChild == NULL || psTree->psChild->psNext == NULL)
+	{
+		CPLDestroyXMLNode(psTree);
+		psTree = NULL;
+	}
+
+	return psTree;
 }
 
 /************************************************************************/
@@ -243,29 +243,29 @@ CPLXMLNode *GDALPamRasterBand::SerializeToXML( const char *pszUnused )
 void GDALPamRasterBand::PamInitialize()
 
 {
-    if( psPam )
-        return;
+	if (psPam)
+		return;
 
-    GDALPamDataset *poParentDS = (GDALPamDataset *) GetDataset();
+	GDALPamDataset *poParentDS = (GDALPamDataset *)GetDataset();
 
-    if( poParentDS == NULL || !(poParentDS->GetMOFlags() & GMO_PAM_CLASS) )
-        return;
+	if (poParentDS == NULL || !(poParentDS->GetMOFlags() & GMO_PAM_CLASS))
+		return;
 
-    poParentDS->PamInitialize();
-    if( poParentDS->psPam == NULL )
-        return;
+	poParentDS->PamInitialize();
+	if (poParentDS->psPam == NULL)
+		return;
 
-    // Often (always?) initializing our parent will have initialized us. 
-    if( psPam != NULL )
-        return;
+	// Often (always?) initializing our parent will have initialized us. 
+	if (psPam != NULL)
+		return;
 
-    psPam = (GDALRasterBandPamInfo *)
-        CPLCalloc(sizeof(GDALRasterBandPamInfo),1);
+	psPam = (GDALRasterBandPamInfo *)
+		CPLCalloc(sizeof(GDALRasterBandPamInfo), 1);
 
-    psPam->dfScale = 1.0;
-    psPam->poParentDS = poParentDS;
-    psPam->dfNoDataValue = -1e10;
-    psPam->poDefaultRAT = NULL;
+	psPam->dfScale = 1.0;
+	psPam->poParentDS = poParentDS;
+	psPam->dfNoDataValue = -1e10;
+	psPam->poDefaultRAT = NULL;
 }
 
 /************************************************************************/
@@ -275,513 +275,513 @@ void GDALPamRasterBand::PamInitialize()
 void GDALPamRasterBand::PamClear()
 
 {
-    if( psPam )
-    {
-        if( psPam->poColorTable )
-            delete psPam->poColorTable;
-        psPam->poColorTable = NULL;
-        
-        CPLFree( psPam->pszUnitType );
-        CSLDestroy( psPam->papszCategoryNames );
+	if (psPam)
+	{
+		if (psPam->poColorTable)
+			delete psPam->poColorTable;
+		psPam->poColorTable = NULL;
 
-        if( psPam->poDefaultRAT != NULL )
-        {
-            delete psPam->poDefaultRAT;
-            psPam->poDefaultRAT = NULL;
-        }
+		CPLFree(psPam->pszUnitType);
+		CSLDestroy(psPam->papszCategoryNames);
 
-        if (psPam->psSavedHistograms != NULL)
-        {
-            CPLDestroyXMLNode (psPam->psSavedHistograms );
-            psPam->psSavedHistograms = NULL;
-        }
+		if (psPam->poDefaultRAT != NULL)
+		{
+			delete psPam->poDefaultRAT;
+			psPam->poDefaultRAT = NULL;
+		}
 
-        CPLFree( psPam );
-        psPam = NULL;
-    }
+		if (psPam->psSavedHistograms != NULL)
+		{
+			CPLDestroyXMLNode(psPam->psSavedHistograms);
+			psPam->psSavedHistograms = NULL;
+		}
+
+		CPLFree(psPam);
+		psPam = NULL;
+	}
 }
 
 /************************************************************************/
 /*                              XMLInit()                               */
 /************************************************************************/
 
-CPLErr GDALPamRasterBand::XMLInit( CPLXMLNode *psTree, const char *pszUnused )
+CPLErr GDALPamRasterBand::XMLInit(CPLXMLNode *psTree, const char *pszUnused)
 
 {
-    PamInitialize();
+	PamInitialize();
 
-/* -------------------------------------------------------------------- */
-/*      Apply any dataset level metadata.                               */
-/* -------------------------------------------------------------------- */
-    oMDMD.XMLInit( psTree, TRUE );
+	/* -------------------------------------------------------------------- */
+	/*      Apply any dataset level metadata.                               */
+	/* -------------------------------------------------------------------- */
+	oMDMD.XMLInit(psTree, TRUE);
 
-/* -------------------------------------------------------------------- */
-/*      Collect various other items of metadata.                        */
-/* -------------------------------------------------------------------- */
-    GDALMajorObject::SetDescription( CPLGetXMLValue( psTree, "Description", "" ) );
-    
-    if( CPLGetXMLValue( psTree, "NoDataValue", NULL ) != NULL )
-    {
-        const char *pszLEHex = 
-            CPLGetXMLValue( psTree, "NoDataValue.le_hex_equiv", NULL );
-        if( pszLEHex != NULL )
-        {
-            int nBytes;
-            GByte *pabyBin = CPLHexToBinary( pszLEHex, &nBytes );
-            if( nBytes == 8 )
-            {
-                CPL_LSBPTR64( pabyBin );
-                
-                GDALPamRasterBand::SetNoDataValue( *((double *) pabyBin) );
-            }
-            else
-            {
-                GDALPamRasterBand::SetNoDataValue( 
-                    atof(CPLGetXMLValue( psTree, "NoDataValue", "0" )) );
-            }
-            CPLFree( pabyBin );
-        }
-        else
-        {
-            GDALPamRasterBand::SetNoDataValue( 
-                atof(CPLGetXMLValue( psTree, "NoDataValue", "0" )) );
-        }
-    }
+	/* -------------------------------------------------------------------- */
+	/*      Collect various other items of metadata.                        */
+	/* -------------------------------------------------------------------- */
+	GDALMajorObject::SetDescription(CPLGetXMLValue(psTree, "Description", ""));
 
-    GDALPamRasterBand::SetOffset( 
-        atof(CPLGetXMLValue( psTree, "Offset", "0.0" )) );
-    GDALPamRasterBand::SetScale( 
-        atof(CPLGetXMLValue( psTree, "Scale", "1.0" )) );
+	if (CPLGetXMLValue(psTree, "NoDataValue", NULL) != NULL)
+	{
+		const char *pszLEHex =
+			CPLGetXMLValue(psTree, "NoDataValue.le_hex_equiv", NULL);
+		if (pszLEHex != NULL)
+		{
+			int nBytes;
+			GByte *pabyBin = CPLHexToBinary(pszLEHex, &nBytes);
+			if (nBytes == 8)
+			{
+				CPL_LSBPTR64(pabyBin);
 
-    GDALPamRasterBand::SetUnitType( CPLGetXMLValue( psTree, "UnitType", NULL));
+				GDALPamRasterBand::SetNoDataValue(*((double *)pabyBin));
+			}
+			else
+			{
+				GDALPamRasterBand::SetNoDataValue(
+					atof(CPLGetXMLValue(psTree, "NoDataValue", "0")));
+			}
+			CPLFree(pabyBin);
+		}
+		else
+		{
+			GDALPamRasterBand::SetNoDataValue(
+				atof(CPLGetXMLValue(psTree, "NoDataValue", "0")));
+		}
+	}
 
-    if( CPLGetXMLValue( psTree, "ColorInterp", NULL ) != NULL )
-    {
-        const char *pszInterp = CPLGetXMLValue( psTree, "ColorInterp", NULL );
-        GDALPamRasterBand::SetColorInterpretation(
-                                GDALGetColorInterpretationByName(pszInterp));
-    }
+	GDALPamRasterBand::SetOffset(
+		atof(CPLGetXMLValue(psTree, "Offset", "0.0")));
+	GDALPamRasterBand::SetScale(
+		atof(CPLGetXMLValue(psTree, "Scale", "1.0")));
 
-/* -------------------------------------------------------------------- */
-/*      Category names.                                                 */
-/* -------------------------------------------------------------------- */
-    if( CPLGetXMLNode( psTree, "CategoryNames" ) != NULL )
-    {
-        CPLXMLNode *psEntry;
-        CPLStringList oCategoryNames;
+	GDALPamRasterBand::SetUnitType(CPLGetXMLValue(psTree, "UnitType", NULL));
 
-        for( psEntry = CPLGetXMLNode( psTree, "CategoryNames" )->psChild;
-             psEntry != NULL; psEntry = psEntry->psNext )
-        {
-            /* Don't skeep <Category> tag with empty content */
-            if( psEntry->eType != CXT_Element 
-                || !EQUAL(psEntry->pszValue,"Category") 
-                || (psEntry->psChild != NULL && psEntry->psChild->eType != CXT_Text) )
-                continue;
-            
-            oCategoryNames.AddString( 
-                                 (psEntry->psChild) ? psEntry->psChild->pszValue : "" );
-        }
-        
-        GDALPamRasterBand::SetCategoryNames( oCategoryNames.List() );
-    }
+	if (CPLGetXMLValue(psTree, "ColorInterp", NULL) != NULL)
+	{
+		const char *pszInterp = CPLGetXMLValue(psTree, "ColorInterp", NULL);
+		GDALPamRasterBand::SetColorInterpretation(
+			GDALGetColorInterpretationByName(pszInterp));
+	}
 
-/* -------------------------------------------------------------------- */
-/*      Collect a color table.                                          */
-/* -------------------------------------------------------------------- */
-    if( CPLGetXMLNode( psTree, "ColorTable" ) != NULL )
-    {
-        CPLXMLNode *psEntry;
-        GDALColorTable oTable;
-        int        iEntry = 0;
+	/* -------------------------------------------------------------------- */
+	/*      Category names.                                                 */
+	/* -------------------------------------------------------------------- */
+	if (CPLGetXMLNode(psTree, "CategoryNames") != NULL)
+	{
+		CPLXMLNode *psEntry;
+		CPLStringList oCategoryNames;
 
-        for( psEntry = CPLGetXMLNode( psTree, "ColorTable" )->psChild;
-             psEntry != NULL; psEntry = psEntry->psNext )
-        {
-            GDALColorEntry sCEntry;
+		for (psEntry = CPLGetXMLNode(psTree, "CategoryNames")->psChild;
+			psEntry != NULL; psEntry = psEntry->psNext)
+		{
+			/* Don't skeep <Category> tag with empty content */
+			if (psEntry->eType != CXT_Element
+				|| !EQUAL(psEntry->pszValue, "Category")
+				|| (psEntry->psChild != NULL && psEntry->psChild->eType != CXT_Text))
+				continue;
 
-            sCEntry.c1 = (short) atoi(CPLGetXMLValue( psEntry, "c1", "0" ));
-            sCEntry.c2 = (short) atoi(CPLGetXMLValue( psEntry, "c2", "0" ));
-            sCEntry.c3 = (short) atoi(CPLGetXMLValue( psEntry, "c3", "0" ));
-            sCEntry.c4 = (short) atoi(CPLGetXMLValue( psEntry, "c4", "255" ));
+			oCategoryNames.AddString(
+				(psEntry->psChild) ? psEntry->psChild->pszValue : "");
+		}
 
-            oTable.SetColorEntry( iEntry++, &sCEntry );
-        }
-        
-        GDALPamRasterBand::SetColorTable( &oTable );
-    }
+		GDALPamRasterBand::SetCategoryNames(oCategoryNames.List());
+	}
 
-/* -------------------------------------------------------------------- */
-/*      Do we have a complete set of stats?                             */
-/* -------------------------------------------------------------------- */
-    if( CPLGetXMLNode( psTree, "Minimum" ) != NULL 
-        && CPLGetXMLNode( psTree, "Maximum" ) != NULL )
-    {
-        psPam->bHaveMinMax = TRUE;
-        psPam->dfMin = atof(CPLGetXMLValue(psTree, "Minimum","0"));
-        psPam->dfMax = atof(CPLGetXMLValue(psTree, "Maximum","0"));
-    }
+	/* -------------------------------------------------------------------- */
+	/*      Collect a color table.                                          */
+	/* -------------------------------------------------------------------- */
+	if (CPLGetXMLNode(psTree, "ColorTable") != NULL)
+	{
+		CPLXMLNode *psEntry;
+		GDALColorTable oTable;
+		int        iEntry = 0;
 
-    if( CPLGetXMLNode( psTree, "Mean" ) != NULL 
-        && CPLGetXMLNode( psTree, "StandardDeviation" ) != NULL )
-    {
-        psPam->bHaveStats = TRUE;
-        psPam->dfMean = atof(CPLGetXMLValue(psTree, "Mean","0"));
-        psPam->dfStdDev = atof(CPLGetXMLValue(psTree,"StandardDeviation","0"));
-    }
+		for (psEntry = CPLGetXMLNode(psTree, "ColorTable")->psChild;
+			psEntry != NULL; psEntry = psEntry->psNext)
+		{
+			GDALColorEntry sCEntry;
 
-/* -------------------------------------------------------------------- */
-/*      Histograms                                                      */
-/* -------------------------------------------------------------------- */
-    CPLXMLNode *psHist = CPLGetXMLNode( psTree, "Histograms" );
-    if( psHist != NULL )
-    {
-        CPLXMLNode *psNext = psHist->psNext;
-        psHist->psNext = NULL;
+			sCEntry.c1 = (short)atoi(CPLGetXMLValue(psEntry, "c1", "0"));
+			sCEntry.c2 = (short)atoi(CPLGetXMLValue(psEntry, "c2", "0"));
+			sCEntry.c3 = (short)atoi(CPLGetXMLValue(psEntry, "c3", "0"));
+			sCEntry.c4 = (short)atoi(CPLGetXMLValue(psEntry, "c4", "255"));
 
-        if (psPam->psSavedHistograms != NULL)
-        {
-            CPLDestroyXMLNode (psPam->psSavedHistograms );
-            psPam->psSavedHistograms = NULL;
-        }
-        psPam->psSavedHistograms = CPLCloneXMLTree( psHist );
-        psHist->psNext = psNext;
-    }
+			oTable.SetColorEntry(iEntry++, &sCEntry);
+		}
 
-/* -------------------------------------------------------------------- */
-/*      Raster Attribute Table                                          */
-/* -------------------------------------------------------------------- */
-    CPLXMLNode *psRAT = CPLGetXMLNode( psTree, "GDALRasterAttributeTable" );
-    if( psRAT != NULL )
-    {
-        if( psPam->poDefaultRAT != NULL )
-        {
-            delete psPam->poDefaultRAT;
-            psPam->poDefaultRAT = NULL;
-        }
-        psPam->poDefaultRAT = new GDALDefaultRasterAttributeTable();
-        psPam->poDefaultRAT->XMLInit( psRAT, "" );
-    }
+		GDALPamRasterBand::SetColorTable(&oTable);
+	}
 
-    return CE_None;
+	/* -------------------------------------------------------------------- */
+	/*      Do we have a complete set of stats?                             */
+	/* -------------------------------------------------------------------- */
+	if (CPLGetXMLNode(psTree, "Minimum") != NULL
+		&& CPLGetXMLNode(psTree, "Maximum") != NULL)
+	{
+		psPam->bHaveMinMax = TRUE;
+		psPam->dfMin = atof(CPLGetXMLValue(psTree, "Minimum", "0"));
+		psPam->dfMax = atof(CPLGetXMLValue(psTree, "Maximum", "0"));
+	}
+
+	if (CPLGetXMLNode(psTree, "Mean") != NULL
+		&& CPLGetXMLNode(psTree, "StandardDeviation") != NULL)
+	{
+		psPam->bHaveStats = TRUE;
+		psPam->dfMean = atof(CPLGetXMLValue(psTree, "Mean", "0"));
+		psPam->dfStdDev = atof(CPLGetXMLValue(psTree, "StandardDeviation", "0"));
+	}
+
+	/* -------------------------------------------------------------------- */
+	/*      Histograms                                                      */
+	/* -------------------------------------------------------------------- */
+	CPLXMLNode *psHist = CPLGetXMLNode(psTree, "Histograms");
+	if (psHist != NULL)
+	{
+		CPLXMLNode *psNext = psHist->psNext;
+		psHist->psNext = NULL;
+
+		if (psPam->psSavedHistograms != NULL)
+		{
+			CPLDestroyXMLNode(psPam->psSavedHistograms);
+			psPam->psSavedHistograms = NULL;
+		}
+		psPam->psSavedHistograms = CPLCloneXMLTree(psHist);
+		psHist->psNext = psNext;
+	}
+
+	/* -------------------------------------------------------------------- */
+	/*      Raster Attribute Table                                          */
+	/* -------------------------------------------------------------------- */
+	CPLXMLNode *psRAT = CPLGetXMLNode(psTree, "GDALRasterAttributeTable");
+	if (psRAT != NULL)
+	{
+		if (psPam->poDefaultRAT != NULL)
+		{
+			delete psPam->poDefaultRAT;
+			psPam->poDefaultRAT = NULL;
+		}
+		psPam->poDefaultRAT = new GDALDefaultRasterAttributeTable();
+		psPam->poDefaultRAT->XMLInit(psRAT, "");
+	}
+
+	return CE_None;
 }
 
 /************************************************************************/
 /*                             CloneInfo()                              */
 /************************************************************************/
 
-CPLErr GDALPamRasterBand::CloneInfo( GDALRasterBand *poSrcBand, 
-                                     int nCloneFlags )
+CPLErr GDALPamRasterBand::CloneInfo(GDALRasterBand *poSrcBand,
+	int nCloneFlags)
 
 {
-    int bOnlyIfMissing = nCloneFlags & GCIF_ONLY_IF_MISSING;
-    int bSuccess;
-    int nSavedMOFlags = GetMOFlags();
+	int bOnlyIfMissing = nCloneFlags & GCIF_ONLY_IF_MISSING;
+	int bSuccess;
+	int nSavedMOFlags = GetMOFlags();
 
-    PamInitialize();
+	PamInitialize();
 
-/* -------------------------------------------------------------------- */
-/*      Supress NotImplemented error messages - mainly needed if PAM    */
-/*      disabled.                                                       */
-/* -------------------------------------------------------------------- */
-    SetMOFlags( nSavedMOFlags | GMO_IGNORE_UNIMPLEMENTED );
+	/* -------------------------------------------------------------------- */
+	/*      Supress NotImplemented error messages - mainly needed if PAM    */
+	/*      disabled.                                                       */
+	/* -------------------------------------------------------------------- */
+	SetMOFlags(nSavedMOFlags | GMO_IGNORE_UNIMPLEMENTED);
 
-/* -------------------------------------------------------------------- */
-/*      Metadata                                                        */
-/* -------------------------------------------------------------------- */
-    if( nCloneFlags & GCIF_BAND_METADATA )
-    {
-        if( poSrcBand->GetMetadata() != NULL )
-        {
-            if( !bOnlyIfMissing 
-             || CSLCount(GetMetadata()) != CSLCount(poSrcBand->GetMetadata()) )
-            {
-                SetMetadata( poSrcBand->GetMetadata() );
-            }
-        }
-    }
+	/* -------------------------------------------------------------------- */
+	/*      Metadata                                                        */
+	/* -------------------------------------------------------------------- */
+	if (nCloneFlags & GCIF_BAND_METADATA)
+	{
+		if (poSrcBand->GetMetadata() != NULL)
+		{
+			if (!bOnlyIfMissing
+				|| CSLCount(GetMetadata()) != CSLCount(poSrcBand->GetMetadata()))
+			{
+				SetMetadata(poSrcBand->GetMetadata());
+			}
+		}
+	}
 
-/* -------------------------------------------------------------------- */
-/*      Band description.                                               */
-/* -------------------------------------------------------------------- */
-    if( nCloneFlags & GCIF_BAND_DESCRIPTION )
-    {
-        if( strlen(poSrcBand->GetDescription()) > 0 )
-        {
-            if( !bOnlyIfMissing || strlen(GetDescription()) == 0 )
-                GDALPamRasterBand::SetDescription( poSrcBand->GetDescription());
-        }
-    }
+	/* -------------------------------------------------------------------- */
+	/*      Band description.                                               */
+	/* -------------------------------------------------------------------- */
+	if (nCloneFlags & GCIF_BAND_DESCRIPTION)
+	{
+		if (strlen(poSrcBand->GetDescription()) > 0)
+		{
+			if (!bOnlyIfMissing || strlen(GetDescription()) == 0)
+				GDALPamRasterBand::SetDescription(poSrcBand->GetDescription());
+		}
+	}
 
-/* -------------------------------------------------------------------- */
-/*      NODATA                                                          */
-/* -------------------------------------------------------------------- */
-    if( nCloneFlags & GCIF_NODATA )
-    {
-        double dfNoData = poSrcBand->GetNoDataValue( &bSuccess );
-        
-        if( bSuccess )
-        {
-            if( !bOnlyIfMissing 
-                || GetNoDataValue( &bSuccess ) != dfNoData 
-                || !bSuccess )
-                GDALPamRasterBand::SetNoDataValue( dfNoData );
-        }
-    }
+	/* -------------------------------------------------------------------- */
+	/*      NODATA                                                          */
+	/* -------------------------------------------------------------------- */
+	if (nCloneFlags & GCIF_NODATA)
+	{
+		double dfNoData = poSrcBand->GetNoDataValue(&bSuccess);
 
-/* -------------------------------------------------------------------- */
-/*      Category names                                                  */
-/* -------------------------------------------------------------------- */
-    if( nCloneFlags & GCIF_CATEGORYNAMES )
-    {
-        if( poSrcBand->GetCategoryNames() != NULL )
-        {
-            if( !bOnlyIfMissing || GetCategoryNames() == NULL )
-                GDALPamRasterBand::SetCategoryNames( poSrcBand->GetCategoryNames() );
-        }
-    }
+		if (bSuccess)
+		{
+			if (!bOnlyIfMissing
+				|| GetNoDataValue(&bSuccess) != dfNoData
+				|| !bSuccess)
+				GDALPamRasterBand::SetNoDataValue(dfNoData);
+		}
+	}
 
-/* -------------------------------------------------------------------- */
-/*      Offset/scale                                                    */
-/* -------------------------------------------------------------------- */
-    if( nCloneFlags & GCIF_SCALEOFFSET )
-    {
-        double dfOffset = poSrcBand->GetOffset( &bSuccess );
-        
-        if( bSuccess )
-        {
-            if( !bOnlyIfMissing || GetOffset() != dfOffset )
-                GDALPamRasterBand::SetOffset( dfOffset );
-        }
+	/* -------------------------------------------------------------------- */
+	/*      Category names                                                  */
+	/* -------------------------------------------------------------------- */
+	if (nCloneFlags & GCIF_CATEGORYNAMES)
+	{
+		if (poSrcBand->GetCategoryNames() != NULL)
+		{
+			if (!bOnlyIfMissing || GetCategoryNames() == NULL)
+				GDALPamRasterBand::SetCategoryNames(poSrcBand->GetCategoryNames());
+		}
+	}
 
-        double dfScale = poSrcBand->GetScale( &bSuccess );
-        
-        if( bSuccess )
-        {
-            if( !bOnlyIfMissing || GetScale() != dfScale )
-                GDALPamRasterBand::SetScale( dfScale );
-        }
-    }
+	/* -------------------------------------------------------------------- */
+	/*      Offset/scale                                                    */
+	/* -------------------------------------------------------------------- */
+	if (nCloneFlags & GCIF_SCALEOFFSET)
+	{
+		double dfOffset = poSrcBand->GetOffset(&bSuccess);
 
-/* -------------------------------------------------------------------- */
-/*      Unittype.                                                       */
-/* -------------------------------------------------------------------- */
-    if( nCloneFlags & GCIF_UNITTYPE )
-    {
-        if( strlen(poSrcBand->GetUnitType()) > 0 )
-        {
-            if( !bOnlyIfMissing 
-                || !EQUAL(GetUnitType(),poSrcBand->GetUnitType()) )
-            {
-                GDALPamRasterBand::SetUnitType( poSrcBand->GetUnitType() );
-            }
-        }
-    }
+		if (bSuccess)
+		{
+			if (!bOnlyIfMissing || GetOffset() != dfOffset)
+				GDALPamRasterBand::SetOffset(dfOffset);
+		}
 
-/* -------------------------------------------------------------------- */
-/*      ColorInterp                                                     */
-/* -------------------------------------------------------------------- */
-    if( nCloneFlags & GCIF_COLORINTERP )
-    {
-        if( poSrcBand->GetColorInterpretation() != GCI_Undefined )
-        {
-            if( !bOnlyIfMissing
-                || poSrcBand->GetColorInterpretation() 
-                != GetColorInterpretation() )
-                GDALPamRasterBand::SetColorInterpretation( 
-                    poSrcBand->GetColorInterpretation() );
-        }
-    }
+		double dfScale = poSrcBand->GetScale(&bSuccess);
 
-/* -------------------------------------------------------------------- */
-/*      color table.                                                    */
-/* -------------------------------------------------------------------- */
-    if( nCloneFlags & GCIF_COLORTABLE )
-    {
-        if( poSrcBand->GetColorTable() != NULL )
-        {
-            if( !bOnlyIfMissing || GetColorTable() == NULL )
-            {
-                GDALPamRasterBand::SetColorTable( 
-                    poSrcBand->GetColorTable() );
-            }
-        }
-    }
+		if (bSuccess)
+		{
+			if (!bOnlyIfMissing || GetScale() != dfScale)
+				GDALPamRasterBand::SetScale(dfScale);
+		}
+	}
 
-/* -------------------------------------------------------------------- */
-/*      Raster Attribute Table.                                         */
-/* -------------------------------------------------------------------- */
-    if( nCloneFlags & GCIF_RAT )
-    {
-        const GDALRasterAttributeTable *poRAT = poSrcBand->GetDefaultRAT();
+	/* -------------------------------------------------------------------- */
+	/*      Unittype.                                                       */
+	/* -------------------------------------------------------------------- */
+	if (nCloneFlags & GCIF_UNITTYPE)
+	{
+		if (strlen(poSrcBand->GetUnitType()) > 0)
+		{
+			if (!bOnlyIfMissing
+				|| !EQUAL(GetUnitType(), poSrcBand->GetUnitType()))
+			{
+				GDALPamRasterBand::SetUnitType(poSrcBand->GetUnitType());
+			}
+		}
+	}
 
-        if( poRAT != NULL )
-        {
-            if( !bOnlyIfMissing || GetDefaultRAT() == NULL )
-            {
-                GDALPamRasterBand::SetDefaultRAT( poRAT );
-            }
-        }
-    }
+	/* -------------------------------------------------------------------- */
+	/*      ColorInterp                                                     */
+	/* -------------------------------------------------------------------- */
+	if (nCloneFlags & GCIF_COLORINTERP)
+	{
+		if (poSrcBand->GetColorInterpretation() != GCI_Undefined)
+		{
+			if (!bOnlyIfMissing
+				|| poSrcBand->GetColorInterpretation()
+				!= GetColorInterpretation())
+				GDALPamRasterBand::SetColorInterpretation(
+					poSrcBand->GetColorInterpretation());
+		}
+	}
 
-/* -------------------------------------------------------------------- */
-/*      Restore MO flags.                                               */
-/* -------------------------------------------------------------------- */
-    SetMOFlags( nSavedMOFlags );
+	/* -------------------------------------------------------------------- */
+	/*      color table.                                                    */
+	/* -------------------------------------------------------------------- */
+	if (nCloneFlags & GCIF_COLORTABLE)
+	{
+		if (poSrcBand->GetColorTable() != NULL)
+		{
+			if (!bOnlyIfMissing || GetColorTable() == NULL)
+			{
+				GDALPamRasterBand::SetColorTable(
+					poSrcBand->GetColorTable());
+			}
+		}
+	}
 
-    return CE_None;
+	/* -------------------------------------------------------------------- */
+	/*      Raster Attribute Table.                                         */
+	/* -------------------------------------------------------------------- */
+	if (nCloneFlags & GCIF_RAT)
+	{
+		const GDALRasterAttributeTable *poRAT = poSrcBand->GetDefaultRAT();
+
+		if (poRAT != NULL)
+		{
+			if (!bOnlyIfMissing || GetDefaultRAT() == NULL)
+			{
+				GDALPamRasterBand::SetDefaultRAT(poRAT);
+			}
+		}
+	}
+
+	/* -------------------------------------------------------------------- */
+	/*      Restore MO flags.                                               */
+	/* -------------------------------------------------------------------- */
+	SetMOFlags(nSavedMOFlags);
+
+	return CE_None;
 }
 
 /************************************************************************/
 /*                            SetMetadata()                             */
 /************************************************************************/
 
-CPLErr GDALPamRasterBand::SetMetadata( char **papszMetadata, 
-                                    const char *pszDomain )
+CPLErr GDALPamRasterBand::SetMetadata(char **papszMetadata,
+	const char *pszDomain)
 
 {
-    PamInitialize();
+	PamInitialize();
 
-    if( psPam )
-        psPam->poParentDS->MarkPamDirty();
+	if (psPam)
+		psPam->poParentDS->MarkPamDirty();
 
-    return GDALRasterBand::SetMetadata( papszMetadata, pszDomain );
+	return GDALRasterBand::SetMetadata(papszMetadata, pszDomain);
 }
 
 /************************************************************************/
 /*                          SetMetadataItem()                           */
 /************************************************************************/
 
-CPLErr GDALPamRasterBand::SetMetadataItem( const char *pszName, 
-                                        const char *pszValue, 
-                                        const char *pszDomain )
+CPLErr GDALPamRasterBand::SetMetadataItem(const char *pszName,
+	const char *pszValue,
+	const char *pszDomain)
 
 {
-    PamInitialize();
+	PamInitialize();
 
-    if( psPam )
-        psPam->poParentDS->MarkPamDirty();
+	if (psPam)
+		psPam->poParentDS->MarkPamDirty();
 
-    return GDALRasterBand::SetMetadataItem( pszName, pszValue, pszDomain );
+	return GDALRasterBand::SetMetadataItem(pszName, pszValue, pszDomain);
 }
 
 /************************************************************************/
 /*                           SetNoDataValue()                           */
 /************************************************************************/
 
-CPLErr GDALPamRasterBand::SetNoDataValue( double dfNewValue )
+CPLErr GDALPamRasterBand::SetNoDataValue(double dfNewValue)
 
 {
-    PamInitialize();
+	PamInitialize();
 
-    if( psPam )
-    {
-        psPam->bNoDataValueSet = TRUE;
-        psPam->dfNoDataValue = dfNewValue;
-        psPam->poParentDS->MarkPamDirty();
-        return CE_None;
-    }
-    else
-        return GDALRasterBand::SetNoDataValue( dfNewValue );
+	if (psPam)
+	{
+		psPam->bNoDataValueSet = TRUE;
+		psPam->dfNoDataValue = dfNewValue;
+		psPam->poParentDS->MarkPamDirty();
+		return CE_None;
+	}
+	else
+		return GDALRasterBand::SetNoDataValue(dfNewValue);
 }
 
 /************************************************************************/
 /*                           GetNoDataValue()                           */
 /************************************************************************/
 
-double GDALPamRasterBand::GetNoDataValue( int *pbSuccess )
+double GDALPamRasterBand::GetNoDataValue(int *pbSuccess)
 
 {
-    if( psPam != NULL )
-    {
-        if( pbSuccess )
-            *pbSuccess = psPam->bNoDataValueSet;
+	if (psPam != NULL)
+	{
+		if (pbSuccess)
+			*pbSuccess = psPam->bNoDataValueSet;
 
-        return psPam->dfNoDataValue;
-    }
-    else
-        return GDALRasterBand::GetNoDataValue( pbSuccess );
+		return psPam->dfNoDataValue;
+	}
+	else
+		return GDALRasterBand::GetNoDataValue(pbSuccess);
 }
 
 /************************************************************************/
 /*                             GetOffset()                              */
 /************************************************************************/
 
-double GDALPamRasterBand::GetOffset( int *pbSuccess )
+double GDALPamRasterBand::GetOffset(int *pbSuccess)
 
 {
-    if( psPam )
-    {
-        if( pbSuccess != NULL )
-            *pbSuccess = TRUE;
-        
-        return psPam->dfOffset;
-    }
-    else
-        return GDALRasterBand::GetOffset( pbSuccess );
+	if (psPam)
+	{
+		if (pbSuccess != NULL)
+			*pbSuccess = TRUE;
+
+		return psPam->dfOffset;
+	}
+	else
+		return GDALRasterBand::GetOffset(pbSuccess);
 }
 
 /************************************************************************/
 /*                             SetOffset()                              */
 /************************************************************************/
 
-CPLErr GDALPamRasterBand::SetOffset( double dfNewOffset )
+CPLErr GDALPamRasterBand::SetOffset(double dfNewOffset)
 
 {
-    PamInitialize();
+	PamInitialize();
 
-    if( psPam != NULL )
-    {
-        if( psPam->dfOffset != dfNewOffset )
-        {
-            psPam->dfOffset = dfNewOffset;
-            psPam->poParentDS->MarkPamDirty();
-        }
+	if (psPam != NULL)
+	{
+		if (psPam->dfOffset != dfNewOffset)
+		{
+			psPam->dfOffset = dfNewOffset;
+			psPam->poParentDS->MarkPamDirty();
+		}
 
-        return CE_None;
-    }
-    else
-        return GDALRasterBand::SetOffset( dfNewOffset );
+		return CE_None;
+	}
+	else
+		return GDALRasterBand::SetOffset(dfNewOffset);
 }
 
 /************************************************************************/
 /*                              GetScale()                              */
 /************************************************************************/
 
-double GDALPamRasterBand::GetScale( int *pbSuccess )
+double GDALPamRasterBand::GetScale(int *pbSuccess)
 
 {
-    if( psPam )
-    {
-        if( pbSuccess != NULL )
-            *pbSuccess = TRUE;
-        
-        return psPam->dfScale;
-    }
-    else
-        return GDALRasterBand::GetScale( pbSuccess );
+	if (psPam)
+	{
+		if (pbSuccess != NULL)
+			*pbSuccess = TRUE;
+
+		return psPam->dfScale;
+	}
+	else
+		return GDALRasterBand::GetScale(pbSuccess);
 }
 
 /************************************************************************/
 /*                              SetScale()                              */
 /************************************************************************/
 
-CPLErr GDALPamRasterBand::SetScale( double dfNewScale )
+CPLErr GDALPamRasterBand::SetScale(double dfNewScale)
 
 {
-    PamInitialize();
+	PamInitialize();
 
-    if( psPam != NULL )
-    {
-        if( dfNewScale != psPam->dfScale )
-        {
-            psPam->dfScale = dfNewScale;
-            psPam->poParentDS->MarkPamDirty();
-        }
-        return CE_None;
-    }
-    else
-        return GDALRasterBand::SetScale( dfNewScale );
+	if (psPam != NULL)
+	{
+		if (dfNewScale != psPam->dfScale)
+		{
+			psPam->dfScale = dfNewScale;
+			psPam->poParentDS->MarkPamDirty();
+		}
+		return CE_None;
+	}
+	else
+		return GDALRasterBand::SetScale(dfNewScale);
 }
 
 /************************************************************************/
@@ -791,48 +791,48 @@ CPLErr GDALPamRasterBand::SetScale( double dfNewScale )
 const char *GDALPamRasterBand::GetUnitType()
 
 {
-    if( psPam != NULL )
-    {
-        if( psPam->pszUnitType == NULL )
-            return "";
-        else
-            return psPam->pszUnitType;
-    }
-    else
-        return GDALRasterBand::GetUnitType();
+	if (psPam != NULL)
+	{
+		if (psPam->pszUnitType == NULL)
+			return "";
+		else
+			return psPam->pszUnitType;
+	}
+	else
+		return GDALRasterBand::GetUnitType();
 }
 
 /************************************************************************/
 /*                            SetUnitType()                             */
 /************************************************************************/
 
-CPLErr GDALPamRasterBand::SetUnitType( const char *pszNewValue )
+CPLErr GDALPamRasterBand::SetUnitType(const char *pszNewValue)
 
 {
-    PamInitialize();
+	PamInitialize();
 
-    if( psPam )
-    {
-        if( pszNewValue == NULL || pszNewValue[0] == '\0' )
-        {
-            if (psPam->pszUnitType != NULL)
-                psPam->poParentDS->MarkPamDirty();
-            CPLFree( psPam->pszUnitType );
-            psPam->pszUnitType = NULL;
-        }
-        else
-        {
-            if (psPam->pszUnitType == NULL ||
-                strcmp(psPam->pszUnitType, pszNewValue) != 0)
-                psPam->poParentDS->MarkPamDirty();
-            CPLFree( psPam->pszUnitType );
-            psPam->pszUnitType = CPLStrdup(pszNewValue);
-        }
+	if (psPam)
+	{
+		if (pszNewValue == NULL || pszNewValue[0] == '\0')
+		{
+			if (psPam->pszUnitType != NULL)
+				psPam->poParentDS->MarkPamDirty();
+			CPLFree(psPam->pszUnitType);
+			psPam->pszUnitType = NULL;
+		}
+		else
+		{
+			if (psPam->pszUnitType == NULL ||
+				strcmp(psPam->pszUnitType, pszNewValue) != 0)
+				psPam->poParentDS->MarkPamDirty();
+			CPLFree(psPam->pszUnitType);
+			psPam->pszUnitType = CPLStrdup(pszNewValue);
+		}
 
-        return CE_None;
-    }
-    else
-        return GDALRasterBand::SetUnitType( pszNewValue );
+		return CE_None;
+	}
+	else
+		return GDALRasterBand::SetUnitType(pszNewValue);
 }
 
 /************************************************************************/
@@ -842,30 +842,30 @@ CPLErr GDALPamRasterBand::SetUnitType( const char *pszNewValue )
 char **GDALPamRasterBand::GetCategoryNames()
 
 {
-    if( psPam )
-        return psPam->papszCategoryNames;
-    else
-        return GDALRasterBand::GetCategoryNames();
+	if (psPam)
+		return psPam->papszCategoryNames;
+	else
+		return GDALRasterBand::GetCategoryNames();
 }
 
 /************************************************************************/
 /*                          SetCategoryNames()                          */
 /************************************************************************/
 
-CPLErr GDALPamRasterBand::SetCategoryNames( char ** papszNewNames )
+CPLErr GDALPamRasterBand::SetCategoryNames(char ** papszNewNames)
 
 {
-    PamInitialize();
+	PamInitialize();
 
-    if( psPam ) 
-    {
-        CSLDestroy( psPam->papszCategoryNames );
-        psPam->papszCategoryNames = CSLDuplicate( papszNewNames );
-        psPam->poParentDS->MarkPamDirty();
-        return CE_None;
-    }
-    else 
-        return GDALRasterBand::SetCategoryNames( papszNewNames );
+	if (psPam)
+	{
+		CSLDestroy(psPam->papszCategoryNames);
+		psPam->papszCategoryNames = CSLDuplicate(papszNewNames);
+		psPam->poParentDS->MarkPamDirty();
+		return CE_None;
+	}
+	else
+		return GDALRasterBand::SetCategoryNames(papszNewNames);
 
 }
 
@@ -877,41 +877,41 @@ CPLErr GDALPamRasterBand::SetCategoryNames( char ** papszNewNames )
 GDALColorTable *GDALPamRasterBand::GetColorTable()
 
 {
-    if( psPam )
-        return psPam->poColorTable;
-    else
-        return GDALRasterBand::GetColorTable();
+	if (psPam)
+		return psPam->poColorTable;
+	else
+		return GDALRasterBand::GetColorTable();
 }
 
 /************************************************************************/
 /*                           SetColorTable()                            */
 /************************************************************************/
 
-CPLErr GDALPamRasterBand::SetColorTable( GDALColorTable *poTableIn )
+CPLErr GDALPamRasterBand::SetColorTable(GDALColorTable *poTableIn)
 
 {
-    PamInitialize();
+	PamInitialize();
 
-    if( psPam )
-    {
-        if( psPam->poColorTable != NULL )
-        {
-            delete psPam->poColorTable;
-            psPam->poColorTable = NULL;
-        }
-        
-        if( poTableIn )
-        {
-            psPam->poColorTable = poTableIn->Clone();
-            psPam->eColorInterp = GCI_PaletteIndex;
-        }
+	if (psPam)
+	{
+		if (psPam->poColorTable != NULL)
+		{
+			delete psPam->poColorTable;
+			psPam->poColorTable = NULL;
+		}
 
-        psPam->poParentDS->MarkPamDirty();
+		if (poTableIn)
+		{
+			psPam->poColorTable = poTableIn->Clone();
+			psPam->eColorInterp = GCI_PaletteIndex;
+		}
 
-        return CE_None;
-    }
-    else
-        return GDALRasterBand::SetColorTable( poTableIn );
+		psPam->poParentDS->MarkPamDirty();
+
+		return CE_None;
+	}
+	else
+		return GDALRasterBand::SetColorTable(poTableIn);
 
 }
 
@@ -919,21 +919,21 @@ CPLErr GDALPamRasterBand::SetColorTable( GDALColorTable *poTableIn )
 /*                       SetColorInterpretation()                       */
 /************************************************************************/
 
-CPLErr GDALPamRasterBand::SetColorInterpretation( GDALColorInterp eInterpIn )
+CPLErr GDALPamRasterBand::SetColorInterpretation(GDALColorInterp eInterpIn)
 
 {
-    PamInitialize();
+	PamInitialize();
 
-    if( psPam )
-    {
-        psPam->poParentDS->MarkPamDirty();
-        
-        psPam->eColorInterp = eInterpIn;
+	if (psPam)
+	{
+		psPam->poParentDS->MarkPamDirty();
 
-        return CE_None;
-    }
-    else
-        return GDALRasterBand::SetColorInterpretation( eInterpIn );
+		psPam->eColorInterp = eInterpIn;
+
+		return CE_None;
+	}
+	else
+		return GDALRasterBand::SetColorInterpretation(eInterpIn);
 }
 
 /************************************************************************/
@@ -943,10 +943,10 @@ CPLErr GDALPamRasterBand::SetColorInterpretation( GDALColorInterp eInterpIn )
 GDALColorInterp GDALPamRasterBand::GetColorInterpretation()
 
 {
-    if( psPam )
-        return psPam->eColorInterp;
-    else
-        return GDALRasterBand::GetColorInterpretation();
+	if (psPam)
+		return psPam->eColorInterp;
+	else
+		return GDALRasterBand::GetColorInterpretation();
 }
 
 /************************************************************************/
@@ -956,113 +956,113 @@ GDALColorInterp GDALPamRasterBand::GetColorInterpretation()
 /*      track of whether it has been changed so we know to save it.     */
 /************************************************************************/
 
-void GDALPamRasterBand::SetDescription( const char *pszDescription )
+void GDALPamRasterBand::SetDescription(const char *pszDescription)
 
 {
-    PamInitialize();
+	PamInitialize();
 
-    if( psPam && strcmp(pszDescription,GetDescription()) != 0 )
-        psPam->poParentDS->MarkPamDirty();
-    
-    GDALRasterBand::SetDescription( pszDescription );
+	if (psPam && strcmp(pszDescription, GetDescription()) != 0)
+		psPam->poParentDS->MarkPamDirty();
+
+	GDALRasterBand::SetDescription(pszDescription);
 }
 
 /************************************************************************/
 /*                         PamParseHistogram()                          */
 /************************************************************************/
 
-int 
-PamParseHistogram( CPLXMLNode *psHistItem, 
-                   double *pdfMin, double *pdfMax, 
-                   int *pnBuckets, int **ppanHistogram, 
-                   int *pbIncludeOutOfRange, int *pbApproxOK )
+int
+PamParseHistogram(CPLXMLNode *psHistItem,
+	double *pdfMin, double *pdfMax,
+	int *pnBuckets, int **ppanHistogram,
+	int *pbIncludeOutOfRange, int *pbApproxOK)
 
 {
-    if( psHistItem == NULL )
-        return FALSE;
+	if (psHistItem == NULL)
+		return FALSE;
 
-    *pdfMin = atof(CPLGetXMLValue( psHistItem, "HistMin", "0"));
-    *pdfMax = atof(CPLGetXMLValue( psHistItem, "HistMax", "1"));
-    *pnBuckets = atoi(CPLGetXMLValue( psHistItem, "BucketCount","2"));
-    if (*pnBuckets <= 0 || *pnBuckets > INT_MAX / 2)
-        return FALSE;
+	*pdfMin = atof(CPLGetXMLValue(psHistItem, "HistMin", "0"));
+	*pdfMax = atof(CPLGetXMLValue(psHistItem, "HistMax", "1"));
+	*pnBuckets = atoi(CPLGetXMLValue(psHistItem, "BucketCount", "2"));
+	if (*pnBuckets <= 0 || *pnBuckets > INT_MAX / 2)
+		return FALSE;
 
-    if( ppanHistogram == NULL )
-        return TRUE;
+	if (ppanHistogram == NULL)
+		return TRUE;
 
-    // Fetch the histogram and use it. 
-    int iBucket;
-    const char *pszHistCounts = CPLGetXMLValue( psHistItem, 
-                                                "HistCounts", "" );
+	// Fetch the histogram and use it. 
+	int iBucket;
+	const char *pszHistCounts = CPLGetXMLValue(psHistItem,
+		"HistCounts", "");
 
-    /* Sanity check to test consistency of BucketCount and HistCounts */
-    if( strlen(pszHistCounts) < 2 * (size_t)(*pnBuckets) -1 )
-    {
-        CPLError(CE_Failure, CPLE_AppDefined,
-                 "HistCounts content isn't consistant with BucketCount value");
-        return FALSE;
-    }
+	/* Sanity check to test consistency of BucketCount and HistCounts */
+	if (strlen(pszHistCounts) < 2 * (size_t)(*pnBuckets) - 1)
+	{
+		CPLError(CE_Failure, CPLE_AppDefined,
+			"HistCounts content isn't consistant with BucketCount value");
+		return FALSE;
+	}
 
-    *ppanHistogram = (int *) VSICalloc(sizeof(int),*pnBuckets);
-    if (*ppanHistogram == NULL)
-    {
-        CPLError(CE_Failure, CPLE_OutOfMemory,
-                 "Cannot allocate memory for %d buckets", *pnBuckets);
-        return FALSE;
-    }
+	*ppanHistogram = (int *)VSICalloc(sizeof(int), *pnBuckets);
+	if (*ppanHistogram == NULL)
+	{
+		CPLError(CE_Failure, CPLE_OutOfMemory,
+			"Cannot allocate memory for %d buckets", *pnBuckets);
+		return FALSE;
+	}
 
-    for( iBucket = 0; iBucket < *pnBuckets; iBucket++ )
-    {
-        (*ppanHistogram)[iBucket] = atoi(pszHistCounts);
-        
-        // skip to next number.
-        while( *pszHistCounts != '\0' && *pszHistCounts != '|' )
-            pszHistCounts++;
-        if( *pszHistCounts == '|' )
-            pszHistCounts++;
-    }
-    
-    return TRUE;
+	for (iBucket = 0; iBucket < *pnBuckets; iBucket++)
+	{
+		(*ppanHistogram)[iBucket] = atoi(pszHistCounts);
+
+		// skip to next number.
+		while (*pszHistCounts != '\0' && *pszHistCounts != '|')
+			pszHistCounts++;
+		if (*pszHistCounts == '|')
+			pszHistCounts++;
+	}
+
+	return TRUE;
 }
 
 /************************************************************************/
 /*                      PamFindMatchingHistogram()                      */
 /************************************************************************/
 CPLXMLNode *
-PamFindMatchingHistogram( CPLXMLNode *psSavedHistograms,
-                          double dfMin, double dfMax, int nBuckets, 
-                          int bIncludeOutOfRange, int bApproxOK )
+PamFindMatchingHistogram(CPLXMLNode *psSavedHistograms,
+	double dfMin, double dfMax, int nBuckets,
+	int bIncludeOutOfRange, int bApproxOK)
 
 {
-    if( psSavedHistograms == NULL )
-        return NULL;
+	if (psSavedHistograms == NULL)
+		return NULL;
 
-    CPLXMLNode *psXMLHist;
-    for( psXMLHist = psSavedHistograms->psChild;
-         psXMLHist != NULL; psXMLHist = psXMLHist->psNext )
-    {
-        if( psXMLHist->eType != CXT_Element
-            || !EQUAL(psXMLHist->pszValue,"HistItem") )
-            continue;
+	CPLXMLNode *psXMLHist;
+	for (psXMLHist = psSavedHistograms->psChild;
+		psXMLHist != NULL; psXMLHist = psXMLHist->psNext)
+	{
+		if (psXMLHist->eType != CXT_Element
+			|| !EQUAL(psXMLHist->pszValue, "HistItem"))
+			continue;
 
-        double dfHistMin = atof(CPLGetXMLValue( psXMLHist, "HistMin", "0"));
-        double dfHistMax = atof(CPLGetXMLValue( psXMLHist, "HistMax", "0"));
+		double dfHistMin = atof(CPLGetXMLValue(psXMLHist, "HistMin", "0"));
+		double dfHistMax = atof(CPLGetXMLValue(psXMLHist, "HistMax", "0"));
 
-        if( !(ARE_REAL_EQUAL(dfHistMin, dfMin))
-            || !(ARE_REAL_EQUAL(dfHistMax, dfMax))
-            || atoi(CPLGetXMLValue( psXMLHist, 
-                                    "BucketCount","0")) != nBuckets
-            || !atoi(CPLGetXMLValue( psXMLHist, 
-                                     "IncludeOutOfRange","0")) != !bIncludeOutOfRange 
-            || (!bApproxOK && atoi(CPLGetXMLValue( psXMLHist, 
-                                                   "Approximate","0"))) )
+		if (!(ARE_REAL_EQUAL(dfHistMin, dfMin))
+			|| !(ARE_REAL_EQUAL(dfHistMax, dfMax))
+			|| atoi(CPLGetXMLValue(psXMLHist,
+				"BucketCount", "0")) != nBuckets
+			|| !atoi(CPLGetXMLValue(psXMLHist,
+				"IncludeOutOfRange", "0")) != !bIncludeOutOfRange
+			|| (!bApproxOK && atoi(CPLGetXMLValue(psXMLHist,
+				"Approximate", "0"))))
 
-            continue;
+			continue;
 
-        return psXMLHist;
-    }
+		return psXMLHist;
+	}
 
-    return NULL;
+	return NULL;
 }
 
 /************************************************************************/
@@ -1070,221 +1070,221 @@ PamFindMatchingHistogram( CPLXMLNode *psSavedHistograms,
 /************************************************************************/
 
 CPLXMLNode *
-PamHistogramToXMLTree( double dfMin, double dfMax,
-                       int nBuckets, int * panHistogram,
-                       int bIncludeOutOfRange, int bApprox )
+PamHistogramToXMLTree(double dfMin, double dfMax,
+	int nBuckets, int * panHistogram,
+	int bIncludeOutOfRange, int bApprox)
 
 {
-    char *pszHistCounts;
-    int iBucket, iHistOffset;
-    CPLXMLNode *psXMLHist;
-    CPLString oFmt;
+	char *pszHistCounts;
+	int iBucket, iHistOffset;
+	CPLXMLNode *psXMLHist;
+	CPLString oFmt;
 
-    if( nBuckets > (INT_MAX - 10) / 12 )
-        return NULL;
+	if (nBuckets > (INT_MAX - 10) / 12)
+		return NULL;
 
-    pszHistCounts = (char *) VSIMalloc(12 * nBuckets + 10);
-    if( pszHistCounts == NULL )
-        return NULL;
+	pszHistCounts = (char *)VSIMalloc(12 * nBuckets + 10);
+	if (pszHistCounts == NULL)
+		return NULL;
 
-    psXMLHist = CPLCreateXMLNode( NULL, CXT_Element, "HistItem" );
+	psXMLHist = CPLCreateXMLNode(NULL, CXT_Element, "HistItem");
 
-    CPLSetXMLValue( psXMLHist, "HistMin", 
-                    oFmt.Printf( "%.16g", dfMin ));
-    CPLSetXMLValue( psXMLHist, "HistMax", 
-                    oFmt.Printf( "%.16g", dfMax ));
-    CPLSetXMLValue( psXMLHist, "BucketCount", 
-                    oFmt.Printf( "%d", nBuckets ));
-    CPLSetXMLValue( psXMLHist, "IncludeOutOfRange", 
-                    oFmt.Printf( "%d", bIncludeOutOfRange ));
-    CPLSetXMLValue( psXMLHist, "Approximate", 
-                    oFmt.Printf( "%d", bApprox ));
+	CPLSetXMLValue(psXMLHist, "HistMin",
+		oFmt.Printf("%.16g", dfMin));
+	CPLSetXMLValue(psXMLHist, "HistMax",
+		oFmt.Printf("%.16g", dfMax));
+	CPLSetXMLValue(psXMLHist, "BucketCount",
+		oFmt.Printf("%d", nBuckets));
+	CPLSetXMLValue(psXMLHist, "IncludeOutOfRange",
+		oFmt.Printf("%d", bIncludeOutOfRange));
+	CPLSetXMLValue(psXMLHist, "Approximate",
+		oFmt.Printf("%d", bApprox));
 
-    iHistOffset = 0;
-    pszHistCounts[0] = '\0';
-    for( iBucket = 0; iBucket < nBuckets; iBucket++ )
-    {
-        sprintf( pszHistCounts + iHistOffset, "%d", panHistogram[iBucket] );
-        if( iBucket < nBuckets-1 )
-            strcat( pszHistCounts + iHistOffset, "|" );
-        iHistOffset += strlen(pszHistCounts+iHistOffset);
-    }
-        
-    CPLSetXMLValue( psXMLHist, "HistCounts", pszHistCounts );
-    CPLFree( pszHistCounts );
+	iHistOffset = 0;
+	pszHistCounts[0] = '\0';
+	for (iBucket = 0; iBucket < nBuckets; iBucket++)
+	{
+		sprintf(pszHistCounts + iHistOffset, "%d", panHistogram[iBucket]);
+		if (iBucket < nBuckets - 1)
+			strcat(pszHistCounts + iHistOffset, "|");
+		iHistOffset += strlen(pszHistCounts + iHistOffset);
+	}
 
-    return psXMLHist;
+	CPLSetXMLValue(psXMLHist, "HistCounts", pszHistCounts);
+	CPLFree(pszHistCounts);
+
+	return psXMLHist;
 }
 
 /************************************************************************/
 /*                            GetHistogram()                            */
 /************************************************************************/
 
-CPLErr GDALPamRasterBand::GetHistogram( double dfMin, double dfMax,
-                                        int nBuckets, int * panHistogram,
-                                        int bIncludeOutOfRange, int bApproxOK,
-                                        GDALProgressFunc pfnProgress, 
-                                        void *pProgressData )
+CPLErr GDALPamRasterBand::GetHistogram(double dfMin, double dfMax,
+	int nBuckets, int * panHistogram,
+	int bIncludeOutOfRange, int bApproxOK,
+	GDALProgressFunc pfnProgress,
+	void *pProgressData)
 
 {
-    PamInitialize();
+	PamInitialize();
 
-    if( psPam == NULL )
-        return GDALRasterBand::GetHistogram( dfMin, dfMax, 
-                                             nBuckets, panHistogram, 
-                                             bIncludeOutOfRange, bApproxOK,
-                                             pfnProgress, pProgressData );
+	if (psPam == NULL)
+		return GDALRasterBand::GetHistogram(dfMin, dfMax,
+			nBuckets, panHistogram,
+			bIncludeOutOfRange, bApproxOK,
+			pfnProgress, pProgressData);
 
-/* -------------------------------------------------------------------- */
-/*      Check if we have a matching histogram.                          */
-/* -------------------------------------------------------------------- */
-    CPLXMLNode *psHistItem;
+	/* -------------------------------------------------------------------- */
+	/*      Check if we have a matching histogram.                          */
+	/* -------------------------------------------------------------------- */
+	CPLXMLNode *psHistItem;
 
-    psHistItem = PamFindMatchingHistogram( psPam->psSavedHistograms, 
-                                           dfMin, dfMax, nBuckets, 
-                                           bIncludeOutOfRange, bApproxOK );
-    if( psHistItem != NULL )
-    {
-        int *panTempHist = NULL;
+	psHistItem = PamFindMatchingHistogram(psPam->psSavedHistograms,
+		dfMin, dfMax, nBuckets,
+		bIncludeOutOfRange, bApproxOK);
+	if (psHistItem != NULL)
+	{
+		int *panTempHist = NULL;
 
-        if( PamParseHistogram( psHistItem, &dfMin, &dfMax, &nBuckets, 
-                               &panTempHist,
-                               &bIncludeOutOfRange, &bApproxOK ) )
-        {
-            memcpy( panHistogram, panTempHist, sizeof(int) * nBuckets );
-            CPLFree( panTempHist );
-            return CE_None;
-        }
-    }
+		if (PamParseHistogram(psHistItem, &dfMin, &dfMax, &nBuckets,
+			&panTempHist,
+			&bIncludeOutOfRange, &bApproxOK))
+		{
+			memcpy(panHistogram, panTempHist, sizeof(int) * nBuckets);
+			CPLFree(panTempHist);
+			return CE_None;
+		}
+	}
 
-/* -------------------------------------------------------------------- */
-/*      We don't have an existing histogram matching the request, so    */
-/*      generate one manually.                                          */
-/* -------------------------------------------------------------------- */
-    CPLErr eErr;
+	/* -------------------------------------------------------------------- */
+	/*      We don't have an existing histogram matching the request, so    */
+	/*      generate one manually.                                          */
+	/* -------------------------------------------------------------------- */
+	CPLErr eErr;
 
-    eErr = GDALRasterBand::GetHistogram( dfMin, dfMax, 
-                                         nBuckets, panHistogram, 
-                                         bIncludeOutOfRange, bApproxOK,
-                                         pfnProgress, pProgressData );
+	eErr = GDALRasterBand::GetHistogram(dfMin, dfMax,
+		nBuckets, panHistogram,
+		bIncludeOutOfRange, bApproxOK,
+		pfnProgress, pProgressData);
 
-/* -------------------------------------------------------------------- */
-/*      Save an XML description of this histogram.                      */
-/* -------------------------------------------------------------------- */
-    if( eErr == CE_None )
-    {
-        CPLXMLNode *psXMLHist;
+	/* -------------------------------------------------------------------- */
+	/*      Save an XML description of this histogram.                      */
+	/* -------------------------------------------------------------------- */
+	if (eErr == CE_None)
+	{
+		CPLXMLNode *psXMLHist;
 
-        psXMLHist = PamHistogramToXMLTree( dfMin, dfMax, nBuckets, 
-                                           panHistogram, 
-                                           bIncludeOutOfRange, bApproxOK );
-        if( psXMLHist != NULL )
-        {
-            psPam->poParentDS->MarkPamDirty();
+		psXMLHist = PamHistogramToXMLTree(dfMin, dfMax, nBuckets,
+			panHistogram,
+			bIncludeOutOfRange, bApproxOK);
+		if (psXMLHist != NULL)
+		{
+			psPam->poParentDS->MarkPamDirty();
 
-            if( psPam->psSavedHistograms == NULL )
-                psPam->psSavedHistograms = CPLCreateXMLNode( NULL, CXT_Element,
-                                                             "Histograms" );
-            
-            CPLAddXMLChild( psPam->psSavedHistograms, psXMLHist );
-        }
-    }
+			if (psPam->psSavedHistograms == NULL)
+				psPam->psSavedHistograms = CPLCreateXMLNode(NULL, CXT_Element,
+					"Histograms");
 
-    return eErr;
+			CPLAddXMLChild(psPam->psSavedHistograms, psXMLHist);
+		}
+	}
+
+	return eErr;
 }
 
 /************************************************************************/
 /*                        SetDefaultHistogram()                         */
 /************************************************************************/
 
-CPLErr GDALPamRasterBand::SetDefaultHistogram( double dfMin, double dfMax, 
-                                               int nBuckets, int *panHistogram)
+CPLErr GDALPamRasterBand::SetDefaultHistogram(double dfMin, double dfMax,
+	int nBuckets, int *panHistogram)
 
 {
-    CPLXMLNode *psNode;
+	CPLXMLNode *psNode;
 
-    PamInitialize();
+	PamInitialize();
 
-    if( psPam == NULL )
-        return GDALRasterBand::SetDefaultHistogram( dfMin, dfMax, 
-                                                    nBuckets, panHistogram );
+	if (psPam == NULL)
+		return GDALRasterBand::SetDefaultHistogram(dfMin, dfMax,
+			nBuckets, panHistogram);
 
-/* -------------------------------------------------------------------- */
-/*      Do we have a matching histogram we should replace?              */
-/* -------------------------------------------------------------------- */
-    psNode = PamFindMatchingHistogram( psPam->psSavedHistograms, 
-                                       dfMin, dfMax, nBuckets,
-                                       TRUE, TRUE );
-    if( psNode != NULL )
-    {
-        /* blow this one away */
-        CPLRemoveXMLChild( psPam->psSavedHistograms, psNode );
-        CPLDestroyXMLNode( psNode );
-    }
+	/* -------------------------------------------------------------------- */
+	/*      Do we have a matching histogram we should replace?              */
+	/* -------------------------------------------------------------------- */
+	psNode = PamFindMatchingHistogram(psPam->psSavedHistograms,
+		dfMin, dfMax, nBuckets,
+		TRUE, TRUE);
+	if (psNode != NULL)
+	{
+		/* blow this one away */
+		CPLRemoveXMLChild(psPam->psSavedHistograms, psNode);
+		CPLDestroyXMLNode(psNode);
+	}
 
-/* -------------------------------------------------------------------- */
-/*      Translate into a histogram XML tree.                            */
-/* -------------------------------------------------------------------- */
-    CPLXMLNode *psHistItem;
+	/* -------------------------------------------------------------------- */
+	/*      Translate into a histogram XML tree.                            */
+	/* -------------------------------------------------------------------- */
+	CPLXMLNode *psHistItem;
 
-    psHistItem = PamHistogramToXMLTree( dfMin, dfMax, nBuckets, 
-                                        panHistogram, TRUE, FALSE );
-    if( psHistItem == NULL )
-        return CE_Failure;
+	psHistItem = PamHistogramToXMLTree(dfMin, dfMax, nBuckets,
+		panHistogram, TRUE, FALSE);
+	if (psHistItem == NULL)
+		return CE_Failure;
 
-/* -------------------------------------------------------------------- */
-/*      Insert our new default histogram at the front of the            */
-/*      histogram list so that it will be the default histogram.        */
-/* -------------------------------------------------------------------- */
-    psPam->poParentDS->MarkPamDirty();
+	/* -------------------------------------------------------------------- */
+	/*      Insert our new default histogram at the front of the            */
+	/*      histogram list so that it will be the default histogram.        */
+	/* -------------------------------------------------------------------- */
+	psPam->poParentDS->MarkPamDirty();
 
-    if( psPam->psSavedHistograms == NULL )
-        psPam->psSavedHistograms = CPLCreateXMLNode( NULL, CXT_Element,
-                                                     "Histograms" );
-            
-    psHistItem->psNext = psPam->psSavedHistograms->psChild;
-    psPam->psSavedHistograms->psChild = psHistItem;
-    
-    return CE_None;
+	if (psPam->psSavedHistograms == NULL)
+		psPam->psSavedHistograms = CPLCreateXMLNode(NULL, CXT_Element,
+			"Histograms");
+
+	psHistItem->psNext = psPam->psSavedHistograms->psChild;
+	psPam->psSavedHistograms->psChild = psHistItem;
+
+	return CE_None;
 }
 
 /************************************************************************/
 /*                        GetDefaultHistogram()                         */
 /************************************************************************/
 
-CPLErr 
-GDALPamRasterBand::GetDefaultHistogram( double *pdfMin, double *pdfMax, 
-                                        int *pnBuckets, int **ppanHistogram, 
-                                        int bForce,
-                                        GDALProgressFunc pfnProgress, 
-                                        void *pProgressData )
-    
+CPLErr
+GDALPamRasterBand::GetDefaultHistogram(double *pdfMin, double *pdfMax,
+	int *pnBuckets, int **ppanHistogram,
+	int bForce,
+	GDALProgressFunc pfnProgress,
+	void *pProgressData)
+
 {
-    if( psPam && psPam->psSavedHistograms != NULL )
-    {
-        CPLXMLNode *psXMLHist;
+	if (psPam && psPam->psSavedHistograms != NULL)
+	{
+		CPLXMLNode *psXMLHist;
 
-        for( psXMLHist = psPam->psSavedHistograms->psChild;
-             psXMLHist != NULL; psXMLHist = psXMLHist->psNext )
-        {
-            int bApprox, bIncludeOutOfRange;
+		for (psXMLHist = psPam->psSavedHistograms->psChild;
+			psXMLHist != NULL; psXMLHist = psXMLHist->psNext)
+		{
+			int bApprox, bIncludeOutOfRange;
 
-            if( psXMLHist->eType != CXT_Element
-                || !EQUAL(psXMLHist->pszValue,"HistItem") )
-                continue;
+			if (psXMLHist->eType != CXT_Element
+				|| !EQUAL(psXMLHist->pszValue, "HistItem"))
+				continue;
 
-            if( PamParseHistogram( psXMLHist, pdfMin, pdfMax, pnBuckets, 
-                                   ppanHistogram, &bIncludeOutOfRange,
-                                   &bApprox ) )
-                return CE_None;
-            else
-                return CE_Failure;
-        }
-    }
+			if (PamParseHistogram(psXMLHist, pdfMin, pdfMax, pnBuckets,
+				ppanHistogram, &bIncludeOutOfRange,
+				&bApprox))
+				return CE_None;
+			else
+				return CE_Failure;
+		}
+	}
 
-    return GDALRasterBand::GetDefaultHistogram( pdfMin, pdfMax, pnBuckets, 
-                                                ppanHistogram, bForce, 
-                                                pfnProgress, pProgressData );
+	return GDALRasterBand::GetDefaultHistogram(pdfMin, pdfMax, pnBuckets,
+		ppanHistogram, bForce,
+		pfnProgress, pProgressData);
 }
 
 /************************************************************************/
@@ -1294,39 +1294,39 @@ GDALPamRasterBand::GetDefaultHistogram( double *pdfMin, double *pdfMax,
 GDALRasterAttributeTable *GDALPamRasterBand::GetDefaultRAT()
 
 {
-    PamInitialize();
+	PamInitialize();
 
-    if( psPam == NULL )
-        return GDALRasterBand::GetDefaultRAT();
+	if (psPam == NULL)
+		return GDALRasterBand::GetDefaultRAT();
 
-    return psPam->poDefaultRAT;
+	return psPam->poDefaultRAT;
 }
 
 /************************************************************************/
 /*                           SetDefaultRAT()                            */
 /************************************************************************/
 
-CPLErr GDALPamRasterBand::SetDefaultRAT( const GDALRasterAttributeTable *poRAT)
+CPLErr GDALPamRasterBand::SetDefaultRAT(const GDALRasterAttributeTable *poRAT)
 
 {
-    PamInitialize();
+	PamInitialize();
 
-    if( psPam == NULL )
-        return GDALRasterBand::SetDefaultRAT( poRAT );
+	if (psPam == NULL)
+		return GDALRasterBand::SetDefaultRAT(poRAT);
 
-    psPam->poParentDS->MarkPamDirty();
+	psPam->poParentDS->MarkPamDirty();
 
-    if( psPam->poDefaultRAT != NULL )
-    {
-        delete psPam->poDefaultRAT;
-        psPam->poDefaultRAT = NULL;
-    }
+	if (psPam->poDefaultRAT != NULL)
+	{
+		delete psPam->poDefaultRAT;
+		psPam->poDefaultRAT = NULL;
+	}
 
-    if( poRAT == NULL )
-        psPam->poDefaultRAT = NULL;
-    else
-        psPam->poDefaultRAT = poRAT->Clone();
+	if (poRAT == NULL)
+		psPam->poDefaultRAT = NULL;
+	else
+		psPam->poDefaultRAT = poRAT->Clone();
 
-    return CE_None;
+	return CE_None;
 }
 

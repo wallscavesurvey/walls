@@ -22,21 +22,21 @@ QvDebugErrorCallback QvDebugError::callback_ = 0;  // mpichler, 19950713
 void
 QvDebugError::post(const char *methodName, const char *formatString ...)
 {
-    char	buf[10000];
-    va_list	ap;
+	char	buf[10000];
+	va_list	ap;
 
 #if defined(SUN4) || defined(SUN4_GNU)
-    va_start(ap);
+	va_start(ap);
 #else
-    va_start(ap, formatString);
+	va_start(ap, formatString);
 #endif
-    vsprintf(buf, formatString, ap);
-    va_end(ap);
+	vsprintf(buf, formatString, ap);
+	va_end(ap);
 
-  if (callback_)
-    (*callback_) (methodName, buf);
+	if (callback_)
+		(*callback_) (methodName, buf);
 #ifdef _DEBUG
-  else
-    fprintf(stderr, "VRML error in %s: %s\n", methodName, buf);
+	else
+		fprintf(stderr, "VRML error in %s: %s\n", methodName, buf);
 #endif
 }

@@ -34,14 +34,14 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CMDISceneWnd message handlers
 
-BOOL CMDISceneWnd::PreCreateWindow(CREATESTRUCT& cs) 
+BOOL CMDISceneWnd::PreCreateWindow(CREATESTRUCT& cs)
 {
 
-    if (!CMDIChildWnd::PreCreateWindow (cs))
-        return FALSE;
+	if (!CMDIChildWnd::PreCreateWindow(cs))
+		return FALSE;
 
-    cs.style &= ~FWS_ADDTOTITLE;
-    return TRUE;
+	cs.style &= ~FWS_ADDTOTITLE;
+	return TRUE;
 }
 
 BOOL CMDISceneWnd::OnEraseBkgnd(CDC* pDC)

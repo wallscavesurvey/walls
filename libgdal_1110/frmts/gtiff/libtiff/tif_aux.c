@@ -4,31 +4,31 @@
  * Copyright (c) 1991-1997 Sam Leffler
  * Copyright (c) 1991-1997 Silicon Graphics, Inc.
  *
- * Permission to use, copy, modify, distribute, and sell this software and 
+ * Permission to use, copy, modify, distribute, and sell this software and
  * its documentation for any purpose is hereby granted without fee, provided
  * that (i) the above copyright notices and this permission notice appear in
  * all copies of the software and related documentation, and (ii) the names of
  * Sam Leffler and Silicon Graphics may not be used in any advertising or
  * publicity relating to the software without the specific, prior written
  * permission of Sam Leffler and Silicon Graphics.
- * 
- * THE SOFTWARE IS PROVIDED "AS-IS" AND WITHOUT WARRANTY OF ANY KIND, 
- * EXPRESS, IMPLIED OR OTHERWISE, INCLUDING WITHOUT LIMITATION, ANY 
- * WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  
- * 
+ *
+ * THE SOFTWARE IS PROVIDED "AS-IS" AND WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS, IMPLIED OR OTHERWISE, INCLUDING WITHOUT LIMITATION, ANY
+ * WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+ *
  * IN NO EVENT SHALL SAM LEFFLER OR SILICON GRAPHICS BE LIABLE FOR
  * ANY SPECIAL, INCIDENTAL, INDIRECT OR CONSEQUENTIAL DAMAGES OF ANY KIND,
  * OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
- * WHETHER OR NOT ADVISED OF THE POSSIBILITY OF DAMAGE, AND ON ANY THEORY OF 
- * LIABILITY, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE 
+ * WHETHER OR NOT ADVISED OF THE POSSIBILITY OF DAMAGE, AND ON ANY THEORY OF
+ * LIABILITY, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
  * OF THIS SOFTWARE.
  */
 
-/*
- * TIFF Library.
- *
- * Auxiliary Support Routines.
- */
+ /*
+  * TIFF Library.
+  *
+  * Auxiliary Support Routines.
+  */
 #include "tiffiop.h"
 #include "tif_predict.h"
 #include <math.h>
@@ -61,7 +61,7 @@ _TIFFMultiply64(TIFF* tif, uint64 first, uint64 second, const char* where)
 
 void*
 _TIFFCheckRealloc(TIFF* tif, void* buffer,
-		  tmsize_t nmemb, tmsize_t elem_size, const char* what)
+	tmsize_t nmemb, tmsize_t elem_size, const char* what)
 {
 	void* cp = NULL;
 	tmsize_t bytes = nmemb * elem_size;
@@ -74,9 +74,9 @@ _TIFFCheckRealloc(TIFF* tif, void* buffer,
 
 	if (cp == NULL) {
 		TIFFErrorExt(tif->tif_clientdata, tif->tif_name,
-			     "Failed to allocate memory for %s "
-			     "(%ld elements of %ld bytes each)",
-			     what,(long) nmemb, (long) elem_size);
+			"Failed to allocate memory for %s "
+			"(%ld elements of %ld bytes each)",
+			what, (long)nmemb, (long)elem_size);
 	}
 
 	return cp;
@@ -85,7 +85,7 @@ _TIFFCheckRealloc(TIFF* tif, void* buffer,
 void*
 _TIFFCheckMalloc(TIFF* tif, tmsize_t nmemb, tmsize_t elem_size, const char* what)
 {
-	return _TIFFCheckRealloc(tif, NULL, nmemb, elem_size, what);  
+	return _TIFFCheckRealloc(tif, NULL, nmemb, elem_size, what);
 }
 
 static int
@@ -98,13 +98,13 @@ TIFFDefaultTransferFunction(TIFFDirectory* td)
 	if (td->td_bitspersample >= sizeof(tmsize_t) * 8 - 2)
 		return 0;
 
-	n = ((tmsize_t)1)<<td->td_bitspersample;
-	nbytes = n * sizeof (uint16);
+	n = ((tmsize_t)1) << td->td_bitspersample;
+	nbytes = n * sizeof(uint16);
 	if (!(tf[0] = (uint16 *)_TIFFmalloc(nbytes)))
 		return 0;
 	tf[0][0] = 0;
 	for (i = 1; i < n; i++) {
-		double t = (double)i/((double) n-1.);
+		double t = (double)i / ((double)n - 1.);
 		tf[0][i] = (uint16)floor(65535.*pow(t, 2.2) + .5);
 	}
 
@@ -134,9 +134,9 @@ TIFFDefaultRefBlackWhite(TIFFDirectory* td)
 {
 	int i;
 
-	if (!(td->td_refblackwhite = (float *)_TIFFmalloc(6*sizeof (float))))
+	if (!(td->td_refblackwhite = (float *)_TIFFmalloc(6 * sizeof(float))))
 		return 0;
-        if (td->td_photometric == PHOTOMETRIC_YCBCR) {
+	if (td->td_photometric == PHOTOMETRIC_YCBCR) {
 		/*
 		 * YCbCr (Class Y) images must have the ReferenceBlackWhite
 		 * tag set. Fix the broken images, which lacks that tag.
@@ -145,14 +145,15 @@ TIFFDefaultRefBlackWhite(TIFFDirectory* td)
 		td->td_refblackwhite[1] = td->td_refblackwhite[3] =
 			td->td_refblackwhite[5] = 255.0F;
 		td->td_refblackwhite[2] = td->td_refblackwhite[4] = 128.0F;
-	} else {
+	}
+	else {
 		/*
 		 * Assume RGB (Class R)
 		 */
 		for (i = 0; i < 3; i++) {
-		    td->td_refblackwhite[2*i+0] = 0;
-		    td->td_refblackwhite[2*i+1] =
-			    (float)((1L<<td->td_bitspersample)-1L);
+			td->td_refblackwhite[2 * i + 0] = 0;
+			td->td_refblackwhite[2 * i + 1] =
+				(float)((1L << td->td_bitspersample) - 1L);
 		}
 	}
 	return 1;
@@ -208,14 +209,14 @@ TIFFVGetFieldDefaulted(TIFF* tif, uint32 tag, va_list ap)
 		*va_arg(ap, uint16 *) = td->td_resolutionunit;
 		return (1);
 	case TIFFTAG_PREDICTOR:
-                {
-			TIFFPredictorState* sp = (TIFFPredictorState*) tif->tif_data;
-			*va_arg(ap, uint16*) = (uint16) sp->predictor;
-			return 1;
-                }
+	{
+		TIFFPredictorState* sp = (TIFFPredictorState*)tif->tif_data;
+		*va_arg(ap, uint16*) = (uint16)sp->predictor;
+		return 1;
+	}
 	case TIFFTAG_DOTRANGE:
 		*va_arg(ap, uint16 *) = 0;
-		*va_arg(ap, uint16 *) = (1<<td->td_bitspersample)-1;
+		*va_arg(ap, uint16 *) = (1 << td->td_bitspersample) - 1;
 		return (1);
 	case TIFFTAG_INKSET:
 		*va_arg(ap, uint16 *) = INKSET_CMYK;
@@ -229,28 +230,28 @@ TIFFVGetFieldDefaulted(TIFF* tif, uint32 tag, va_list ap)
 		return (1);
 	case TIFFTAG_MATTEING:
 		*va_arg(ap, uint16 *) =
-		    (td->td_extrasamples == 1 &&
-		     td->td_sampleinfo[0] == EXTRASAMPLE_ASSOCALPHA);
+			(td->td_extrasamples == 1 &&
+				td->td_sampleinfo[0] == EXTRASAMPLE_ASSOCALPHA);
 		return (1);
 	case TIFFTAG_TILEDEPTH:
 		*va_arg(ap, uint32 *) = td->td_tiledepth;
 		return (1);
 	case TIFFTAG_DATATYPE:
-		*va_arg(ap, uint16 *) = td->td_sampleformat-1;
+		*va_arg(ap, uint16 *) = td->td_sampleformat - 1;
 		return (1);
 	case TIFFTAG_SAMPLEFORMAT:
 		*va_arg(ap, uint16 *) = td->td_sampleformat;
-                return(1);
+		return(1);
 	case TIFFTAG_IMAGEDEPTH:
 		*va_arg(ap, uint32 *) = td->td_imagedepth;
 		return (1);
 	case TIFFTAG_YCBCRCOEFFICIENTS:
-		{
-			/* defaults are from CCIR Recommendation 601-1 */
-			static float ycbcrcoeffs[] = { 0.299f, 0.587f, 0.114f };
-			*va_arg(ap, float **) = ycbcrcoeffs;
-			return 1;
-		}
+	{
+		/* defaults are from CCIR Recommendation 601-1 */
+		static float ycbcrcoeffs[] = { 0.299f, 0.587f, 0.114f };
+		*va_arg(ap, float **) = ycbcrcoeffs;
+		return 1;
+	}
 	case TIFFTAG_YCBCRSUBSAMPLING:
 		*va_arg(ap, uint16 *) = td->td_ycbcrsubsampling[0];
 		*va_arg(ap, uint16 *) = td->td_ycbcrsubsampling[1];
@@ -259,20 +260,20 @@ TIFFVGetFieldDefaulted(TIFF* tif, uint32 tag, va_list ap)
 		*va_arg(ap, uint16 *) = td->td_ycbcrpositioning;
 		return (1);
 	case TIFFTAG_WHITEPOINT:
-		{
-			static float whitepoint[2];
+	{
+		static float whitepoint[2];
 
-			/* TIFF 6.0 specification tells that it is no default
-			   value for the WhitePoint, but AdobePhotoshop TIFF
-			   Technical Note tells that it should be CIE D50. */
-			whitepoint[0] =	D50_X0 / (D50_X0 + D50_Y0 + D50_Z0);
-			whitepoint[1] =	D50_Y0 / (D50_X0 + D50_Y0 + D50_Z0);
-			*va_arg(ap, float **) = whitepoint;
-			return 1;
-		}
+		/* TIFF 6.0 specification tells that it is no default
+		   value for the WhitePoint, but AdobePhotoshop TIFF
+		   Technical Note tells that it should be CIE D50. */
+		whitepoint[0] = D50_X0 / (D50_X0 + D50_Y0 + D50_Z0);
+		whitepoint[1] = D50_Y0 / (D50_X0 + D50_Y0 + D50_Z0);
+		*va_arg(ap, float **) = whitepoint;
+		return 1;
+	}
 	case TIFFTAG_TRANSFERFUNCTION:
 		if (!td->td_transferfunction[0] &&
-		    !TIFFDefaultTransferFunction(td)) {
+			!TIFFDefaultTransferFunction(td)) {
 			TIFFErrorExt(tif->tif_clientdata, tif->tif_name, "No space for \"TransferFunction\" tag");
 			return (0);
 		}
@@ -302,7 +303,7 @@ TIFFGetFieldDefaulted(TIFF* tif, uint32 tag, ...)
 	va_list ap;
 
 	va_start(ap, tag);
-	ok =  TIFFVGetFieldDefaulted(tif, tag, ap);
+	ok = TIFFVGetFieldDefaulted(tif, tag, ap);
 	va_end(ap);
 	return (ok);
 }
@@ -324,7 +325,8 @@ _TIFFUInt64ToFloat(uint64 ui64)
 	i.value = ui64;
 	if (i.part.high >= 0) {
 		return (float)i.value;
-	} else {
+	}
+	else {
 		long double df;
 		df = (long double)i.value;
 		df += 18446744073709551616.0; /* adding 2**64 */
@@ -340,7 +342,8 @@ _TIFFUInt64ToDouble(uint64 ui64)
 	i.value = ui64;
 	if (i.part.high >= 0) {
 		return (double)i.value;
-	} else {
+	}
+	else {
 		long double df;
 		df = (long double)i.value;
 		df += 18446744073709551616.0; /* adding 2**64 */

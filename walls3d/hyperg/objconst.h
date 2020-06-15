@@ -17,30 +17,30 @@
 
 #include "../utils/str.h"
 
-//
-// Hyper-G Objects
-//
-// Objects in Hyper-G have both a C++ class representation
-// and an ASCII string representation.
-// This file contains the ASCII string representation of
-// the various Hyper-G objects.
-//
-//
-// All objects must have the following two fields:
-//
-// ObjectID=0xnnnnnnnn                              // unique id in hex
-// Type= Anchor | Document | Link                   // object type
-//
+ //
+ // Hyper-G Objects
+ //
+ // Objects in Hyper-G have both a C++ class representation
+ // and an ASCII string representation.
+ // This file contains the ASCII string representation of
+ // the various Hyper-G objects.
+ //
+ //
+ // All objects must have the following two fields:
+ //
+ // ObjectID=0xnnnnnnnn                              // unique id in hex
+ // Type= Anchor | Document | Link                   // object type
+ //
 
 
-extern const RString rsObjectIDEq ;                 // "ObjectID="
-extern const RString rsGOidEq ;                     // "GOid="
-extern const RString rsTypeEq ;                     // "Type="
+extern const RString rsObjectIDEq;                 // "ObjectID="
+extern const RString rsGOidEq;                     // "GOid="
+extern const RString rsTypeEq;                     // "Type="
 
 // Type field values
-extern const RString rsLink ;                       // "Link"
-extern const RString rsAnchor ;                     // "Anchor"
-extern const RString rsDocument ;                   // "Document"
+extern const RString rsLink;                       // "Link"
+extern const RString rsAnchor;                     // "Anchor"
+extern const RString rsDocument;                   // "Document"
 
 
 
@@ -65,22 +65,22 @@ extern const RString rsDocument ;                   // "Document"
 
 // general field identifiers
 
-extern const RString rsAuthorEq ;                 // "Author="
-extern const RString rsTitleEq ;                  // "Title="
-extern const RString rsTimeCreatedEq ;            // "TimeCreated="
-extern const RString rsTimeModifiedEq ;           // "TimeModified="
-extern const RString rsTimeOpenEq ;               // "TimeOpen="
-extern const RString rsTimeExpireEq ;             // "TimeExpire="
-extern const RString rsKeywordEq ;                // "Keyword="
+extern const RString rsAuthorEq;                 // "Author="
+extern const RString rsTitleEq;                  // "Title="
+extern const RString rsTimeCreatedEq;            // "TimeCreated="
+extern const RString rsTimeModifiedEq;           // "TimeModified="
+extern const RString rsTimeOpenEq;               // "TimeOpen="
+extern const RString rsTimeExpireEq;             // "TimeExpire="
+extern const RString rsKeywordEq;                // "Keyword="
 
-extern const RString rsTitlePt ;                  // "Title."
-extern const RString rsEngEq ;                      // "eng="
-extern const RString rsGerEq ;                      // "ger="
+extern const RString rsTitlePt;                  // "Title."
+extern const RString rsEngEq;                      // "eng="
+extern const RString rsGerEq;                      // "ger="
 
 
 // extra fields for Anchors
 
-extern const RString rsPositionEq ;               // "Position="
+extern const RString rsPositionEq;               // "Position="
 
 
 
@@ -90,41 +90,41 @@ extern const RString rsPositionEq ;               // "Position="
 
 // extra fields for Links
 
-extern const RString rsHintEq ;                   // "Hint="
+extern const RString rsHintEq;                   // "Hint="
 
 
 
 // extra fields for Documents
 
-extern const RString rsPathEq ;                   // "Path="
-extern const RString rsDocumentTypeEq ;           // "DocumentType="
+extern const RString rsPathEq;                   // "Path="
+extern const RString rsDocumentTypeEq;           // "DocumentType="
 
 
 
 // DocumentType field values
 
-extern const RString rsCollection ;                 // "collection"
+extern const RString rsCollection;                 // "collection"
 
 
 // extra fields for collections
 
-extern const RString rsNameEq ;                   // "Name="
-extern const RString rsCollectionTypeEq ;         // "CollectionType="
+extern const RString rsNameEq;                   // "Name="
+extern const RString rsCollectionTypeEq;         // "CollectionType="
 
 
 // CollectionType field values
 
-extern const RString rsCluster ;                    // "Cluster"
+extern const RString rsCluster;                    // "Cluster"
 
 
 
 
 // extra fields for Frank !!
 
-extern const RString rsProtocolEq ;               // "Protocol="
-extern const RString rsHostEq ;                   // "Host="
-extern const RString rsPortEq ;                   // "Port="
-extern const RString rsGopherTypeEq ;             // "GopherType="
+extern const RString rsProtocolEq;               // "Protocol="
+extern const RString rsHostEq;                   // "Host="
+extern const RString rsPortEq;                   // "Port="
+extern const RString rsGopherTypeEq;             // "GopherType="
 
 
 

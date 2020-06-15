@@ -21,35 +21,35 @@
 #include "geo_tiffp.h" /* external TIFF interface */
 #include "geo_keyp.h"  /* private interface       */
 
-/* return the Header info of this geotiff file */
+ /* return the Header info of this geotiff file */
 
 void GTIFDirectoryInfo(GTIF *gtif, int version[3], int *keycount)
 {
-        if (version)
-        {
-                version[0]  = gtif->gt_version;
-                version[1]  = gtif->gt_rev_major;
-                version[2]  = gtif->gt_rev_minor;
-        }
-        if (keycount) *keycount = gtif->gt_num_keys;
+	if (version)
+	{
+		version[0] = gtif->gt_version;
+		version[1] = gtif->gt_rev_major;
+		version[2] = gtif->gt_rev_minor;
+	}
+	if (keycount) *keycount = gtif->gt_num_keys;
 }
 
 
 int GTIFKeyInfo(GTIF *gtif, geokey_t key, int *size, tagtype_t* type)
 {
-        int index = gtif->gt_keyindex[ key ];
-        GeoKey *keyptr;
+	int index = gtif->gt_keyindex[key];
+	GeoKey *keyptr;
 
-        if (!index) return 0;
+	if (!index) return 0;
 
-        keyptr = gtif->gt_keys + index;
-        if (size) *size = (int) keyptr->gk_size;
-        if (type) *type = keyptr->gk_type;
+	keyptr = gtif->gt_keys + index;
+	if (size) *size = (int)keyptr->gk_size;
+	if (type) *type = keyptr->gk_type;
 
-        return keyptr->gk_count;
+	return keyptr->gk_count;
 }
 
-/** 
+/**
 
 This function reads the value of a single GeoKey from a GeoTIFF file.
 
@@ -138,8 +138,8 @@ ValuePair(  ProjScaleAtCenterGeoKey,	3093)     -- ratio   --
 ValuePair(  ProjAzimuthAngleGeoKey,	3094)     -- GeogAzimuthUnit --
 ValuePair(  ProjStraightVertPoleLongGeoKey,	3095)     -- GeogAngularUnit --
 
- 6.2.4 Vertical CS Keys 
-   
+ 6.2.4 Vertical CS Keys
+
 ValuePair(  VerticalCSTypeGeoKey,	4096)  -- Section 6.3.4.1 codes   --
 ValuePair(  VerticalCitationGeoKey,	4097)  -- documentation --
 ValuePair(  VerticalDatumGeoKey,	4098)  -- Section 6.3.4.2 codes   --
@@ -149,28 +149,28 @@ ValuePair(  VerticalUnitsGeoKey,	4099)  -- Section 6.3.1 (.x) codes   --
 
 int GTIFKeyGet(GTIF *gtif, geokey_t thekey, void *val, int index, int count)
 {
-        int kindex = gtif->gt_keyindex[ thekey ];
-        GeoKey *key;
-        gsize_t size;
-        char *data;
-        tagtype_t type;
+	int kindex = gtif->gt_keyindex[thekey];
+	GeoKey *key;
+	gsize_t size;
+	char *data;
+	tagtype_t type;
 
-        if (!kindex) return 0;
+	if (!kindex) return 0;
 
-        key = gtif->gt_keys+kindex;
-        if (!count) count = key->gk_count - index;
-        if (count <=0) return 0;
-        if (count > key->gk_count) count = key->gk_count;
-        size = key->gk_size;
-        type = key->gk_type;
+	key = gtif->gt_keys + kindex;
+	if (!count) count = key->gk_count - index;
+	if (count <= 0) return 0;
+	if (count > key->gk_count) count = key->gk_count;
+	size = key->gk_size;
+	type = key->gk_type;
 
-        if (count==1 && type==TYPE_SHORT) data = (char *)&key->gk_data;
-        else data = key->gk_data;
+	if (count == 1 && type == TYPE_SHORT) data = (char *)&key->gk_data;
+	else data = key->gk_data;
 
-        _GTIFmemcpy( val, data + index*size, count*size );
+	_GTIFmemcpy(val, data + index * size, count*size);
 
-        if (type==TYPE_ASCII)
-           ((char *)val)[count-1] = '\0'; /* replace last char with NULL */
+	if (type == TYPE_ASCII)
+		((char *)val)[count - 1] = '\0'; /* replace last char with NULL */
 
-        return count;
+	return count;
 }

@@ -10,12 +10,12 @@
 
 class CResourceButton : public baseCResourceButton
 {
-// Construction
+	// Construction
 public:
 
-CResourceButton() : m_index(0), m_imageCount(0), m_styleCount(0) {}
+	CResourceButton() : m_index(0), m_imageCount(0), m_styleCount(0) {}
 
-// Attributes
+	// Attributes
 
 private:
 	CBitmap m_Bitmap; // bitmap containing the images
@@ -24,24 +24,24 @@ private:
 	int m_styleCount;
 	int m_index;
 
-// Operations
+	// Operations
 public:
-	BOOL LoadBitmap(UINT bitmapid,int nCount,int nStyles);
-	int GetImageCount() {return m_imageCount;}
-	int GetImageIndex() {return m_index;}
+	BOOL LoadBitmap(UINT bitmapid, int nCount, int nStyles);
+	int GetImageCount() { return m_imageCount; }
+	int GetImageIndex() { return m_index; }
 	void Show(BOOL bShow) {
-		ShowWindow(bShow?SW_SHOW:SW_HIDE);
+		ShowWindow(bShow ? SW_SHOW : SW_HIDE);
 	}
 	void SetImageIndex(int n) {
-		ASSERT(n<m_imageCount);
-		m_index=n;
+		ASSERT(n < m_imageCount);
+		m_index = n;
 		Invalidate();
 	}
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CResourceButton)
-	public:
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CResourceButton)
+public:
 	//virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 	//}}AFX_VIRTUAL

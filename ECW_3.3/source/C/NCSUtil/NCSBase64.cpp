@@ -2,13 +2,13 @@
 ** Copyright 2000 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:   	NCSUtil\NCSBase64.cpp
@@ -26,21 +26,21 @@
 #include "NCSBase64.h"
 #include "CNCSBase64Coder.h"
 #include "NCSUtil.h"
-/*!
- * Decodes a Base 64 encrypted message
- * \param inputMessage the encoded text
- * \param outputMessage the decoded text
- * \see NCSEncodeBase64Message
- * \version [02] ny  08Mar00 Coding standard conformance edit.
- * \version [01] ny  08Mar00 Change Base64Coder to CNCSBase64Coder
-*/
-void NCSDecodeBase64Message(char *inputMessage,char *outputMessage)
+ /*!
+  * Decodes a Base 64 encrypted message
+  * \param inputMessage the encoded text
+  * \param outputMessage the decoded text
+  * \see NCSEncodeBase64Message
+  * \version [02] ny  08Mar00 Coding standard conformance edit.
+  * \version [01] ny  08Mar00 Change Base64Coder to CNCSBase64Coder
+ */
+void NCSDecodeBase64Message(char *inputMessage, char *outputMessage)
 {
 	CNCSBase64Coder Coder;
 
 	Coder.Decode((UINT8 *)inputMessage); /**[03]**/
 
-	strcpy(outputMessage,(const char *)Coder.DecodedMessage());
+	strcpy(outputMessage, (const char *)Coder.DecodedMessage());
 }
 
 /*!
@@ -51,11 +51,11 @@ void NCSDecodeBase64Message(char *inputMessage,char *outputMessage)
  * \version [02] ny  08Mar00 Coding standard conformance edit.
  * \version [01] ny  08Mar00 Change Base64Coder to CNCSBase64Coder
  */
-void NCSEncodeBase64Message(char *inputMessage,char *outputMessage)
+void NCSEncodeBase64Message(char *inputMessage, char *outputMessage)
 {
 	CNCSBase64Coder Coder;
 
 	Coder.Encode((UINT8 *)inputMessage);	/**[03]**/
 
-	strcpy(outputMessage,(const char *)Coder.EncodedMessage());
+	strcpy(outputMessage, (const char *)Coder.EncodedMessage());
 }

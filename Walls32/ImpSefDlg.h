@@ -6,7 +6,7 @@
 
 class CImpSefDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
 	enum { IDD = IDD_IMPSEFDLG };
 
@@ -25,7 +25,7 @@ private:
 	BOOL Check_Chrs_repl();
 
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
-    virtual BOOL OnInitDialog();
+	virtual BOOL OnInitDialog();
 	virtual void OnCancel();
 
 	afx_msg void OnChangeChrsRepl();

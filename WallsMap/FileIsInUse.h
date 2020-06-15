@@ -24,33 +24,33 @@
 class CFileIsInUseImpl : public IFileIsInUse
 {
 public:
-    // IUnknown
-    IFACEMETHODIMP QueryInterface(REFIID riid, void **ppv);
-    IFACEMETHODIMP_(ULONG) AddRef();
-    IFACEMETHODIMP_(ULONG) Release();
+	// IUnknown
+	IFACEMETHODIMP QueryInterface(REFIID riid, void **ppv);
+	IFACEMETHODIMP_(ULONG) AddRef();
+	IFACEMETHODIMP_(ULONG) Release();
 
-    // IFileIsInUse
-    IFACEMETHODIMP GetAppName(PWSTR *ppszName);
-    IFACEMETHODIMP GetUsage(FILE_USAGE_TYPE *pfut);
-    IFACEMETHODIMP GetCapabilities(DWORD *pdwCapabilitiesFlags);
-    IFACEMETHODIMP GetSwitchToHWND(HWND *phwnd);
-    IFACEMETHODIMP CloseFile();
+	// IFileIsInUse
+	IFACEMETHODIMP GetAppName(PWSTR *ppszName);
+	IFACEMETHODIMP GetUsage(FILE_USAGE_TYPE *pfut);
+	IFACEMETHODIMP GetCapabilities(DWORD *pdwCapabilitiesFlags);
+	IFACEMETHODIMP GetSwitchToHWND(HWND *phwnd);
+	IFACEMETHODIMP CloseFile();
 
-    static HRESULT s_CreateInstance(HWND hwnd, LPCSTR pszFilePath, FILE_USAGE_TYPE fut, DWORD dwCapabilities, REFIID riid, void **ppv, DWORD *pdwCookie);
+	static HRESULT s_CreateInstance(HWND hwnd, LPCSTR pszFilePath, FILE_USAGE_TYPE fut, DWORD dwCapabilities, REFIID riid, void **ppv, DWORD *pdwCookie);
 
 private:
-    CFileIsInUseImpl();
-    ~CFileIsInUseImpl();
+	CFileIsInUseImpl();
+	~CFileIsInUseImpl();
 
-    HRESULT _Initialize(HWND hwnd, LPCSTR pszFilePath, FILE_USAGE_TYPE fut, DWORD dwCapabilities);
-    HRESULT _AddFileToROT();
-    HRESULT _RemoveFileFromROT();
+	HRESULT _Initialize(HWND hwnd, LPCSTR pszFilePath, FILE_USAGE_TYPE fut, DWORD dwCapabilities);
+	HRESULT _AddFileToROT();
+	HRESULT _RemoveFileFromROT();
 
-    long _cRef;
-    WCHAR _szFilePath[MAX_PATH];
-    HWND _hwnd;
-    DWORD _dwCapabilities;
-    DWORD _dwCookie;
-    FILE_USAGE_TYPE _fut;
+	long _cRef;
+	WCHAR _szFilePath[MAX_PATH];
+	HWND _hwnd;
+	DWORD _dwCapabilities;
+	DWORD _dwCookie;
+	FILE_USAGE_TYPE _fut;
 };
 

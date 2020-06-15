@@ -32,10 +32,10 @@ struct CGPSPoint : public CPoint
 	CGPSPoint() : CPoint() {}
 	CGPSPoint(const CFltPoint &fp)
 	{
-		x=(LONG)(fp.x*1000000);
-		y=(LONG)(fp.y*1000000);
+		x = (LONG)(fp.x * 1000000);
+		y = (LONG)(fp.y * 1000000);
 	}
-	operator CFltPoint() {return CFltPoint(x/1000000.0,y/1000000.0);}
+	operator CFltPoint() { return CFltPoint(x / 1000000.0, y / 1000000.0); }
 };
 
 typedef std::vector<CGPSPoint> VEC_GPSPOINT;
@@ -43,9 +43,9 @@ typedef VEC_GPSPOINT::iterator it_gpspt;
 
 struct CGPSFix : public CGPSPoint
 {
-	CGPSFix() : elev(0),h(0),m(0),s(0),flag(0) {}
+	CGPSFix() : elev(0), h(0), m(0), s(0), flag(0) {}
 	float elev;
-	BYTE h,m,s,flag;
+	BYTE h, m, s, flag;
 };
 
 typedef std::vector<CGPSFix> VEC_GPSFIX;
@@ -56,7 +56,7 @@ typedef VEC_GPSFIX::iterator it_gpsfix;
 #define MAXFIELD	25		// maximum field length
 
 enum NP_STATE {
-	NP_STATE_SOM =				0,		// Search for start of message
+	NP_STATE_SOM = 0,		// Search for start of message
 	NP_STATE_CMD,						// Get command
 	NP_STATE_DATA,						// Get data
 	NP_STATE_CHECKSUM_1,				// Get first checksum character
@@ -82,12 +82,12 @@ public:
 #endif
 //////////////////////////////////////////////////////////////////////
 
-enum {GPS_FLAT=1,GPS_FLON=2,GPS_FPOS=3,GPS_FALT=4,GPS_FTIME=8,GPS_FDATE=16,GPS_FHDOP=32,GPS_FQUAL=64,GPS_FSATV=128,GPS_FSATU=256};
- 
+enum { GPS_FLAT = 1, GPS_FLON = 2, GPS_FPOS = 3, GPS_FALT = 4, GPS_FTIME = 8, GPS_FDATE = 16, GPS_FHDOP = 32, GPS_FQUAL = 64, GPS_FSATV = 128, GPS_FSATU = 256 };
+
 struct GPS_POSITION { //size=36 bytes
 	GPS_POSITION() :
-		bSatsUsed(0),bSatsInView(0),fHdop(0),bQual(0),
-		bYear(0),bMonth(0),bDay(0),wFlags(0)
+		bSatsUsed(0), bSatsInView(0), fHdop(0), bQual(0),
+		bYear(0), bMonth(0), bDay(0), wFlags(0)
 	{}
 
 	CGPSFix gpf;   //=16
@@ -103,7 +103,7 @@ struct GPS_POSITION { //size=36 bytes
 
 struct CMD_NAME
 {
-	CMD_NAME(LPCSTR p) {strcpy(name,p);}
+	CMD_NAME(LPCSTR p) { strcpy(name, p); }
 	char name[6];
 };
 
@@ -111,7 +111,7 @@ typedef std::vector<CMD_NAME> VEC_CMD_NAME;
 
 
 //////////////////////////////////////////////////////////////////////
-class CNMEAParser  
+class CNMEAParser
 {
 private:
 	NP_STATE m_nState;					// Current state protocol parser is in
@@ -222,7 +222,7 @@ public:
 #endif
 
 public:
-	enum {NUM_PROCESSES=7,MAX_PROCESSES=20};
+	enum { NUM_PROCESSES = 7, MAX_PROCESSES = 20 };
 
 #if 0
 	DWORD m_seq_cmd_seen[MAX_PROCESSES];
@@ -231,7 +231,7 @@ public:
 #endif
 	typedef void (CNMEAParser::* PTR_PROCESS)(BYTE *);
 
-	static LPCSTR m_pCommandName[NUM_PROCESSES+1];
+	static LPCSTR m_pCommandName[NUM_PROCESSES + 1];
 	PTR_PROCESS m_pProcess[NUM_PROCESSES];
 
 	void ProcessGPZDA(BYTE *pData); //empty (date/time)

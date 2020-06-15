@@ -18,16 +18,16 @@
   occurs and  trx_findResult is set to FFFFh.
 */
 
-int TRXAPI trx_FindNext(TRX_NO trx,LPBYTE pKey)
+int TRXAPI trx_FindNext(TRX_NO trx, LPBYTE pKey)
 {
-  CSH_HDRP hp;
-  UINT frslt;
+	CSH_HDRP hp;
+	UINT frslt;
 
-  trx_findResult=0xFFFF;
-  if((hp=_trx_GetNodePos(trx,1))==0) return trx_errno;
-  if(!_trx_pTreeVar->SizKey) return trx_errno=TRX_ErrTreeType;
-  frslt=_trx_Btfndn(hp,_trx_pTreeUsr->KeyPos,pKey); /*=trx_findResult*/
-  return (frslt &&
-         ((BYTE)frslt || (_trx_pTreeUsr->UsrFlags&TRX_KeyExact)))?
-         (trx_errno=TRX_ErrMatch):0;
+	trx_findResult = 0xFFFF;
+	if ((hp = _trx_GetNodePos(trx, 1)) == 0) return trx_errno;
+	if (!_trx_pTreeVar->SizKey) return trx_errno = TRX_ErrTreeType;
+	frslt = _trx_Btfndn(hp, _trx_pTreeUsr->KeyPos, pKey); /*=trx_findResult*/
+	return (frslt &&
+		((BYTE)frslt || (_trx_pTreeUsr->UsrFlags&TRX_KeyExact))) ?
+		(trx_errno = TRX_ErrMatch) : 0;
 }

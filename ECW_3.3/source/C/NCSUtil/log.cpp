@@ -2,13 +2,13 @@
 ** Copyright 1999 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:   	log.cpp
@@ -50,16 +50,16 @@ class CNCSLogInternal
 {
 private:
 	ENCSLogLevel m_eLevel;
-  
+
 	FILE *m_pFile;
 
-  
+
 public:
 	CNCSLogInternal();
 	~CNCSLogInternal();
 	BOOLEAN Open(char *szLogFile, ENCSLogLevel eLevel = LOG_LOW);
 	ENCSLogLevel &Level() { return m_eLevel; };
-	void Log(ENCSLogLevel eLevel, char *szFormat, ... );				// wrapper to a call to vLog
+	void Log(ENCSLogLevel eLevel, char *szFormat, ...);				// wrapper to a call to vLog
 	void vLog(ENCSLogLevel eLevel, char *szFormat, va_list args);
 	void Close();
 
@@ -86,7 +86,7 @@ BOOLEAN CNCSLogInternal::DontLogCheck() //[04]
 #ifdef _WIN32_WCE
 	return TRUE;
 #else
-	if( NCSUtilInitialised() ) return m_bDontLog;
+	if (NCSUtilInitialised()) return m_bDontLog;
 	else return TRUE;
 #endif //_WIN32_WCE
 }
@@ -106,7 +106,7 @@ BOOLEAN CNCSLogInternal::DontLogCheck() //[04]
 		NCSPrefGetUserString(NCS_LOG_FILE_NAME_PREF, pLogName);
 		if (NCSPrefGetUserInt(NCS_LOG_FILE_LEVEL_PREF, (INT32 *) pLogLevel) != NCS_SUCCESS) {
 			*pLogLevel = (ENCSLogLevel) 0;
-		}	
+		}
 	}
 
 	CNCSLogInternal::m_bDontLog = FALSE; //[04]
@@ -136,10 +136,10 @@ BOOLEAN CNCSLogInternal::Open(char *szFilename, ENCSLogLevel eLevel /* = LOG_LOW
 	if (szFilename && strlen(szFilename))
 		m_pFile = fopen(szFilename, "a+c");		// c == commit to disk (not just OS) on fflush
 	m_eLevel = eLevel;
-	if (m_pFile!=NULL && !bIsServerLog) {					//[03]
+	if (m_pFile != NULL && !bIsServerLog) {					//[03]
 		fprintf(m_pFile,					//[03]
-				"Version Number : %s\n",	//[03]
-				NCS_VERSION_STRING);		//[03]
+			"Version Number : %s\n",	//[03]
+			NCS_VERSION_STRING);		//[03]
 	}										//[03]
 	return (m_pFile != NULL);
 #else	/* NO_STDIO */
@@ -148,7 +148,7 @@ BOOLEAN CNCSLogInternal::Open(char *szFilename, ENCSLogLevel eLevel /* = LOG_LOW
 }
 
 
-void CNCSLogInternal::Log(ENCSLogLevel eLevel, char *szFormat, ... )
+void CNCSLogInternal::Log(ENCSLogLevel eLevel, char *szFormat, ...)
 {
 	va_list args;
 	va_start(args, szFormat);
@@ -164,9 +164,9 @@ void CNCSLogInternal::vLog(ENCSLogLevel eLevel, char *szFormat, va_list args)
 	char *pLogName = (char*)NULL;
 	ENCSLogLevel eConfigLevel = LOG_LOW;
 
-	if( DontLogCheck() ) return; //[04]
+	if (DontLogCheck()) return; //[04]
 
-	if(!m_pFile) {
+	if (!m_pFile) {
 
 		//NCSLogGetConfig(&pLogName, &eConfigLevel);
 		m_eLevel = eConfigLevel; //[05]
@@ -190,8 +190,8 @@ void CNCSLogInternal::vLog(ENCSLogLevel eLevel, char *szFormat, va_list args)
 	SYSTEMTIME ptm;
 	GetLocalTime(&ptm);
 
-	int nLen1 = sprintf(szBuffer, "%02d%02d%02d %02d:%02d:%02d %d : ", 
-		ptm.wYear%100, ptm.wMonth+1, ptm.wDay, ptm.wHour, ptm.wMinute, ptm.wSecond, eLevel);
+	int nLen1 = sprintf(szBuffer, "%02d%02d%02d %02d:%02d:%02d %d : ",
+		ptm.wYear % 100, ptm.wMonth + 1, ptm.wDay, ptm.wHour, ptm.wMinute, ptm.wSecond, eLevel);
 
 #else	/* _WIN32_WCE */
 
@@ -200,8 +200,8 @@ void CNCSLogInternal::vLog(ENCSLogLevel eLevel, char *szFormat, va_list args)
 	time(&long_time);
 	ptm = localtime(&long_time);
 
-	int nLen1 = sprintf(szBuffer, "%02d%02d%02d %02d:%02d:%02d %d : ", 
-		ptm->tm_year%100, ptm->tm_mon+1, ptm->tm_mday, ptm->tm_hour, ptm->tm_min, ptm->tm_sec, eLevel);
+	int nLen1 = sprintf(szBuffer, "%02d%02d%02d %02d:%02d:%02d %d : ",
+		ptm->tm_year % 100, ptm->tm_mon + 1, ptm->tm_mday, ptm->tm_hour, ptm->tm_min, ptm->tm_sec, eLevel);
 
 #endif	/* _WIN32_WCE */
 
@@ -220,8 +220,8 @@ void CNCSLogInternal::vLog(ENCSLogLevel eLevel, char *szFormat, va_list args)
 	_RPT0(_CRT_WARN, szBuffer);			// send to crt debug too
 #endif
 
-	if(!m_pFile) {
-		if(eLevel <= eConfigLevel) {
+	if (!m_pFile) {
+		if (eLevel <= eConfigLevel) {
 			Open(pLogName, eConfigLevel);
 		}
 		NCSFree(pLogName);
@@ -233,7 +233,7 @@ void CNCSLogInternal::vLog(ENCSLogLevel eLevel, char *szFormat, va_list args)
 	fwrite(szBuffer, nLen1 + nLen2 + 2, 1, m_pFile);
 	fflush(m_pFile);
 
-	if(bIsServerLog)
+	if (bIsServerLog)
 		Close();			//[05]
 }
 

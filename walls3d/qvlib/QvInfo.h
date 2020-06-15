@@ -6,14 +6,14 @@
 
 class QvInfo : public QvNode {
 
-    QV_NODE_HEADER(QvInfo);
+	QV_NODE_HEADER(QvInfo);
 
-  public:
-    // Fields
-    QvSFString		string;		// Info string
+public:
+	// Fields
+	QvSFString		string;		// Info string
 
-    // mpichler, 19951116
-    int handled_;  // viewer info already handled?
+	// mpichler, 19951116
+	int handled_;  // viewer info already handled?
 };
 
 #endif /* _QV_INFO_ */

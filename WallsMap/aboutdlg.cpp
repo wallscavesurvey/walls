@@ -23,7 +23,7 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 	ON_BN_CLICKED(IDC_HELPCONTENTS, &CAboutDlg::OnBnClickedHelp)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_KEYDOWN()
-   ON_MESSAGE(WM_COMMANDHELP,OnCommandHelp)
+	ON_MESSAGE(WM_COMMANDHELP, OnCommandHelp)
 END_MESSAGE_MAP()
 
 CAboutDlg::CAboutDlg(CWnd* pParent /*=NULL*/)
@@ -39,25 +39,25 @@ CAboutDlg::CAboutDlg(CWnd* pParent /*=NULL*/)
 
 BOOL CAboutDlg::OnInitDialog()
 {
-	m_textLink.SubclassDlgItem(IDC_NEWURL,this);
+	m_textLink.SubclassDlgItem(IDC_NEWURL, this);
 	CDialog::OnInitDialog();
-	CString fmt,sVersion,urlName;
+	CString fmt, sVersion, urlName;
 	CStdioFileEx file;
-	if(file.Open(theApp.m_csUrlPath, CFile::modeRead | CFile::typeText)) {
+	if (file.Open(theApp.m_csUrlPath, CFile::modeRead | CFile::typeText)) {
 		file.ReadString(urlName);
 		file.ReadString(urlName);
-		if(urlName.GetLength()>11 && !memcmp("URL=http://",(LPCSTR)urlName,11)) {
-			m_textLink.SetLink((LPCSTR)urlName+11);
-			LPCSTR pExt=strstr(theApp.m_csUrlPath,"WallsMap-");
-			if(pExt) {
-				fmt.SetString(pExt+9,trx_Stpext(pExt)-(pExt+9));
-				sVersion.Format(" (%s Edition)",(LPCSTR)fmt);
+		if (urlName.GetLength() > 11 && !memcmp("URL=http://", (LPCSTR)urlName, 11)) {
+			m_textLink.SetLink((LPCSTR)urlName + 11);
+			LPCSTR pExt = strstr(theApp.m_csUrlPath, "WallsMap-");
+			if (pExt) {
+				fmt.SetString(pExt + 9, trx_Stpext(pExt) - (pExt + 9));
+				sVersion.Format(" (%s Edition)", (LPCSTR)fmt);
 			}
 		}
 		file.Close();
 	}
 	fmt.LoadStringA(IDS_ABOUT_TITLE);
-	urlName.Format(fmt,(LPCSTR)sVersion);
+	urlName.Format(fmt, (LPCSTR)sVersion);
 	GetDlgItem(IDC_ST_TITLE)->SetWindowTextA(urlName);
 	CenterWindow();
 	return TRUE;  // return TRUE  unless you set the focus to a control

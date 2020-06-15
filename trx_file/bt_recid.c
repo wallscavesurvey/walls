@@ -19,16 +19,16 @@
 ; or from low end if N_SIZLINK>0.
 ;--------------------------------------------------------------------
 */
-apfcn_vp  _trx_Btrecp(CSH_HDRP hp,UINT keyPos)
+apfcn_vp  _trx_Btrecp(CSH_HDRP hp, UINT keyPos)
 {
 	__asm {
-        mov     ebx,keyPos
-        mov     esi,hp
-        call    bt_link		;ECX=size link,ESI=addr node,EBX=addr rec
-        mov     eax,ebx
-        jnb      _fnp
-		xor		eax,eax
-_fnp:
+		mov     ebx, keyPos
+		mov     esi, hp
+		call    bt_link; ECX = size link, ESI = addr node, EBX = addr rec
+		mov     eax, ebx
+		jnb      _fnp
+		xor		eax, eax
+		_fnp :
 	}
 }
 
@@ -41,18 +41,18 @@ _fnp:
 ; length. This is followed by the actual suffix bytes.
 ;--------------------------------------------------------------------
 */
-apfcn_p _trx_Btkeyp(CSH_HDRP hp,UINT keyPos)
+apfcn_p _trx_Btkeyp(CSH_HDRP hp, UINT keyPos)
 {
 	__asm {
-        mov     ebx,keyPos
-        mov     esi,hp
-        call    bt_link		;ECX=size link,ESI=addr node,EBX=addr rec
+		mov     ebx, keyPos
+		mov     esi, hp
+		call    bt_link; ECX = size link, ESI = addr node, EBX = addr rec
 		jnb		_fn0
-		xor		eax,eax
+		xor		eax, eax
 		jmp		short _fnp
-_fn0:   mov     eax,ebx
-        add     eax,ecx    ;skip over record
-_fnp:
+		_fn0 : mov     eax, ebx
+			   add     eax, ecx; skip over record
+			   _fnp :
 	}
 }
 
@@ -67,28 +67,28 @@ _fnp:
 ;--------------------------------------------------------------------
 */
 
-apfcn_i _trx_Btrec(CSH_HDRP hp,UINT keyPos,PVOID recbuf,UINT sizRecBuf)
+apfcn_i _trx_Btrec(CSH_HDRP hp, UINT keyPos, PVOID recbuf, UINT sizRecBuf)
 {
 	__asm {
-        mov     ebx,keyPos
-        mov     esi,hp
-        call    bt_link		;ECX=size link,ESI=addr node,EBX=addr rec
-        jb      _err
-        xor     eax,eax
-		mov     edi,recbuf
-		mov		esi,ebx
-        mov     edx,sizRecBuf
-        cmp     ecx,edx
-        jbe     _rmov
-        mov     ecx,edx
-        mov     eax,TRX_ErrTruncate
-_rmov:  shr     ecx,1
-        rep     movsw
-        adc     ecx,ecx
-        rep     movsb
-		jmp		short _ex
+		mov     ebx, keyPos
+		mov     esi, hp
+		call    bt_link; ECX = size link, ESI = addr node, EBX = addr rec
+		jb      _err
+		xor     eax, eax
+		mov     edi, recbuf
+		mov		esi, ebx
+		mov     edx, sizRecBuf
+		cmp     ecx, edx
+		jbe     _rmov
+		mov     ecx, edx
+		mov     eax, TRX_ErrTruncate
+		_rmov : shr     ecx, 1
+				rep     movsw
+				adc     ecx, ecx
+				rep     movsb
+				jmp		short _ex
 
-_err:   mov     eax,TRX_ErrFormat
-_ex:
+				_err : mov     eax, TRX_ErrFormat
+					   _ex :
 	}
 }

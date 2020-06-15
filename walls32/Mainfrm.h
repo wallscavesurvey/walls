@@ -8,7 +8,7 @@
 #include "prjref.h"
 
 #if !defined(LSTBOXEX_H)
- #include "lstboxex.h"
+#include "lstboxex.h"
 #endif
 
 #ifndef __WALLMAG_H
@@ -26,9 +26,9 @@ extern const UINT WM_RETFOCUS;
 extern const UINT WM_PROPVIEWLB;
 extern const UINT WM_TIMERREFRESH;
 
-enum {E_ENTERTABS=1,E_GRIDLINES=2,E_TABLINES=4,E_AUTOSEQ=8,E_CHANGED=128,E_SIZECHG=1024};
+enum { E_ENTERTABS = 1, E_GRIDLINES = 2, E_TABLINES = 4, E_AUTOSEQ = 8, E_CHANGED = 128, E_SIZECHG = 1024 };
 
-enum e_ref {REF_FMTDM=1,REF_FMTDMS=2,REF_FMTMASK=3,REF_LONDIR=4,REF_LATDIR=8};
+enum e_ref { REF_FMTDM = 1, REF_FMTDMS = 2, REF_FMTMASK = 3, REF_LONDIR = 4, REF_LATDIR = 8 };
 
 #define REF_WGS84 27
 #define REF_NAD27 254
@@ -38,7 +38,7 @@ enum e_ref {REF_FMTDM=1,REF_FMTDMS=2,REF_FMTMASK=3,REF_LONDIR=4,REF_LATDIR=8};
 extern int moveBranch_id;
 extern BOOL moveBranch_SameList;
 
-enum {MV_COPY=1,MV_FILES=2};
+enum { MV_COPY = 1, MV_FILES = 2 };
 
 class CPrjDoc;
 class CLineDoc;
@@ -49,39 +49,39 @@ class CPrjListNode;
 // CMyMdi window
 class CMyMdi : public CWnd
 {
-// Construction
+	// Construction
 public:
-    CMyMdi();
+	CMyMdi();
 
-// Attributes
+	// Attributes
 public:
 
 #ifdef _USE_IMAGE
 #ifdef _USE_OLE
 	CPicture m_Picture;
 #else
-    CBitmap m_bmpBackGround;   
-    CSize m_szBmp ;
+	CBitmap m_bmpBackGround;
+	CSize m_szBmp;
 #endif
 #endif
-    
-// Implementation
-public:
-    virtual ~CMyMdi();
 
-    // Generated message map functions
+	// Implementation
+public:
+	virtual ~CMyMdi();
+
+	// Generated message map functions
 protected:
-    //{{AFX_MSG(CMyMdi)
-    afx_msg BOOL OnEraseBkgnd(CDC* pDC);
-    afx_msg void OnSize(UINT nType, int cx, int cy);
+	//{{AFX_MSG(CMyMdi)
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 	//}}AFX_MSG
-    DECLARE_MESSAGE_MAP()
+	DECLARE_MESSAGE_MAP()
 };
 
 struct POS_MDI {
-  CDocTemplate *pTemp;
-  POSITION dPos;
-  POSITION vPos;
+	CDocTemplate *pTemp;
+	POSITION dPos;
+	POSITION vPos;
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -91,10 +91,10 @@ class CMainFrame : public CMDIFrameWnd
 public:
 	CMainFrame();
 
-// Attributes
+	// Attributes
 public:
 	CListBoxExResources m_ListBoxRes1;
-    CMyMdi m_MyMdiClientWnd;	//MDI client window 
+	CMyMdi m_MyMdiClientWnd;	//MDI client window 
 	CPrjDoc *m_pFirstPrjDoc;	//Linked list of project documents
 	CLineDoc *m_pFirstLineDoc;  //Linked list of documents
 	static BOOL	m_bIns;         //Insert mode toggle
@@ -104,55 +104,55 @@ public:
 	static UINT m_EditWidth[2]; //Default window size for non-SRV and SRV files
 	static UINT m_EditHeight[2];
 
-    static PRJREF m_reflast;
+	static PRJREF m_reflast;
 
-// Operations
+	// Operations
 public:
-	static void PutRef(PRJREF *pr,MAGDATA *pMD=&app_MagData);
-	static void InitRef(PRJREF *pr,MAGDATA *pMD=&app_MagData); //Calls PutRef and also initializes date/time
+	static void PutRef(PRJREF *pr, MAGDATA *pMD = &app_MagData);
+	static void InitRef(PRJREF *pr, MAGDATA *pMD = &app_MagData); //Calls PutRef and also initializes date/time
 	static void GetRef(PRJREF *pr); //fills pr with app_MagData
 	static void CheckDatumName(PRJREF *pr);
 
 	static void ConvertUTM2LL(double *pXY);
 
-    void RestoreWindow(int nShow);
+	void RestoreWindow(int nShow);
 	void SetHierRefresh();
 
-    virtual BOOL CreateClient(LPCREATESTRUCT lpCreateStruct, CMenu* pWindowMenu); //MYMDI 
-    static void IconEraseBkgnd(CDC* pDC); //Called by CPrjFrame::OnIconEraseBkgnd(), etc.
+	virtual BOOL CreateClient(LPCREATESTRUCT lpCreateStruct, CMenu* pWindowMenu); //MYMDI 
+	static void IconEraseBkgnd(CDC* pDC); //Called by CPrjFrame::OnIconEraseBkgnd(), etc.
 	static void ChangeLabelFont(PRJFONT *pF);
 	static void LoadEditFlags(int iType);
 	static void SaveEditFlags(int iType);
 	static void XferVecLimits(BOOL bSave);
-	static BOOL Launch3D(const char *name,BOOL b3D);
- 	static CString Get3DFilePath(BOOL b3D,BOOL bConfig=FALSE);
- 	static CString GetViewerProg(BOOL b3D);
+	static BOOL Launch3D(const char *name, BOOL b3D);
+	static CString Get3DFilePath(BOOL b3D, BOOL bConfig = FALSE);
+	static CString GetViewerProg(BOOL b3D);
 	static BOOL GetViewerStatus(BOOL b3D);
-	static void SaveViewerStatus(BOOL bStatus,BOOL b3D);
+	static void SaveViewerStatus(BOOL bStatus, BOOL b3D);
 
 	//static void GetSetGridSVG(UINT *pInt,UINT *pSub,BOOL bSet);
-	static CString Get3DPathName(CPrjListNode *pNode,BOOL b3D);
+	static CString Get3DPathName(CPrjListNode *pNode, BOOL b3D);
 	static void GetMrgPathNames(CString &merge1, CString &merge2);
-	static BOOL CloseLineDoc(LPCSTR pathname,BOOL bNoSave);
+	static BOOL CloseLineDoc(LPCSTR pathname, BOOL bNoSave);
 	static BOOL LineDocOpened(LPCSTR pathname);
 
 	void OnViewerConfig(BOOL b3D);
 	void BrowseNewProject(CDialog *pDlg, CString &prjPath);
 	void BrowseFileInput(CDialog *pDlg, CString &srcPath, CString &outPath, UINT ids_outfile);
-   
+
 #if 0
 	//Public static utility used for window placement in view's OnInitialUpdate --
-    static POSITION GetFirstMdiFrame(CDocument *pDoc);
-	static CFrameWnd *GetNextMdiFrame(POSITION &pos,CRect *pRect,UINT *pCmd);
+	static POSITION GetFirstMdiFrame(CDocument *pDoc);
+	static CFrameWnd *GetNextMdiFrame(POSITION &pos, CRect *pRect, UINT *pCmd);
 #endif
-	
+
 	//Used to mark updated document window title with asterisk --
-	enum {MAX_TITLE_LEN=80};
-	
+	enum { MAX_TITLE_LEN = 80 };
+
 private:
 
-// Implementation
-	BOOL EditOptions(UINT *pFlags,int typ);
+	// Implementation
+	BOOL EditOptions(UINT *pFlags, int typ);
 
 public:
 	static void ToggleIns();
@@ -164,23 +164,23 @@ public:
 	virtual	void Dump(CDumpContext& dc) const;
 #endif
 
-//protected:
+	//protected:
 	CStatusBar	m_wndStatusBar;
 	CToolBar	m_wndToolBar;
 
-// MFC Overrides --
-virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	// MFC Overrides --
+	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 
 #ifdef _USEHTML
-virtual BOOL OnHelpInfo(HELPINFO* pHelpInfo);
+	virtual BOOL OnHelpInfo(HELPINFO* pHelpInfo);
 #endif
 
 public:
 	afx_msg void OnWindowCloseAll();
 	//***7.1 afx_msg LRESULT OnCopyData(WPARAM wNone,COPYDATASTRUCT *pcd);
-	afx_msg LRESULT OnCopyData(WPARAM wNone,LPARAM lParam);
+	afx_msg LRESULT OnCopyData(WPARAM wNone, LPARAM lParam);
 
-// Generated message map functions
+	// Generated message map functions
 protected:
 	//{{AFX_MSG(CMainFrame)
 #ifdef _USE_FILETIMER
@@ -244,11 +244,11 @@ protected:
 	afx_msg void OnDetails();
 	afx_msg void OnUpdateDetails(CCmdUI* pCmdUI);
 	//}}AFX_MSG
-	
+
 	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 	afx_msg void OnUpdateLine(CCmdUI* pCCmdUI);
 	afx_msg void OnUpdateIns(CCmdUI* pCCmdUI);
-	afx_msg LRESULT OnFindReplace(WPARAM wParam,LPARAM lParam);
+	afx_msg LRESULT OnFindReplace(WPARAM wParam, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnClose();
@@ -263,16 +263,16 @@ public:
 // from/to application profile and CArchive.
 //
 struct CWindowPlacement : public tagWINDOWPLACEMENT {
-   CWindowPlacement();
-   ~CWindowPlacement();
-   
-   // Read/write to app profile
-   BOOL GetProfileWP();
-   void WriteProfileWP();
+	CWindowPlacement();
+	~CWindowPlacement();
 
-   // Save/restore window pos (from app profile)
-   void Save(CWnd* pWnd);
-   BOOL Restore(CWnd* pWnd);
+	// Read/write to app profile
+	BOOL GetProfileWP();
+	void WriteProfileWP();
+
+	// Save/restore window pos (from app profile)
+	void Save(CWnd* pWnd);
+	BOOL Restore(CWnd* pWnd);
 };
 #endif  
 

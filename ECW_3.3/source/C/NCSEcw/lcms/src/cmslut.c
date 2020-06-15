@@ -87,125 +87,125 @@
 
 LPLUT LCMSEXPORT cmsAllocLUT(void)
 {
-       LPLUT NewLUT;
+	LPLUT NewLUT;
 
-       NewLUT = (LPLUT) malloc(sizeof(LUT));
-       if (NewLUT)
-              ZeroMemory(NewLUT, sizeof(LUT));
+	NewLUT = (LPLUT)malloc(sizeof(LUT));
+	if (NewLUT)
+		ZeroMemory(NewLUT, sizeof(LUT));
 
-       return NewLUT;
+	return NewLUT;
 }
 
 void LCMSEXPORT cmsFreeLUT(LPLUT Lut)
 {
-       unsigned int i;
+	unsigned int i;
 
-       if (!Lut) return;
+	if (!Lut) return;
 
-       if (Lut -> T) free(Lut -> T);
+	if (Lut->T) free(Lut->T);
 
-       for (i=0; i < Lut -> OutputChan; i++)
-       {
-              if (Lut -> L2[i]) free(Lut -> L2[i]);
-       }
+	for (i = 0; i < Lut->OutputChan; i++)
+	{
+		if (Lut->L2[i]) free(Lut->L2[i]);
+	}
 
-       for (i=0; i < Lut -> InputChan; i++)
-       {
+	for (i = 0; i < Lut->InputChan; i++)
+	{
 
-              if (Lut -> L1[i]) free(Lut -> L1[i]);
-       }
+		if (Lut->L1[i]) free(Lut->L1[i]);
+	}
 
 
-       if (Lut ->wFlags & LUT_HASTL3) {
+	if (Lut->wFlags & LUT_HASTL3) {
 
-            for (i=0; i < Lut -> InputChan; i++) {
+		for (i = 0; i < Lut->InputChan; i++) {
 
-              if (Lut -> L3[i]) free(Lut -> L3[i]);
-            }
-       }
+			if (Lut->L3[i]) free(Lut->L3[i]);
+		}
+	}
 
-       if (Lut ->wFlags & LUT_HASTL4) {
+	if (Lut->wFlags & LUT_HASTL4) {
 
-            for (i=0; i < Lut -> OutputChan; i++) {
+		for (i = 0; i < Lut->OutputChan; i++) {
 
-              if (Lut -> L4[i]) free(Lut -> L4[i]);
-            }
-       }
+			if (Lut->L4[i]) free(Lut->L4[i]);
+		}
+	}
 
-       if (Lut ->CLut16params.p8)
-           free(Lut ->CLut16params.p8);
+	if (Lut->CLut16params.p8)
+		free(Lut->CLut16params.p8);
 
-       free(Lut);
+	free(Lut);
 }
 
 
 static
 LPVOID DupBlockTab(LPVOID Org, size_t size)
 {
-    LPVOID mem = malloc(size);
+	LPVOID mem = malloc(size);
 
-    CopyMemory(mem, Org, size);
-    return mem;
+	CopyMemory(mem, Org, size);
+	return mem;
 }
 
 
 LPLUT LCMSEXPORT cmsDupLUT(LPLUT Orig)
 {
-    LPLUT NewLUT = cmsAllocLUT();
-    unsigned int i;
-    
-       CopyMemory(NewLUT, Orig, sizeof(LUT));
+	LPLUT NewLUT = cmsAllocLUT();
+	unsigned int i;
 
-       for (i=0; i < Orig ->InputChan; i++) 
-            NewLUT -> L1[i] = (LPWORD) DupBlockTab((LPVOID) Orig ->L1[i], 
-                                        sizeof(WORD) * Orig ->In16params.nSamples);
+	CopyMemory(NewLUT, Orig, sizeof(LUT));
 
-       for (i=0; i < Orig ->OutputChan; i++)
-            NewLUT -> L2[i] = (LPWORD) DupBlockTab((LPVOID) Orig ->L2[i], 
-                                        sizeof(WORD) * Orig ->Out16params.nSamples);   
-       
-       NewLUT -> T = (LPWORD) DupBlockTab((LPVOID) Orig ->T, Orig -> Tsize);
+	for (i = 0; i < Orig->InputChan; i++)
+		NewLUT->L1[i] = (LPWORD)DupBlockTab((LPVOID)Orig->L1[i],
+			sizeof(WORD) * Orig->In16params.nSamples);
 
-       return NewLUT;
+	for (i = 0; i < Orig->OutputChan; i++)
+		NewLUT->L2[i] = (LPWORD)DupBlockTab((LPVOID)Orig->L2[i],
+			sizeof(WORD) * Orig->Out16params.nSamples);
+
+	NewLUT->T = (LPWORD)DupBlockTab((LPVOID)Orig->T, Orig->Tsize);
+
+	return NewLUT;
 }
 
 
 static
 unsigned int UIpow(unsigned int a, unsigned int b)
 {
-        unsigned int rv = 1;
+	unsigned int rv = 1;
 
-        for (; b > 0; b--)
-                rv *= a;
+	for (; b > 0; b--)
+		rv *= a;
 
-        return rv;
+	return rv;
 }
 
 
 LPLUT LCMSEXPORT cmsAlloc3DGrid(LPLUT NewLUT, int clutPoints, int inputChan, int outputChan)
 {
-    DWORD nTabSize;
+	DWORD nTabSize;
 
-       NewLUT -> wFlags       |= LUT_HAS3DGRID;  
-       NewLUT -> cLutPoints    = clutPoints;
-       NewLUT -> InputChan     = inputChan;
-       NewLUT -> OutputChan    = outputChan;
+	NewLUT->wFlags |= LUT_HAS3DGRID;
+	NewLUT->cLutPoints = clutPoints;
+	NewLUT->InputChan = inputChan;
+	NewLUT->OutputChan = outputChan;
 
 
-       nTabSize = (NewLUT -> OutputChan * UIpow(NewLUT->cLutPoints,
-                                                NewLUT->InputChan)
-                                                * sizeof(WORD));
+	nTabSize = (NewLUT->OutputChan * UIpow(NewLUT->cLutPoints,
+		NewLUT->InputChan)
+		* sizeof(WORD));
 
-       NewLUT -> T = (LPWORD) malloc(nTabSize);
-       ZeroMemory(NewLUT -> T, nTabSize);
-       NewLUT ->Tsize = nTabSize;
-       
+	NewLUT->T = (LPWORD)malloc(nTabSize);
+	ZeroMemory(NewLUT->T, nTabSize);
+	NewLUT->Tsize = nTabSize;
 
-       cmsCalcCLUT16Params(NewLUT -> cLutPoints,  NewLUT -> InputChan,
-                                                  NewLUT -> OutputChan,
-                                                  &NewLUT -> CLut16params);
 
-       return NewLUT;
+	cmsCalcCLUT16Params(NewLUT->cLutPoints, NewLUT->InputChan,
+		NewLUT->OutputChan,
+		&NewLUT->CLut16params);
+
+	return NewLUT;
 }
 
 
@@ -213,68 +213,68 @@ LPLUT LCMSEXPORT cmsAlloc3DGrid(LPLUT NewLUT, int clutPoints, int inputChan, int
 
 LPLUT LCMSEXPORT cmsAllocLinearTable(LPLUT NewLUT, LPGAMMATABLE Tables[], int nTable)
 {
-       unsigned int i;
-       LPWORD PtrW;
+	unsigned int i;
+	LPWORD PtrW;
 
-       switch (nTable) {
-
-
-       case 1: NewLUT -> wFlags |= LUT_HASTL1;
-               cmsCalcL16Params(Tables[0] -> nEntries, &NewLUT -> In16params);
-               NewLUT -> InputEntries = Tables[0] -> nEntries;
-
-               for (i=0; i < NewLUT -> InputChan; i++) {
-
-                     PtrW = (LPWORD) malloc(sizeof(WORD) * NewLUT -> InputEntries);
-                     NewLUT -> L1[i] = PtrW;
-                     CopyMemory(PtrW, Tables[i]->GammaTable, sizeof(WORD) * NewLUT -> InputEntries);
-               }
-               break;
-
-       case 2: NewLUT -> wFlags |= LUT_HASTL2;
-               cmsCalcL16Params(Tables[0] -> nEntries, &NewLUT -> Out16params);
-               NewLUT -> OutputEntries = Tables[0] -> nEntries;
-               for (i=0; i < NewLUT -> OutputChan; i++) {
-
-                     PtrW = (LPWORD) malloc(sizeof(WORD) * NewLUT -> OutputEntries);
-                     NewLUT -> L2[i] = PtrW;
-                     CopyMemory(PtrW, Tables[i]->GammaTable, sizeof(WORD) * NewLUT -> OutputEntries);
-               }
-               break;
+	switch (nTable) {
 
 
-       // 3 & 4 according ICC 4.0 spec
+	case 1: NewLUT->wFlags |= LUT_HASTL1;
+		cmsCalcL16Params(Tables[0]->nEntries, &NewLUT->In16params);
+		NewLUT->InputEntries = Tables[0]->nEntries;
 
-       case 3:
-               NewLUT -> wFlags |= LUT_HASTL3;
-               cmsCalcL16Params(Tables[0] -> nEntries, &NewLUT -> L3params);
-               NewLUT -> L3Entries = Tables[0] -> nEntries;
+		for (i = 0; i < NewLUT->InputChan; i++) {
 
-               for (i=0; i < NewLUT -> InputChan; i++) {
+			PtrW = (LPWORD)malloc(sizeof(WORD) * NewLUT->InputEntries);
+			NewLUT->L1[i] = PtrW;
+			CopyMemory(PtrW, Tables[i]->GammaTable, sizeof(WORD) * NewLUT->InputEntries);
+		}
+		break;
 
-                     PtrW = (LPWORD) malloc(sizeof(WORD) * NewLUT -> L3Entries);
-                     NewLUT -> L3[i] = PtrW;
-                     CopyMemory(PtrW, Tables[i]->GammaTable, sizeof(WORD) * NewLUT -> L3Entries);
-               }
-               break;
+	case 2: NewLUT->wFlags |= LUT_HASTL2;
+		cmsCalcL16Params(Tables[0]->nEntries, &NewLUT->Out16params);
+		NewLUT->OutputEntries = Tables[0]->nEntries;
+		for (i = 0; i < NewLUT->OutputChan; i++) {
 
-       case 4:
-               NewLUT -> wFlags |= LUT_HASTL4;
-               cmsCalcL16Params(Tables[0] -> nEntries, &NewLUT -> L4params);
-               NewLUT -> L4Entries = Tables[0] -> nEntries;
-               for (i=0; i < NewLUT -> OutputChan; i++) {
+			PtrW = (LPWORD)malloc(sizeof(WORD) * NewLUT->OutputEntries);
+			NewLUT->L2[i] = PtrW;
+			CopyMemory(PtrW, Tables[i]->GammaTable, sizeof(WORD) * NewLUT->OutputEntries);
+		}
+		break;
 
-                     PtrW = (LPWORD) malloc(sizeof(WORD) * NewLUT -> L4Entries);
-                     NewLUT -> L4[i] = PtrW;
-                     CopyMemory(PtrW, Tables[i]->GammaTable, sizeof(WORD) * NewLUT -> L4Entries);
-               }
-               break;
-               
 
-       default:;
-       }
+		// 3 & 4 according ICC 4.0 spec
 
-       return NewLUT;
+	case 3:
+		NewLUT->wFlags |= LUT_HASTL3;
+		cmsCalcL16Params(Tables[0]->nEntries, &NewLUT->L3params);
+		NewLUT->L3Entries = Tables[0]->nEntries;
+
+		for (i = 0; i < NewLUT->InputChan; i++) {
+
+			PtrW = (LPWORD)malloc(sizeof(WORD) * NewLUT->L3Entries);
+			NewLUT->L3[i] = PtrW;
+			CopyMemory(PtrW, Tables[i]->GammaTable, sizeof(WORD) * NewLUT->L3Entries);
+		}
+		break;
+
+	case 4:
+		NewLUT->wFlags |= LUT_HASTL4;
+		cmsCalcL16Params(Tables[0]->nEntries, &NewLUT->L4params);
+		NewLUT->L4Entries = Tables[0]->nEntries;
+		for (i = 0; i < NewLUT->OutputChan; i++) {
+
+			PtrW = (LPWORD)malloc(sizeof(WORD) * NewLUT->L4Entries);
+			NewLUT->L4[i] = PtrW;
+			CopyMemory(PtrW, Tables[i]->GammaTable, sizeof(WORD) * NewLUT->L4Entries);
+		}
+		break;
+
+
+	default:;
+	}
+
+	return NewLUT;
 }
 
 
@@ -282,12 +282,12 @@ LPLUT LCMSEXPORT cmsAllocLinearTable(LPLUT NewLUT, LPGAMMATABLE Tables[], int nT
 
 LPLUT LCMSEXPORT cmsSetMatrixLUT(LPLUT Lut, LPMAT3 M)
 {
-        MAT3toFix(&Lut ->Matrix, M);
+	MAT3toFix(&Lut->Matrix, M);
 
-        if (!MAT3isIdentity(&Lut->Matrix, 0.0001))
-            Lut ->wFlags |= LUT_HASMATRIX;
+	if (!MAT3isIdentity(&Lut->Matrix, 0.0001))
+		Lut->wFlags |= LUT_HASMATRIX;
 
-        return Lut;
+	return Lut;
 }
 
 
@@ -295,46 +295,46 @@ LPLUT LCMSEXPORT cmsSetMatrixLUT(LPLUT Lut, LPMAT3 M)
 
 LPLUT LCMSEXPORT cmsSetMatrixLUT4(LPLUT Lut, LPMAT3 M, LPVEC3 off, DWORD dwFlags)
 {
-    WMAT3 WMat;
-    WVEC3 Woff;
-    VEC3  Zero = {{0, 0, 0}};
+	WMAT3 WMat;
+	WVEC3 Woff;
+	VEC3  Zero = { {0, 0, 0} };
 
-        MAT3toFix(&WMat, M);
+	MAT3toFix(&WMat, M);
 
-        if (off == NULL)
-                off = &Zero;
+	if (off == NULL)
+		off = &Zero;
 
-        VEC3toFix(&Woff, off);
+	VEC3toFix(&Woff, off);
 
-        // Nop if identity
-        if (MAT3isIdentity(&WMat, 0.0001) && 
-            (Woff.n[VX] == 0 && Woff.n[VY] == 0 && Woff.n[VZ] == 0))
-            return Lut;
+	// Nop if identity
+	if (MAT3isIdentity(&WMat, 0.0001) &&
+		(Woff.n[VX] == 0 && Woff.n[VY] == 0 && Woff.n[VZ] == 0))
+		return Lut;
 
-        switch (dwFlags) {
+	switch (dwFlags) {
 
-        case LUT_HASMATRIX:
-                Lut ->Matrix = WMat;                
-                Lut ->wFlags |= LUT_HASMATRIX;
-                break;
+	case LUT_HASMATRIX:
+		Lut->Matrix = WMat;
+		Lut->wFlags |= LUT_HASMATRIX;
+		break;
 
-        case LUT_HASMATRIX3:
-                Lut ->Mat3 = WMat;
-                Lut ->Ofs3 = Woff;
-                Lut ->wFlags |= LUT_HASMATRIX3;
-                break;
+	case LUT_HASMATRIX3:
+		Lut->Mat3 = WMat;
+		Lut->Ofs3 = Woff;
+		Lut->wFlags |= LUT_HASMATRIX3;
+		break;
 
-        case LUT_HASMATRIX4:
-                Lut ->Mat4 = WMat;
-                Lut ->Ofs4 = Woff;
-                Lut ->wFlags |= LUT_HASMATRIX4;
-                break;
+	case LUT_HASMATRIX4:
+		Lut->Mat4 = WMat;
+		Lut->Ofs4 = Woff;
+		Lut->wFlags |= LUT_HASMATRIX4;
+		break;
 
 
-        default:;
-        }
+	default:;
+	}
 
-        return Lut;
+	return Lut;
 }
 
 
@@ -342,169 +342,169 @@ LPLUT LCMSEXPORT cmsSetMatrixLUT4(LPLUT Lut, LPMAT3 M, LPVEC3 off, DWORD dwFlags
 
 void LCMSEXPORT cmsEvalLUT(LPLUT Lut, WORD In[], WORD Out[])
 {
-       register unsigned int i;
-       WORD StageABC[MAXCHANNELS], StageLMN[MAXCHANNELS];
+	register unsigned int i;
+	WORD StageABC[MAXCHANNELS], StageLMN[MAXCHANNELS];
 
 
-       for (i=0; i < Lut -> InputChan; i++)
-                            StageABC[i] = In[i];
-
-       
-       if (Lut ->wFlags & LUT_V4_OUTPUT_EMULATE_V2) {
-           
-           StageABC[0] = (WORD) FROM_V2_TO_V4(StageABC[0]);
-           StageABC[1] = (WORD) FROM_V2_TO_V4(StageABC[1]);
-           StageABC[2] = (WORD) FROM_V2_TO_V4(StageABC[2]);
-           
-       }
-
-       if (Lut ->wFlags & LUT_V2_OUTPUT_EMULATE_V4) {
-           
-           StageABC[0] = (WORD) FROM_V4_TO_V2(StageABC[0]);
-           StageABC[1] = (WORD) FROM_V4_TO_V2(StageABC[1]);
-           StageABC[2] = (WORD) FROM_V4_TO_V2(StageABC[2]);           
-       }
+	for (i = 0; i < Lut->InputChan; i++)
+		StageABC[i] = In[i];
 
 
-       // Matrix handling. 
+	if (Lut->wFlags & LUT_V4_OUTPUT_EMULATE_V2) {
 
-       if (Lut -> wFlags & LUT_HASMATRIX)
-       {
-              WVEC3 InVect, OutVect;
+		StageABC[0] = (WORD)FROM_V2_TO_V4(StageABC[0]);
+		StageABC[1] = (WORD)FROM_V2_TO_V4(StageABC[1]);
+		StageABC[2] = (WORD)FROM_V2_TO_V4(StageABC[2]);
 
-              InVect.n[VX] = ToFixedDomain(StageABC[0]);
-              InVect.n[VY] = ToFixedDomain(StageABC[1]);
-              InVect.n[VZ] = ToFixedDomain(StageABC[2]);
+	}
 
-              MAT3evalW(&OutVect, &Lut -> Matrix, &InVect);
+	if (Lut->wFlags & LUT_V2_OUTPUT_EMULATE_V4) {
 
-              // PCS in 1Fixed15 format, adjusting
-
-              StageABC[0] = Clamp_RGB(FromFixedDomain(OutVect.n[VX]));
-              StageABC[1] = Clamp_RGB(FromFixedDomain(OutVect.n[VY]));
-              StageABC[2] = Clamp_RGB(FromFixedDomain(OutVect.n[VZ]));
-       }
-       
-
-       // First linearization
-
-       if (Lut -> wFlags & LUT_HASTL1)
-       {
-              for (i=0; i < Lut -> InputChan; i++)
-                     StageABC[i] = cmsLinearInterpLUT16(StageABC[i],
-                                                   Lut -> L1[i],
-                                                   &Lut -> In16params);
-       }
+		StageABC[0] = (WORD)FROM_V4_TO_V2(StageABC[0]);
+		StageABC[1] = (WORD)FROM_V4_TO_V2(StageABC[1]);
+		StageABC[2] = (WORD)FROM_V4_TO_V2(StageABC[2]);
+	}
 
 
-       //  Mat3, Ofs3, L3 processing
-             
-       if (Lut ->wFlags & LUT_HASMATRIX3) {
+	// Matrix handling. 
 
-              WVEC3 InVect, OutVect;
+	if (Lut->wFlags & LUT_HASMATRIX)
+	{
+		WVEC3 InVect, OutVect;
 
-              InVect.n[VX] = ToFixedDomain(StageABC[0]);
-              InVect.n[VY] = ToFixedDomain(StageABC[1]);
-              InVect.n[VZ] = ToFixedDomain(StageABC[2]);
+		InVect.n[VX] = ToFixedDomain(StageABC[0]);
+		InVect.n[VY] = ToFixedDomain(StageABC[1]);
+		InVect.n[VZ] = ToFixedDomain(StageABC[2]);
 
-              MAT3evalW(&OutVect, &Lut -> Mat3, &InVect);              
+		MAT3evalW(&OutVect, &Lut->Matrix, &InVect);
 
-              OutVect.n[VX] += Lut ->Ofs3.n[VX];
-              OutVect.n[VY] += Lut ->Ofs3.n[VY];
-              OutVect.n[VZ] += Lut ->Ofs3.n[VZ];
+		// PCS in 1Fixed15 format, adjusting
 
-              StageABC[0] = Clamp_RGB(FromFixedDomain(OutVect.n[VX]));
-              StageABC[1] = Clamp_RGB(FromFixedDomain(OutVect.n[VY]));
-              StageABC[2] = Clamp_RGB(FromFixedDomain(OutVect.n[VZ]));
-
-       }
-       
-       if (Lut ->wFlags & LUT_HASTL3) {
-
-             for (i=0; i < Lut -> InputChan; i++)
-                     StageABC[i] = cmsLinearInterpLUT16(StageABC[i],
-                                                   Lut -> L3[i],
-                                                   &Lut -> L3params);
-
-       }
+		StageABC[0] = Clamp_RGB(FromFixedDomain(OutVect.n[VX]));
+		StageABC[1] = Clamp_RGB(FromFixedDomain(OutVect.n[VY]));
+		StageABC[2] = Clamp_RGB(FromFixedDomain(OutVect.n[VZ]));
+	}
 
 
+	// First linearization
 
-       if (Lut -> wFlags & LUT_HAS3DGRID) {
-
-            Lut ->CLut16params.Interp3D(StageABC, StageLMN, Lut -> T, &Lut -> CLut16params);
-
-       }
-       else
-       {              
-
-              for (i=0; i < Lut -> InputChan; i++)
-                            StageLMN[i] = StageABC[i];
-
-       }
+	if (Lut->wFlags & LUT_HASTL1)
+	{
+		for (i = 0; i < Lut->InputChan; i++)
+			StageABC[i] = cmsLinearInterpLUT16(StageABC[i],
+				Lut->L1[i],
+				&Lut->In16params);
+	}
 
 
-       // Mat4, Ofs4, L4 processing
-     
-       if (Lut ->wFlags & LUT_HASTL4) {
+	//  Mat3, Ofs3, L3 processing
 
-            for (i=0; i < Lut -> OutputChan; i++)
-                     StageLMN[i] = cmsLinearInterpLUT16(StageLMN[i],
-                                                   Lut -> L4[i],
-                                                   &Lut -> L4params);
-       }
-        
-       if (Lut ->wFlags & LUT_HASMATRIX4) {
+	if (Lut->wFlags & LUT_HASMATRIX3) {
 
-              WVEC3 InVect, OutVect;
+		WVEC3 InVect, OutVect;
 
-              InVect.n[VX] = ToFixedDomain(StageLMN[0]);
-              InVect.n[VY] = ToFixedDomain(StageLMN[1]);
-              InVect.n[VZ] = ToFixedDomain(StageLMN[2]);
+		InVect.n[VX] = ToFixedDomain(StageABC[0]);
+		InVect.n[VY] = ToFixedDomain(StageABC[1]);
+		InVect.n[VZ] = ToFixedDomain(StageABC[2]);
 
-              MAT3evalW(&OutVect, &Lut -> Mat4, &InVect);              
+		MAT3evalW(&OutVect, &Lut->Mat3, &InVect);
 
-              OutVect.n[VX] += Lut ->Ofs4.n[VX];
-              OutVect.n[VY] += Lut ->Ofs4.n[VY];
-              OutVect.n[VZ] += Lut ->Ofs4.n[VZ];
+		OutVect.n[VX] += Lut->Ofs3.n[VX];
+		OutVect.n[VY] += Lut->Ofs3.n[VY];
+		OutVect.n[VZ] += Lut->Ofs3.n[VZ];
 
-              StageLMN[0] = Clamp_RGB(FromFixedDomain(OutVect.n[VX]));
-              StageLMN[1] = Clamp_RGB(FromFixedDomain(OutVect.n[VY]));
-              StageLMN[2] = Clamp_RGB(FromFixedDomain(OutVect.n[VZ]));
+		StageABC[0] = Clamp_RGB(FromFixedDomain(OutVect.n[VX]));
+		StageABC[1] = Clamp_RGB(FromFixedDomain(OutVect.n[VY]));
+		StageABC[2] = Clamp_RGB(FromFixedDomain(OutVect.n[VZ]));
 
-       }
+	}
 
-       // Last linearitzation
+	if (Lut->wFlags & LUT_HASTL3) {
 
-       if (Lut -> wFlags & LUT_HASTL2)
-       {
-              for (i=0; i < Lut -> OutputChan; i++)
-                     Out[i] = cmsLinearInterpLUT16(StageLMN[i],
-                                                   Lut -> L2[i],
-                                                   &Lut -> Out16params);
-       }
-       else
-       {
-       for (i=0; i < Lut -> OutputChan; i++)
-              Out[i] = StageLMN[i];
-       }
+		for (i = 0; i < Lut->InputChan; i++)
+			StageABC[i] = cmsLinearInterpLUT16(StageABC[i],
+				Lut->L3[i],
+				&Lut->L3params);
 
-       
+	}
 
-       if (Lut ->wFlags & LUT_V4_INPUT_EMULATE_V2) {
-           
-           Out[0] = (WORD) FROM_V4_TO_V2(Out[0]);
-           Out[1] = (WORD) FROM_V4_TO_V2(Out[1]);
-           Out[2] = (WORD) FROM_V4_TO_V2(Out[2]);
-           
-       }
 
-       if (Lut ->wFlags & LUT_V2_INPUT_EMULATE_V4) {
-           
-           Out[0] = (WORD) FROM_V2_TO_V4(Out[0]);
-           Out[1] = (WORD) FROM_V2_TO_V4(Out[1]);
-           Out[2] = (WORD) FROM_V2_TO_V4(Out[2]);           
-       }
+
+	if (Lut->wFlags & LUT_HAS3DGRID) {
+
+		Lut->CLut16params.Interp3D(StageABC, StageLMN, Lut->T, &Lut->CLut16params);
+
+	}
+	else
+	{
+
+		for (i = 0; i < Lut->InputChan; i++)
+			StageLMN[i] = StageABC[i];
+
+	}
+
+
+	// Mat4, Ofs4, L4 processing
+
+	if (Lut->wFlags & LUT_HASTL4) {
+
+		for (i = 0; i < Lut->OutputChan; i++)
+			StageLMN[i] = cmsLinearInterpLUT16(StageLMN[i],
+				Lut->L4[i],
+				&Lut->L4params);
+	}
+
+	if (Lut->wFlags & LUT_HASMATRIX4) {
+
+		WVEC3 InVect, OutVect;
+
+		InVect.n[VX] = ToFixedDomain(StageLMN[0]);
+		InVect.n[VY] = ToFixedDomain(StageLMN[1]);
+		InVect.n[VZ] = ToFixedDomain(StageLMN[2]);
+
+		MAT3evalW(&OutVect, &Lut->Mat4, &InVect);
+
+		OutVect.n[VX] += Lut->Ofs4.n[VX];
+		OutVect.n[VY] += Lut->Ofs4.n[VY];
+		OutVect.n[VZ] += Lut->Ofs4.n[VZ];
+
+		StageLMN[0] = Clamp_RGB(FromFixedDomain(OutVect.n[VX]));
+		StageLMN[1] = Clamp_RGB(FromFixedDomain(OutVect.n[VY]));
+		StageLMN[2] = Clamp_RGB(FromFixedDomain(OutVect.n[VZ]));
+
+	}
+
+	// Last linearitzation
+
+	if (Lut->wFlags & LUT_HASTL2)
+	{
+		for (i = 0; i < Lut->OutputChan; i++)
+			Out[i] = cmsLinearInterpLUT16(StageLMN[i],
+				Lut->L2[i],
+				&Lut->Out16params);
+	}
+	else
+	{
+		for (i = 0; i < Lut->OutputChan; i++)
+			Out[i] = StageLMN[i];
+	}
+
+
+
+	if (Lut->wFlags & LUT_V4_INPUT_EMULATE_V2) {
+
+		Out[0] = (WORD)FROM_V4_TO_V2(Out[0]);
+		Out[1] = (WORD)FROM_V4_TO_V2(Out[1]);
+		Out[2] = (WORD)FROM_V4_TO_V2(Out[2]);
+
+	}
+
+	if (Lut->wFlags & LUT_V2_INPUT_EMULATE_V4) {
+
+		Out[0] = (WORD)FROM_V2_TO_V4(Out[0]);
+		Out[1] = (WORD)FROM_V2_TO_V4(Out[1]);
+		Out[2] = (WORD)FROM_V2_TO_V4(Out[2]);
+	}
 }
 
 
@@ -512,50 +512,50 @@ void LCMSEXPORT cmsEvalLUT(LPLUT Lut, WORD In[], WORD Out[])
 // 
 LPLUT _cmsBlessLUT8(LPLUT Lut)
 {
-   int i, j;
-   WORD StageABC[3];
-   Fixed32 v1, v2, v3;
-   LPL8PARAMS p8; 
-   LPL16PARAMS p = &Lut ->CLut16params;
+	int i, j;
+	WORD StageABC[3];
+	Fixed32 v1, v2, v3;
+	LPL8PARAMS p8;
+	LPL16PARAMS p = &Lut->CLut16params;
 
-  
-   p8 = (LPL8PARAMS) malloc(sizeof(L8PARAMS));
-   if (p8 == NULL) return NULL;
 
-  // values comes * 257, so we can safely take first byte (x << 8 + x)
-  // if there are prelinearization, is already melted in tables
+	p8 = (LPL8PARAMS)malloc(sizeof(L8PARAMS));
+	if (p8 == NULL) return NULL;
 
-   for (i=0; i < 256; i++) {
+	// values comes * 257, so we can safely take first byte (x << 8 + x)
+	// if there are prelinearization, is already melted in tables
 
-           StageABC[0] = StageABC[1] = StageABC[2] = RGB_8_TO_16(i);
+	for (i = 0; i < 256; i++) {
 
-           if (Lut ->wFlags & LUT_HASTL1) {
+		StageABC[0] = StageABC[1] = StageABC[2] = RGB_8_TO_16(i);
 
-              for (j=0; j < 3; j++)
-                     StageABC[i] = cmsLinearInterpLUT16(StageABC[i],
-                                                        Lut -> L1[i],
-                                                       &Lut -> In16params);
-              Lut ->wFlags &= ~LUT_HASTL1;
-           }
-    
-               
-           v1 = ToFixedDomain(StageABC[0] * p -> Domain);
-           v2 = ToFixedDomain(StageABC[1] * p -> Domain);
-           v3 = ToFixedDomain(StageABC[2] * p -> Domain);
+		if (Lut->wFlags & LUT_HASTL1) {
 
-           p8 ->X0[i] = p->opta3 * FIXED_TO_INT(v1);
-           p8 ->Y0[i] = p->opta2 * FIXED_TO_INT(v2);
-           p8 ->Z0[i] = p->opta1 * FIXED_TO_INT(v3);
+			for (j = 0; j < 3; j++)
+				StageABC[i] = cmsLinearInterpLUT16(StageABC[i],
+					Lut->L1[i],
+					&Lut->In16params);
+			Lut->wFlags &= ~LUT_HASTL1;
+		}
 
-           p8 ->rx[i] = (WORD) FIXED_REST_TO_INT(v1);
-           p8 ->ry[i] = (WORD) FIXED_REST_TO_INT(v2);
-           p8 ->rz[i] = (WORD) FIXED_REST_TO_INT(v3);
-  
-  }
 
-   Lut -> CLut16params.p8 = p8;
-   Lut -> CLut16params.Interp3D = cmsTetrahedralInterp8;
+		v1 = ToFixedDomain(StageABC[0] * p->Domain);
+		v2 = ToFixedDomain(StageABC[1] * p->Domain);
+		v3 = ToFixedDomain(StageABC[2] * p->Domain);
 
-   return Lut;
+		p8->X0[i] = p->opta3 * FIXED_TO_INT(v1);
+		p8->Y0[i] = p->opta2 * FIXED_TO_INT(v2);
+		p8->Z0[i] = p->opta1 * FIXED_TO_INT(v3);
+
+		p8->rx[i] = (WORD)FIXED_REST_TO_INT(v1);
+		p8->ry[i] = (WORD)FIXED_REST_TO_INT(v2);
+		p8->rz[i] = (WORD)FIXED_REST_TO_INT(v3);
+
+	}
+
+	Lut->CLut16params.p8 = p8;
+	Lut->CLut16params.Interp3D = cmsTetrahedralInterp8;
+
+	return Lut;
 
 }

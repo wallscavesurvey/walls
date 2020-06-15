@@ -40,7 +40,7 @@
 
 #include "cairoint.h"
 
-/* get the "real" version info instead of dummy cairo-version.h */
+ /* get the "real" version info instead of dummy cairo-version.h */
 #undef CAIRO_VERSION_H
 #include "../cairo-version.h"
 
@@ -64,9 +64,9 @@
  * Return value: the encoded version.
  **/
 int
-cairo_version (void)
+cairo_version(void)
 {
-    return CAIRO_VERSION;
+	return CAIRO_VERSION;
 }
 
 /**
@@ -81,8 +81,8 @@ cairo_version (void)
  * Return value: a string containing the version.
  **/
 const char*
-cairo_version_string (void)
+cairo_version_string(void)
 {
-    return CAIRO_VERSION_STRING;
+	return CAIRO_VERSION_STRING;
 }
-slim_hidden_def (cairo_version_string);
+slim_hidden_def(cairo_version_string);

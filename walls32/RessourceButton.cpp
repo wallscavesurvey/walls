@@ -28,14 +28,14 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CResourceButton message handlers
 /*
-BOOL CResourceButton::PreTranslateMessage(MSG* pMsg) 
+BOOL CResourceButton::PreTranslateMessage(MSG* pMsg)
 {
 	// TODO: Add your specialized code here and/or call the base class
-	
+
 	return baseCResourceButton::PreTranslateMessage(pMsg);
 }
 */
-void CResourceButton::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct) 
+void CResourceButton::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
 	// TODO: Add your code to draw the specified item
 
@@ -46,39 +46,40 @@ void CResourceButton::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
 	CBitmap * pOldBitmap;
 	pOldBitmap = pMemDC->SelectObject(&m_Bitmap);
-	
-	int offset=(m_index*m_styleCount);
+
+	int offset = (m_index*m_styleCount);
 	if (IsWindowEnabled()) {
 		if (lpDrawItemStruct->itemState & ODS_SELECTED)
 		{
-			pDC->BitBlt(0, 0, m_ButtonSize.cx, m_ButtonSize.cy, pMemDC,(offset+1)*m_ButtonSize.cx, 0, SRCCOPY);
+			pDC->BitBlt(0, 0, m_ButtonSize.cx, m_ButtonSize.cy, pMemDC, (offset + 1)*m_ButtonSize.cx, 0, SRCCOPY);
 		}
 		else {
-			pDC->BitBlt(0,0,m_ButtonSize.cx,m_ButtonSize.cy,pMemDC,offset*m_ButtonSize.cx,0,SRCCOPY);
+			pDC->BitBlt(0, 0, m_ButtonSize.cx, m_ButtonSize.cy, pMemDC, offset*m_ButtonSize.cx, 0, SRCCOPY);
 		}
-	} else if(m_styleCount>=3) {
-		pDC->BitBlt(0, 0, m_ButtonSize.cx, m_ButtonSize.cy, pMemDC,(offset+2)*m_ButtonSize.cx, 0, SRCCOPY);
+	}
+	else if (m_styleCount >= 3) {
+		pDC->BitBlt(0, 0, m_ButtonSize.cx, m_ButtonSize.cy, pMemDC, (offset + 2)*m_ButtonSize.cx, 0, SRCCOPY);
 	}
 
 	// clean up
-	pMemDC -> SelectObject(pOldBitmap);
+	pMemDC->SelectObject(pOldBitmap);
 	delete pMemDC;
 }
 
 
-BOOL CResourceButton::LoadBitmap(UINT bitmapid,int nCount,int nStyles)
+BOOL CResourceButton::LoadBitmap(UINT bitmapid, int nCount, int nStyles)
 {
-	m_Bitmap.Attach(::LoadImage(::AfxGetInstanceHandle(),MAKEINTRESOURCE(bitmapid), IMAGE_BITMAP,0,0,LR_LOADMAP3DCOLORS));
+	m_Bitmap.Attach(::LoadImage(::AfxGetInstanceHandle(), MAKEINTRESOURCE(bitmapid), IMAGE_BITMAP, 0, 0, LR_LOADMAP3DCOLORS));
 	BITMAP	bitmapbits;
 	m_Bitmap.GetBitmap(&bitmapbits);
-	m_ButtonSize.cy=bitmapbits.bmHeight;
-	m_ButtonSize.cx=bitmapbits.bmWidth/((m_styleCount=nStyles)*(m_imageCount=nCount));
-	SetWindowPos(NULL,0,0, m_ButtonSize.cx,m_ButtonSize.cy,SWP_NOMOVE|SWP_NOOWNERZORDER);
+	m_ButtonSize.cy = bitmapbits.bmHeight;
+	m_ButtonSize.cx = bitmapbits.bmWidth / ((m_styleCount = nStyles)*(m_imageCount = nCount));
+	SetWindowPos(NULL, 0, 0, m_ButtonSize.cx, m_ButtonSize.cy, SWP_NOMOVE | SWP_NOOWNERZORDER);
 	return TRUE;
 }
 
 /*
-void CResourceButton::OnMouseMove(UINT nFlags, CPoint point) 
+void CResourceButton::OnMouseMove(UINT nFlags, CPoint point)
 {
 	//	TODO: Add your message handler code here and/or call default
 
@@ -94,7 +95,7 @@ void CResourceButton::OnMouseMove(UINT nFlags, CPoint point)
 	baseCResourceButton::OnMouseMove(nFlags, point);
 }
 
-LRESULT CResourceButton::OnMouseHover(WPARAM wparam, LPARAM lparam) 
+LRESULT CResourceButton::OnMouseHover(WPARAM wparam, LPARAM lparam)
 {
 	// TODO: Add your message handler code here and/or call default
 	//m_bHover = TRUE;

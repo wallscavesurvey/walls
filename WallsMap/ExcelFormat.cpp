@@ -20,10 +20,10 @@ using namespace ExcelFormat;
 
 
 XLSFormatManager::XLSFormatManager(BasicExcel& xls)
- :	_xls(xls),
+	: _xls(xls),
 	_next_fmt_idx(FIRST_USER_FORMAT_IDX)	// above last reserved format index 163
 {
-	 // initialize predefined formats
+	// initialize predefined formats
 	_formats[0] = XLS_FORMAT_GENERAL;		// "General"								// General
 	_formats[1] = XLS_FORMAT_INTEGER;		// "0"										// Decimal
 	_formats[2] = XLS_FORMAT_DECIMAL;		// "0.00"									// Decimal
@@ -63,18 +63,18 @@ XLSFormatManager::XLSFormatManager(BasicExcel& xls)
 
 	 // overwrite formats from workbook
 	size_t maxFormats = xls.workbook_.formats_.size();
-	for(size_t i=0; i<maxFormats; ++i) {
+	for (size_t i = 0; i < maxFormats; ++i) {
 		int idx = xls.workbook_.formats_[i].index_;
 
 		_formats[idx] = wstringFromLargeString(xls.workbook_.formats_[i].fmtstring_);
 
-		 // adjust index for the next user defined format
+		// adjust index for the next user defined format
 		if (idx >= _next_fmt_idx)
 			_next_fmt_idx = idx + 1;
 	}
 
-	 // create reverse format map
-	for(FormatMap::const_iterator it=_formats.begin(); it!=_formats.end(); ++it)
+	// create reverse format map
+	for (FormatMap::const_iterator it = _formats.begin(); it != _formats.end(); ++it)
 		_formats_rev[it->second] = it->first;
 }
 
@@ -82,11 +82,11 @@ XLSFormatManager::XLSFormatManager(BasicExcel& xls)
 int XLSFormatManager::get_font_idx(const ExcelFont& font)
 {
 	int i = 0;
-	for(vector<Workbook::Font>::const_iterator it=_xls.workbook_.fonts_.begin(); it!=_xls.workbook_.fonts_.end(); ++it,++i)
+	for (vector<Workbook::Font>::const_iterator it = _xls.workbook_.fonts_.begin(); it != _xls.workbook_.fonts_.end(); ++it, ++i)
 		if (font.matches(*it))
 			return i;
 
-	int font_idx = (int) _xls.workbook_.fonts_.size();
+	int font_idx = (int)_xls.workbook_.fonts_.size();
 	_xls.workbook_.fonts_.push_back(Workbook::Font());
 	Workbook::Font& new_font = _xls.workbook_.fonts_[font_idx];
 
@@ -101,8 +101,8 @@ int XLSFormatManager::get_font_idx(const ExcelFont& font)
 
 	new_font.name_ = font._name.c_str();
 
-	 // The font with index 4 is omitted in all BIFF versions. This means the first four fonts have zero-based indexes,
-	 // and the fifth font and all following fonts are referenced with one-based indexes.
+	// The font with index 4 is omitted in all BIFF versions. This means the first four fonts have zero-based indexes,
+	// and the fifth font and all following fonts are referenced with one-based indexes.
 	if (font_idx >= 4)
 		++font_idx;
 
@@ -119,7 +119,7 @@ const Workbook::Font& XLSFormatManager::get_font(const CellFormat& fmt) const
 	if (font_idx < _xls.workbook_.fonts_.size())
 		return _xls.workbook_.fonts_[font_idx];
 	else {
-//		assert(0); // font_idx out of range
+		//		assert(0); // font_idx out of range
 		return _xls.workbook_.fonts_[0];
 	}
 }
@@ -143,7 +143,7 @@ int XLSFormatManager::get_format_idx(const wstring& fmt_str)
 	if (found != _formats_rev.end())
 		return found->second;
 
-	 // register a new format string
+	// register a new format string
 	int fmt_idx = _next_fmt_idx++;
 
 	_formats[fmt_idx] = fmt_str;
@@ -161,12 +161,12 @@ int XLSFormatManager::get_format_idx(const wstring& fmt_str)
 int XLSFormatManager::get_xf_idx(const CellFormat& fmt)
 {
 	int i = 0;
-	for(vector<Workbook::XF>::const_iterator it=_xls.workbook_.XFs_.begin(); it!=_xls.workbook_.XFs_.end(); ++it,++i)
+	for (vector<Workbook::XF>::const_iterator it = _xls.workbook_.XFs_.begin(); it != _xls.workbook_.XFs_.end(); ++it, ++i)
 		if (fmt.matches(*it))
 			return i;
 
-	 // create a new XF
-	int xf_idx = (int) _xls.workbook_.XFs_.size();
+	// create a new XF
+	int xf_idx = (int)_xls.workbook_.XFs_.size();
 	_xls.workbook_.XFs_.push_back(Workbook::XF());
 	Workbook::XF& xf = _xls.workbook_.XFs_[xf_idx];
 

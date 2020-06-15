@@ -8,16 +8,16 @@
 
 	Date :			2005-05-06
 
-	Purpose :		CFontComboBox is derived from "CComboBox" and is an 
-					autosizing no-frills combobox for display of the fonts 
-					installed in the system.. 
+	Purpose :		CFontComboBox is derived from "CComboBox" and is an
+					autosizing no-frills combobox for display of the fonts
+					installed in the system..
 
-	Description :	Simpel derived class with members to fill the box, to 
+	Description :	Simpel derived class with members to fill the box, to
 					autosize the dropdown and select an entry by name.
 
-	Usage :			Create as any combobox, and call "FillCombo" to fill 
-					the control with the names of the fonts installed in 
-					the system. Call "SelectFontName" to select a font by 
+	Usage :			Create as any combobox, and call "FillCombo" to fill
+					the control with the names of the fonts installed in
+					the system. Call "SelectFontName" to select a font by
 					name.
 
    ========================================================================*/
@@ -33,18 +33,18 @@ static char THIS_FILE[] = __FILE__;
 
 // Enumeration callback function for 
 // installed fonts
-BOOL CALLBACK EnumFontProc( LPLOGFONT lplf, LPTEXTMETRIC /*lptm*/, DWORD /*dwType*/, LPARAM lpData )	
-{	
-	CFontComboBox *caller = reinterpret_cast< CFontComboBox* > ( lpData );		
-	caller->AddString( lplf->lfFaceName );
+BOOL CALLBACK EnumFontProc(LPLOGFONT lplf, LPTEXTMETRIC /*lptm*/, DWORD /*dwType*/, LPARAM lpData)
+{
+	CFontComboBox *caller = reinterpret_cast<CFontComboBox*> (lpData);
+	caller->AddString(lplf->lfFaceName);
 
-	CClientDC dc( caller );
-	dc.SelectStockObject( ANSI_VAR_FONT );
+	CClientDC dc(caller);
+	dc.SelectStockObject(ANSI_VAR_FONT);
 
 	// Add a "0" for the margin.
-	CSize sz = dc.GetTextExtent( CString( lplf->lfFaceName ) + CString( "0" ) );
+	CSize sz = dc.GetTextExtent(CString(lplf->lfFaceName) + CString("0"));
 
-	caller->SetMaxWidth( max( caller->GetMaxWidth(), sz.cx ) );
+	caller->SetMaxWidth(max(caller->GetMaxWidth(), sz.cx));
 
 	return TRUE;
 
@@ -58,11 +58,11 @@ CFontComboBox::CFontComboBox()
 	Function :		CFontComboBox::CFontComboBox
 	Description :	ctor
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	none
 
-	Usage :			
+	Usage :
 
    ============================================================*/
 {
@@ -74,11 +74,11 @@ CFontComboBox::~CFontComboBox()
 	Function :		CFontComboBox::~CFontComboBox
 	Description :	dtor
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	none
 
-	Usage :			
+	Usage :
 
    ============================================================*/
 {
@@ -93,14 +93,14 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CFontComboBox message handlers
 
-void CFontComboBox::OnDropdown() 
+void CFontComboBox::OnDropdown()
 /* ============================================================
 	Function :		CFontComboBox::OnDropdown
-	Description :	Sets the dropped down width of the combo 
-					control to the max width of the string in 
+	Description :	Sets the dropped down width of the combo
+					control to the max width of the string in
 					the list
 	Access :		Protected
-					
+
 	Return :		void
 	Parameters :	none
 
@@ -109,8 +109,8 @@ void CFontComboBox::OnDropdown()
    ============================================================*/
 {
 
-   int scroll = ::GetSystemMetrics(SM_CXVSCROLL);
-   SetDroppedWidth( m_maxWidth + scroll );
+	int scroll = ::GetSystemMetrics(SM_CXVSCROLL);
+	SetDroppedWidth(m_maxWidth + scroll);
 
 }
 
@@ -120,37 +120,37 @@ void CFontComboBox::OnDropdown()
 void CFontComboBox::FillCombo()
 /* ============================================================
 	Function :		CFontComboBox::FillCombo
-	Description :	Fills the combo with the font names from 
+	Description :	Fills the combo with the font names from
 					the system
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	none
 
-	Usage :			Call to fill the combo with the installed 
+	Usage :			Call to fill the combo with the installed
 					fonts.
 
    ============================================================*/
 {
 
-	CClientDC dc( this );		
-	::EnumFonts( dc, 0, ( FONTENUMPROC ) EnumFontProc, ( LPARAM ) this );
+	CClientDC dc(this);
+	::EnumFonts(dc, 0, (FONTENUMPROC)EnumFontProc, (LPARAM)this);
 
 }
 
-void CFontComboBox::SetMaxWidth( int maxWidth )
+void CFontComboBox::SetMaxWidth(int maxWidth)
 /* ============================================================
 	Function :		CFontComboBox::SetMaxWidth
 	Description :	Sets the "m_maxWidth" member.
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	int maxWidth	-	New width of the drop
 										down list
 
-	Usage :			Call to set a max width for the strings in 
-					the list, used to set the width of the drop 
-					down list. Called from the font enum 
+	Usage :			Call to set a max width for the strings in
+					the list, used to set the width of the drop
+					down list. Called from the font enum
 					callback.
 
    ============================================================*/
@@ -163,15 +163,15 @@ void CFontComboBox::SetMaxWidth( int maxWidth )
 int CFontComboBox::GetMaxWidth() const
 /* ============================================================
 	Function :		CFontComboBox::GetMaxWidth
-	Description :	Returns the "m_maxWidth" member of the 
+	Description :	Returns the "m_maxWidth" member of the
 					control.
 	Access :		Public
-					
-	Return :		int		-	Width of the longest string, in 
+
+	Return :		int		-	Width of the longest string, in
 								pixels.
 	Parameters :	none
 
-	Usage :			Call to get the width necessary to display 
+	Usage :			Call to get the width necessary to display
 					the longest string in the combo drop down.
 
    ============================================================*/
@@ -181,31 +181,31 @@ int CFontComboBox::GetMaxWidth() const
 
 }
 
-void CFontComboBox::SelectFontName( const CString& font )
+void CFontComboBox::SelectFontName(const CString& font)
 /* ============================================================
 	Function :		CFontComboBox::SelectFontName
-	Description :	Selects "font" in the list, if it 
+	Description :	Selects "font" in the list, if it
 					exists.
 	Access :		Public
-					
+
 	Return :		void
-	Parameters :	const CString& font	-	Name of the font to 
+	Parameters :	const CString& font	-	Name of the font to
 											select.
 
-	Usage :			Call to set/change the selection of the 
+	Usage :			Call to set/change the selection of the
 					combo.
 
    ============================================================*/
 {
 
 	int max = GetCount();
-	for( int t = 0 ; t < max ; t++ )
+	for (int t = 0; t < max; t++)
 	{
 		CString data;
-		GetLBText( t, data );
-		if( data == font )
+		GetLBText(t, data);
+		if (data == font)
 		{
-			SetCurSel( t );
+			SetCurSel(t);
 			return;
 		}
 	}

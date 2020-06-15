@@ -42,15 +42,17 @@ struct XCOMBODATA
 struct XDESCDATA
 {
 	XDESCDATA() : nFld(0) {}
-	XDESCDATA(UINT fld,LPCSTR pDesc) : nFld(fld), sDesc(pDesc) {}
+	XDESCDATA(UINT fld, LPCSTR pDesc) : nFld(fld), sDesc(pDesc) {}
 	UINT nFld;
 	CString sDesc;
 };
 typedef std::vector<XDESCDATA> VEC_XDESC;
 typedef VEC_XDESC *PVEC_XDESC;
 
-enum {XC_READONLY=1,XC_INITSTR=2,XC_INITPOLY=4,XC_INITELEV=8,XC_HASLIST=16,
-	XC_LISTNOEDIT=32,XC_METERS=64,XC_NOPROMPT=128}; //supported flags
+enum {
+	XC_READONLY = 1, XC_INITSTR = 2, XC_INITPOLY = 4, XC_INITELEV = 8, XC_HASLIST = 16,
+	XC_LISTNOEDIT = 32, XC_METERS = 64, XC_NOPROMPT = 128
+}; //supported flags
 
 typedef XCOMBODATA *PXCOMBODATA;
 typedef std::vector<PXCOMBODATA> VEC_PXCOMBO; //avoid deletes?
@@ -60,7 +62,7 @@ typedef VEC_XCOMBO::iterator it_vec_xcombo;
 
 class CFocusedListBox : public CListBox
 {
- //necessary for determining when to close dropdown listbox --
+	//necessary for determining when to close dropdown listbox --
 protected:
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
 	DECLARE_MESSAGE_MAP()
@@ -71,17 +73,17 @@ protected:
 
 class CXComboList : public CWnd
 {
-// Construction
+	// Construction
 public:
 	CXComboList(CWnd *pParent);
 	virtual ~CXComboList();
 
-// Attributes
+	// Attributes
 public:
 
-// Operations
+	// Operations
 public:
-	void SetActive(int nScrollBarWidth,int nItemsVisible);
+	void SetActive(int nScrollBarWidth, int nItemsVisible);
 
 	int AddString(LPCTSTR lpszItem)
 	{
@@ -112,9 +114,9 @@ public:
 		m_ListBox.SetFont(pFont, bRedraw);
 	}
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CXComboList)
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CXComboList)
 public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual CScrollBar* GetScrollBarCtrl(int nBar);
@@ -124,7 +126,7 @@ public:
 	CWnd *		m_pParent;
 	bool		m_bActive;
 
-// Implementation
+	// Implementation
 protected:
 	CFocusedListBox	m_ListBox;
 	BOOL		m_bFirstTime;

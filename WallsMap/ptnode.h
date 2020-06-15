@@ -14,7 +14,7 @@ class CShpLayer;
 struct MAP_PTNODE { //7*4=28 bytes
 	int xy[2];	 //screen location
 	int maxdist;
-	int rt,lf;
+	int rt, lf;
 	int rec;
 	CShpLayer *pLayer;
 };
@@ -28,17 +28,17 @@ public:
 	CPtNode();
 	~CPtNode();
 
-	BOOL Init(int xM,int yM,int maxvecs);
-	BOOL AddPtNode(int x,int y,CShpLayer *pLayer,int rec);
-	MAP_PTNODE * GetPtNode(int x,int y);
-	int GetVecPtNode(VEC_PTNODE &vec_pt,int x,int xBorder,int y,int yBorder,bool bMerging);
+	BOOL Init(int xM, int yM, int maxvecs);
+	BOOL AddPtNode(int x, int y, CShpLayer *pLayer, int rec);
+	MAP_PTNODE * GetPtNode(int x, int y);
+	int GetVecPtNode(VEC_PTNODE &vec_pt, int x, int xBorder, int y, int yBorder, bool bMerging);
 
-	BOOL IsInitialized() {return vnod!=NULL && vstk!=NULL;}
+	BOOL IsInitialized() { return vnod != NULL && vstk != NULL; }
 
 private:
 	MAP_PTNODE *vnod;
 	int *vstk;
-	int vnod_siz,vnod_len;
+	int vnod_siz, vnod_len;
 };
 
 #endif

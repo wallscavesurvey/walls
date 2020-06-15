@@ -13,71 +13,71 @@
 
 CWinScene3D::CWinScene3D(CSceneDoc* pDoc)
 {
-  m_pDoc=pDoc;
+	m_pDoc = pDoc;
 
-  // allocate 
-  m_pszParseOut=new char[PARSE_BUF];
-  *m_pszParseOut=0;
+	// allocate 
+	m_pszParseOut = new char[PARSE_BUF];
+	*m_pszParseOut = 0;
 }
 
 CWinScene3D::~CWinScene3D()
 {
-  delete[] m_pszParseOut;
+	delete[] m_pszParseOut;
 }
 
 // sets progress indicator
 void CWinScene3D::progress(float fPercent, int iLabel)
 {
-  GUIControls* pTemp=guiControls();
+	GUIControls* pTemp = guiControls();
 
-  //if(pTemp)
-    pTemp->setProgIndicator(fPercent);
+	//if(pTemp)
+	pTemp->setProgIndicator(fPercent);
 }
 
 // error message (e.g. during parsing) 
 void CWinScene3D::errorMessage(const char* pszError) const
 {
-  char pszNewError[1024];
+	char pszNewError[1024];
 
-  // prevent overflow
-  if(strlen(pszError)>512)
-    ((char*)pszError)[511]=0;
+	// prevent overflow
+	if (strlen(pszError) > 512)
+		((char*)pszError)[511] = 0;
 
-  if(strlen(pszError)+strlen(m_pszParseOut)<PARSE_BUF-1)
-  {
-    const char* pSrc=pszError;
-    char* pDst;
-    //int iCount;
-    pDst=pszNewError;
+	if (strlen(pszError) + strlen(m_pszParseOut) < PARSE_BUF - 1)
+	{
+		const char* pSrc = pszError;
+		char* pDst;
+		//int iCount;
+		pDst = pszNewError;
 
-    // replace \n with \r\n
-    //for(iCount=0;iCount<strlen(pszError);iCount++)
-    while(*pSrc!=0)
-    {
-      if(*pSrc!='\n')
-        *pDst=*pSrc;
-      else
-      {
-        *pDst++='\015';
-        //pDst++;
-        *pDst='\012';
-      }
-      pDst++;
-      pSrc++;
-    }
-    *pDst=0;
-    strcat(m_pszParseOut,pszNewError);
-  }
+		// replace \n with \r\n
+		//for(iCount=0;iCount<strlen(pszError);iCount++)
+		while (*pSrc != 0)
+		{
+			if (*pSrc != '\n')
+				*pDst = *pSrc;
+			else
+			{
+				*pDst++ = '\015';
+				//pDst++;
+				*pDst = '\012';
+			}
+			pDst++;
+			pSrc++;
+		}
+		*pDst = 0;
+		strcat(m_pszParseOut, pszNewError);
+	}
 }
 
 void CWinScene3D::showNumFaces()
 {
-  unsigned long lPolygons=0;
-  char szBuf[512];
+	unsigned long lPolygons = 0;
+	char szBuf[512];
 
-  lPolygons=getNumFaces();
-  sprintf(szBuf,"Polygons in scene: %ld\n",lPolygons);
-  errorMessage(szBuf);
+	lPolygons = getNumFaces();
+	sprintf(szBuf, "Polygons in scene: %ld\n", lPolygons);
+	errorMessage(szBuf);
 }
 
 // request all textures
@@ -87,29 +87,29 @@ void CWinScene3D::requestTextures()
 }
 
 // load a texture
-void CWinScene3D::loadTextureFile(Material* material,const char* filename)
+void CWinScene3D::loadTextureFile(Material* material, const char* filename)
 {
 
 }
 
 // read inline VRML data
-int CWinScene3D::readInlineVRMLFile(QvWWWInline* node,const char* filename)
+int CWinScene3D::readInlineVRMLFile(QvWWWInline* node, const char* filename)
 {
 
-  return 1;
+	return 1;
 }
 
 // read inline VRML data
-int CWinScene3D::readInlineVRMLFILE(QvWWWInline* node,FILE* file)
+int CWinScene3D::readInlineVRMLFILE(QvWWWInline* node, FILE* file)
 {
 
-  return 1;
+	return 1;
 }
 
 // navigation hint
 void CWinScene3D::navigationHint(int)
 {
-  // TODO: send message to enable navigation mode...
+	// TODO: send message to enable navigation mode...
 }
 
 
@@ -133,13 +133,13 @@ void CWinScene3D::deleteSourceAnchor(const SourceAnchor*)
 }
 
 // define current view as destination anchor
-void CWinScene3D::setDestinationAnchor ()
+void CWinScene3D::setDestinationAnchor()
 {
 
 }
 
 // define the default destination anchor
-void CWinScene3D::setDefDestAnchor ()
+void CWinScene3D::setDefDestAnchor()
 {
 
 }
@@ -183,11 +183,11 @@ void CWinScene3D::anchorInfo(const SourceAnchor*)
 int CWinScene3D::followLink(const GeometricObject*, const SourceAnchor*)
 {
 
-  return 1;
+	return 1;
 }
 
 // URL-request for inline VRML
-void CWinScene3D::requestInlineURL(QvWWWInline* node,const char* url,const char* docurl)
+void CWinScene3D::requestInlineURL(QvWWWInline* node, const char* url, const char* docurl)
 {
 
 }
@@ -196,10 +196,10 @@ void CWinScene3D::showResult(void)
 {
 	CParseDlg* pOutputDlg;
 
-  pOutputDlg=new CParseDlg(m_pszParseOut);
-  TRACE("Dialog created\n");
+	pOutputDlg = new CParseDlg(m_pszParseOut);
+	TRACE("Dialog created\n");
 	pOutputDlg->DoModal();
-  delete pOutputDlg;
+	delete pOutputDlg;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -207,9 +207,9 @@ void CWinScene3D::showResult(void)
 
 
 
-CParseDlg::CParseDlg(char* pszEditText): CDialog(CParseDlg::IDD)
+CParseDlg::CParseDlg(char* pszEditText) : CDialog(CParseDlg::IDD)
 {
-  m_pszEditText=pszEditText;
+	m_pszEditText = pszEditText;
 }
 
 
@@ -231,12 +231,12 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CParseDlg message handlers
 
-BOOL CParseDlg::OnInitDialog() 
+BOOL CParseDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	
-	CEdit* pEdit=(CEdit*)GetDlgItem(IDC_SCENE_EDIT);
-  pEdit->SetWindowText(m_pszEditText);
+
+	CEdit* pEdit = (CEdit*)GetDlgItem(IDC_SCENE_EDIT);
+	pEdit->SetWindowText(m_pszEditText);
 	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+				  // EXCEPTION: OCX Property Pages should return FALSE
 }

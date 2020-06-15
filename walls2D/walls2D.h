@@ -9,7 +9,7 @@
 #endif // _MSC_VER > 1000
 
 #ifndef __AFXWIN_H__
-	#error include 'stdafx.h' before including this file for PCH
+#error include 'stdafx.h' before including this file for PCH
 #endif
 
 #include "resource.h"       // main symbols
@@ -21,9 +21,9 @@
 
 struct DPOINT {
 public:
-	DPOINT(double X,double Y) : x(X),y(Y) {};
-	DPOINT() {x=0.0;y=0.0;};
-	double x,y;
+	DPOINT(double X, double Y) : x(X), y(Y) {};
+	DPOINT() { x = 0.0; y = 0.0; };
+	double x, y;
 };
 
 class CWalls2DApp : public CWinApp
@@ -39,9 +39,9 @@ public:
 	static CDocument *m_pDocument;
 	static CString m_csTitle;
 	static BOOL m_bCoordPage;
-	
+
 	CSingleDocTemplate* m_pDocTemplate;
-	CString m_wallsLink,m_adobeLink;
+	CString m_wallsLink, m_adobeLink;
 	LPSTR m_pszTempHTM;   // HTM template file in app directory
 	LPSTR m_pszDfltSVG;   // Default SVG file in app directory
 
@@ -49,10 +49,10 @@ public:
 	LPCSTR GetRecentFile(UINT nIndex);
 	LPCSTR GetRecentFile();
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CWalls2DApp)
-	public:
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CWalls2DApp)
+public:
 	virtual BOOL InitInstance();
 	virtual int ExitInstance();
 	//}}AFX_VIRTUAL
@@ -60,9 +60,9 @@ public:
 // Implementation
 	//{{AFX_MSG(CWalls2DApp)
 	afx_msg void OnAppAbout();
-		// NOTE - the ClassWizard will add and remove member functions here.
-		//    DO NOT EDIT what you see in these blocks of generated code !
-	//}}AFX_MSG
+	// NOTE - the ClassWizard will add and remove member functions here.
+	//    DO NOT EDIT what you see in these blocks of generated code !
+//}}AFX_MSG
 	afx_msg BOOL OnOpenRecentFile(UINT nID);
 	DECLARE_MESSAGE_MAP()
 };

@@ -8,10 +8,10 @@ class CReloadDlg : public CDialog
 	DECLARE_DYNAMIC(CReloadDlg)
 
 public:
-	CReloadDlg(LPCSTR pTitle,int nSubset,int nDeleted,BOOL bRestoreLayout,CWnd* pParent = NULL);   // standard constructor
+	CReloadDlg(LPCSTR pTitle, int nSubset, int nDeleted, BOOL bRestoreLayout, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CReloadDlg();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_RELOAD };
 
 protected:

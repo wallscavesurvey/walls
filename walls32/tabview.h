@@ -9,13 +9,13 @@
 
 #include "tabarray.h"
 
-class CTabView : public CView             
+class CTabView : public CView
 {
 	DECLARE_DYNCREATE(CTabView)
 protected: // create from serialization only
 	CTabView();
 
-// Attributes
+	// Attributes
 public:
 	// OnUpdate hints
 	enum
@@ -24,36 +24,36 @@ public:
 		hintSwitchFrom
 	};
 
-// Operations
+	// Operations
 public:
 
-// Implementation
+	// Implementation
 public:
 	virtual 		~CTabView();
 	virtual void 	OnActivateView(BOOL bActivate, CView* pActiveView, CView* pDeactiveView);
 	virtual void 	OnDraw(CDC* pDC);  // overridden to draw this view
 	virtual void 	OnInitialUpdate();
-	int				GetTabIndex() {return m_tabArray.m_curTab;}
+	int				GetTabIndex() { return m_tabArray.m_curTab; }
 
-	virtual CView* 	addTabView(CRuntimeClass* viewClass,CDocument* document,
-					char* tabLabel,	BOOL border = FALSE,BOOL show = FALSE,int tabWidth = 100);
-	BOOL 			doSysCommand(UINT nID,LONG lParam);
+	virtual CView* 	addTabView(CRuntimeClass* viewClass, CDocument* document,
+		char* tabLabel, BOOL border = FALSE, BOOL show = FALSE, int tabWidth = 100);
+	BOOL 			doSysCommand(UINT nID, LONG lParam);
 	void			enableView(int viewIndex, BOOL bEnable = TRUE);
 	void			setFrameBorderOn(BOOL on = TRUE);
-	void			setLAF(eLookAndFeel LAF=LAF_MSWORD);
-	void			setMargin(int margin=7);
-	void			setTabHeight(int height=25);
-	void			setTabPosition(eTabPosition tabPos=TABSONTOP);
+	void			setLAF(eLookAndFeel LAF = LAF_MSWORD);
+	void			setMargin(int margin = 7);
+	void			setTabHeight(int height = 25);
+	void			setTabPosition(eTabPosition tabPos = TABSONTOP);
 	virtual void 	switchTab(int viewIndex);
-    void 			ChangeDoc(CDocument *pDocNew);
-    CFont *			GetNormalFont() {return m_tabArray.m_normalFont;}
-    CFont *			GetBoldFont() {return m_tabArray.m_boldFont;}
-    
+	void 			ChangeDoc(CDocument *pDocNew);
+	CFont *			GetNormalFont() { return m_tabArray.m_normalFont; }
+	CFont *			GetBoldFont() { return m_tabArray.m_boldFont; }
+
 protected:
-	virtual CView* 	createTabView(CRuntimeClass* viewClass,CDocument* document,CWnd* parentWnd,	BOOL border,BOOL show);
+	virtual CView* 	createTabView(CRuntimeClass* viewClass, CDocument* document, CWnd* parentWnd, BOOL border, BOOL show);
 	virtual void	createFonts();
 	virtual void	destroyFonts();
-	
+
 	void			repositionViews();
 #ifdef T_TABS
 	BOOL			switchTopTab(CPoint point);
@@ -74,7 +74,7 @@ protected:
 	CTabArray m_tabArray;		//array of CTabInfo objects
 	CView* m_curView;			//current view
 	eLookAndFeel m_lookAndFeel;	// Look of Tabs (either LAF_CHICAGO or LAF_MSWORD)
-	
+
 // Generated message map functions
 protected:
 	//{{AFX_MSG(CTabView)

@@ -28,9 +28,9 @@ void CCompareFcnDlg::DoDataExchange(CDataExchange* pDX)
 	DDV_MaxChars(pDX, m_PathName, 260);
 	DDX_Text(pDX, IDC_ARGUMENTS, m_Arguments);
 	DDV_MaxChars(pDX, m_Arguments, 60);
-	if(pDX->m_bSaveAndValidate && !m_PathName.IsEmpty() && (m_PathName[1]!=':' || _access(m_PathName, 0))) {
+	if (pDX->m_bSaveAndValidate && !m_PathName.IsEmpty() && (m_PathName[1] != ':' || _access(m_PathName, 0))) {
 		AfxMessageBox("Program's pathname incomplete or not found.");
-		pDX->m_idLastControl=IDC_PATHNAME;
+		pDX->m_idLastControl = IDC_PATHNAME;
 		pDX->Fail();
 	}
 }
@@ -56,21 +56,21 @@ BOOL CCompareFcnDlg::OnInitDialog()
 void CCompareFcnDlg::OnClickedBrowse()
 {
 	CString strFilter;
-	if(!AddFilter(strFilter,IDS_EXE_FILES)) return;
+	if (!AddFilter(strFilter, IDS_EXE_FILES)) return;
 
 	TCHAR pf[MAX_PATH];
 	CString path;
-	if(SHGetSpecialFolderPath(0, pf, CSIDL_PROGRAM_FILES, FALSE)) {
+	if (SHGetSpecialFolderPath(0, pf, CSIDL_PROGRAM_FILES, FALSE)) {
 		strcat(pf, "\\");
-		path=pf;
+		path = pf;
 	}
-	else if(!m_PathName.IsEmpty()) {
-		LPCSTR p=trx_Stpnam(m_PathName);
-		path.SetString(p,trx_Stpnam(p)-p);
+	else if (!m_PathName.IsEmpty()) {
+		LPCSTR p = trx_Stpnam(m_PathName);
+		path.SetString(p, trx_Stpnam(p) - p);
 	}
 
-	if(!DoPromptPathName(path, OFN_FILEMUSTEXIST,3,strFilter,
+	if (!DoPromptPathName(path, OFN_FILEMUSTEXIST, 3, strFilter,
 		TRUE, IDS_COMPARE_FCN, ".exe")) return;
 
-	GetDlgItem(IDC_PATHNAME)->SetWindowText(m_PathName=path);
+	GetDlgItem(IDC_PATHNAME)->SetWindowText(m_PathName = path);
 }

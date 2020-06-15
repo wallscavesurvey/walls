@@ -32,8 +32,8 @@ END_MESSAGE_MAP()
 // CReView construction/destruction
 
 FONT_SPEC CReView::font_spec;
-BOOL CReView::m_bFontScaled=FALSE;
-      
+BOOL CReView::m_bFontScaled = FALSE;
+
 CReView::CReView()
 {
 }
@@ -42,23 +42,23 @@ CReView::~CReView()
 {
 }
 
-BOOL CALLBACK SetControlFont(HWND hControl,LPARAM pSpec)
+BOOL CALLBACK SetControlFont(HWND hControl, LPARAM pSpec)
 {
-   int i=::GetDlgCtrlID(hControl);
-   int *pID=((lpFONT_SPEC)pSpec)->pDlgFont_id;
-   
-   for(;*pID;pID++) if(*pID==i) {
-	   ::SendMessage(hControl,WM_SETFONT,(WPARAM)((lpFONT_SPEC)pSpec)->hFont,FALSE);
-	   break;
-   }
-   return TRUE;
+	int i = ::GetDlgCtrlID(hControl);
+	int *pID = ((lpFONT_SPEC)pSpec)->pDlgFont_id;
+
+	for (; *pID; pID++) if (*pID == i) {
+		::SendMessage(hControl, WM_SETFONT, (WPARAM)((lpFONT_SPEC)pSpec)->hFont, FALSE);
+		break;
+	}
+	return TRUE;
 }
 
-void CReView::SetFontsBold(HWND hWnd,int *pCtl)
+void CReView::SetFontsBold(HWND hWnd, int *pCtl)
 {
-	font_spec.hFont=(HFONT)GetBoldFont()->GetSafeHandle();
-	font_spec.pDlgFont_id=pCtl;
-    VERIFY(::EnumChildWindows(hWnd,(WNDENUMPROC)SetControlFont,(LPARAM)(lpFONT_SPEC)&font_spec));
+	font_spec.hFont = (HFONT)GetBoldFont()->GetSafeHandle();
+	font_spec.pDlgFont_id = pCtl;
+	VERIFY(::EnumChildWindows(hWnd, (WNDENUMPROC)SetControlFont, (LPARAM)(lpFONT_SPEC)&font_spec));
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -78,7 +78,7 @@ void CReView::Dump(CDumpContext& dc) const
 CPrjDoc* CReView::GetDocument() // non-debug version is inline
 {
 	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CPrjDoc)));
-	return (CPrjDoc*) m_pDocument;
+	return (CPrjDoc*)m_pDocument;
 }
 #endif //_DEBUG
 
@@ -100,42 +100,42 @@ static char BASED_CODE szReviewFont[] = "Font for Review Tables";
 
 void CReView::Initialize()
 {
-    //Let's try calculating an appropriate default fixed-pitch font --
-    
-    CLogFont lf;
- 
-    lf.Init("Courier New",90,FW_REGULAR,FF_MODERN+FIXED_PITCH);
-    
-    m_ReviewFont.Load(szReviewFont,FALSE,&lf);
-    //m_ReviewFont.LineHeight+=2;
-	m_bFontScaled=FALSE;
+	//Let's try calculating an appropriate default fixed-pitch font --
+
+	CLogFont lf;
+
+	lf.Init("Courier New", 90, FW_REGULAR, FF_MODERN + FIXED_PITCH);
+
+	m_ReviewFont.Load(szReviewFont, FALSE, &lf);
+	//m_ReviewFont.LineHeight+=2;
+	m_bFontScaled = FALSE;
 
 	//m_hPltBrush=::CreateSolidBrush(RGB_LTGRAY);
-	m_hPltBrush=(HBRUSH)::GetStockObject(LTGRAY_BRUSH);
+	m_hPltBrush = (HBRUSH)::GetStockObject(LTGRAY_BRUSH);
 
-	m_hBrush=::CreateSolidBrush(SRV_DLG_BACKCOLOR);
-	
-	m_PenGrid.CreatePen(PS_SOLID,0,GetSysColor(COLOR_BTNFACE));
-	m_PenBorder.CreatePen(PS_SOLID,0,GetSysColor(COLOR_BTNSHADOW));
-	
-	m_PenNet.CreatePen(PS_SOLID,0,SRV_PEN_NETCOLOR);
-	m_PenSys.CreatePen(PS_SOLID,0,SRV_PEN_SYSCOLOR);
-	m_PenSysSel.CreatePen(PS_SOLID,0,SRV_PEN_SYSSELCOLOR);
-	m_PenTravSel.CreatePen(PS_SOLID,0,SRV_PEN_TRAVSELCOLOR);
-	m_PenTravRaw.CreatePen(PS_SOLID,0,SRV_PEN_TRAVRAWCOLOR);
-	m_PenFragRaw.CreatePen(PS_SOLID,0,SRV_PEN_TRAVFRAGRAWCOLOR);
-	m_PenTravFrag.CreatePen(PS_SOLID,0,SRV_PEN_TRAVFRAGCOLOR);
+	m_hBrush = ::CreateSolidBrush(SRV_DLG_BACKCOLOR);
+
+	m_PenGrid.CreatePen(PS_SOLID, 0, GetSysColor(COLOR_BTNFACE));
+	m_PenBorder.CreatePen(PS_SOLID, 0, GetSysColor(COLOR_BTNSHADOW));
+
+	m_PenNet.CreatePen(PS_SOLID, 0, SRV_PEN_NETCOLOR);
+	m_PenSys.CreatePen(PS_SOLID, 0, SRV_PEN_SYSCOLOR);
+	m_PenSysSel.CreatePen(PS_SOLID, 0, SRV_PEN_SYSSELCOLOR);
+	m_PenTravSel.CreatePen(PS_SOLID, 0, SRV_PEN_TRAVSELCOLOR);
+	m_PenTravRaw.CreatePen(PS_SOLID, 0, SRV_PEN_TRAVRAWCOLOR);
+	m_PenFragRaw.CreatePen(PS_SOLID, 0, SRV_PEN_TRAVFRAGRAWCOLOR);
+	m_PenTravFrag.CreatePen(PS_SOLID, 0, SRV_PEN_TRAVFRAGCOLOR);
 }
 
 void CReView::ChangeFont()
 {
-	if(!m_ReviewFont.Change(CF_FIXEDPITCHONLY|CF_LIMITSIZE|CF_NOSIZESEL|CF_FORCEFONTEXIST|
-	   CF_SCALABLEONLY|CF_NOOEMFONTS|CF_SCREENFONTS|CF_INITTOLOGFONTSTRUCT)) return;
-    //m_ReviewFont.LineHeight+=2;
-	m_bFontScaled=FALSE;
-	if(pCV) {
-	  pCV->UpdateFont();
-	  pTV->UpdateFont();
+	if (!m_ReviewFont.Change(CF_FIXEDPITCHONLY | CF_LIMITSIZE | CF_NOSIZESEL | CF_FORCEFONTEXIST |
+		CF_SCALABLEONLY | CF_NOOEMFONTS | CF_SCREENFONTS | CF_INITTOLOGFONTSTRUCT)) return;
+	//m_ReviewFont.LineHeight+=2;
+	m_bFontScaled = FALSE;
+	if (pCV) {
+		pCV->UpdateFont();
+		pTV->UpdateFont();
 	}
 }
 
@@ -143,92 +143,92 @@ void CReView::Terminate()
 {
 	::DeleteObject(m_hBrush);
 	::DeleteObject(m_hPltBrush);
-    m_ReviewFont.Save();
+	m_ReviewFont.Save();
 }
 
 void CReView::ResetContents()
 {
-    GetCompView()->ResetContents();
-    GetTraView()->ResetContents();
-    GetSegView()->ResetContents();
-    GetPlotView()->ResetContents();
+	GetCompView()->ResetContents();
+	GetTraView()->ResetContents();
+	GetSegView()->ResetContents();
+	GetPlotView()->ResetContents();
 	GetPageView()->ResetContents();
 }
 
 void CReView::OnInitialUpdate()
 {
-    //Get rid of 3D border --
-	ModifyStyleEx(WS_EX_CLIENTEDGE|WS_EX_WINDOWEDGE,0);
-    {
-		CCompView* pCompView = (CCompView *)addTabView(RUNTIME_CLASS(CCompView),GetDocument(),
+	//Get rid of 3D border --
+	ModifyStyleEx(WS_EX_CLIENTEDGE | WS_EX_WINDOWEDGE, 0);
+	{
+		CCompView* pCompView = (CCompView *)addTabView(RUNTIME_CLASS(CCompView), GetDocument(),
 			"&Geometry");
 		ASSERT(pCompView != NULL);
 		pCompView->m_pTabView = this;
 	}
 	{
-		CTraView* pTraView = (CTraView *)addTabView(RUNTIME_CLASS(CTraView),GetDocument(),
+		CTraView* pTraView = (CTraView *)addTabView(RUNTIME_CLASS(CTraView), GetDocument(),
 			"&Traverse");
 		ASSERT(pTraView != NULL);
 		pTraView->m_pTabView = this;
 	}
 	{
-		CPlotView* pPlotView = (CPlotView *)addTabView(RUNTIME_CLASS(CPlotView),GetDocument(),
+		CPlotView* pPlotView = (CPlotView *)addTabView(RUNTIME_CLASS(CPlotView), GetDocument(),
 			"&Map");
 		ASSERT(pPlotView != NULL);
 		pPlotView->m_pTabView = this;
 	}
 	{
-		CPageView* pPageView = (CPageView *)addTabView(RUNTIME_CLASS(CPageView),GetDocument(),
+		CPageView* pPageView = (CPageView *)addTabView(RUNTIME_CLASS(CPageView), GetDocument(),
 			"&Page Layout");
 		ASSERT(pPageView != NULL);
 		pPageView->m_pTabView = this;
 	}
 	{
-		CSegView* pSegView = (CSegView *)addTabView(RUNTIME_CLASS(CSegView),GetDocument(),
+		CSegView* pSegView = (CSegView *)addTabView(RUNTIME_CLASS(CSegView), GetDocument(),
 			"&Segments");
 		ASSERT(pSegView != NULL);
 		pSegView->m_pTabView = this;
 	}
-	
+
 	CTabView::OnInitialUpdate();
 }
 
 void CReView::switchTab(int viewIndex)
 {
-	static int bLandscape=0;
+	static int bLandscape = 0;
 
-	if(m_tabArray.m_curTab==viewIndex) return;
-	if(m_tabArray.m_curTab==TAB_PLOT) GetPlotView()->ClearTracker();
+	if (m_tabArray.m_curTab == viewIndex) return;
+	if (m_tabArray.m_curTab == TAB_PLOT) GetPlotView()->ClearTracker();
 	/*
 	else if(m_tabArray.m_curTab==TAB_SEG) {
 		GetSegView()->SelectSegments();
 	}
 	*/
 
-	switch(viewIndex) {
+	switch (viewIndex) {
 
-		case TAB_PAGE :
-			  if(!GetSegView()->InitSegTree()) return;
-			  if(!bLandscape) theApp.SetLandscape(2);
-			  bLandscape=1;
-			  GetCompView()->PlotTraverse(0);
-			  CPrjDoc::PlotPageGrid(0);
-			  GetPageView()->RefreshScale();
-			  break;
+	case TAB_PAGE:
+		if (!GetSegView()->InitSegTree()) return;
+		if (!bLandscape) theApp.SetLandscape(2);
+		bLandscape = 1;
+		GetCompView()->PlotTraverse(0);
+		CPrjDoc::PlotPageGrid(0);
+		GetPageView()->RefreshScale();
+		break;
 
-		case TAB_PLOT :
-			  if(!GetSegView()->InitSegTree()) return;
-			  pCV->PlotTraverse(0);
-			  break;
+	case TAB_PLOT:
+		if (!GetSegView()->InitSegTree()) return;
+		pCV->PlotTraverse(0);
+		break;
 
-		case TAB_SEG  :
-			  if(!GetSegView()->InitSegTree()) return;
-			  break;
+	case TAB_SEG:
+		if (!GetSegView()->InitSegTree()) return;
+		break;
 
-		case TAB_TRAV :
-			  if(!GetCompView()->SetTraverse()) return;
-			  break;
+	case TAB_TRAV:
+		if (!GetCompView()->SetTraverse()) return;
+		break;
 	}
-	
+
 	CTabView::switchTab(viewIndex);
 }

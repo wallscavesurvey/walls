@@ -64,127 +64,129 @@ class mq_decoder;
 /*****************************************************************************/
 
 struct mqd_state {
-  public: // Member functions
-    void init(int Sigma, kdu_int32 s); // Inline implementation appears later
-      /* `Sigma' is in the range 0 to 46 and `s' is the MPS identity. */
-  public: // Data
-    kdu_int32 p_bar_mps; // Holds `p_bar' * 2^8 + `s' (`s' is the MPS: 0 or 1)
-    mqd_transition *transition;
-  };
-  /* Notes:
-        This structure manages the state of the probability estimation state
-     machine for a single coding context.  The representation is redundant,
-     of course, since all that is required is the value of `Sigma', in the
-     range 0 to 46, and the value of MPS, `s' (0 or 1).  However, this expanded
-     representation avoids unnecessary de-referencing steps by the MQ
-     decoder and so can significantly increase throughput.
-        The `transition' pointer holds the address of the entry in
-     `mq_decoder::transition_table' which corresponds to this element. There
-     are 92 entries in the transition table, whose indices have the form
-     `idx'=2*`Sigma'+s.  If renormalization occurs while decoding an MPS,
-     the state is updated according to state=state.transition->mps; if
-     renormalization occurs while decoding an LPS, the state is updated
-     according to state=state.transition->lps.  The transition table is
-     carefully constructed to ensure that all information is mapped correctly
-     by this simple operation. */
+public: // Member functions
+	void init(int Sigma, kdu_int32 s); // Inline implementation appears later
+	  /* `Sigma' is in the range 0 to 46 and `s' is the MPS identity. */
+public: // Data
+	kdu_int32 p_bar_mps; // Holds `p_bar' * 2^8 + `s' (`s' is the MPS: 0 or 1)
+	mqd_transition *transition;
+};
+/* Notes:
+	  This structure manages the state of the probability estimation state
+   machine for a single coding context.  The representation is redundant,
+   of course, since all that is required is the value of `Sigma', in the
+   range 0 to 46, and the value of MPS, `s' (0 or 1).  However, this expanded
+   representation avoids unnecessary de-referencing steps by the MQ
+   decoder and so can significantly increase throughput.
+	  The `transition' pointer holds the address of the entry in
+   `mq_decoder::transition_table' which corresponds to this element. There
+   are 92 entries in the transition table, whose indices have the form
+   `idx'=2*`Sigma'+s.  If renormalization occurs while decoding an MPS,
+   the state is updated according to state=state.transition->mps; if
+   renormalization occurs while decoding an LPS, the state is updated
+   according to state=state.transition->lps.  The transition table is
+   carefully constructed to ensure that all information is mapped correctly
+   by this simple operation. */
 
-/*****************************************************************************/
-/*                                mqd_transition                             */
-/*****************************************************************************/
+   /*****************************************************************************/
+   /*                                mqd_transition                             */
+   /*****************************************************************************/
 
 struct mqd_transition {
-  /* See the definition of `mqd_state' for an explanation of this structure. */
-    mqd_state mps;
-    mqd_state lps;
-  };
+	/* See the definition of `mqd_state' for an explanation of this structure. */
+	mqd_state mps;
+	mqd_state lps;
+};
 
 /*****************************************************************************/
 /*                                  mq_decoder                               */
 /*****************************************************************************/
 
 class mq_decoder {
-  /* This object can be used for both MQ and raw codeword segments. */
-  public: // Member functions
-    mq_decoder()
-      { active = false; buf_start = buf_next = NULL; }
-    void start(kdu_byte *start, int segment_length, bool MQ_segment);
-      /* Start decoding a new MQ or raw codeword segment.  On entry, `buffer'
-         points to the first byte of the segment and `segment_length' indicates
-         the total number of bytes in the segment.  Note that the buffer
-         must be long enough to accommodate 2 extra bytes beyond the stated
-         length.  During start up, the values of these 2 extra bytes are
-         stored internally and overwritten with a termination marker.  This
-         has the effect of halving the number of tests which must be performed
-         while consuming bytes. The original values of these two bytes are
-         restored by `finish' call. */
-    bool finish(bool check_erterm=false);
-      /* Each `start' call should be matched by a `finish' call.  The
-         function returns true, unless an error condition was detected.
-         There is no way to detect an error unless we can assume something
-         about the termination policy used by the encoder. When the predictable
-         termination policy (ERTERM mode switch) has been used by the encoder,
-         the `check_erterm' argument may be set to true and the function
-         will perform the relevant tests. */
-  public: // Functions to check out state information for use with fast macros
-    void check_out(kdu_int32 &A, kdu_int32 &C, kdu_int32 &D,
-                   kdu_int32 &t, kdu_int32 &temp, kdu_byte * &store, int &S)
-      { // Use this form for MQ codeword segments.
-        assert(active && (!checked_out) && MQ_segment); checked_out = true;
-        A = this->A; C = this->C;
-        D = A-MQD_A_MIN; D = (C<D)?C:D; A -= D; C -= D;
-        t = this->t; temp = this->temp; store = this->buf_next; S = this->S;
-      }
-    void check_out(kdu_int32 &t, kdu_int32 &temp, kdu_byte * &store)
-      { // Use this form for raw codeword segments.
-        assert(active && (!checked_out) && !MQ_segment); checked_out = true;
-        t = this->t; temp = this->temp; store = this->buf_next;
-      }
-    void check_in(kdu_int32 A, kdu_int32 C, kdu_int32 D,
-                  kdu_int32 t, kdu_int32 temp, kdu_byte *store, int S)
-      { // Use this form for MQ codeword segments.
-        assert(active && checked_out && MQ_segment); checked_out = false;
-        this->A = A+D; this->C = C+D;
-        this->t = t; this->temp = temp; this->buf_next = store; this->S = S;
-      }
-    void check_in(kdu_int32 t, kdu_int32 temp, kdu_byte *store)
-      { // Use this form for raw codeword segments.
-        assert(active && checked_out && !MQ_segment); checked_out = false;
-        this->t = t; this->temp = temp; this->buf_next = store;
-      }
-  public: // Encoding functions. Note: use macros for the highest throughput
-    void mq_decode(kdu_int32 &symbol, mqd_state &state);
-    void mq_decode_run(kdu_int32 &run); // Decodes 2 bit run length, MSB first
-    void raw_decode(kdu_int32 &symbol);
-  private:
-    void fill_lsbs();
-      /* Used by the `mq_decode' member function. */
-  public: // Probability estimation state machine.
-    static kdu_int32 p_bar_table[47]; // Normalized LPS probabilities
-    static mqd_transition transition_table[94]; // See defn of `mqd_transition'
-  private: // Data
-    kdu_int32 A; // The 8 MSB's and 8 LSB's of this word are guaranteed to be 0
-    kdu_int32 C; // The 8 MSB's of this word are guaranteed to be 0
-    kdu_int32 t;   // This is "t_bar" in the book
-    kdu_int32 temp; // This is "T_bar" in the book
-    kdu_byte *buf_start, *buf_next;
-    int S; // Number of synthesized FF's
-    bool checked_out;
-    bool MQ_segment;
-    bool active;
-    int segment_length;
-    kdu_byte overwritten_bytes[2];
-  };
+	/* This object can be used for both MQ and raw codeword segments. */
+public: // Member functions
+	mq_decoder()
+	{
+		active = false; buf_start = buf_next = NULL;
+	}
+	void start(kdu_byte *start, int segment_length, bool MQ_segment);
+	/* Start decoding a new MQ or raw codeword segment.  On entry, `buffer'
+	   points to the first byte of the segment and `segment_length' indicates
+	   the total number of bytes in the segment.  Note that the buffer
+	   must be long enough to accommodate 2 extra bytes beyond the stated
+	   length.  During start up, the values of these 2 extra bytes are
+	   stored internally and overwritten with a termination marker.  This
+	   has the effect of halving the number of tests which must be performed
+	   while consuming bytes. The original values of these two bytes are
+	   restored by `finish' call. */
+	bool finish(bool check_erterm = false);
+	/* Each `start' call should be matched by a `finish' call.  The
+	   function returns true, unless an error condition was detected.
+	   There is no way to detect an error unless we can assume something
+	   about the termination policy used by the encoder. When the predictable
+	   termination policy (ERTERM mode switch) has been used by the encoder,
+	   the `check_erterm' argument may be set to true and the function
+	   will perform the relevant tests. */
+public: // Functions to check out state information for use with fast macros
+	void check_out(kdu_int32 &A, kdu_int32 &C, kdu_int32 &D,
+		kdu_int32 &t, kdu_int32 &temp, kdu_byte * &store, int &S)
+	{ // Use this form for MQ codeword segments.
+		assert(active && (!checked_out) && MQ_segment); checked_out = true;
+		A = this->A; C = this->C;
+		D = A - MQD_A_MIN; D = (C < D) ? C : D; A -= D; C -= D;
+		t = this->t; temp = this->temp; store = this->buf_next; S = this->S;
+	}
+	void check_out(kdu_int32 &t, kdu_int32 &temp, kdu_byte * &store)
+	{ // Use this form for raw codeword segments.
+		assert(active && (!checked_out) && !MQ_segment); checked_out = true;
+		t = this->t; temp = this->temp; store = this->buf_next;
+	}
+	void check_in(kdu_int32 A, kdu_int32 C, kdu_int32 D,
+		kdu_int32 t, kdu_int32 temp, kdu_byte *store, int S)
+	{ // Use this form for MQ codeword segments.
+		assert(active && checked_out && MQ_segment); checked_out = false;
+		this->A = A + D; this->C = C + D;
+		this->t = t; this->temp = temp; this->buf_next = store; this->S = S;
+	}
+	void check_in(kdu_int32 t, kdu_int32 temp, kdu_byte *store)
+	{ // Use this form for raw codeword segments.
+		assert(active && checked_out && !MQ_segment); checked_out = false;
+		this->t = t; this->temp = temp; this->buf_next = store;
+	}
+public: // Encoding functions. Note: use macros for the highest throughput
+	void mq_decode(kdu_int32 &symbol, mqd_state &state);
+	void mq_decode_run(kdu_int32 &run); // Decodes 2 bit run length, MSB first
+	void raw_decode(kdu_int32 &symbol);
+private:
+	void fill_lsbs();
+	/* Used by the `mq_decode' member function. */
+public: // Probability estimation state machine.
+	static kdu_int32 p_bar_table[47]; // Normalized LPS probabilities
+	static mqd_transition transition_table[94]; // See defn of `mqd_transition'
+private: // Data
+	kdu_int32 A; // The 8 MSB's and 8 LSB's of this word are guaranteed to be 0
+	kdu_int32 C; // The 8 MSB's of this word are guaranteed to be 0
+	kdu_int32 t;   // This is "t_bar" in the book
+	kdu_int32 temp; // This is "T_bar" in the book
+	kdu_byte *buf_start, *buf_next;
+	int S; // Number of synthesized FF's
+	bool checked_out;
+	bool MQ_segment;
+	bool active;
+	int segment_length;
+	kdu_byte overwritten_bytes[2];
+};
 
 /*****************************************************************************/
 /* INLINE                       mqd_state::init                              */
 /*****************************************************************************/
 
 inline void
-  mqd_state::init(int Sigma, kdu_int32 s)
+mqd_state::init(int Sigma, kdu_int32 s)
 {
-  assert((Sigma >= 0) && (Sigma <= 46) && (s == (s&1)));
-  p_bar_mps = (mq_decoder::p_bar_table[Sigma] << 8) + s;
-  transition = mq_decoder::transition_table + ((Sigma<<1) + s);
+	assert((Sigma >= 0) && (Sigma <= 46) && (s == (s & 1)));
+	p_bar_mps = (mq_decoder::p_bar_table[Sigma] << 8) + s;
+	transition = mq_decoder::transition_table + ((Sigma << 1) + s);
 }
 
 
@@ -197,15 +199,15 @@ inline void
    throughput and also to the size of the code fragment which gets executed
    inside the coding pass loops. */
 
-/*****************************************************************************/
-/* MACRO                        _mqd_fill_lsbs_                              */
-/*****************************************************************************/
+   /*****************************************************************************/
+   /* MACRO                        _mqd_fill_lsbs_                              */
+   /*****************************************************************************/
 
-  /* Implements the Fill-LSBs procedure described in Section 12.1.3 of the
-     book by Taubman and Marcellin.  The implementation differs only in that
-     we can be certain that the codeword segment will be terminated by a
-     marker code in the range 0xFF90 through 0xFFFF.  This is because a
-     synthetic marker is temporarily inserted at the end of the segment. */
+	 /* Implements the Fill-LSBs procedure described in Section 12.1.3 of the
+		book by Taubman and Marcellin.  The implementation differs only in that
+		we can be certain that the codeword segment will be terminated by a
+		marker code in the range 0xFF90 through 0xFFFF.  This is because a
+		synthetic marker is temporarily inserted at the end of the segment. */
 
 #define _mqd_fill_lsbs_(C,t,temp,store,S)                                     \
   {                                                                           \
@@ -223,23 +225,23 @@ inline void
     C += temp;                                                                \
   }
 
-/*****************************************************************************/
-/* MACRO                           _mq_decode_                               */
-/*****************************************************************************/
+		/*****************************************************************************/
+		/* MACRO                           _mq_decode_                               */
+		/*****************************************************************************/
 
-  /* Implementation of the CDP (Common Decoding Path) optimized algorithm
-     suggested in Section 17.1.1 of the book by Taubman and Marcellin.
-        The idea is that D accumulates the p_bar quantities associated with
-     consecutive CDP symbols, whose subtraction from both A and C is delayed
-     until the next non-CDP symbol occurs.  C_min holds the minimum of C and
-     (A-2^15), from the point when the last non-CDP symbol was coded.  Thus,
-     so long as D <= C_min, an MPS is decoded without renormalization (and
-     hence without conditional exchange either).
-        On return, `symbol' holds either 1 or 0. */
+		  /* Implementation of the CDP (Common Decoding Path) optimized algorithm
+			 suggested in Section 17.1.1 of the book by Taubman and Marcellin.
+				The idea is that D accumulates the p_bar quantities associated with
+			 consecutive CDP symbols, whose subtraction from both A and C is delayed
+			 until the next non-CDP symbol occurs.  C_min holds the minimum of C and
+			 (A-2^15), from the point when the last non-CDP symbol was coded.  Thus,
+			 so long as D <= C_min, an MPS is decoded without renormalization (and
+			 hence without conditional exchange either).
+				On return, `symbol' holds either 1 or 0. */
 
-  /* If your compiler and architecture support the allocation of registers
-     for critical variables, it is recommended that `symbol', `state',
-     `D', `A' and `C' be allocated registers, in that order. */
+				/* If your compiler and architecture support the allocation of registers
+				   for critical variables, it is recommended that `symbol', `state',
+				   `D', `A' and `C' be allocated registers, in that order. */
 
 #define _mq_decode_(symbol,state,A,C,D,t,temp,store,S)                        \
   {                                                                           \
@@ -289,14 +291,14 @@ inline void
       }                                                                       \
   }
 
-/*****************************************************************************/
-/* MACRO                        _mq_decode_run_                              */
-/*****************************************************************************/
+				   /*****************************************************************************/
+				   /* MACRO                        _mq_decode_run_                              */
+				   /*****************************************************************************/
 
-  /* Specialization of _mq_decode_ to the case where the state is equal to
-     the special non-adaptive MQ coder state (last state in transition
-     table); decodes two symbols to recover a 2-bit run length, with the
-     first symbol forming the most significant bit of the run. */
+					 /* Specialization of _mq_decode_ to the case where the state is equal to
+						the special non-adaptive MQ coder state (last state in transition
+						table); decodes two symbols to recover a 2-bit run length, with the
+						first symbol forming the most significant bit of the run. */
 
 #define _mq_decode_run_(run,A,C,D,t,temp,store,S)                             \
   {                                                                           \
@@ -359,9 +361,9 @@ inline void
       }                                                                       \
   }
 
-/*****************************************************************************/
-/* MACRO                          _raw_decode_                               */
-/*****************************************************************************/
+						/*****************************************************************************/
+						/* MACRO                          _raw_decode_                               */
+						/*****************************************************************************/
 
 #define _raw_decode_(symbol,t,temp,store)                                     \
   {                                                                           \

@@ -50,7 +50,7 @@ BOOL CXlsExportApp::InitInstance()
 	// such as the name of your company or organization
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
 
-	CXlsExportDlg dlg(__argc,__argv);
+	CXlsExportDlg dlg(__argc, __argv);
 
 	m_pMainWnd = &dlg;
 	INT_PTR nResponse = dlg.DoModal();

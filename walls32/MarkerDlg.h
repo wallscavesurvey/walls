@@ -38,8 +38,8 @@ public:
 	enum { IDD = IDD_MARKERDLG };
 	CStatic	m_rectSym;
 	BOOL	m_bNoOverlap;
-    BOOL	m_bHideNotes;
-	COLORREF m_bkgcolor,m_bkgcolor_sav;
+	BOOL	m_bHideNotes;
+	COLORREF m_bkgcolor, m_bkgcolor_sav;
 	COLORREF m_markcolor;
 	WORD m_markstyle;
 
@@ -58,7 +58,7 @@ private:
 
 	CBitmap m_cBmp;   // Bitmap with symbol
 	CDC m_dcBmp;	  // Compatible Memory DC, with m_cBmp already selected
-    CRect m_rectBox;  // Bitmap's client-relative rectangle
+	CRect m_rectBox;  // Bitmap's client-relative rectangle
 	CSize m_sizeBox;  // Size (width and height) of bitmap in pixels
 	HBITMAP m_hBmpOld;    // Handle of old bitmap to save
 	HBRUSH m_hBrushOld;   // Handle of old brush to save
@@ -67,26 +67,26 @@ private:
 	void DrawSymbol();
 	void InitFlagNames();
 	void UpdateFlagStyles();
-	BOOL SetFlagStyle(int iVal,int type);
+	BOOL SetFlagStyle(int iVal, int type);
 	void ChangePriority(int dir);
 	BOOL CheckSizeCtrl();
 	void EnableButtons(int sel);
 	//void UpdateDisableButton(int i);
-	void Enable(UINT id,BOOL bEnable) {GetDlgItem(id)->EnableWindow(bEnable);}
-	void DeselectAllBut(int p,int s);
+	void Enable(UINT id, BOOL bEnable) { GetDlgItem(id)->EnableWindow(bEnable); }
+	void DeselectAllBut(int p, int s);
 	//void SelectRange(int i,int j);
 
-	void ApplyChange(BOOL bUpdate=TRUE);
+	void ApplyChange(BOOL bUpdate = TRUE);
 
 	BOOL IsListItemEnabled(int i)
 	{
 		return !M_ISHIDDEN(m_pFS[m_pFS[i].flgidx].style);
 	}
 
-	void EnableListItem(int i,BOOL bEnable)
+	void EnableListItem(int i, BOOL bEnable)
 	{
-		WORD *pStyle=&m_pFS[m_pFS[i].flgidx].style;
-		M_SETHIDDEN(*pStyle,!bEnable);
+		WORD *pStyle = &m_pFS[m_pFS[i].flgidx].style;
+		M_SETHIDDEN(*pStyle, !bEnable);
 	}
 
 	BOOL IsMarkerEnabled(int i)
@@ -94,18 +94,18 @@ private:
 		return !M_ISHIDDEN(m_pFS[i].style);
 	}
 
-	void EnableMarker(int i,BOOL bEnable)
+	void EnableMarker(int i, BOOL bEnable)
 	{
-		WORD *pStyle=&m_pFS[i].style;
-		M_SETHIDDEN(*pStyle,!bEnable);
+		WORD *pStyle = &m_pFS[i].style;
+		M_SETHIDDEN(*pStyle, !bEnable);
 	}
 
 	COLORREF ListItemRGB(int i)
 	{
-		return M_COLORRGB(m_pFS[m_pFS[i].flgidx].color); 
+		return M_COLORRGB(m_pFS[m_pFS[i].flgidx].color);
 	}
 
-	void SetListItemColor(int i,COLORREF rgb);
+	void SetListItemColor(int i, COLORREF rgb);
 
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual BOOL OnInitDialog();
@@ -113,8 +113,8 @@ private:
 
 	afx_msg void OnApply();
 	afx_msg void OnFlagSelChg();
-	afx_msg LRESULT OnChgColor(WPARAM,LPARAM);
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+	afx_msg LRESULT OnChgColor(WPARAM, LPARAM);
+	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnDestroy();

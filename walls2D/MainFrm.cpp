@@ -99,7 +99,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	img.Detach();
 	m_wndToolBar.ModifyStyle(0, TBSTYLE_FLAT | TBSTYLE_TRANSPARENT);
 
-	m_wndToolBar.SetButtons(NULL,16);
+	m_wndToolBar.SetButtons(NULL, 16);
 
 	// set up each toolbar button
 	m_wndToolBar.SetButtonInfo(0, ID_FILE_OPEN, TBSTYLE_BUTTON, 3);
@@ -111,10 +111,10 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndToolBar.SetButtonInfo(2, 0, TBBS_SEPARATOR, 20);
 
 	m_wndToolBar.SetButtonInfo(3, ID_VIEW_HOME, TBSTYLE_BUTTON, 2);
-	m_wndToolBar.SetButtonText(3,"Home");
+	m_wndToolBar.SetButtonText(3, "Home");
 
 	m_wndToolBar.SetButtonInfo(4, ID_VIEW_STOP, TBSTYLE_BUTTON, 0);
-	m_wndToolBar.SetButtonText(4,"Back");
+	m_wndToolBar.SetButtonText(4, "Back");
 
 	m_wndToolBar.SetButtonInfo(5, 0, TBBS_SEPARATOR, 20);
 
@@ -150,7 +150,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	// set up toolbar button sizes
 	m_wndToolBar.GetItemRect(0, &rectToolBar);
-	m_wndToolBar.SetSizes(rectToolBar.Size(), CSize(30,20));
+	m_wndToolBar.SetSizes(rectToolBar.Size(), CSize(30, 20));
 
 	// create the animation control
 	//m_wndAnimate.Create(WS_CHILD | WS_VISIBLE, CRect(0, 0, 10, 10), this, AFX_IDW_TOOLBAR + 2);
@@ -185,7 +185,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	if (!m_wndStatusBar.Create(this) ||
 		!m_wndStatusBar.SetIndicators(indicators,
-		  sizeof(indicators)/sizeof(UINT)))
+			sizeof(indicators) / sizeof(UINT)))
 	{
 		TRACE0("Failed to create status bar\n");
 		return -1;      // fail to create
@@ -193,23 +193,23 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_csStatText.LoadString(AFX_IDS_IDLEMESSAGE);
 
-    //PostMessage(WM_COMMAND,ID_VIEW_STATUS_BAR);
+	//PostMessage(WM_COMMAND,ID_VIEW_STATUS_BAR);
 
-	ModifyStyle(FWS_PREFIXTITLE,0);
+	ModifyStyle(FWS_PREFIXTITLE, 0);
 
 	return 0;
 }
 
 void CMainFrame::HelpMsg()
 {
-  m_wndStatusBar.SetPaneText(0,m_csStatText,TRUE);
+	m_wndStatusBar.SetPaneText(0, m_csStatText, TRUE);
 }
 
 CString * CMainFrame::NoSVGMsg()
 {
-  if(m_csNoSVGMsg.IsEmpty()) m_csNoSVGMsg.LoadString(IDS_ERR_NOSVG);
-  m_wndStatusBar.SetPaneText(0,m_csNoSVGMsg,TRUE);
-  return &m_csNoSVGMsg; 
+	if (m_csNoSVGMsg.IsEmpty()) m_csNoSVGMsg.LoadString(IDS_ERR_NOSVG);
+	m_wndStatusBar.SetPaneText(0, m_csNoSVGMsg, TRUE);
+	return &m_csNoSVGMsg;
 }
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
@@ -225,58 +225,58 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 ////////////////////////////////////////////////////////////
 HRESULT CMainFrame::ExecCmdTarget(const GUID *pguidCmdGroup, DWORD nCmdID)
 {
-   LPDISPATCH lpDispatch = NULL;
-   LPOLECOMMANDTARGET lpOleCommandTarget = NULL;
-   HRESULT hr = E_FAIL;
+	LPDISPATCH lpDispatch = NULL;
+	LPOLECOMMANDTARGET lpOleCommandTarget = NULL;
+	HRESULT hr = E_FAIL;
 
-   lpDispatch = ((CWalls2DView*)GetActiveView())->GetHtmlDocument();
-   ASSERT(lpDispatch);
+	lpDispatch = ((CWalls2DView*)GetActiveView())->GetHtmlDocument();
+	ASSERT(lpDispatch);
 
-   if (lpDispatch)
-   {
-      // Get an pointer for the IOleCommandTarget interface.
-      hr = lpDispatch->QueryInterface(IID_IOleCommandTarget, (void**)&lpOleCommandTarget);
-      ASSERT(lpOleCommandTarget);
+	if (lpDispatch)
+	{
+		// Get an pointer for the IOleCommandTarget interface.
+		hr = lpDispatch->QueryInterface(IID_IOleCommandTarget, (void**)&lpOleCommandTarget);
+		ASSERT(lpOleCommandTarget);
 
-      lpDispatch->Release();
+		lpDispatch->Release();
 
-      if (SUCCEEDED(hr))
-      {
-         // Invoke the given command id for the WebBrowser control
-         hr = lpOleCommandTarget->Exec(pguidCmdGroup, nCmdID, 0, NULL, NULL);
-         lpOleCommandTarget->Release();
-      }
-   }
+		if (SUCCEEDED(hr))
+		{
+			// Invoke the given command id for the WebBrowser control
+			hr = lpOleCommandTarget->Exec(pguidCmdGroup, nCmdID, 0, NULL, NULL);
+			lpOleCommandTarget->Release();
+		}
+	}
 
-   return hr;
+	return hr;
 }
 
 BOOL CMainFrame::SelectionPresent(void)
 {
-   HRESULT hr;
-   BOOL bret=FALSE;
-								  
-   IDispatch * pDocDisp = ((CWalls2DView *)GetActiveView())->GetHtmlDocument();
-   
-   if (pDocDisp != NULL) {
-	  IHTMLDocument2* pDoc;
-      hr=pDocDisp->QueryInterface(IID_IHTMLDocument2, (void**)&pDoc);
-      if(SUCCEEDED(hr))
-      {
-		  IHTMLSelectionObject *pSel;
-		  hr=pDoc->get_selection(&pSel);
-		  if(SUCCEEDED(hr)) {
-			  BSTR bs;
-			  hr=pSel->get_type(&bs);
-			  if(SUCCEEDED(hr) && CString(bs)=="Text") bret=TRUE;
-			  pSel->Release();
-		  }
-		  pDoc->Release();
-      }
-      pDocDisp->Release();
-   }
-   
-   return bret;
+	HRESULT hr;
+	BOOL bret = FALSE;
+
+	IDispatch * pDocDisp = ((CWalls2DView *)GetActiveView())->GetHtmlDocument();
+
+	if (pDocDisp != NULL) {
+		IHTMLDocument2* pDoc;
+		hr = pDocDisp->QueryInterface(IID_IHTMLDocument2, (void**)&pDoc);
+		if (SUCCEEDED(hr))
+		{
+			IHTMLSelectionObject *pSel;
+			hr = pDoc->get_selection(&pSel);
+			if (SUCCEEDED(hr)) {
+				BSTR bs;
+				hr = pSel->get_type(&bs);
+				if (SUCCEEDED(hr) && CString(bs) == "Text") bret = TRUE;
+				pSel->Release();
+			}
+			pDoc->Release();
+		}
+		pDocDisp->Release();
+	}
+
+	return bret;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -308,7 +308,7 @@ void CMainFrame::StartAnimation(BOOL bTimer)
 {
 	// Start the animation.  This is called when the browser begins to
 	// navigate to a new location
-	if(bTimer) m_uTimer=SetTimer(0x128,2000,NULL);
+	if (bTimer) m_uTimer = SetTimer(0x128, 2000, NULL);
 	//m_wndAnimate.Play(0, -1, -1);
 }
 
@@ -329,7 +329,7 @@ void CMainFrame::OnDropDown(NMHDR* pNotifyStruct, LRESULT* pResult)
 	m_wndToolBar.GetToolBarCtrl().GetRect(pNMToolBar->iItem, &rect);
 	rect.top = rect.bottom;
 	::ClientToScreen(pNMToolBar->hdr.hwndFrom, &rect.TopLeft());
-	if(pNMToolBar->iItem == ID_FONT_DROPDOWN)
+	if (pNMToolBar->iItem == ID_FONT_DROPDOWN)
 	{
 		CMenu menu;
 		CMenu* pPopup;
@@ -342,85 +342,85 @@ void CMainFrame::OnDropDown(NMHDR* pNotifyStruct, LRESULT* pResult)
 	*pResult = TBDDRET_DEFAULT;
 }
 
-void CMainFrame::OnEditCopy() 
+void CMainFrame::OnEditCopy()
 {
-   ExecCmdTarget(NULL, OLECMDID_COPY);
+	ExecCmdTarget(NULL, OLECMDID_COPY);
 }
 
-void CMainFrame::OnEditFind() 
+void CMainFrame::OnEditFind()
 {
-   // Invoke the find dialog box
-   ExecCmdTarget(&CGID_IWebBrowser, CWBCmdGroup::HTMLID_FIND);
+	// Invoke the find dialog box
+	ExecCmdTarget(&CGID_IWebBrowser, CWBCmdGroup::HTMLID_FIND);
 }
 
-void CMainFrame::OnEditSelectAll() 
+void CMainFrame::OnEditSelectAll()
 {
-   // Select all items in the WebBrowser document
-   ExecCmdTarget(NULL, OLECMDID_SELECTALL);
+	// Select all items in the WebBrowser document
+	ExecCmdTarget(NULL, OLECMDID_SELECTALL);
 }
 
-void CMainFrame::OnTimer(UINT nIDEvent) 
+void CMainFrame::OnTimer(UINT nIDEvent)
 {
 	// TODO: Add your message handler code here and/or call default
-	if(nIDEvent==m_uTimer) {
+	if (nIDEvent == m_uTimer) {
 		KillTimer(nIDEvent);
-		m_uTimer=0;
+		m_uTimer = 0;
 		StopAnimation();
 	}
 	else CFrameWnd::OnTimer(nIDEvent);
 }
 
-void CMainFrame::OnGoWalls() 
+void CMainFrame::OnGoWalls()
 {
 	theApp.Navigate2Links(IDC_WALLS_URL);
 }
 
 void CMainFrame::RestoreWindow(int nShow)
 {
-  CWindowPlacement wp;
-  if(!wp.Restore(this)) ShowWindow(nShow);
+	CWindowPlacement wp;
+	if (!wp.Restore(this)) ShowWindow(nShow);
 }
 
 void CMainFrame::OnDestroy()
 {
-  CWindowPlacement wp;
-  wp.Save(this);
-  CFrameWnd::OnDestroy();
+	CWindowPlacement wp;
+	wp.Save(this);
+	CFrameWnd::OnDestroy();
 }
 
-void CMainFrame::OnUpdateEditCopy(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateEditCopy(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(SelectionPresent());
 }
 
-void CMainFrame::OnViewStop() 
+void CMainFrame::OnViewStop()
 {
 	// TODO: Add your command handler code here
-	
+
 }
 
-void CMainFrame::OnUpdateViewStop(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateViewStop(CCmdUI* pCmdUI)
 {
 	// TODO: Add your command update UI handler code here
-	
+
 }
 
-void CMainFrame::OnFilePrintPreview() 
+void CMainFrame::OnFilePrintPreview()
 {
-   ExecCmdTarget(NULL, OLECMDID_PRINTPREVIEW);
+	ExecCmdTarget(NULL, OLECMDID_PRINTPREVIEW);
 }
 
-void CMainFrame::OnFilePageSetup() 
+void CMainFrame::OnFilePageSetup()
 {
-   ExecCmdTarget(NULL,OLECMDID_PAGESETUP);
+	ExecCmdTarget(NULL, OLECMDID_PAGESETUP);
 }
 
-void CMainFrame::OnCoordPage() 
+void CMainFrame::OnCoordPage()
 {
-	CWalls2DApp::m_bCoordPage=!CWalls2DApp::m_bCoordPage;
+	CWalls2DApp::m_bCoordPage = !CWalls2DApp::m_bCoordPage;
 }
 
-void CMainFrame::OnUpdateCoordPage(CCmdUI* pCmdUI) 
+void CMainFrame::OnUpdateCoordPage(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(TRUE);
 	pCmdUI->SetCheck(CWalls2DApp::m_bCoordPage);

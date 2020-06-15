@@ -2,13 +2,13 @@
 ** Copyright 2002 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:     $Archive: /NCS/Source/C/NCSEcw/NCSJP2/NCSJP2FileTypeBox.cpp $
@@ -20,9 +20,9 @@
 
 #include "NCSJP2File.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+ //////////////////////////////////////////////////////////////////////
+ // Construction/Destruction
+ //////////////////////////////////////////////////////////////////////
 
 UINT32 CNCSJP2File::CNCSJP2FileTypeBox::sm_nTBox = 'ftyp';
 UINT32 CNCSJP2File::CNCSJP2FileTypeBox::sm_JP2Brand = 0x6a703220;//'jp2\040';
@@ -57,39 +57,40 @@ CNCSError CNCSJP2File::CNCSJP2FileTypeBox::Parse(class CNCSJP2File &JP2File, CNC
 	m_CLList.clear();
 
 	NCSJP2_CHECKIO_BEGIN(Error, Stream);
-		// Read in the "brand"
-		NCSJP2_CHECKIO(ReadUINT32(m_Brand));
+	// Read in the "brand"
+	NCSJP2_CHECKIO(ReadUINT32(m_Brand));
 
-		if(m_Brand == sm_JP2Brand) {
-			// Brand is OK
-			m_bValid = true;
-		}
-		// Get the minimim version			
-		NCSJP2_CHECKIO(ReadUINT32(m_nMinV));
+	if (m_Brand == sm_JP2Brand) {
+		// Brand is OK
+		m_bValid = true;
+	}
+	// Get the minimim version			
+	NCSJP2_CHECKIO(ReadUINT32(m_nMinV));
 
-		// Now read in the "compatibility list".
-		// Even if the "brand" is not valid, we may still be able to read the file as a JP2
-		// eg, a JPX file.
-		UINT32 nCLEntries = (UINT32)((m_nLDBox - 2 * sizeof(UINT32)) / sizeof(UINT32));
-				
-		// Must be at least one.
-		if(nCLEntries >= 1) {
-			for(UINT32 i = 0; i < nCLEntries; i++) {
-				CNCSJP2CLEntry CL;
-								
-				if(Stream.ReadUINT32(CL) == false) {
-					Error = Stream.GetError();
-					break;
-				}
-				if(CL == sm_JP2Brand) {
-					// OK, we can read it!
-					m_bValid = true;
-				}
-				m_CLList.push_back(CL);
+	// Now read in the "compatibility list".
+	// Even if the "brand" is not valid, we may still be able to read the file as a JP2
+	// eg, a JPX file.
+	UINT32 nCLEntries = (UINT32)((m_nLDBox - 2 * sizeof(UINT32)) / sizeof(UINT32));
+
+	// Must be at least one.
+	if (nCLEntries >= 1) {
+		for (UINT32 i = 0; i < nCLEntries; i++) {
+			CNCSJP2CLEntry CL;
+
+			if (Stream.ReadUINT32(CL) == false) {
+				Error = Stream.GetError();
+				break;
 			}
-		} else {
-			Error = NCS_FILE_INVALID;
+			if (CL == sm_JP2Brand) {
+				// OK, we can read it!
+				m_bValid = true;
+			}
+			m_CLList.push_back(CL);
 		}
+	}
+	else {
+		Error = NCS_FILE_INVALID;
+	}
 	NCSJP2_CHECKIO_END();
 	return(Error);
 }
@@ -102,22 +103,22 @@ CNCSError CNCSJP2File::CNCSJP2FileTypeBox::UnParse(class CNCSJP2File &JP2File, C
 	// write out the base box
 	Error = CNCSJP2Box::UnParse(JP2File, Stream);
 	NCSJP2_CHECKIO_BEGIN(Error, Stream);
-		// Write out the brand
-		NCSJP2_CHECKIO(WriteUINT32(m_Brand));
-		NCSJP2_CHECKIO(WriteUINT32(m_nMinV));
-		
-		CNCSJP2CLList::iterator pCur = m_CLList.begin();
+	// Write out the brand
+	NCSJP2_CHECKIO(WriteUINT32(m_Brand));
+	NCSJP2_CHECKIO(WriteUINT32(m_nMinV));
 
-		// Now the compatibility list.
-		while(pCur != m_CLList.end()) {
-			CNCSJP2CLEntry CL;
-			CL = *pCur;
-			if(Stream.WriteUINT32(CL) == false) {
-				Error = Stream.GetError();
-				break;
-			}
-			pCur++;
+	CNCSJP2CLList::iterator pCur = m_CLList.begin();
+
+	// Now the compatibility list.
+	while (pCur != m_CLList.end()) {
+		CNCSJP2CLEntry CL;
+		CL = *pCur;
+		if (Stream.WriteUINT32(CL) == false) {
+			Error = Stream.GetError();
+			break;
 		}
+		pCur++;
+	}
 	NCSJP2_CHECKIO_END();
 	return(Error);
 }

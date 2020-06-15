@@ -25,21 +25,21 @@ RString HgMessage::progname_;
 HgMessage::cleanupfunc HgMessage::cleanup_ = nil;
 
 
-void HgMessage::init( const RString& progname, cleanupfunc cleanup)
+void HgMessage::init(const RString& progname, cleanupfunc cleanup)
 {
-  progname_ = progname;
-  cleanup_ = cleanup;
+	progname_ = progname;
+	cleanup_ = cleanup;
 }
 
 
 void HgMessage::message(const char* msg)
 {
 #ifndef _CONSOLE
-    char buf[1024];
-    sprintf(buf, "%s: %s", (const char*) progname_, msg);
-    AfxMessageBox(buf);
+	char buf[1024];
+	sprintf(buf, "%s: %s", (const char*)progname_, msg);
+	AfxMessageBox(buf);
 #else
-    cerr << (const char*) progname_ << ": " << msg << endl;
+	cerr << (const char*)progname_ << ": " << msg << endl;
 #endif
 }
 
@@ -47,11 +47,11 @@ void HgMessage::message(const char* msg)
 void HgMessage::error(const char* msg)
 {
 #ifndef _CONSOLE
-    char buf[1024];
-    sprintf(buf, "%s. Error: %s", (const char*) progname_, msg);
-    AfxMessageBox(buf);
+	char buf[1024];
+	sprintf(buf, "%s. Error: %s", (const char*)progname_, msg);
+	AfxMessageBox(buf);
 #else
-    cerr << (const char*) progname_ << ". Error: " << msg << endl;
+	cerr << (const char*)progname_ << ". Error: " << msg << endl;
 #endif
 }
 
@@ -59,20 +59,20 @@ void HgMessage::error(const char* msg)
 void HgMessage::fatalError(const char* msg, int code)
 {
 #ifndef _CONSOLE
-    char buf[1024];
-    sprintf(buf, "%s. Fatal error: %s", (const char*) progname_, msg);
-    AfxMessageBox(buf);
+	char buf[1024];
+	sprintf(buf, "%s. Fatal error: %s", (const char*)progname_, msg);
+	AfxMessageBox(buf);
 #else
-    cerr << (const char*) progname_ << ". Fatal error: " << msg << endl;
+	cerr << (const char*)progname_ << ". Fatal error: " << msg << endl;
 #endif
-  if (cleanup_)
-        (*cleanup_)();
+	if (cleanup_)
+		(*cleanup_)();
 
 #ifndef _CONSOLE
-    sprintf(buf, "%s. terminated with exit code %d.", (const char*) progname_, code);
-    AfxMessageBox(buf);
+	sprintf(buf, "%s. terminated with exit code %d.", (const char*)progname_, code);
+	AfxMessageBox(buf);
 #else
-    cerr << (const char*) progname_ << " terminated with exit code " << code << "." << endl;
+	cerr << (const char*)progname_ << " terminated with exit code " << code << "." << endl;
 #endif
-  ::exit (code);
+	::exit(code);
 }

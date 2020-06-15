@@ -6,9 +6,9 @@
 
 class C3DConfigDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
-	C3DConfigDlg(BOOL b3D,CWnd* pParent = NULL);	// standard constructor
+	C3DConfigDlg(BOOL b3D, CWnd* pParent = NULL);	// standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(C3DConfigDlg)
@@ -23,7 +23,7 @@ protected:
 	BOOL m_b3D;
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 	//{{AFX_MSG(C3DConfigDlg)
 	afx_msg void OnBrowse();
 	virtual BOOL OnInitDialog();

@@ -2,13 +2,13 @@
 ** Copyright 2001 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:     $Archive: /NCS/Source/C/NCSServerUtil/NCSLog.cpp $
@@ -18,7 +18,7 @@
 ** EDITS:    [xx] ddMmmyy NAME COMMENTS
  *******************************************************/
 
-//#import "C:\WinNT\System32\inetsrv\logscrpt.dll" raw_interfaces_only, raw_native_types, no_namespace, named_guids
+ //#import "C:\WinNT\System32\inetsrv\logscrpt.dll" raw_interfaces_only, raw_native_types, no_namespace, named_guids
 
 #include "NCSUtil.h"
 
@@ -58,7 +58,7 @@ void NCSLogInit()
 
 void NCSLogFini()
 {
-	if( CNCSLog::pUpdateLogConfigThread ) delete CNCSLog::pUpdateLogConfigThread;
+	if (CNCSLog::pUpdateLogConfigThread) delete CNCSLog::pUpdateLogConfigThread;
 	CNCSLog::pUpdateLogConfigThread = NULL;
 }
 
@@ -69,30 +69,30 @@ void NCSLogFini()
 //
 CNCSLog::CNCSLog()
 {
-//	sm_Mutex.Lock();
-//	if( sm_nRefCount == 0 ) {
+	//	sm_Mutex.Lock();
+	//	if( sm_nRefCount == 0 ) {
 
-	if(pUpdateLogConfigThread && !pUpdateLogConfigThread->IsRunning()) {
+	if (pUpdateLogConfigThread && !pUpdateLogConfigThread->IsRunning()) {
 		pUpdateLogConfigThread->Spawn((void*)&pUpdateLogConfigThread, false);
 	}
 	UpdateLogConfig();
 
 	NCSLogSetServer(TRUE);
 
-/*	// Spawn worker thread
-	Spawn(this, false);
-	}
-	sm_nRefCount++;
-	sm_Mutex.UnLock();*/
+	/*	// Spawn worker thread
+		Spawn(this, false);
+		}
+		sm_nRefCount++;
+		sm_Mutex.UnLock();*/
 }
 
 CNCSLog::~CNCSLog() {
-/*	sm_Mutex.Lock();
-	sm_nRefCount--;
-	if( sm_nRefCount == 0 ) {
-		Stop();
-	}
-	sm_Mutex.UnLock();*/
+	/*	sm_Mutex.Lock();
+		sm_nRefCount--;
+		if( sm_nRefCount == 0 ) {
+			Stop();
+		}
+		sm_Mutex.UnLock();*/
 }
 
 //
@@ -100,11 +100,11 @@ CNCSLog::~CNCSLog() {
 //
 void CNCSLog::Log(CNCSLog::NCSLogLevel eLevel, char *pFormat, ...)
 {
-    if(GetLogLevel() >= eLevel
+	if (GetLogLevel() >= eLevel
 #ifdef DEBUG
-			|| eLevel == CNCSLog::LOG_DEBUG
+		|| eLevel == CNCSLog::LOG_DEBUG
 #endif
-			) {
+		) {
 		char buf[4096];
 		va_list va;
 		va_start(va, pFormat);
@@ -115,30 +115,32 @@ void CNCSLog::Log(CNCSLog::NCSLogLevel eLevel, char *pFormat, ...)
 #ifdef POSIX
 		// Under WIN32 %I64 is used to print a 64bit int but the posix
 		//  conversion is %ll.  So we must change all occurances of %I64 to %ll.
-		if( pFormat && (strlen( pFormat ) > 4) ) {
-			int nLength = strlen( pFormat );
-			char *pFormatNew = new char[nLength+1];
-			int i=0;
-			int j=0;
+		if (pFormat && (strlen(pFormat) > 4)) {
+			int nLength = strlen(pFormat);
+			char *pFormatNew = new char[nLength + 1];
+			int i = 0;
+			int j = 0;
 			pFormatNew[0] = pFormat[0];
 			pFormatNew[1] = pFormat[1];
-			pFormatNew[2] = pFormat[2];			
-			for( i=3, j=3; i < nLength; i++, j++ ) {
-				if( pFormat[i-3] == '%' && pFormat[i-2] == 'I' && pFormat[i-1] == '6' && pFormat[i] == '4' ) {
+			pFormatNew[2] = pFormat[2];
+			for (i = 3, j = 3; i < nLength; i++, j++) {
+				if (pFormat[i - 3] == '%' && pFormat[i - 2] == 'I' && pFormat[i - 1] == '6' && pFormat[i] == '4') {
 					// we have found an occurance of "%I64"
-					pFormatNew[j-2] = pFormatNew[j-1] = 'l';
+					pFormatNew[j - 2] = pFormatNew[j - 1] = 'l';
 					pFormatNew[j] = pFormat[++i];
-				} else {
+				}
+				else {
 					pFormatNew[j] = pFormat[i];
 				}
 			}
 			pFormatNew[j] = '\0';
 			_vsnprintf(buf + nLen, sizeof(buf) - nLen, pFormatNew, va);
 
-			delete [] pFormatNew;
-		} else
+			delete[] pFormatNew;
+		}
+		else
 #endif
-        {
+		{
 			_vsnprintf(buf + nLen, sizeof(buf) - nLen, pFormat, va);
 		}
 
@@ -154,16 +156,16 @@ void CNCSLog::Log(CNCSLog::NCSLogLevel eLevel, char *pFormat, ...)
 //
 void CNCSLog::Log(char *pFile, int nLine, CNCSLog::NCSLogLevel eLevel, char *pFormat, ...)
 {
-    if(GetLogLevel() >= eLevel
+	if (GetLogLevel() >= eLevel
 #ifdef DEBUG
-			|| eLevel == CNCSLog::LOG_DEBUG
+		|| eLevel == CNCSLog::LOG_DEBUG
 #endif
-			) {
+		) {
 		char buf[4096];
 		va_list va;
 		va_start(va, pFormat);
 		char *p = pFile + strlen(pFile);
-		while(p > pFile && *(p - 1) != '\\') {
+		while (p > pFile && *(p - 1) != '\\') {
 			p--;
 		}
 		_snprintf(buf, sizeof(buf), "%d : File %s, Line %ld, ", (int)eLevel, p, nLine);
@@ -172,33 +174,35 @@ void CNCSLog::Log(char *pFile, int nLine, CNCSLog::NCSLogLevel eLevel, char *pFo
 #ifdef POSIX
 		// Under WIN32 %I64 is used to print a 64bit int but the posix
 		//  conversion is %ll.  So we must change all occurances of %I64 to %ll.
-		if( pFormat && (strlen( pFormat ) > 4) ) {
-			int nLength = strlen( pFormat );
-			char *pFormatNew = new char[nLength+1];
-			int i=0;
-			int j=0;
+		if (pFormat && (strlen(pFormat) > 4)) {
+			int nLength = strlen(pFormat);
+			char *pFormatNew = new char[nLength + 1];
+			int i = 0;
+			int j = 0;
 			pFormatNew[0] = pFormat[0];
 			pFormatNew[1] = pFormat[1];
 			pFormatNew[2] = pFormat[2];
-			for( i=3, j=3; i < nLength; i++, j++ ) {
-				if( pFormat[i-3] == '%' && pFormat[i-2] == 'I' && pFormat[i-1] == '6' && pFormat[i] == '4' ) {
+			for (i = 3, j = 3; i < nLength; i++, j++) {
+				if (pFormat[i - 3] == '%' && pFormat[i - 2] == 'I' && pFormat[i - 1] == '6' && pFormat[i] == '4') {
 					// we have found an occurance of "%I64"
-					pFormatNew[j-2] = pFormatNew[j-1] = 'l';
+					pFormatNew[j - 2] = pFormatNew[j - 1] = 'l';
 					pFormatNew[j] = pFormat[++i];
-				} else {
+				}
+				else {
 					pFormatNew[j] = pFormat[i];
 				}
 			}
 			pFormatNew[j] = '\0';
 			_vsnprintf(buf + nLen, sizeof(buf) - nLen, pFormatNew, va);
 
-			delete [] pFormatNew;
-		} else
+			delete[] pFormatNew;
+		}
+		else
 #endif
-        {
+		{
 			_vsnprintf(buf + nLen, sizeof(buf) - nLen, pFormat, va);
 		}
-		
+
 		Log(buf);
 
 		va_end(va);
@@ -214,16 +218,16 @@ CNCSLog::NCSLogLevel CNCSLog::GetLogLevel(void)
 }
 
 void CNCSLog::Log(char *pBuf)
-{  
-	char szBuffer[4096+512] = { '\0' };
+{
+	char szBuffer[4096 + 512] = { '\0' };
 
 #ifdef _WIN32_WCE
 
 	SYSTEMTIME ptm;
 	GetLocalTime(&ptm);
 
-	int nLen1 = sprintf(szBuffer, "%02d%02d%02d %02d:%02d:%02d ", 
-		ptm.wYear%100, ptm.wMonth+1, ptm.wDay, ptm.wHour, ptm.wMinute, ptm.wSecond);
+	int nLen1 = sprintf(szBuffer, "%02d%02d%02d %02d:%02d:%02d ",
+		ptm.wYear % 100, ptm.wMonth + 1, ptm.wDay, ptm.wHour, ptm.wMinute, ptm.wSecond);
 
 #else	/* _WIN32_WCE */
 
@@ -232,8 +236,8 @@ void CNCSLog::Log(char *pBuf)
 	time(&long_time);
 	ptm = localtime(&long_time);
 
-	int nLen1 = sprintf(szBuffer, "%02d%02d%02d %02d:%02d:%02d ", 
-		ptm->tm_year%100, ptm->tm_mon+1, ptm->tm_mday, ptm->tm_hour, ptm->tm_min, ptm->tm_sec);
+	int nLen1 = sprintf(szBuffer, "%02d%02d%02d %02d:%02d:%02d ",
+		ptm->tm_year % 100, ptm->tm_mon + 1, ptm->tm_mday, ptm->tm_hour, ptm->tm_min, ptm->tm_sec);
 
 #endif	/* _WIN32_WCE */
 
@@ -260,7 +264,7 @@ void CNCSLog::Log(char *pBuf)
 #endif // _DEBUG
 
 	sm_Mutex.Lock();
-	if(sm_szLogFile && strlen(sm_szLogFile)) {
+	if (sm_szLogFile && strlen(sm_szLogFile)) {
 		FILE *pFile;
 
 #ifdef WIN32
@@ -269,25 +273,26 @@ void CNCSLog::Log(char *pBuf)
 
 		// Need to run as SYSTEM to write to the log file, make sure we change back to the correct user afterwards though!
 #ifndef _WIN32_WCE
-		if(OpenThreadToken(hThread,
-						   TOKEN_READ|TOKEN_IMPERSONATE,
-						   FALSE,
-						   &hToken)) {
+		if (OpenThreadToken(hThread,
+			TOKEN_READ | TOKEN_IMPERSONATE,
+			FALSE,
+			&hToken)) {
 			RevertToSelf();
-						   
-			if((pFile = fopen(sm_szLogFile, "a+c")) != NULL) {
-				
-			//	_chmod(sm_szLogFile, _S_IREAD|_S_IWRITE);
+
+			if ((pFile = fopen(sm_szLogFile, "a+c")) != NULL) {
+
+				//	_chmod(sm_szLogFile, _S_IREAD|_S_IWRITE);
 				fprintf(pFile, szBuffer);
 				fflush(pFile);
 				fclose(pFile);
 			}
 			SetThreadToken(&hThread, hToken);
-		} else
+		}
+		else
 #endif
 #endif //WIN32
 		{
-			if((pFile = fopen(sm_szLogFile, "a+c")) != NULL) {
+			if ((pFile = fopen(sm_szLogFile, "a+c")) != NULL) {
 				fprintf(pFile, szBuffer);
 				fflush(pFile);
 				fclose(pFile);
@@ -303,12 +308,13 @@ void CNCSLog::UpdateLogConfig(NCSLogLevel eLevel, char *pLogFile)
 	// Update static members
 	sm_Mutex.Lock();
 	sm_eLogLevel = eLevel;
-	if(pLogFile) {
+	if (pLogFile) {
 		strcpy(sm_szLogFile, pLogFile);
 		NCSFree(pLogFile);
-	} else {
+	}
+	else {
 		char *pTemp = NCSGetTempDirectory();
-		if( pTemp ) {
+		if (pTemp) {
 			strcpy(sm_szLogFile, pTemp);
 #ifdef WIN32
 			strcat(sm_szLogFile, "\\IWS.log");
@@ -329,14 +335,15 @@ void CNCSLog::UpdateLogConfig(void)
 	char *pLogFile = (char*)NULL;
 
 	// Get registry values, or use defaults if not set
-	if( NCSPrefSetMachineKeyLock(NCSPREF_DEFAULT_BASE_KEY) == NCS_SUCCESS ) {
+	if (NCSPrefSetMachineKeyLock(NCSPREF_DEFAULT_BASE_KEY) == NCS_SUCCESS) {
 		INT32 nLevel = 0;
-		if(NCSPrefGetInt(NCS_SERVER_LOG_FILE_LEVEL_PREF, &nLevel) == NCS_SUCCESS) {
+		if (NCSPrefGetInt(NCS_SERVER_LOG_FILE_LEVEL_PREF, &nLevel) == NCS_SUCCESS) {
 			eLevel = (NCSLogLevel)nLevel;
-		} else {
+		}
+		else {
 			eLevel = LOG_LEVEL0;
 		}
-		if(NCSPrefGetString(NCS_SERVER_LOG_FILE_NAME_PREF, &pLogFile) != NCS_SUCCESS) {
+		if (NCSPrefGetString(NCS_SERVER_LOG_FILE_NAME_PREF, &pLogFile) != NCS_SUCCESS) {
 			pLogFile = (char*)NULL;
 		}
 
@@ -346,12 +353,13 @@ void CNCSLog::UpdateLogConfig(void)
 	// Update static members
 	sm_Mutex.Lock();
 	sm_eLogLevel = eLevel;
-	if(pLogFile) {
+	if (pLogFile) {
 		strcpy(sm_szLogFile, pLogFile);
 		NCSFree(pLogFile);
-	} else {
+	}
+	else {
 		char *pTemp = NCSGetTempDirectory();
-		if( pTemp ) {
+		if (pTemp) {
 			strcpy(sm_szLogFile, pTemp);
 #ifdef WIN32
 			strcat(sm_szLogFile, "\\IWS.log");
@@ -367,8 +375,8 @@ void CNCSLog::UpdateLogConfig(void)
 }
 
 
-void CNCSLog::CNCSUpdateLogConfigThread::Work( void *pData ) {
-	while(Run()) {
+void CNCSLog::CNCSUpdateLogConfigThread::Work(void *pData) {
+	while (Run()) {
 		CNCSLog::UpdateLogConfig();
 		NCSSleep(3000);
 	}

@@ -2,6 +2,6 @@
 
 int TRXAPI trx_Last(TRX_NO trx)
 {
-   _trx_GetNodePos(trx,2);
-   return trx_errno;
+	_trx_GetNodePos(trx, 2);
+	return trx_errno;
 }

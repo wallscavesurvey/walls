@@ -58,23 +58,23 @@
 //</class>
 
 class DLListNode {
-  public:
-     DLListNode();     
-     virtual ~DLListNode() {};
+public:
+	DLListNode();
+	virtual ~DLListNode() {};
 
-     virtual boolean operator <( DLListNode&) { return 0; };
-     virtual DLListNode* getNextNode() { return next_; };
-     virtual DLListNode* getPrevNode() { return prev_; };
+	virtual boolean operator <(DLListNode&) { return 0; };
+	virtual DLListNode* getNextNode() { return next_; };
+	virtual DLListNode* getPrevNode() { return prev_; };
 
-  private:
-     DLListNode* next_;
-     DLListNode* prev_;
- friend class DLList;
+private:
+	DLListNode* next_;
+	DLListNode* prev_;
+	friend class DLList;
 };
 
-inline DLListNode::DLListNode() { 
-     next_ = nil;
-     prev_ = nil;
+inline DLListNode::DLListNode() {
+	next_ = nil;
+	prev_ = nil;
 
 }
 
@@ -161,62 +161,62 @@ inline DLListNode::DLListNode() {
 //</class>
 
 class DLList {
-     DLListNode head_;
-     DLListNode tail_;
-     int count_;
-  public:
-     DLList();
-     ~DLList();
-     void free();			 // remove all nodes of the list and delete them 
-     void addHead( DLListNode*); 
-     void addTail( DLListNode*);
-     void insertBefore( DLListNode* ins, DLListNode* bef);
-     void insertAfter( DLListNode* ins, DLListNode* aft);
-     void insertAt( DLListNode* ins, int pos);
-     DLListNode* removeHead();		 // remove the first/last node of the list and 
-     DLListNode* removeTail();		 // returns a pointer to it. When the list is empty, return nil 
-     void remove( DLListNode* n);	 // remove the node n 
-     DLListNode* getFirst();		 // return a pointer to the first/last node of the list.
-     DLListNode* getLast();		 // When the list is empty, return nil.
-     DLListNode* getNext( DLListNode* n); // return a pointer to the successor of n
-     DLListNode* getPrev( DLListNode* n); // return a pointer to the predecessor of n
-     DLListNode* operator []( int i);
-     int count() const;
-     void sort();
-     const DLListNode* first() const;		 // return a pointer to the first/last node of the list.
-     const DLListNode* next( const DLListNode* n) const; // return a pointer to the successor of n
+	DLListNode head_;
+	DLListNode tail_;
+	int count_;
+public:
+	DLList();
+	~DLList();
+	void free();			 // remove all nodes of the list and delete them 
+	void addHead(DLListNode*);
+	void addTail(DLListNode*);
+	void insertBefore(DLListNode* ins, DLListNode* bef);
+	void insertAfter(DLListNode* ins, DLListNode* aft);
+	void insertAt(DLListNode* ins, int pos);
+	DLListNode* removeHead();		 // remove the first/last node of the list and 
+	DLListNode* removeTail();		 // returns a pointer to it. When the list is empty, return nil 
+	void remove(DLListNode* n);	 // remove the node n 
+	DLListNode* getFirst();		 // return a pointer to the first/last node of the list.
+	DLListNode* getLast();		 // When the list is empty, return nil.
+	DLListNode* getNext(DLListNode* n); // return a pointer to the successor of n
+	DLListNode* getPrev(DLListNode* n); // return a pointer to the predecessor of n
+	DLListNode* operator [](int i);
+	int count() const;
+	void sort();
+	const DLListNode* first() const;		 // return a pointer to the first/last node of the list.
+	const DLListNode* next(const DLListNode* n) const; // return a pointer to the successor of n
 };
 
 inline int DLList::count() const {
-     return count_;
+	return count_;
 }
 
 inline DLListNode* DLList::getFirst() {
-     return (head_.next_->next_) ? (head_.next_) : (nil);
+	return (head_.next_->next_) ? (head_.next_) : (nil);
 }
 
 inline const DLListNode* DLList::first() const {
-     return (head_.next_->next_) ? (head_.next_) : (nil);
+	return (head_.next_->next_) ? (head_.next_) : (nil);
 }
 
 inline DLListNode* DLList::getPrev(DLListNode* n) {
-     return (n->prev_->prev_) ? (n->prev_) : nil;
+	return (n->prev_->prev_) ? (n->prev_) : nil;
 }
 
 inline DLListNode* DLList::getLast() {
-     return (tail_.prev_->prev_) ? (tail_.prev_) : nil;
+	return (tail_.prev_->prev_) ? (tail_.prev_) : nil;
 }
 
 inline DLListNode* DLList::getNext(DLListNode* n) {
-     return (n->next_->next_) ? (n->next_) : nil;
+	return (n->next_->next_) ? (n->next_) : nil;
 }
 
 inline const DLListNode* DLList::next(const DLListNode* n) const {
-     return (n->next_->next_) ? (n->next_) : nil;
+	return (n->next_->next_) ? (n->next_) : nil;
 }
 
 inline DLList::~DLList() {
-     free();
+	free();
 }
 
 //<class>

@@ -8,20 +8,20 @@ class CExpandNTI : public CDialog
 	DECLARE_DYNAMIC(CExpandNTI)
 
 public:
-	CExpandNTI(CNtiLayer *pLayer,CWnd* pParent = NULL);   // standard constructor
+	CExpandNTI(CNtiLayer *pLayer, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CExpandNTI();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_EXPAND_NTI };
 
 	BOOL OnInitDialog();
 
 private:
-	void Show(UINT id) {GetDlgItem(id)->ShowWindow(SW_SHOW);}
-	void Hide(UINT id) {GetDlgItem(id)->ShowWindow(SW_HIDE);}
-	void Disable(UINT id) {GetDlgItem(id)->EnableWindow(FALSE);}
-	void Enable(UINT id) {GetDlgItem(id)->EnableWindow(TRUE);}
-	void SetText(UINT id,LPCSTR text) {GetDlgItem(id)->SetWindowText(text);}
+	void Show(UINT id) { GetDlgItem(id)->ShowWindow(SW_SHOW); }
+	void Hide(UINT id) { GetDlgItem(id)->ShowWindow(SW_HIDE); }
+	void Disable(UINT id) { GetDlgItem(id)->EnableWindow(FALSE); }
+	void Enable(UINT id) { GetDlgItem(id)->EnableWindow(TRUE); }
+	void SetText(UINT id, LPCSTR text) { GetDlgItem(id)->SetWindowText(text); }
 	BOOL m_bProcessing;
 	CExportJob m_job;					 // worker job (thread)
 	CNtiLayer *m_pLayer;

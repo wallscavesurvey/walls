@@ -20,7 +20,7 @@ extern bool bUsingIndex;
 struct FILTER
 {
 	FILTER() : fld(0), bNeg(0), pVals(NULL) {};
-	FILTER(UINT f,WORD neg,LPSTR p) : fld(f), bNeg(neg), pVals(p) {};
+	FILTER(UINT f, WORD neg, LPSTR p) : fld(f), bNeg(neg), pVals(p) {};
 	WORD fld;
 	WORD bNeg;
 	LPSTR pVals;
@@ -32,7 +32,7 @@ typedef V_FILTER::iterator it_filter;
 struct REPL_FCN
 {
 	REPL_FCN() : fld(0) {};
-	REPL_FCN(UINT f,LPCSTR pOld,LPCSTR pNew) : fld(f), sOld(pOld), sNew(pNew) {};
+	REPL_FCN(UINT f, LPCSTR pOld, LPCSTR pNew) : fld(f), sOld(pOld), sNew(pNew) {};
 	UINT fld;
 	CString sOld;
 	CString sNew;
@@ -49,18 +49,20 @@ class CShpDBF;
 class CShpLayer;
 class CFileCfg;
 
-enum {SHPD_USEVIEWCOORD=1,SHPD_RETAINDELETED=2,SHPD_EXCLUDEMEMOS=4,SHPD_INITEMPTY=8,
-	SHPD_GENTEMPLATE=16,SHPD_INITFLDS=32,SHPD_DESCFLDS=64,SHPD_ISCONVERTING=128,SHPD_MAKE2D=256,SHPD_COMBOFLDS=512,SHPD_FILTER=1024,SHPD_REPL=2048};
+enum {
+	SHPD_USEVIEWCOORD = 1, SHPD_RETAINDELETED = 2, SHPD_EXCLUDEMEMOS = 4, SHPD_INITEMPTY = 8,
+	SHPD_GENTEMPLATE = 16, SHPD_INITFLDS = 32, SHPD_DESCFLDS = 64, SHPD_ISCONVERTING = 128, SHPD_MAKE2D = 256, SHPD_COMBOFLDS = 512, SHPD_FILTER = 1024, SHPD_REPL = 2048
+};
 
 class CShpDef
 {
 public:
-	CShpDef(void): numFlds(0),numSrcFlds(0),numLocFlds(0),numMemoFlds(0), iPrefixFld(0), uFlags(0), m_pFdef(0) {}
+	CShpDef(void) : numFlds(0), numSrcFlds(0), numLocFlds(0), numMemoFlds(0), iPrefixFld(0), uFlags(0), m_pFdef(0) {}
 	~CShpDef(void);
 
-	BOOL Process(CShpLayer *pShp,LPCSTR pathName);
+	BOOL Process(CShpLayer *pShp, LPCSTR pathName);
 	DBF_pFLDDEF FindDstFld(UINT srcFld) const;
-	BOOL Write(CShpLayer *pShp,CSafeMirrorFile &cf) const;
+	BOOL Write(CShpLayer *pShp, CSafeMirrorFile &cf) const;
 
 	CFileCfg *m_pFdef;
 	V_FLDSCALE v_fldScale;
@@ -79,5 +81,5 @@ public:
 	int numMemoFlds;
 	UINT uFlags;
 private:
-	bool GetReplArgs(UINT f,LPSTR p);
+	bool GetReplArgs(UINT f, LPSTR p);
 };

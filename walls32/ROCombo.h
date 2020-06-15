@@ -12,22 +12,22 @@
 
 class CReadOnlyComboBox : public CComboBox
 {
-// Construction
+	// Construction
 public:
 	CReadOnlyComboBox();
 
-// Attributes
+	// Attributes
 public:
 
-// Operations
+	// Operations
 public:
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CReadOnlyComboBox)
-	//}}AFX_VIRTUAL
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CReadOnlyComboBox)
+		//}}AFX_VIRTUAL
 
-// Implementation
+	// Implementation
 public:
 	virtual ~CReadOnlyComboBox();
 

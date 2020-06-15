@@ -46,38 +46,38 @@ vector arithmetic (MMX, SSE, Altivec, Sparc-VIS, etc.).
 /* ========================================================================= */
 
 KDU_EXPORT extern
-  int kdu_mmx_level;
-  /* [SYNOPSIS]
-     Indicates the level of MMX support offered by the architecture:
-     [>>] 0 if the architecture does not support MMX instructions (e.g.,
-          non-Intel processor);
-     [>>] 1 if the architecture supports MMX instructions only;
-     [>>] 2 if the architecture supports MMX, SSE and SSE2 instructions;
-     [>>] 3 if the architecture supports MMX, SSE, SSE2 and SSE3 instructions.
-     [>>] 4 if the architecture supports MMX, SSE, SSE2, SSE3 and SSSE3.
-  */
+int kdu_mmx_level;
+/* [SYNOPSIS]
+   Indicates the level of MMX support offered by the architecture:
+   [>>] 0 if the architecture does not support MMX instructions (e.g.,
+		non-Intel processor);
+   [>>] 1 if the architecture supports MMX instructions only;
+   [>>] 2 if the architecture supports MMX, SSE and SSE2 instructions;
+   [>>] 3 if the architecture supports MMX, SSE, SSE2 and SSE3 instructions.
+   [>>] 4 if the architecture supports MMX, SSE, SSE2, SSE3 and SSSE3.
+*/
 
 KDU_EXPORT extern
-  bool kdu_pentium_cmov_exists;
-  /* [SYNOPSIS]
-     Indicates whether the X86 CMOV (conditional move) instruction
-     is known to exist.
-  */
+bool kdu_pentium_cmov_exists;
+/* [SYNOPSIS]
+   Indicates whether the X86 CMOV (conditional move) instruction
+   is known to exist.
+*/
 
 KDU_EXPORT extern
-  bool kdu_sparcvis_exists;
-  /* [SYNOPSIS]
-     True if the architecture is known to support the SPARC visual
-     instruction set.
-  */
+bool kdu_sparcvis_exists;
+/* [SYNOPSIS]
+   True if the architecture is known to support the SPARC visual
+   instruction set.
+*/
 
 KDU_EXPORT extern
-  bool kdu_altivec_exists;
-  /* [SYNOPSIS]
-     True if the architecture is known to support the Altivec instruction --
-     i.e., the fast vector processor available on many G4/G5 PowerPC
-     CPU's.
-  */
+bool kdu_altivec_exists;
+/* [SYNOPSIS]
+   True if the architecture is known to support the Altivec instruction --
+   i.e., the fast vector processor available on many G4/G5 PowerPC
+   CPU's.
+*/
 
 #ifdef KDU_MAC_SPEEDUPS
 #  if defined(__ppc__) || defined(__ppc64__)
@@ -98,7 +98,7 @@ KDU_EXPORT extern
 /* ========================================================================= */
 
 #define KDU_MAX_L2_CACHE_LINE 128 // Max bytes in an L2 cache line
-                                  // Must be a power of 2!
+								  // Must be a power of 2!
 #ifdef KDU_POINTERS64
 # define KDU_CODE_BUFFER_ALIGN 128
 # define KDU_CODE_BUFFERS_PER_PAGE 4 /* Must be power of 2, no more than 64 */
@@ -107,25 +107,25 @@ KDU_EXPORT extern
 # define KDU_CODE_BUFFERS_PER_PAGE 4 /* Must be power of 2, no more than 64 */
 #endif
 
-     /* Note: `KDU_CODE_BUFFERS_PER_PAGE' * `KDU_CODE_BUFFER_ALIGN' is the
-        size of an internal "virtual cache page".  For good performance in
-        multi-threaded applications, this quantity should be a multiple of
-        the true L2 cache line size. */
+	 /* Note: `KDU_CODE_BUFFERS_PER_PAGE' * `KDU_CODE_BUFFER_ALIGN' is the
+		size of an internal "virtual cache page".  For good performance in
+		multi-threaded applications, this quantity should be a multiple of
+		the true L2 cache line size. */
 
-/* ========================================================================= */
-/*                          Number of Processors                             */
-/* ========================================================================= */
+		/* ========================================================================= */
+		/*                          Number of Processors                             */
+		/* ========================================================================= */
 
 KDU_EXPORT extern int
-  kdu_get_num_processors();
-  /* [SYNOPSIS]
-       This function returns the total number of logical processors which
-       are available to the current process, or 0 if the value cannot be
-       determined.  For a variety of good reasons, POSIX refuses to
-       standardize a consistent mechanism for discovering the number of
-       system processors, although their are a variety of platform-specific
-       methods around.  If the number of processors cannot be discovered, this
-       function returns 0.
-  */
+kdu_get_num_processors();
+/* [SYNOPSIS]
+	 This function returns the total number of logical processors which
+	 are available to the current process, or 0 if the value cannot be
+	 determined.  For a variety of good reasons, POSIX refuses to
+	 standardize a consistent mechanism for discovering the number of
+	 system processors, although their are a variety of platform-specific
+	 methods around.  If the number of processors cannot be discovered, this
+	 function returns 0.
+*/
 
 #endif // KDU_ARCH_H

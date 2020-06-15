@@ -113,31 +113,31 @@
 // 
 // Returns:     None
 //
-typedef void (* XMESSAGEBOX_REPORT_FUNCTION)(LPCTSTR lpszMessageText, DWORD dwUserData); 
+typedef void(*XMESSAGEBOX_REPORT_FUNCTION)(LPCTSTR lpszMessageText, DWORD dwUserData);
 
 
-struct XMSGBOXPARAMS 
+struct XMSGBOXPARAMS
 {
 	XMSGBOXPARAMS()
 	{
-		nTimeoutSeconds               = 0;
-		nDisabledSeconds              = 0;
-		hInstanceIcon                 = NULL;
-		hInstanceStrings              = NULL;
-		lpReportFunc                  = NULL;
-		dwReportUserData              = 0;
-		nIdHelp                       = 0;
-		nIdIcon                       = 0;
-		nIdCustomButtons              = 0;
-		nIdReportButtonCaption        = 0;
-		x                             = 0;
-		y                             = 0;
-		dwOptions                     = 0;
-		lpszModule                    = NULL;
-		nLine                         = 0;
+		nTimeoutSeconds = 0;
+		nDisabledSeconds = 0;
+		hInstanceIcon = NULL;
+		hInstanceStrings = NULL;
+		lpReportFunc = NULL;
+		dwReportUserData = 0;
+		nIdHelp = 0;
+		nIdIcon = 0;
+		nIdCustomButtons = 0;
+		nIdReportButtonCaption = 0;
+		x = 0;
+		y = 0;
+		dwOptions = 0;
+		lpszModule = NULL;
+		nLine = 0;
 		bUseUserDefinedButtonCaptions = FALSE;			//+++1.5
-		crText                        = CLR_INVALID;	//+++1.8
-		crBackground                  = CLR_INVALID;	//+++1.8
+		crText = CLR_INVALID;	//+++1.8
+		crBackground = CLR_INVALID;	//+++1.8
 
 		memset(szIcon, 0, sizeof(szIcon));
 		memset(szCustomButtons, 0, sizeof(szCustomButtons));
@@ -159,15 +159,15 @@ struct XMSGBOXPARAMS
 	int			x, y;							// initial x,y screen coordinates
 	enum										// these are bit flags for dwOptions
 	{
-		None				= 0x0000,
-		RightJustifyButtons	= 0x0001,			// causes buttons to be right-justified
-		VistaStyle			= 0x0002,			// setting this option bit will cause the 
+		None = 0x0000,
+		RightJustifyButtons = 0x0001,			// causes buttons to be right-justified
+		VistaStyle = 0x0002,			// setting this option bit will cause the 
 												// message background to be painted with 
 												// the current window color (typically 
 												// white), and the buttons to be 
 												// right-justified.    +++1.8
-		Narrow				= 0x0004			// uses a narrow width for message box -
-												// SM_CXSCREEN / 3
+												Narrow = 0x0004			// uses a narrow width for message box -
+																						// SM_CXSCREEN / 3
 
 	};
 	DWORD		dwOptions;						// options flags
@@ -194,36 +194,36 @@ struct XMSGBOXPARAMS
 	// Use the following code.
 	struct CUserDefinedButtonCaptions
 	{
-		TCHAR	szAbort				[1];
-		TCHAR	szCancel			[MAX_PATH];
-		TCHAR	szContinue			[1];
-		TCHAR	szDoNotAskAgain		[1];
-		TCHAR	szDoNotTellAgain	[MAX_PATH];
-		TCHAR	szDoNotShowAgain	[1];
-		TCHAR	szHelp				[1];
-		TCHAR	szIgnore			[1];
-		TCHAR	szIgnoreAll			[1];
-		TCHAR	szNo				[32];
-		TCHAR	szNoToAll			[1];
-		TCHAR	szOK				[32];
-		TCHAR	szReport			[1];
-		TCHAR	szRetry				[1];
-		TCHAR	szSkip				[1];
-		TCHAR	szSkipAll			[1];
-		TCHAR	szTryAgain			[1];
-		TCHAR	szYes				[32];
-		TCHAR	szYesToAll			[1];
+		TCHAR	szAbort[1];
+		TCHAR	szCancel[MAX_PATH];
+		TCHAR	szContinue[1];
+		TCHAR	szDoNotAskAgain[1];
+		TCHAR	szDoNotTellAgain[MAX_PATH];
+		TCHAR	szDoNotShowAgain[1];
+		TCHAR	szHelp[1];
+		TCHAR	szIgnore[1];
+		TCHAR	szIgnoreAll[1];
+		TCHAR	szNo[32];
+		TCHAR	szNoToAll[1];
+		TCHAR	szOK[32];
+		TCHAR	szReport[1];
+		TCHAR	szRetry[1];
+		TCHAR	szSkip[1];
+		TCHAR	szSkipAll[1];
+		TCHAR	szTryAgain[1];
+		TCHAR	szYes[32];
+		TCHAR	szYesToAll[1];
 	};
 	BOOL						bUseUserDefinedButtonCaptions;	//+++1.5
 	CUserDefinedButtonCaptions	UserDefinedButtonCaptions;		//+++1.5
 	//-]UK
 };
 
-int XMessageBox(HWND hwnd, 
-				LPCTSTR lpszMessage,
-				LPCTSTR lpszCaption = NULL, 
-				UINT nStyle = MB_OK | MB_ICONEXCLAMATION,
-				XMSGBOXPARAMS * pXMB = NULL);
+int XMessageBox(HWND hwnd,
+	LPCTSTR lpszMessage,
+	LPCTSTR lpszCaption = NULL,
+	UINT nStyle = MB_OK | MB_ICONEXCLAMATION,
+	XMSGBOXPARAMS * pXMB = NULL);
 
 
 DWORD XMessageBoxGetCheckBox(LPCTSTR lpszCompanyName, LPCTSTR lpszModule, int nLine);

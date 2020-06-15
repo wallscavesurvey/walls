@@ -25,23 +25,23 @@
 #include <string.h>
 
 
-SourceAnchor::SourceAnchor (long id, const RString& aobject, const char* groupname)
-: anchorobj_ (aobject)
+SourceAnchor::SourceAnchor(long id, const RString& aobject, const char* groupname)
+	: anchorobj_(aobject)
 {
-  anchorid_ = id;
+	anchorid_ = id;
 
-  // RStrings do not differ between NULL pointers and empty strings
-  if (groupname && *groupname)  // group anchor
-  {
-    groupname_ = new char [strlen (groupname) + 1];
-    strcpy (groupname_, groupname);
-  }
-  else  // object anchor
-    groupname_ = 0;
+	// RStrings do not differ between NULL pointers and empty strings
+	if (groupname && *groupname)  // group anchor
+	{
+		groupname_ = new char[strlen(groupname) + 1];
+		strcpy(groupname_, groupname);
+	}
+	else  // object anchor
+		groupname_ = 0;
 }
 
 
-SourceAnchor::~SourceAnchor ()
+SourceAnchor::~SourceAnchor()
 {
-  delete groupname_;
+	delete groupname_;
 }

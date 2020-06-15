@@ -24,37 +24,37 @@
 void __declspec(naked) bt_link(void)
 {
 	__asm {
-		mov		esi,[esi]
-        push    esi
-        movsx   edx,word ptr[esi+N_SIZLINK]
-        neg     edx
-        or      ebx,ebx
-        jnz     _lnk0
-        add     esi,N_RLINK
-        jmp     short _err
+		mov		esi, [esi]
+		push    esi
+		movsx   edx, word ptr[esi + N_SIZLINK]
+		neg     edx
+		or ebx, ebx
+		jnz     _lnk0
+		add     esi, N_RLINK
+		jmp     short _err
 
-_lnk0:	
-		movzx	eax,word ptr[esi+N_FSTLINK]
-		movzx   ecx,word ptr[esi+N_NUMKEYS]
-		add		esi,eax
-        cmp     ecx,ebx
-        jb      _errx
-        xor     eax,eax
+		_lnk0 :
+		movzx	eax, word ptr[esi + N_FSTLINK]
+			movzx   ecx, word ptr[esi + N_NUMKEYS]
+			add		esi, eax
+			cmp     ecx, ebx
+			jb      _errx
+			xor     eax, eax
 
-_loop:  cmp     ebx,ecx
-        jnb     _errx
-        add     esi,edx ;skip over link
-        lodsb           ;get unmatching suffix length
-        inc     esi     ;skip matching prefix length
-        add     esi,eax ;skip over suffix
-        loop    _loop
+			_loop : cmp     ebx, ecx
+			jnb     _errx
+			add     esi, edx; skip over link
+			lodsb; get unmatching suffix length
+			inc     esi; skip matching prefix length
+			add     esi, eax; skip over suffix
+			loop    _loop
 
-_err:   stc
+			_err : stc
 
-_errx:	mov		ebx,esi
-		mov		ecx,edx
-		pop     esi
-		ret
+			_errx : mov		ebx, esi
+			mov		ecx, edx
+			pop     esi
+			ret
 	}
 }
 
@@ -66,23 +66,23 @@ _errx:	mov		ebx,esi
 ;--------------------------------------------------------------------
 */
 
-apfcn_ul _trx_Btlnkc(CSH_HDRP hp,UINT keyPos)
+apfcn_ul _trx_Btlnkc(CSH_HDRP hp, UINT keyPos)
 {
 	__asm {
-        mov     ebx,keyPos
-        mov     esi,hp
-        call    bt_link		;ECX=size link,ESI=addr node,EBX=addr rec
-        jb      lnk2
-		cmp		ecx,4
+		mov     ebx, keyPos
+		mov     esi, hp
+		call    bt_link; ECX = size link, ESI = addr node, EBX = addr rec
+		jb      lnk2
+		cmp		ecx, 4
 		jb		lnk1
-        mov		eax,[ebx]
+		mov		eax, [ebx]
 		jmp		short lnkx
 
-lnk1:	movzx	eax,word ptr[ebx]
-        jmp     short lnkx
+		lnk1 : movzx	eax, word ptr[ebx]
+			   jmp     short lnkx
 
-lnk2:   xor     eax,eax
-lnkx:
+			   lnk2 : xor     eax, eax
+					  lnkx :
 	}
 }
 

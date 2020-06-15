@@ -41,11 +41,11 @@
 
 class CSSplitter : public CStatic
 {
-// Construction
+	// Construction
 public:
 	CSSplitter();
 
-// Attributes
+	// Attributes
 private:
 
 	CWnd*	m_pWndParent;
@@ -71,32 +71,32 @@ private:
 	BOOL	m_bHorizSplitter;
 	BOOL	m_bVertSplitter;
 	BOOL	m_bMovingVertSplitter;
-	BOOL	m_bDraggingVert; 
+	BOOL	m_bDraggingVert;
 	BOOL	m_bHiddenRightPane;
 	BOOL	m_bMovingHorizSplitter;
-	BOOL	m_bDraggingHoriz; 
+	BOOL	m_bDraggingHoriz;
 	BOOL	m_bHiddenBottomPane;
 	BOOL	m_bHiddenLeftPane;
 
-	CPoint	m_ptVertOriginal;		
-	CPoint	m_ptVertPrevious;		
-	CPoint	m_ptHorizOriginal;		
-	CPoint	m_ptHorizPrevious;	
+	CPoint	m_ptVertOriginal;
+	CPoint	m_ptVertPrevious;
+	CPoint	m_ptHorizOriginal;
+	CPoint	m_ptHorizPrevious;
 
-	HWND	m_hwndPrevFocusVert;	
+	HWND	m_hwndPrevFocusVert;
 	HWND	m_hwndPrevFocusHoriz;
 
-// Operations
+	// Operations
 private:
 
-	CPoint MakePtVert(CPoint pt){ return CPoint(pt.x, 0);}
+	CPoint MakePtVert(CPoint pt) { return CPoint(pt.x, 0); }
 	void SetVertConstraint(CPoint &pt);
 	void CancelVertDrag();
 	void OnDrawVertBar(CDC &dc, CRect &rc);
 	void DrawVertBar();
 	void MoveVertPanes(CPoint SplitPoint);
 
-	CPoint MakePtHoriz(CPoint pt) { return CPoint(0, pt.y);}
+	CPoint MakePtHoriz(CPoint pt) { return CPoint(0, pt.y); }
 	void SetHorizConstraint(CPoint &pt);
 	void CancelHorizDrag();
 	void OnDrawHorizBar(CDC &dc, CRect &rc);
@@ -104,34 +104,34 @@ private:
 	void MoveHorizPanes(CPoint SplitPoint);
 
 	void InitVertSplitter(
-		CWnd*	pParentWnd,				
-		CWnd*	pWndLeft,				
+		CWnd*	pParentWnd,
+		CWnd*	pWndLeft,
 		CWnd*	pWndRight,
 		UINT	nMaxLeft,
 		UINT	nMaxRight);
 
 	void InitHorizSplitter(
-		CWnd*	pParentWnd,				
-		CWnd*	pWndTop,				
+		CWnd*	pParentWnd,
+		CWnd*	pWndTop,
 		CWnd*	pWndBottom,
 		UINT	nMaxTop,
 		UINT	nMaxBottom);
 
-// Attributes
+	// Attributes
 public:
 
-// Operations
+	// Operations
 public:
 
-	BOOL Create(DWORD dwStyle, 
-			CWnd*	pParentWnd, 
-			CWnd* pFPane, 
-			CWnd* pSPane,
-			UINT nID,
-			const RECT& rc,
-			UINT nFConstr = 30,
-			UINT nSConstr = 30
-		);
+	BOOL Create(DWORD dwStyle,
+		CWnd*	pParentWnd,
+		CWnd* pFPane,
+		CWnd* pSPane,
+		UINT nID,
+		const RECT& rc,
+		UINT nFConstr = 30,
+		UINT nSConstr = 30
+	);
 
 	void MakeVertSplitter();
 	void MakeHorizSplitter();
@@ -150,12 +150,12 @@ public:
 	int  GetSplitterPos();
 	void SetSplitterPos(int nPos);
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CSSplitter)
-	public:
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CSSplitter)
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+protected:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	//}}AFX_VIRTUAL
 
@@ -183,7 +183,7 @@ protected:
 
 	afx_msg void OnBeginlabeleditList(NMHDR* pNMHDR, LRESULT* pResult);
 
-	DECLARE_MESSAGE_MAP() 
+	DECLARE_MESSAGE_MAP()
 };
 
 /////////////////////////////////////////////////////////////////////////////

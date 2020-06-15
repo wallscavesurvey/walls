@@ -8,7 +8,7 @@
 
 #ifdef _DEBUG
 #undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
+static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
 #endif
 
@@ -42,7 +42,7 @@ CGradientCtrlImpl::CGradientCtrlImpl(CGradientCtrl *owner)
 
 CGradientCtrlImpl::~CGradientCtrlImpl()
 {
-	if(m_wndToolTip) DestroyTooltip();
+	if (m_wndToolTip) DestroyTooltip();
 	free(m_pHistValue);
 }
 
@@ -52,29 +52,29 @@ void CGradientCtrlImpl::GetGradientFrame()
 	CRect clientrect;
 	m_Owner->GetClientRect(&clientrect);
 
-	if(IsVertical())
+	if (IsVertical())
 	{
-		w=((m_Owner->m_Width==GCW_AUTO)?clientrect.right:m_Owner->m_Width);
-		m_GradFrame.left	= m_LeftDownSide ? 23 : 4,
-		m_GradFrame.top	= 4,
-		m_GradFrame.right	= w - (m_RightUpSide ? 23 : 4);
-		m_GradFrame.bottom = clientrect.bottom-4;
-		m_HistWidth = clientrect.right-w;
+		w = ((m_Owner->m_Width == GCW_AUTO) ? clientrect.right : m_Owner->m_Width);
+		m_GradFrame.left = m_LeftDownSide ? 23 : 4,
+			m_GradFrame.top = 4,
+			m_GradFrame.right = w - (m_RightUpSide ? 23 : 4);
+		m_GradFrame.bottom = clientrect.bottom - 4;
+		m_HistWidth = clientrect.right - w;
 		m_HistLength = m_GradFrame.Height();
 	}
 	else
 	{
-		w=((m_Owner->m_Width==GCW_AUTO)?clientrect.bottom:m_Owner->m_Width);
-		m_GradFrame.left	= 4,
-		m_GradFrame.top	= clientrect.bottom - w + (m_RightUpSide ? 23 : 4);
-		m_GradFrame.right	= clientrect.right-4;
-		m_GradFrame.bottom	= clientrect.bottom-(m_LeftDownSide?23:4);
-		m_HistWidth = clientrect.bottom-w;
+		w = ((m_Owner->m_Width == GCW_AUTO) ? clientrect.bottom : m_Owner->m_Width);
+		m_GradFrame.left = 4,
+			m_GradFrame.top = clientrect.bottom - w + (m_RightUpSide ? 23 : 4);
+		m_GradFrame.right = clientrect.right - 4;
+		m_GradFrame.bottom = clientrect.bottom - (m_LeftDownSide ? 23 : 4);
+		m_HistWidth = clientrect.bottom - w;
 		m_HistLength = m_GradFrame.Width();
 	}
-	ASSERT(!m_pHistValue && m_HistWidth>1);
-	m_pHistValue=(float *)malloc(m_HistLength*sizeof(float)+(m_HistLength+1)*sizeof(WORD));
-	m_pHistArray=(WORD *)(m_pHistValue+m_HistLength);
+	ASSERT(!m_pHistValue && m_HistWidth > 1);
+	m_pHistValue = (float *)malloc(m_HistLength * sizeof(float) + (m_HistLength + 1) * sizeof(WORD));
+	m_pHistArray = (WORD *)(m_pHistValue + m_HistLength);
 }
 
 void CGradientCtrlImpl::Draw(CDC *dc)
@@ -87,10 +87,10 @@ void CGradientCtrlImpl::Draw(CDC *dc)
 	DrawPegs(dc);
 
 	//The order is important -
-    //The function DrawSelPeg is called in the function DrawPegs
+	//The function DrawSelPeg is called in the function DrawPegs
 	//so if we then draw the end peg we will be drawing over the inverse rectangle!
 
-	if(::GetFocus()==m_Owner->m_hWnd) {
+	if (::GetFocus() == m_Owner->m_hWnd) {
 		DrawSelPeg(dc, m_Owner->m_Selected);
 	}
 
@@ -98,11 +98,11 @@ void CGradientCtrlImpl::Draw(CDC *dc)
 	brush.CreateStockObject(BLACK_BRUSH);
 
 	//----- Draw a box around the palette -----//
-	dc->FrameRect(m_GradFrame,&brush);
+	dc->FrameRect(m_GradFrame, &brush);
 
 	//Draw histogram box - m_HistWidth is the width inside the box (Width()-2) --
 
-	if(m_pHistValue) DrawHistogram(dc);
+	if (m_pHistValue) DrawHistogram(dc);
 }
 
 void CGradientCtrlImpl::DrawHistogram(CDC *dc)
@@ -114,45 +114,45 @@ void CGradientCtrlImpl::DrawHistogram(CDC *dc)
 	CRect rect(m_GradFrame);
 
 	//Clear any existing histogram --
-	rect.bottom=rect.top;
-	rect.top-=m_HistWidth;
-	::FillRect(dc->m_hDC, &rect,(HBRUSH)(COLOR_BTNFACE+1));
+	rect.bottom = rect.top;
+	rect.top -= m_HistWidth;
+	::FillRect(dc->m_hDC, &rect, (HBRUSH)(COLOR_BTNFACE + 1));
 
-	CPen pen,*oldpen;
-	VERIFY(pen.CreatePen(PS_SOLID,1,(COLORREF)0));
-	VERIFY(oldpen=dc->SelectObject(&pen));
+	CPen pen, *oldpen;
+	VERIFY(pen.CreatePen(PS_SOLID, 1, (COLORREF)0));
+	VERIFY(oldpen = dc->SelectObject(&pen));
 	//CPen *oldpen = (CPen*)dc->SelectStockObject(BLACK_PEN);
-	int y,x=rect.left;
-	int ybase=rect.bottom-1;
+	int y, x = rect.left;
+	int ybase = rect.bottom - 1;
 
-	for(int i=1;i<=m_HistLength;i++,x++) {
-		if(m_pHistArray[i]) {
+	for (int i = 1; i <= m_HistLength; i++, x++) {
+		if (m_pHistArray[i]) {
 			//Paint a maximum of m_HistWidth pixels 
-			y=(m_HistWidth*m_pHistArray[i])/m_pHistArray[0];
-			if(!y) y++;
-			dc->MoveTo(x,ybase);
-			dc->LineTo(x,ybase-y); //paint max(1,y) pixels
+			y = (m_HistWidth*m_pHistArray[i]) / m_pHistArray[0];
+			if (!y) y++;
+			dc->MoveTo(x, ybase);
+			dc->LineTo(x, ybase - y); //paint max(1,y) pixels
 		}
 	}
 	dc->SelectObject(oldpen);
 }
 
-BOOL CGradientCtrlImpl::GetNearbyValueStr(int x,CString &valstr)
+BOOL CGradientCtrlImpl::GetNearbyValueStr(int x, CString &valstr)
 {
-	#define MAX_DELTA 2
+#define MAX_DELTA 2
 	int delta;
 
-    x++; //at least 1
-	ASSERT(x>0 && x<=m_HistLength);
-	for(delta=0;delta<=MAX_DELTA;delta++) {
-		x+=delta;
-		if(x<=m_HistLength && m_pHistArray[x]) break;
-		x-=2*delta;
-		if(x>0 && m_pHistArray[x]) break;
-		x+=delta;
+	x++; //at least 1
+	ASSERT(x > 0 && x <= m_HistLength);
+	for (delta = 0; delta <= MAX_DELTA; delta++) {
+		x += delta;
+		if (x <= m_HistLength && m_pHistArray[x]) break;
+		x -= 2 * delta;
+		if (x > 0 && m_pHistArray[x]) break;
+		x += delta;
 	}
-	if(delta>MAX_DELTA) return FALSE;
-	m_Owner->GetGradient().ValueStr(valstr,m_pHistValue[x-1]);
+	if (delta > MAX_DELTA) return FALSE;
+	m_Owner->GetGradient().ValueStr(valstr, m_pHistValue[x - 1]);
 	return TRUE;
 }
 
@@ -160,46 +160,46 @@ BOOL CGradientCtrlImpl::GetNearbyValueStr(int x,CString &valstr)
 void CGradientCtrlImpl::DrawGradient(CDC *dc)
 {
 	CRect rect(m_GradFrame);
-	rect.InflateRect(-1,-1,-1,-1);
-	m_Owner->m_Gradient.FillRect(dc,&rect,IsVertical());
+	rect.InflateRect(-1, -1, -1, -1);
+	m_Owner->m_Gradient.FillRect(dc, &rect, IsVertical());
 }
 
 void CGradientCtrlImpl::DrawPegs(CDC *dc)
 {
 	CPeg peg;
 	CRect clientrect;
-	
+
 	m_Owner->GetClientRect(&clientrect);
 
 	// No stupid selection
-	if(m_Owner->m_Selected > m_Owner->m_Gradient.GetPegCount())
+	if (m_Owner->m_Selected > m_Owner->m_Gradient.GetPegCount())
 		m_Owner->m_Selected = -1;
 
 	int pegindent = 0;
-	
-	for(int i = 0; i < m_Owner->m_Gradient.GetPegCount(); i++)
+
+	for (int i = 0; i < m_Owner->m_Gradient.GetPegCount(); i++)
 	{
 		peg = m_Owner->m_Gradient.GetPeg(i);
 
-		if(m_RightUpSide)
+		if (m_RightUpSide)
 		{
 			//Indent if close
-			pegindent = GetPegIndent(i)*11 + GetDrawWidth() - 23;
+			pegindent = GetPegIndent(i) * 11 + GetDrawWidth() - 23;
 
 			//Obvious really
-			if(IsVertical())
+			if (IsVertical())
 				DrawPeg(dc, CPoint(pegindent, PointFromPos(peg.position)), peg.color, 0);
 			else
 				DrawPeg(dc, CPoint(PointFromPos(peg.position), clientrect.bottom - pegindent - 1), peg.color, 1);
 		}
 
-		if(m_LeftDownSide)
+		if (m_LeftDownSide)
 		{
 			//Indent if close
-			pegindent = 23 - GetPegIndent(i)*11;
+			pegindent = 23 - GetPegIndent(i) * 11;
 
 			//Obvious really
-			if(IsVertical())
+			if (IsVertical())
 				DrawPeg(dc, CPoint(pegindent, PointFromPos(peg.position)), peg.color, 2);
 			else
 				DrawPeg(dc, CPoint(PointFromPos(peg.position), clientrect.bottom - pegindent - 1), peg.color, 3);
@@ -218,36 +218,36 @@ void CGradientCtrlImpl::DrawSelPeg(CDC *dc, CPoint point, int direction)
 	int oldrop = dc->SetROP2(R2_NOT);
 
 	//Prepare the coodrdinates
-	switch(direction)
+	switch (direction)
 	{
 	case 0:
-		points[0].x = 8+point.x;
-		points[0].y = point.y-2;
-		points[1].x = 2+point.x;
-		points[1].y = point.y+1;
-		points[2].x = 8+point.x;
-		points[2].y = point.y+4;
+		points[0].x = 8 + point.x;
+		points[0].y = point.y - 2;
+		points[1].x = 2 + point.x;
+		points[1].y = point.y + 1;
+		points[2].x = 8 + point.x;
+		points[2].y = point.y + 4;
 		break;
 	case 1:
-		points[0].x = point.x-2;
-		points[0].y = point.y-8;
-		points[1].x = point.x+1;
-		points[1].y = point.y-2;
-		points[2].x = point.x+4;
-		points[2].y = point.y-8;
+		points[0].x = point.x - 2;
+		points[0].y = point.y - 8;
+		points[1].x = point.x + 1;
+		points[1].y = point.y - 2;
+		points[2].x = point.x + 4;
+		points[2].y = point.y - 8;
 		break;
 	case 2:
-		points[0].x = point.x-9,	points[0].y = point.y-2;
-		points[1].x = point.x-3,	points[1].y = point.y+1;
-		points[2].x = point.x-9,	points[2].y = point.y+4;
+		points[0].x = point.x - 9, points[0].y = point.y - 2;
+		points[1].x = point.x - 3, points[1].y = point.y + 1;
+		points[2].x = point.x - 9, points[2].y = point.y + 4;
 		break;
 	default:
-		points[0].x = point.x-2;
-		points[0].y = point.y+8;
-		points[1].x = point.x+1;
-		points[1].y = point.y+2;
-		points[2].x = point.x+4;
-		points[2].y = point.y+8;
+		points[0].x = point.x - 2;
+		points[0].y = point.y + 8;
+		points[1].x = point.x + 1;
+		points[1].y = point.y + 2;
+		points[2].x = point.x + 4;
+		points[2].y = point.y + 8;
 		break;
 	}
 	dc->Polygon(points, 3);
@@ -263,64 +263,64 @@ void CGradientCtrlImpl::DrawSelPeg(CDC *dc, int peg)
 	CBrush *oldbrush;
 	CPen *oldpen;
 	CRect clientrect;
-	int drawwidth = GetDrawWidth()-23;
+	int drawwidth = GetDrawWidth() - 23;
 	bool vertical = IsVertical();
 
 	m_Owner->GetClientRect(&clientrect);
-	
+
 	//"Select objects"//
 	oldpen = (CPen*)dc->SelectStockObject(BLACK_PEN);
 	oldbrush = (CBrush*)dc->SelectStockObject(NULL_BRUSH);
 	int oldrop = dc->SetROP2(R2_NOT);
 
-	if(peg == PEG_START)
+	if (peg == PEG_START)
 	{
-		if(m_RightUpSide)
-			if(vertical) dc->Rectangle(drawwidth+9, 5, drawwidth+14, 10);
-			else dc->Rectangle(5, clientrect.bottom-drawwidth-9,
-					10,	clientrect.bottom-drawwidth-14);
-		
-		if(m_LeftDownSide)
-			if(vertical) dc->Rectangle(9, 5, 14, 10);
-			else dc->Rectangle(5, clientrect.bottom-9, 10, clientrect.bottom-14);
+		if (m_RightUpSide)
+			if (vertical) dc->Rectangle(drawwidth + 9, 5, drawwidth + 14, 10);
+			else dc->Rectangle(5, clientrect.bottom - drawwidth - 9,
+				10, clientrect.bottom - drawwidth - 14);
+
+		if (m_LeftDownSide)
+			if (vertical) dc->Rectangle(9, 5, 14, 10);
+			else dc->Rectangle(5, clientrect.bottom - 9, 10, clientrect.bottom - 14);
 	}
-	else if(peg == PEG_END)
+	else if (peg == PEG_END)
 	{
-		if(m_RightUpSide)
-			if(vertical) dc->Rectangle(drawwidth+9, clientrect.bottom-10, drawwidth+14, clientrect.bottom-5);
-			else dc->Rectangle(clientrect.right-10, clientrect.bottom-drawwidth-9,
-					clientrect.right-5, clientrect.bottom-drawwidth-14);
-		
-		if(m_LeftDownSide)
-			if(vertical) dc->Rectangle(9, clientrect.bottom-5, 14, clientrect.bottom-10);
-			else dc->Rectangle(clientrect.right-5, clientrect.bottom-9,
-				clientrect.right-10, clientrect.bottom-14);
+		if (m_RightUpSide)
+			if (vertical) dc->Rectangle(drawwidth + 9, clientrect.bottom - 10, drawwidth + 14, clientrect.bottom - 5);
+			else dc->Rectangle(clientrect.right - 10, clientrect.bottom - drawwidth - 9,
+				clientrect.right - 5, clientrect.bottom - drawwidth - 14);
+
+		if (m_LeftDownSide)
+			if (vertical) dc->Rectangle(9, clientrect.bottom - 5, 14, clientrect.bottom - 10);
+			else dc->Rectangle(clientrect.right - 5, clientrect.bottom - 9,
+				clientrect.right - 10, clientrect.bottom - 14);
 	}
-	
+
 	dc->SelectObject(oldbrush);
 	dc->SetROP2(oldrop);
 	dc->SelectObject(oldpen);
 
-	if(peg<0) return;
+	if (peg < 0) return;
 
-	if(m_Owner->m_Gradient.GetPegCount())
+	if (m_Owner->m_Gradient.GetPegCount())
 	{
 		CPeg mypeg = m_Owner->m_Gradient.GetPeg(peg);
-		int pegindent = GetPegIndent(peg)*11;
+		int pegindent = GetPegIndent(peg) * 11;
 
-		if(IsVertical())
+		if (IsVertical())
 		{
-			if(m_RightUpSide)
+			if (m_RightUpSide)
 				DrawSelPeg(dc, CPoint(pegindent + drawwidth, PointFromPos(mypeg.position)), 0);
-			if(m_LeftDownSide)
-				DrawSelPeg(dc, CPoint(23-pegindent, PointFromPos(mypeg.position)), 2);
+			if (m_LeftDownSide)
+				DrawSelPeg(dc, CPoint(23 - pegindent, PointFromPos(mypeg.position)), 2);
 		}
 		else
 		{
-			if(m_RightUpSide)
-				DrawSelPeg(dc, CPoint(PointFromPos(mypeg.position), clientrect.bottom-pegindent-drawwidth-1), 1);
-			if(m_LeftDownSide)
-				DrawSelPeg(dc, CPoint(PointFromPos(mypeg.position), clientrect.bottom-23+pegindent), 3);
+			if (m_RightUpSide)
+				DrawSelPeg(dc, CPoint(PointFromPos(mypeg.position), clientrect.bottom - pegindent - drawwidth - 1), 1);
+			if (m_LeftDownSide)
+				DrawSelPeg(dc, CPoint(PointFromPos(mypeg.position), clientrect.bottom - 23 + pegindent), 3);
 		}
 	}
 }
@@ -337,22 +337,22 @@ void CGradientCtrlImpl::DrawEndPegs(CDC *dc)
 	//----- Draw the first marker -----//
 	CBrush brush(m_Owner->m_Gradient.GetStartPegColor());
 	CBrush *oldbrush = dc->SelectObject(&brush); //select the brush
-	if(m_RightUpSide)
+	if (m_RightUpSide)
 	{
-		if(vertical)
-			dc->Rectangle(drawwidth-15, 4, drawwidth-8, 11); //draw the rectangle
+		if (vertical)
+			dc->Rectangle(drawwidth - 15, 4, drawwidth - 8, 11); //draw the rectangle
 		else
-			dc->Rectangle(4, clientrect.bottom-drawwidth+8,
-				11, clientrect.bottom-drawwidth+15); //draw the rectangle
+			dc->Rectangle(4, clientrect.bottom - drawwidth + 8,
+				11, clientrect.bottom - drawwidth + 15); //draw the rectangle
 	}
-	
-	if(m_LeftDownSide)
+
+	if (m_LeftDownSide)
 	{
-		if(vertical)
+		if (vertical)
 			dc->Rectangle(8, 4, 15, 11); //draw the rectangle
 		else
-			dc->Rectangle(4, clientrect.bottom-15,
-				11, clientrect.bottom-8); //draw the rectangle
+			dc->Rectangle(4, clientrect.bottom - 15,
+				11, clientrect.bottom - 8); //draw the rectangle
 	}
 
 	dc->SelectObject(oldbrush); // restore the old brush
@@ -361,25 +361,25 @@ void CGradientCtrlImpl::DrawEndPegs(CDC *dc)
 	//----- Draw the second one -----//
 	brush.CreateSolidBrush(m_Owner->m_Gradient.GetEndPegColor());
 	oldbrush = dc->SelectObject(&brush); //select the brush
-	
-	if(m_LeftDownSide)
+
+	if (m_LeftDownSide)
 	{
-		if(vertical)
-			dc->Rectangle(8, clientrect.bottom-4, 15,
-				clientrect.bottom-11);
+		if (vertical)
+			dc->Rectangle(8, clientrect.bottom - 4, 15,
+				clientrect.bottom - 11);
 		else
-			dc->Rectangle(clientrect.right-4, clientrect.bottom-15,
-				clientrect.right-11, clientrect.bottom-8);
+			dc->Rectangle(clientrect.right - 4, clientrect.bottom - 15,
+				clientrect.right - 11, clientrect.bottom - 8);
 	}
-	
-	if(m_RightUpSide)
+
+	if (m_RightUpSide)
 	{
-		if(vertical)
-			dc->Rectangle(drawwidth-15, clientrect.bottom-4, drawwidth-8,
-				clientrect.bottom-11);
+		if (vertical)
+			dc->Rectangle(drawwidth - 15, clientrect.bottom - 4, drawwidth - 8,
+				clientrect.bottom - 11);
 		else
-			dc->Rectangle(clientrect.right-4, clientrect.bottom-drawwidth+8,
-				clientrect.right-11, clientrect.bottom-drawwidth+15);
+			dc->Rectangle(clientrect.right - 4, clientrect.bottom - drawwidth + 8,
+				clientrect.right - 11, clientrect.bottom - drawwidth + 15);
 	}
 
 	dc->SelectObject(oldbrush); //restore the old brush
@@ -395,58 +395,58 @@ void CGradientCtrlImpl::DrawPeg(CDC *dc, CPoint point, COLORREF color, int direc
 	brush.CreateSolidBrush(color);
 	CPen *oldpen = (CPen*)dc->SelectStockObject(NULL_PEN);
 	oldbrush = dc->SelectObject(&brush);
-	
+
 	//Prepare the coodrdinates
-	switch(direction)
+	switch (direction)
 	{
 	case 0:
 		points[0].x = point.x;
-		points[0].y = point.y+1;
-		points[1].x = point.x+9;
-		points[1].y = point.y-3;
-		points[2].x = point.x+9;
-		points[2].y = point.y+5;
+		points[0].y = point.y + 1;
+		points[1].x = point.x + 9;
+		points[1].y = point.y - 3;
+		points[2].x = point.x + 9;
+		points[2].y = point.y + 5;
 		break;
 	case 1:
-		points[0].x = point.x+1;
+		points[0].x = point.x + 1;
 		points[0].y = point.y;
-		points[1].x = point.x-3;
-		points[1].y = point.y-9;
-		points[2].x = point.x+5;
-		points[2].y = point.y-9;
+		points[1].x = point.x - 3;
+		points[1].y = point.y - 9;
+		points[2].x = point.x + 5;
+		points[2].y = point.y - 9;
 		break;
 	case 2:
-		points[0].x = point.x-1;
-		points[0].y = point.y+1;
-		points[1].x = point.x-10;
-		points[1].y = point.y-3;
-		points[2].x = point.x-10;
-		points[2].y = point.y+5;
+		points[0].x = point.x - 1;
+		points[0].y = point.y + 1;
+		points[1].x = point.x - 10;
+		points[1].y = point.y - 3;
+		points[2].x = point.x - 10;
+		points[2].y = point.y + 5;
 		break;
 	default:
-		points[0].x = point.x+1;
-		points[0].y = point.y+1;
-		points[1].x = point.x-3;
-		points[1].y = point.y+10;
-		points[2].x = point.x+5;
-		points[2].y = point.y+10;
+		points[0].x = point.x + 1;
+		points[0].y = point.y + 1;
+		points[1].x = point.x - 3;
+		points[1].y = point.y + 10;
+		points[2].x = point.x + 5;
+		points[2].y = point.y + 10;
 		break;
 	}
 	dc->Polygon(points, 3);
-	
+
 	//Restore the old brush and pen
 	dc->SelectObject(oldbrush);
 	dc->SelectObject(oldpen);
-	
+
 	//----- Draw lines manually in the right directions ------//
 	CPen outlinepen(PS_SOLID, 1, GetSysColor(COLOR_WINDOWTEXT));
 	oldpen = dc->SelectObject(&outlinepen);
-	
+
 	dc->MoveTo(points[0]);
 	dc->LineTo(points[1]);
 	dc->LineTo(points[2]);
 	dc->LineTo(points[0]);
-	
+
 	dc->SelectObject(oldpen);
 
 	brush.DeleteObject();
@@ -457,37 +457,37 @@ CString CGradientCtrlImpl::ExtractLine(CString source, int line)
 	int start = 0, end;
 	CString textline;
 
-	if(source == _T(""))
+	if (source == _T(""))
 		return _T("");
 
-	while(line > 0)
+	while (line > 0)
 	{
 		start = source.Find(_T('\n'), start);
-		if(start == -1)
+		if (start == -1)
 			return _T("");
 		start++;
 		line--;
 	}
 
 	end = source.Find(_T('\n'), start);
-	if(end == -1)
+	if (end == -1)
 		end = source.GetLength();
 
 	textline = source;
-	CString op = textline.Mid(start, end-start);
+	CString op = textline.Mid(start, end - start);
 
-	return textline.Mid(start, end-start);
+	return textline.Mid(start, end - start);
 }
 
-void CGradientCtrlImpl::ParseToolTipLine(CString &tiptext,CPeg peg)
+void CGradientCtrlImpl::ParseToolTipLine(CString &tiptext, CPeg peg)
 {
 	CString str;
 
-	tiptext=ExtractLine(m_Owner->m_ToolTipFormat,1);
-	tiptext.Replace(ampersandtag,_T("&"));
-	tiptext.Replace(valtag,m_Owner->GetGradient().ValueStrFromPos(str,peg.position));
+	tiptext = ExtractLine(m_Owner->m_ToolTipFormat, 1);
+	tiptext.Replace(ampersandtag, _T("&"));
+	tiptext.Replace(valtag, m_Owner->GetGradient().ValueStrFromPos(str, peg.position));
 
-	LPCSTR fmt=_T("%2.2X");
+	LPCSTR fmt = _T("%2.2X");
 
 	str.Format(fmt, GetRValue(peg.color));
 	tiptext.Replace(hexrtag, str);
@@ -498,21 +498,21 @@ void CGradientCtrlImpl::ParseToolTipLine(CString &tiptext,CPeg peg)
 	str.Format(fmt, GetBValue(peg.color));
 	tiptext.Replace(hexbtag, str);
 
-	fmt=_T("%0.3f");
+	fmt = _T("%0.3f");
 
 	str.Format(fmt, peg.position);
 	tiptext.Replace(postag, str);
 
-	str.Format(fmt, ((double)GetRValue(peg.color))/255.0);
+	str.Format(fmt, ((double)GetRValue(peg.color)) / 255.0);
 	tiptext.Replace(floatrtag, str);
 
-	str.Format(fmt, ((double)GetGValue(peg.color))/255.0);
+	str.Format(fmt, ((double)GetGValue(peg.color)) / 255.0);
 	tiptext.Replace(floatgtag, str);
 
-	str.Format(fmt, ((double)GetBValue(peg.color))/255.0);
+	str.Format(fmt, ((double)GetBValue(peg.color)) / 255.0);
 	tiptext.Replace(floatbtag, str);
-	
-	fmt=_T("%u");
+
+	fmt = _T("%u");
 	str.Format(fmt, GetRValue(peg.color));
 	tiptext.Replace(rtag, str);
 
@@ -533,118 +533,118 @@ void CGradientCtrlImpl::SynchronizeTooltips()
 
 	m_Owner->GetClientRect(&clientrect);
 
-	if(!m_ToolTipCtrl.GetSafeHwnd())
+	if (!m_ToolTipCtrl.GetSafeHwnd())
 		m_ToolTipCtrl.Create(m_Owner);
-	
+
 	//----- Out with the old -----//
-	for(int i = 0; i < m_RectCount+1; i++) m_ToolTipCtrl.DelTool(m_Owner, i);
+	for (int i = 0; i < m_RectCount + 1; i++) m_ToolTipCtrl.DelTool(m_Owner, i);
 
 	m_RectCount = m_Owner->m_Gradient.GetPegCount();
 
-	if(m_Owner->m_ToolTipFormat == _T("")) return;
+	if (m_Owner->m_ToolTipFormat == _T("")) return;
 
 	//----- Add the main pegs -----//
-	for(int i = 0; i < m_RectCount; i++)
+	for (int i = 0; i < m_RectCount; i++)
 	{
-		if(m_LeftDownSide)
+		if (m_LeftDownSide)
 		{
 			GetPegRect(i, &pegrect, false);
 			ParseToolTipLine(tiptext, m_Owner->m_Gradient.GetPeg(i));
-			m_ToolTipCtrl.AddTool(m_Owner, tiptext, pegrect, i+6);
+			m_ToolTipCtrl.AddTool(m_Owner, tiptext, pegrect, i + 6);
 		}
 
-		if(m_RightUpSide)
+		if (m_RightUpSide)
 		{
 			GetPegRect(i, &pegrect, true);
 			ParseToolTipLine(tiptext, m_Owner->m_Gradient.GetPeg(i));
-			m_ToolTipCtrl.AddTool(m_Owner, tiptext, pegrect, i+6);
+			m_ToolTipCtrl.AddTool(m_Owner, tiptext, pegrect, i + 6);
 		}
 	}
 
 	//----- Add ones for the end pegs -----//
 	ParseToolTipLine(tiptext, m_Owner->m_Gradient.GetPeg(PEG_START));
-	if(tiptext != _T(""))
+	if (tiptext != _T(""))
 	{
-		if(IsVertical())
-		{	
-			if(m_RightUpSide)
+		if (IsVertical())
+		{
+			if (m_RightUpSide)
 			{
-				pegrect.SetRect(drawwidth-15, 4, drawwidth-8, 11);
+				pegrect.SetRect(drawwidth - 15, 4, drawwidth - 8, 11);
 				m_ToolTipCtrl.AddTool(m_Owner, tiptext, pegrect, 1);
 			}
 
-			if(m_LeftDownSide)
+			if (m_LeftDownSide)
 			{
 				pegrect.SetRect(8, 4, 15, 11);
 				m_ToolTipCtrl.AddTool(m_Owner, tiptext, pegrect, 2);
 			}
 		}
 		else
-		{	
-			if(m_RightUpSide)
+		{
+			if (m_RightUpSide)
 			{
-				pegrect.SetRect(4, clientrect.bottom-drawwidth+8, 11,
-					clientrect.bottom-drawwidth+15);
+				pegrect.SetRect(4, clientrect.bottom - drawwidth + 8, 11,
+					clientrect.bottom - drawwidth + 15);
 				m_ToolTipCtrl.AddTool(m_Owner, tiptext, pegrect, 1);
 			}
 
-			if(m_LeftDownSide)
+			if (m_LeftDownSide)
 			{
-				pegrect = CRect(4, clientrect.bottom-15, 11, clientrect.bottom-8);
+				pegrect = CRect(4, clientrect.bottom - 15, 11, clientrect.bottom - 8);
 				m_ToolTipCtrl.AddTool(m_Owner, tiptext, pegrect, 2);
 			}
 		}
 	}
 
 	ParseToolTipLine(tiptext, m_Owner->m_Gradient.GetPeg(PEG_END));
-	if(tiptext != _T(""))
+	if (tiptext != _T(""))
 	{
-		if(IsVertical())
-		{		
-			if(m_RightUpSide)
-			{	
-				pegrect.SetRect(drawwidth-15, clientrect.bottom-11, drawwidth-8,
-					clientrect.bottom-4);
+		if (IsVertical())
+		{
+			if (m_RightUpSide)
+			{
+				pegrect.SetRect(drawwidth - 15, clientrect.bottom - 11, drawwidth - 8,
+					clientrect.bottom - 4);
 				m_ToolTipCtrl.AddTool(m_Owner, tiptext, pegrect, 3);
 			}
 
-			if(m_LeftDownSide)
+			if (m_LeftDownSide)
 			{
-				pegrect.SetRect(8, clientrect.bottom-11, 15,
-					clientrect.bottom-4);
+				pegrect.SetRect(8, clientrect.bottom - 11, 15,
+					clientrect.bottom - 4);
 				m_ToolTipCtrl.AddTool(m_Owner, tiptext, pegrect, 4);
 			}
 		}
 		else
-		{		
-			if(m_RightUpSide)
-			{	
-				pegrect.SetRect(clientrect.right-11, clientrect.bottom-drawwidth+8,
-					clientrect.right-4, clientrect.bottom-drawwidth+15);
+		{
+			if (m_RightUpSide)
+			{
+				pegrect.SetRect(clientrect.right - 11, clientrect.bottom - drawwidth + 8,
+					clientrect.right - 4, clientrect.bottom - drawwidth + 15);
 				m_ToolTipCtrl.AddTool(m_Owner, tiptext, pegrect, 3);
 			}
 
-			if(m_LeftDownSide)
+			if (m_LeftDownSide)
 			{
-				pegrect.SetRect(clientrect.right-11, clientrect.bottom-15,
-					clientrect.right-4, clientrect.bottom-8);
+				pegrect.SetRect(clientrect.right - 11, clientrect.bottom - 15,
+					clientrect.right - 4, clientrect.bottom - 8);
 				m_ToolTipCtrl.AddTool(m_Owner, tiptext, pegrect, 4);
 			}
 		}
 	}
 
 	//----- Add one for the gradient -----//
-	if(IsVertical())
-		pegrect.SetRect(m_LeftDownSide?23:4, 4,
-			drawwidth-(m_RightUpSide?23:4),
-			(clientrect.bottom>10)?clientrect.bottom-4:clientrect.bottom);
+	if (IsVertical())
+		pegrect.SetRect(m_LeftDownSide ? 23 : 4, 4,
+			drawwidth - (m_RightUpSide ? 23 : 4),
+			(clientrect.bottom > 10) ? clientrect.bottom - 4 : clientrect.bottom);
 	else
-		pegrect.SetRect(4, clientrect.bottom-drawwidth+(m_RightUpSide?23:4),
-			(clientrect.right>10)?clientrect.right-4:clientrect.right,
-			clientrect.bottom-(m_LeftDownSide?23:4));
+		pegrect.SetRect(4, clientrect.bottom - drawwidth + (m_RightUpSide ? 23 : 4),
+		(clientrect.right > 10) ? clientrect.right - 4 : clientrect.right,
+			clientrect.bottom - (m_LeftDownSide ? 23 : 4));
 
 	tiptext = ExtractLine(m_Owner->m_ToolTipFormat, 2);
-	if(tiptext != _T(""))
+	if (tiptext != _T(""))
 	{
 		m_ToolTipCtrl.AddTool(m_Owner, tiptext, pegrect, 5);
 	}
@@ -654,26 +654,26 @@ void CGradientCtrlImpl::ShowTooltip(CPoint point, CString text)
 {
 	unsigned int uid = 0;       // for ti initialization
 
-	if(text == _T(""))
+	if (text == _T(""))
 		return;
 
 	// CREATE A TOOLTIP WINDOW
-	if(m_wndToolTip == NULL)
+	if (m_wndToolTip == NULL)
 	{
 		m_wndToolTip = CreateWindowEx(WS_EX_TOPMOST,
-			TOOLTIPS_CLASS, NULL, TTS_NOPREFIX | TTS_ALWAYSTIP,		
+			TOOLTIPS_CLASS, NULL, TTS_NOPREFIX | TTS_ALWAYSTIP,
 			CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
 			NULL, NULL, NULL, NULL);
 
 		ASSERT(m_wndToolTip);
-		if(!m_wndToolTip) return;
+		if (!m_wndToolTip) return;
 		// INITIALIZE MEMBERS OF THE TOOLINFO STRUCTURE
 		m_ToolInfo.cbSize = sizeof(TOOLINFO);
 		m_ToolInfo.uFlags = TTF_TRACK;
 		m_ToolInfo.hwnd = NULL;
 		m_ToolInfo.hinst = NULL;
 		m_ToolInfo.uId = uid;
-		m_ToolInfo.lpszText = (LPTSTR)(LPCTSTR) text;		
+		m_ToolInfo.lpszText = (LPTSTR)(LPCTSTR)text;
 		// ToolTip control will cover the whole window
 		m_ToolInfo.rect.left = 0;
 		m_ToolInfo.rect.top = 0;
@@ -681,20 +681,20 @@ void CGradientCtrlImpl::ShowTooltip(CPoint point, CString text)
 		m_ToolInfo.rect.bottom = 0;
 
 		// SEND AN ADDTOOL MESSAGE TO THE TOOLTIP CONTROL WINDOW
-		::SendMessage(m_wndToolTip, TTM_ADDTOOL, 0, (LPARAM) (LPTOOLINFO) &m_ToolInfo);
+		::SendMessage(m_wndToolTip, TTM_ADDTOOL, 0, (LPARAM)(LPTOOLINFO)&m_ToolInfo);
 		TrackMouse(m_Owner->m_hWnd);
 	}
 
-	::SendMessage(m_wndToolTip, TTM_TRACKPOSITION, 0, (LPARAM)(DWORD) MAKELONG(point.x, point.y));
-	::SendMessage(m_wndToolTip, TTM_TRACKACTIVATE, true, (LPARAM)(LPTOOLINFO) &m_ToolInfo);
+	::SendMessage(m_wndToolTip, TTM_TRACKPOSITION, 0, (LPARAM)(DWORD)MAKELONG(point.x, point.y));
+	::SendMessage(m_wndToolTip, TTM_TRACKACTIVATE, true, (LPARAM)(LPTOOLINFO)&m_ToolInfo);
 }
 
 void CGradientCtrlImpl::SetTooltipText(CString text)
-{	
-	if(m_wndToolTip != NULL)
+{
+	if (m_wndToolTip != NULL)
 	{
-		m_ToolInfo.lpszText = (LPTSTR)(LPCTSTR) text;	
-		::SendMessage(m_wndToolTip, TTM_SETTOOLINFO, 0, (LPARAM)(LPTOOLINFO) &m_ToolInfo);   	
+		m_ToolInfo.lpszText = (LPTSTR)(LPCTSTR)text;
+		::SendMessage(m_wndToolTip, TTM_SETTOOLINFO, 0, (LPARAM)(LPTOOLINFO)&m_ToolInfo);
 	}
 }
 
@@ -706,9 +706,9 @@ void CGradientCtrlImpl::DestroyTooltip()
 
 bool CGradientCtrlImpl::IsVertical()
 {
-	if(m_Owner->m_Orientation == CGradientCtrl::ForceVertical)
+	if (m_Owner->m_Orientation == CGradientCtrl::ForceVertical)
 		return true;
-	else if(m_Owner->m_Orientation == CGradientCtrl::ForceHorizontal)
+	else if (m_Owner->m_Orientation == CGradientCtrl::ForceHorizontal)
 		return false;
 	else
 	{
@@ -741,17 +741,17 @@ int CGradientCtrlImpl::PointFromPos(double pos)
 }
 
 double CGradientCtrlImpl::PosFromPoint(int point)
-{	
+{
 	CRect clientrect;
 	m_Owner->GetClientRect(clientrect);
-	int length = IsVertical() ? (clientrect.bottom -  9) : (clientrect.right -  9);
-	int x = point-5;
+	int length = IsVertical() ? (clientrect.bottom - 9) : (clientrect.right - 9);
+	int x = point - 5;
 	double val;
-	
-	val = (double)x/(double)length;
 
-	if(val < 0) val = 0;
-	else if(val > 1) val = 1;
+	val = (double)x / (double)length;
+
+	if (val < 0) val = 0;
+	else if (val > 1) val = 1;
 
 	return val;
 }
@@ -760,17 +760,17 @@ int CGradientCtrlImpl::GetPegIndent(int index)
 {
 	int lastpegpos = -1, pegindent = 0;
 
-	for(int i = 0; i <= index; i++)
+	for (int i = 0; i <= index; i++)
 	{
 		const CPeg &peg = m_Owner->m_Gradient.GetPeg(i);
-		if(lastpegpos != -1 && lastpegpos >= PointFromPos(peg.position)-10)
+		if (lastpegpos != -1 && lastpegpos >= PointFromPos(peg.position) - 10)
 			pegindent += 1;
 		else pegindent = 0;
 
 		lastpegpos = PointFromPos(peg.position);
 	}
-	
-	return pegindent%2;
+
+	return pegindent % 2;
 }
 
 int CGradientCtrlImpl::PtInPeg(CPoint point)
@@ -778,23 +778,23 @@ int CGradientCtrlImpl::PtInPeg(CPoint point)
 	CPeg peg;
 	CRect pegrect, clientrect;
 	int drawwidth = GetDrawWidth();
-	
+
 	//----- Check if the point is on a marker peg -----//
-	for(int i = 0; i < m_Owner->m_Gradient.GetPegCount(); i++)
+	for (int i = 0; i < m_Owner->m_Gradient.GetPegCount(); i++)
 	{
 		peg = m_Owner->m_Gradient.GetPeg(i);
-		
-		if(m_LeftDownSide)
+
+		if (m_LeftDownSide)
 		{
 			GetPegRect(i, &pegrect, false);
-			if(pegrect.PtInRect(point))
+			if (pegrect.PtInRect(point))
 				return i;
 		}
-		
-		if(m_RightUpSide)
+
+		if (m_RightUpSide)
 		{
 			GetPegRect(i, &pegrect, true);
-			if(pegrect.PtInRect(point))
+			if (pegrect.PtInRect(point))
 				return i;
 		}
 	}
@@ -802,14 +802,14 @@ int CGradientCtrlImpl::PtInPeg(CPoint point)
 	//----- Check if the point is on an  end peg -----//
 	m_Owner->GetClientRect(&clientrect);
 
-	pegrect.left = drawwidth+8, pegrect.top = 4;
-	pegrect.right = drawwidth+15, pegrect.bottom = 11;
-	if(pegrect.PtInRect(point))
+	pegrect.left = drawwidth + 8, pegrect.top = 4;
+	pegrect.right = drawwidth + 15, pegrect.bottom = 11;
+	if (pegrect.PtInRect(point))
 		return PEG_START;
 
-	pegrect.left = drawwidth+8, pegrect.top = clientrect.bottom-11;
-	pegrect.right = drawwidth+15, pegrect.bottom = clientrect.bottom-4;
-	if(pegrect.PtInRect(point))
+	pegrect.left = drawwidth + 8, pegrect.top = clientrect.bottom - 11;
+	pegrect.right = drawwidth + 15, pegrect.bottom = clientrect.bottom - 4;
+	if (pegrect.PtInRect(point))
 		return PEG_END;
 
 	return -1;
@@ -821,105 +821,105 @@ void CGradientCtrlImpl::GetPegRect(int index, CRect *rect, bool right)
 	int drawwidth = GetDrawWidth();
 	bool vertical = IsVertical();
 	m_Owner->GetClientRect(&clientrect);
-	
-	if(index == PEG_START)
+
+	if (index == PEG_START)
 	{
-		if(right)
-		{	
-			if(vertical)
+		if (right)
+		{
+			if (vertical)
 			{
-				rect->left = drawwidth-15, rect->top = 4;
-				rect->right = drawwidth-8, rect->bottom = 11;
+				rect->left = drawwidth - 15, rect->top = 4;
+				rect->right = drawwidth - 8, rect->bottom = 11;
 			}
 			else
 			{
-				rect->left = 4, rect->top = clientrect.bottom-drawwidth+8;
-				rect->right = 11, rect->bottom = clientrect.bottom-drawwidth+15;
+				rect->left = 4, rect->top = clientrect.bottom - drawwidth + 8;
+				rect->right = 11, rect->bottom = clientrect.bottom - drawwidth + 15;
 			}
 		}
 		else
 		{
-			if(vertical)
+			if (vertical)
 			{
 				rect->left = 8, rect->top = 4;
 				rect->right = 15, rect->bottom = 11;
 			}
 			else
 			{
-				rect->left = 4, rect->top = clientrect.bottom-15;
-				rect->right = 11, rect->bottom = clientrect.bottom-8;
+				rect->left = 4, rect->top = clientrect.bottom - 15;
+				rect->right = 11, rect->bottom = clientrect.bottom - 8;
 			}
 		}
 
 		return;
 	}
 
-	if(index == PEG_END)
+	if (index == PEG_END)
 	{
-		if(right)
-		{	
-			if(vertical)
+		if (right)
+		{
+			if (vertical)
 			{
-				rect->left = drawwidth-15, rect->top = clientrect.bottom-11;
-				rect->right = drawwidth-8, rect->bottom = clientrect.bottom-4;
+				rect->left = drawwidth - 15, rect->top = clientrect.bottom - 11;
+				rect->right = drawwidth - 8, rect->bottom = clientrect.bottom - 4;
 			}
 			else
 			{
-				rect->left = clientrect.right-11, rect->top = clientrect.bottom-drawwidth+8;
-				rect->right = clientrect.right-4, rect->bottom = clientrect.bottom-drawwidth+15;
+				rect->left = clientrect.right - 11, rect->top = clientrect.bottom - drawwidth + 8;
+				rect->right = clientrect.right - 4, rect->bottom = clientrect.bottom - drawwidth + 15;
 			}
 		}
 		else
 		{
-			if(vertical)
+			if (vertical)
 			{
-				rect->left = 8, rect->top = clientrect.bottom-11;
-				rect->right = 15, rect->bottom = clientrect.bottom-4;
+				rect->left = 8, rect->top = clientrect.bottom - 11;
+				rect->right = 15, rect->bottom = clientrect.bottom - 4;
 			}
 			else
 			{
-				rect->left = clientrect.right-11, rect->top = clientrect.bottom-15;
-				rect->right = clientrect.right-4, rect->bottom = clientrect.bottom-8;
+				rect->left = clientrect.right - 11, rect->top = clientrect.bottom - 15;
+				rect->right = clientrect.right - 4, rect->bottom = clientrect.bottom - 8;
 			}
 		}
 
 		return;
 	}
-	
+
 	CPeg peg = m_Owner->m_Gradient.GetPeg(index);
 	int p = PointFromPos(peg.position);
-	int indent = GetPegIndent(index)*11;
+	int indent = GetPegIndent(index) * 11;
 
-	if(right)
+	if (right)
 	{
-		if(vertical)
+		if (vertical)
 		{
 			rect->top = p - 3;
 			rect->bottom = p + 6;
-			rect->left = drawwidth+indent-23;
-			rect->right = drawwidth+indent-13;
+			rect->left = drawwidth + indent - 23;
+			rect->right = drawwidth + indent - 13;
 		}
 		else
 		{
-			rect->top = clientrect.bottom-drawwidth-indent+13;
-			rect->bottom = clientrect.bottom-drawwidth-indent+23;
+			rect->top = clientrect.bottom - drawwidth - indent + 13;
+			rect->bottom = clientrect.bottom - drawwidth - indent + 23;
 			rect->left = p - 3;
 			rect->right = p + 6;
 		}
 	}
 	else
 	{
-		if(vertical)
+		if (vertical)
 		{
 			rect->top = p - 3;
 			rect->bottom = p + 6;
-			rect->left = 13-indent;
-			rect->right = 23-indent;
+			rect->left = 13 - indent;
+			rect->right = 23 - indent;
 		}
 		else
 		{
-			rect->top = clientrect.bottom+indent-23;
-			rect->bottom = clientrect.bottom+indent-13;
+			rect->top = clientrect.bottom + indent - 23;
+			rect->bottom = clientrect.bottom + indent - 13;
 			rect->left = p - 3;
 			rect->right = p + 6;
 		}

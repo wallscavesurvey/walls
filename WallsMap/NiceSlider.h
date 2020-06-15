@@ -6,7 +6,7 @@ class CNiceSliderCtrl : public CSliderCtrl
 {
 public:
 	DECLARE_DYNAMIC(CNiceSliderCtrl)
-		CNiceSliderCtrl() : m_bDragging(false), m_bDragChanged(false) {}
+	CNiceSliderCtrl() : m_bDragging(false), m_bDragChanged(false) {}
 protected:
 	//{{AFX_MSG(CRoundSliderCtrl)
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);

@@ -5,13 +5,13 @@
  * Purpose:  Implementation of CPLKeywordParser - a class for parsing
  *           the keyword format used for files like QuickBird .RPB files.
  *           This is a slight variation on the NASAKeywordParser used for
- *           the PDS/ISIS2/ISIS3 formats. 
+ *           the PDS/ISIS2/ISIS3 formats.
  * Author:   Frank Warmerdam <warmerdam@pobox.com
  *
  ******************************************************************************
  * Copyright (c) 2008, Frank Warmerdam <warmerdam@pobox.com>
  * Copyright (c) 2009-2010, Even Rouault <even dot rouault at mines-paris dot org>
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
@@ -49,7 +49,7 @@ CPL_CVSID("$Id");
 CPLKeywordParser::CPLKeywordParser()
 
 {
-    papszKeywordList = NULL;
+	papszKeywordList = NULL;
 }
 
 /************************************************************************/
@@ -59,81 +59,81 @@ CPLKeywordParser::CPLKeywordParser()
 CPLKeywordParser::~CPLKeywordParser()
 
 {
-    CSLDestroy( papszKeywordList );
-    papszKeywordList = NULL;
+	CSLDestroy(papszKeywordList);
+	papszKeywordList = NULL;
 }
 
 /************************************************************************/
 /*                               Ingest()                               */
 /************************************************************************/
 
-int CPLKeywordParser::Ingest( VSILFILE *fp )
+int CPLKeywordParser::Ingest(VSILFILE *fp)
 
 {
-/* -------------------------------------------------------------------- */
-/*      Read in buffer till we find END all on it's own line.           */
-/* -------------------------------------------------------------------- */
-    for( ; TRUE; ) 
-    {
-        const char *pszCheck;
-        char szChunk[513];
+	/* -------------------------------------------------------------------- */
+	/*      Read in buffer till we find END all on it's own line.           */
+	/* -------------------------------------------------------------------- */
+	for (; TRUE; )
+	{
+		const char *pszCheck;
+		char szChunk[513];
 
-        int nBytesRead = VSIFReadL( szChunk, 1, 512, fp );
+		int nBytesRead = VSIFReadL(szChunk, 1, 512, fp);
 
-        szChunk[nBytesRead] = '\0';
-        osHeaderText += szChunk;
+		szChunk[nBytesRead] = '\0';
+		osHeaderText += szChunk;
 
-        if( nBytesRead < 512 )
-            break;
+		if (nBytesRead < 512)
+			break;
 
-        if( osHeaderText.size() > 520 )
-            pszCheck = osHeaderText.c_str() + (osHeaderText.size() - 520);
-        else
-            pszCheck = szChunk;
+		if (osHeaderText.size() > 520)
+			pszCheck = osHeaderText.c_str() + (osHeaderText.size() - 520);
+		else
+			pszCheck = szChunk;
 
-        if( strstr(pszCheck,"\r\nEND;\r\n") != NULL 
-            || strstr(pszCheck,"\nEND;\n") != NULL )
-            break;
-    }
+		if (strstr(pszCheck, "\r\nEND;\r\n") != NULL
+			|| strstr(pszCheck, "\nEND;\n") != NULL)
+			break;
+	}
 
-    pszHeaderNext = osHeaderText.c_str();
+	pszHeaderNext = osHeaderText.c_str();
 
-/* -------------------------------------------------------------------- */
-/*      Process name/value pairs, keeping track of a "path stack".      */
-/* -------------------------------------------------------------------- */
-    return ReadGroup( "" );
+	/* -------------------------------------------------------------------- */
+	/*      Process name/value pairs, keeping track of a "path stack".      */
+	/* -------------------------------------------------------------------- */
+	return ReadGroup("");
 }
 
 /************************************************************************/
 /*                             ReadGroup()                              */
 /************************************************************************/
 
-int CPLKeywordParser::ReadGroup( const char *pszPathPrefix )
+int CPLKeywordParser::ReadGroup(const char *pszPathPrefix)
 
 {
-    CPLString osName, osValue;
+	CPLString osName, osValue;
 
-    for( ; TRUE; )
-    {
-        if( !ReadPair( osName, osValue ) )
-            return FALSE;
+	for (; TRUE; )
+	{
+		if (!ReadPair(osName, osValue))
+			return FALSE;
 
-        if( EQUAL(osName,"BEGIN_GROUP") )
-        {
-            if( !ReadGroup( (CPLString(pszPathPrefix) + osValue + ".").c_str() ) )
-                return FALSE;
-        }
-        else if( EQUALN(osName,"END",3) )
-        {
-            return TRUE;
-        }
-        else
-        {
-            osName = pszPathPrefix + osName;
-            papszKeywordList = CSLSetNameValue( papszKeywordList, 
-                                                osName, osValue );
-        }
-    }
+		if (EQUAL(osName, "BEGIN_GROUP"))
+		{
+			if (!ReadGroup((CPLString(pszPathPrefix) + osValue + ".").c_str()))
+				return FALSE;
+		}
+		else if (EQUALN(osName, "END", 3))
+		{
+			return TRUE;
+		}
+		else
+		{
+			osName = pszPathPrefix + osName;
+			papszKeywordList = CSLSetNameValue(papszKeywordList,
+				osName, osValue);
+		}
+	}
 }
 
 /************************************************************************/
@@ -143,159 +143,159 @@ int CPLKeywordParser::ReadGroup( const char *pszPathPrefix )
 /*      white space, ignore comments, split on '='.                     */
 /************************************************************************/
 
-int CPLKeywordParser::ReadPair( CPLString &osName, CPLString &osValue )
+int CPLKeywordParser::ReadPair(CPLString &osName, CPLString &osValue)
 
 {
-    osName = "";
-    osValue = "";
+	osName = "";
+	osValue = "";
 
-    if( !ReadWord( osName ) )
-        return FALSE;
+	if (!ReadWord(osName))
+		return FALSE;
 
-    SkipWhite();
+	SkipWhite();
 
-    if( EQUAL(osName,"END") )
-        return TRUE;
+	if (EQUAL(osName, "END"))
+		return TRUE;
 
-    if( *pszHeaderNext != '=' )
-    {
-        // ISIS3 does not have anything after the end group/object keyword. 
-        if( EQUAL(osName,"End_Group") || EQUAL(osName,"End_Object") )
-            return TRUE;
-        else
-            return FALSE;
-    }
-    
-    pszHeaderNext++;
-    
-    SkipWhite();
-    
-    osValue = "";
+	if (*pszHeaderNext != '=')
+	{
+		// ISIS3 does not have anything after the end group/object keyword. 
+		if (EQUAL(osName, "End_Group") || EQUAL(osName, "End_Object"))
+			return TRUE;
+		else
+			return FALSE;
+	}
 
-    // Handle value lists like:     Name   = (Red, Red)
-    // or list of lists like : TLCList = ( (0,  0.000000), (8299,  4.811014) );
-    if( *pszHeaderNext == '(' )
-    {
-        CPLString osWord;
-        int nDepth = 0;
-        const char* pszLastPos = pszHeaderNext;
+	pszHeaderNext++;
 
-        while( ReadWord( osWord ) && pszLastPos != pszHeaderNext)
-        {
-            SkipWhite();
-            pszLastPos = pszHeaderNext;
+	SkipWhite();
 
-            osValue += osWord;
-            const char* pszIter = osWord.c_str();
-            int bInQuote = FALSE;
-            while(*pszIter != '\0')
-            {
-                if (*pszIter == '"')
-                    bInQuote = !bInQuote;
-                else if (!bInQuote)
-                {
-                    if (*pszIter == '(')
-                        nDepth ++;
-                    else if (*pszIter == ')')
-                    {
-                        nDepth --;
-                        if (nDepth == 0)
-                            break;
-                    }
-                }
-                pszIter ++;
-            }
-            if (*pszIter == ')' && nDepth == 0)
-                break;
-        }
-    }
+	osValue = "";
 
-    else // Handle more normal "single word" values. 
-    {
-        if( !ReadWord( osValue ) )
-            return FALSE;
+	// Handle value lists like:     Name   = (Red, Red)
+	// or list of lists like : TLCList = ( (0,  0.000000), (8299,  4.811014) );
+	if (*pszHeaderNext == '(')
+	{
+		CPLString osWord;
+		int nDepth = 0;
+		const char* pszLastPos = pszHeaderNext;
 
-    }
-        
-    SkipWhite();
+		while (ReadWord(osWord) && pszLastPos != pszHeaderNext)
+		{
+			SkipWhite();
+			pszLastPos = pszHeaderNext;
 
-    // No units keyword?   
-    if( *pszHeaderNext != '<' )
-        return TRUE;
+			osValue += osWord;
+			const char* pszIter = osWord.c_str();
+			int bInQuote = FALSE;
+			while (*pszIter != '\0')
+			{
+				if (*pszIter == '"')
+					bInQuote = !bInQuote;
+				else if (!bInQuote)
+				{
+					if (*pszIter == '(')
+						nDepth++;
+					else if (*pszIter == ')')
+					{
+						nDepth--;
+						if (nDepth == 0)
+							break;
+					}
+				}
+				pszIter++;
+			}
+			if (*pszIter == ')' && nDepth == 0)
+				break;
+		}
+	}
 
-    // Append units keyword.  For lines that like like this:
-    //  MAP_RESOLUTION               = 4.0 <PIXEL/DEGREE>
-    
-    CPLString osWord;
-    
-    osValue += " ";
-    
-    while( ReadWord( osWord ) )
-    {
-        SkipWhite();
-        
-        osValue += osWord;
-        if( osWord[strlen(osWord)-1] == '>' )
-            break;
-    }
-    
-    return TRUE;
+	else // Handle more normal "single word" values. 
+	{
+		if (!ReadWord(osValue))
+			return FALSE;
+
+	}
+
+	SkipWhite();
+
+	// No units keyword?   
+	if (*pszHeaderNext != '<')
+		return TRUE;
+
+	// Append units keyword.  For lines that like like this:
+	//  MAP_RESOLUTION               = 4.0 <PIXEL/DEGREE>
+
+	CPLString osWord;
+
+	osValue += " ";
+
+	while (ReadWord(osWord))
+	{
+		SkipWhite();
+
+		osValue += osWord;
+		if (osWord[strlen(osWord) - 1] == '>')
+			break;
+	}
+
+	return TRUE;
 }
 
 /************************************************************************/
 /*                              ReadWord()                              */
 /************************************************************************/
 
-int CPLKeywordParser::ReadWord( CPLString &osWord )
+int CPLKeywordParser::ReadWord(CPLString &osWord)
 
 {
-    osWord = "";
+	osWord = "";
 
-    SkipWhite();
+	SkipWhite();
 
-    if( *pszHeaderNext == '\0' )
-        return FALSE;
+	if (*pszHeaderNext == '\0')
+		return FALSE;
 
-    while( *pszHeaderNext != '\0' 
-           && *pszHeaderNext != '=' 
-           && *pszHeaderNext != ';'
-           && !isspace((unsigned char)*pszHeaderNext) )
-    {
-        if( *pszHeaderNext == '"' )
-        {
-            osWord += *(pszHeaderNext++);
-            while( *pszHeaderNext != '"' )
-            {
-                if( *pszHeaderNext == '\0' )
-                    return FALSE;
+	while (*pszHeaderNext != '\0'
+		&& *pszHeaderNext != '='
+		&& *pszHeaderNext != ';'
+		&& !isspace((unsigned char)*pszHeaderNext))
+	{
+		if (*pszHeaderNext == '"')
+		{
+			osWord += *(pszHeaderNext++);
+			while (*pszHeaderNext != '"')
+			{
+				if (*pszHeaderNext == '\0')
+					return FALSE;
 
-                osWord += *(pszHeaderNext++);
-            }
-            osWord += *(pszHeaderNext++);
-        }
-        else if( *pszHeaderNext == '\'' )
-        {
-            osWord += *(pszHeaderNext++);
-            while( *pszHeaderNext != '\'' )
-            {
-                if( *pszHeaderNext == '\0' )
-                    return FALSE;
+				osWord += *(pszHeaderNext++);
+			}
+			osWord += *(pszHeaderNext++);
+		}
+		else if (*pszHeaderNext == '\'')
+		{
+			osWord += *(pszHeaderNext++);
+			while (*pszHeaderNext != '\'')
+			{
+				if (*pszHeaderNext == '\0')
+					return FALSE;
 
-                osWord += *(pszHeaderNext++);
-            }
-            osWord += *(pszHeaderNext++);
-        }
-        else
-        {
-            osWord += *pszHeaderNext;
-            pszHeaderNext++;
-        }
-    }
+				osWord += *(pszHeaderNext++);
+			}
+			osWord += *(pszHeaderNext++);
+		}
+		else
+		{
+			osWord += *pszHeaderNext;
+			pszHeaderNext++;
+		}
+	}
 
-    if( *pszHeaderNext == ';' )
-        pszHeaderNext++;
-    
-    return TRUE;
+	if (*pszHeaderNext == ';')
+		pszHeaderNext++;
+
+	return TRUE;
 }
 
 /************************************************************************/
@@ -305,64 +305,64 @@ int CPLKeywordParser::ReadWord( CPLString &osWord )
 void CPLKeywordParser::SkipWhite()
 
 {
-    for( ; TRUE; )
-    {
-        // Skip white space (newline, space, tab, etc )
-        if( isspace( (unsigned char)*pszHeaderNext ) )
-        {
-            pszHeaderNext++; 
-            continue;
-        }
-        
-        // Skip C style comments 
-        if( *pszHeaderNext == '/' && pszHeaderNext[1] == '*' )
-        {
-            pszHeaderNext += 2;
-            
-            while( *pszHeaderNext != '\0' 
-                   && (*pszHeaderNext != '*' 
-                       || pszHeaderNext[1] != '/' ) )
-            {
-                pszHeaderNext++;
-            }
+	for (; TRUE; )
+	{
+		// Skip white space (newline, space, tab, etc )
+		if (isspace((unsigned char)*pszHeaderNext))
+		{
+			pszHeaderNext++;
+			continue;
+		}
 
-            pszHeaderNext += 2;
-            continue;
-        }
+		// Skip C style comments 
+		if (*pszHeaderNext == '/' && pszHeaderNext[1] == '*')
+		{
+			pszHeaderNext += 2;
 
-        // Skip # style comments 
-        if( *pszHeaderNext == '#'  )
-        {
-            pszHeaderNext += 1;
+			while (*pszHeaderNext != '\0'
+				&& (*pszHeaderNext != '*'
+					|| pszHeaderNext[1] != '/'))
+			{
+				pszHeaderNext++;
+			}
 
-            // consume till end of line.
-            while( *pszHeaderNext != '\0' 
-                   && *pszHeaderNext != 10
-                   && *pszHeaderNext != 13 )
-            {
-                pszHeaderNext++;
-            }
-            continue;
-        }
+			pszHeaderNext += 2;
+			continue;
+		}
 
-        // not white space, return. 
-        return;
-    }
+		// Skip # style comments 
+		if (*pszHeaderNext == '#')
+		{
+			pszHeaderNext += 1;
+
+			// consume till end of line.
+			while (*pszHeaderNext != '\0'
+				&& *pszHeaderNext != 10
+				&& *pszHeaderNext != 13)
+			{
+				pszHeaderNext++;
+			}
+			continue;
+		}
+
+		// not white space, return. 
+		return;
+	}
 }
 
 /************************************************************************/
 /*                             GetKeyword()                             */
 /************************************************************************/
 
-const char *CPLKeywordParser::GetKeyword( const char *pszPath,
-                                            const char *pszDefault )
+const char *CPLKeywordParser::GetKeyword(const char *pszPath,
+	const char *pszDefault)
 
 {
-    const char *pszResult;
+	const char *pszResult;
 
-    pszResult = CSLFetchNameValue( papszKeywordList, pszPath );
-    if( pszResult == NULL )
-        return pszDefault;
-    else
-        return pszResult;
+	pszResult = CSLFetchNameValue(papszKeywordList, pszPath);
+	if (pszResult == NULL)
+		return pszDefault;
+	else
+		return pszResult;
 }

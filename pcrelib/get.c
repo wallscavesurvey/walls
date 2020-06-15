@@ -9,7 +9,7 @@ the file Tech.Notes for some information on the internals.
 
 Written by: Philip Hazel <ph10@cam.ac.uk>
 
-           Copyright (c) 1997-2003 University of Cambridge
+		   Copyright (c) 1997-2003 University of Cambridge
 
 -----------------------------------------------------------------------------
 Permission is granted to anyone to use this software for any purpose on any
@@ -55,37 +55,37 @@ Arguments:
   stringname  the name whose number is required
 
 Returns:      the number of the named parentheses, or a negative number
-                (PCRE_ERROR_NOSUBSTRING) if not found
+				(PCRE_ERROR_NOSUBSTRING) if not found
 */
 
 int
 pcre_get_stringnumber(const pcre *code, const char *stringname)
 {
-int rc;
-int entrysize;
-int top, bot;
-uschar *nametable;
+	int rc;
+	int entrysize;
+	int top, bot;
+	uschar *nametable;
 
-if ((rc = pcre_fullinfo(code, NULL, PCRE_INFO_NAMECOUNT, &top)) != 0)
-  return rc;
-if (top <= 0) return PCRE_ERROR_NOSUBSTRING;
+	if ((rc = pcre_fullinfo(code, NULL, PCRE_INFO_NAMECOUNT, &top)) != 0)
+		return rc;
+	if (top <= 0) return PCRE_ERROR_NOSUBSTRING;
 
-if ((rc = pcre_fullinfo(code, NULL, PCRE_INFO_NAMEENTRYSIZE, &entrysize)) != 0)
-  return rc;
-if ((rc = pcre_fullinfo(code, NULL, PCRE_INFO_NAMETABLE, &nametable)) != 0)
-  return rc;
+	if ((rc = pcre_fullinfo(code, NULL, PCRE_INFO_NAMEENTRYSIZE, &entrysize)) != 0)
+		return rc;
+	if ((rc = pcre_fullinfo(code, NULL, PCRE_INFO_NAMETABLE, &nametable)) != 0)
+		return rc;
 
-bot = 0;
-while (top > bot)
-  {
-  int mid = (top + bot) / 2;
-  uschar *entry = nametable + entrysize*mid;
-  int c = strcmp(stringname, (char *)(entry + 2));
-  if (c == 0) return (entry[0] << 8) + entry[1];
-  if (c > 0) bot = mid + 1; else top = mid;
-  }
+	bot = 0;
+	while (top > bot)
+	{
+		int mid = (top + bot) / 2;
+		uschar *entry = nametable + entrysize * mid;
+		int c = strcmp(stringname, (char *)(entry + 2));
+		if (c == 0) return (entry[0] << 8) + entry[1];
+		if (c > 0) bot = mid + 1; else top = mid;
+	}
 
-return PCRE_ERROR_NOSUBSTRING;
+	return PCRE_ERROR_NOSUBSTRING;
 }
 
 
@@ -102,34 +102,34 @@ Arguments:
   subject        the subject string that was matched
   ovector        pointer to the offsets table
   stringcount    the number of substrings that were captured
-                   (i.e. the yield of the pcre_exec call, unless
-                   that was zero, in which case it should be 1/3
-                   of the offset table size)
+				   (i.e. the yield of the pcre_exec call, unless
+				   that was zero, in which case it should be 1/3
+				   of the offset table size)
   stringnumber   the number of the required substring
   buffer         where to put the substring
   size           the size of the buffer
 
 Returns:         if successful:
-                   the length of the copied string, not including the zero
-                   that is put on the end; can be zero
-                 if not successful:
-                   PCRE_ERROR_NOMEMORY (-6) buffer too small
-                   PCRE_ERROR_NOSUBSTRING (-7) no such captured substring
+				   the length of the copied string, not including the zero
+				   that is put on the end; can be zero
+				 if not successful:
+				   PCRE_ERROR_NOMEMORY (-6) buffer too small
+				   PCRE_ERROR_NOSUBSTRING (-7) no such captured substring
 */
 
 int
 pcre_copy_substring(const char *subject, int *ovector, int stringcount,
-  int stringnumber, char *buffer, int size)
+	int stringnumber, char *buffer, int size)
 {
-int yield;
-if (stringnumber < 0 || stringnumber >= stringcount)
-  return PCRE_ERROR_NOSUBSTRING;
-stringnumber *= 2;
-yield = ovector[stringnumber+1] - ovector[stringnumber];
-if (size < yield + 1) return PCRE_ERROR_NOMEMORY;
-memcpy(buffer, subject + ovector[stringnumber], yield);
-buffer[yield] = 0;
-return yield;
+	int yield;
+	if (stringnumber < 0 || stringnumber >= stringcount)
+		return PCRE_ERROR_NOSUBSTRING;
+	stringnumber *= 2;
+	yield = ovector[stringnumber + 1] - ovector[stringnumber];
+	if (size < yield + 1) return PCRE_ERROR_NOMEMORY;
+	memcpy(buffer, subject + ovector[stringnumber], yield);
+	buffer[yield] = 0;
+	return yield;
 }
 
 
@@ -146,28 +146,28 @@ Arguments:
   subject        the subject string that was matched
   ovector        pointer to the offsets table
   stringcount    the number of substrings that were captured
-                   (i.e. the yield of the pcre_exec call, unless
-                   that was zero, in which case it should be 1/3
-                   of the offset table size)
+				   (i.e. the yield of the pcre_exec call, unless
+				   that was zero, in which case it should be 1/3
+				   of the offset table size)
   stringname     the name of the required substring
   buffer         where to put the substring
   size           the size of the buffer
 
 Returns:         if successful:
-                   the length of the copied string, not including the zero
-                   that is put on the end; can be zero
-                 if not successful:
-                   PCRE_ERROR_NOMEMORY (-6) buffer too small
-                   PCRE_ERROR_NOSUBSTRING (-7) no such captured substring
+				   the length of the copied string, not including the zero
+				   that is put on the end; can be zero
+				 if not successful:
+				   PCRE_ERROR_NOMEMORY (-6) buffer too small
+				   PCRE_ERROR_NOSUBSTRING (-7) no such captured substring
 */
 
 int
 pcre_copy_named_substring(const pcre *code, const char *subject, int *ovector,
-  int stringcount, const char *stringname, char *buffer, int size)
+	int stringcount, const char *stringname, char *buffer, int size)
 {
-int n = pcre_get_stringnumber(code, stringname);
-if (n <= 0) return n;
-return pcre_copy_substring(subject, ovector, stringcount, n, buffer, size);
+	int n = pcre_get_stringnumber(code, stringname);
+	if (n <= 0) return n;
+	return pcre_copy_substring(subject, ovector, stringcount, n, buffer, size);
 }
 
 
@@ -183,46 +183,46 @@ Arguments:
   subject        the subject string that was matched
   ovector        pointer to the offsets table
   stringcount    the number of substrings that were captured
-                   (i.e. the yield of the pcre_exec call, unless
-                   that was zero, in which case it should be 1/3
-                   of the offset table size)
+				   (i.e. the yield of the pcre_exec call, unless
+				   that was zero, in which case it should be 1/3
+				   of the offset table size)
   listptr        set to point to the list of pointers
 
 Returns:         if successful: 0
-                 if not successful:
-                   PCRE_ERROR_NOMEMORY (-6) failed to get store
+				 if not successful:
+				   PCRE_ERROR_NOMEMORY (-6) failed to get store
 */
 
 int
 pcre_get_substring_list(const char *subject, int *ovector, int stringcount,
-  const char ***listptr)
+	const char ***listptr)
 {
-int i;
-int size = sizeof(char *);
-int double_count = stringcount * 2;
-char **stringlist;
-char *p;
+	int i;
+	int size = sizeof(char *);
+	int double_count = stringcount * 2;
+	char **stringlist;
+	char *p;
 
-for (i = 0; i < double_count; i += 2)
-  size += sizeof(char *) + ovector[i+1] - ovector[i] + 1;
+	for (i = 0; i < double_count; i += 2)
+		size += sizeof(char *) + ovector[i + 1] - ovector[i] + 1;
 
-stringlist = (char **)(pcre_malloc)(size);
-if (stringlist == NULL) return PCRE_ERROR_NOMEMORY;
+	stringlist = (char **)(pcre_malloc)(size);
+	if (stringlist == NULL) return PCRE_ERROR_NOMEMORY;
 
-*listptr = (const char **)stringlist;
-p = (char *)(stringlist + stringcount + 1);
+	*listptr = (const char **)stringlist;
+	p = (char *)(stringlist + stringcount + 1);
 
-for (i = 0; i < double_count; i += 2)
-  {
-  int len = ovector[i+1] - ovector[i];
-  memcpy(p, subject + ovector[i], len);
-  *stringlist++ = p;
-  p += len;
-  *p++ = 0;
-  }
+	for (i = 0; i < double_count; i += 2)
+	{
+		int len = ovector[i + 1] - ovector[i];
+		memcpy(p, subject + ovector[i], len);
+		*stringlist++ = p;
+		p += len;
+		*p++ = 0;
+	}
 
-*stringlist = NULL;
-return 0;
+	*stringlist = NULL;
+	return 0;
 }
 
 
@@ -241,7 +241,7 @@ Returns:    nothing
 void
 pcre_free_substring_list(const char **pointer)
 {
-(pcre_free)((void *)pointer);
+	(pcre_free)((void *)pointer);
 }
 
 
@@ -257,36 +257,36 @@ Arguments:
   subject        the subject string that was matched
   ovector        pointer to the offsets table
   stringcount    the number of substrings that were captured
-                   (i.e. the yield of the pcre_exec call, unless
-                   that was zero, in which case it should be 1/3
-                   of the offset table size)
+				   (i.e. the yield of the pcre_exec call, unless
+				   that was zero, in which case it should be 1/3
+				   of the offset table size)
   stringnumber   the number of the required substring
   stringptr      where to put a pointer to the substring
 
 Returns:         if successful:
-                   the length of the string, not including the zero that
-                   is put on the end; can be zero
-                 if not successful:
-                   PCRE_ERROR_NOMEMORY (-6) failed to get store
-                   PCRE_ERROR_NOSUBSTRING (-7) substring not present
+				   the length of the string, not including the zero that
+				   is put on the end; can be zero
+				 if not successful:
+				   PCRE_ERROR_NOMEMORY (-6) failed to get store
+				   PCRE_ERROR_NOSUBSTRING (-7) substring not present
 */
 
 int
 pcre_get_substring(const char *subject, int *ovector, int stringcount,
-  int stringnumber, const char **stringptr)
+	int stringnumber, const char **stringptr)
 {
-int yield;
-char *substring;
-if (stringnumber < 0 || stringnumber >= stringcount)
-  return PCRE_ERROR_NOSUBSTRING;
-stringnumber *= 2;
-yield = ovector[stringnumber+1] - ovector[stringnumber];
-substring = (char *)(pcre_malloc)(yield + 1);
-if (substring == NULL) return PCRE_ERROR_NOMEMORY;
-memcpy(substring, subject + ovector[stringnumber], yield);
-substring[yield] = 0;
-*stringptr = substring;
-return yield;
+	int yield;
+	char *substring;
+	if (stringnumber < 0 || stringnumber >= stringcount)
+		return PCRE_ERROR_NOSUBSTRING;
+	stringnumber *= 2;
+	yield = ovector[stringnumber + 1] - ovector[stringnumber];
+	substring = (char *)(pcre_malloc)(yield + 1);
+	if (substring == NULL) return PCRE_ERROR_NOMEMORY;
+	memcpy(substring, subject + ovector[stringnumber], yield);
+	substring[yield] = 0;
+	*stringptr = substring;
+	return yield;
 }
 
 
@@ -303,27 +303,27 @@ Arguments:
   subject        the subject string that was matched
   ovector        pointer to the offsets table
   stringcount    the number of substrings that were captured
-                   (i.e. the yield of the pcre_exec call, unless
-                   that was zero, in which case it should be 1/3
-                   of the offset table size)
+				   (i.e. the yield of the pcre_exec call, unless
+				   that was zero, in which case it should be 1/3
+				   of the offset table size)
   stringname     the name of the required substring
   stringptr      where to put the pointer
 
 Returns:         if successful:
-                   the length of the copied string, not including the zero
-                   that is put on the end; can be zero
-                 if not successful:
-                   PCRE_ERROR_NOMEMORY (-6) couldn't get memory
-                   PCRE_ERROR_NOSUBSTRING (-7) no such captured substring
+				   the length of the copied string, not including the zero
+				   that is put on the end; can be zero
+				 if not successful:
+				   PCRE_ERROR_NOMEMORY (-6) couldn't get memory
+				   PCRE_ERROR_NOSUBSTRING (-7) no such captured substring
 */
 
 int
 pcre_get_named_substring(const pcre *code, const char *subject, int *ovector,
-  int stringcount, const char *stringname, const char **stringptr)
+	int stringcount, const char *stringname, const char **stringptr)
 {
-int n = pcre_get_stringnumber(code, stringname);
-if (n <= 0) return n;
-return pcre_get_substring(subject, ovector, stringcount, n, stringptr);
+	int n = pcre_get_stringnumber(code, stringname);
+	if (n <= 0) return n;
+	return pcre_get_substring(subject, ovector, stringcount, n, stringptr);
 }
 
 
@@ -343,7 +343,7 @@ Returns:    nothing
 void
 pcre_free_substring(const char *pointer)
 {
-(pcre_free)((void *)pointer);
+	(pcre_free)((void *)pointer);
 }
 
 /* End of get.c */

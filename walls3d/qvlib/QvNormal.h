@@ -6,11 +6,11 @@
 
 class QvNormal : public QvNode {
 
-    QV_NODE_HEADER(QvNormal);
+	QV_NODE_HEADER(QvNormal);
 
-  public:
-    // Fields
-    QvMFVec3f		vector;		// Normal vector(s)
+public:
+	// Fields
+	QvMFVec3f		vector;		// Normal vector(s)
 };
 
 #endif /* _QV_NORMAL_ */

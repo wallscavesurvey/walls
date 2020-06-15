@@ -40,8 +40,8 @@
 
 #include "cairoint.h"
 
-COMPILE_TIME_ASSERT (CAIRO_STATUS_LAST_STATUS < CAIRO_INT_STATUS_UNSUPPORTED);
-COMPILE_TIME_ASSERT (CAIRO_INT_STATUS_LAST_STATUS <= 127);
+COMPILE_TIME_ASSERT(CAIRO_STATUS_LAST_STATUS < CAIRO_INT_STATUS_UNSUPPORTED);
+COMPILE_TIME_ASSERT(CAIRO_INT_STATUS_LAST_STATUS <= 127);
 
 /* Public stuff */
 
@@ -54,76 +54,76 @@ COMPILE_TIME_ASSERT (CAIRO_INT_STATUS_LAST_STATUS <= 127);
  * Returns: a string representation of the status
  */
 const char *
-cairo_status_to_string (cairo_status_t status)
+cairo_status_to_string(cairo_status_t status)
 {
-    switch (status) {
-    case CAIRO_STATUS_SUCCESS:
-	return "success";
-    case CAIRO_STATUS_NO_MEMORY:
-	return "out of memory";
-    case CAIRO_STATUS_INVALID_RESTORE:
-	return "cairo_restore without matching cairo_save";
-    case CAIRO_STATUS_INVALID_POP_GROUP:
-	return "cairo_pop_group without matching cairo_push_group";
-    case CAIRO_STATUS_NO_CURRENT_POINT:
-	return "no current point defined";
-    case CAIRO_STATUS_INVALID_MATRIX:
-	return "invalid matrix (not invertible)";
-    case CAIRO_STATUS_INVALID_STATUS:
-	return "invalid value for an input cairo_status_t";
-    case CAIRO_STATUS_NULL_POINTER:
-	return "NULL pointer";
-    case CAIRO_STATUS_INVALID_STRING:
-	return "input string not valid UTF-8";
-    case CAIRO_STATUS_INVALID_PATH_DATA:
-	return "input path data not valid";
-    case CAIRO_STATUS_READ_ERROR:
-	return "error while reading from input stream";
-    case CAIRO_STATUS_WRITE_ERROR:
-	return "error while writing to output stream";
-    case CAIRO_STATUS_SURFACE_FINISHED:
-	return "the target surface has been finished";
-    case CAIRO_STATUS_SURFACE_TYPE_MISMATCH:
-	return "the surface type is not appropriate for the operation";
-    case CAIRO_STATUS_PATTERN_TYPE_MISMATCH:
-	return "the pattern type is not appropriate for the operation";
-    case CAIRO_STATUS_INVALID_CONTENT:
-	return "invalid value for an input cairo_content_t";
-    case CAIRO_STATUS_INVALID_FORMAT:
-	return "invalid value for an input cairo_format_t";
-    case CAIRO_STATUS_INVALID_VISUAL:
-	return "invalid value for an input Visual*";
-    case CAIRO_STATUS_FILE_NOT_FOUND:
-	return "file not found";
-    case CAIRO_STATUS_INVALID_DASH:
-	return "invalid value for a dash setting";
-    case CAIRO_STATUS_INVALID_DSC_COMMENT:
-	return "invalid value for a DSC comment";
-    case CAIRO_STATUS_INVALID_INDEX:
-	return "invalid index passed to getter";
-    case CAIRO_STATUS_CLIP_NOT_REPRESENTABLE:
-        return "clip region not representable in desired format";
-    case CAIRO_STATUS_TEMP_FILE_ERROR:
-	return "error creating or writing to a temporary file";
-    case CAIRO_STATUS_INVALID_STRIDE:
-	return "invalid value for stride";
-    case CAIRO_STATUS_FONT_TYPE_MISMATCH:
-	return "the font type is not appropriate for the operation";
-    case CAIRO_STATUS_USER_FONT_IMMUTABLE:
-	return "the user-font is immutable";
-    case CAIRO_STATUS_USER_FONT_ERROR:
-	return "error occurred in a user-font callback function";
-    case CAIRO_STATUS_NEGATIVE_COUNT:
-	return "negative number used where it is not allowed";
-    case CAIRO_STATUS_INVALID_CLUSTERS:
-	return "input clusters do not represent the accompanying text and glyph arrays";
-    case CAIRO_STATUS_INVALID_SLANT:
-	return "invalid value for an input #cairo_font_slant_t";
-    case CAIRO_STATUS_INVALID_WEIGHT:
-	return "input value for an input #cairo_font_weight_t";
-    }
+	switch (status) {
+	case CAIRO_STATUS_SUCCESS:
+		return "success";
+	case CAIRO_STATUS_NO_MEMORY:
+		return "out of memory";
+	case CAIRO_STATUS_INVALID_RESTORE:
+		return "cairo_restore without matching cairo_save";
+	case CAIRO_STATUS_INVALID_POP_GROUP:
+		return "cairo_pop_group without matching cairo_push_group";
+	case CAIRO_STATUS_NO_CURRENT_POINT:
+		return "no current point defined";
+	case CAIRO_STATUS_INVALID_MATRIX:
+		return "invalid matrix (not invertible)";
+	case CAIRO_STATUS_INVALID_STATUS:
+		return "invalid value for an input cairo_status_t";
+	case CAIRO_STATUS_NULL_POINTER:
+		return "NULL pointer";
+	case CAIRO_STATUS_INVALID_STRING:
+		return "input string not valid UTF-8";
+	case CAIRO_STATUS_INVALID_PATH_DATA:
+		return "input path data not valid";
+	case CAIRO_STATUS_READ_ERROR:
+		return "error while reading from input stream";
+	case CAIRO_STATUS_WRITE_ERROR:
+		return "error while writing to output stream";
+	case CAIRO_STATUS_SURFACE_FINISHED:
+		return "the target surface has been finished";
+	case CAIRO_STATUS_SURFACE_TYPE_MISMATCH:
+		return "the surface type is not appropriate for the operation";
+	case CAIRO_STATUS_PATTERN_TYPE_MISMATCH:
+		return "the pattern type is not appropriate for the operation";
+	case CAIRO_STATUS_INVALID_CONTENT:
+		return "invalid value for an input cairo_content_t";
+	case CAIRO_STATUS_INVALID_FORMAT:
+		return "invalid value for an input cairo_format_t";
+	case CAIRO_STATUS_INVALID_VISUAL:
+		return "invalid value for an input Visual*";
+	case CAIRO_STATUS_FILE_NOT_FOUND:
+		return "file not found";
+	case CAIRO_STATUS_INVALID_DASH:
+		return "invalid value for a dash setting";
+	case CAIRO_STATUS_INVALID_DSC_COMMENT:
+		return "invalid value for a DSC comment";
+	case CAIRO_STATUS_INVALID_INDEX:
+		return "invalid index passed to getter";
+	case CAIRO_STATUS_CLIP_NOT_REPRESENTABLE:
+		return "clip region not representable in desired format";
+	case CAIRO_STATUS_TEMP_FILE_ERROR:
+		return "error creating or writing to a temporary file";
+	case CAIRO_STATUS_INVALID_STRIDE:
+		return "invalid value for stride";
+	case CAIRO_STATUS_FONT_TYPE_MISMATCH:
+		return "the font type is not appropriate for the operation";
+	case CAIRO_STATUS_USER_FONT_IMMUTABLE:
+		return "the user-font is immutable";
+	case CAIRO_STATUS_USER_FONT_ERROR:
+		return "error occurred in a user-font callback function";
+	case CAIRO_STATUS_NEGATIVE_COUNT:
+		return "negative number used where it is not allowed";
+	case CAIRO_STATUS_INVALID_CLUSTERS:
+		return "input clusters do not represent the accompanying text and glyph arrays";
+	case CAIRO_STATUS_INVALID_SLANT:
+		return "invalid value for an input #cairo_font_slant_t";
+	case CAIRO_STATUS_INVALID_WEIGHT:
+		return "input value for an input #cairo_font_weight_t";
+	}
 
-    return "<unknown error status>";
+	return "<unknown error status>";
 }
 
 
@@ -148,14 +148,14 @@ cairo_status_to_string (cairo_status_t status)
  * Since: 1.8
  */
 cairo_glyph_t *
-cairo_glyph_allocate (int num_glyphs)
+cairo_glyph_allocate(int num_glyphs)
 {
-    if (num_glyphs <= 0)
-	return NULL;
+	if (num_glyphs <= 0)
+		return NULL;
 
-    return _cairo_malloc_ab (num_glyphs, sizeof (cairo_glyph_t));
+	return _cairo_malloc_ab(num_glyphs, sizeof(cairo_glyph_t));
 }
-slim_hidden_def (cairo_glyph_allocate);
+slim_hidden_def(cairo_glyph_allocate);
 
 /**
  * cairo_glyph_free:
@@ -171,12 +171,12 @@ slim_hidden_def (cairo_glyph_allocate);
  * Since: 1.8
  */
 void
-cairo_glyph_free (cairo_glyph_t *glyphs)
+cairo_glyph_free(cairo_glyph_t *glyphs)
 {
-    if (glyphs)
-	free (glyphs);
+	if (glyphs)
+		free(glyphs);
 }
-slim_hidden_def (cairo_glyph_free);
+slim_hidden_def(cairo_glyph_free);
 
 /**
  * cairo_text_cluster_allocate:
@@ -199,14 +199,14 @@ slim_hidden_def (cairo_glyph_free);
  * Since: 1.8
  */
 cairo_text_cluster_t *
-cairo_text_cluster_allocate (int num_clusters)
+cairo_text_cluster_allocate(int num_clusters)
 {
-    if (num_clusters <= 0)
-	return NULL;
+	if (num_clusters <= 0)
+		return NULL;
 
-    return _cairo_malloc_ab (num_clusters, sizeof (cairo_text_cluster_t));
+	return _cairo_malloc_ab(num_clusters, sizeof(cairo_text_cluster_t));
 }
-slim_hidden_def (cairo_text_cluster_allocate);
+slim_hidden_def(cairo_text_cluster_allocate);
 
 /**
  * cairo_text_cluster_free:
@@ -222,12 +222,12 @@ slim_hidden_def (cairo_text_cluster_allocate);
  * Since: 1.8
  */
 void
-cairo_text_cluster_free (cairo_text_cluster_t *clusters)
+cairo_text_cluster_free(cairo_text_cluster_t *clusters)
 {
-    if (clusters)
-	free (clusters);
+	if (clusters)
+		free(clusters);
 }
-slim_hidden_def (cairo_text_cluster_free);
+slim_hidden_def(cairo_text_cluster_free);
 
 
 /* Private stuff */
@@ -251,55 +251,55 @@ slim_hidden_def (cairo_text_cluster_free);
  *               or bad cluster mapping.
  */
 cairo_status_t
-_cairo_validate_text_clusters (const char		   *utf8,
-			       int			    utf8_len,
-			       const cairo_glyph_t	   *glyphs,
-			       int			    num_glyphs,
-			       const cairo_text_cluster_t  *clusters,
-			       int			    num_clusters,
-			       cairo_text_cluster_flags_t   cluster_flags)
+_cairo_validate_text_clusters(const char		   *utf8,
+	int			    utf8_len,
+	const cairo_glyph_t	   *glyphs,
+	int			    num_glyphs,
+	const cairo_text_cluster_t  *clusters,
+	int			    num_clusters,
+	cairo_text_cluster_flags_t   cluster_flags)
 {
-    cairo_status_t status;
-    unsigned int n_bytes  = 0;
-    unsigned int n_glyphs = 0;
-    int i;
+	cairo_status_t status;
+	unsigned int n_bytes = 0;
+	unsigned int n_glyphs = 0;
+	int i;
 
-    for (i = 0; i < num_clusters; i++) {
-	int cluster_bytes  = clusters[i].num_bytes;
-	int cluster_glyphs = clusters[i].num_glyphs;
+	for (i = 0; i < num_clusters; i++) {
+		int cluster_bytes = clusters[i].num_bytes;
+		int cluster_glyphs = clusters[i].num_glyphs;
 
-	if (cluster_bytes < 0 || cluster_glyphs < 0)
-	    goto BAD;
+		if (cluster_bytes < 0 || cluster_glyphs < 0)
+			goto BAD;
 
-	/* A cluster should cover at least one character or glyph.
-	 * I can't see any use for a 0,0 cluster.
-	 * I can't see an immediate use for a zero-text cluster
-	 * right now either, but they don't harm.
-	 * Zero-glyph clusters on the other hand are useful for
-	 * things like U+200C ZERO WIDTH NON-JOINER */
-	if (cluster_bytes == 0 && cluster_glyphs == 0)
-	    goto BAD;
+		/* A cluster should cover at least one character or glyph.
+		 * I can't see any use for a 0,0 cluster.
+		 * I can't see an immediate use for a zero-text cluster
+		 * right now either, but they don't harm.
+		 * Zero-glyph clusters on the other hand are useful for
+		 * things like U+200C ZERO WIDTH NON-JOINER */
+		if (cluster_bytes == 0 && cluster_glyphs == 0)
+			goto BAD;
 
-	/* Since n_bytes and n_glyphs are unsigned, but the rest of
-	 * values involved are signed, we can detect overflow easily */
-	if (n_bytes+cluster_bytes > (unsigned int)utf8_len || n_glyphs+cluster_glyphs > (unsigned int)num_glyphs)
-	    goto BAD;
+		/* Since n_bytes and n_glyphs are unsigned, but the rest of
+		 * values involved are signed, we can detect overflow easily */
+		if (n_bytes + cluster_bytes > (unsigned int)utf8_len || n_glyphs + cluster_glyphs > (unsigned int)num_glyphs)
+			goto BAD;
 
-	/* Make sure we've got valid UTF-8 for the cluster */
-	status = _cairo_utf8_to_ucs4 (utf8+n_bytes, cluster_bytes, NULL, NULL);
-	if (status)
-	    return CAIRO_STATUS_INVALID_CLUSTERS;
+		/* Make sure we've got valid UTF-8 for the cluster */
+		status = _cairo_utf8_to_ucs4(utf8 + n_bytes, cluster_bytes, NULL, NULL);
+		if (status)
+			return CAIRO_STATUS_INVALID_CLUSTERS;
 
-	n_bytes  += cluster_bytes ;
-	n_glyphs += cluster_glyphs;
-    }
+		n_bytes += cluster_bytes;
+		n_glyphs += cluster_glyphs;
+	}
 
-    if (n_bytes != (unsigned int) utf8_len || n_glyphs != (unsigned int) num_glyphs) {
-      BAD:
-	return CAIRO_STATUS_INVALID_CLUSTERS;
-    }
+	if (n_bytes != (unsigned int)utf8_len || n_glyphs != (unsigned int)num_glyphs) {
+	BAD:
+		return CAIRO_STATUS_INVALID_CLUSTERS;
+	}
 
-    return CAIRO_STATUS_SUCCESS;
+	return CAIRO_STATUS_SUCCESS;
 }
 
 /**
@@ -316,29 +316,29 @@ _cairo_validate_text_clusters (const char		   *utf8,
  * Return value: %TRUE if the operator is bounded by the mask operand
  **/
 cairo_bool_t
-_cairo_operator_bounded_by_mask (cairo_operator_t op)
+_cairo_operator_bounded_by_mask(cairo_operator_t op)
 {
-    switch (op) {
-    case CAIRO_OPERATOR_CLEAR:
-    case CAIRO_OPERATOR_SOURCE:
-    case CAIRO_OPERATOR_OVER:
-    case CAIRO_OPERATOR_ATOP:
-    case CAIRO_OPERATOR_DEST:
-    case CAIRO_OPERATOR_DEST_OVER:
-    case CAIRO_OPERATOR_DEST_OUT:
-    case CAIRO_OPERATOR_XOR:
-    case CAIRO_OPERATOR_ADD:
-    case CAIRO_OPERATOR_SATURATE:
-	return TRUE;
-    case CAIRO_OPERATOR_OUT:
-    case CAIRO_OPERATOR_IN:
-    case CAIRO_OPERATOR_DEST_IN:
-    case CAIRO_OPERATOR_DEST_ATOP:
-	return FALSE;
-    }
+	switch (op) {
+	case CAIRO_OPERATOR_CLEAR:
+	case CAIRO_OPERATOR_SOURCE:
+	case CAIRO_OPERATOR_OVER:
+	case CAIRO_OPERATOR_ATOP:
+	case CAIRO_OPERATOR_DEST:
+	case CAIRO_OPERATOR_DEST_OVER:
+	case CAIRO_OPERATOR_DEST_OUT:
+	case CAIRO_OPERATOR_XOR:
+	case CAIRO_OPERATOR_ADD:
+	case CAIRO_OPERATOR_SATURATE:
+		return TRUE;
+	case CAIRO_OPERATOR_OUT:
+	case CAIRO_OPERATOR_IN:
+	case CAIRO_OPERATOR_DEST_IN:
+	case CAIRO_OPERATOR_DEST_ATOP:
+		return FALSE;
+	}
 
-    ASSERT_NOT_REACHED;
-    return FALSE;
+	ASSERT_NOT_REACHED;
+	return FALSE;
 }
 
 /**
@@ -356,39 +356,39 @@ _cairo_operator_bounded_by_mask (cairo_operator_t op)
  * Return value: %TRUE if the operator is bounded by the source operand
  **/
 cairo_bool_t
-_cairo_operator_bounded_by_source (cairo_operator_t op)
+_cairo_operator_bounded_by_source(cairo_operator_t op)
 {
-    switch (op) {
-    case CAIRO_OPERATOR_OVER:
-    case CAIRO_OPERATOR_ATOP:
-    case CAIRO_OPERATOR_DEST:
-    case CAIRO_OPERATOR_DEST_OVER:
-    case CAIRO_OPERATOR_DEST_OUT:
-    case CAIRO_OPERATOR_XOR:
-    case CAIRO_OPERATOR_ADD:
-    case CAIRO_OPERATOR_SATURATE:
-	return TRUE;
-    case CAIRO_OPERATOR_CLEAR:
-    case CAIRO_OPERATOR_SOURCE:
-    case CAIRO_OPERATOR_OUT:
-    case CAIRO_OPERATOR_IN:
-    case CAIRO_OPERATOR_DEST_IN:
-    case CAIRO_OPERATOR_DEST_ATOP:
-	return FALSE;
-    }
+	switch (op) {
+	case CAIRO_OPERATOR_OVER:
+	case CAIRO_OPERATOR_ATOP:
+	case CAIRO_OPERATOR_DEST:
+	case CAIRO_OPERATOR_DEST_OVER:
+	case CAIRO_OPERATOR_DEST_OUT:
+	case CAIRO_OPERATOR_XOR:
+	case CAIRO_OPERATOR_ADD:
+	case CAIRO_OPERATOR_SATURATE:
+		return TRUE;
+	case CAIRO_OPERATOR_CLEAR:
+	case CAIRO_OPERATOR_SOURCE:
+	case CAIRO_OPERATOR_OUT:
+	case CAIRO_OPERATOR_IN:
+	case CAIRO_OPERATOR_DEST_IN:
+	case CAIRO_OPERATOR_DEST_ATOP:
+		return FALSE;
+	}
 
-    ASSERT_NOT_REACHED;
-    return FALSE;
+	ASSERT_NOT_REACHED;
+	return FALSE;
 }
 
 
 void
-_cairo_restrict_value (double *value, double min, double max)
+_cairo_restrict_value(double *value, double min, double max)
 {
-    if (*value < min)
-	*value = min;
-    else if (*value > max)
-	*value = max;
+	if (*value < min)
+		*value = min;
+	else if (*value > max)
+		*value = max;
 }
 
 /* This function is identical to the C99 function lround(), except that it
@@ -411,193 +411,193 @@ _cairo_restrict_value (double *value, double min, double max)
  * avoids this penalty.
   */
 int
-_cairo_lround (double d)
+_cairo_lround(double d)
 {
-    uint32_t top, shift_amount, output;
-    union {
-        double d;
-        uint64_t ui64;
-        uint32_t ui32[2];
-    } u;
+	uint32_t top, shift_amount, output;
+	union {
+		double d;
+		uint64_t ui64;
+		uint32_t ui32[2];
+	} u;
 
-    u.d = d;
+	u.d = d;
 
-    /* If the integer word order doesn't match the float word order, we swap
-     * the words of the input double. This is needed because we will be
-     * treating the whole double as a 64-bit unsigned integer. Notice that we
-     * use WORDS_BIGENDIAN to detect the integer word order, which isn't
-     * exactly correct because WORDS_BIGENDIAN refers to byte order, not word
-     * order. Thus, we are making the assumption that the byte order is the
-     * same as the integer word order which, on the modern machines that we
-     * care about, is OK.
-     */
+	/* If the integer word order doesn't match the float word order, we swap
+	 * the words of the input double. This is needed because we will be
+	 * treating the whole double as a 64-bit unsigned integer. Notice that we
+	 * use WORDS_BIGENDIAN to detect the integer word order, which isn't
+	 * exactly correct because WORDS_BIGENDIAN refers to byte order, not word
+	 * order. Thus, we are making the assumption that the byte order is the
+	 * same as the integer word order which, on the modern machines that we
+	 * care about, is OK.
+	 */
 #if ( defined(FLOAT_WORDS_BIGENDIAN) && !defined(WORDS_BIGENDIAN)) || \
     (!defined(FLOAT_WORDS_BIGENDIAN) &&  defined(WORDS_BIGENDIAN))
-    {
-        uint32_t temp = u.ui32[0];
-        u.ui32[0] = u.ui32[1];
-        u.ui32[1] = temp;
-    }
+	{
+		uint32_t temp = u.ui32[0];
+		u.ui32[0] = u.ui32[1];
+		u.ui32[1] = temp;
+	}
 #endif
 
 #ifdef WORDS_BIGENDIAN
-    #define MSW (0) /* Most Significant Word */
-    #define LSW (1) /* Least Significant Word */
+#define MSW (0) /* Most Significant Word */
+#define LSW (1) /* Least Significant Word */
 #else
-    #define MSW (1)
-    #define LSW (0)
+#define MSW (1)
+#define LSW (0)
 #endif
 
-    /* By shifting the most significant word of the input double to the
-     * right 20 places, we get the very "top" of the double where the exponent
-     * and sign bit lie.
-     */
-    top = u.ui32[MSW] >> 20;
+	/* By shifting the most significant word of the input double to the
+	 * right 20 places, we get the very "top" of the double where the exponent
+	 * and sign bit lie.
+	 */
+	top = u.ui32[MSW] >> 20;
 
-    /* Here, we calculate how much we have to shift the mantissa to normalize
-     * it to an integer value. We extract the exponent "top" by masking out the
-     * sign bit, then we calculate the shift amount by subtracting the exponent
-     * from the bias. Notice that the correct bias for 64-bit doubles is
-     * actually 1075, but we use 1053 instead for two reasons:
-     *
-     *  1) To perform rounding later on, we will first need the target
-     *     value in a 31.1 fixed-point format. Thus, the bias needs to be one
-     *     less: (1075 - 1: 1074).
-     *
-     *  2) To avoid shifting the mantissa as a full 64-bit integer (which is
-     *     costly on certain architectures), we break the shift into two parts.
-     *     First, the upper and lower parts of the mantissa are shifted
-     *     individually by a constant amount that all valid inputs will require
-     *     at the very least. This amount is chosen to be 21, because this will
-     *     allow the two parts of the mantissa to later be combined into a
-     *     single 32-bit representation, on which the remainder of the shift
-     *     will be performed. Thus, we decrease the bias by an additional 21:
-     *     (1074 - 21: 1053).
-     */
-    shift_amount = 1053 - (top & 0x7FF);
+	/* Here, we calculate how much we have to shift the mantissa to normalize
+	 * it to an integer value. We extract the exponent "top" by masking out the
+	 * sign bit, then we calculate the shift amount by subtracting the exponent
+	 * from the bias. Notice that the correct bias for 64-bit doubles is
+	 * actually 1075, but we use 1053 instead for two reasons:
+	 *
+	 *  1) To perform rounding later on, we will first need the target
+	 *     value in a 31.1 fixed-point format. Thus, the bias needs to be one
+	 *     less: (1075 - 1: 1074).
+	 *
+	 *  2) To avoid shifting the mantissa as a full 64-bit integer (which is
+	 *     costly on certain architectures), we break the shift into two parts.
+	 *     First, the upper and lower parts of the mantissa are shifted
+	 *     individually by a constant amount that all valid inputs will require
+	 *     at the very least. This amount is chosen to be 21, because this will
+	 *     allow the two parts of the mantissa to later be combined into a
+	 *     single 32-bit representation, on which the remainder of the shift
+	 *     will be performed. Thus, we decrease the bias by an additional 21:
+	 *     (1074 - 21: 1053).
+	 */
+	shift_amount = 1053 - (top & 0x7FF);
 
-    /* We are done with the exponent portion in "top", so here we shift it off
-     * the end.
-     */
-    top >>= 11;
+	/* We are done with the exponent portion in "top", so here we shift it off
+	 * the end.
+	 */
+	top >>= 11;
 
-    /* Before we perform any operations on the mantissa, we need to OR in
-     * the implicit 1 at the top (see the IEEE-754 spec). We needn't mask
-     * off the sign bit nor the exponent bits because these higher bits won't
-     * make a bit of difference in the rest of our calculations.
-     */
-    u.ui32[MSW] |= 0x100000;
+	/* Before we perform any operations on the mantissa, we need to OR in
+	 * the implicit 1 at the top (see the IEEE-754 spec). We needn't mask
+	 * off the sign bit nor the exponent bits because these higher bits won't
+	 * make a bit of difference in the rest of our calculations.
+	 */
+	u.ui32[MSW] |= 0x100000;
 
-    /* If the input double is negative, we have to decrease the mantissa
-     * by a hair. This is an important part of performing arithmetic rounding,
-     * as negative numbers must round towards positive infinity in the
-     * halfwase case of -x.5. Since "top" contains only the sign bit at this
-     * point, we can just decrease the mantissa by the value of "top".
-     */
-    u.ui64 -= top;
+	/* If the input double is negative, we have to decrease the mantissa
+	 * by a hair. This is an important part of performing arithmetic rounding,
+	 * as negative numbers must round towards positive infinity in the
+	 * halfwase case of -x.5. Since "top" contains only the sign bit at this
+	 * point, we can just decrease the mantissa by the value of "top".
+	 */
+	u.ui64 -= top;
 
-    /* By decrementing "top", we create a bitmask with a value of either
-     * 0x0 (if the input was negative) or 0xFFFFFFFF (if the input was positive
-     * and thus the unsigned subtraction underflowed) that we'll use later.
-     */
-    top--;
+	/* By decrementing "top", we create a bitmask with a value of either
+	 * 0x0 (if the input was negative) or 0xFFFFFFFF (if the input was positive
+	 * and thus the unsigned subtraction underflowed) that we'll use later.
+	 */
+	top--;
 
-    /* Here, we shift the mantissa by the constant value as described above.
-     * We can emulate a 64-bit shift right by 21 through shifting the top 32
-     * bits left 11 places and ORing in the bottom 32 bits shifted 21 places
-     * to the right. Both parts of the mantissa are now packed into a single
-     * 32-bit integer. Although we severely truncate the lower part in the
-     * process, we still have enough significant bits to perform the conversion
-     * without error (for all valid inputs).
-     */
-    output = (u.ui32[MSW] << 11) | (u.ui32[LSW] >> 21);
+	/* Here, we shift the mantissa by the constant value as described above.
+	 * We can emulate a 64-bit shift right by 21 through shifting the top 32
+	 * bits left 11 places and ORing in the bottom 32 bits shifted 21 places
+	 * to the right. Both parts of the mantissa are now packed into a single
+	 * 32-bit integer. Although we severely truncate the lower part in the
+	 * process, we still have enough significant bits to perform the conversion
+	 * without error (for all valid inputs).
+	 */
+	output = (u.ui32[MSW] << 11) | (u.ui32[LSW] >> 21);
 
-    /* Next, we perform the shift that converts the X.Y fixed-point number
-     * currently found in "output" to the desired 31.1 fixed-point format
-     * needed for the following rounding step. It is important to consider
-     * all possible values for "shift_amount" at this point:
-     *
-     * - {shift_amount < 0} Since shift_amount is an unsigned integer, it
-     *   really can't have a value less than zero. But, if the shift_amount
-     *   calculation above caused underflow (which would happen with
-     *   input > INT_MAX or input <= INT_MIN) then shift_amount will now be
-     *   a very large number, and so this shift will result in complete
-     *   garbage. But that's OK, as the input was out of our range, so our
-     *   output is undefined.
-     *
-     * - {shift_amount > 31} If the magnitude of the input was very small
-     *   (i.e. |input| << 1.0), shift_amount will have a value greater than
-     *   31. Thus, this shift will also result in garbage. After performing
-     *   the shift, we will zero-out "output" if this is the case.
-     *
-     * - {0 <= shift_amount < 32} In this case, the shift will properly convert
-     *   the mantissa into a 31.1 fixed-point number.
-     */
-    output >>= shift_amount;
+	/* Next, we perform the shift that converts the X.Y fixed-point number
+	 * currently found in "output" to the desired 31.1 fixed-point format
+	 * needed for the following rounding step. It is important to consider
+	 * all possible values for "shift_amount" at this point:
+	 *
+	 * - {shift_amount < 0} Since shift_amount is an unsigned integer, it
+	 *   really can't have a value less than zero. But, if the shift_amount
+	 *   calculation above caused underflow (which would happen with
+	 *   input > INT_MAX or input <= INT_MIN) then shift_amount will now be
+	 *   a very large number, and so this shift will result in complete
+	 *   garbage. But that's OK, as the input was out of our range, so our
+	 *   output is undefined.
+	 *
+	 * - {shift_amount > 31} If the magnitude of the input was very small
+	 *   (i.e. |input| << 1.0), shift_amount will have a value greater than
+	 *   31. Thus, this shift will also result in garbage. After performing
+	 *   the shift, we will zero-out "output" if this is the case.
+	 *
+	 * - {0 <= shift_amount < 32} In this case, the shift will properly convert
+	 *   the mantissa into a 31.1 fixed-point number.
+	 */
+	output >>= shift_amount;
 
-    /* This is where we perform rounding with the 31.1 fixed-point number.
-     * Since what we're after is arithmetic rounding, we simply add the single
-     * fractional bit into the integer part of "output", and just keep the
-     * integer part.
-     */
-    output = (output >> 1) + (output & 1);
+	/* This is where we perform rounding with the 31.1 fixed-point number.
+	 * Since what we're after is arithmetic rounding, we simply add the single
+	 * fractional bit into the integer part of "output", and just keep the
+	 * integer part.
+	 */
+	output = (output >> 1) + (output & 1);
 
-    /* Here, we zero-out the result if the magnitude if the input was very small
-     * (as explained in the section above). Notice that all input out of the
-     * valid range is also caught by this condition, which means we produce 0
-     * for all invalid input, which is a nice side effect.
-     *
-     * The most straightforward way to do this would be:
-     *
-     *      if (shift_amount > 31)
-     *          output = 0;
-     *
-     * But we can use a little trick to avoid the potential branch. The
-     * expression (shift_amount > 31) will be either 1 or 0, which when
-     * decremented will be either 0x0 or 0xFFFFFFFF (unsigned underflow),
-     * which can be used to conditionally mask away all the bits in "output"
-     * (in the 0x0 case), effectively zeroing it out. Certain, compilers would
-     * have done this for us automatically.
-     */
-    output &= ((shift_amount > 31) - 1);
+	/* Here, we zero-out the result if the magnitude if the input was very small
+	 * (as explained in the section above). Notice that all input out of the
+	 * valid range is also caught by this condition, which means we produce 0
+	 * for all invalid input, which is a nice side effect.
+	 *
+	 * The most straightforward way to do this would be:
+	 *
+	 *      if (shift_amount > 31)
+	 *          output = 0;
+	 *
+	 * But we can use a little trick to avoid the potential branch. The
+	 * expression (shift_amount > 31) will be either 1 or 0, which when
+	 * decremented will be either 0x0 or 0xFFFFFFFF (unsigned underflow),
+	 * which can be used to conditionally mask away all the bits in "output"
+	 * (in the 0x0 case), effectively zeroing it out. Certain, compilers would
+	 * have done this for us automatically.
+	 */
+	output &= ((shift_amount > 31) - 1);
 
-    /* If the input double was a negative number, then we have to negate our
-     * output. The most straightforward way to do this would be:
-     *
-     *      if (!top)
-     *          output = -output;
-     *
-     * as "top" at this point is either 0x0 (if the input was negative) or
-     * 0xFFFFFFFF (if the input was positive). But, we can use a trick to
-     * avoid the branch. Observe that the following snippet of code has the
-     * same effect as the reference snippet above:
-     *
-     *      if (!top)
-     *          output = 0 - output;
-     *      else
-     *          output = output - 0;
-     *
-     * Armed with the bitmask found in "top", we can condense the two statements
-     * into the following:
-     *
-     *      output = (output & top) - (output & ~top);
-     *
-     * where, in the case that the input double was negative, "top" will be 0,
-     * and the statement will be equivalent to:
-     *
-     *      output = (0) - (output);
-     *
-     * and if the input double was positive, "top" will be 0xFFFFFFFF, and the
-     * statement will be equivalent to:
-     *
-     *      output = (output) - (0);
-     *
-     * Which, as pointed out earlier, is equivalent to the original reference
-     * snippet.
-     */
-    output = (output & top) - (output & ~top);
+	/* If the input double was a negative number, then we have to negate our
+	 * output. The most straightforward way to do this would be:
+	 *
+	 *      if (!top)
+	 *          output = -output;
+	 *
+	 * as "top" at this point is either 0x0 (if the input was negative) or
+	 * 0xFFFFFFFF (if the input was positive). But, we can use a trick to
+	 * avoid the branch. Observe that the following snippet of code has the
+	 * same effect as the reference snippet above:
+	 *
+	 *      if (!top)
+	 *          output = 0 - output;
+	 *      else
+	 *          output = output - 0;
+	 *
+	 * Armed with the bitmask found in "top", we can condense the two statements
+	 * into the following:
+	 *
+	 *      output = (output & top) - (output & ~top);
+	 *
+	 * where, in the case that the input double was negative, "top" will be 0,
+	 * and the statement will be equivalent to:
+	 *
+	 *      output = (0) - (output);
+	 *
+	 * and if the input double was positive, "top" will be 0xFFFFFFFF, and the
+	 * statement will be equivalent to:
+	 *
+	 *      output = (output) - (0);
+	 *
+	 * Which, as pointed out earlier, is equivalent to the original reference
+	 * snippet.
+	 */
+	output = (output & top) - (output & ~top);
 
-    return output;
+	return output;
 #undef MSW
 #undef LSW
 }
@@ -623,47 +623,47 @@ _cairo_lround (double d)
  * may fail due to unsufficient privileges.
  */
 FILE *
-_cairo_win32_tmpfile (void)
+_cairo_win32_tmpfile(void)
 {
-    DWORD path_len;
-    WCHAR path_name[MAX_PATH + 1];
-    WCHAR file_name[MAX_PATH + 1];
-    HANDLE handle;
-    int fd;
-    FILE *fp;
+	DWORD path_len;
+	WCHAR path_name[MAX_PATH + 1];
+	WCHAR file_name[MAX_PATH + 1];
+	HANDLE handle;
+	int fd;
+	FILE *fp;
 
-    path_len = GetTempPathW (MAX_PATH, path_name);
-    if (path_len <= 0 || path_len >= MAX_PATH)
-	return NULL;
+	path_len = GetTempPathW(MAX_PATH, path_name);
+	if (path_len <= 0 || path_len >= MAX_PATH)
+		return NULL;
 
-    if (GetTempFileNameW (path_name, L"ps_", 0, file_name) == 0)
-	return NULL;
+	if (GetTempFileNameW(path_name, L"ps_", 0, file_name) == 0)
+		return NULL;
 
-    handle = CreateFileW (file_name,
-			 GENERIC_READ | GENERIC_WRITE,
-			 0,
-			 NULL,
-			 CREATE_ALWAYS,
-			 FILE_ATTRIBUTE_NORMAL | FILE_FLAG_DELETE_ON_CLOSE,
-			 NULL);
-    if (handle == INVALID_HANDLE_VALUE) {
-	DeleteFileW (file_name);
-	return NULL;
-    }
+	handle = CreateFileW(file_name,
+		GENERIC_READ | GENERIC_WRITE,
+		0,
+		NULL,
+		CREATE_ALWAYS,
+		FILE_ATTRIBUTE_NORMAL | FILE_FLAG_DELETE_ON_CLOSE,
+		NULL);
+	if (handle == INVALID_HANDLE_VALUE) {
+		DeleteFileW(file_name);
+		return NULL;
+	}
 
-    fd = _open_osfhandle((intptr_t) handle, 0);
-    if (fd < 0) {
-	CloseHandle (handle);
-	return NULL;
-    }
+	fd = _open_osfhandle((intptr_t)handle, 0);
+	if (fd < 0) {
+		CloseHandle(handle);
+		return NULL;
+	}
 
-    fp = fdopen(fd, "w+b");
-    if (fp == NULL) {
-	_close(fd);
-	return NULL;
-    }
+	fp = fdopen(fd, "w+b");
+	if (fp == NULL) {
+		_close(fd);
+		return NULL;
+	}
 
-    return fp;
+	return fp;
 }
 
 #endif /* _WIN32 */

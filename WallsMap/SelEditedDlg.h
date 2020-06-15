@@ -10,10 +10,10 @@ class CSelEditedDlg : public CDialog
 	DECLARE_DYNAMIC(CSelEditedDlg)
 
 public:
-	CSelEditedDlg(CWallsMapView *pView,CWnd* pParent = NULL);   // standard constructor
+	CSelEditedDlg(CWallsMapView *pView, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CSelEditedDlg();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_SELEDITED };
 
 	UINT m_uFlags;

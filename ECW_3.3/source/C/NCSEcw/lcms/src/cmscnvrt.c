@@ -26,20 +26,20 @@
 
 
 /*
-       This module provides conversion stages for handling intents.
+	   This module provides conversion stages for handling intents.
 
 The chain of evaluation in a transform is:
 
-                PCS1            PCS2                    PCS3          PCS4
+				PCS1            PCS2                    PCS3          PCS4
 
 |From |  |From  |  |Conversion |  |Preview |  |Gamut   |  |Conversion |  |To    |  |To     |
 |Input|->|Device|->|Stage 1    |->|handling|->|Checking|->|Stage 2    |->|Device|->|output |
 
 --------  -------  -------------   ---------  ----------  -------------   -------  ---------
 
-          AToB0                     prew0       gamut                     BToA0
+		  AToB0                     prew0       gamut                     BToA0
 Formatting LUT      Adjusting        LUT         LUT       Adjusting       LUT      Formatting
-          Intent     Intent 1       intent      intent      Intent 2      Intent
+		  Intent     Intent 1       intent      intent      Intent 2      Intent
 
 
 Some of these LUT may be missing
@@ -51,10 +51,10 @@ transform intent. Input data of any stage is taked as relative colorimetric
 always.
 
 
-NOTES: V4 states than perceptual & saturation intents between mixed v2 & v4 profiles should 
+NOTES: V4 states than perceptual & saturation intents between mixed v2 & v4 profiles should
 scale PCS from a black point equal to ZERO in v2 profiles to the reference media black of
-perceptual v4 PCS. Since I found many v2 profiles to be using a perceptual intent with black 
-point not zero at all, I'm implementing that as a black point compensation from whatever 
+perceptual v4 PCS. Since I found many v2 profiles to be using a perceptual intent with black
+point not zero at all, I'm implementing that as a black point compensation from whatever
 black from perceptal intent to the reference media black for v4 profiles.
 
 */
@@ -63,19 +63,19 @@ black from perceptal intent to the reference media black for v4 profiles.
 
 
 int cdecl cmsChooseCnvrt(int Absolute,
-                 int Phase1, LPcmsCIEXYZ BlackPointIn,
-                             LPcmsCIEXYZ WhitePointIn,
-                             LPcmsCIEXYZ IlluminantIn,
-                             LPMAT3 ChromaticAdaptationMatrixIn,
+	int Phase1, LPcmsCIEXYZ BlackPointIn,
+	LPcmsCIEXYZ WhitePointIn,
+	LPcmsCIEXYZ IlluminantIn,
+	LPMAT3 ChromaticAdaptationMatrixIn,
 
-                 int Phase2, LPcmsCIEXYZ BlackPointOut,
-                             LPcmsCIEXYZ WhitePointOut,
-                             LPcmsCIEXYZ IlluminantOut,
-                             LPMAT3 ChromaticAdaptationMatrixOut,
+	int Phase2, LPcmsCIEXYZ BlackPointOut,
+	LPcmsCIEXYZ WhitePointOut,
+	LPcmsCIEXYZ IlluminantOut,
+	LPMAT3 ChromaticAdaptationMatrixOut,
 
-                int DoBlackPointCompensation,
-                 _cmsADJFN *fn1,
-                 LPWMAT3 wm, LPWVEC3 wof);
+	int DoBlackPointCompensation,
+	_cmsADJFN *fn1,
+	LPWMAT3 wm, LPWVEC3 wof);
 
 
 // -------------------------------------------------------------------------
@@ -84,17 +84,17 @@ int cdecl cmsChooseCnvrt(int Absolute,
 
 LCMSAPI LPcmsCIEXYZ LCMSEXPORT cmsD50_XYZ(void)
 {
-    static cmsCIEXYZ D50XYZ = {D50X, D50Y, D50Z};
+	static cmsCIEXYZ D50XYZ = { D50X, D50Y, D50Z };
 
-    return &D50XYZ;
+	return &D50XYZ;
 }
 
 LCMSAPI LPcmsCIExyY LCMSEXPORT cmsD50_xyY(void)
 {
-    static cmsCIExyY D50xyY;
-    cmsXYZ2xyY(&D50xyY, cmsD50_XYZ());
+	static cmsCIExyY D50xyY;
+	cmsXYZ2xyY(&D50xyY, cmsD50_XYZ());
 
-    return &D50xyY;
+	return &D50xyY;
 }
 
 
@@ -115,40 +115,40 @@ LCMSAPI LPcmsCIExyY LCMSEXPORT cmsD50_xyY(void)
 
 static
 void Rel2RelStepAbsCoefs(LPcmsCIEXYZ BlackPointIn,
-                      LPcmsCIEXYZ WhitePointIn,
-                      LPcmsCIEXYZ IlluminantIn,
-                      LPMAT3 ChromaticAdaptationMatrixIn,
+	LPcmsCIEXYZ WhitePointIn,
+	LPcmsCIEXYZ IlluminantIn,
+	LPMAT3 ChromaticAdaptationMatrixIn,
 
-                      LPcmsCIEXYZ BlackPointOut,
-                      LPcmsCIEXYZ WhitePointOut,
-                      LPcmsCIEXYZ IlluminantOut,
-                      LPMAT3 ChromaticAdaptationMatrixOut,
+	LPcmsCIEXYZ BlackPointOut,
+	LPcmsCIEXYZ WhitePointOut,
+	LPcmsCIEXYZ IlluminantOut,
+	LPMAT3 ChromaticAdaptationMatrixOut,
 
-                      LPMAT3 m, LPVEC3 of)
+	LPMAT3 m, LPVEC3 of)
 {
-       
-       VEC3 WtPtIn, WtPtInAdapted;
-       VEC3 WtPtOut, WtPtOutAdapted;
-       MAT3 Scale, m1, m2, m3;
-       
-       VEC3init(&WtPtIn, WhitePointIn->X, WhitePointIn->Y, WhitePointIn->Z);
-       MAT3eval(&WtPtInAdapted, ChromaticAdaptationMatrixIn, &WtPtIn);
-                  
-       VEC3init(&WtPtOut, WhitePointOut->X, WhitePointOut->Y, WhitePointOut->Z);
-       MAT3eval(&WtPtOutAdapted, ChromaticAdaptationMatrixOut, &WtPtOut);
 
-       VEC3init(&Scale.v[0], WtPtInAdapted.n[0] / WtPtOutAdapted.n[0], 0, 0);
-       VEC3init(&Scale.v[1], 0, WtPtInAdapted.n[1] / WtPtOutAdapted.n[1], 0);
-       VEC3init(&Scale.v[2], 0, 0, WtPtInAdapted.n[2] / WtPtOutAdapted.n[2]);
+	VEC3 WtPtIn, WtPtInAdapted;
+	VEC3 WtPtOut, WtPtOutAdapted;
+	MAT3 Scale, m1, m2, m3;
+
+	VEC3init(&WtPtIn, WhitePointIn->X, WhitePointIn->Y, WhitePointIn->Z);
+	MAT3eval(&WtPtInAdapted, ChromaticAdaptationMatrixIn, &WtPtIn);
+
+	VEC3init(&WtPtOut, WhitePointOut->X, WhitePointOut->Y, WhitePointOut->Z);
+	MAT3eval(&WtPtOutAdapted, ChromaticAdaptationMatrixOut, &WtPtOut);
+
+	VEC3init(&Scale.v[0], WtPtInAdapted.n[0] / WtPtOutAdapted.n[0], 0, 0);
+	VEC3init(&Scale.v[1], 0, WtPtInAdapted.n[1] / WtPtOutAdapted.n[1], 0);
+	VEC3init(&Scale.v[2], 0, 0, WtPtInAdapted.n[2] / WtPtOutAdapted.n[2]);
 
 
-       m1 = *ChromaticAdaptationMatrixIn;
-       MAT3inverse(&m1, &m2);
-       
-       MAT3per(&m3, &m2, &Scale);
-       MAT3per(m, &m3, ChromaticAdaptationMatrixOut);
-       VEC3init(of, 0.0, 0.0, 0.0);
-                    
+	m1 = *ChromaticAdaptationMatrixIn;
+	MAT3inverse(&m1, &m2);
+
+	MAT3per(&m3, &m2, &Scale);
+	MAT3per(m, &m3, ChromaticAdaptationMatrixOut);
+	VEC3init(of, 0.0, 0.0, 0.0);
+
 }
 
 
@@ -157,52 +157,52 @@ void Rel2RelStepAbsCoefs(LPcmsCIEXYZ BlackPointIn,
 
 static
 void ComputeBlackPointCompensationFactors(LPcmsCIEXYZ BlackPointIn,
-                      LPcmsCIEXYZ WhitePointIn,
-                      LPcmsCIEXYZ IlluminantIn,
-                      LPcmsCIEXYZ BlackPointOut,
-                      LPcmsCIEXYZ WhitePointOut,
-                      LPcmsCIEXYZ IlluminantOut,
-                      LPMAT3 m, LPVEC3 of)
+	LPcmsCIEXYZ WhitePointIn,
+	LPcmsCIEXYZ IlluminantIn,
+	LPcmsCIEXYZ BlackPointOut,
+	LPcmsCIEXYZ WhitePointOut,
+	LPcmsCIEXYZ IlluminantOut,
+	LPMAT3 m, LPVEC3 of)
 {
-    
-
-   cmsCIEXYZ RelativeBlackPointIn, RelativeBlackPointOut;
-   double ax, ay, az, bx, by, bz, tx, ty, tz;
-   
-   // At first, convert both black points to relative.
-
-   cmsAdaptToIlluminant(&RelativeBlackPointIn,  WhitePointIn, IlluminantIn, BlackPointIn);
-   cmsAdaptToIlluminant(&RelativeBlackPointOut, WhitePointOut, IlluminantOut, BlackPointOut);
-   
-   // Now we need to compute a matrix plus an offset m and of such of
-   // [m]*bpin + off = bpout
-   // [m]*D50  + off = D50
-   //
-   // This is a linear scaling in the form ax+b, where
-   // a = (bpout - D50) / (bpin - D50)
-   // b = - D50* (bpout - bpin) / (bpin - D50)
 
 
-   tx = RelativeBlackPointIn.X - IlluminantIn ->X;
-   ty = RelativeBlackPointIn.Y - IlluminantIn ->Y;
-   tz = RelativeBlackPointIn.Z - IlluminantIn ->Z;
+	cmsCIEXYZ RelativeBlackPointIn, RelativeBlackPointOut;
+	double ax, ay, az, bx, by, bz, tx, ty, tz;
 
-   ax = (RelativeBlackPointOut.X - IlluminantOut ->X) / tx;
-   ay = (RelativeBlackPointOut.Y - IlluminantOut ->Y) / ty;
-   az = (RelativeBlackPointOut.Z - IlluminantOut ->Z) / tz;
+	// At first, convert both black points to relative.
 
-   bx = - IlluminantOut -> X * (RelativeBlackPointOut.X - RelativeBlackPointIn.X) / tx;
-   by = - IlluminantOut -> Y * (RelativeBlackPointOut.Y - RelativeBlackPointIn.Y) / ty;
-   bz = - IlluminantOut -> Z * (RelativeBlackPointOut.Z - RelativeBlackPointIn.Z) / tz;
+	cmsAdaptToIlluminant(&RelativeBlackPointIn, WhitePointIn, IlluminantIn, BlackPointIn);
+	cmsAdaptToIlluminant(&RelativeBlackPointOut, WhitePointOut, IlluminantOut, BlackPointOut);
+
+	// Now we need to compute a matrix plus an offset m and of such of
+	// [m]*bpin + off = bpout
+	// [m]*D50  + off = D50
+	//
+	// This is a linear scaling in the form ax+b, where
+	// a = (bpout - D50) / (bpin - D50)
+	// b = - D50* (bpout - bpin) / (bpin - D50)
 
 
-   MAT3identity(m);
+	tx = RelativeBlackPointIn.X - IlluminantIn->X;
+	ty = RelativeBlackPointIn.Y - IlluminantIn->Y;
+	tz = RelativeBlackPointIn.Z - IlluminantIn->Z;
 
-   m->v[VX].n[0] = ax;
-   m->v[VY].n[1] = ay;
-   m->v[VZ].n[2] = az;
+	ax = (RelativeBlackPointOut.X - IlluminantOut->X) / tx;
+	ay = (RelativeBlackPointOut.Y - IlluminantOut->Y) / ty;
+	az = (RelativeBlackPointOut.Z - IlluminantOut->Z) / tz;
 
-   VEC3init(of, bx, by, bz);
+	bx = -IlluminantOut->X * (RelativeBlackPointOut.X - RelativeBlackPointIn.X) / tx;
+	by = -IlluminantOut->Y * (RelativeBlackPointOut.Y - RelativeBlackPointIn.Y) / ty;
+	bz = -IlluminantOut->Z * (RelativeBlackPointOut.Z - RelativeBlackPointIn.Z) / tz;
+
+
+	MAT3identity(m);
+
+	m->v[VX].n[0] = ax;
+	m->v[VY].n[1] = ay;
+	m->v[VZ].n[2] = az;
+
+	VEC3init(of, bx, by, bz);
 
 }
 
@@ -210,7 +210,7 @@ void ComputeBlackPointCompensationFactors(LPcmsCIEXYZ BlackPointIn,
 
 static
 BOOL IdentityParameters(LPWMAT3 m, LPWVEC3 of)
-{	
+{
 	WVEC3 wv0;
 
 	VEC3initF(&wv0, 0, 0, 0);
@@ -232,17 +232,17 @@ static
 void XYZ2XYZ(WORD In[], WORD Out[], LPWMAT3 m, LPWVEC3 of)
 {
 
-    WVEC3 a, r;
+	WVEC3 a, r;
 
-    a.n[0] = In[0] << 1;
-    a.n[1] = In[1] << 1;
-    a.n[2] = In[2] << 1;
+	a.n[0] = In[0] << 1;
+	a.n[1] = In[1] << 1;
+	a.n[2] = In[2] << 1;
 
-    MAT3evalW(&r, m, &a);
+	MAT3evalW(&r, m, &a);
 
-    Out[0] = Clamp_XYZ((r.n[VX] + of->n[VX]) >> 1);
-    Out[1] = Clamp_XYZ((r.n[VY] + of->n[VY]) >> 1);
-    Out[2] = Clamp_XYZ((r.n[VZ] + of->n[VZ]) >> 1);
+	Out[0] = Clamp_XYZ((r.n[VX] + of->n[VX]) >> 1);
+	Out[1] = Clamp_XYZ((r.n[VY] + of->n[VY]) >> 1);
+	Out[2] = Clamp_XYZ((r.n[VZ] + of->n[VZ]) >> 1);
 }
 
 
@@ -251,10 +251,10 @@ void XYZ2XYZ(WORD In[], WORD Out[], LPWMAT3 m, LPWVEC3 of)
 static
 void XYZ2Lab(WORD In[], WORD Out[], LPWMAT3 m, LPWVEC3 of)
 {
-  WORD XYZ[3];
+	WORD XYZ[3];
 
-  XYZ2XYZ(In, XYZ, m, of);
-  cmsXYZ2LabEncoded(XYZ, Out);
+	XYZ2XYZ(In, XYZ, m, of);
+	cmsXYZ2LabEncoded(XYZ, Out);
 }
 
 // Lab to XYZ, then scalling
@@ -262,10 +262,10 @@ void XYZ2Lab(WORD In[], WORD Out[], LPWMAT3 m, LPWVEC3 of)
 static
 void Lab2XYZ(WORD In[], WORD Out[], LPWMAT3 m, LPWVEC3 of)
 {
-       WORD XYZ[3];
+	WORD XYZ[3];
 
-       cmsLab2XYZEncoded(In, XYZ);
-       XYZ2XYZ(XYZ, Out, m, of);
+	cmsLab2XYZEncoded(In, XYZ);
+	XYZ2XYZ(XYZ, Out, m, of);
 }
 
 // Lab to XYZ, scalling and then, back to Lab
@@ -273,11 +273,11 @@ void Lab2XYZ(WORD In[], WORD Out[], LPWMAT3 m, LPWVEC3 of)
 static
 void Lab2XYZ2Lab(WORD In[], WORD Out[], LPWMAT3 m, LPWVEC3 of)
 {
-       WORD XYZ[3], XYZ2[3];
+	WORD XYZ[3], XYZ2[3];
 
-       cmsLab2XYZEncoded(In, XYZ);
-       XYZ2XYZ(XYZ, XYZ2, m, of);
-       cmsXYZ2LabEncoded(XYZ2, Out);
+	cmsLab2XYZEncoded(In, XYZ);
+	XYZ2XYZ(XYZ, XYZ2, m, of);
+	cmsXYZ2LabEncoded(XYZ2, Out);
 }
 
 // ------------------------------------------------------------------
@@ -286,114 +286,114 @@ void Lab2XYZ2Lab(WORD In[], WORD Out[], LPWMAT3 m, LPWVEC3 of)
 
 static
 int FromXYZRelLUT(int Absolute,
-                             LPcmsCIEXYZ BlackPointIn,
-                             LPcmsCIEXYZ WhitePointIn,
-                             LPcmsCIEXYZ IlluminantIn,
-                             LPMAT3 ChromaticAdaptationMatrixIn,
+	LPcmsCIEXYZ BlackPointIn,
+	LPcmsCIEXYZ WhitePointIn,
+	LPcmsCIEXYZ IlluminantIn,
+	LPMAT3 ChromaticAdaptationMatrixIn,
 
-                 int Phase2, LPcmsCIEXYZ BlackPointOut,
-                             LPcmsCIEXYZ WhitePointOut,
-                             LPcmsCIEXYZ IlluminantOut,
-                             LPMAT3 ChromaticAdaptationMatrixOut,
+	int Phase2, LPcmsCIEXYZ BlackPointOut,
+	LPcmsCIEXYZ WhitePointOut,
+	LPcmsCIEXYZ IlluminantOut,
+	LPMAT3 ChromaticAdaptationMatrixOut,
 
-                 int DoBlackPointCompensation,
-                 _cmsADJFN *fn1,
-                 LPMAT3 m, LPVEC3 of)
+	int DoBlackPointCompensation,
+	_cmsADJFN *fn1,
+	LPMAT3 m, LPVEC3 of)
 
 {
-              switch (Phase2) {
+	switch (Phase2) {
 
-                     // From relative XYZ to Relative XYZ.
+		// From relative XYZ to Relative XYZ.
 
-                     case XYZRel:
+	case XYZRel:
 
-                            if (Absolute)
-                            {
-                                   // From input relative to absolute, and then
-                                   // back to output relative
+		if (Absolute)
+		{
+			// From input relative to absolute, and then
+			// back to output relative
 
-                                   Rel2RelStepAbsCoefs(BlackPointIn,
-                                                  WhitePointIn,
-                                                  IlluminantIn,
-                                                  ChromaticAdaptationMatrixIn,
-                                                  BlackPointOut,
-                                                  WhitePointOut,
-                                                  IlluminantOut,
-                                                  ChromaticAdaptationMatrixOut,
-                                                  m, of);
-                                   *fn1 = XYZ2XYZ;
+			Rel2RelStepAbsCoefs(BlackPointIn,
+				WhitePointIn,
+				IlluminantIn,
+				ChromaticAdaptationMatrixIn,
+				BlackPointOut,
+				WhitePointOut,
+				IlluminantOut,
+				ChromaticAdaptationMatrixOut,
+				m, of);
+			*fn1 = XYZ2XYZ;
 
-                            }
-                            else
-                            {
-                                   // XYZ Relative to XYZ relative, no op required                                   
-                                   *fn1 = NULL;
-                                   if (DoBlackPointCompensation) {
+		}
+		else
+		{
+			// XYZ Relative to XYZ relative, no op required                                   
+			*fn1 = NULL;
+			if (DoBlackPointCompensation) {
 
-                                      *fn1 = XYZ2XYZ;
-                                      ComputeBlackPointCompensationFactors(BlackPointIn,
-                                                                      WhitePointIn,
-                                                                      IlluminantIn,
-                                                                      BlackPointOut,
-                                                                      WhitePointOut,
-                                                                      IlluminantOut,
-                                                                      m, of);
+				*fn1 = XYZ2XYZ;
+				ComputeBlackPointCompensationFactors(BlackPointIn,
+					WhitePointIn,
+					IlluminantIn,
+					BlackPointOut,
+					WhitePointOut,
+					IlluminantOut,
+					m, of);
 
-                                   }
-                            }
-                            break;
+			}
+		}
+		break;
 
-                    
-                     // From relative XYZ to Relative Lab
 
-                     case LabRel:
+		// From relative XYZ to Relative Lab
 
-                            // First pass XYZ to absolute, then to relative and
-                            // finally to Lab. I use here D50 for output in order
-                            // to prepare the "to Lab" conversion.
+	case LabRel:
 
-                            if (Absolute)
-                            {   
+		// First pass XYZ to absolute, then to relative and
+		// finally to Lab. I use here D50 for output in order
+		// to prepare the "to Lab" conversion.
 
-                                Rel2RelStepAbsCoefs(BlackPointIn,
-                                                    WhitePointIn,
-                                                    IlluminantIn,
-                                                    ChromaticAdaptationMatrixIn,
-                                                    BlackPointOut,
-                                                    WhitePointOut,
-                                                    IlluminantOut,
-                                                    ChromaticAdaptationMatrixOut,
-                                                    m, of);
-                                
-                                *fn1 = XYZ2Lab;
+		if (Absolute)
+		{
 
-                            }
-                            else
-                            {
-                                   // Just Convert to Lab
+			Rel2RelStepAbsCoefs(BlackPointIn,
+				WhitePointIn,
+				IlluminantIn,
+				ChromaticAdaptationMatrixIn,
+				BlackPointOut,
+				WhitePointOut,
+				IlluminantOut,
+				ChromaticAdaptationMatrixOut,
+				m, of);
 
-                                   MAT3identity(m);
-                                   VEC3init(of, 0, 0, 0);
-                                   *fn1 = XYZ2Lab;
+			*fn1 = XYZ2Lab;
 
-                                   if (DoBlackPointCompensation) {
+		}
+		else
+		{
+			// Just Convert to Lab
 
-                                    ComputeBlackPointCompensationFactors(BlackPointIn,
-                                                                          WhitePointIn,
-                                                                          IlluminantIn,
-                                                                          BlackPointOut,
-                                                                          WhitePointOut,
-                                                                          IlluminantOut,
-                                                                          m, of);
-                                   }
-                            }
-                            break;
+			MAT3identity(m);
+			VEC3init(of, 0, 0, 0);
+			*fn1 = XYZ2Lab;
 
-                    
-                     default: return FALSE;
-                     }
+			if (DoBlackPointCompensation) {
 
-              return TRUE;
+				ComputeBlackPointCompensationFactors(BlackPointIn,
+					WhitePointIn,
+					IlluminantIn,
+					BlackPointOut,
+					WhitePointOut,
+					IlluminantOut,
+					m, of);
+			}
+		}
+		break;
+
+
+	default: return FALSE;
+	}
+
+	return TRUE;
 }
 
 
@@ -403,109 +403,109 @@ int FromXYZRelLUT(int Absolute,
 
 static
 int FromLabRelLUT(int Absolute,
-                             LPcmsCIEXYZ BlackPointIn,
-                             LPcmsCIEXYZ WhitePointIn,
-                             LPcmsCIEXYZ IlluminantIn,
-                             LPMAT3 ChromaticAdaptationMatrixIn,
+	LPcmsCIEXYZ BlackPointIn,
+	LPcmsCIEXYZ WhitePointIn,
+	LPcmsCIEXYZ IlluminantIn,
+	LPMAT3 ChromaticAdaptationMatrixIn,
 
-                 int Phase2, LPcmsCIEXYZ BlackPointOut,
-                             LPcmsCIEXYZ WhitePointOut,
-                             LPcmsCIEXYZ IlluminantOut,
-                             LPMAT3 ChromaticAdaptationMatrixOut,
+	int Phase2, LPcmsCIEXYZ BlackPointOut,
+	LPcmsCIEXYZ WhitePointOut,
+	LPcmsCIEXYZ IlluminantOut,
+	LPMAT3 ChromaticAdaptationMatrixOut,
 
-                int DoBlackPointCompensation,
-                 _cmsADJFN *fn1,
-                 LPMAT3 m, LPVEC3 of)
+	int DoBlackPointCompensation,
+	_cmsADJFN *fn1,
+	LPMAT3 m, LPVEC3 of)
 {
 
-          switch (Phase2) {
+	switch (Phase2) {
 
-              // From Lab Relative to XYZ Relative, very usual case
+		// From Lab Relative to XYZ Relative, very usual case
 
-              case XYZRel:
+	case XYZRel:
 
-                  if (Absolute) {  // Absolute intent
+		if (Absolute) {  // Absolute intent
 
-                            // From lab relative, to XYZ absolute, and then,
-                            // back to XYZ relative
+				  // From lab relative, to XYZ absolute, and then,
+				  // back to XYZ relative
 
-                            Rel2RelStepAbsCoefs(BlackPointIn,
-                                           WhitePointIn,
-                                           cmsD50_XYZ(),
-                                           ChromaticAdaptationMatrixIn,
-                                           BlackPointOut,
-                                           WhitePointOut,
-                                           IlluminantOut,
-                                           ChromaticAdaptationMatrixOut,
-                                           m, of);
+			Rel2RelStepAbsCoefs(BlackPointIn,
+				WhitePointIn,
+				cmsD50_XYZ(),
+				ChromaticAdaptationMatrixIn,
+				BlackPointOut,
+				WhitePointOut,
+				IlluminantOut,
+				ChromaticAdaptationMatrixOut,
+				m, of);
 
-                            *fn1 = Lab2XYZ;
+			*fn1 = Lab2XYZ;
 
-                     }
-                     else
-                     {
-                            // From Lab relative, to XYZ relative.
-                            
-                            *fn1 = Lab2XYZ;
-                            if (DoBlackPointCompensation) {
+		}
+		else
+		{
+			// From Lab relative, to XYZ relative.
 
-                                 ComputeBlackPointCompensationFactors(BlackPointIn,
-                                                                      WhitePointIn,
-                                                                      IlluminantIn,
-                                                                      BlackPointOut,
-                                                                      WhitePointOut,
-                                                                      IlluminantOut,
-                                                                      m, of);
+			*fn1 = Lab2XYZ;
+			if (DoBlackPointCompensation) {
 
-                            }
-                     }
-                     break;
+				ComputeBlackPointCompensationFactors(BlackPointIn,
+					WhitePointIn,
+					IlluminantIn,
+					BlackPointOut,
+					WhitePointOut,
+					IlluminantOut,
+					m, of);
 
-
-
-              case LabRel:
-
-                     if (Absolute) {
-
-                     // First pass to XYZ using the input illuminant
-                     // * InIlluminant / D50, then to absolute. Then
-                     // to relative, but for input
-
-                     Rel2RelStepAbsCoefs(BlackPointIn, 
-                                         WhitePointIn, IlluminantIn,
-                                         ChromaticAdaptationMatrixIn,
-                                         BlackPointOut, 
-                                         WhitePointOut, cmsD50_XYZ(),
-                                         ChromaticAdaptationMatrixOut,
-                                         m, of);
-                     *fn1 = Lab2XYZ2Lab;
-                     }
-                     else
-                     {      // Lab -> Lab relative don't need any adjust unless
-                            // black point compensation
-
-                            *fn1 = NULL;
-                             if (DoBlackPointCompensation) {
-
-                                 *fn1 = Lab2XYZ2Lab;
-                                 ComputeBlackPointCompensationFactors(BlackPointIn,
-                                                                      WhitePointIn,
-                                                                      IlluminantIn,
-                                                                      BlackPointOut,
-                                                                      WhitePointOut,
-                                                                      IlluminantOut,
-                                                                      m, of);
-
-                                
-                            }
-                     }
-                     break;
+			}
+		}
+		break;
 
 
-              default: return FALSE;
-              }
 
-   return TRUE;
+	case LabRel:
+
+		if (Absolute) {
+
+			// First pass to XYZ using the input illuminant
+			// * InIlluminant / D50, then to absolute. Then
+			// to relative, but for input
+
+			Rel2RelStepAbsCoefs(BlackPointIn,
+				WhitePointIn, IlluminantIn,
+				ChromaticAdaptationMatrixIn,
+				BlackPointOut,
+				WhitePointOut, cmsD50_XYZ(),
+				ChromaticAdaptationMatrixOut,
+				m, of);
+			*fn1 = Lab2XYZ2Lab;
+		}
+		else
+		{      // Lab -> Lab relative don't need any adjust unless
+			   // black point compensation
+
+			*fn1 = NULL;
+			if (DoBlackPointCompensation) {
+
+				*fn1 = Lab2XYZ2Lab;
+				ComputeBlackPointCompensationFactors(BlackPointIn,
+					WhitePointIn,
+					IlluminantIn,
+					BlackPointOut,
+					WhitePointOut,
+					IlluminantOut,
+					m, of);
+
+
+			}
+		}
+		break;
+
+
+	default: return FALSE;
+	}
+
+	return TRUE;
 }
 
 
@@ -521,89 +521,89 @@ int FromLabRelLUT(int Absolute,
 // Main dispatcher
 
 int cmsChooseCnvrt(int Absolute,
-                  int Phase1, LPcmsCIEXYZ BlackPointIn,
-                              LPcmsCIEXYZ WhitePointIn,
-                              LPcmsCIEXYZ IlluminantIn,
-                              LPMAT3 ChromaticAdaptationMatrixIn,
+	int Phase1, LPcmsCIEXYZ BlackPointIn,
+	LPcmsCIEXYZ WhitePointIn,
+	LPcmsCIEXYZ IlluminantIn,
+	LPMAT3 ChromaticAdaptationMatrixIn,
 
-                  int Phase2, LPcmsCIEXYZ BlackPointOut,
-                              LPcmsCIEXYZ WhitePointOut,
-                              LPcmsCIEXYZ IlluminantOut,
-                              LPMAT3 ChromaticAdaptationMatrixOut,
+	int Phase2, LPcmsCIEXYZ BlackPointOut,
+	LPcmsCIEXYZ WhitePointOut,
+	LPcmsCIEXYZ IlluminantOut,
+	LPMAT3 ChromaticAdaptationMatrixOut,
 
-                  int DoBlackPointCompensation,
-                  _cmsADJFN *fn1,
-                  LPWMAT3 wm, LPWVEC3 wof)
+	int DoBlackPointCompensation,
+	_cmsADJFN *fn1,
+	LPWMAT3 wm, LPWVEC3 wof)
 {
 
-       int rc;
-       MAT3 m;
-       VEC3 of;
+	int rc;
+	MAT3 m;
+	VEC3 of;
 
 
-       MAT3identity(&m);
-       VEC3init(&of, 0, 0, 0);
+	MAT3identity(&m);
+	VEC3init(&of, 0, 0, 0);
 
-       switch (Phase1) {
+	switch (Phase1) {
 
-       // Input LUT is giving XYZ relative values.
+		// Input LUT is giving XYZ relative values.
 
-       case XYZRel:  rc = FromXYZRelLUT(Absolute,
-                                          BlackPointIn,
-                                          WhitePointIn,
-                                          IlluminantIn,
-                                          ChromaticAdaptationMatrixIn,
-                                          Phase2,
-                                          BlackPointOut,
-                                          WhitePointOut,
-                                          IlluminantOut,
-                                          ChromaticAdaptationMatrixOut,
-                                          DoBlackPointCompensation,
-                                          fn1, &m, &of);
-                     break;
-
-       
-
-       // Input LUT is giving Lab relative values
-
-       case LabRel:  rc =  FromLabRelLUT(Absolute,
-                                          BlackPointIn,
-                                          WhitePointIn,
-                                          IlluminantIn,
-                                          ChromaticAdaptationMatrixIn,
-                                          Phase2,
-                                          BlackPointOut,
-                                          WhitePointOut,
-                                          IlluminantOut,
-                                          ChromaticAdaptationMatrixOut,
-                                          DoBlackPointCompensation,
-                                          fn1, &m, &of);
-                     break;
+	case XYZRel:  rc = FromXYZRelLUT(Absolute,
+		BlackPointIn,
+		WhitePointIn,
+		IlluminantIn,
+		ChromaticAdaptationMatrixIn,
+		Phase2,
+		BlackPointOut,
+		WhitePointOut,
+		IlluminantOut,
+		ChromaticAdaptationMatrixOut,
+		DoBlackPointCompensation,
+		fn1, &m, &of);
+		break;
 
 
-       
 
-       // Unrecognized combination
+		// Input LUT is giving Lab relative values
 
-       default:    cmsSignalError(LCMS_ERRC_ABORTED, "(internal) Phase error");
-                   return FALSE;
+	case LabRel:  rc = FromLabRelLUT(Absolute,
+		BlackPointIn,
+		WhitePointIn,
+		IlluminantIn,
+		ChromaticAdaptationMatrixIn,
+		Phase2,
+		BlackPointOut,
+		WhitePointOut,
+		IlluminantOut,
+		ChromaticAdaptationMatrixOut,
+		DoBlackPointCompensation,
+		fn1, &m, &of);
+		break;
 
-       }
 
-       MAT3toFix(wm, &m);
-       VEC3toFix(wof, &of);
 
-       // Do some optimization -- discard conversion if identity parameters.
 
-       if (*fn1 == XYZ2XYZ || *fn1 == Lab2XYZ2Lab) {
+		// Unrecognized combination
 
-           if (IdentityParameters(wm, wof))
-               *fn1 = NULL;
-       }
+	default:    cmsSignalError(LCMS_ERRC_ABORTED, "(internal) Phase error");
+		return FALSE;
 
-       
-       return rc;
+	}
+
+	MAT3toFix(wm, &m);
+	VEC3toFix(wof, &of);
+
+	// Do some optimization -- discard conversion if identity parameters.
+
+	if (*fn1 == XYZ2XYZ || *fn1 == Lab2XYZ2Lab) {
+
+		if (IdentityParameters(wm, wof))
+			*fn1 = NULL;
+	}
+
+
+	return rc;
 }
 
 
-                             
+

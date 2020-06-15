@@ -26,13 +26,13 @@
 #define Delete __debugpos(__FILE__,__LINE__), ::delete
 
 
-void __debugpos( const char* filename, unsigned line ) ;
+void __debugpos(const char* filename, unsigned line);
 
-void* operator new( size_t size, char* file, unsigned line ) ;
-void  operator delete( void* p ) ;
+void* operator new(size_t size, char* file, unsigned line);
+void  operator delete(void* p);
 
-void MemLeakBegin( int verbose = 1 ) ;
-void MemLeakEnd() ;
+void MemLeakBegin(int verbose = 1);
+void MemLeakEnd();
 
 #else
 

@@ -9,7 +9,7 @@ public:
 	CFont *m_pCellFont;
 	int m_nSortCol;
 	bool m_bSortAsc;
-	int SetSortImage(int nCol,bool bAsc);
+	int SetSortImage(int nCol, bool bAsc);
 
 protected:
 	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
@@ -18,9 +18,9 @@ protected:
 
 public:
 	DECLARE_MESSAGE_MAP()
-	afx_msg LRESULT OnLayout( WPARAM wParam, LPARAM lParam );
+	afx_msg LRESULT OnLayout(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	//afx_msg BOOL OnToolTipText(UINT id, NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg LRESULT OnTabletQuerySystemGestureStatus(WPARAM,LPARAM);
+	afx_msg LRESULT OnTabletQuerySystemGestureStatus(WPARAM, LPARAM);
 };
 #endif

@@ -54,12 +54,12 @@ cairo_bool_t _cairo_mutex_initialized = _CAIRO_MUTEX_IMPL_INITIALIZED_DEFAULT_VA
 #endif
 
 #if _CAIRO_MUTEX_IMPL_USE_STATIC_INITIALIZER
-void _cairo_mutex_initialize (void)
+void _cairo_mutex_initialize(void)
 {
-    if (_cairo_mutex_initialized)
-        return;
+	if (_cairo_mutex_initialized)
+		return;
 
-    _cairo_mutex_initialized = TRUE;
+	_cairo_mutex_initialized = TRUE;
 
 #define  CAIRO_MUTEX_DECLARE(mutex) CAIRO_MUTEX_INIT (mutex);
 #include "cairo-mutex-list-private.h"
@@ -68,12 +68,12 @@ void _cairo_mutex_initialize (void)
 #endif
 
 #if _CAIRO_MUTEX_IMPL_USE_STATIC_FINALIZER
-void _cairo_mutex_finalize (void)
+void _cairo_mutex_finalize(void)
 {
-    if (!_cairo_mutex_initialized)
-        return;
+	if (!_cairo_mutex_initialized)
+		return;
 
-    _cairo_mutex_initialized = FALSE;
+	_cairo_mutex_initialized = FALSE;
 
 #define  CAIRO_MUTEX_DECLARE(mutex) CAIRO_MUTEX_FINI (mutex);
 #include "cairo-mutex-list-private.h"

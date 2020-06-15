@@ -2,13 +2,13 @@
 ** Copyright 2001 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:   	NCSUtil/NCSThread.cpp
@@ -29,16 +29,16 @@ void CNCSThread::ThreadFunc(void *pDataParam)
 	pThis->Work(pData);
 }
 
-CNCSThread::CNCSThread() 
-{ 
+CNCSThread::CNCSThread()
+{
 	m_Thread = NCS_NULL_THREAD_ID;
 	m_bRun = false;
 	m_pData = NULL;
 }
 
-CNCSThread::~CNCSThread() 
+CNCSThread::~CNCSThread()
 {
-	if( Terminate() ) {
+	if (Terminate()) {
 		FreeInfo();
 	}
 }
@@ -49,7 +49,7 @@ bool CNCSThread::Spawn(void *pData, bool bCreateSuspended) {
 	//pStartData[1] = pData;
 	m_pData = pData;
 	m_bRun = true;
-	return(NCSThreadSpawn(&m_Thread, CNCSThread::ThreadFunc, (void*)this, bCreateSuspended)==TRUE);
+	return(NCSThreadSpawn(&m_Thread, CNCSThread::ThreadFunc, (void*)this, bCreateSuspended) == TRUE);
 }
 
 void CNCSThread::FreeInfo() {
@@ -85,19 +85,19 @@ void CNCSThread::DisableStats() {
 }
 
 bool CNCSThread::IsRunning() {
-	return (NCSThreadIsRunning(&m_Thread)==TRUE);
+	return (NCSThreadIsRunning(&m_Thread) == TRUE);
 }
 
 bool CNCSThread::IsSuspended() {
-	return (NCSThreadIsSuspended(&m_Thread)==TRUE);
+	return (NCSThreadIsSuspended(&m_Thread) == TRUE);
 }
 
 bool CNCSThread::ThreadYield(void) {
-	return (NCSThreadYield()==TRUE);
+	return (NCSThreadYield() == TRUE);
 }
 
 bool CNCSThread::SetPriority(NCSThreadPriority pri) {
-	return (NCSThreadSetPriority(&m_Thread,pri)==TRUE);
+	return (NCSThreadSetPriority(&m_Thread, pri) == TRUE);
 }
 
 NCSThreadPriority CNCSThread::GetPriority() {
@@ -105,7 +105,7 @@ NCSThreadPriority CNCSThread::GetPriority() {
 }
 
 bool CNCSThread::Terminate() {
-	return (NCSThreadTerminate(&m_Thread)==TRUE);
+	return (NCSThreadTerminate(&m_Thread) == TRUE);
 }
 
 NCSThread CNCSThread::GetID(void) {
@@ -135,15 +135,16 @@ bool CNCSThread::Run(void)
 
 bool CNCSThread::Stop(bool bWait)
 {
-	if(m_bRun) {
+	if (m_bRun) {
 		m_bRun = false;
 
-		while(bWait && IsRunning()) {
+		while (bWait && IsRunning()) {
 			Resume();
-			NCSSleep(1);	
+			NCSSleep(1);
 		}
 		return(!IsRunning());
-	} else {
+	}
+	else {
 		return(false);
 	}
 }

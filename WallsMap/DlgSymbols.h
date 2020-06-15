@@ -25,7 +25,7 @@ class CDlgSymbols : public CDialog
 	CWallsMapDoc *m_pDoc;
 
 	UINT m_nLblFld;
-	COLORREF m_crLbl,m_clrPrev;
+	COLORREF m_crLbl, m_clrPrev;
 	CLogFont m_font;
 	SHP_MRK_STYLE m_mstyle;
 	BOOL m_bDotCenter;
@@ -36,7 +36,7 @@ class CDlgSymbols : public CDialog
 	CDC m_dcBmp;	 // Compatible Memory DC, with m_cBmp already selected
 	HBITMAP m_hBmpOld;    // Handle of old bitmap to save
 
-    CRect m_rectBox;  // Bitmap's client-relative rectangle
+	CRect m_rectBox;  // Bitmap's client-relative rectangle
 	CSize m_sizeBox;  // Size (width and height) of bitmap in pixels
 	CPoint m_ptCtrBox; //Center of box where symbol is drawn
 	CStatic	m_rectSym;
@@ -53,10 +53,10 @@ class CDlgSymbols : public CDialog
 	void UpdateOpacityLabel();
 
 public:
-	CDlgSymbols(CWallsMapDoc *pDoc,CShpLayer *pLayer,CWnd* pParent = NULL);   // standard constructor
+	CDlgSymbols(CWallsMapDoc *pDoc, CShpLayer *pLayer, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CDlgSymbols();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_SYMBOLS };
 
 private:
@@ -93,8 +93,8 @@ private:
 	afx_msg void OnClear();
 	afx_msg void OnLblFont();
 
-	afx_msg LRESULT OnChgColor(WPARAM,LPARAM);
-	afx_msg LRESULT OnColorListbox(WPARAM wParam,LPARAM lParam);
+	afx_msg LRESULT OnChgColor(WPARAM, LPARAM);
+	afx_msg LRESULT OnColorListbox(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnDestroy();
 	afx_msg void OnPaint();
 	afx_msg void OnBnClickedMoveleft();

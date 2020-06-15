@@ -21,7 +21,7 @@
 class CMagDlg : public CDialog
 {
 public:
-	CMagDlg(CWnd* pParent,bool bVecInit=false);   // standard constructor
+	CMagDlg(CWnd* pParent, bool bVecInit = false);   // standard constructor
 	CMagDlg();
 	~CMagDlg();
 	BOOL upd_UTM(int fcn);
@@ -31,9 +31,9 @@ public:
 	char *m_pTitle;
 	MAGDATA m_MD;
 
-	BOOL IsDirEnabled() {return m_bDirEnabled;}
+	BOOL IsDirEnabled() { return m_bDirEnabled; }
 
-	bool ErrorOK(CLinkEdit *pEdit,CWnd* pNewWnd);
+	bool ErrorOK(CLinkEdit *pEdit, CWnd* pNewWnd);
 
 	//void UpdateMD(double *enu,DWORD date); //Called from CVecInfoDlg::OnMagDlg()
 
@@ -45,7 +45,7 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CMagDlg)
-	protected:
+protected:
 	virtual void PostNcDestroy();
 	//}}AFX_VIRTUAL
 
@@ -57,27 +57,27 @@ private:
 	BOOL m_bDisplayDEG;
 	BOOL m_bDirEnabled;
 	int m_iOutOfZone;
-	
-	bool m_bUPS;
-	bool m_bModeless,m_bVecInit;
 
-	CButton m_zoneInc,m_zoneDec;
+	bool m_bUPS;
+	bool m_bModeless, m_bVecInit;
+
+	CButton m_zoneInc, m_zoneDec;
 	CResourceButton m_btnUTMUPS;
 
-	CLinkEditI  m_zone,m_elev,m_year,m_month,
-		        m_latdeg,m_latmin,
-			    m_londeg,m_lonmin;
+	CLinkEditI  m_zone, m_elev, m_year, m_month,
+		m_latdeg, m_latmin,
+		m_londeg, m_lonmin;
 
-	CLinkEditF  m_latdegF,m_londegF,
-				m_latminF,m_lonminF,
-				m_latsecF,m_lonsecF,
-				m_north,m_east;
+	CLinkEditF  m_latdegF, m_londegF,
+		m_latminF, m_lonminF,
+		m_latsecF, m_lonsecF,
+		m_north, m_east;
 
-	CSpinEdit  m_syear,m_smonth,
-		       m_slatdeg,m_slatmin,m_slatsec,
-			   m_slondeg,m_slonmin,m_slonsec;
+	CSpinEdit  m_syear, m_smonth,
+		m_slatdeg, m_slatmin, m_slatsec,
+		m_slondeg, m_slonmin, m_slonsec;
 
-	int m_MF(int f) {m_MD.fcn=f; return mag_GetData(&m_MD);}
+	int m_MF(int f) { m_MD.fcn = f; return mag_GetData(&m_MD); }
 
 	void IncZone(int dir);
 	void EnableDIR(BOOL bEnable);
@@ -94,29 +94,29 @@ private:
 	void ToggleFormat(UINT id);
 
 	void ShowErrMsg();
-	void Show(UINT id,BOOL bShow) {
-		GetDlgItem(id)->ShowWindow(bShow?SW_SHOW:SW_HIDE);
+	void Show(UINT id, BOOL bShow) {
+		GetDlgItem(id)->ShowWindow(bShow ? SW_SHOW : SW_HIDE);
 	}
-	void Enable(UINT id,BOOL bEnable) {
+	void Enable(UINT id, BOOL bEnable) {
 		GetDlgItem(id)->EnableWindow(bEnable);
 	}
 
-	void SetText(UINT id,LPCSTR text) {
-	  GetDlgItem(id)->SetWindowText(text);
+	void SetText(UINT id, LPCSTR text) {
+		GetDlgItem(id)->SetWindowText(text);
 	}
 
-	void SetFlt(UINT id,double f,int dec) {
-	  SetText(id,GetFloatStr(f,dec));
+	void SetFlt(UINT id, double f, int dec) {
+		SetText(id, GetFloatStr(f, dec));
 	}
 
-	void SetInt(UINT id,int i)
+	void SetInt(UINT id, int i)
 	{
-	  SetText(id,GetIntStr(i));
+		SetText(id, GetIntStr(i));
 	}
 
 	virtual void DoDataExchange(CDataExchange* pDX);
 
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 	afx_msg LRESULT OnCopyCoords(WPARAM wParam, LPARAM lParam);
 	afx_msg LRESULT OnPasteCoords(WPARAM wParam, LPARAM lParam);
 

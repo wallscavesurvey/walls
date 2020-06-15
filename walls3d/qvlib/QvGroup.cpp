@@ -8,76 +8,76 @@ QV_NODE_SOURCE(QvGroup);
 
 QvGroup::QvGroup()
 {
-    children = new QvChildList();
-    QV_NODE_CONSTRUCTOR(QvGroup);
-    isBuiltIn = TRUE;
+	children = new QvChildList();
+	QV_NODE_CONSTRUCTOR(QvGroup);
+	isBuiltIn = TRUE;
 }
 
 QvGroup::~QvGroup()
 {
-    delete children;
+	delete children;
 }
 
 QvNode *
 QvGroup::getChild(int index) const
 {
-    return(*children)[index];
+	return(*children)[index];
 }
 
 int
 QvGroup::getNumChildren() const
 {
-    return children->getLength();
+	return children->getLength();
 }
 
 QvChildList *
 QvGroup::getChildren() const
 {
-    return children;
+	return children;
 }
 
 QvBool
 QvGroup::readInstance(QvInput *in)
 {
-    QvName	typeString;
-    QvFieldData	*fieldData = getFieldData();
+	QvName	typeString;
+	QvFieldData	*fieldData = getFieldData();
 
-    if (! isBuiltIn) {
-        if (in->read(typeString, TRUE)) {
-	    if (typeString == "fields") {
-		if (! fieldData->readFieldTypes(in, this)) {
-		    QvReadError::post(in, "Bad field specifications for node");
-		    return FALSE;
+	if (!isBuiltIn) {
+		if (in->read(typeString, TRUE)) {
+			if (typeString == "fields") {
+				if (!fieldData->readFieldTypes(in, this)) {
+					QvReadError::post(in, "Bad field specifications for node");
+					return FALSE;
+				}
+			}
+			else
+				in->putBack(typeString.getString());
 		}
-	    }
-	    else
-		in->putBack(typeString.getString());
 	}
-    }
 
-    return (fieldData->read(in, this, FALSE) && readChildren(in));
+	return (fieldData->read(in, this, FALSE) && readChildren(in));
 }
 
 QvBool
 QvGroup::readChildren(QvInput *in)
 {
-    QvNode	*child;
-    QvBool	ret = TRUE;
+	QvNode	*child;
+	QvBool	ret = TRUE;
 
-    while (TRUE) {
-	if (read(in, child)) {
-	    if (child != NULL)
-		children->append(child);
-	    else
-		break;
+	while (TRUE) {
+		if (read(in, child)) {
+			if (child != NULL)
+				children->append(child);
+			else
+				break;
+		}
+		else {
+			// mpichler, 19950711: continue on bad children
+			// should work because QvNode::readNode cleans up after wrong nodes
+			// 	    ret = FALSE;
+			// 	    break;
+		}
 	}
-	else {
-// mpichler, 19950711: continue on bad children
-// should work because QvNode::readNode cleans up after wrong nodes
-// 	    ret = FALSE;
-// 	    break;
-	}
-    }
 
-    return ret;
+	return ret;
 }

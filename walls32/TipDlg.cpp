@@ -27,8 +27,8 @@ CTipDlg::CTipDlg(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 
 	m_iVersion = AfxGetApp()->GetProfileInt(szSection, szRelease, 0);
-	m_bStartup = (m_iVersion!=WALLS_RELEASE) || !AfxGetApp()->GetProfileInt(szSection, szIntStartup, 0);
-	m_idMax=0;
+	m_bStartup = (m_iVersion != WALLS_RELEASE) || !AfxGetApp()->GetProfileInt(szSection, szIntStartup, 0);
+	m_idMax = 0;
 }
 
 CTipDlg::~CTipDlg()
@@ -37,13 +37,13 @@ CTipDlg::~CTipDlg()
 	// or clicked on the close button. If the user had pressed the escape key,
 	// it is still required to update the filepos in the ini file with the 
 	// latest position so that we don't repeat the tips! 
-    
-	if(m_idMax) {
+
+	if (m_idMax) {
 		AfxGetApp()->WriteProfileInt(szSection, szIntID, m_id);
-		if(m_iVersion!=WALLS_RELEASE) AfxGetApp()->WriteProfileInt(szSection,szRelease,WALLS_RELEASE);
+		if (m_iVersion != WALLS_RELEASE) AfxGetApp()->WriteProfileInt(szSection, szRelease, WALLS_RELEASE);
 	}
 }
-        
+
 void CTipDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -51,7 +51,7 @@ void CTipDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_STARTUP, m_bStartup);
 	DDX_Text(pDX, IDC_TIPSTRING, m_strTip);
 	//}}AFX_DATA_MAP
-	if(!pDX->m_bSaveAndValidate) GetDlgItem(IDC_TELLMEMORE)->EnableWindow(m_idHelp);
+	if (!pDX->m_bSaveAndValidate) GetDlgItem(IDC_TELLMEMORE)->EnableWindow(m_idHelp);
 	else AfxGetApp()->WriteProfileInt(szSection, szIntStartup, !m_bStartup);
 }
 
@@ -68,42 +68,42 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CTipDlg message handlers
 
-void CTipDlg::OnPrevTip() 
+void CTipDlg::OnPrevTip()
 {
 	ASSERT(m_idMax && m_id);
 	//m_id is the last shown tip -- it will be decremented by OnNextTip() --
-	if((m_id+=2)>m_idMax+1) m_id=2;
+	if ((m_id += 2) > m_idMax + 1) m_id = 2;
 	OnNextTip();
-	
+
 }
 void CTipDlg::OnNextTip()
 {
-	if(!m_idMax) {
+	if (!m_idMax) {
 		CString str;
-		if(str.LoadString(TIP_OFFSET)) m_idMax=atoi(str);
-		if(m_iVersion!=WALLS_RELEASE) m_id=0;
-		else m_id=AfxGetApp()->GetProfileInt(szSection,szIntID,0); //Last tip shown
+		if (str.LoadString(TIP_OFFSET)) m_idMax = atoi(str);
+		if (m_iVersion != WALLS_RELEASE) m_id = 0;
+		else m_id = AfxGetApp()->GetProfileInt(szSection, szIntID, 0); //Last tip shown
 	}
 
-	m_idHelp=0;
-	m_strTip="";
+	m_idHelp = 0;
+	m_strTip = "";
 
-	for(int i=0;i<m_idMax;i++) {
-	  if(--m_id<1) m_id=m_idMax;
-	  if(m_strTip.LoadString(m_id+TIP_OFFSET)) {
-		m_strTip.TrimRight();
-		LPTSTR lpsz = m_strTip.GetBuffer(0);
-		int len=strlen(lpsz)-1;
-		if(lpsz[len]=='#') {
-			while(len && lpsz[--len]!=' ');
-			if(len) {
-			  m_idHelp=atoi(lpsz+len+1);
-			  lpsz[len]=0; //may not be needed?
-			  m_strTip.ReleaseBuffer(-1);
+	for (int i = 0; i < m_idMax; i++) {
+		if (--m_id < 1) m_id = m_idMax;
+		if (m_strTip.LoadString(m_id + TIP_OFFSET)) {
+			m_strTip.TrimRight();
+			LPTSTR lpsz = m_strTip.GetBuffer(0);
+			int len = strlen(lpsz) - 1;
+			if (lpsz[len] == '#') {
+				while (len && lpsz[--len] != ' ');
+				if (len) {
+					m_idHelp = atoi(lpsz + len + 1);
+					lpsz[len] = 0; //may not be needed?
+					m_strTip.ReleaseBuffer(-1);
+				}
 			}
+			break;
 		}
-		break;
-	  }
 	}
 
 	UpdateData(FALSE);
@@ -129,7 +129,7 @@ BOOL CTipDlg::OnInitDialog()
 
 void CTipDlg::OnTellMeMore()
 {
-	if(m_idHelp) AfxGetApp()->WinHelp(m_idHelp);
+	if (m_idHelp) AfxGetApp()->WinHelp(m_idHelp);
 }
 
 void CTipDlg::OnPaint()
@@ -160,7 +160,7 @@ void CTipDlg::OnPaint()
 	dcTmp.CreateCompatibleDC(&dc);
 	dcTmp.SelectObject(&bmp);
 	rect.bottom = bmpInfo.bmHeight + rect.top;
-	dc.BitBlt(rect.left, rect.top, rect.Width(), rect.Height(), 
+	dc.BitBlt(rect.left, rect.top, rect.Width(), rect.Height(),
 		&dcTmp, 0, 0, SRCCOPY);
 
 	// Draw out "Did you know..." message next to the bitmap

@@ -6,14 +6,14 @@
 
 class QvTranslation : public QvNode {
 
-    QV_NODE_HEADER(QvTranslation);
+	QV_NODE_HEADER(QvTranslation);
 
-  public:
-    // Fields
-    QvSFVec3f		translation;	// Translation vector
+public:
+	// Fields
+	QvSFVec3f		translation;	// Translation vector
 
-    // mpichler, 19950503
-    const vector3D* trans_;
+	// mpichler, 19950503
+	const vector3D* trans_;
 };
 
 #endif /* _QV_TRANSLATION_ */

@@ -21,37 +21,37 @@ static char THIS_FILE[] = __FILE__;
 // CGradientDlg dialog
 
 
-CGradientDlg::CGradientDlg(UINT id,COLORREF clr,CWnd* pParent /*=NULL*/)
+CGradientDlg::CGradientDlg(UINT id, COLORREF clr, CWnd* pParent /*=NULL*/)
 	: CDialog(CGradientDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CGradientDlg)
 	//}}AFX_DATA_INIT
-	m_id=id;
-	m_clr=clr;
-	m_iTyp=CUSTOM_COLOR_IDX(m_clr);
+	m_id = id;
+	m_clr = clr;
+	m_iTyp = CUSTOM_COLOR_IDX(m_clr);
 	m_iInterpMethod = (int)CPrjDoc::GetGradientPtr(m_iTyp)->GetInterpolationMethod();
-	m_bUpdating=m_bChanged=FALSE;
-	m_SelPegIndex=PEG_NONE;
+	m_bUpdating = m_bChanged = FALSE;
+	m_SelPegIndex = PEG_NONE;
 }
 
-void CGradientDlg::UpdateFloatBox(UINT id,double value,int iTyp /*=-1*/)
+void CGradientDlg::UpdateFloatBox(UINT id, double value, int iTyp /*=-1*/)
 {
-	if(!iTyp && LEN_ISFEET()) value=(double)LEN_SCALE(value);
-	m_bUpdating=TRUE;
-	char *p=(iTyp==1)?GetDateStr((int)value):GetFloatStr(value,iTyp<0?4:2);
-	if(!iTyp && id!=IDC_SELPEG_VALUE && id!=IDC_NEWPEG_VALUE) {
+	if (!iTyp && LEN_ISFEET()) value = (double)LEN_SCALE(value);
+	m_bUpdating = TRUE;
+	char *p = (iTyp == 1) ? GetDateStr((int)value) : GetFloatStr(value, iTyp < 0 ? 4 : 2);
+	if (!iTyp && id != IDC_SELPEG_VALUE && id != IDC_NEWPEG_VALUE) {
 		CString s;
-		s.Format("%s %s",p,LEN_ISFEET()?"ft":"m");
+		s.Format("%s %s", p, LEN_ISFEET() ? "ft" : "m");
 		GetDlgItem(id)->SetWindowText(s);
 	}
 	else GetDlgItem(id)->SetWindowText(p);
-	m_bUpdating=FALSE;
+	m_bUpdating = FALSE;
 }
 
-void CGradientDlg::UpdateValueBox(UINT id,double position)
+void CGradientDlg::UpdateValueBox(UINT id, double position)
 {
-	UpdateFloatBox(id,m_wndGradientCtrl.GetGradient().ValueFromPos(position),m_iTyp);
-	if(id==IDC_SELPEG_VALUE) m_bSelValid=TRUE;
+	UpdateFloatBox(id, m_wndGradientCtrl.GetGradient().ValueFromPos(position), m_iTyp);
+	if (id == IDC_SELPEG_VALUE) m_bSelValid = TRUE;
 }
 
 void CGradientDlg::DoDataExchange(CDataExchange* pDX)
@@ -61,7 +61,7 @@ void CGradientDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SELPEG_COLOR, m_SelPegColor);
 	DDX_CBIndex(pDX, IDC_METHOD_COMBO, m_iInterpMethod);
 	//}}AFX_DATA_MAP
-	DDX_Control(pDX,IDC_GRADIENT,m_wndGradientCtrl);
+	DDX_Control(pDX, IDC_GRADIENT, m_wndGradientCtrl);
 }
 
 BEGIN_MESSAGE_MAP(CGradientDlg, CDialog)
@@ -81,7 +81,7 @@ BEGIN_MESSAGE_MAP(CGradientDlg, CDialog)
 	ON_BN_CLICKED(ID_SAVEAS, OnSaveAs)
 	ON_BN_CLICKED(ID_OPEN, OnOpen)
 	ON_BN_CLICKED(IDC_APPLY, OnApply)
-    ON_MESSAGE(WM_COMMANDHELP,OnCommandHelp)
+	ON_MESSAGE(WM_COMMANDHELP, OnCommandHelp)
 	ON_NOTIFY(GC_SELCHANGE, IDC_GRADIENT, OnNotifyChangeSelPeg)
 	ON_NOTIFY(GC_PEGMOVE, IDC_GRADIENT, OnNotifyPegMove)
 	ON_NOTIFY(GC_PEGMOVED, IDC_GRADIENT, OnNotifyPegMove)
@@ -93,13 +93,13 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CGradientDlg message handlers
 
-BOOL CGradientDlg::OnInitDialog() 
+BOOL CGradientDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
 	m_wndGradientCtrl.SetGradient(*CPrjDoc::GetGradientPtr(m_iTyp));
-	m_wndGradientCtrl.SetPegSide(TRUE,FALSE); //right/up side: pegs_enable(FALSE)
-	m_wndGradientCtrl.SetPegSide(FALSE,TRUE); //left/down side: pegs_enable(TRUE)
+	m_wndGradientCtrl.SetPegSide(TRUE, FALSE); //right/up side: pegs_enable(FALSE)
+	m_wndGradientCtrl.SetPegSide(FALSE, TRUE); //left/down side: pegs_enable(TRUE)
 	//The control window dimensions determine gradient direction by default,
 	//but this is more efficient --
 	m_wndGradientCtrl.SetOrientation(CGradientCtrl::ForceHorizontal);
@@ -111,102 +111,102 @@ BOOL CGradientDlg::OnInitDialog()
 	CGradient &grad = m_wndGradientCtrl.GetGradient();
 
 	//Set value range of current dataset --
-	CPrjDoc::GetValueRange(&m_fMinValue,&m_fMaxValue,m_iTyp);
-	if(grad.StartValue()>=grad.EndValue()) {
-		CPrjDoc::InitGradValues(grad,m_fMinValue,m_fMaxValue,m_iTyp);
+	CPrjDoc::GetValueRange(&m_fMinValue, &m_fMaxValue, m_iTyp);
+	if (grad.StartValue() >= grad.EndValue()) {
+		CPrjDoc::InitGradValues(grad, m_fMinValue, m_fMaxValue, m_iTyp);
 	}
-	
-	CPrjDoc::FillHistArray(m_wndGradientCtrl.GetHistValue(),m_wndGradientCtrl.GetHistLength(),
-		grad.m_fStartValue,grad.m_fEndValue,m_iTyp);
+
+	CPrjDoc::FillHistArray(m_wndGradientCtrl.GetHistValue(), m_wndGradientCtrl.GetHistLength(),
+		grad.m_fStartValue, grad.m_fEndValue, m_iTyp);
 
 	//Set static control text depending on m_iTyp --
-	CString s(m_iTyp?((m_iTyp==1)?"Date":"Component F-Ratio"):"Elevation");
-	SetWndTitle(this,0,(LPCSTR)s);
-	SetWndTitle(GetDlgItem(IDC_ST_RANGETYPE),0,(LPCSTR)s);
+	CString s(m_iTyp ? ((m_iTyp == 1) ? "Date" : "Component F-Ratio") : "Elevation");
+	SetWndTitle(this, 0, (LPCSTR)s);
+	SetWndTitle(GetDlgItem(IDC_ST_RANGETYPE), 0, (LPCSTR)s);
 
-	if(!m_iTyp) s+=LEN_ISFEET()?" (ft):":" (m):";
-	else s+=':';
+	if (!m_iTyp) s += LEN_ISFEET() ? " (ft):" : " (m):";
+	else s += ':';
 	GetDlgItem(IDC_ST_SELPOS)->SetWindowText(s);
 	GetDlgItem(IDC_ST_NEWPOS)->SetWindowText(s);
 
 	//Update static values --
-	UpdateFloatBox(IDC_ST_MINVALUE,m_fMinValue,m_iTyp);
-	UpdateFloatBox(IDC_ST_MAXVALUE,m_fMaxValue,m_iTyp);
-	UpdateFloatBox(IDC_ST_STARTVALUE,grad.StartValue(),m_iTyp);
-	UpdateFloatBox(IDC_ST_ENDVALUE,grad.EndValue(),m_iTyp);
+	UpdateFloatBox(IDC_ST_MINVALUE, m_fMinValue, m_iTyp);
+	UpdateFloatBox(IDC_ST_MAXVALUE, m_fMaxValue, m_iTyp);
+	UpdateFloatBox(IDC_ST_STARTVALUE, grad.StartValue(), m_iTyp);
+	UpdateFloatBox(IDC_ST_ENDVALUE, grad.EndValue(), m_iTyp);
 
-	UpdateFloatBox(IDC_NEWPEG_POSITION,m_NewPegPosition=0.5);
-	UpdateValueBox(IDC_NEWPEG_VALUE,m_NewPegPosition);
+	UpdateFloatBox(IDC_NEWPEG_POSITION, m_NewPegPosition = 0.5);
+	UpdateValueBox(IDC_NEWPEG_VALUE, m_NewPegPosition);
 
-	m_SelPegPosition=0.0;
+	m_SelPegPosition = 0.0;
 	SelectPeg(PEG_START);
 
 	m_ToolTips.Create(this);
 	m_SelPegColor.AddToolTip(&m_ToolTips);
 
-	Enable(IDC_APPLY,CPrjDoc::IsActiveFrame());
+	Enable(IDC_APPLY, CPrjDoc::IsActiveFrame());
 
 	//GetDlgItem(IDCANCEL)->SetFocus();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+				  // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CGradientDlg::OnSelchangeMethodCombo() 
+void CGradientDlg::OnSelchangeMethodCombo()
 {
 	int sel = ((CComboBox *)GetDlgItem(IDC_METHOD_COMBO))->GetCurSel();
-	if(sel == -1) return;
+	if (sel == -1) return;
 	m_wndGradientCtrl.GetGradient().SetInterpolationMethod((CGradient::InterpolationMethod)sel);
 	m_wndGradientCtrl.Invalidate();
-	m_bChanged=TRUE;
+	m_bChanged = TRUE;
 }
 
-void CGradientDlg::OnAddPeg() 
+void CGradientDlg::OnAddPeg()
 {
-	AddAndSelectPeg(m_wndGradientCtrl.GetGradient().ColorFromPosition(m_NewPegPosition),m_NewPegPosition);
+	AddAndSelectPeg(m_wndGradientCtrl.GetGradient().ColorFromPosition(m_NewPegPosition), m_NewPegPosition);
 }
 
-void CGradientDlg::OnDelPeg() 
+void CGradientDlg::OnDelPeg()
 {
 	CGradient &grad = m_wndGradientCtrl.GetGradient();
 	int selindex = m_wndGradientCtrl.GetSelIndex();
 
-	if(selindex<PEG_NONE) {
+	if (selindex < PEG_NONE) {
 		//We are deleting an end peg. Let it absorb the adjacent peg's value and color --
-		ASSERT(grad.GetPegCount()>0);
-		int index=(selindex==PEG_START)?0:(grad.GetPegCount()-1);
+		ASSERT(grad.GetPegCount() > 0);
+		int index = (selindex == PEG_START) ? 0 : (grad.GetPegCount() - 1);
 		CPeg peg = grad.GetPeg(index);
-		grad.SetPeg(selindex,peg.color,0); //last param (position) ignored here
+		grad.SetPeg(selindex, peg.color, 0); //last param (position) ignored here
 		m_SelPegColor.SetColor(peg.color);
-		double f=peg.position;
+		double f = peg.position;
 		grad.RemovePeg(index);
 		//Reposition the remaining interior pegs (f=deleted pos)
-		index=grad.GetPegCount();
-		while(index--) {
-			double fPos=grad.GetPeg(index).position;
-			if(selindex==PEG_START) {
-				if(f<1.0) fPos=(fPos-f)/(1.0-f);
+		index = grad.GetPegCount();
+		while (index--) {
+			double fPos = grad.GetPeg(index).position;
+			if (selindex == PEG_START) {
+				if (f < 1.0) fPos = (fPos - f) / (1.0 - f);
 			}
-			else if(f>0.0) fPos/=f;
-			grad.ShiftPegToPosition(index,fPos);
+			else if (f > 0.0) fPos /= f;
+			grad.ShiftPegToPosition(index, fPos);
 		}
-		f=grad.ValueFromPos(f);
-		UpdateRangeEnd(selindex,f);
-		UpdateFloatBox(IDC_SELPEG_VALUE,f,m_iTyp);
-		if(!grad.GetPegCount()) Enable(IDC_DEL_PEG,FALSE);
+		f = grad.ValueFromPos(f);
+		UpdateRangeEnd(selindex, f);
+		UpdateFloatBox(IDC_SELPEG_VALUE, f, m_iTyp);
+		if (!grad.GetPegCount()) Enable(IDC_DEL_PEG, FALSE);
 	}
 	else {
 		grad.RemovePeg(selindex);
-		if(selindex==grad.GetPegCount()) {
+		if (selindex == grad.GetPegCount()) {
 			//deleting rightmost peg --
-			if(--selindex<0) selindex=PEG_START;
+			if (--selindex < 0) selindex = PEG_START;
 		}
 		//else id stays the same
 
 		SelectPeg(selindex);
 		m_wndGradientCtrl.Invalidate();
 	}
-	m_bChanged=TRUE; //done in notify msg also
+	m_bChanged = TRUE; //done in notify msg also
 }
 
 long CGradientDlg::OnSelEndOK(UINT /*lParam*/, LONG wParam)
@@ -214,12 +214,12 @@ long CGradientDlg::OnSelEndOK(UINT /*lParam*/, LONG wParam)
 	CGradient &gradient = m_wndGradientCtrl.GetGradient();
 	int selindex = m_wndGradientCtrl.GetSelIndex();
 
-	if(wParam!=IDC_SELPEG_COLOR || selindex==PEG_NONE || selindex==PEG_BACKGROUND) return 0;
+	if (wParam != IDC_SELPEG_COLOR || selindex == PEG_NONE || selindex == PEG_BACKGROUND) return 0;
 	const CPeg &peg = gradient.GetPeg(selindex);
 	gradient.SetPeg(selindex, m_SelPegColor.GetColor(), peg.position);
-	
+
 	m_wndGradientCtrl.Invalidate();
-	m_bChanged=TRUE;
+	m_bChanged = TRUE;
 
 	return 0;
 }
@@ -227,47 +227,47 @@ long CGradientDlg::OnSelEndOK(UINT /*lParam*/, LONG wParam)
 void CGradientDlg::UpdateSelPegText(int index)
 {
 	CString str("Selected Color Peg ");
-	LPCSTR p=NULL;
-	switch(index) {
-		case PEG_NONE: p="[None]"; break;
-		case PEG_START: p="[Start]"; break;
-		case PEG_END: p="[End]"; break;
-		default: break;
+	LPCSTR p = NULL;
+	switch (index) {
+	case PEG_NONE: p = "[None]"; break;
+	case PEG_START: p = "[Start]"; break;
+	case PEG_END: p = "[End]"; break;
+	default: break;
 	}
-	if(!p) {
+	if (!p) {
 		CString append;
-		append.Format("- %d",index);
-		str+=append;
+		append.Format("- %d", index);
+		str += append;
 	}
-	else str+=p;
+	else str += p;
 
 	GetDlgItem(IDC_ST_SELPEG)->SetWindowText(str);
-	m_SelPegIndex=index;
+	m_SelPegIndex = index;
 }
 
 void CGradientDlg::OnNotifyChangeSelPeg(NMHDR * pNotifyStruct, LRESULT *result)
 {
 	PegNMHDR* pPegNotifyStruct = (PegNMHDR*)pNotifyStruct;
-	
-	if(pPegNotifyStruct->index == PEG_NONE)
+
+	if (pPegNotifyStruct->index == PEG_NONE)
 	{
 		ASSERT(FALSE);
 		m_SelPegColor.EnableWindow(FALSE);
-		Enable(IDC_SELPEG_POSITION,FALSE);
-		Enable(IDC_SELPEG_VALUE,FALSE);
-		Enable(IDC_DEL_PEG,FALSE);
+		Enable(IDC_SELPEG_POSITION, FALSE);
+		Enable(IDC_SELPEG_VALUE, FALSE);
+		Enable(IDC_DEL_PEG, FALSE);
 	}
 	else
-	{	
-		ASSERT(pPegNotifyStruct->peg.position!=-1);
+	{
+		ASSERT(pPegNotifyStruct->peg.position != -1);
 		m_SelPegColor.EnableWindow(TRUE);
 		m_SelPegColor.SetColor(pPegNotifyStruct->peg.color);
-		UpdateFloatBox(IDC_SELPEG_POSITION,m_SelPegPosition=pPegNotifyStruct->peg.position);
-		UpdateValueBox(IDC_SELPEG_VALUE,m_SelPegPosition);
+		UpdateFloatBox(IDC_SELPEG_POSITION, m_SelPegPosition = pPegNotifyStruct->peg.position);
+		UpdateValueBox(IDC_SELPEG_VALUE, m_SelPegPosition);
 
-		Enable(IDC_SELPEG_POSITION,pPegNotifyStruct->index>=0);
-		Enable(IDC_SELPEG_VALUE,TRUE);
-		Enable(IDC_DEL_PEG,m_wndGradientCtrl.GetGradient().GetPegCount()>0);
+		Enable(IDC_SELPEG_POSITION, pPegNotifyStruct->index >= 0);
+		Enable(IDC_SELPEG_VALUE, TRUE);
+		Enable(IDC_DEL_PEG, m_wndGradientCtrl.GetGradient().GetPegCount() > 0);
 
 	}
 	UpdateSelPegText(pPegNotifyStruct->index);
@@ -278,15 +278,15 @@ void CGradientDlg::OnNotifyChangeSelPeg(NMHDR * pNotifyStruct, LRESULT *result)
 void CGradientDlg::OnNotifyPegMove(NMHDR * pNotifyStruct, LRESULT *result)
 {
 	PegNMHDR* pPegNotifyStruct = (PegNMHDR*)pNotifyStruct;
-	m_SelPegPosition=pPegNotifyStruct->peg.position;
-	UpdateFloatBox(IDC_SELPEG_POSITION,m_SelPegPosition);
-	UpdateValueBox(IDC_SELPEG_VALUE,m_SelPegPosition);
-	if(m_SelPegIndex!=pPegNotifyStruct->index) UpdateSelPegText(pPegNotifyStruct->index); 
-	m_bChanged=TRUE;
+	m_SelPegPosition = pPegNotifyStruct->peg.position;
+	UpdateFloatBox(IDC_SELPEG_POSITION, m_SelPegPosition);
+	UpdateValueBox(IDC_SELPEG_VALUE, m_SelPegPosition);
+	if (m_SelPegIndex != pPegNotifyStruct->index) UpdateSelPegText(pPegNotifyStruct->index);
+	m_bChanged = TRUE;
 	*result = 0;
 }
 
-void CGradientDlg::OnNotifyPegRemoved(NMHDR* , LRESULT *result)
+void CGradientDlg::OnNotifyPegRemoved(NMHDR*, LRESULT *result)
 {
 	OnDelPeg();
 	*result = 0;
@@ -297,122 +297,122 @@ void CGradientDlg::SelectPeg(int idx)
 	m_wndGradientCtrl.SetSelIndex(idx);
 	LRESULT result;
 	PegNMHDR nmhdr;
-	nmhdr.peg=m_wndGradientCtrl.GetSelPeg();
+	nmhdr.peg = m_wndGradientCtrl.GetSelPeg();
 	nmhdr.index = idx;
-	OnNotifyChangeSelPeg((NMHDR*) &nmhdr, &result);
+	OnNotifyChangeSelPeg((NMHDR*)&nmhdr, &result);
 }
 
-void CGradientDlg::AddAndSelectPeg(COLORREF color,double position)
+void CGradientDlg::AddAndSelectPeg(COLORREF color, double position)
 {
-	SelectPeg(m_wndGradientCtrl.GetGradient().AddPeg(color,position));
+	SelectPeg(m_wndGradientCtrl.GetGradient().AddPeg(color, position));
 	m_wndGradientCtrl.Invalidate();
-	m_bChanged=TRUE;
+	m_bChanged = TRUE;
 }
 
 void CGradientDlg::OnNotifyDoubleClickCreate(NMHDR * pNotifyStruct, LRESULT *result)
 {
 	PegCreateNMHDR* pPegCreateNotifyStruct = (PegCreateNMHDR*)pNotifyStruct;
-	AddAndSelectPeg(pPegCreateNotifyStruct->color,pPegCreateNotifyStruct->position);
+	AddAndSelectPeg(pPegCreateNotifyStruct->color, pPegCreateNotifyStruct->position);
 	*result = 0;
 }
 
-BOOL CGradientDlg::ChangePosition(UINT idPos,UINT idVal,double &fNewPos) 
+BOOL CGradientDlg::ChangePosition(UINT idPos, UINT idVal, double &fNewPos)
 {
 	//We've manually editied a position field --
 	CString buf;
 	double dPos;
 	GetDlgItem(idPos)->GetWindowText(buf);
-	if(!CheckFlt(buf,&dPos,0.0,1.0,4)) {
-		UpdateFloatBox(idPos,fNewPos);
+	if (!CheckFlt(buf, &dPos, 0.0, 1.0, 4)) {
+		UpdateFloatBox(idPos, fNewPos);
 		return FALSE;
 	}
-	UpdateValueBox(idVal,fNewPos=dPos);
+	UpdateValueBox(idVal, fNewPos = dPos);
 	return TRUE;
 }
 
-void CGradientDlg::OnChangeSelpegPosition() 
+void CGradientDlg::OnChangeSelpegPosition()
 {
-	if(m_bUpdating) return;
-	if(ChangePosition(IDC_SELPEG_POSITION,IDC_SELPEG_VALUE,m_SelPegPosition)) {
+	if (m_bUpdating) return;
+	if (ChangePosition(IDC_SELPEG_POSITION, IDC_SELPEG_VALUE, m_SelPegPosition)) {
 		//We've successfully edited the position field --
-		UpdateSelPegText(m_wndGradientCtrl.MoveSelected(m_SelPegPosition,TRUE));
-		m_bChanged=TRUE;
+		UpdateSelPegText(m_wndGradientCtrl.MoveSelected(m_SelPegPosition, TRUE));
+		m_bChanged = TRUE;
 	}
 }
 
-void CGradientDlg::OnChangeNewpegPosition() 
+void CGradientDlg::OnChangeNewpegPosition()
 {
-	if(m_bUpdating) return;
-	ChangePosition(IDC_NEWPEG_POSITION,IDC_NEWPEG_VALUE,m_NewPegPosition);
+	if (m_bUpdating) return;
+	ChangePosition(IDC_NEWPEG_POSITION, IDC_NEWPEG_VALUE, m_NewPegPosition);
 }
 
-void CGradientDlg::OnResetPegs() 
+void CGradientDlg::OnResetPegs()
 {
 	CGradient &grad = m_wndGradientCtrl.GetGradient();
 
-	if(m_iTyp==2) {
-		CPrjDoc::InitGradValues(grad,m_fMinValue,m_fMaxValue,2);
-		m_SelPegPosition=0.0;
+	if (m_iTyp == 2) {
+		CPrjDoc::InitGradValues(grad, m_fMinValue, m_fMaxValue, 2);
+		m_SelPegPosition = 0.0;
 		SelectPeg(PEG_START);
 	}
-	else if(m_fMinValue==grad.StartValue() && m_fMaxValue==grad.EndValue()) return;
+	else if (m_fMinValue == grad.StartValue() && m_fMaxValue == grad.EndValue()) return;
 
-	m_bChanged=TRUE;
+	m_bChanged = TRUE;
 
 	grad.SetStartValue(m_fMinValue);
-	UpdateFloatBox(IDC_ST_STARTVALUE,m_fMinValue,m_iTyp);
+	UpdateFloatBox(IDC_ST_STARTVALUE, m_fMinValue, m_iTyp);
 	grad.SetEndValue(m_fMaxValue);
-	UpdateFloatBox(IDC_ST_ENDVALUE,m_fMaxValue,m_iTyp);
+	UpdateFloatBox(IDC_ST_ENDVALUE, m_fMaxValue, m_iTyp);
 
 	UpdateHistArray();
 	m_wndGradientCtrl.Invalidate(); //Tooltips synchronized
 
-	int index=m_wndGradientCtrl.GetSelIndex();
-	UpdateFloatBox(IDC_SELPEG_VALUE,grad.ValueFromPos(grad.GetPeg(index).position),m_iTyp);
+	int index = m_wndGradientCtrl.GetSelIndex();
+	UpdateFloatBox(IDC_SELPEG_VALUE, grad.ValueFromPos(grad.GetPeg(index).position), m_iTyp);
 	CString buf;
 	GetDlgItem(IDC_NEWPEG_POSITION)->GetWindowText(buf);
-	UpdateFloatBox(IDC_NEWPEG_VALUE,grad.ValueFromPos((double)atof(buf)),m_iTyp);
+	UpdateFloatBox(IDC_NEWPEG_VALUE, grad.ValueFromPos((double)atof(buf)), m_iTyp);
 }
 
 void CGradientDlg::ShowRangeError()
 {
-	int index=m_wndGradientCtrl.GetSelIndex();
+	int index = m_wndGradientCtrl.GetSelIndex();
 
-	if(index>=PEG_NONE) {
-		CString start,end;
+	if (index >= PEG_NONE) {
+		CString start, end;
 		GetDlgItem(IDC_ST_STARTVALUE)->GetWindowText(start);
 		GetDlgItem(IDC_ST_ENDVALUE)->GetWindowText(end);
-		CMsgBox(MB_ICONINFORMATION,IDS_ERR_VALUERANGE2,(LPCSTR)start,(LPCSTR)end);
+		CMsgBox(MB_ICONINFORMATION, IDS_ERR_VALUERANGE2, (LPCSTR)start, (LPCSTR)end);
 	}
-	else CMsgBox(MB_ICONINFORMATION,IDS_ERR_VALUELIMIT);
+	else CMsgBox(MB_ICONINFORMATION, IDS_ERR_VALUELIMIT);
 }
 
 void CGradientDlg::UpdateHistArray()
 {
 	CGradient &grad = m_wndGradientCtrl.GetGradient();
-	CPrjDoc::FillHistArray(m_wndGradientCtrl.GetHistValue(),m_wndGradientCtrl.GetHistLength(),
-	grad.m_fStartValue,grad.m_fEndValue,m_iTyp);
+	CPrjDoc::FillHistArray(m_wndGradientCtrl.GetHistValue(), m_wndGradientCtrl.GetHistLength(),
+		grad.m_fStartValue, grad.m_fEndValue, m_iTyp);
 }
 
-int CGradientDlg::UpdateRangeEnd(int index,double fVal)
+int CGradientDlg::UpdateRangeEnd(int index, double fVal)
 {
 	//We're updating the value of a selected endpoint peg --
 	CGradient &grad = m_wndGradientCtrl.GetGradient();
-	int iRet=0;
+	int iRet = 0;
 
-	if(index==PEG_START) {
-	  if(fVal>=grad.EndValue()) iRet=-1;
+	if (index == PEG_START) {
+		if (fVal >= grad.EndValue()) iRet = -1;
 	}
-	else if(fVal<=grad.StartValue()) iRet=-1;
+	else if (fVal <= grad.StartValue()) iRet = -1;
 
-	if(!iRet) {
-		if(index==PEG_START) {
+	if (!iRet) {
+		if (index == PEG_START) {
 			grad.SetStartValue(fVal);
-			UpdateFloatBox(IDC_ST_STARTVALUE,fVal,m_iTyp);
+			UpdateFloatBox(IDC_ST_STARTVALUE, fVal, m_iTyp);
 		}
 		else {
 			grad.SetEndValue(fVal);
-			UpdateFloatBox(IDC_ST_ENDVALUE,fVal,m_iTyp);
+			UpdateFloatBox(IDC_ST_ENDVALUE, fVal, m_iTyp);
 		}
 
 		UpdateHistArray();
@@ -420,104 +420,104 @@ int CGradientDlg::UpdateRangeEnd(int index,double fVal)
 
 		CString buf;
 		GetDlgItem(IDC_NEWPEG_POSITION)->GetWindowText(buf);
-		UpdateFloatBox(IDC_NEWPEG_VALUE,grad.ValueFromPos(atof(buf)),m_iTyp);
+		UpdateFloatBox(IDC_NEWPEG_VALUE, grad.ValueFromPos(atof(buf)), m_iTyp);
 	}
 	return iRet;
 }
 
-BOOL CGradientDlg::ChangeValue(UINT idVal,UINT idPos,double &fNewPos,int index) 
+BOOL CGradientDlg::ChangeValue(UINT idVal, UINT idPos, double &fNewPos, int index)
 {
 	CGradient &grad = m_wndGradientCtrl.GetGradient();
 	CString buf;
 	GetDlgItem(idVal)->GetWindowText(buf);
 	double fPos;
-	int j=0;
+	int j = 0;
 
-	if(m_iTyp==1) {
-		j=trx_DateStrToJul(buf);
-		if(j>=0) {
-			if(index<PEG_NONE) {
-				ASSERT(idVal==IDC_SELPEG_VALUE);
+	if (m_iTyp == 1) {
+		j = trx_DateStrToJul(buf);
+		if (j >= 0) {
+			if (index < PEG_NONE) {
+				ASSERT(idVal == IDC_SELPEG_VALUE);
 				//display error if not correct endpoint --
-				j=UpdateRangeEnd(index,(double)j);
+				j = UpdateRangeEnd(index, (double)j);
 			}
-			else if(j<grad.IntStartValue() || j>grad.IntEndValue()) {
-				j=-1;
+			else if (j<grad.IntStartValue() || j>grad.IntEndValue()) {
+				j = -1;
 			}
-			else fPos=grad.PosFromValue(j);
+			else fPos = grad.PosFromValue(j);
 		}
 	}
 	else {
 		double f;
 		buf.TrimRight();
-		if(!IsNumeric(buf)) j=-1;
+		if (!IsNumeric(buf)) j = -1;
 		else {
-			f=atof(buf);
-			if(!m_iTyp && LEN_ISFEET()) f=LEN_INVSCALE(f);
-			if(index<PEG_NONE) {
-				ASSERT(idVal==IDC_SELPEG_VALUE);
+			f = atof(buf);
+			if (!m_iTyp && LEN_ISFEET()) f = LEN_INVSCALE(f);
+			if (index < PEG_NONE) {
+				ASSERT(idVal == IDC_SELPEG_VALUE);
 				//display error if not correct endpoint --
-				j=UpdateRangeEnd(index,f);
+				j = UpdateRangeEnd(index, f);
 			}
-			else if(f<grad.StartValue() || f>grad.EndValue()) {
-				j=-1;
+			else if (f<grad.StartValue() || f>grad.EndValue()) {
+				j = -1;
 			}
-			else fPos=grad.PosFromValue(f);
+			else fPos = grad.PosFromValue(f);
 		}
 	}
 
-	if(index>=PEG_NONE) {
-		Enable(idPos,j>=0);
-		if(j>=0) UpdateFloatBox(idPos,fNewPos=fPos);
+	if (index >= PEG_NONE) {
+		Enable(idPos, j >= 0);
+		if (j >= 0) UpdateFloatBox(idPos, fNewPos = fPos);
 	}
 
-	return j>=0;
+	return j >= 0;
 }
 
-void CGradientDlg::OnChangeNewpegValue() 
+void CGradientDlg::OnChangeNewpegValue()
 {
-	if(m_bUpdating) return;
+	if (m_bUpdating) return;
 
-	BOOL bValid=ChangeValue(IDC_NEWPEG_VALUE,IDC_NEWPEG_POSITION,m_NewPegPosition,PEG_NONE);
+	BOOL bValid = ChangeValue(IDC_NEWPEG_VALUE, IDC_NEWPEG_POSITION, m_NewPegPosition, PEG_NONE);
 
-	Enable(IDC_ADD_PEG,bValid);
+	Enable(IDC_ADD_PEG, bValid);
 }
 
-void CGradientDlg::OnChangeSelpegValue() 
+void CGradientDlg::OnChangeSelpegValue()
 {
-	if(m_bUpdating) return;
-	int index=m_wndGradientCtrl.GetSelIndex();
-	if(m_bSelValid=ChangeValue(IDC_SELPEG_VALUE,IDC_SELPEG_POSITION,m_SelPegPosition,index)) {
-		if(index>PEG_NONE) m_wndGradientCtrl.MoveSelected(m_SelPegPosition,TRUE);
-		m_bChanged=TRUE;
+	if (m_bUpdating) return;
+	int index = m_wndGradientCtrl.GetSelIndex();
+	if (m_bSelValid = ChangeValue(IDC_SELPEG_VALUE, IDC_SELPEG_POSITION, m_SelPegPosition, index)) {
+		if (index > PEG_NONE) m_wndGradientCtrl.MoveSelected(m_SelPegPosition, TRUE);
+		m_bChanged = TRUE;
 	}
 }
 
-void CGradientDlg::OnKillfocusNewpegValue() 
+void CGradientDlg::OnKillfocusNewpegValue()
 {
-	if(!GetDlgItem(IDC_NEWPEG_POSITION)->IsWindowEnabled()) {
-		Enable(IDC_NEWPEG_POSITION,TRUE);
-		Enable(IDC_ADD_PEG,TRUE);
+	if (!GetDlgItem(IDC_NEWPEG_POSITION)->IsWindowEnabled()) {
+		Enable(IDC_NEWPEG_POSITION, TRUE);
+		Enable(IDC_ADD_PEG, TRUE);
 		CString buf;
 		GetDlgItem(IDC_NEWPEG_POSITION)->GetWindowText(buf);
-		UpdateValueBox(IDC_NEWPEG_VALUE,(double)atof(buf));
+		UpdateValueBox(IDC_NEWPEG_VALUE, (double)atof(buf));
 	}
 }
 
-void CGradientDlg::OnKillfocusSelpegValue() 
+void CGradientDlg::OnKillfocusSelpegValue()
 {
-	if(!m_bSelValid) {
-		m_bSelValid=TRUE;
+	if (!m_bSelValid) {
+		m_bSelValid = TRUE;
 		ShowRangeError();
-		if(m_wndGradientCtrl.GetSelIndex()>=0) Enable(IDC_SELPEG_POSITION,TRUE);
+		if (m_wndGradientCtrl.GetSelIndex() >= 0) Enable(IDC_SELPEG_POSITION, TRUE);
 		CString buf;
 		GetDlgItem(IDC_SELPEG_POSITION)->GetWindowText(buf);
-		UpdateValueBox(IDC_SELPEG_VALUE,(double)atof(buf));
+		UpdateValueBox(IDC_SELPEG_VALUE, (double)atof(buf));
 		GetDlgItem(IDC_SELPEG_VALUE)->SetFocus();
 	}
 }
 
-void CGradientDlg::OnLButtonDown(UINT nFlags, CPoint point) 
+void CGradientDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	OnKillfocusNewpegValue();
 	OnKillfocusSelpegValue();
@@ -530,100 +530,100 @@ LRESULT CGradientDlg::OnCommandHelp(WPARAM wNone, LPARAM lParam)
 	return TRUE;
 }
 
-void CGradientDlg::OnDefault() 
+void CGradientDlg::OnDefault()
 {
 	CGradient &grad = m_wndGradientCtrl.GetGradient();
-	for(int i=grad.GetPegCount();i;) {
+	for (int i = grad.GetPegCount(); i;) {
 		grad.RemovePeg(--i);
 	}
 
-	CPrjDoc::InitGradient(&grad,m_iTyp);
+	CPrjDoc::InitGradient(&grad, m_iTyp);
 	m_iInterpMethod = grad.GetInterpolationMethod();
 	((CComboBox *)GetDlgItem(IDC_METHOD_COMBO))->SetCurSel(m_iInterpMethod);
-	m_SelPegPosition=0.0;
+	m_SelPegPosition = 0.0;
 	SelectPeg(PEG_START);
 
 	OnResetPegs();
 	m_wndGradientCtrl.Invalidate(); //Tooltips synchronized
-	m_bChanged=TRUE;
+	m_bChanged = TRUE;
 }
 
 CFileDialog * CGradientDlg::GetFileDialog(BOOL bSave)
 {
 	LPSTR pathName;
 	CString fspec;
-	char ext[]="ntae";
-	if(m_iTyp) ext[3]=(m_iTyp==1)?'d':'s';
+	char ext[] = "ntae";
+	if (m_iTyp) ext[3] = (m_iTyp == 1) ? 'd' : 's';
 
-	pathName=CPrjDoc::m_pReviewDoc->WorkPath(CPrjDoc::m_pReviewNode,CPrjDoc::TYP_NTAC);
+	pathName = CPrjDoc::m_pReviewDoc->WorkPath(CPrjDoc::m_pReviewNode, CPrjDoc::TYP_NTAC);
 	_strlwr(trx_Stpnam(pathName));
-	pathName[strlen(pathName)-1]=ext[3];
+	pathName[strlen(pathName) - 1] = ext[3];
 
-	char *name=m_iTyp?((m_iTyp==1)?"Date":"Statistics"):"Elevation";
+	char *name = m_iTyp ? ((m_iTyp == 1) ? "Date" : "Statistics") : "Elevation";
 	fspec.Format("%s gradient (*.%s)|*.%s||",
-		m_iTyp?((m_iTyp==1)?"Date":"Statistics"):"Elevation",
-		ext,ext);
+		m_iTyp ? ((m_iTyp == 1) ? "Date" : "Statistics") : "Elevation",
+		ext, ext);
 
-	return new CFileDialog(bSave,ext,pathName,
-		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_EXPLORER,fspec);
+	return new CFileDialog(bSave, ext, pathName,
+		OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT | OFN_EXPLORER, fspec);
 
 }
 
-void CGradientDlg::OnSaveAs() 
+void CGradientDlg::OnSaveAs()
 {
 	CFileDialog *pdlg;
 
-	VERIFY(pdlg=GetFileDialog(FALSE));
-	if(!pdlg) return;
+	VERIFY(pdlg = GetFileDialog(FALSE));
+	if (!pdlg) return;
 
-	if(pdlg->DoModal()==IDOK)
+	if (pdlg->DoModal() == IDOK)
 	{
-		CFile file(pdlg->GetPathName(), CFile::modeWrite | CFile::modeCreate | CFile::shareDenyWrite );
+		CFile file(pdlg->GetPathName(), CFile::modeWrite | CFile::modeCreate | CFile::shareDenyWrite);
 		CArchive ar(&file, CArchive::store);
 		m_wndGradientCtrl.GetGradient().Serialize(ar);
 	}
 	delete pdlg;
 }
 
-void CGradientDlg::OnOpen() 
+void CGradientDlg::OnOpen()
 {
 	CFileDialog *pdlg;
-		
-	VERIFY(pdlg=GetFileDialog(TRUE));
-	if(!pdlg) return;
 
-	*(pdlg->m_ofn.lpstrFile)=0;
+	VERIFY(pdlg = GetFileDialog(TRUE));
+	if (!pdlg) return;
 
-	if(pdlg->DoModal()==IDOK)
+	*(pdlg->m_ofn.lpstrFile) = 0;
+
+	if (pdlg->DoModal() == IDOK)
 	{
-		CFile file(pdlg->GetPathName(), CFile::modeRead | CFile::shareDenyWrite );
+		CFile file(pdlg->GetPathName(), CFile::modeRead | CFile::shareDenyWrite);
 		CArchive ar(&file, CArchive::load);
 
 		CGradient &grad = m_wndGradientCtrl.GetGradient();
-	
+
 		grad.Serialize(ar);
 
 		m_iInterpMethod = grad.GetInterpolationMethod();
 		((CComboBox *)GetDlgItem(IDC_METHOD_COMBO))->SetCurSel(m_iInterpMethod);
-		UpdateValueBox(IDC_NEWPEG_VALUE,m_NewPegPosition);
-		UpdateFloatBox(IDC_ST_STARTVALUE,grad.StartValue(),m_iTyp);
-		UpdateFloatBox(IDC_ST_ENDVALUE,grad.EndValue(),m_iTyp);
+		UpdateValueBox(IDC_NEWPEG_VALUE, m_NewPegPosition);
+		UpdateFloatBox(IDC_ST_STARTVALUE, grad.StartValue(), m_iTyp);
+		UpdateFloatBox(IDC_ST_ENDVALUE, grad.EndValue(), m_iTyp);
 
 		UpdateHistArray();
 
-		m_SelPegPosition=0.0;
+		m_SelPegPosition = 0.0;
 		SelectPeg(PEG_START);
 
 		m_wndGradientCtrl.Invalidate(); //Tooltips synchronized
-		m_bChanged=TRUE;
+		m_bChanged = TRUE;
 	}
 	delete pdlg;
 }
 
-void CGradientDlg::OnApply() 
+void CGradientDlg::OnApply()
 {
-	CGradient *pOldGradient=pSV->m_Gradient[m_iTyp];
-	pSV->m_Gradient[m_iTyp]=&m_wndGradientCtrl.GetGradient();
-	pSV->ApplyClrToFrames(m_clr,m_id);
-	pSV->m_Gradient[m_iTyp]=pOldGradient;
+	CGradient *pOldGradient = pSV->m_Gradient[m_iTyp];
+	pSV->m_Gradient[m_iTyp] = &m_wndGradientCtrl.GetGradient();
+	pSV->ApplyClrToFrames(m_clr, m_id);
+	pSV->m_Gradient[m_iTyp] = pOldGradient;
 }

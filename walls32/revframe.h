@@ -11,7 +11,7 @@ protected:
 
 // Attributes
 public:
-    POINT m_ptFrameSize;    //Set in CCompView::OnInitialUpdate()
+	POINT m_ptFrameSize;    //Set in CCompView::OnInitialUpdate()
 	void CenterWindow();    //Called in CCompView::OnInitialUpdate()
 
 // Implementation
@@ -20,9 +20,9 @@ protected:
 	virtual ~CRevFrame() {};
 	virtual void ActivateFrame(int nCmdShow);
 	BOOL PreCreateWindow(CREATESTRUCT& cs);
-	 
+
 	afx_msg void OnIconEraseBkgnd(CDC* pDC);
-	afx_msg LRESULT OnSetText(WPARAM wParam,LPARAM strText);
+	afx_msg LRESULT OnSetText(WPARAM wParam, LPARAM strText);
 	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 
 	// Generated message map functions

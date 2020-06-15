@@ -3,7 +3,7 @@
 #pragma once
 
 #ifndef __AFXWIN_H__
-	#error include 'stdafx.h' before including this file for PCH
+#error include 'stdafx.h' before including this file for PCH
 #endif
 
 #include "resource.h"       // main symbols
@@ -13,7 +13,7 @@ extern LPCTSTR lpszUniqueClass;
 
 //=========================================================
 //Taken from walls32/mainfrm.h -- should be moved to wallmag.h:
-enum e_ref {REF_FMTDM=1,REF_FMTDMS=2,REF_FMTMASK=3,REF_LONDIR=4,REF_LATDIR=8};
+enum e_ref { REF_FMTDM = 1, REF_FMTDMS = 2, REF_FMTMASK = 3, REF_LONDIR = 4, REF_LATDIR = 8 };
 
 #define REF_NAD27 254
 #define REF_MAXDATUM 250
@@ -40,7 +40,7 @@ typedef struct { //2*8 + 4*4 + 2 + 6 + 20 = 60 bytes
 extern HINSTANCE mag_hinst;
 void mag_GetRef(MAGREF *mr);
 void mag_PutRef(MAGREF *mr);
-HINSTANCE LoadMagDLL(MAGREF *mr=NULL);
+HINSTANCE LoadMagDLL(MAGREF *mr = NULL);
 
 //=========================================================
 // See WallsMap.cpp for the implementation of this class
@@ -64,24 +64,24 @@ public:
 private:
 	BOOL RegisterWallsMapClass();
 
-// Overrides
+	// Overrides
 public:
-	HCURSOR m_hCursorZoomIn,m_hCursorZoomOut,m_hCursorHand,m_hCursorMeasure,
-		m_hCursorCross,m_hCursorArrow,m_hCursorSelect,m_hCursorSelectAdd;
+	HCURSOR m_hCursorZoomIn, m_hCursorZoomOut, m_hCursorHand, m_hCursorMeasure,
+		m_hCursorCross, m_hCursorArrow, m_hCursorSelect, m_hCursorSelectAdd;
 
-    static CMultiDocTemplate *m_pDocTemplate;
+	static CMultiDocTemplate *m_pDocTemplate;
 	static BOOL m_bBackground;
 	static BOOL m_bNoAddRecent;
 	CString m_csUrlPath;
 
-// Overrides
+	// Overrides
 	virtual void WinHelpInternal(DWORD_PTR dwData, UINT nCmd = HELP_CONTEXT);
-	virtual void WinHelp(DWORD dwData,UINT nCmd=HELP_CONTEXT);
+	virtual void WinHelp(DWORD dwData, UINT nCmd = HELP_CONTEXT);
 	virtual BOOL InitInstance();
 	virtual int ExitInstance();
 	virtual void AddToRecentFileList(const char* pszPathName);
-	
-// Implementation
+
+	// Implementation
 	afx_msg BOOL OnOpenRecentFile(UINT nID);
 	afx_msg void OnAppAbout();
 	DECLARE_MESSAGE_MAP()
@@ -91,21 +91,21 @@ extern CWallsMapApp theApp;
 
 class CMainFrame;
 
-__inline CMainFrame * GetMF() {return (CMainFrame *)theApp.m_pMainWnd;}
+__inline CMainFrame * GetMF() { return (CMainFrame *)theApp.m_pMainWnd; }
 
 class COpenExDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
-	COpenExDlg(CString &msg,CWnd* pParent = NULL);   // standard constructor
+	COpenExDlg(CString &msg, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	CString &m_msg;
 
 	//{{AFX_DATA(CErrorDlg)
 	enum { IDD = IDD_OPENEXISTING };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+	// NOTE: the ClassWizard will add data members here
+//}}AFX_DATA
 
 // Overrides
 	// ClassWizard generated virtual function overrides

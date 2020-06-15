@@ -48,7 +48,7 @@
 #define	BASIC_Ta	5
 
 #define CREGIONS (9)    /* quantization regions for d-a, a-c, c-b */
-/* number of different contexts */
+   /* number of different contexts */
 #define CONTEXTS1 (CREGIONS*CREGIONS*CREGIONS)
 #define CONTEXTS   ((CONTEXTS1+1)/2) /* all regions, with symmetric merging */
 #define MAX_C 127
@@ -83,7 +83,7 @@
 #    define ENDIAN16(x) ( ((x>>8)|(x<<8)) & 0x0000ffff)
 #endif
 
-/* clipping macro */
+							   /* clipping macro */
 #define clip(x,alpha) \
 	    if ( x & highmask ) {\
 	      if(x < 0) \
@@ -163,9 +163,9 @@ bool lco_Init(int maxCols);
 
 /* statistics tables */
 extern int	lco_N[TOT_CONTEXTS],
-			lco_A[TOT_CONTEXTS],
-			lco_B[TOT_CONTEXTS],
-			lco_C[TOT_CONTEXTS];
+lco_A[TOT_CONTEXTS],
+lco_B[TOT_CONTEXTS],
+lco_C[TOT_CONTEXTS];
 
 #define MELCSTATES	32	/* number of melcode states */
 
@@ -180,7 +180,7 @@ extern int lco_J[MELCSTATES];
 extern dword lco_reg;         /* BIT buffer for input/output */
 extern int lco_bits;          /* number of bits free in bit buffer (on output) */
 
-                         /* (number of bits free)-8 in bit buffer (on input)*/
+						 /* (number of bits free)-8 in bit buffer (on input)*/
 #define BITBUFSIZE (8*sizeof(lco_reg))
 
 #endif

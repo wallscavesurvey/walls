@@ -14,10 +14,10 @@
 //IMPLEMENT_DYNCREATE(CPageDetails, CLayerSetPage)
 
 CPageDetails::CPageDetails()
-	: CLayerSetPage(CPageDetails::IDD),m_nPos(-1)
+	: CLayerSetPage(CPageDetails::IDD), m_nPos(-1)
 {
-	m_bNewLayer=false;
-	m_pDoc=NULL;
+	m_bNewLayer = false;
+	m_pDoc = NULL;
 }
 
 CPageDetails::~CPageDetails()
@@ -26,22 +26,22 @@ CPageDetails::~CPageDetails()
 
 void CPageDetails::UpdateLayerData(CWallsMapDoc *pDoc)
 {
-	CLayerSet &lSet=pDoc->LayerSet();
-	int nPos=lSet.SelectedLayerPos();
-	ASSERT(nPos<lSet.NumLayers());
-	if(m_bNewLayer || m_pDoc!=pDoc || nPos!=m_nPos) {
-		m_bNewLayer=false;
-		m_pDoc=pDoc; m_nPos=nPos;
-		SetText(IDC_EDIT_DETAILS,lSet.LayerPtr(nPos)->GetInfo());
+	CLayerSet &lSet = pDoc->LayerSet();
+	int nPos = lSet.SelectedLayerPos();
+	ASSERT(nPos < lSet.NumLayers());
+	if (m_bNewLayer || m_pDoc != pDoc || nPos != m_nPos) {
+		m_bNewLayer = false;
+		m_pDoc = pDoc; m_nPos = nPos;
+		SetText(IDC_EDIT_DETAILS, lSet.LayerPtr(nPos)->GetInfo());
 	}
 }
 
 void CPageDetails::DoDataExchange(CDataExchange* pDX)
 {
 	CLayerSetPage::DoDataExchange(pDX);
-	if(!pDX->m_bSaveAndValidate) {
+	if (!pDX->m_bSaveAndValidate) {
 		UpdateLayerData(Sheet()->GetDoc());
-		m_pDoc->GetPropStatus().nTab=1;
+		m_pDoc->GetPropStatus().nTab = 1;
 	}
 }
 
@@ -56,20 +56,20 @@ BOOL CPageDetails::OnInitDialog()
 }
 
 BEGIN_MESSAGE_MAP(CPageDetails, CLayerSetPage)
-	ON_REGISTERED_MESSAGE(WM_RETFOCUS,OnRetFocus)
+	ON_REGISTERED_MESSAGE(WM_RETFOCUS, OnRetFocus)
 	ON_WM_SIZE()
 	ON_BN_CLICKED(IDCANCEL, OnClose)
-    ON_MESSAGE(WM_COMMANDHELP,OnCommandHelp)
+	ON_MESSAGE(WM_COMMANDHELP, OnCommandHelp)
 END_MESSAGE_MAP()
 
 // CPageDetails message handlers
-LRESULT CPageDetails::OnRetFocus(WPARAM,LPARAM)
+LRESULT CPageDetails::OnRetFocus(WPARAM, LPARAM)
 {
 	//if(m_idLastFocus) GetDlgItem(m_idLastFocus)->SetFocus();
 	//else m_idLastFocus=checkid(GetFocus()->GetDlgCtrlID(),getids());
-	if(m_pDoc!=Sheet()->GetDoc())
+	if (m_pDoc != Sheet()->GetDoc())
 		UpdateLayerData(Sheet()->GetDoc());
-	m_pDoc->GetPropStatus().nTab=1;
+	m_pDoc->GetPropStatus().nTab = 1;
 	return TRUE;
 }
 

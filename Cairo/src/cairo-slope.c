@@ -37,12 +37,12 @@
 #include "cairoint.h"
 
 void
-_cairo_slope_init (cairo_slope_t *slope,
-		   const cairo_point_t *a,
-		   const cairo_point_t *b)
+_cairo_slope_init(cairo_slope_t *slope,
+	const cairo_point_t *a,
+	const cairo_point_t *b)
 {
-    slope->dx = b->x - a->x;
-    slope->dy = b->y - a->y;
+	slope->dx = b->x - a->x;
+	slope->dy = b->y - a->y;
 }
 
 /* Compare two slopes. Slope angles begin at 0 in the direction of the
@@ -64,45 +64,45 @@ _cairo_slope_init (cairo_slope_t *slope,
    >  0 => a more positive than b
 */
 int
-_cairo_slope_compare (const cairo_slope_t *a, const cairo_slope_t *b)
+_cairo_slope_compare(const cairo_slope_t *a, const cairo_slope_t *b)
 {
-    cairo_int64_t ady_bdx = _cairo_int32x32_64_mul (a->dy, b->dx);
-    cairo_int64_t bdy_adx = _cairo_int32x32_64_mul (b->dy, a->dx);
-    int cmp;
+	cairo_int64_t ady_bdx = _cairo_int32x32_64_mul(a->dy, b->dx);
+	cairo_int64_t bdy_adx = _cairo_int32x32_64_mul(b->dy, a->dx);
+	int cmp;
 
-    cmp = _cairo_int64_cmp (ady_bdx, bdy_adx);
-    if (cmp)
-	return cmp;
+	cmp = _cairo_int64_cmp(ady_bdx, bdy_adx);
+	if (cmp)
+		return cmp;
 
-    /* special-case zero vectors.  the intended logic here is:
-     * zero vectors all compare equal, and more positive than any
-     * non-zero vector.
-     */
-    if (a->dx == 0 && a->dy == 0 && b->dx == 0 && b->dy ==0)
+	/* special-case zero vectors.  the intended logic here is:
+	 * zero vectors all compare equal, and more positive than any
+	 * non-zero vector.
+	 */
+	if (a->dx == 0 && a->dy == 0 && b->dx == 0 && b->dy == 0)
+		return 0;
+	if (a->dx == 0 && a->dy == 0)
+		return 1;
+	if (b->dx == 0 && b->dy == 0)
+		return -1;
+
+	/* Finally, we're looking at two vectors that are either equal or
+	 * that differ by exactly pi. We can identify the "differ by pi"
+	 * case by looking for a change in sign in either dx or dy between
+	 * a and b.
+	 *
+	 * And in these cases, we eliminate the ambiguity by reducing the angle
+	 * of b by an infinitesimally small amount, (that is, 'a' will
+	 * always be considered less than 'b').
+	 */
+	if (((a->dx > 0) != (b->dx > 0)) ||
+		((a->dy > 0) != (b->dy > 0)))
+	{
+		if (a->dx > 0 || (a->dx == 0 && a->dy > 0))
+			return +1;
+		else
+			return -1;
+	}
+
+	/* Finally, for identical slopes, we obviously return 0. */
 	return 0;
-    if (a->dx == 0 && a->dy == 0)
-	return 1;
-    if (b->dx == 0 && b->dy ==0)
-	return -1;
-
-    /* Finally, we're looking at two vectors that are either equal or
-     * that differ by exactly pi. We can identify the "differ by pi"
-     * case by looking for a change in sign in either dx or dy between
-     * a and b.
-     *
-     * And in these cases, we eliminate the ambiguity by reducing the angle
-     * of b by an infinitesimally small amount, (that is, 'a' will
-     * always be considered less than 'b').
-     */
-    if (((a->dx > 0) != (b->dx > 0)) ||
-	((a->dy > 0) != (b->dy > 0)))
-    {
-	if (a->dx > 0 || (a->dx == 0 && a->dy > 0))
-	    return +1;
-	else
-	    return -1;
-    }
-
-    /* Finally, for identical slopes, we obviously return 0. */
-    return 0;
 }

@@ -11,15 +11,15 @@ IMPLEMENT_DYNAMIC(CPointTree, CTreeCtrl)
 
 CPointTree::CPointTree()
 {
-	m_pDragImage=NULL;
-	m_bLDragging=false;
-	m_hcArrow=::LoadCursor(NULL, IDC_ARROW);
-	m_hcNo=::LoadCursor(NULL, IDC_NO);
+	m_pDragImage = NULL;
+	m_bLDragging = false;
+	m_hcArrow = ::LoadCursor(NULL, IDC_ARROW);
+	m_hcNo = ::LoadCursor(NULL, IDC_NO);
 }
 
 CPointTree::~CPointTree()
 {
-	if(m_pDragImage) delete m_pDragImage;
+	if (m_pDragImage) delete m_pDragImage;
 }
 
 
@@ -37,37 +37,37 @@ END_MESSAGE_MAP()
 
 void CPointTree::OnMouseMove(UINT nFlags, CPoint point)
 {
-	if(m_bLDragging) {
+	if (m_bLDragging) {
 		ASSERT(m_pDragImage);
-		CPoint pt (point);
-		ClientToScreen (&pt);
+		CPoint pt(point);
+		ClientToScreen(&pt);
 
 		// move the drag image
 		VERIFY(m_pDragImage->DragMove(pt));
 
 		// unlock window updates
-		VERIFY (m_pDragImage->DragShowNolock (FALSE));
+		VERIFY(m_pDragImage->DragShowNolock(FALSE));
 
 		// get the CWnd pointer of the window that is under the mouse cursor
-		if(WindowFromPoint(pt)==this) {
+		if (WindowFromPoint(pt) == this) {
 			UINT uFlags;
 			// get the item that is below cursor
-			HTREEITEM h=HitTest(point,&uFlags);
+			HTREEITEM h = HitTest(point, &uFlags);
 			// highlight it
-			if(h!=m_hitemDrop) {
-				SelectDropTarget(m_hitemDrop=NULL);
-				if(h && (TVHT_ONITEM & uFlags) &&
-						(!m_bDraggingRoot || !GetParentItem(h)) && app_pShowDlg->IsSelDroppable(h)) {
-					SelectDropTarget(m_hitemDrop=h);
+			if (h != m_hitemDrop) {
+				SelectDropTarget(m_hitemDrop = NULL);
+				if (h && (TVHT_ONITEM & uFlags) &&
+					(!m_bDraggingRoot || !GetParentItem(h)) && app_pShowDlg->IsSelDroppable(h)) {
+					SelectDropTarget(m_hitemDrop = h);
 				}
 			}
-			::SetCursor(m_hitemDrop?m_hcArrow:m_hcNo);
+			::SetCursor(m_hitemDrop ? m_hcArrow : m_hcNo);
 		}
 		else {
 			// turn off drag hilite for tree control
 			if (m_hitemDrop)
 			{
-				SelectDropTarget (NULL);
+				SelectDropTarget(NULL);
 				m_hitemDrop = NULL;
 			}
 			::SetCursor(m_hcNo);
@@ -78,29 +78,29 @@ void CPointTree::OnMouseMove(UINT nFlags, CPoint point)
 	else {
 		::SetCursor(m_hcArrow);
 	}
-	CTreeCtrl::OnMouseMove(nFlags,point);
+	CTreeCtrl::OnMouseMove(nFlags, point);
 }
 
-void CPointTree::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult) 
+void CPointTree::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
-	ASSERT(GetSelectedItem()==pNMTreeView->itemNew.hItem);
+	ASSERT(GetSelectedItem() == pNMTreeView->itemNew.hItem);
 
 	// Item user started dragging ...
 	*pResult = 0;
-	if(!app_pShowDlg->IsSelMovable()) return;
+	if (!app_pShowDlg->IsSelMovable()) return;
 
 	m_hitemDrag = pNMTreeView->itemNew.hItem;
-	m_bDraggingRoot=!GetParentItem(m_hitemDrag);
+	m_bDraggingRoot = !GetParentItem(m_hitemDrag);
 
 	// So user cant drag root node
 	//if (GetParentItem(m_hitemDrag) == NULL) return ; 
 
 	m_hitemDrop = NULL;
 
-	if(m_pDragImage) {
+	if (m_pDragImage) {
 		delete m_pDragImage;
-		m_pDragImage=NULL;
+		m_pDragImage = NULL;
 	}
 
 	CRect rect;
@@ -111,32 +111,32 @@ void CPointTree::OnBeginDrag(NMHDR* pNMHDR, LRESULT* pResult)
 	CClientDC	dc(this);
 	CDC 		memDC;
 
-	if(!memDC.CreateCompatibleDC(&dc))
+	if (!memDC.CreateCompatibleDC(&dc))
 		return;
 
 	CBitmap bitmap;
-	if(!bitmap.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height()))
+	if (!bitmap.CreateCompatibleBitmap(&dc, rect.Width(), rect.Height()))
 		return;
 
-	CBitmap* pOldMemDCBitmap = memDC.SelectObject( &bitmap );
+	CBitmap* pOldMemDCBitmap = memDC.SelectObject(&bitmap);
 	CFont* pOldFont = memDC.SelectObject(GetFont());
 
 	memDC.FillSolidRect(&rect, RGB(255, 255, 255)); // Here green is used as mask color
 	memDC.SetTextColor(GetSysColor(COLOR_GRAYTEXT));
-	memDC.TextOut(rect.left,rect.top,GetItemText(m_hitemDrag));
+	memDC.TextOut(rect.left, rect.top, GetItemText(m_hitemDrag));
 
-	memDC.SelectObject( pOldFont );
-	memDC.SelectObject( pOldMemDCBitmap );
+	memDC.SelectObject(pOldFont);
+	memDC.SelectObject(pOldMemDCBitmap);
 
 	// Create CImageList
 	m_pDragImage = new CImageList;
-	VERIFY(m_pDragImage->Create(rect.Width(), rect.Height(),ILC_COLOR | ILC_MASK, 0, 1));
+	VERIFY(m_pDragImage->Create(rect.Width(), rect.Height(), ILC_COLOR | ILC_MASK, 0, 1));
 	m_pDragImage->Add(&bitmap, RGB(255, 255, 255)); // Here green is used as mask color
 
 	m_bLDragging = true;
-	m_pDragImage->BeginDrag(0, CPoint(-15,-15));
+	m_pDragImage->BeginDrag(0, CPoint(-15, -15));
 	POINT pt = pNMTreeView->ptDrag;
-	ClientToScreen( &pt );
+	ClientToScreen(&pt);
 	m_pDragImage->DragEnter(NULL, pt);
 	SetCapture();
 }
@@ -147,24 +147,24 @@ void CPointTree::OnLButtonUp(UINT nFlags, CPoint point)
 	{
 		// end dragging
 		ASSERT(m_pDragImage);
-		ASSERT(m_hitemDrag==GetSelectedItem());
-		VERIFY (m_pDragImage->DragLeave(GetDesktopWindow()));	
+		ASSERT(m_hitemDrag == GetSelectedItem());
+		VERIFY(m_pDragImage->DragLeave(GetDesktopWindow()));
 		m_pDragImage->EndDrag();
 		// stop intercepting all mouse messages
 		VERIFY(::ReleaseCapture());
 		m_bLDragging = false;
 
-		CPoint pt (point);
-		ClientToScreen (&pt);
+		CPoint pt(point);
+		ClientToScreen(&pt);
 		// get the CWnd pointer of the window that is under the mouse cursor
-		if((CWnd *)this==WindowFromPoint(pt)) {
+		if ((CWnd *)this == WindowFromPoint(pt)) {
 			// unhilite the drop target
-			SelectDropTarget (NULL);
+			SelectDropTarget(NULL);
 		}
 		delete m_pDragImage;
-		m_pDragImage=NULL;
-		if(m_hitemDrop && m_hitemDrag!=m_hitemDrop) {
-			ASSERT(m_hitemDrag==GetSelectedItem());
+		m_pDragImage = NULL;
+		if (m_hitemDrop && m_hitemDrag != m_hitemDrop) {
+			ASSERT(m_hitemDrag == GetSelectedItem());
 			app_pShowDlg->OnDropTreeItem(m_hitemDrop);
 		}
 	}
@@ -173,11 +173,11 @@ void CPointTree::OnLButtonUp(UINT nFlags, CPoint point)
 
 BOOL CPointTree::CheckSelect(CPoint &point)
 {
-	if(!m_bLDragging) {
+	if (!m_bLDragging) {
 		// get the item that is below cursor
-		HTREEITEM h=HitTest(point);
-		if(h && h!=GetSelectedItem()) {
-			if(app_pShowDlg->CancelSelChange()) {
+		HTREEITEM h = HitTest(point);
+		if (h && h != GetSelectedItem()) {
+			if (app_pShowDlg->CancelSelChange()) {
 				return FALSE;
 			}
 			SelectItem(h);
@@ -188,46 +188,46 @@ BOOL CPointTree::CheckSelect(CPoint &point)
 
 void CPointTree::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	if(CheckSelect(point))
+	if (CheckSelect(point))
 		CTreeCtrl::OnLButtonDown(nFlags, point);
 }
 
 void CPointTree::OnRButtonDown(UINT nFlags, CPoint point)
 {
-	if(CheckSelect(point))
+	if (CheckSelect(point))
 		CTreeCtrl::OnRButtonDown(nFlags, point);
 }
 
-HTREEITEM CPointTree::MoveItem(HTREEITEM hDragItem,HTREEITEM hDropItem)
+HTREEITEM CPointTree::MoveItem(HTREEITEM hDragItem, HTREEITEM hDropItem)
 {
 
 	TV_INSERTSTRUCT tvis;
 
-	tvis.item.hItem	= hDragItem;
-	tvis.item.mask = TVIF_HANDLE|TVIF_IMAGE|TVIF_SELECTEDIMAGE|TVIF_STATE|TVIF_PARAM;
+	tvis.item.hItem = hDragItem;
+	tvis.item.mask = TVIF_HANDLE | TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_STATE | TVIF_PARAM;
 
 	// get item that was dragged
 	VERIFY(GetItem(&tvis.item));
 
-	HTREEITEM hDropRoot=GetParentItem(hDropItem);
-	if(!hDropRoot) {
-		hDropRoot=hDropItem;
-		tvis.hInsertAfter=TVI_FIRST;
+	HTREEITEM hDropRoot = GetParentItem(hDropItem);
+	if (!hDropRoot) {
+		hDropRoot = hDropItem;
+		tvis.hInsertAfter = TVI_FIRST;
 	}
 	else {
-		tvis.hInsertAfter=hDropItem;
+		tvis.hInsertAfter = hDropItem;
 	}
-	tvis.hParent=hDropRoot;
-	tvis.item.pszText=LPSTR_TEXTCALLBACK;
-	tvis.item.mask = TVIF_DI_SETITEM|TVIF_IMAGE|TVIF_SELECTEDIMAGE|TVIF_TEXT|TVIF_STATE|TVIF_PARAM;
+	tvis.hParent = hDropRoot;
+	tvis.item.pszText = LPSTR_TEXTCALLBACK;
+	tvis.item.mask = TVIF_DI_SETITEM | TVIF_IMAGE | TVIF_SELECTEDIMAGE | TVIF_TEXT | TVIF_STATE | TVIF_PARAM;
 
-	VERIFY(hDropItem=InsertItem(&tvis));
+	VERIFY(hDropItem = InsertItem(&tvis));
 	// delete the original item (move operation)
 	VERIFY(DeleteItem(hDragItem));
 	return hDropItem;
 }
 
-LRESULT CPointTree::OnTabletQuerySystemGestureStatus(WPARAM,LPARAM)
+LRESULT CPointTree::OnTabletQuerySystemGestureStatus(WPARAM, LPARAM)
 {
-   return 0;
+	return 0;
 }

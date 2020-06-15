@@ -20,11 +20,11 @@ CComboBoxNS::~CComboBoxNS()
 
 BOOL CComboBoxNS::PreTranslateMessage(MSG* pMsg)
 {
-      if (pMsg->message == WM_VSCROLL || pMsg->message == WM_MOUSEWHEEL)
-      {
-            return TRUE;
-      }
-      return CComboBox::PreTranslateMessage(pMsg);
+	if (pMsg->message == WM_VSCROLL || pMsg->message == WM_MOUSEWHEEL)
+	{
+		return TRUE;
+	}
+	return CComboBox::PreTranslateMessage(pMsg);
 }
 
 

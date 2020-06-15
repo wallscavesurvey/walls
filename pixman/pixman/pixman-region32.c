@@ -35,7 +35,7 @@ typedef pixman_region32_data_t	region_data_type_t;
 typedef pixman_region32_t	region_type_t;
 
 typedef struct {
-    int x, y;
+	int x, y;
 } point_type_t;
 
 #define PREFIX(x) pixman_region32##x

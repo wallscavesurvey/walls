@@ -11,25 +11,25 @@
 
 class CMainFrame : public CFrameWnd
 {
-	
+
 protected: // create from serialization only
 	CMainFrame();
 	DECLARE_DYNCREATE(CMainFrame)
 
-// Attributes
+	// Attributes
 public:
-    // Holds status line text
-    CString m_csStatText;
+	// Holds status line text
+	CString m_csStatText;
 	CString m_csNoSVGMsg;
 
-// Operations
+	// Operations
 public:
 	void HelpMsg();
 	CString *NoSVGMsg();
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMainFrame)
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CMainFrame)
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	//}}AFX_VIRTUAL
 
@@ -42,7 +42,7 @@ public:
 #endif
 	void StartAnimation(BOOL bTimer);
 	void StopAnimation();
-    void RestoreWindow(int nShow);
+	void RestoreWindow(int nShow);
 
 protected:  // control bar embedded members
 	CStatusBar  m_wndStatusBar;
@@ -54,7 +54,7 @@ private:
 	HRESULT ExecCmdTarget(const GUID *pguidCmdGroup, DWORD nCmdID);
 	BOOL CMainFrame::SelectionPresent(void);
 
-// Generated message map functions
+	// Generated message map functions
 protected:
 	//CAnimateCtrl m_wndAnimate;
 	//{{AFX_MSG(CMainFrame)

@@ -35,8 +35,8 @@
 
 // To hold the colours and their names
 typedef struct {
-    COLORREF crColor;
-    TCHAR    *szName;
+	COLORREF crColor;
+	TCHAR    *szName;
 } ColorTableEntry;
 
 /////////////////////////////////////////////////////////////////////////////
@@ -46,89 +46,89 @@ class CColorCombo;
 
 class CColorPopup : public CWnd
 {
-// Construction
+	// Construction
 public:
-    CColorPopup();
-    CColorPopup(CPoint p, COLORREF crColor, CColorCombo* pParentWnd,
-		LPCTSTR *pText,COLORREF *pClrElems,int nTextElems);
-    void Initialise();
+	CColorPopup();
+	CColorPopup(CPoint p, COLORREF crColor, CColorCombo* pParentWnd,
+		LPCTSTR *pText, COLORREF *pClrElems, int nTextElems);
+	void Initialise();
 
-// Attributes
+	// Attributes
 public:
 
-// Operations
+	// Operations
 public:
-    BOOL Create(CPoint p, COLORREF crColor,CColorCombo* pParentWnd);
+	BOOL Create(CPoint p, COLORREF crColor, CColorCombo* pParentWnd);
 
-// Overrides
-    // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CColorPopup)
-    public:
-    virtual BOOL PreTranslateMessage(MSG* pMsg);
-    //}}AFX_VIRTUAL
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CColorPopup)
+public:
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	//}}AFX_VIRTUAL
 
 // Implementation
 public:
-    virtual ~CColorPopup();
+	virtual ~CColorPopup();
 
-    static LPCTSTR GetColorName(int nIndex) { return m_crColors[nIndex].szName; }
-    static ColorTableEntry m_crColors[];
+	static LPCTSTR GetColorName(int nIndex) { return m_crColors[nIndex].szName; }
+	static ColorTableEntry m_crColors[];
 	static int CColorPopup::GetTableIndex(COLORREF crColor);
-    static int m_nNumColors;
-    static COLORREF GetColor(int nIndex) {return m_crColors[nIndex].crColor;}
-	static char *GetColorName(char *buf,COLORREF crColor);
-	static void GetRGBStr(char *str,COLORREF clr);
+	static int m_nNumColors;
+	static COLORREF GetColor(int nIndex) { return m_crColors[nIndex].crColor; }
+	static char *GetColorName(char *buf, COLORREF crColor);
+	static void GetRGBStr(char *str, COLORREF clr);
 
 protected:
-    BOOL GetCellRect(int nIndex, const LPRECT& rect);
-    void SetWindowSize();
-    void CreateToolTips();
-    void ChangeSelection(int nIndex,BOOL bDrepressed=FALSE);
-    void EndSelection(int nMessage);
-    void DrawCell(CDC* pDC,int nIndex,BOOL bDepressed=FALSE);
-    void DrawTextCell(CDC* pDC,int idx,BOOL bDepressed=FALSE);
-	void DrawColorCell(CDC *pDC,CRect &rect,COLORREF clr,UINT flags);
-    int GetIndexFromColor(COLORREF crColor);
-    int  GetIndex(int row, int col) const;
-    int  GetRow(int nIndex) const;
-    int  GetColumn(int nIndex) const;
+	BOOL GetCellRect(int nIndex, const LPRECT& rect);
+	void SetWindowSize();
+	void CreateToolTips();
+	void ChangeSelection(int nIndex, BOOL bDrepressed = FALSE);
+	void EndSelection(int nMessage);
+	void DrawCell(CDC* pDC, int nIndex, BOOL bDepressed = FALSE);
+	void DrawTextCell(CDC* pDC, int idx, BOOL bDepressed = FALSE);
+	void DrawColorCell(CDC *pDC, CRect &rect, COLORREF clr, UINT flags);
+	int GetIndexFromColor(COLORREF crColor);
+	int  GetIndex(int row, int col) const;
+	int  GetRow(int nIndex) const;
+	int  GetColumn(int nIndex) const;
 
 	BOOL OnToolTipNotify(UINT id, NMHDR * pNMHDR, LRESULT * pResult);
 
-// protected attributes
+	// protected attributes
 protected:
-    int            m_nNumColumns, m_nNumRows;
-    int            m_nTextWidth,m_nBoxSize, m_nMargin;
-    int            m_nCurrentSel;
-    int            m_nChosenColorSel;
+	int            m_nNumColumns, m_nNumRows;
+	int            m_nTextWidth, m_nBoxSize, m_nMargin;
+	int            m_nCurrentSel;
+	int            m_nChosenColorSel;
 	LPCTSTR		   *m_pText;
 	COLORREF	   *m_pClrElems;
 	int			   m_nTextElems;
-    CRect          *m_pTextRect;
+	CRect          *m_pTextRect;
 	CRect		   m_WindowRect;
-    CFont          m_Font;
-    CPalette       m_Palette;
-    COLORREF       m_crInitialColor, m_crColor;
-    CToolTipCtrl   m_ToolTip;
-    CColorCombo   *m_pParent;
+	CFont          m_Font;
+	CPalette       m_Palette;
+	COLORREF       m_crInitialColor, m_crColor;
+	CToolTipCtrl   m_ToolTip;
+	CColorCombo   *m_pParent;
 
-    // Generated message map functions
+	// Generated message map functions
 protected:
-    afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
-   //{{AFX_MSG(CColorPopup)
-    afx_msg void OnNcDestroy();
-    afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-    afx_msg void OnPaint();
-    afx_msg void OnMouseMove(UINT nFlags, CPoint point);
-    afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-    afx_msg BOOL OnQueryNewPalette();
-    afx_msg void OnPaletteChanged(CWnd* pFocusWnd);
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+	//{{AFX_MSG(CColorPopup)
+	afx_msg void OnNcDestroy();
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnPaint();
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg BOOL OnQueryNewPalette();
+	afx_msg void OnPaletteChanged(CWnd* pFocusWnd);
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
 	afx_msg void OnActivateApp(BOOL bActive, DWORD hTask);
 	//}}AFX_MSG
 	//***7.1 afx_msg void OnActivateApp(BOOL bActive, HTASK hTask);
-    DECLARE_MESSAGE_MAP()
+	DECLARE_MESSAGE_MAP()
 };
 
 /////////////////////////////////////////////////////////////////////////////

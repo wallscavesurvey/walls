@@ -36,13 +36,13 @@
  *	Vladimir Vukicevic <vladimir@pobox.com>
  */
 
-/* This file should include code that is system-specific, not
- * feature-specific.  For example, the DLL initialization/finalization
- * code on Win32 or OS/2 must live here (not in cairo-whatever-surface.c).
- * Same about possible ELF-specific code.
- *
- * And no other function should live here.
- */
+ /* This file should include code that is system-specific, not
+  * feature-specific.  For example, the DLL initialization/finalization
+  * code on Win32 or OS/2 must live here (not in cairo-whatever-surface.c).
+  * Same about possible ELF-specific code.
+  *
+  * And no other function should live here.
+  */
 
 
 #include "cairoint.h"
@@ -53,7 +53,7 @@
 #if !CAIRO_WIN32_STATIC_BUILD
 
 #define WIN32_LEAN_AND_MEAN
-/* We require Windows 2000 features such as ETO_PDY */
+  /* We require Windows 2000 features such as ETO_PDY */
 #if !defined(WINVER) || (WINVER < 0x0500)
 # define WINVER 0x0500
 #endif
@@ -70,26 +70,26 @@
 
 /* declare to avoid "no previous prototype for 'DllMain'" warning */
 BOOL WINAPI
-DllMain (HINSTANCE hinstDLL,
-         DWORD     fdwReason,
-         LPVOID    lpvReserved);
+DllMain(HINSTANCE hinstDLL,
+	DWORD     fdwReason,
+	LPVOID    lpvReserved);
 
 BOOL WINAPI
-DllMain (HINSTANCE hinstDLL,
-         DWORD     fdwReason,
-         LPVOID    lpvReserved)
+DllMain(HINSTANCE hinstDLL,
+	DWORD     fdwReason,
+	LPVOID    lpvReserved)
 {
-    switch (fdwReason) {
-        case DLL_PROCESS_ATTACH:
-            CAIRO_MUTEX_INITIALIZE ();
-            break;
+	switch (fdwReason) {
+	case DLL_PROCESS_ATTACH:
+		CAIRO_MUTEX_INITIALIZE();
+		break;
 
-        case DLL_PROCESS_DETACH:
-            CAIRO_MUTEX_FINALIZE ();
-            break;
-    }
+	case DLL_PROCESS_DETACH:
+		CAIRO_MUTEX_FINALIZE();
+		break;
+	}
 
-    return TRUE;
+	return TRUE;
 }
 
 #endif

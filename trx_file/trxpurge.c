@@ -2,6 +2,6 @@
 
 void TRXAPI trx_Purge(TRX_NO trx)
 {
-  _csf_Purge((CSF_NO)_GETTRXP);
+	_csf_Purge((CSF_NO)_GETTRXP);
 }
 

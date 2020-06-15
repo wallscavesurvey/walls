@@ -1,15 +1,15 @@
 #pragma once
 
-LPCSTR CheckAccent(UINT wParam,BYTE &bAccent);
+LPCSTR CheckAccent(UINT wParam, BYTE &bAccent);
 void SetLowerNoAccents(LPSTR s);
 
 class CEditLabel : public CEdit
 {
 	// Construction
 public:
-	CEditLabel() : m_bAccent(0),m_cmd(0),m_pmes(NULL),m_pParent(NULL) {}
+	CEditLabel() : m_bAccent(0), m_cmd(0), m_pmes(NULL), m_pParent(NULL) {}
 
-	void SetCustomCmd(UINT cmd,LPCSTR pmes=NULL,CWnd *pParent=NULL) {m_cmd=cmd; m_pmes=pmes; m_pParent=pParent;}
+	void SetCustomCmd(UINT cmd, LPCSTR pmes = NULL, CWnd *pParent = NULL) { m_cmd = cmd; m_pmes = pmes; m_pParent = pParent; }
 	virtual ~CEditLabel() {}
 
 	// Overrides

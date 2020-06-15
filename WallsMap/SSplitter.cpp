@@ -35,22 +35,22 @@ static char THIS_FILE[] = __FILE__;
 
 CSSplitter::CSSplitter()
 {
-	m_pWndLeft				= NULL;
-	m_pWndRight				= NULL;
-	m_pWndTop				= NULL;
-	m_pWndBottom			= NULL;
+	m_pWndLeft = NULL;
+	m_pWndRight = NULL;
+	m_pWndTop = NULL;
+	m_pWndBottom = NULL;
 
-	m_nSplitterWidth		= 3;   // the width of slitter
+	m_nSplitterWidth = 3;   // the width of slitter
 
-	m_bMovingHorizSplitter	= FALSE;
-	m_bDraggingHoriz		= FALSE;	
-	m_bMovingVertSplitter	= FALSE;
-	m_bDraggingVert			= FALSE;
-	m_bHiddenBottomPane		= FALSE;
-	m_bHiddenRightPane		= FALSE;
-	m_bHiddenLeftPane		= FALSE;
-	m_bHorizSplitter		= FALSE;
-	m_bVertSplitter			= FALSE;
+	m_bMovingHorizSplitter = FALSE;
+	m_bDraggingHoriz = FALSE;
+	m_bMovingVertSplitter = FALSE;
+	m_bDraggingVert = FALSE;
+	m_bHiddenBottomPane = FALSE;
+	m_bHiddenRightPane = FALSE;
+	m_bHiddenLeftPane = FALSE;
+	m_bHorizSplitter = FALSE;
+	m_bVertSplitter = FALSE;
 }
 
 CSSplitter::~CSSplitter()
@@ -64,30 +64,30 @@ BEGIN_MESSAGE_MAP(CSSplitter, CStatic)
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
 	ON_WM_DESTROY()
-	ON_MESSAGE(WM_QUICKLIST_EDITCHANGE,OnEditChange)
-	ON_MESSAGE(WM_QUICKLIST_CLICK, OnListClick) 
-	ON_MESSAGE(WM_QUICKLIST_GETTOOLTIP, OnGetToolTip) 
+	ON_MESSAGE(WM_QUICKLIST_EDITCHANGE, OnEditChange)
+	ON_MESSAGE(WM_QUICKLIST_CLICK, OnListClick)
+	ON_MESSAGE(WM_QUICKLIST_GETTOOLTIP, OnGetToolTip)
 	ON_MESSAGE(WM_QUICKLIST_GETLISTITEMDATA, OnGetQuickListItem)
 	ON_MESSAGE(WM_QUICKLIST_NAVIGATIONTEST, OnQuickListNavTest)
-	ON_NOTIFY(LVN_ENDLABELEDIT,IDC_FIELD_LIST,OnEndlabeleditList)
-	ON_NOTIFY(LVN_BEGINLABELEDIT,IDC_FIELD_LIST,OnBeginlabeleditList)
+	ON_NOTIFY(LVN_ENDLABELEDIT, IDC_FIELD_LIST, OnEndlabeleditList)
+	ON_NOTIFY(LVN_BEGINLABELEDIT, IDC_FIELD_LIST, OnBeginlabeleditList)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CSSplitter message handlers
 
-BOOL CSSplitter::Create(DWORD dwStyle, 
-			CWnd*	pParentWnd, 
-			CWnd* pFPane, 
-			CWnd* pSPane,
-			UINT nID,
-			const RECT& rc,
-			UINT nFConstr,
-			UINT nSConstr)
+BOOL CSSplitter::Create(DWORD dwStyle,
+	CWnd*	pParentWnd,
+	CWnd* pFPane,
+	CWnd* pSPane,
+	UINT nID,
+	const RECT& rc,
+	UINT nFConstr,
+	UINT nSConstr)
 {
-	m_nID  = nID;
+	m_nID = nID;
 	CStatic::Create(NULL, dwStyle, rc, pParentWnd, nID);
-	
+
 	pFPane->SetParent(this);
 	pFPane->SetOwner(pParentWnd);
 
@@ -96,26 +96,26 @@ BOOL CSSplitter::Create(DWORD dwStyle,
 
 	ModifyStyleEx(0, WS_EX_CONTROLPARENT);
 
-	m_nMaxTop		= nFConstr;
-	m_nMaxBottom	= nSConstr;
-	m_nMaxLeft		= nFConstr;
-	m_nMaxRight		= nSConstr;
+	m_nMaxTop = nFConstr;
+	m_nMaxBottom = nSConstr;
+	m_nMaxLeft = nFConstr;
+	m_nMaxRight = nSConstr;
 
 #ifdef _USE_VERT
-	if ( dwStyle & SS_VERT )
+	if (dwStyle & SS_VERT)
 		InitVertSplitter(
-			this,				
-			pFPane,				
+			this,
+			pFPane,
 			pSPane,
 			nFConstr,
 			nSConstr
-		); 
+		);
 #endif
 #ifdef _USE_HORZ
-	if ( dwStyle & SS_HORIZ )
+	if (dwStyle & SS_HORIZ)
 		InitHorizSplitter(
-			this,				
-			pFPane,				
+			this,
+			pFPane,
 			pSPane,
 			nFConstr,
 			nSConstr
@@ -124,86 +124,86 @@ BOOL CSSplitter::Create(DWORD dwStyle,
 	return TRUE;
 }
 
-BOOL CSSplitter::PreCreateWindow(CREATESTRUCT& cs) 
+BOOL CSSplitter::PreCreateWindow(CREATESTRUCT& cs)
 {
 	cs.style |= SS_NOTIFY; // to notify its parent of mouse events	
 	return CStatic::PreCreateWindow(cs);
 }
 
-void CSSplitter::OnSize(UINT nType, int cx, int cy) 
+void CSSplitter::OnSize(UINT nType, int cx, int cy)
 {
 	CStatic::OnSize(nType, cx, cy);
-	
+
 	CRect rect;
-	GetClientRect( &rect );
+	GetClientRect(&rect);
 
 #ifdef _USE_VERT
-	if ( m_bVertSplitter && (!m_bHiddenRightPane) && (!m_bHiddenLeftPane) ){
+	if (m_bVertSplitter && (!m_bHiddenRightPane) && (!m_bHiddenLeftPane)) {
 		CPoint pt;
-		pt.x = m_nLeftPaneWidth + m_nSplitterWidth/2;
+		pt.x = m_nLeftPaneWidth + m_nSplitterWidth / 2;
 		pt.y = 0;
-		MoveVertPanes( pt );
+		MoveVertPanes(pt);
 	}
 
-	if ( m_bVertSplitter && m_bHiddenRightPane && (m_pWndLeft->GetSafeHwnd()) ){
+	if (m_bVertSplitter && m_bHiddenRightPane && (m_pWndLeft->GetSafeHwnd())) {
 		m_pWndLeft->MoveWindow(&rect);
 	}
 
-	if ( m_bVertSplitter && m_bHiddenLeftPane && (m_pWndRight->GetSafeHwnd()) ){
+	if (m_bVertSplitter && m_bHiddenLeftPane && (m_pWndRight->GetSafeHwnd())) {
 		m_pWndRight->MoveWindow(&rect);
 	}
 #endif
 #ifdef _USE_HORZ
-	if ( m_bHorizSplitter && m_bHiddenBottomPane && (m_pWndTop->GetSafeHwnd()) ){
+	if (m_bHorizSplitter && m_bHiddenBottomPane && (m_pWndTop->GetSafeHwnd())) {
 		m_pWndTop->MoveWindow(&rect);
 		return;
 	}
 
-	if ( m_bHorizSplitter && (!m_bHiddenBottomPane) ){ 
+	if (m_bHorizSplitter && (!m_bHiddenBottomPane)) {
 
 		CPoint pt;
 		pt.x = 0;
-		pt.y = cy - m_nBottomPaneHeight - m_nSplitterWidth/2;
+		pt.y = cy - m_nBottomPaneHeight - m_nSplitterWidth / 2;
 
 		SetHorizConstraint(pt);
-		MoveHorizPanes( pt );
+		MoveHorizPanes(pt);
 	}
 #endif
-	
+
 }
 
 #ifdef _USE_VERT
 void CSSplitter::MoveVertPanes(CPoint SplitPoint)
 {
 	CRect rect;
-	GetClientRect( &rect );
+	GetClientRect(&rect);
 
-	m_rcVertSplitter.SetRect(		
+	m_rcVertSplitter.SetRect(
 		SplitPoint.x - m_nSplitterWidth,
 		rect.top,
 		SplitPoint.x + m_nSplitterWidth,
 		rect.bottom
 	);
 
-	if ( m_pWndLeft->GetSafeHwnd() ){
+	if (m_pWndLeft->GetSafeHwnd()) {
 
 		m_rcWndLeft.SetRect(
 			rect.left,
 			rect.top,
-			SplitPoint.x - m_nSplitterWidth/2,
+			SplitPoint.x - m_nSplitterWidth / 2,
 			rect.bottom
 		);
 		m_pWndLeft->MoveWindow(&m_rcWndLeft);
 	}
 
-	if ( m_pWndRight->GetSafeHwnd() ){
+	if (m_pWndRight->GetSafeHwnd()) {
 
 		m_rcWndRight.SetRect(
-			m_rcWndLeft.right + m_nSplitterWidth, 
-			rect.top,		
+			m_rcWndLeft.right + m_nSplitterWidth,
+			rect.top,
 			rect.right,
 			rect.bottom
-			);
+		);
 		m_pWndRight->MoveWindow(&m_rcWndRight);
 	}
 
@@ -214,29 +214,29 @@ void CSSplitter::MoveVertPanes(CPoint SplitPoint)
 void CSSplitter::MoveHorizPanes(CPoint SplitPoint)
 {
 	CRect rect;
-	GetClientRect( &rect );
+	GetClientRect(&rect);
 
-	m_rcHorizSplitter.SetRect(		
+	m_rcHorizSplitter.SetRect(
 		0,
 		SplitPoint.y - m_nSplitterWidth,
 		rect.right,
 		SplitPoint.y + m_nSplitterWidth
-	); 
+	);
 
 	m_rcWndBottom.SetRect(
 		rect.left,
-		SplitPoint.y + m_nSplitterWidth/2,
+		SplitPoint.y + m_nSplitterWidth / 2,
 		rect.right,
 		rect.bottom
 	);
 
-	if ( m_pWndBottom->GetSafeHwnd() ){
+	if (m_pWndBottom->GetSafeHwnd()) {
 		m_pWndBottom->MoveWindow(&m_rcWndBottom);
 	}
 
-	if ( m_pWndTop->GetSafeHwnd() ){
+	if (m_pWndTop->GetSafeHwnd()) {
 		m_rcWndTop.SetRect(
-			rect.left, 
+			rect.left,
 			rect.top,
 			rect.right,
 			m_rcWndBottom.top - m_nSplitterWidth
@@ -247,52 +247,52 @@ void CSSplitter::MoveHorizPanes(CPoint SplitPoint)
 }
 #endif
 
-void CSSplitter::OnLButtonDown(UINT nFlags, CPoint point) 
+void CSSplitter::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	CClientDC dc( this );
-	dc.DPtoLP( &point );
+	CClientDC dc(this);
+	dc.DPtoLP(&point);
 
 #ifdef _USE_VERT
-	if ( m_bVertSplitter && (m_rcVertSplitter.PtInRect( point )) ){
-		GetWindowRect(&m_rcVertBar); 
-		m_bDraggingVert=TRUE;
+	if (m_bVertSplitter && (m_rcVertSplitter.PtInRect(point))) {
+		GetWindowRect(&m_rcVertBar);
+		m_bDraggingVert = TRUE;
 		m_ptVertOriginal = m_ptVertPrevious = MakePtVert(point);
-		DrawVertBar();					 
+		DrawVertBar();
 		SetCapture();
-		m_hwndPrevFocusVert = ::SetFocus(m_hWnd);  
-		::SetCursor( AfxGetApp()->LoadStandardCursor ((LPCTSTR)IDC_SIZEWE));
+		m_hwndPrevFocusVert = ::SetFocus(m_hWnd);
+		::SetCursor(AfxGetApp()->LoadStandardCursor((LPCTSTR)IDC_SIZEWE));
 		m_bMovingVertSplitter = TRUE;
 	}
 #endif
 #ifdef _USE_HORIZ
-	if ( m_bHorizSplitter && (m_rcHorizSplitter.PtInRect( point )) )
+	if (m_bHorizSplitter && (m_rcHorizSplitter.PtInRect(point)))
 	{
-		GetWindowRect(&m_rcHorizBar); 
-		m_bDraggingHoriz=TRUE;
+		GetWindowRect(&m_rcHorizBar);
+		m_bDraggingHoriz = TRUE;
 		m_ptHorizOriginal = m_ptHorizPrevious = MakePtHoriz(point);
-		DrawHorizBar();					
+		DrawHorizBar();
 		SetCapture();
-		m_hwndPrevFocusHoriz = ::SetFocus(m_hWnd);  
-		::SetCursor( AfxGetApp()->LoadStandardCursor ((LPCTSTR)IDC_SIZENS));
+		m_hwndPrevFocusHoriz = ::SetFocus(m_hWnd);
+		::SetCursor(AfxGetApp()->LoadStandardCursor((LPCTSTR)IDC_SIZENS));
 		m_bMovingHorizSplitter = TRUE;
 	}
 #endif
 	CStatic::OnLButtonDown(nFlags, point);
 }
 
-void CSSplitter::OnLButtonUp(UINT nFlags, CPoint point) 
+void CSSplitter::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	CClientDC dc( this );
-	dc.DPtoLP( &point );
+	CClientDC dc(this);
+	dc.DPtoLP(&point);
 
- #ifdef _USE_VERT
-	if ( m_bVertSplitter && m_bDraggingVert && (m_bMovingVertSplitter) ) {
+#ifdef _USE_VERT
+	if (m_bVertSplitter && m_bDraggingVert && (m_bMovingVertSplitter)) {
 		SetVertConstraint(point);
-		point = MakePtVert(point);					
-		CPoint ptDelta = point-m_ptVertOriginal;    
-		DrawVertBar();								
-    	m_bDraggingVert = FALSE;
-		MoveVertPanes( point );
+		point = MakePtVert(point);
+		CPoint ptDelta = point - m_ptVertOriginal;
+		DrawVertBar();
+		m_bDraggingVert = FALSE;
+		MoveVertPanes(point);
 		m_nLeftPaneWidth = m_rcWndLeft.Width();
 		m_bMovingVertSplitter = FALSE;
 		ReleaseCapture();
@@ -300,14 +300,14 @@ void CSSplitter::OnLButtonUp(UINT nFlags, CPoint point)
 #endif
 
 #ifdef _USE_HORZ
-	if ( m_bHorizSplitter && m_bDraggingHoriz && m_bMovingHorizSplitter) {
-		point = MakePtHoriz(point);				
+	if (m_bHorizSplitter && m_bDraggingHoriz && m_bMovingHorizSplitter) {
+		point = MakePtHoriz(point);
 		SetHorizConstraint(point);
-		CPoint ptDelta = point-m_ptHorizOriginal;   
-		DrawHorizBar();								
-		MoveHorizPanes( point );	
+		CPoint ptDelta = point - m_ptHorizOriginal;
+		DrawHorizBar();
+		MoveHorizPanes(point);
 		m_nBottomPaneHeight = m_rcWndBottom.Height();
-    	m_bDraggingHoriz = FALSE;
+		m_bDraggingHoriz = FALSE;
 		m_bMovingHorizSplitter = FALSE;
 		ReleaseCapture();
 	}
@@ -316,78 +316,78 @@ void CSSplitter::OnLButtonUp(UINT nFlags, CPoint point)
 	CStatic::OnLButtonUp(nFlags, point);
 }
 
-void CSSplitter::OnMouseMove(UINT nFlags, CPoint point) 
+void CSSplitter::OnMouseMove(UINT nFlags, CPoint point)
 {
-	CClientDC dc( this );
-	dc.DPtoLP( &point );
+	CClientDC dc(this);
+	dc.DPtoLP(&point);
 
- #ifdef _USE_VERT
-   if ( m_bVertSplitter && (m_rcVertSplitter.PtInRect( point )) )
-	::SetCursor( AfxGetApp()->LoadStandardCursor ((LPCTSTR)IDC_SIZEWE));
+#ifdef _USE_VERT
+	if (m_bVertSplitter && (m_rcVertSplitter.PtInRect(point)))
+		::SetCursor(AfxGetApp()->LoadStandardCursor((LPCTSTR)IDC_SIZEWE));
 
-	if ( m_bVertSplitter && m_bDraggingVert ) {
-		DrawVertBar();				
+	if (m_bVertSplitter && m_bDraggingVert) {
+		DrawVertBar();
 		SetVertConstraint(point);
-		point = MakePtVert(point);	
-		CPoint ptDelta = point-m_ptVertPrevious;
-		m_rcVertBar += ptDelta;	
-		DrawVertBar();				
-		m_ptVertPrevious = point;	
+		point = MakePtVert(point);
+		CPoint ptDelta = point - m_ptVertPrevious;
+		m_rcVertBar += ptDelta;
+		DrawVertBar();
+		m_ptVertPrevious = point;
 	}
 #endif
 
 #ifdef _USE_HORZ
-    if ( m_bHorizSplitter && m_rcHorizSplitter.PtInRect( point ) )
-		::SetCursor( AfxGetApp()->LoadStandardCursor ((LPCTSTR)IDC_SIZENS));
+	if (m_bHorizSplitter && m_rcHorizSplitter.PtInRect(point))
+		::SetCursor(AfxGetApp()->LoadStandardCursor((LPCTSTR)IDC_SIZENS));
 
-	if (m_bHorizSplitter && m_bDraggingHoriz ) {
-		DrawHorizBar();				
+	if (m_bHorizSplitter && m_bDraggingHoriz) {
+		DrawHorizBar();
 		SetHorizConstraint(point);
-		point = MakePtHoriz(point);	
-		CPoint ptDelta = point-m_ptHorizPrevious;
-		m_rcHorizBar += ptDelta;	
-		DrawHorizBar();				
-		m_ptHorizPrevious = point;	
+		point = MakePtHoriz(point);
+		CPoint ptDelta = point - m_ptHorizPrevious;
+		m_rcHorizBar += ptDelta;
+		DrawHorizBar();
+		m_ptHorizPrevious = point;
 	}
 #endif
-	
+
 	CStatic::OnMouseMove(nFlags, point);
 }
 
 #ifdef _USE_VERT
 void CSSplitter::InitVertSplitter(
-		CWnd*	pParentWnd,				
-		CWnd*	pWndLeft,				
-		CWnd*	pWndRight,
-		UINT	nMaxLeft,
-		UINT	nMaxRight)
+	CWnd*	pParentWnd,
+	CWnd*	pWndLeft,
+	CWnd*	pWndRight,
+	UINT	nMaxLeft,
+	UINT	nMaxRight)
 {
-	m_bVertSplitter	 = TRUE;
+	m_bVertSplitter = TRUE;
 	m_bHorizSplitter = FALSE;
 
 	m_pWndParent = pParentWnd;
 
-	m_pWndLeft   = pWndLeft;
-	m_pWndRight  = pWndRight;
+	m_pWndLeft = pWndLeft;
+	m_pWndRight = pWndRight;
 
 	m_nMaxLeft = nMaxLeft;
 	m_nMaxRight = nMaxRight;
 
 	CRect rect;
-	GetClientRect( &rect );
-/*
-	CWinApp* pApp = AfxGetApp();
-	CString strKey;
-	strKey.Format("%s%d", "splt\\init_v", m_nID);
-	int nLeftPaneWidth = pApp->
-		GetProfileInt(
-			LPCTSTR(strKey),
-			"VertSplitPos", 
-			2*nMaxLeft
-		);
-*/
+	GetClientRect(&rect);
+	/*
+		CWinApp* pApp = AfxGetApp();
+		CString strKey;
+		strKey.Format("%s%d", "splt\\init_v", m_nID);
+		int nLeftPaneWidth = pApp->
+			GetProfileInt(
+				LPCTSTR(strKey),
+				"VertSplitPos",
+				2*nMaxLeft
+			);
+	*/
 
-	int nLeftPaneWidth=2*nMaxLeft;
+	int nLeftPaneWidth = 2 * nMaxLeft;
 
 	m_rcWndLeft.SetRect(
 		rect.left,
@@ -396,24 +396,24 @@ void CSSplitter::InitVertSplitter(
 		rect.bottom
 	);
 
-	if (!m_bHiddenRightPane){
-		CPoint InitPoint(nLeftPaneWidth + m_nSplitterWidth/2, 0);
-		MoveVertPanes( InitPoint );
+	if (!m_bHiddenRightPane) {
+		CPoint InitPoint(nLeftPaneWidth + m_nSplitterWidth / 2, 0);
+		MoveVertPanes(InitPoint);
 		m_nLeftPaneWidth = m_rcWndLeft.Width();
 	}
 
-	if ( (m_bHiddenRightPane)&&(m_pWndLeft->GetSafeHwnd()) ){
+	if ((m_bHiddenRightPane) && (m_pWndLeft->GetSafeHwnd())) {
 		m_pWndRight->ShowWindow(SW_HIDE);
 		m_pWndLeft->MoveWindow(&rect);
 	}
 
-	if (!m_bHiddenLeftPane){
-		CPoint InitPoint(nLeftPaneWidth + m_nSplitterWidth/2, 0);
-		MoveVertPanes( InitPoint );
+	if (!m_bHiddenLeftPane) {
+		CPoint InitPoint(nLeftPaneWidth + m_nSplitterWidth / 2, 0);
+		MoveVertPanes(InitPoint);
 		m_nLeftPaneWidth = m_rcWndLeft.Width();
 	}
 
-	if ( (m_bHiddenLeftPane)&&(m_pWndLeft->GetSafeHwnd()) ){
+	if ((m_bHiddenLeftPane) && (m_pWndLeft->GetSafeHwnd())) {
 		m_pWndLeft->ShowWindow(SW_HIDE);
 		m_pWndRight->MoveWindow(&rect);
 	}
@@ -425,10 +425,10 @@ void CSSplitter::DrawVertBar()
 	CWnd* pParentWnd = GetParent();
 	CWindowDC dc(pParentWnd);
 	CRect rcWin;
-	pParentWnd->GetWindowRect(&rcWin);	 
-	CRect rc = m_rcVertBar;						
-	rc -= rcWin.TopLeft();					 
-	OnDrawVertBar(dc, rc);						 
+	pParentWnd->GetWindowRect(&rcWin);
+	CRect rc = m_rcVertBar;
+	rc -= rcWin.TopLeft();
+	OnDrawVertBar(dc, rc);
 }
 
 void CSSplitter::OnDrawVertBar(CDC &dc, CRect &rc)
@@ -437,10 +437,10 @@ void CSSplitter::OnDrawVertBar(CDC &dc, CRect &rc)
 	CBrush* pOldBrush = dc.SelectObject(&brush);
 
 	dc.PatBlt(
-		rc.left + m_rcVertSplitter.left + m_nSplitterWidth, 
-		rc.top, 
-		m_nSplitterWidth, 
-		rc.Height(), 
+		rc.left + m_rcVertSplitter.left + m_nSplitterWidth,
+		rc.top,
+		m_nSplitterWidth,
+		rc.Height(),
 		PATINVERT);
 
 	dc.SelectObject(pOldBrush);
@@ -448,54 +448,54 @@ void CSSplitter::OnDrawVertBar(CDC &dc, CRect &rc)
 
 void CSSplitter::CancelVertDrag()
 {
-	DrawVertBar();								
-	ReleaseCapture();						
-	::SetFocus(m_hwndPrevFocusVert);		
+	DrawVertBar();
+	ReleaseCapture();
+	::SetFocus(m_hwndPrevFocusVert);
 	m_bDraggingVert = FALSE;
 }
 
 void CSSplitter::SetVertConstraint(CPoint &pt)
 {
 	CRect rect;
-	GetClientRect( &rect );
+	GetClientRect(&rect);
 
-	if ( pt.x > (rect.right - m_nMaxRight) )
+	if (pt.x > (rect.right - m_nMaxRight))
 		pt.x = rect.right - m_nMaxRight;
-	if ( pt.x < (rect.left + m_nMaxLeft) )
+	if (pt.x < (rect.left + m_nMaxLeft))
 		pt.x = rect.left + m_nMaxLeft;
 }
 
 void CSSplitter::ShowRightPane()
 {
-	if(!m_bVertSplitter)
+	if (!m_bVertSplitter)
 		return;
 
-	m_bHiddenRightPane	= FALSE;
+	m_bHiddenRightPane = FALSE;
 
 	m_nLeftPaneWidth = m_rcWndLeft.Width();
-	CPoint InitPoint(m_rcWndLeft.right + m_nSplitterWidth/2, 0);
-	MoveVertPanes( InitPoint );
+	CPoint InitPoint(m_rcWndLeft.right + m_nSplitterWidth / 2, 0);
+	MoveVertPanes(InitPoint);
 
-	if ( m_pWndRight->GetSafeHwnd() )
+	if (m_pWndRight->GetSafeHwnd())
 		m_pWndRight->ShowWindow(SW_SHOW);
 
 }
 
 void CSSplitter::HideRightPane()
 {
-	if(!m_bVertSplitter)
+	if (!m_bVertSplitter)
 		return;
 
 	if (m_bHiddenRightPane)
 		return;
 
-	if ( m_pWndLeft->GetSafeHwnd() ){
+	if (m_pWndLeft->GetSafeHwnd()) {
 
-		m_bHiddenRightPane	= TRUE;
+		m_bHiddenRightPane = TRUE;
 		m_rcVertSplitter.SetRectEmpty();
 
 		CRect rect;
-		GetClientRect( &rect );
+		GetClientRect(&rect);
 
 		m_pWndRight->ShowWindow(SW_HIDE);
 		m_pWndLeft->MoveWindow(&rect);
@@ -504,34 +504,34 @@ void CSSplitter::HideRightPane()
 
 void CSSplitter::ShowLeftPane()
 {
-	if(!m_bVertSplitter)
+	if (!m_bVertSplitter)
 		return;
 
-	m_bHiddenLeftPane	= FALSE;
+	m_bHiddenLeftPane = FALSE;
 
 	m_nLeftPaneWidth = m_rcWndLeft.Width();
-	CPoint InitPoint(m_rcWndLeft.right + m_nSplitterWidth/2, 0);
-	MoveVertPanes( InitPoint );
+	CPoint InitPoint(m_rcWndLeft.right + m_nSplitterWidth / 2, 0);
+	MoveVertPanes(InitPoint);
 
-	if ( m_pWndLeft->GetSafeHwnd() )
+	if (m_pWndLeft->GetSafeHwnd())
 		m_pWndLeft->ShowWindow(SW_SHOW);
 }
 
 void CSSplitter::HideLeftPane()
 {
-	if(!m_bVertSplitter)
+	if (!m_bVertSplitter)
 		return;
 
 	if (m_bHiddenLeftPane)
 		return;
 
-	if ( m_pWndRight->GetSafeHwnd() ){
+	if (m_pWndRight->GetSafeHwnd()) {
 
-		m_bHiddenLeftPane	= TRUE;
+		m_bHiddenLeftPane = TRUE;
 		m_rcVertSplitter.SetRectEmpty();
 
 		CRect rect;
-		GetClientRect( &rect );
+		GetClientRect(&rect);
 
 		m_pWndLeft->ShowWindow(SW_HIDE);
 		m_pWndRight->MoveWindow(&rect);
@@ -540,14 +540,14 @@ void CSSplitter::HideLeftPane()
 
 void CSSplitter::MakeVertSplitter()
 {
-	if ( m_bVertSplitter )
+	if (m_bVertSplitter)
 		return;
 
-	if ( (m_pWndLeft==NULL) && (m_pWndRight==NULL) ){
+	if ((m_pWndLeft == NULL) && (m_pWndRight == NULL)) {
 
 		InitVertSplitter(
-			m_pWndParent,				
-			m_pWndTop,				
+			m_pWndParent,
+			m_pWndTop,
 			m_pWndBottom,
 			m_nMaxLeft,
 			m_nMaxRight
@@ -556,17 +556,17 @@ void CSSplitter::MakeVertSplitter()
 		return;
 	}
 
-	if ( (m_pWndLeft!=NULL) && (m_pWndRight!=NULL) && (!m_rcWndLeft.IsRectEmpty()) ){
+	if ((m_pWndLeft != NULL) && (m_pWndRight != NULL) && (!m_rcWndLeft.IsRectEmpty())) {
 
-		m_bHorizSplitter		= FALSE;
-		m_bVertSplitter			= TRUE;
+		m_bHorizSplitter = FALSE;
+		m_bVertSplitter = TRUE;
 
-		m_pWndLeft	= m_pWndTop;
+		m_pWndLeft = m_pWndTop;
 		m_pWndRight = m_pWndBottom;
 
 		m_nLeftPaneWidth = m_rcWndLeft.Width();
-		CPoint InitPoint(m_rcWndLeft.right + m_nSplitterWidth/2, 0);
-			MoveVertPanes( InitPoint );
+		CPoint InitPoint(m_rcWndLeft.right + m_nSplitterWidth / 2, 0);
+		MoveVertPanes(InitPoint);
 	}
 
 }
@@ -574,25 +574,25 @@ void CSSplitter::MakeVertSplitter()
 
 #ifdef _USE_HORZ
 void CSSplitter::InitHorizSplitter(
-		CWnd*	pParentWnd,				
-		CWnd*	pWndTop,				
-		CWnd*	pWndBottom,
-		UINT	nMaxTop,
-		UINT	nMaxBottom)
+	CWnd*	pParentWnd,
+	CWnd*	pWndTop,
+	CWnd*	pWndBottom,
+	UINT	nMaxTop,
+	UINT	nMaxBottom)
 {
-	m_bVertSplitter	 = FALSE;
+	m_bVertSplitter = FALSE;
 	m_bHorizSplitter = TRUE;
 
 	m_pWndParent = pParentWnd;
 
-	m_pWndTop	   = pWndTop;
-	m_pWndBottom   = pWndBottom;
+	m_pWndTop = pWndTop;
+	m_pWndBottom = pWndBottom;
 
-	m_nMaxTop	 = nMaxTop;
+	m_nMaxTop = nMaxTop;
 	m_nMaxBottom = nMaxBottom;
 
 	CRect rect;
-	GetClientRect( &rect );
+	GetClientRect(&rect);
 
 	CWinApp* pApp = AfxGetApp();
 	CString strKey;
@@ -600,16 +600,16 @@ void CSSplitter::InitHorizSplitter(
 	m_nBottomPaneHeight = pApp->
 		GetProfileInt(
 			LPCTSTR(strKey),
-			"HorizSplitPos", 
-			2*nMaxBottom
+			"HorizSplitPos",
+			2 * nMaxBottom
 		);
 
-	if ( !m_bHiddenBottomPane ){
-		CPoint InitPoint(0, rect.bottom - m_nBottomPaneHeight - m_nSplitterWidth/2);
-		MoveHorizPanes( InitPoint );
+	if (!m_bHiddenBottomPane) {
+		CPoint InitPoint(0, rect.bottom - m_nBottomPaneHeight - m_nSplitterWidth / 2);
+		MoveHorizPanes(InitPoint);
 	}
 
-	if ( m_bHiddenBottomPane && (m_pWndTop->GetSafeHwnd()) ){
+	if (m_bHiddenBottomPane && (m_pWndTop->GetSafeHwnd())) {
 		m_pWndBottom->ShowWindow(SW_HIDE);
 		m_pWndTop->MoveWindow(&rect);
 	}
@@ -620,17 +620,17 @@ void CSSplitter::ShowBottomPane()
 	if (!m_bHorizSplitter)
 		return;
 
-	m_bHiddenBottomPane	= FALSE;
+	m_bHiddenBottomPane = FALSE;
 
-	if ( !m_rcWndBottom.IsRectEmpty() )
+	if (!m_rcWndBottom.IsRectEmpty())
 		m_nBottomPaneHeight = m_rcWndBottom.Height();
 
 	CRect rect;
-	GetClientRect( &rect );
-	CPoint InitPoint(0, rect.bottom - m_nBottomPaneHeight - m_nSplitterWidth/2 );
-	MoveHorizPanes( InitPoint );
+	GetClientRect(&rect);
+	CPoint InitPoint(0, rect.bottom - m_nBottomPaneHeight - m_nSplitterWidth / 2);
+	MoveHorizPanes(InitPoint);
 
-	if ( m_pWndBottom->GetSafeHwnd() )
+	if (m_pWndBottom->GetSafeHwnd())
 		m_pWndBottom->ShowWindow(SW_SHOW);
 
 }
@@ -643,13 +643,13 @@ void CSSplitter::HideBottomPane()
 	if (m_bHiddenBottomPane)
 		return;
 
-	if ( m_pWndBottom->GetSafeHwnd() ){
+	if (m_pWndBottom->GetSafeHwnd()) {
 
-		m_bHiddenBottomPane	= TRUE;
+		m_bHiddenBottomPane = TRUE;
 		m_rcHorizSplitter.SetRectEmpty();
 
 		CRect rect;
-		GetClientRect( &rect );
+		GetClientRect(&rect);
 
 		m_pWndBottom->ShowWindow(SW_HIDE);
 		m_pWndTop->MoveWindow(&rect);
@@ -658,14 +658,14 @@ void CSSplitter::HideBottomPane()
 
 void CSSplitter::MakeHorizSplitter()
 {
-	if ( m_bHorizSplitter )
+	if (m_bHorizSplitter)
 		return;
 
-	if ( (m_pWndTop==NULL) && (m_pWndBottom==NULL)	){
+	if ((m_pWndTop == NULL) && (m_pWndBottom == NULL)) {
 
 		InitHorizSplitter(
-			m_pWndParent,				
-			m_pWndLeft,				
+			m_pWndParent,
+			m_pWndLeft,
 			m_pWndRight,
 			m_nMaxTop,
 			m_nMaxBottom
@@ -674,20 +674,20 @@ void CSSplitter::MakeHorizSplitter()
 		return;
 	}
 
-	if ( (m_pWndTop!=NULL) && (m_pWndBottom!=NULL) && (!m_rcWndBottom.IsRectEmpty()) ){
+	if ((m_pWndTop != NULL) && (m_pWndBottom != NULL) && (!m_rcWndBottom.IsRectEmpty())) {
 
-		m_bHorizSplitter		= TRUE;
-		m_bVertSplitter			= FALSE;
+		m_bHorizSplitter = TRUE;
+		m_bVertSplitter = FALSE;
 
 		CRect rect;
 		GetClientRect(&rect);
 
-		CPoint InitPoint(0, rect.bottom - m_nBottomPaneHeight - m_nSplitterWidth/2 );
+		CPoint InitPoint(0, rect.bottom - m_nBottomPaneHeight - m_nSplitterWidth / 2);
 		SetHorizConstraint(InitPoint);
 		m_nBottomPaneHeight = m_rcWndBottom.Height();
 
-		if ( !m_bHiddenBottomPane )
-			MoveHorizPanes( InitPoint );
+		if (!m_bHiddenBottomPane)
+			MoveHorizPanes(InitPoint);
 	}
 
 }
@@ -697,10 +697,10 @@ void CSSplitter::DrawHorizBar()
 	CWnd* pParentWnd = GetParent();
 	CWindowDC dc(pParentWnd);
 	CRect rcWin;
-	pParentWnd->GetWindowRect(&rcWin);	 
-	CRect rc = m_rcHorizBar;						 
-	rc -= rcWin.TopLeft();					 
-	OnDrawHorizBar(dc, rc);						 
+	pParentWnd->GetWindowRect(&rcWin);
+	CRect rc = m_rcHorizBar;
+	rc -= rcWin.TopLeft();
+	OnDrawHorizBar(dc, rc);
 }
 
 void CSSplitter::OnDrawHorizBar(CDC &dc, CRect &rc)
@@ -709,10 +709,10 @@ void CSSplitter::OnDrawHorizBar(CDC &dc, CRect &rc)
 	CBrush* pOldBrush = dc.SelectObject(&brush);
 
 	dc.PatBlt(
-		rc.left, 
-		rc.top + m_rcHorizSplitter.top + m_nSplitterWidth/2, 
-		rc.Width(), 
-		m_nSplitterWidth, 
+		rc.left,
+		rc.top + m_rcHorizSplitter.top + m_nSplitterWidth / 2,
+		rc.Width(),
+		m_nSplitterWidth,
 		PATINVERT
 	);
 
@@ -721,71 +721,71 @@ void CSSplitter::OnDrawHorizBar(CDC &dc, CRect &rc)
 
 void CSSplitter::CancelHorizDrag()
 {
-	DrawHorizBar();								
-	ReleaseCapture();						
-	::SetFocus(m_hwndPrevFocusHoriz);		
+	DrawHorizBar();
+	ReleaseCapture();
+	::SetFocus(m_hwndPrevFocusHoriz);
 	m_bDraggingHoriz = FALSE;
 }
 
 void CSSplitter::SetHorizConstraint(CPoint &pt)
 {
 	CRect rect;
-	GetClientRect( &rect );
+	GetClientRect(&rect);
 
-	if ( pt.y > (rect.bottom - m_nMaxBottom) )
+	if (pt.y > (rect.bottom - m_nMaxBottom))
 		pt.y = rect.bottom - m_nMaxBottom;
-	if ( pt.y < (rect.top + m_nMaxTop) )
+	if (pt.y < (rect.top + m_nMaxTop))
 		pt.y = rect.top + m_nMaxTop;
 }
 #endif
 
-BOOL CSSplitter::PreTranslateMessage(MSG* pMsg) 
+BOOL CSSplitter::PreTranslateMessage(MSG* pMsg)
 {
 #ifdef _USE_VERT
-	if ( (pMsg->message == WM_KEYDOWN)&&( pMsg->wParam == VK_ESCAPE )&& m_bDraggingVert	)
+	if ((pMsg->message == WM_KEYDOWN) && (pMsg->wParam == VK_ESCAPE) && m_bDraggingVert)
 		CancelVertDrag();
 #endif
 #ifdef _USE_HORZ
-	if ( (pMsg->message == WM_KEYDOWN)&&( pMsg->wParam == VK_ESCAPE )&& m_bDraggingHoriz )
+	if ((pMsg->message == WM_KEYDOWN) && (pMsg->wParam == VK_ESCAPE) && m_bDraggingHoriz)
 		CancelHorizDrag();
 #endif
-	
+
 	return CStatic::PreTranslateMessage(pMsg);
 }
 
-void CSSplitter::OnDestroy() 
+void CSSplitter::OnDestroy()
 {
 	CStatic::OnDestroy();
 
-/*
-	CWinApp* pApp = AfxGetApp();
-	CString strKey;
-	strKey.Format("%s%d", "splt\\init_v", m_nID); 
+	/*
+		CWinApp* pApp = AfxGetApp();
+		CString strKey;
+		strKey.Format("%s%d", "splt\\init_v", m_nID);
 
-#ifdef _USE_VERT
-	if ( !(m_rcWndLeft.IsRectEmpty()) ){
+	#ifdef _USE_VERT
+		if ( !(m_rcWndLeft.IsRectEmpty()) ){
 
-		pApp->WriteProfileInt(
-			LPCTSTR(strKey),
-			"VertSplitPos", 
-			m_rcWndLeft.right
-		);	
-	}
-#endif
-	
-#ifdef _USE_HORZ
-	if ( !(m_rcWndBottom.IsRectEmpty()) ){
+			pApp->WriteProfileInt(
+				LPCTSTR(strKey),
+				"VertSplitPos",
+				m_rcWndLeft.right
+			);
+		}
+	#endif
 
-		strKey.Format("%s%d", "splt\\init_h", m_nID);
-		pApp->WriteProfileInt(
-			LPCTSTR(strKey),
-			"HorizSplitPos", 
-			m_rcWndBottom.Height()
-		);
-	}
-#endif
+	#ifdef _USE_HORZ
+		if ( !(m_rcWndBottom.IsRectEmpty()) ){
 
-*/
+			strKey.Format("%s%d", "splt\\init_h", m_nID);
+			pApp->WriteProfileInt(
+				LPCTSTR(strKey),
+				"HorizSplitPos",
+				m_rcWndBottom.Height()
+			);
+		}
+	#endif
+
+	*/
 }
 
 
@@ -794,12 +794,12 @@ UINT CSSplitter::GetSplitterStyle()
 	UINT nStyle;
 
 #ifdef _USE_HORZ
-	if ( m_bHorizSplitter )
+	if (m_bHorizSplitter)
 		nStyle = SS_HORIZ;
 #endif
 
 #ifdef _USE_VERT
-	if ( m_bVertSplitter )
+	if (m_bVertSplitter)
 		nStyle = SS_VERT;
 #endif
 
@@ -812,12 +812,12 @@ int CSSplitter::GetSplitterPos()
 	UINT nSplitterStyle = GetSplitterStyle();
 
 #ifdef _USE_VERT
-	if ( nSplitterStyle == SS_VERT )
+	if (nSplitterStyle == SS_VERT)
 		nSplitterPos = m_rcWndLeft.right;
 #endif
 
 #ifdef _USE_HORZ
-	if ( nSplitterStyle == SS_HORIZ )
+	if (nSplitterStyle == SS_HORIZ)
 		nSplitterPos = m_rcWndBottom.top;
 #endif
 	return nSplitterPos;
@@ -828,10 +828,10 @@ void CSSplitter::SetSplitterPos(int nPos)
 	UINT nSplitterStyle = GetSplitterStyle();
 
 	CRect rect;
-	GetClientRect( &rect );
+	GetClientRect(&rect);
 
 #ifdef _USE_VERT
-	if ( nSplitterStyle == SS_VERT ){
+	if (nSplitterStyle == SS_VERT) {
 
 		m_rcWndLeft.SetRect(
 			rect.left,
@@ -840,21 +840,21 @@ void CSSplitter::SetSplitterPos(int nPos)
 			rect.bottom
 		);
 
-		if (!m_bHiddenRightPane){
-			CPoint InitPoint(nPos + m_nSplitterWidth/2, 0);
-			MoveVertPanes( InitPoint );
+		if (!m_bHiddenRightPane) {
+			CPoint InitPoint(nPos + m_nSplitterWidth / 2, 0);
+			MoveVertPanes(InitPoint);
 			m_nLeftPaneWidth = m_rcWndLeft.Width();
 		}
 
-		if ( (m_bHiddenRightPane)&&(m_pWndLeft->GetSafeHwnd()) ){
+		if ((m_bHiddenRightPane) && (m_pWndLeft->GetSafeHwnd())) {
 			m_pWndRight->ShowWindow(SW_HIDE);
 			m_pWndLeft->MoveWindow(&rect);
 		}
 	}
 #endif
 #ifdef _USE_HORZ
-	if ( nSplitterStyle == SS_HORIZ ){
-		
+	if (nSplitterStyle == SS_HORIZ) {
+
 		m_rcWndBottom.SetRect(
 			rect.left,
 			nPos,
@@ -865,12 +865,12 @@ void CSSplitter::SetSplitterPos(int nPos)
 		m_nBottomPaneHeight = m_rcWndBottom.Height();
 
 
-		if ( !m_bHiddenBottomPane ){
-			CPoint InitPoint(0, nPos - m_nSplitterWidth/2);
-			MoveHorizPanes( InitPoint );
+		if (!m_bHiddenBottomPane) {
+			CPoint InitPoint(0, nPos - m_nSplitterWidth / 2);
+			MoveHorizPanes(InitPoint);
 		}
 
-		if ( m_bHiddenBottomPane && (m_pWndTop->GetSafeHwnd()) ){
+		if (m_bHiddenBottomPane && (m_pWndTop->GetSafeHwnd())) {
 			m_pWndBottom->ShowWindow(SW_HIDE);
 			m_pWndTop->MoveWindow(&rect);
 		}
@@ -885,31 +885,31 @@ void CSSplitter::OnSetFocus(CWnd* pOldWnd)
 
 LRESULT CSSplitter::OnListClick(WPARAM wParam, LPARAM lParam)
 {
-	return GetParent()->SendMessage(WM_QUICKLIST_CLICK,wParam,lParam); 
+	return GetParent()->SendMessage(WM_QUICKLIST_CLICK, wParam, lParam);
 }
 LRESULT CSSplitter::OnGetToolTip(WPARAM wParam, LPARAM lParam)
 {
-	return GetParent()->SendMessage(WM_QUICKLIST_GETTOOLTIP,wParam,lParam); 
+	return GetParent()->SendMessage(WM_QUICKLIST_GETTOOLTIP, wParam, lParam);
 }
 LRESULT CSSplitter::OnGetQuickListItem(WPARAM wParam, LPARAM lParam)
 {
-	return GetParent()->SendMessage(WM_QUICKLIST_GETLISTITEMDATA,wParam,lParam); 
+	return GetParent()->SendMessage(WM_QUICKLIST_GETLISTITEMDATA, wParam, lParam);
 }
 LRESULT CSSplitter::OnQuickListNavTest(WPARAM wParam, LPARAM lParam)
 {
-	return GetParent()->SendMessage(WM_QUICKLIST_NAVIGATIONTEST,wParam,lParam); 
+	return GetParent()->SendMessage(WM_QUICKLIST_NAVIGATIONTEST, wParam, lParam);
 }
-void CSSplitter::OnEndlabeleditList(NMHDR* pNMHDR, LRESULT* pResult) 
+void CSSplitter::OnEndlabeleditList(NMHDR* pNMHDR, LRESULT* pResult)
 {
-	GetParent()->SendMessage(WM_QUICKLIST_ENDEDIT,(WPARAM)pNMHDR,(LPARAM)pResult); 
+	GetParent()->SendMessage(WM_QUICKLIST_ENDEDIT, (WPARAM)pNMHDR, (LPARAM)pResult);
 }
-void CSSplitter::OnBeginlabeleditList(NMHDR* pNMHDR, LRESULT* pResult) 
+void CSSplitter::OnBeginlabeleditList(NMHDR* pNMHDR, LRESULT* pResult)
 {
-	if(GetParent()->SendMessage(WM_QUICKLIST_BEGINEDIT,(WPARAM)pNMHDR,(LPARAM)pResult))
-		*pResult=TRUE; //disallow editing
+	if (GetParent()->SendMessage(WM_QUICKLIST_BEGINEDIT, (WPARAM)pNMHDR, (LPARAM)pResult))
+		*pResult = TRUE; //disallow editing
 }
-LRESULT CSSplitter::OnEditChange(WPARAM wParam, LPARAM lParam) 
+LRESULT CSSplitter::OnEditChange(WPARAM wParam, LPARAM lParam)
 {
-	return GetParent()->SendMessage(WM_QUICKLIST_EDITCHANGE,wParam,lParam); 
+	return GetParent()->SendMessage(WM_QUICKLIST_EDITCHANGE, wParam, lParam);
 }
 

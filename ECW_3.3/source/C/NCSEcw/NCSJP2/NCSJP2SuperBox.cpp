@@ -2,13 +2,13 @@
 ** Copyright 2002 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:     $Archive: /NCS/Source/C/NCSEcw/NCSJP2/NCSJP2SuperBox.cpp $
@@ -20,11 +20,11 @@
 
 #include "NCSJP2File.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+ //////////////////////////////////////////////////////////////////////
+ // Construction/Destruction
+ //////////////////////////////////////////////////////////////////////
 
-// Constructor
+ // Constructor
 CNCSJP2SuperBox::CNCSJP2SuperBox()
 {
 	m_bIsSuperBox = true;
@@ -34,7 +34,7 @@ CNCSJP2SuperBox::CNCSJP2SuperBox()
 CNCSJP2SuperBox::~CNCSJP2SuperBox()
 {
 	m_OtherBoxes.clear();
-	while(m_OwnedBoxes.size()) {
+	while (m_OwnedBoxes.size()) {
 		CNCSJP2BoxList::iterator pCur = m_OwnedBoxes.begin();
 		CNCSJP2Box *pBox = *pCur;
 		m_OwnedBoxes.erase(pCur);
@@ -46,12 +46,12 @@ CNCSJP2SuperBox::~CNCSJP2SuperBox()
 CNCSError CNCSJP2SuperBox::SetBoxes(CNCSJP2Box *pFirst, ...)
 {
 	va_list va;
-	
+
 	va_start(va, pFirst);
 
 	CNCSJP2Box *pBox = pFirst;
 
-	while(pBox) {
+	while (pBox) {
 		m_Boxes.push_back(pBox);
 		pBox = va_arg(va, CNCSJP2Box*);
 	}
@@ -64,8 +64,8 @@ void CNCSJP2SuperBox::UpdateXLBox(void)
 	CNCSJP2Box::UpdateXLBox();
 	CNCSJP2BoxList::iterator pCur = m_Boxes.begin();
 
-	while(pCur != m_Boxes.end()) {
-		if((*pCur)->m_bValid) {
+	while (pCur != m_Boxes.end()) {
+		if ((*pCur)->m_bValid) {
 			(*pCur)->UpdateXLBox();
 			m_nXLBox += (*pCur)->m_nXLBox;
 		}
@@ -73,8 +73,8 @@ void CNCSJP2SuperBox::UpdateXLBox(void)
 	}
 	pCur = m_OtherBoxes.begin();
 
-	while(pCur != m_OtherBoxes.end()) {
-		if((*pCur)->m_bValid) {
+	while (pCur != m_OtherBoxes.end()) {
+		if ((*pCur)->m_bValid) {
 			(*pCur)->UpdateXLBox();
 			m_nXLBox += (*pCur)->m_nXLBox;
 		}
@@ -87,53 +87,55 @@ CNCSError CNCSJP2SuperBox::Parse(class CNCSJP2File &JP2File, CNCSJPCIOStream &St
 {
 	CNCSError Error;
 	UINT64 nStart, nCurrent;
-		
+
 	nStart = Stream.Tell();
-	if(nStart != -1) {
+	if (nStart != -1) {
 		nCurrent = nStart;
-			
-		while(nCurrent < nStart + m_nLDBox) {
+
+		while (nCurrent < nStart + m_nLDBox) {
 			CNCSJP2BoxList::iterator pCur = m_Boxes.begin();
 
 			CNCSJP2Box Box;
 
 			Error = Box.Parse(JP2File, Stream);
 
-			if(Error == NCS_SUCCESS) {
+			if (Error == NCS_SUCCESS) {
 				bool bFound = false;
 
-				while(pCur != m_Boxes.end()) {
-					if(Required(*(*pCur), Box)) {
+				while (pCur != m_Boxes.end()) {
+					if (Required(*(*pCur), Box)) {
 						*(*pCur) = Box;
 						Error = (*pCur)->Parse(JP2File, Stream);
 						bFound = true;
 #ifdef NCS_BUILD_WITH_STDERR_DEBUG_INFO
-						fprintf(stderr, "Parsed Box, %c%c%c%c\r\n", 
-										((char*)&Box.m_nTBox)[3], 
-										((char*)&Box.m_nTBox)[2],
-										((char*)&Box.m_nTBox)[1],
-										((char*)&Box.m_nTBox)[0]);
+						fprintf(stderr, "Parsed Box, %c%c%c%c\r\n",
+							((char*)&Box.m_nTBox)[3],
+							((char*)&Box.m_nTBox)[2],
+							((char*)&Box.m_nTBox)[1],
+							((char*)&Box.m_nTBox)[0]);
 						fflush(stderr);
 #endif // NCS_BUILD_WITH_STDERR_DEBUG_INFO
 						break;
 					}
 					pCur++;
 				}
-				if(!bFound) {
+				if (!bFound) {
 					// "special" boxes
-					if(Box.m_nTBox == CNCSJP2File::CNCSJP2UUIDBox::sm_nTBox) {
+					if (Box.m_nTBox == CNCSJP2File::CNCSJP2UUIDBox::sm_nTBox) {
 						CNCSJP2File::CNCSJP2UUIDBox *pBox = new CNCSJP2File::CNCSJP2UUIDBox();
 						*(CNCSJP2Box*)pBox = Box;
 						Error = pBox->Parse(JP2File, Stream);
 						m_OtherBoxes.push_back(pBox);
 						m_OwnedBoxes.push_back(pBox);
-					} else if(Box.m_nTBox == CNCSJP2File::CNCSJP2XMLBox::sm_nTBox) {
+					}
+					else if (Box.m_nTBox == CNCSJP2File::CNCSJP2XMLBox::sm_nTBox) {
 						CNCSJP2File::CNCSJP2XMLBox *pBox = new CNCSJP2File::CNCSJP2XMLBox();
 						*(CNCSJP2Box*)pBox = Box;
 						Error = pBox->Parse(JP2File, Stream);
 						m_OtherBoxes.push_back(pBox);
 						m_OwnedBoxes.push_back(pBox);
-					} else {
+					}
+					else {
 						CNCSJP2Box *pBox = new CNCSJP2Box;
 						*pBox = Box;
 						m_OtherBoxes.push_back(pBox);
@@ -143,29 +145,31 @@ CNCSError CNCSJP2SuperBox::Parse(class CNCSJP2File &JP2File, CNCSJPCIOStream &St
 					Stream.Seek(Box.m_nBoxOffset + Box.m_nXLBox, CNCSJPCIOStream::START);
 					Error = Stream.GetError();
 #ifdef NCS_BUILD_WITH_STDERR_DEBUG_INFO
-					fprintf(stderr, "Skipped Box, %c%c%c%c\r\n", 
-									((char*)&Box.m_nTBox)[3], 
-									((char*)&Box.m_nTBox)[2],
-									((char*)&Box.m_nTBox)[1],
-									((char*)&Box.m_nTBox)[0]);
+					fprintf(stderr, "Skipped Box, %c%c%c%c\r\n",
+						((char*)&Box.m_nTBox)[3],
+						((char*)&Box.m_nTBox)[2],
+						((char*)&Box.m_nTBox)[1],
+						((char*)&Box.m_nTBox)[0]);
 					fflush(stderr);
 #endif // NCS_BUILD_WITH_STDERR_DEBUG_INFO
 				}
 			}
-			if(Error == NCS_SUCCESS) {
+			if (Error == NCS_SUCCESS) {
 				nCurrent = Stream.Tell();
-				if(nCurrent == -1) {
+				if (nCurrent == -1) {
 					Error = NCS_FILEIO_ERROR;
 					break;
 				}
-			} else {
+			}
+			else {
 				break;
 			}
 		}
-	} else {
+	}
+	else {
 		Error = NCS_FILEIO_ERROR;
 	}
-	if(Error == NCS_SUCCESS) {	
+	if (Error == NCS_SUCCESS) {
 		m_bValid = true;
 	}
 	return(Error);
@@ -180,22 +184,22 @@ CNCSError CNCSJP2SuperBox::UnParse(class CNCSJP2File &JP2File, CNCSJPCIOStream &
 
 	CNCSJP2BoxList::iterator pCur = m_Boxes.begin();
 
-	while(pCur != m_Boxes.end()) {
-		if((*pCur)->m_bValid) {
+	while (pCur != m_Boxes.end()) {
+		if ((*pCur)->m_bValid) {
 			// Make sure any auxilary XML, UUID etc boxes are written out before the Codestream box.
-			if((*pCur)->m_nTBox == CNCSJP2File::CNCSJP2ContiguousCodestreamBox::sm_nTBox) {
+			if ((*pCur)->m_nTBox == CNCSJP2File::CNCSJP2ContiguousCodestreamBox::sm_nTBox) {
 				CNCSJP2BoxList::iterator pCur2 = m_OtherBoxes.begin();
 
-				while(pCur2 != m_OtherBoxes.end()) {
-					if((*pCur2)->m_bValid) {
+				while (pCur2 != m_OtherBoxes.end()) {
+					if ((*pCur2)->m_bValid) {
 						(*pCur2)->UpdateXLBox();
-						if((*pCur2)->m_bValid) {
-							if((*pCur2)->m_bIsSuperBox) {
+						if ((*pCur2)->m_bValid) {
+							if ((*pCur2)->m_bIsSuperBox) {
 								CNCSJP2Box Box = *(*pCur2);
 								Error = Box.UnParse(JP2File, Stream);
 							}
 							Error = (*pCur2)->UnParse(JP2File, Stream);
-							if(Error != NCS_SUCCESS) {
+							if (Error != NCS_SUCCESS) {
 								break;
 							}
 						}
@@ -204,60 +208,61 @@ CNCSError CNCSJP2SuperBox::UnParse(class CNCSJP2File &JP2File, CNCSJPCIOStream &
 				}
 			}
 			(*pCur)->UpdateXLBox();
-			if((*pCur)->m_bValid) {
-				if((*pCur)->m_bIsSuperBox) {
+			if ((*pCur)->m_bValid) {
+				if ((*pCur)->m_bIsSuperBox) {
 					CNCSJP2Box Box = *(*pCur);
 					Error = Box.UnParse(JP2File, Stream);
 				}
 				Error = (*pCur)->UnParse(JP2File, Stream);
-				if(Error != NCS_SUCCESS) {
+				if (Error != NCS_SUCCESS) {
 					break;
 				}
 			}
 		}
 		pCur++;
 	}
-	if(Error == NCS_SUCCESS) {
+	if (Error == NCS_SUCCESS) {
 		INT64 nEnd = Stream.Tell();
-		if(nEnd != -1) {
+		if (nEnd != -1) {
 			m_nXLBox = nEnd - nStart;
-//			if(Stream.Seek(nStart, CNCSJPCIOStream::START)) {
-//				Error = CNCSJP2Box::UnParse(JP2File, Stream);
-//				if(Error == NCS_SUCCESS) {
-//					Stream.Seek(nEnd, CNCSJPCIOStream::START);
-//					Error = Stream.GetError();
-//				}
-//			} else {
-//				Error = Stream.GetError();
-//			}
+			//			if(Stream.Seek(nStart, CNCSJPCIOStream::START)) {
+			//				Error = CNCSJP2Box::UnParse(JP2File, Stream);
+			//				if(Error == NCS_SUCCESS) {
+			//					Stream.Seek(nEnd, CNCSJPCIOStream::START);
+			//					Error = Stream.GetError();
+			//				}
+			//			} else {
+			//				Error = Stream.GetError();
+			//			}
 		}
 	}
 	return(Error);
 }
 
 CNCSJP2Box *CNCSJP2SuperBox::GetBox(UINT32 nTBox, CNCSJP2Box *pLast, bool *pbSkip)
-{	
+{
 	bool bSkip;
-	if(!pbSkip) {
+	if (!pbSkip) {
 		pbSkip = &bSkip;
 	}
 	*pbSkip = pLast ? true : false;
 	CNCSJP2BoxList::iterator pCur = m_Boxes.begin();
 	CNCSJP2BoxList::iterator pEnd = m_Boxes.end();
-	while(pCur != pEnd) {
+	while (pCur != pEnd) {
 		CNCSJP2Box *pBox = (*pCur);
-		if(pBox->m_nTBox == nTBox) {
-			if(*pbSkip) {
-				if(pLast == pBox) {
+		if (pBox->m_nTBox == nTBox) {
+			if (*pbSkip) {
+				if (pLast == pBox) {
 					*pbSkip = false;
 				}
-			} else {
+			}
+			else {
 				return(pBox);
 			}
 		}
-		if(pBox->m_bIsSuperBox) {
+		if (pBox->m_bIsSuperBox) {
 			pBox = ((CNCSJP2SuperBox*)pBox)->GetBox(nTBox, pLast, pbSkip);
-			if(pBox) {
+			if (pBox) {
 				return(pBox);
 			}
 		}
@@ -265,20 +270,21 @@ CNCSJP2Box *CNCSJP2SuperBox::GetBox(UINT32 nTBox, CNCSJP2Box *pLast, bool *pbSki
 	}
 	pCur = m_OtherBoxes.begin();
 	pEnd = m_OtherBoxes.end();
-	while(pCur != pEnd) {
+	while (pCur != pEnd) {
 		CNCSJP2Box *pBox = (*pCur);
-		if(pBox->m_nTBox == nTBox) {
-			if(*pbSkip) {
-				if(pLast == pBox) {
+		if (pBox->m_nTBox == nTBox) {
+			if (*pbSkip) {
+				if (pLast == pBox) {
 					*pbSkip = false;
 				}
-			} else {
+			}
+			else {
 				return(pBox);
 			}
 		}
-		if(pBox->m_bIsSuperBox) {
+		if (pBox->m_bIsSuperBox) {
 			pBox = ((CNCSJP2SuperBox*)pBox)->GetBox(nTBox, pLast, pbSkip);
-			if(pBox) {
+			if (pBox) {
 				return(pBox);
 			}
 		}
@@ -289,7 +295,7 @@ CNCSJP2Box *CNCSJP2SuperBox::GetBox(UINT32 nTBox, CNCSJP2Box *pLast, bool *pbSki
 
 bool CNCSJP2SuperBox::Required(CNCSJP2Box &TestBox, CNCSJP2Box &ThisBox)
 {
-	if(TestBox.m_nTBox == ThisBox.m_nTBox && TestBox.m_bValid == false && TestBox.m_bHaveBox == false) {
+	if (TestBox.m_nTBox == ThisBox.m_nTBox && TestBox.m_bValid == false && TestBox.m_bHaveBox == false) {
 		return(true);
 	}
 	return(false);

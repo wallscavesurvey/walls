@@ -27,7 +27,7 @@
 #define VP8L_SIGNATURE_SIZE          1      // VP8L signature size.
 #define VP8L_MAGIC_BYTE              0x2f   // VP8L signature byte.
 #define VP8L_IMAGE_SIZE_BITS         14     // Number of bits used to store
-                                            // width and height.
+											// width and height.
 #define VP8L_VERSION_BITS            3      // 3 bits reserved for version.
 #define VP8L_VERSION                 0      // version 0
 #define VP8L_FRAME_HEADER_SIZE       5      // Size of the VP8L frame header.
@@ -49,14 +49,14 @@
 #define MAX_HUFFMAN_BITS             9  // max number of Huffman bits
 
 #define TRANSFORM_PRESENT            1  // The bit to be written when next data
-                                        // to be read is a transform.
+										// to be read is a transform.
 #define NUM_TRANSFORMS               4  // Maximum number of allowed transform
-                                        // in a bitstream.
+										// in a bitstream.
 typedef enum {
-  PREDICTOR_TRANSFORM      = 0,
-  CROSS_COLOR_TRANSFORM    = 1,
-  SUBTRACT_GREEN           = 2,
-  COLOR_INDEXING_TRANSFORM = 3
+	PREDICTOR_TRANSFORM = 0,
+	CROSS_COLOR_TRANSFORM = 1,
+	SUBTRACT_GREEN = 2,
+	COLOR_INDEXING_TRANSFORM = 3
 } VP8LImageTransformType;
 
 // Alpha related constants.

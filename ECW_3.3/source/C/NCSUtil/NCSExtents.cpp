@@ -2,13 +2,13 @@
 ** Copyright 1989-2000 - Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** CLASS(ES):	CNCSExtent
@@ -28,7 +28,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CNCSExtents::CNCSExtents(IEEE8 dTLX,IEEE8 dTLY,IEEE8 dBRX, IEEE8 dBRY)
+CNCSExtents::CNCSExtents(IEEE8 dTLX, IEEE8 dTLY, IEEE8 dBRX, IEEE8 dBRY)
 {
 	m_pTL = new(CNCSPoint);
 	m_pBR = new(CNCSPoint);
@@ -42,8 +42,8 @@ CNCSExtents::CNCSExtents(IEEE8 dTLX,IEEE8 dTLY,IEEE8 dBRX, IEEE8 dBRY)
 
 CNCSExtents::~CNCSExtents()
 {
-	if(m_pTL)
+	if (m_pTL)
 		delete(m_pTL);
-	if(m_pBR)
+	if (m_pBR)
 		delete(m_pBR);
 }

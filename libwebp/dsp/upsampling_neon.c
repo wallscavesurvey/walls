@@ -27,7 +27,7 @@ extern "C" {
 
 #ifdef FANCY_UPSAMPLING
 
-// Loads 9 pixels each from rows r1 and r2 and generates 16 pixels.
+	// Loads 9 pixels each from rows r1 and r2 and generates 16 pixels.
 #define UPSAMPLE_16PIXELS(r1, r2, out) {                                \
   uint8x8_t a = vld1_u8(r1);                                            \
   uint8x8_t b = vld1_u8(r1 + 1);                                        \
@@ -70,10 +70,10 @@ extern "C" {
 }
 
 // Turn the macro into a function for reducing code-size when non-critical
-static void Upsample16Pixels(const uint8_t *r1, const uint8_t *r2,
-                             uint8_t *out) {
-  UPSAMPLE_16PIXELS(r1, r2, out);
-}
+	static void Upsample16Pixels(const uint8_t *r1, const uint8_t *r2,
+		uint8_t *out) {
+		UPSAMPLE_16PIXELS(r1, r2, out);
+	}
 
 #define UPSAMPLE_LAST_BLOCK(tb, bb, num_pixels, out) {                  \
   uint8_t r1[9], r2[9];                                                 \
@@ -91,7 +91,7 @@ static void Upsample16Pixels(const uint8_t *r1, const uint8_t *r2,
 #define CVG 45773
 #define CUB 113618
 
-static const int16_t coef[4] = { CVR / 4, CUG, CVG / 2, CUB / 4 };
+	static const int16_t coef[4] = { CVR / 4, CUG, CVG / 2, CUB / 4 };
 
 #define CONVERT8(FMT, XSTEP, N, src_y, src_uv, out, cur_x) {            \
   int i;                                                                \
@@ -259,35 +259,35 @@ static void FUNC_NAME(const uint8_t *top_y, const uint8_t *bottom_y,    \
                 top_dst, bottom_dst, last_pos, len - last_pos);         \
 }
 
-// NEON variants of the fancy upsampler.
-NEON_UPSAMPLE_FUNC(UpsampleRgbLinePairNEON,  Rgb,  3)
-NEON_UPSAMPLE_FUNC(UpsampleBgrLinePairNEON,  Bgr,  3)
-NEON_UPSAMPLE_FUNC(UpsampleRgbaLinePairNEON, Rgba, 4)
-NEON_UPSAMPLE_FUNC(UpsampleBgraLinePairNEON, Bgra, 4)
+	// NEON variants of the fancy upsampler.
+	NEON_UPSAMPLE_FUNC(UpsampleRgbLinePairNEON, Rgb, 3)
+		NEON_UPSAMPLE_FUNC(UpsampleBgrLinePairNEON, Bgr, 3)
+		NEON_UPSAMPLE_FUNC(UpsampleRgbaLinePairNEON, Rgba, 4)
+		NEON_UPSAMPLE_FUNC(UpsampleBgraLinePairNEON, Bgra, 4)
 
 #endif  // FANCY_UPSAMPLING
 
 #endif   // WEBP_USE_NEON
 
-//------------------------------------------------------------------------------
+		//------------------------------------------------------------------------------
 
-extern WebPUpsampleLinePairFunc WebPUpsamplers[/* MODE_LAST */];
+		extern WebPUpsampleLinePairFunc WebPUpsamplers[/* MODE_LAST */];
 
-void WebPInitUpsamplersNEON(void) {
+	void WebPInitUpsamplersNEON(void) {
 #if defined(WEBP_USE_NEON)
-  WebPUpsamplers[MODE_RGB]  = UpsampleRgbLinePairNEON;
-  WebPUpsamplers[MODE_RGBA] = UpsampleRgbaLinePairNEON;
-  WebPUpsamplers[MODE_BGR]  = UpsampleBgrLinePairNEON;
-  WebPUpsamplers[MODE_BGRA] = UpsampleBgraLinePairNEON;
+		WebPUpsamplers[MODE_RGB] = UpsampleRgbLinePairNEON;
+		WebPUpsamplers[MODE_RGBA] = UpsampleRgbaLinePairNEON;
+		WebPUpsamplers[MODE_BGR] = UpsampleBgrLinePairNEON;
+		WebPUpsamplers[MODE_BGRA] = UpsampleBgraLinePairNEON;
 #endif   // WEBP_USE_NEON
-}
+	}
 
-void WebPInitPremultiplyNEON(void) {
+	void WebPInitPremultiplyNEON(void) {
 #if defined(WEBP_USE_NEON)
-  WebPUpsamplers[MODE_rgbA] = UpsampleRgbaLinePairNEON;
-  WebPUpsamplers[MODE_bgrA] = UpsampleBgraLinePairNEON;
+		WebPUpsamplers[MODE_rgbA] = UpsampleRgbaLinePairNEON;
+		WebPUpsamplers[MODE_bgrA] = UpsampleBgraLinePairNEON;
 #endif   // WEBP_USE_NEON
-}
+	}
 
 #if defined(__cplusplus) || defined(c_plusplus)
 }    // extern "C"

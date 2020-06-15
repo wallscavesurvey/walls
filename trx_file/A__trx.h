@@ -17,10 +17,10 @@
 #undef _TRX_TEST
 
 #ifdef _TRX_TEST
- #define _SCN_TEST
- #ifdef _SCN_TEST
-   extern UINT _trx_oldSpace,_trx_newSpace;
- #endif
+#define _SCN_TEST
+#ifdef _SCN_TEST
+extern UINT _trx_oldSpace, _trx_newSpace;
+#endif
 #endif
 
 extern UINT _trx_btsfx;
@@ -46,15 +46,15 @@ typedef DWORD HNode;
 #pragma pack(1)
 
 typedef struct { /*20 byte node header --*/
- short  N_SizLink;  /*Link size+key size, or -(link size) if type 1*/
- WORD   N_NumKeys;  /*Number of records (or link/keys) stored in node*/
- WORD   N_FstLink;  /*Node offset of first record - fixed if type 2*/
- BYTE   N_Flags;    /*Bits 0-4:Branch level(0 if leaf) 6-7: DupCut flags*/
- BYTE   N_Tree;     /*Tree number (0..)*/
- HNode  N_This;     /*Node number of this node (1..)*/
- HNode  N_Rlink;    /*Node number of higher valued records, or 0*/
- HNode  N_Llink;    /*Node number of lower valued records, or 0*/
- BYTE   N_Buffer[0]; /*Records are right justified in node*/
+	short  N_SizLink;  /*Link size+key size, or -(link size) if type 1*/
+	WORD   N_NumKeys;  /*Number of records (or link/keys) stored in node*/
+	WORD   N_FstLink;  /*Node offset of first record - fixed if type 2*/
+	BYTE   N_Flags;    /*Bits 0-4:Branch level(0 if leaf) 6-7: DupCut flags*/
+	BYTE   N_Tree;     /*Tree number (0..)*/
+	HNode  N_This;     /*Node number of this node (1..)*/
+	HNode  N_Rlink;    /*Node number of higher valued records, or 0*/
+	HNode  N_Llink;    /*Node number of lower valued records, or 0*/
+	BYTE   N_Buffer[0]; /*Records are right justified in node*/
 } TRX_NODE;
 
 /*;
@@ -79,44 +79,46 @@ typedef struct { /*20 byte node header --*/
   Bit  5   - Indicates parent link is to potential leaf to right.
   Bits 6,7 - Duplicate key set broken at left or right, respectively
 */
-enum {TRX_N_Branch=31,
-      TRX_N_DupCutRight=32,
-      TRX_N_DupCutLeft=64,
-      TRX_N_EmptyRight=128};
+enum {
+	TRX_N_Branch = 31,
+	TRX_N_DupCutRight = 32,
+	TRX_N_DupCutLeft = 64,
+	TRX_N_EmptyRight = 128
+};
 
 typedef TRX_NODE FAR *TRX_pNODE;
 
 typedef struct {      /*Struct passed to trx_CreateInd() (8 bytes)*/
-    WORD  NumTrees;   /*Number of subtrees supported (1..255)*/
-    WORD  SizExtra;   /*Total size of subtree extra data*/
-    WORD  SizNode;    /*Node size in bytes*/
-    WORD  SizNodePtr; /*Link size in branch nodes (2..4)*/
+	WORD  NumTrees;   /*Number of subtrees supported (1..255)*/
+	WORD  SizExtra;   /*Total size of subtree extra data*/
+	WORD  SizNode;    /*Node size in bytes*/
+	WORD  SizNodePtr; /*Link size in branch nodes (2..4)*/
 } TRX_FILEDEF;
 
 typedef struct {
-    WORD Id;		  /*Used in trx_Open()*/
-    TRX_FILEDEF Fd;
+	WORD Id;		  /*Used in trx_Open()*/
+	TRX_FILEDEF Fd;
 } TRX_FILEHDR;
 
 typedef struct {      /*Dynamic tree data stored in file (28 bytes)*/
-    DWORD NumKeys;    /*Total # keys in leaves*/
-    HNode Root;       /*Root node number (1..), 0 if tree empty*/
-    HNode NumNodes;   /*Total nodes in tree*/
-    HNode LowLeaf;    /*Leftmost (low) leaf node*/
-    HNode HighLeaf;   /*Rightmost (high) leaf node*/
-    WORD  SizRec;     /*Record size in leaves - SizRec=SizKey=0 if no init*/
-    BYTE  SizKey;     /*Maximum allowed key length or fixed size*/
-    BYTE  InitFlags;  /*trx_InitFlags() set by trx_InitTree()*/
-    WORD  ExtraOff;   /*Extra data at (nptr)pTreeUsr-ExtraOff*/
-    WORD  ExtraLen;   /*For convenience in manipulating extra data (?)*/
+	DWORD NumKeys;    /*Total # keys in leaves*/
+	HNode Root;       /*Root node number (1..), 0 if tree empty*/
+	HNode NumNodes;   /*Total nodes in tree*/
+	HNode LowLeaf;    /*Leftmost (low) leaf node*/
+	HNode HighLeaf;   /*Rightmost (high) leaf node*/
+	WORD  SizRec;     /*Record size in leaves - SizRec=SizKey=0 if no init*/
+	BYTE  SizKey;     /*Maximum allowed key length or fixed size*/
+	BYTE  InitFlags;  /*trx_InitFlags() set by trx_InitTree()*/
+	WORD  ExtraOff;   /*Extra data at (nptr)pTreeUsr-ExtraOff*/
+	WORD  ExtraLen;   /*For convenience in manipulating extra data (?)*/
 } TRX_TREEVAR;
 
 #define TRX_TREEVAR_SIZ 28
 
 typedef struct {      /*User's tree status maintained after open (8 bytes)*/
-  HNode NodePos;      /*Subtree current node*/
-  UINT  KeyPos;       /*Subtree current key position*/
-  UINT  UsrFlags;     /*trx_UsrFlags() - operational mode flags*/
+	HNode NodePos;      /*Subtree current node*/
+	UINT  KeyPos;       /*Subtree current key position*/
+	UINT  UsrFlags;     /*trx_UsrFlags() - operational mode flags*/
 } TRX_TREEUSR;
 
 #define TRX_TREEUSR_SIZ 12
@@ -131,30 +133,30 @@ struct sTRX_FILEUSR;
 typedef struct sTRX_FILEUSR *TRX_pFILEUSR;
 
 typedef struct sTRX_FILEUSR {
-  TRX_pFILE pUsrFile;        /*Pointer to TRX_FILE structure*/
-  UINT UsrMode;              /*File oriented user flags (share, flush, etc)*/
-  UINT UsrIndex;             /*_trx_usrMap[UsrIndex] points to this structure*/
-  BYTE *UsrKeyBuffer;		 /*Points to user's key buffer if set*/
-  TRX_pFILEUSR pNextFileUsr; /*Points to next file user in chain*/
-  int  Errno;                /*Error code of last operation by this user*/
-  TRX_TREEUSR TreeUsr[0];    /*Array of tree-oriented user data*/
+	TRX_pFILE pUsrFile;        /*Pointer to TRX_FILE structure*/
+	UINT UsrMode;              /*File oriented user flags (share, flush, etc)*/
+	UINT UsrIndex;             /*_trx_usrMap[UsrIndex] points to this structure*/
+	BYTE *UsrKeyBuffer;		 /*Points to user's key buffer if set*/
+	TRX_pFILEUSR pNextFileUsr; /*Points to next file user in chain*/
+	int  Errno;                /*Error code of last operation by this user*/
+	TRX_TREEUSR TreeUsr[0];    /*Array of tree-oriented user data*/
 } TRX_FILEUSR;
 
 typedef struct sTRX_FILE {
-  CSH_FILE Cf;               /*36-byte struct defined in A__CSH.H*/
-  UINT HdrChg;               /*Nonzero if header differs from file version*/
-  UINT MinPreWrite;          /*Nodes to pre-allocate to file when extending*/
-  TRX_pFILEUSR pFileUsr;     /*Pointer to linked list of TRX_FILEUSR structs*/
+	CSH_FILE Cf;               /*36-byte struct defined in A__CSH.H*/
+	UINT HdrChg;               /*Nonzero if header differs from file version*/
+	UINT MinPreWrite;          /*Nodes to pre-allocate to file when extending*/
+	TRX_pFILEUSR pFileUsr;     /*Pointer to linked list of TRX_FILEUSR structs*/
 
-  /*TRX file header - Length depends on NumTrees and SizExtra --*/
-  WORD FileID;               /*Has value TRX_FILEID on disk when current*/
-  TRX_FILEDEF Fd;            /*Fixed part specified when created - 8 bytes*/
-  WORD NumPreWrite;          /*Number of unused pre-allocated nodes*/
-  HNode NumNodes;            /*Used node count (last assigned number)*/
-  DWORD NumFreeNodes;        /*Number of previously freed nodes*/
-  HNode FirstFreeNode;       /*Node number of first free node*/
-  TRX_TREEVAR TreeVar[0];     /*Array of subtree dynamic variables*/
-  /*<Subtree extra data>*/   /*Array of SizExtra bytes*/
+	/*TRX file header - Length depends on NumTrees and SizExtra --*/
+	WORD FileID;               /*Has value TRX_FILEID on disk when current*/
+	TRX_FILEDEF Fd;            /*Fixed part specified when created - 8 bytes*/
+	WORD NumPreWrite;          /*Number of unused pre-allocated nodes*/
+	HNode NumNodes;            /*Used node count (last assigned number)*/
+	DWORD NumFreeNodes;        /*Number of previously freed nodes*/
+	HNode FirstFreeNode;       /*Node number of first free node*/
+	TRX_TREEVAR TreeVar[0];     /*Array of subtree dynamic variables*/
+	/*<Subtree extra data>*/   /*Array of SizExtra bytes*/
 } TRX_FILE;
 
 // TRX_FILE Structure Offsets --
@@ -212,10 +214,10 @@ typedef struct sTRX_FILE {
 
 #define TRX_FILE_SIZ(nt,ex) (sizeof(TRX_FILE)+nt*sizeof(TRX_TREEVAR)+ex)
 
-/*Variables defined in trxalloc.c --*/
+  /*Variables defined in trxalloc.c --*/
 
-extern UINT _trx_max_users;  /*== TRX_MAX_USERS*/ 
-extern UINT _trx_max_files;  /*== TRX_MAX_FILES*/ 
+extern UINT _trx_max_users;  /*== TRX_MAX_USERS*/
+extern UINT _trx_max_files;  /*== TRX_MAX_FILES*/
 
 /*Noncompacted array. One entry per file/user pair.
   Index forms high word of TRX_NO --*/
@@ -256,42 +258,42 @@ apfcn_i     _trx_FormatError(void);
 apfcn_i     _trx_FormatErrorLine(int line);
 TRX_pFILE NEAR PASCAL _trx_GetTrx(TRX_NO trx);
 apfcn_hdrp  _trx_GetNode(HNode nodeno);
-apfcn_hdrp  _trx_GetNodePos(TRX_NO trx,int offset);
+apfcn_hdrp  _trx_GetNodePos(TRX_NO trx, int offset);
 apfcn_i     _trx_IncPreWrite(UINT numnodes);
 apfcn_hdrp  _trx_NewNode(int level);
-apfcn_i     _trx_TransferHdr(TRX_pFILE trxp,UINT typ);
+apfcn_i     _trx_TransferHdr(TRX_pFILE trxp, UINT typ);
 apfcn_v     _trx_FreeFile(TRX_pFILE trxp);
 apfcn_i     _trx_AllocFile(TRX_FILEDEF FAR *pFd);
-apfcn_i     _trx_AllocUsr(TRX_NO FAR *ptrx,TRX_pFILE trxp,UINT mode);
+apfcn_i     _trx_AllocUsr(TRX_NO FAR *ptrx, TRX_pFILE trxp, UINT mode);
 apfcn_v     _trx_FreeUsr(TRX_pFILEUSR usrp);
 apfcn_i     _trx_FindFile(NPSTR name);
 #define     _trx_ErrRange(e,low,high) ((e)<(low) || (e)>(high))
-apfcn_i     _trx_SetUsrFlag(TRX_NO trx,UINT flag,BOOL status);
+apfcn_i     _trx_SetUsrFlag(TRX_NO trx, UINT flag, BOOL status);
 
 extern DWORD  _trx_btcnt;
 extern LPVOID _trx_pFindRec;
 
 typedef struct {
-    UINT CntBound;    /*Count position of upperbound rec/key for new node*/
-    UINT SizDupLead;  /*Length of duplicate chain prefixing the upperbound:
-                        0 if key not duplicated, else all but last dup*/
-    UINT SizDupLast;  /*Length of portion to be stored at level 0 only:
-                        last dup if dups attached, else whole rec/key*/
-    int SpcRemain;    /*Length of header+space remaining in old node*/
-    UINT SizBoundKey; /*Length of upper bound key*/
-    UINT ScnOffset;   /*Offset of next link/key in old node*/
+	UINT CntBound;    /*Count position of upperbound rec/key for new node*/
+	UINT SizDupLead;  /*Length of duplicate chain prefixing the upperbound:
+						0 if key not duplicated, else all but last dup*/
+	UINT SizDupLast;  /*Length of portion to be stored at level 0 only:
+						last dup if dups attached, else whole rec/key*/
+	int SpcRemain;    /*Length of header+space remaining in old node*/
+	UINT SizBoundKey; /*Length of upper bound key*/
+	UINT ScnOffset;   /*Offset of next link/key in old node*/
 } typ_scnData;
 
 extern typ_scnData _trx_btscnData; /*in bt_stoid.c*/
 
 #ifndef _NO_TRXD
 typedef struct {
-    int     pid;
-    int     fcn;
-    int     idx;
-    int     iret;  
-    int     rec;
-    BYTE  key[256];
+	int     pid;
+	int     fcn;
+	int     idx;
+	int     iret;
+	int     rec;
+	BYTE  key[256];
 } io_rectyp;
 
 /*declared in trxalloc.c, set non-zero by trxd daemon --*/
@@ -307,20 +309,20 @@ typedef struct {
 void		bt_srch(void);
 void		bt_link(void);
 
-apfcn_vp    _trx_Btrecp(CSH_HDRP hp,UINT keyPos);
-apfcn_p     _trx_Btkeyp(CSH_HDRP hp,UINT keyPos);
-apfcn_i     _trx_Btrec(CSH_HDRP hp,UINT keyPos,PVOID recbuf,UINT sizRecBuf);
-apfcn_i     _trx_Btkey(CSH_HDRP hp,UINT keyPos,PBYTE key,UINT sizKeyBuf);
-apfcn_i     _trx_Btfnd(CSH_HDRP hp,PBYTE key);
-apfcn_i     _trx_Btfndn(CSH_HDRP hp,UINT keyPos,PBYTE key);
-apfcn_ul    _trx_Btlnk(CSH_HDRP hp,PBYTE key);
-apfcn_ul    _trx_Btlnkc(CSH_HDRP hp,UINT keyPos);
-apfcn_v     _trx_Btlop(CSH_HDRP org_node,PBYTE bound_key);
+apfcn_vp    _trx_Btrecp(CSH_HDRP hp, UINT keyPos);
+apfcn_p     _trx_Btkeyp(CSH_HDRP hp, UINT keyPos);
+apfcn_i     _trx_Btrec(CSH_HDRP hp, UINT keyPos, PVOID recbuf, UINT sizRecBuf);
+apfcn_i     _trx_Btkey(CSH_HDRP hp, UINT keyPos, PBYTE key, UINT sizKeyBuf);
+apfcn_i     _trx_Btfnd(CSH_HDRP hp, PBYTE key);
+apfcn_i     _trx_Btfndn(CSH_HDRP hp, UINT keyPos, PBYTE key);
+apfcn_ul    _trx_Btlnk(CSH_HDRP hp, PBYTE key);
+apfcn_ul    _trx_Btlnkc(CSH_HDRP hp, UINT keyPos);
+apfcn_v     _trx_Btlop(CSH_HDRP org_node, PBYTE bound_key);
 apfcn_i     _trx_Btscn(void);
-apfcn_v     _trx_Btsetc(CSH_HDRP hp,UINT keyPos,PVOID link);
-apfcn_i     _trx_Btsto(CSH_HDRP hp,PBYTE key,PVOID link);
-apfcn_i     _trx_Btcut(CSH_HDRP hp,PBYTE key,UINT breakpoint);
-apfcn_v     _trx_Btdel(CSH_HDRP hp,UINT keyPos);
+apfcn_v     _trx_Btsetc(CSH_HDRP hp, UINT keyPos, PVOID link);
+apfcn_i     _trx_Btsto(CSH_HDRP hp, PBYTE key, PVOID link);
+apfcn_i     _trx_Btcut(CSH_HDRP hp, PBYTE key, UINT breakpoint);
+apfcn_v     _trx_Btdel(CSH_HDRP hp, UINT keyPos);
 
 #pragma pack()
 

@@ -32,15 +32,15 @@
 
 
 class DummyObject
-: public Object3D
+	: public Object3D
 {
-  public:
-    DummyObject (int obj_n, int par = 0, char* name = 0)
-    : Object3D (obj_n, par, name)  { }
+public:
+	DummyObject(int obj_n, int par = 0, char* name = 0)
+		: Object3D(obj_n, par, name) { }
 
-    const char* type () const  { return "dum"; }
+	const char* type() const { return "dum"; }
 
-    void print ();
+	void print();
 
 };
 

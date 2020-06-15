@@ -9,7 +9,7 @@ class CPercentDlg : public CDialog
 {
 	DECLARE_DYNAMIC(CPercentDlg)
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_PERCENT_ZOOM };
 
 	double m_fPercent;
@@ -17,7 +17,7 @@ class CPercentDlg : public CDialog
 	CEditLabel m_cePercent;
 
 public:
-	CPercentDlg(double percent,CWnd* pParent = NULL);   // standard constructor
+	CPercentDlg(double percent, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CPercentDlg();
 
 

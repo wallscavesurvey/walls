@@ -4,9 +4,9 @@
 #include "QvSubField.h"
 
 class QvSFString : public QvSField {
-  public:
-    QvString value;
-    QV_SFIELD_HEADER(QvSFString);
+public:
+	QvString value;
+	QV_SFIELD_HEADER(QvSFString);
 };
 
 #endif /* _QV_SF_STRING_ */

@@ -16,18 +16,18 @@ protected: // create from serialization only
 	CWalls2DDoc();
 	DECLARE_DYNCREATE(CWalls2DDoc)
 
-// Attributes
+	// Attributes
 public:
 
-// Operations
+	// Operations
 public:
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CWalls2DDoc)
-	//}}AFX_VIRTUAL
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CWalls2DDoc)
+		//}}AFX_VIRTUAL
 
-// Implementation
+	// Implementation
 public:
 	virtual ~CWalls2DDoc();
 #ifdef _DEBUG
@@ -37,7 +37,7 @@ public:
 
 protected:
 
-// Generated message map functions
+	// Generated message map functions
 protected:
 	//{{AFX_MSG(CWalls2DDoc)
 		// NOTE - the ClassWizard will add and remove member functions here.

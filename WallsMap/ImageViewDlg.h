@@ -34,7 +34,7 @@ public:
 private:
 	bool m_bInfoLoaded;
 	CBitmap m_bmInfo;
-	int m_bmWidth,m_bmHeight;
+	int m_bmWidth, m_bmHeight;
 
 	afx_msg void OnPaint();
 	//afx_msg void OnSize(UINT nType, int cx, int cy) ;
@@ -44,7 +44,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 class CLVEdit : public CEdit
 {
-// Construction
+	// Construction
 public:
 	CLVEdit() {}
 
@@ -68,9 +68,9 @@ class CImageData
 public:
 	CImageData() : pLayer(NULL) {}
 	CImageData(CString &s) : csPath(s) {}
-	LPCSTR InitFromText(LPCSTR p,CShpLayer *pShp);
-	bool IsPathValid() {return !csPath.IsEmpty() && csPath[0]!='*';}
-	bool IsOpen() {return pLayer!=NULL;}
+	LPCSTR InitFromText(LPCSTR p, CShpLayer *pShp);
+	bool IsPathValid() { return !csPath.IsEmpty() && csPath[0] != '*'; }
+	bool IsOpen() { return pLayer != NULL; }
 	CString csPath;
 	CString csTitle;
 	CString csDesc;
@@ -84,23 +84,23 @@ class CImageViewDlg : public CMemoEditDlg
 	DECLARE_DYNAMIC(CImageViewDlg)
 
 public:
-	CImageViewDlg(CDialog *pParentDlg,CShpLayer *pShp,EDITED_MEMO &memo,CWnd* pParent = NULL);   // standard constructor
+	CImageViewDlg(CDialog *pParentDlg, CShpLayer *pShp, EDITED_MEMO &memo, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CImageViewDlg();
 	virtual BOOL OnInitDialog();
 
 	//virtual bool CanReInit(CShpLayer *pShp,DWORD uRec,UINT uFld);
-	virtual void ReInit(CShpLayer *pShp,EDITED_MEMO &memo);
-	virtual bool DenyClose(BOOL bForceClose=FALSE);
+	virtual void ReInit(CShpLayer *pShp, EDITED_MEMO &memo);
+	virtual bool DenyClose(BOOL bForceClose = FALSE);
 	virtual void SetEditable(bool bEditable);
 
-	LPSTR GetTooltipText(int col,UINT code);
+	LPSTR GetTooltipText(int col, UINT code);
 	void Destroy();
 	static void NoDropMsg(CShpLayer *pShp);
 	void OnDrop();
-	void MoveSelected(int nDragIndex,int nDropIndex);
+	void MoveSelected(int nDragIndex, int nDropIndex);
 
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_IMAGE_VIEWER };
 
 	CThumbListCtrl m_ThumbList;
@@ -117,15 +117,15 @@ public:
 	CImageLayer * GetSelectedImage();
 	void AdjustControls();
 
-	bool HasEditedText() {return m_bChanged;}
+	bool HasEditedText() { return m_bChanged; }
 
 	static bool IsValidExt(LPCSTR pExt);
 	bool IsDragAllowed() {
-		if(!IsEditable() || !m_bThreadActive)
+		if (!IsEditable() || !m_bThreadActive)
 			return !m_bThreadActive;
 
-		AfxMessageBox("Please wait for thumbnail geneneration to complete before any rearrangements.",MB_ICONINFORMATION);
-		
+		AfxMessageBox("Please wait for thumbnail geneneration to complete before any rearrangements.", MB_ICONINFORMATION);
+
 		return false;
 	}
 
@@ -212,7 +212,7 @@ private:
 	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 	afx_msg void OnOpenfolder();
 	afx_msg void OnItemDblClick(NMHDR* pNMHDR, LRESULT* pResult);
-	
+
 	afx_msg void OnBeginLabelEdit(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnEndLabelEdit(NMHDR* pNMHDR, LRESULT* pResult);
 public:

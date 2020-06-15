@@ -1,16 +1,16 @@
-/********************************************************** 
+/**********************************************************
 ** Copyright 1998 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
-** 
+**
 ** FILE:   	build_pyr.c
 ** CREATED:	1998
 ** AUTHOR: 	SNS
@@ -63,7 +63,7 @@
 
 #include "ECW.h"
 #include "NCSECWCompress.h"
-//#include "NCSDefs.h"
+ //#include "NCSDefs.h"
 #undef NCS_VECTOR_CC
 #undef NCS_RESTRICT
 #undef NCS_OPENMP
@@ -94,7 +94,7 @@
 static NCSError build_qmf_level_dwt_line(QmfLevelStruct *p_qmf, IEEE4 **p_p_parent_ll_lines);
 static void build_qmf_level_roll_line_array(QmfLevelStruct *p_qmf);
 static void build_qmf_level_lohi_line_pair(QmfLevelStruct *p_qmf);
-static NCSError build_qmf_level_output_line(QmfLevelStruct *p_qmf, IEEE4 **p_p_ll_lines );
+static NCSError build_qmf_level_output_line(QmfLevelStruct *p_qmf, IEEE4 **p_p_ll_lines);
 
 /*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
 **	Given a set up QMF tree, and the output file handle, this will
@@ -113,7 +113,7 @@ NCSError build_qmf_compress_file(QmfLevelStruct *p_top_qmf, NCS_FILE_HANDLE outf
 	NCSError eError = NCS_SUCCESS;
 	QmfLevelStruct	*p_qmf;
 
-	if( !p_top_qmf )
+	if (!p_top_qmf)
 		return(NCS_INVALID_PARAMETER);
 
 	// Allocate a buffer to hold one line of the top level LL.
@@ -122,29 +122,29 @@ NCSError build_qmf_compress_file(QmfLevelStruct *p_top_qmf, NCS_FILE_HANDLE outf
 	// outselves; lower level calls will flush it to the compressed file
 	// We could perhaps allocate this as a single buffer and index into it;
 	// simpler.
-	p_p_top_ll_lines = (IEEE4 **) NCSMalloc(sizeof(IEEE4 *) * p_top_qmf->nr_bands, FALSE);
-	if(!p_p_top_ll_lines) {
+	p_p_top_ll_lines = (IEEE4 **)NCSMalloc(sizeof(IEEE4 *) * p_top_qmf->nr_bands, FALSE);
+	if (!p_p_top_ll_lines) {
 		return(NCS_COULDNT_ALLOC_MEMORY);
 	}
-	p_top_ll_line_buffer = (IEEE4 *) NCSMalloc(sizeof(IEEE4) * p_top_qmf->nr_bands * p_top_qmf->x_size, FALSE);
-	if(!p_top_ll_line_buffer) {
+	p_top_ll_line_buffer = (IEEE4 *)NCSMalloc(sizeof(IEEE4) * p_top_qmf->nr_bands * p_top_qmf->x_size, FALSE);
+	if (!p_top_ll_line_buffer) {
 		return(NCS_COULDNT_ALLOC_MEMORY);
 	}
-	if( !p_p_top_ll_lines || !p_top_ll_line_buffer ) {
-		NCS_SAFE_FREE((char *) p_p_top_ll_lines);
-		NCS_SAFE_FREE((char *) p_top_ll_line_buffer);
+	if (!p_p_top_ll_lines || !p_top_ll_line_buffer) {
+		NCS_SAFE_FREE((char *)p_p_top_ll_lines);
+		NCS_SAFE_FREE((char *)p_top_ll_line_buffer);
 
 		return(NCS_COULDNT_ALLOC_MEMORY);
 	}
 	// now index into the line buffer for each band
-	for( band = 0; band < p_top_qmf->nr_bands; band++ )
+	for (band = 0; band < p_top_qmf->nr_bands; band++)
 		p_p_top_ll_lines[band] = p_top_ll_line_buffer + (band * p_top_qmf->x_size);
 
 
 	// Write ERW header information
 	eError = write_compressed_preamble(p_top_qmf, outfile);
-	
-	if(eError != NCS_SUCCESS)
+
+	if (eError != NCS_SUCCESS)
 		return(eError);
 
 	/*
@@ -152,22 +152,22 @@ NCSError build_qmf_compress_file(QmfLevelStruct *p_top_qmf, NCS_FILE_HANDLE outf
 	** This will trigger recursive reads of larger levels, writing
 	** compressed data out as it goes.
 	*/
-	for(line = 0; line < p_top_qmf->y_size; line++) {
+	for (line = 0; line < p_top_qmf->y_size; line++) {
 		eError = build_qmf_level_dwt_line(p_top_qmf, p_p_top_ll_lines);
-		if( eError != NCS_SUCCESS ) {
-			NCS_SAFE_FREE((char *) p_p_top_ll_lines);
-			NCS_SAFE_FREE((char *) p_top_ll_line_buffer);
+		if (eError != NCS_SUCCESS) {
+			NCS_SAFE_FREE((char *)p_p_top_ll_lines);
+			NCS_SAFE_FREE((char *)p_top_ll_line_buffer);
 			return(eError);
 		}
 	}
 
 	// Ditch the line buffers; not needed any more
-	NCS_SAFE_FREE((char *) p_p_top_ll_lines);
-	NCS_SAFE_FREE((char *) p_top_ll_line_buffer);
+	NCS_SAFE_FREE((char *)p_p_top_ll_lines);
+	NCS_SAFE_FREE((char *)p_top_ll_line_buffer);
 
 	// convert the block table
 	eError = convert_block_table(p_top_qmf, outfile);
-	if(eError != NCS_SUCCESS)
+	if (eError != NCS_SUCCESS)
 		return(eError);
 
 	/*
@@ -178,10 +178,10 @@ NCSError build_qmf_compress_file(QmfLevelStruct *p_top_qmf, NCS_FILE_HANDLE outf
 
 	// Write each layer out
 	p_qmf = p_top_qmf;
-	while(p_qmf->p_larger_qmf) {	// we don't write the fake file QMF level
+	while (p_qmf->p_larger_qmf) {	// we don't write the fake file QMF level
 		eError = write_compressed_level(p_qmf, outfile);
-		
-		if(eError != NCS_SUCCESS)
+
+		if (eError != NCS_SUCCESS)
 			return(eError);
 		p_qmf = p_qmf->p_larger_qmf;
 	}
@@ -233,32 +233,32 @@ static NCSError build_qmf_level_dwt_line(QmfLevelStruct *p_qmf, IEEE4 **p_p_pare
 	NCSError eError;
 	UINT16	band;
 
-	if( p_qmf->next_output_line >= p_qmf->y_size ) {
+	if (p_qmf->next_output_line >= p_qmf->y_size) {
 		return(NCS_GENERATED_TOO_MANY_OUTPUT_LINES);
 	}
 
 	// if file level, we just return the requested LL line to the parent
-	if( !(p_qmf->p_larger_qmf) ) {
-		if( p_qmf->pCompressionTask && p_qmf->pCompressionTask->pCancelCallback ) {
+	if (!(p_qmf->p_larger_qmf)) {
+		if (p_qmf->pCompressionTask && p_qmf->pCompressionTask->pCancelCallback) {
 			BOOLEAN bCancel;
 			bCancel = (p_qmf->pCompressionTask->pCancelCallback)(p_qmf->pCompressionTask->pClient);
-			if( bCancel ) {
+			if (bCancel) {
 				/*[05]Replaced error with error value that does not include the text "ERS_ERROR"
 				This is to give the user a more user friendly error message*/
 				return(NCS_USER_CANCELLED_COMPRESSION);
 			}
 		}
-		if(p_qmf->pCompressionTask && p_qmf->pCompressionTask->pStatusCallback ) {
+		if (p_qmf->pCompressionTask && p_qmf->pCompressionTask->pStatusCallback) {
 			(p_qmf->pCompressionTask->pStatusCallback)(p_qmf->pCompressionTask->pClient, p_qmf->next_output_line);
 		}
-		if(p_qmf->pCompressionTask && p_qmf->pCompressionTask->pClient && p_qmf->pCompressionTask->pReadCallback) {
+		if (p_qmf->pCompressionTask && p_qmf->pCompressionTask->pClient && p_qmf->pCompressionTask->pReadCallback) {
 			NCSError eError;
-			
-			eError = (p_qmf->pCompressionTask->pReadCallback)(p_qmf->pCompressionTask->pClient, 
-														  p_qmf->next_output_line, 
-														  p_p_parent_ll_lines);
-			
-			if(eError != NCS_SUCCESS) {
+
+			eError = (p_qmf->pCompressionTask->pReadCallback)(p_qmf->pCompressionTask->pClient,
+				p_qmf->next_output_line,
+				p_p_parent_ll_lines);
+
+			if (eError != NCS_SUCCESS) {
 				return(eError);
 			}
 
@@ -279,14 +279,14 @@ static NCSError build_qmf_level_dwt_line(QmfLevelStruct *p_qmf, IEEE4 **p_p_pare
 	// We always generae the last of the lowpass/highpass lines, and roll
 	// them up by one.
 
-	if( !p_qmf->next_output_line ) {	// first call, so pre-read (FILTER_SIZE/2)+1 input lines and filter them
-		while( p_qmf->next_input_line <= ((FILTER_SIZE / 2) + 1 ) ) {
+	if (!p_qmf->next_output_line) {	// first call, so pre-read (FILTER_SIZE/2)+1 input lines and filter them
+		while (p_qmf->next_input_line <= ((FILTER_SIZE / 2) + 1)) {
 			// roll the lowpass/highpass line array down. Just moves pointers, so is fast.
 			// Technically we don't need to do this for the very first line, but no harm done
 			build_qmf_level_roll_line_array(p_qmf);
 			// gather an input line.  Must offset into our input line by reflection amount
-			if( (eError = build_qmf_level_dwt_line(p_qmf->p_larger_qmf, p_qmf->p_p_input_ll_line)) != NCS_SUCCESS )
-				return( eError );
+			if ((eError = build_qmf_level_dwt_line(p_qmf->p_larger_qmf, p_qmf->p_p_input_ll_line)) != NCS_SUCCESS)
+				return(eError);
 			// generate this lowpass and highpass line pair from the input line
 			build_qmf_level_lohi_line_pair(p_qmf);
 			p_qmf->next_input_line += 1;
@@ -296,17 +296,17 @@ static NCSError build_qmf_level_dwt_line(QmfLevelStruct *p_qmf, IEEE4 **p_p_pare
 		// later we can just roll the lowpass/highpass line pointers for all lines,
 		// so we only do FILTER_SIZE/2 memcopy()'s per level, making overall performance much faster
 		{
-			for( band = 0; band < p_qmf->nr_bands; band++ ) {
+			for (band = 0; band < p_qmf->nr_bands; band++) {
 				QmfLevelBandStruct *p_band = p_qmf->p_bands + band;
 
 				UINT32	reflect_line;
-				for( reflect_line = 0; reflect_line < FILTER_SIZE/2; reflect_line++ ) {
-					memcpy(p_band->p_p_lo_lines[(FILTER_SIZE/2) - reflect_line - 1],
-								p_band->p_p_lo_lines[(FILTER_SIZE/2) + reflect_line + 1],
-								p_qmf->x_size * sizeof(IEEE4));
-					memcpy(p_band->p_p_hi_lines[(FILTER_SIZE/2) - reflect_line - 1],
-								p_band->p_p_hi_lines[(FILTER_SIZE/2) + reflect_line + 1],
-								p_qmf->x_size * sizeof(IEEE4));
+				for (reflect_line = 0; reflect_line < FILTER_SIZE / 2; reflect_line++) {
+					memcpy(p_band->p_p_lo_lines[(FILTER_SIZE / 2) - reflect_line - 1],
+						p_band->p_p_lo_lines[(FILTER_SIZE / 2) + reflect_line + 1],
+						p_qmf->x_size * sizeof(IEEE4));
+					memcpy(p_band->p_p_hi_lines[(FILTER_SIZE / 2) - reflect_line - 1],
+						p_band->p_p_hi_lines[(FILTER_SIZE / 2) + reflect_line + 1],
+						p_qmf->x_size * sizeof(IEEE4));
 				}
 			}	/* end band loop */
 		}
@@ -319,19 +319,19 @@ static NCSError build_qmf_level_dwt_line(QmfLevelStruct *p_qmf, IEEE4 **p_p_pare
 	// lines we already have.
 
 	// read lines if not at the very start
-	if( p_qmf->next_output_line ) {
+	if (p_qmf->next_output_line) {
 		UINT8	read_two;
 		// We need to read two input lines - this is how we decimate input in the Y direction
 		// We check input to start reflecting at end. This way it works well for odd or even
 		// size input number of lines
-		for( read_two = 0; read_two < 2; read_two++ ) {
-			if( p_qmf->next_input_line < p_qmf->p_larger_qmf->y_size ) {
+		for (read_two = 0; read_two < 2; read_two++) {
+			if (p_qmf->next_input_line < p_qmf->p_larger_qmf->y_size) {
 				// not at end of larger QMF, so OK to recurse down and read a line 
 				// roll the lowpass/highpass line array down. Just moves pointers, so is fast.
 				build_qmf_level_roll_line_array(p_qmf);
 				// gather an input line.  Must offset into our input line by reflection amount
-				if( (eError = build_qmf_level_dwt_line(p_qmf->p_larger_qmf, p_qmf->p_p_input_ll_line)) != NCS_SUCCESS )
-					return( eError );
+				if ((eError = build_qmf_level_dwt_line(p_qmf->p_larger_qmf, p_qmf->p_p_input_ll_line)) != NCS_SUCCESS)
+					return(eError);
 				// generate this lowpass and highpass line pair from the input line
 				build_qmf_level_lohi_line_pair(p_qmf);
 				p_qmf->next_input_line += 1;
@@ -344,18 +344,18 @@ static NCSError build_qmf_level_dwt_line(QmfLevelStruct *p_qmf, IEEE4 **p_p_pare
 				// as the hilo lines are already built, we just need to reflect one line
 				// To do this, work out our current position, and offset by that amount
 				// Must be 2x jump each loop, as the roll above moved the center of reflection down
-				reflect_line = (p_qmf->y_size * 2) - ((p_qmf->next_output_line*2) + read_two);
+				reflect_line = (p_qmf->y_size * 2) - ((p_qmf->next_output_line * 2) + read_two);
 				reflect_line = (reflect_line * 2) - 1;
-				for( band = 0; band < p_qmf->nr_bands; band++ ) {
+				for (band = 0; band < p_qmf->nr_bands; band++) {
 					QmfLevelBandStruct *p_band = p_qmf->p_bands + band;
 
-					if( reflect_line >= 0 && reflect_line <= FILTER_SIZE ) {	// sanity check it
+					if (reflect_line >= 0 && reflect_line <= FILTER_SIZE) {	// sanity check it
 						memcpy(p_band->p_p_lo_lines[FILTER_SIZE],
-									p_band->p_p_lo_lines[reflect_line],
-									p_qmf->x_size * sizeof(IEEE4));
+							p_band->p_p_lo_lines[reflect_line],
+							p_qmf->x_size * sizeof(IEEE4));
 						memcpy(p_band->p_p_hi_lines[FILTER_SIZE],
-									p_band->p_p_hi_lines[reflect_line],
-									p_qmf->x_size * sizeof(IEEE4));
+							p_band->p_p_hi_lines[reflect_line],
+							p_qmf->x_size * sizeof(IEEE4));
 					}
 				} /* end band loop */
 			}
@@ -368,9 +368,9 @@ static NCSError build_qmf_level_dwt_line(QmfLevelStruct *p_qmf, IEEE4 **p_p_pare
 	// be generated to the buffer indicated by the parent call to this routine,
 	// the LH,HL and HH lines will be created and then consumed by the encoder,
 	// which is called by the lower level build routine
-	eError = build_qmf_level_output_line(p_qmf, p_p_parent_ll_lines );
-	
-	if(eError != NCS_SUCCESS)
+	eError = build_qmf_level_output_line(p_qmf, p_p_parent_ll_lines);
+
+	if (eError != NCS_SUCCESS)
 		return(eError);
 
 	p_qmf->next_output_line += 1;
@@ -386,20 +386,20 @@ static NCSError build_qmf_level_dwt_line(QmfLevelStruct *p_qmf, IEEE4 **p_p_pare
 static void build_qmf_level_roll_line_array(QmfLevelStruct *p_qmf)
 {
 	UINT16	band;
-	for( band = 0; band < p_qmf->nr_bands; band++ ) {
+	for (band = 0; band < p_qmf->nr_bands; band++) {
 		QmfLevelBandStruct *p_band = p_qmf->p_bands + band;
 
 		IEEE4	*p_temp;
 		UINT32	line;
 		// there are FILTER_SIZE+1 lines to roll.
 		p_temp = p_band->p_p_lo_lines[0];
-		for(line = 1; line <= FILTER_SIZE; line ++)
-			p_band->p_p_lo_lines[line-1] = p_band->p_p_lo_lines[line];
+		for (line = 1; line <= FILTER_SIZE; line++)
+			p_band->p_p_lo_lines[line - 1] = p_band->p_p_lo_lines[line];
 		p_band->p_p_lo_lines[FILTER_SIZE] = p_temp;
 
 		p_temp = p_band->p_p_hi_lines[0];
-		for(line = 1; line <= FILTER_SIZE; line ++)
-			p_band->p_p_hi_lines[line-1] = p_band->p_p_hi_lines[line];
+		for (line = 1; line <= FILTER_SIZE; line++)
+			p_band->p_p_hi_lines[line - 1] = p_band->p_p_hi_lines[line];
 		p_band->p_p_hi_lines[FILTER_SIZE] = p_temp;
 	}	/* end band loop */
 }
@@ -428,7 +428,7 @@ static void build_qmf_level_lohi_line_pair(QmfLevelStruct *p_qmf)
 	UINT32 band;
 	UINT32 larger_x_size = p_qmf->p_larger_qmf->x_size;
 
-	for( band = 0; band < p_qmf->nr_bands; band++ ) {
+	for (band = 0; band < p_qmf->nr_bands; band++) {
 		QmfLevelBandStruct *p_band = p_qmf->p_bands + band;
 
 		register IEEE4	*p_in_line;
@@ -438,12 +438,12 @@ static void build_qmf_level_lohi_line_pair(QmfLevelStruct *p_qmf)
 		p_in_line = p_band->p_input_ll_line;
 
 		// reflect left edge. Always FILTER_SIZE/2 to reflect
-		for(i = 0; i < FILTER_SIZE/2; i++)
-			p_in_line[(FILTER_SIZE/2) -i - 1 /**[06]* - index was just i **/] =		// left edge
-				p_in_line[((FILTER_SIZE/2) + 1) + i];
+		for (i = 0; i < FILTER_SIZE / 2; i++)
+			p_in_line[(FILTER_SIZE / 2) - i - 1 /**[06]* - index was just i **/] =		// left edge
+			p_in_line[((FILTER_SIZE / 2) + 1) + i];
 		// reflect right edge. Might have to reflect one more value if larger x_size != x_size*2
-		p_temp = &p_in_line[(FILTER_SIZE/2) + (larger_x_size-1)];	// last valid value
-		for(i = 0; i < ((FILTER_SIZE/2) + (int) ((p_qmf->x_size * 2) - larger_x_size)); i++ )
+		p_temp = &p_in_line[(FILTER_SIZE / 2) + (larger_x_size - 1)];	// last valid value
+		for (i = 0; i < ((FILTER_SIZE / 2) + (int)((p_qmf->x_size * 2) - larger_x_size)); i++)
 			p_temp[i + 1] = p_temp[-i - 1];
 
 		// generate output using convolution for both lowpass and highpass
@@ -454,30 +454,30 @@ static void build_qmf_level_lohi_line_pair(QmfLevelStruct *p_qmf)
 			register IEEE4 *NCS_RESTRICT p_hi_line = p_band->p_p_hi_lines[FILTER_SIZE];
 			register IEEE4 *NCS_RESTRICT p_in = p_in_line;	// [07] restructured loops for performance
 			int x_size = p_qmf->x_size;
-//#ifdef NOTDEF				
+			//#ifdef NOTDEF				
 
-//1.9MBs to 2.4MBs by removing write on P3 800
-//3.5MBs to 6.3MBs by removing write on P4Xeon 2.4GHz!
-//			i = p_qmf->x_size;
-//			while( i-- ) {				// faster this way so can test against non-zero
+			//1.9MBs to 2.4MBs by removing write on P3 800
+			//3.5MBs to 6.3MBs by removing write on P4Xeon 2.4GHz!
+			//			i = p_qmf->x_size;
+			//			while( i-- ) {				// faster this way so can test against non-zero
 #ifdef NCS_OPENMP
 #pragma omp parallel for
 #endif // NCS_OPENMP
-			for(i = 0; i < x_size; i++) {				// faster this way so can test against non-zero
+			for (i = 0; i < x_size; i++) {				// faster this way so can test against non-zero
 				// LO filter starts with even input, HI starts with odd input
 				*p_lo_line++ = (*p_in + *(p_in + 10)) * LO_FILTER_0 +
-						  (*(p_in + 1) + *(p_in + 9)) * LO_FILTER_1 +
-						  (*(p_in + 2) + *(p_in + 8)) * LO_FILTER_2 +
-						  (*(p_in + 3) + *(p_in + 7)) * LO_FILTER_3 +
-						  (*(p_in + 4) + *(p_in + 6)) * LO_FILTER_4 +
-										  *(p_in + 5) * LO_FILTER_5;
-				
+					(*(p_in + 1) + *(p_in + 9)) * LO_FILTER_1 +
+					(*(p_in + 2) + *(p_in + 8)) * LO_FILTER_2 +
+					(*(p_in + 3) + *(p_in + 7)) * LO_FILTER_3 +
+					(*(p_in + 4) + *(p_in + 6)) * LO_FILTER_4 +
+					*(p_in + 5) * LO_FILTER_5;
+
 				*p_hi_line++ = (*(p_in + 1) + *(p_in + 11)) * HI_FILTER_0 +
-							   (*(p_in + 2) + *(p_in + 10)) * HI_FILTER_1 +
-							    (*(p_in + 3) + *(p_in + 9)) * HI_FILTER_2 +
-							    (*(p_in + 4) + *(p_in + 8)) * HI_FILTER_3 +
-							    (*(p_in + 5) + *(p_in + 7)) * HI_FILTER_4 +
-												*(p_in + 6) * HI_FILTER_5;
+					(*(p_in + 2) + *(p_in + 10)) * HI_FILTER_1 +
+					(*(p_in + 3) + *(p_in + 9)) * HI_FILTER_2 +
+					(*(p_in + 4) + *(p_in + 8)) * HI_FILTER_3 +
+					(*(p_in + 5) + *(p_in + 7)) * HI_FILTER_4 +
+					*(p_in + 6) * HI_FILTER_5;
 
 				p_in += 2;
 			}	/* end loop loop */
@@ -492,11 +492,11 @@ int p_fetch; // this "anchor" variable helps to
 // fool the compiler’s optimizer
 static void __inline BLOCK_PREFETCH_1K(void* addr) {
 	int* a = (int*) addr; // cast as INT pointer for speed
-	int i; 
+	int i;
 	for(i = 192; i > 0; i -= 8) {
 		p_fetch += a[i];
 	}
-}		
+}
 static void __inline BLOCK_PREFETCH_4K(void* addr) {
 	int* a = (int*) addr; // cast as INT pointer for speed
 	p_fetch += a[0] + a[16] + a[32] + a[48] // Grab every
@@ -518,7 +518,7 @@ static void __inline BLOCK_PREFETCH_4K(void* addr) {
 	+ a[64] + a[80] + a[96] + a[112]
 	+ a[128] + a[144] + a[160] + a[176]
 	+ a[192] + a[208] + a[224] + a[240];
-}	
+}
 */
 
 /*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
@@ -531,18 +531,18 @@ static void __inline BLOCK_PREFETCH_4K(void* addr) {
 **
 **
 *	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*/
-static NCSError build_qmf_level_output_line(QmfLevelStruct *p_qmf, IEEE4 **p_p_ll_lines )
+static NCSError build_qmf_level_output_line(QmfLevelStruct *p_qmf, IEEE4 **p_p_ll_lines)
 {
 	UINT32	band;			// [03] VTune says to make this an int not short
 #ifndef NCS_VECTOR_CC
-	FLT_TO_INT_INIT();		
+	FLT_TO_INT_INIT();
 #endif //!NCS_VECTOR_CC
-	for( band = 0; band < p_qmf->nr_bands; band++ ) {
+	for (band = 0; band < p_qmf->nr_bands; band++) {
 		QmfLevelBandStruct *p_band = p_qmf->p_bands + band;
-	
+
 		// p_hh_line is handed to us, from parent level
 		register IEEE4 *NCS_RESTRICT p_lo_line;
-//		register IEEE4 *p_hi_line;
+		//		register IEEE4 *p_hi_line;
 		register INT16 *NCS_RESTRICT p_lo_line16;
 		register INT16 *NCS_RESTRICT p_hi_line16;
 		register INT32 i;
@@ -558,123 +558,125 @@ static NCSError build_qmf_level_output_line(QmfLevelStruct *p_qmf, IEEE4 **p_p_l
 		// generate output LL and LH from lowpass input using convolution. Do this, then highpass
 		// input as a separate run, to improve cache hits
 
-		register IEEE4 *NCS_RESTRICT p_i_0, *NCS_RESTRICT p_i_1, *NCS_RESTRICT p_i_2, *NCS_RESTRICT p_i_3, 
-					   *NCS_RESTRICT p_i_4, *NCS_RESTRICT p_i_5, *NCS_RESTRICT p_i_6, *NCS_RESTRICT p_i_7, 
-					   *NCS_RESTRICT p_i_8, *NCS_RESTRICT p_i_9, *NCS_RESTRICT p_i_10,*NCS_RESTRICT p_i_11;
+		register IEEE4 *NCS_RESTRICT p_i_0, *NCS_RESTRICT p_i_1, *NCS_RESTRICT p_i_2, *NCS_RESTRICT p_i_3,
+			*NCS_RESTRICT p_i_4, *NCS_RESTRICT p_i_5, *NCS_RESTRICT p_i_6, *NCS_RESTRICT p_i_7,
+			*NCS_RESTRICT p_i_8, *NCS_RESTRICT p_i_9, *NCS_RESTRICT p_i_10, *NCS_RESTRICT p_i_11;
 		register IEEE4 f1;
 		register INT32 n1;
 
 		p_p_in = p_band->p_p_lo_lines;
 		p_i_0 = p_p_in[0];	p_i_1 = p_p_in[1];	p_i_2 = p_p_in[2];	p_i_3 = p_p_in[3];
 		p_i_4 = p_p_in[4];	p_i_5 = p_p_in[5];	p_i_6 = p_p_in[6];	p_i_7 = p_p_in[7];
-		p_i_8 = p_p_in[8];	p_i_9 = p_p_in[9];	p_i_10 = p_p_in[10];p_i_11 = p_p_in[11];
+		p_i_8 = p_p_in[8];	p_i_9 = p_p_in[9];	p_i_10 = p_p_in[10]; p_i_11 = p_p_in[11];
 
 		p_lo_line = p_p_ll_lines[band];
-//		p_hi_line = p_band->p_output_lh_line;
+		//		p_hi_line = p_band->p_output_lh_line;
 
-		if(p_qmf->p_file_qmf->bLowMemCompress) {
+		if (p_qmf->p_file_qmf->bLowMemCompress) {
 			p_lo_line16 = (INT16*)p_p_ll_lines[band];
-		} else {
+		}
+		else {
 			p_lo_line16 = p_band->p_quantized_output_ll_block;
 		}
 		p_hi_line16 = p_band->p_quantized_output_lh_block;
-		if(!p_qmf->p_file_qmf->bLowMemCompress) {
-			p_lo_line16 += p_qmf->x_size * p_qmf->next_output_block_y_line;		
-			p_hi_line16 += p_qmf->x_size * p_qmf->next_output_block_y_line;		
+		if (!p_qmf->p_file_qmf->bLowMemCompress) {
+			p_lo_line16 += p_qmf->x_size * p_qmf->next_output_block_y_line;
+			p_hi_line16 += p_qmf->x_size * p_qmf->next_output_block_y_line;
 		}
 		//p_qmf->x_size;
-		if(p_qmf->level != 0) {
+		if (p_qmf->level != 0) {
 #ifdef NCS_OPENMP
 #pragma omp parallel for private (f1,n1)
 #endif // NCS_OPENMP
-/*			while(x_size > 256) {
-				BLOCK_PREFETCH_1K(p_i_0);
-				BLOCK_PREFETCH_1K(p_i_1);
-				BLOCK_PREFETCH_1K(p_i_2);
-				BLOCK_PREFETCH_1K(p_i_3);
-				BLOCK_PREFETCH_1K(p_i_4);
-				BLOCK_PREFETCH_1K(p_i_5);
-				BLOCK_PREFETCH_1K(p_i_6);
-				BLOCK_PREFETCH_1K(p_i_7);
-				BLOCK_PREFETCH_1K(p_i_8);
-				BLOCK_PREFETCH_1K(p_i_9);
-				BLOCK_PREFETCH_1K(p_i_10);
-				BLOCK_PREFETCH_1K(p_i_11);
-				for(i = 0; i < 256; i++) {	// LOWPASS:	Generate LL and LH lines
-						// LO filter starts with even input, HI starts with odd input
-					*p_lo_line++ = (*p_i_0 + *p_i_10) * LO_FILTER_0 + 
-								   (*p_i_1 + *p_i_9) * LO_FILTER_1 + 
-								   (*p_i_2 + *p_i_8) * LO_FILTER_2 + 
-								   (*p_i_3 + *p_i_7) * LO_FILTER_3 + 
-								   (*p_i_4 + *p_i_6) * LO_FILTER_4 + 
-								   *p_i_5 * LO_FILTER_5;
-					f1 = ((*p_i_1 + *p_i_11) * HI_FILTER_0 + 
-						  (*p_i_2 + *p_i_10) * HI_FILTER_1 + 
-						  (*p_i_3 + *p_i_9) * HI_FILTER_2 + 
-						  (*p_i_4 + *p_i_8) * HI_FILTER_3 +
-						  (*p_i_5 + *p_i_7) * HI_FILTER_4 + 
-						   *p_i_6 * HI_FILTER_5) * fBinSize;
-#ifdef NCS_VECTOR_CC
-					*p_hi_line16++ = (INT16)(f1 + 0.5);
-#else
-					FLT_TO_INT32(n1,f1);
-					*p_hi_line16++ = (INT16)n1;
-#endif
-					++p_i_0; ++p_i_1; ++p_i_2; ++p_i_3; ++p_i_4; ++p_i_5; ++p_i_6; ++p_i_7; ++p_i_8; ++p_i_9; ++p_i_10; ++p_i_11;
-				}
-				x_size -= 256;
-			}*/
-			for(i = 0; i < x_size; i++) {	// LOWPASS:	Generate LL and LH lines
+			/*			while(x_size > 256) {
+							BLOCK_PREFETCH_1K(p_i_0);
+							BLOCK_PREFETCH_1K(p_i_1);
+							BLOCK_PREFETCH_1K(p_i_2);
+							BLOCK_PREFETCH_1K(p_i_3);
+							BLOCK_PREFETCH_1K(p_i_4);
+							BLOCK_PREFETCH_1K(p_i_5);
+							BLOCK_PREFETCH_1K(p_i_6);
+							BLOCK_PREFETCH_1K(p_i_7);
+							BLOCK_PREFETCH_1K(p_i_8);
+							BLOCK_PREFETCH_1K(p_i_9);
+							BLOCK_PREFETCH_1K(p_i_10);
+							BLOCK_PREFETCH_1K(p_i_11);
+							for(i = 0; i < 256; i++) {	// LOWPASS:	Generate LL and LH lines
+									// LO filter starts with even input, HI starts with odd input
+								*p_lo_line++ = (*p_i_0 + *p_i_10) * LO_FILTER_0 +
+											   (*p_i_1 + *p_i_9) * LO_FILTER_1 +
+											   (*p_i_2 + *p_i_8) * LO_FILTER_2 +
+											   (*p_i_3 + *p_i_7) * LO_FILTER_3 +
+											   (*p_i_4 + *p_i_6) * LO_FILTER_4 +
+											   *p_i_5 * LO_FILTER_5;
+								f1 = ((*p_i_1 + *p_i_11) * HI_FILTER_0 +
+									  (*p_i_2 + *p_i_10) * HI_FILTER_1 +
+									  (*p_i_3 + *p_i_9) * HI_FILTER_2 +
+									  (*p_i_4 + *p_i_8) * HI_FILTER_3 +
+									  (*p_i_5 + *p_i_7) * HI_FILTER_4 +
+									   *p_i_6 * HI_FILTER_5) * fBinSize;
+			#ifdef NCS_VECTOR_CC
+								*p_hi_line16++ = (INT16)(f1 + 0.5);
+			#else
+								FLT_TO_INT32(n1,f1);
+								*p_hi_line16++ = (INT16)n1;
+			#endif
+								++p_i_0; ++p_i_1; ++p_i_2; ++p_i_3; ++p_i_4; ++p_i_5; ++p_i_6; ++p_i_7; ++p_i_8; ++p_i_9; ++p_i_10; ++p_i_11;
+							}
+							x_size -= 256;
+						}*/
+			for (i = 0; i < x_size; i++) {	// LOWPASS:	Generate LL and LH lines
 					// LO filter starts with even input, HI starts with odd input
-				*p_lo_line++ = (*p_i_0 + *p_i_10) * LO_FILTER_0 + 
-							   (*p_i_1 + *p_i_9) * LO_FILTER_1 + 
-							   (*p_i_2 + *p_i_8) * LO_FILTER_2 + 
-							   (*p_i_3 + *p_i_7) * LO_FILTER_3 + 
-							   (*p_i_4 + *p_i_6) * LO_FILTER_4 + 
-							   *p_i_5 * LO_FILTER_5;
-				f1 = ((*p_i_1 + *p_i_11) * HI_FILTER_0 + 
-					  (*p_i_2 + *p_i_10) * HI_FILTER_1 + 
-					  (*p_i_3 + *p_i_9) * HI_FILTER_2 + 
-					  (*p_i_4 + *p_i_8) * HI_FILTER_3 +
-					  (*p_i_5 + *p_i_7) * HI_FILTER_4 + 
-					   *p_i_6 * HI_FILTER_5) * fBinSize;
+				*p_lo_line++ = (*p_i_0 + *p_i_10) * LO_FILTER_0 +
+					(*p_i_1 + *p_i_9) * LO_FILTER_1 +
+					(*p_i_2 + *p_i_8) * LO_FILTER_2 +
+					(*p_i_3 + *p_i_7) * LO_FILTER_3 +
+					(*p_i_4 + *p_i_6) * LO_FILTER_4 +
+					*p_i_5 * LO_FILTER_5;
+				f1 = ((*p_i_1 + *p_i_11) * HI_FILTER_0 +
+					(*p_i_2 + *p_i_10) * HI_FILTER_1 +
+					(*p_i_3 + *p_i_9) * HI_FILTER_2 +
+					(*p_i_4 + *p_i_8) * HI_FILTER_3 +
+					(*p_i_5 + *p_i_7) * HI_FILTER_4 +
+					*p_i_6 * HI_FILTER_5) * fBinSize;
 #ifdef NCS_VECTOR_CC
 				*p_hi_line16++ = (INT16)(f1 + 0.5);
 #else
-				FLT_TO_INT32(n1,f1);
+				FLT_TO_INT32(n1, f1);
 				*p_hi_line16++ = (INT16)n1;
 #endif
 				++p_i_0; ++p_i_1; ++p_i_2; ++p_i_3; ++p_i_4; ++p_i_5; ++p_i_6; ++p_i_7; ++p_i_8; ++p_i_9; ++p_i_10; ++p_i_11;
 			}
 			x_size = p_qmf->x_size;
-		} else {
+		}
+		else {
 #ifdef NCS_OPENMP
 #pragma omp parallel for private (f1,n1)
 #endif // NCS_OPENMP
-			for(i = 0; i < x_size; i++) {	// HIGPASS:	Generate HL and HH lines
+			for (i = 0; i < x_size; i++) {	// HIGPASS:	Generate HL and HH lines
 				// LO filter starts with even input, HI starts with odd input
-				f1 = ((*p_i_0 + *p_i_10) * LO_FILTER_0 + 
-					  (*p_i_1 + *p_i_9) * LO_FILTER_1 + 
-					  (*p_i_2 + *p_i_8) * LO_FILTER_2 + 
-					  (*p_i_3 + *p_i_7) * LO_FILTER_3 +
-					  (*p_i_4 + *p_i_6) * LO_FILTER_4 + 
-					   *p_i_5 * LO_FILTER_5) * fBinSize;
+				f1 = ((*p_i_0 + *p_i_10) * LO_FILTER_0 +
+					(*p_i_1 + *p_i_9) * LO_FILTER_1 +
+					(*p_i_2 + *p_i_8) * LO_FILTER_2 +
+					(*p_i_3 + *p_i_7) * LO_FILTER_3 +
+					(*p_i_4 + *p_i_6) * LO_FILTER_4 +
+					*p_i_5 * LO_FILTER_5) * fBinSize;
 #ifdef NCS_VECTOR_CC
 				*p_lo_line16++ = (INT16)(f1 + 0.5);
 #else
-				FLT_TO_INT32(n1,f1);
+				FLT_TO_INT32(n1, f1);
 				*p_lo_line16++ = (INT16)n1;
 #endif
-				f1 = ((*p_i_1 + *p_i_11) * HI_FILTER_0 + 
-					  (*p_i_2 + *p_i_10) * HI_FILTER_1 + 
-					  (*p_i_3 + *p_i_9) * HI_FILTER_2 + 
-					  (*p_i_4 + *p_i_8) * HI_FILTER_3 +
-					  (*p_i_5 + *p_i_7) * HI_FILTER_4 + 
-					   *p_i_6 * HI_FILTER_5) * fBinSize;
+				f1 = ((*p_i_1 + *p_i_11) * HI_FILTER_0 +
+					(*p_i_2 + *p_i_10) * HI_FILTER_1 +
+					(*p_i_3 + *p_i_9) * HI_FILTER_2 +
+					(*p_i_4 + *p_i_8) * HI_FILTER_3 +
+					(*p_i_5 + *p_i_7) * HI_FILTER_4 +
+					*p_i_6 * HI_FILTER_5) * fBinSize;
 #ifdef NCS_VECTOR_CC
 				*p_hi_line16++ = (INT16)(f1 + 0.5);
 #else
-				FLT_TO_INT32(n1,f1);
+				FLT_TO_INT32(n1, f1);
 				*p_hi_line16++ = (INT16)n1;
 #endif
 				++p_i_0; ++p_i_1; ++p_i_2; ++p_i_3; ++p_i_4; ++p_i_5; ++p_i_6; ++p_i_7; ++p_i_8; ++p_i_9; ++p_i_10; ++p_i_11;
@@ -684,128 +686,128 @@ static NCSError build_qmf_level_output_line(QmfLevelStruct *p_qmf, IEEE4 **p_p_l
 		p_p_in = p_band->p_p_hi_lines;
 		p_i_0 = p_p_in[0];	p_i_1 = p_p_in[1];	p_i_2 = p_p_in[2];	p_i_3 = p_p_in[3];
 		p_i_4 = p_p_in[4];	p_i_5 = p_p_in[5];	p_i_6 = p_p_in[6];	p_i_7 = p_p_in[7];
-		p_i_8 = p_p_in[8];	p_i_9 = p_p_in[9];	p_i_10 = p_p_in[10];p_i_11 = p_p_in[11];
+		p_i_8 = p_p_in[8];	p_i_9 = p_p_in[9];	p_i_10 = p_p_in[10]; p_i_11 = p_p_in[11];
 
 		p_lo_line16 = p_band->p_quantized_output_hl_block;
 		p_hi_line16 = p_band->p_quantized_output_hh_block;
-		if(!p_qmf->p_file_qmf->bLowMemCompress) {//[05]
-			p_lo_line16 += p_qmf->x_size * p_qmf->next_output_block_y_line;		
-			p_hi_line16 += p_qmf->x_size * p_qmf->next_output_block_y_line;		
+		if (!p_qmf->p_file_qmf->bLowMemCompress) {//[05]
+			p_lo_line16 += p_qmf->x_size * p_qmf->next_output_block_y_line;
+			p_hi_line16 += p_qmf->x_size * p_qmf->next_output_block_y_line;
 		}
 #ifdef NCS_OPENMP
 #pragma omp parallel for private (f1,n1)
 #endif // NCS_OPENMP
-/*		while(x_size > 256) {
-			BLOCK_PREFETCH_1K(p_i_0);
-			BLOCK_PREFETCH_1K(p_i_1);
-			BLOCK_PREFETCH_1K(p_i_2);
-			BLOCK_PREFETCH_1K(p_i_3);
-			BLOCK_PREFETCH_1K(p_i_4);
-			BLOCK_PREFETCH_1K(p_i_5);
-			BLOCK_PREFETCH_1K(p_i_6);
-			BLOCK_PREFETCH_1K(p_i_7);
-			BLOCK_PREFETCH_1K(p_i_8);
-			BLOCK_PREFETCH_1K(p_i_9);
-			BLOCK_PREFETCH_1K(p_i_10);
-			BLOCK_PREFETCH_1K(p_i_11);
+		/*		while(x_size > 256) {
+					BLOCK_PREFETCH_1K(p_i_0);
+					BLOCK_PREFETCH_1K(p_i_1);
+					BLOCK_PREFETCH_1K(p_i_2);
+					BLOCK_PREFETCH_1K(p_i_3);
+					BLOCK_PREFETCH_1K(p_i_4);
+					BLOCK_PREFETCH_1K(p_i_5);
+					BLOCK_PREFETCH_1K(p_i_6);
+					BLOCK_PREFETCH_1K(p_i_7);
+					BLOCK_PREFETCH_1K(p_i_8);
+					BLOCK_PREFETCH_1K(p_i_9);
+					BLOCK_PREFETCH_1K(p_i_10);
+					BLOCK_PREFETCH_1K(p_i_11);
 
-			for(i = 0; i < 256; i++) {
-				// LO filter starts with even input, HI starts with odd input
-				f1 = ((*p_i_0 + *p_i_10) * LO_FILTER_0 + 
-					  (*p_i_1 + *p_i_9) * LO_FILTER_1 + 
-					  (*p_i_2 + *p_i_8) * LO_FILTER_2 + 
-					  (*p_i_3 + *p_i_7) * LO_FILTER_3 +
-					  (*p_i_4 + *p_i_6) * LO_FILTER_4 + 
-					   *p_i_5 * LO_FILTER_5) * fBinSize;
-	#ifdef NCS_VECTOR_CC
-				*p_lo_line16++ = (INT16)(f1 + 0.5);
-	#else
-				FLT_TO_INT32(n1,f1);
-				*p_lo_line16++ = (INT16)n1;
-	#endif
-				f1 = ((*p_i_1 + *p_i_11) * HI_FILTER_0 + 
-					  (*p_i_2 + *p_i_10) * HI_FILTER_1 + 
-					  (*p_i_3 + *p_i_9) * HI_FILTER_2 + 
-					  (*p_i_4 + *p_i_8) * HI_FILTER_3 +
-					  (*p_i_5 + *p_i_7) * HI_FILTER_4 + 
-					   *p_i_6 * HI_FILTER_5) * fBinSize;
-	#ifdef NCS_VECTOR_CC
-				*p_hi_line16++ = (INT16)(f1 + 0.5);
-	#else
-				FLT_TO_INT32(n1,f1);
-				*p_hi_line16++ = (INT16)n1;
-	#endif
-				++p_i_0; ++p_i_1; ++p_i_2; ++p_i_3; ++p_i_4; ++p_i_5; ++p_i_6; ++p_i_7; ++p_i_8; ++p_i_9; ++p_i_10; ++p_i_11;
-			}
-			x_size -= 256;
-		}*/
-		for(i = 0; i < x_size; i++) {	// HIGPASS:	Generate HL and HH lines
+					for(i = 0; i < 256; i++) {
+						// LO filter starts with even input, HI starts with odd input
+						f1 = ((*p_i_0 + *p_i_10) * LO_FILTER_0 +
+							  (*p_i_1 + *p_i_9) * LO_FILTER_1 +
+							  (*p_i_2 + *p_i_8) * LO_FILTER_2 +
+							  (*p_i_3 + *p_i_7) * LO_FILTER_3 +
+							  (*p_i_4 + *p_i_6) * LO_FILTER_4 +
+							   *p_i_5 * LO_FILTER_5) * fBinSize;
+			#ifdef NCS_VECTOR_CC
+						*p_lo_line16++ = (INT16)(f1 + 0.5);
+			#else
+						FLT_TO_INT32(n1,f1);
+						*p_lo_line16++ = (INT16)n1;
+			#endif
+						f1 = ((*p_i_1 + *p_i_11) * HI_FILTER_0 +
+							  (*p_i_2 + *p_i_10) * HI_FILTER_1 +
+							  (*p_i_3 + *p_i_9) * HI_FILTER_2 +
+							  (*p_i_4 + *p_i_8) * HI_FILTER_3 +
+							  (*p_i_5 + *p_i_7) * HI_FILTER_4 +
+							   *p_i_6 * HI_FILTER_5) * fBinSize;
+			#ifdef NCS_VECTOR_CC
+						*p_hi_line16++ = (INT16)(f1 + 0.5);
+			#else
+						FLT_TO_INT32(n1,f1);
+						*p_hi_line16++ = (INT16)n1;
+			#endif
+						++p_i_0; ++p_i_1; ++p_i_2; ++p_i_3; ++p_i_4; ++p_i_5; ++p_i_6; ++p_i_7; ++p_i_8; ++p_i_9; ++p_i_10; ++p_i_11;
+					}
+					x_size -= 256;
+				}*/
+		for (i = 0; i < x_size; i++) {	// HIGPASS:	Generate HL and HH lines
 			// LO filter starts with even input, HI starts with odd input
-			f1 = ((*p_i_0 + *p_i_10) * LO_FILTER_0 + 
-				  (*p_i_1 + *p_i_9) * LO_FILTER_1 + 
-				  (*p_i_2 + *p_i_8) * LO_FILTER_2 + 
-				  (*p_i_3 + *p_i_7) * LO_FILTER_3 +
-				  (*p_i_4 + *p_i_6) * LO_FILTER_4 + 
-				   *p_i_5 * LO_FILTER_5) * fBinSize;
+			f1 = ((*p_i_0 + *p_i_10) * LO_FILTER_0 +
+				(*p_i_1 + *p_i_9) * LO_FILTER_1 +
+				(*p_i_2 + *p_i_8) * LO_FILTER_2 +
+				(*p_i_3 + *p_i_7) * LO_FILTER_3 +
+				(*p_i_4 + *p_i_6) * LO_FILTER_4 +
+				*p_i_5 * LO_FILTER_5) * fBinSize;
 #ifdef NCS_VECTOR_CC
 			*p_lo_line16++ = (INT16)(f1 + 0.5);
 #else
-			FLT_TO_INT32(n1,f1);
+			FLT_TO_INT32(n1, f1);
 			*p_lo_line16++ = (INT16)n1;
 #endif
-			f1 = ((*p_i_1 + *p_i_11) * HI_FILTER_0 + 
-				  (*p_i_2 + *p_i_10) * HI_FILTER_1 + 
-				  (*p_i_3 + *p_i_9) * HI_FILTER_2 + 
-				  (*p_i_4 + *p_i_8) * HI_FILTER_3 +
-				  (*p_i_5 + *p_i_7) * HI_FILTER_4 + 
-				   *p_i_6 * HI_FILTER_5) * fBinSize;
+			f1 = ((*p_i_1 + *p_i_11) * HI_FILTER_0 +
+				(*p_i_2 + *p_i_10) * HI_FILTER_1 +
+				(*p_i_3 + *p_i_9) * HI_FILTER_2 +
+				(*p_i_4 + *p_i_8) * HI_FILTER_3 +
+				(*p_i_5 + *p_i_7) * HI_FILTER_4 +
+				*p_i_6 * HI_FILTER_5) * fBinSize;
 #ifdef NCS_VECTOR_CC
 			*p_hi_line16++ = (INT16)(f1 + 0.5);
 #else
-			FLT_TO_INT32(n1,f1);
+			FLT_TO_INT32(n1, f1);
 			*p_hi_line16++ = (INT16)n1;
 #endif
 
-/*
-			*p_lo_line++ = *p_i_0 * LO_FILTER_0 + *p_i_1 * LO_FILTER_1 + *p_i_2 * LO_FILTER_2 + *p_i_3 * LO_FILTER_3
-						 + *p_i_4 * LO_FILTER_4 + *p_i_5 * LO_FILTER_5 + *p_i_6 * LO_FILTER_6 + *p_i_7 * LO_FILTER_7
-						 + *p_i_8 * LO_FILTER_8 + *p_i_9 * LO_FILTER_9 + *p_i_10 * LO_FILTER_10;
+			/*
+						*p_lo_line++ = *p_i_0 * LO_FILTER_0 + *p_i_1 * LO_FILTER_1 + *p_i_2 * LO_FILTER_2 + *p_i_3 * LO_FILTER_3
+									 + *p_i_4 * LO_FILTER_4 + *p_i_5 * LO_FILTER_5 + *p_i_6 * LO_FILTER_6 + *p_i_7 * LO_FILTER_7
+									 + *p_i_8 * LO_FILTER_8 + *p_i_9 * LO_FILTER_9 + *p_i_10 * LO_FILTER_10;
 
-			*p_hi_line++ = *p_i_1 * HI_FILTER_0 + *p_i_2 * HI_FILTER_1 + *p_i_3 * HI_FILTER_2 + *p_i_4 * HI_FILTER_3
-						 + *p_i_5 * HI_FILTER_4 + *p_i_6 * HI_FILTER_5 + *p_i_7 * HI_FILTER_6 + *p_i_8 * HI_FILTER_7
-						 + *p_i_9 * HI_FILTER_8 + *p_i_10 * HI_FILTER_9 + *p_i_11 * HI_FILTER_10;
-*/
+						*p_hi_line++ = *p_i_1 * HI_FILTER_0 + *p_i_2 * HI_FILTER_1 + *p_i_3 * HI_FILTER_2 + *p_i_4 * HI_FILTER_3
+									 + *p_i_5 * HI_FILTER_4 + *p_i_6 * HI_FILTER_5 + *p_i_7 * HI_FILTER_6 + *p_i_8 * HI_FILTER_7
+									 + *p_i_9 * HI_FILTER_8 + *p_i_10 * HI_FILTER_9 + *p_i_11 * HI_FILTER_10;
+			*/
 			++p_i_0; ++p_i_1; ++p_i_2; ++p_i_3; ++p_i_4; ++p_i_5; ++p_i_6; ++p_i_7; ++p_i_8; ++p_i_9; ++p_i_10; ++p_i_11;
 		}
-			x_size = p_qmf->x_size;
+		x_size = p_qmf->x_size;
 
 #ifdef NEVER_OLD_CODE_PRE_07
 		p_lo_line = p_p_ll_lines[band];
 		p_hi_line = p_band->p_output_lh_line;
-		for( i=0; i < p_qmf->x_size; i++ ) {
+		for (i = 0; i < p_qmf->x_size; i++) {
 			// Generate LL and LH lines
 			register	IEEE4	**p_p_in = p_band->p_p_lo_lines;
 
 			// LO filter starts with even input, HI starts with odd input
-			lo_result  = p_p_in[0][i]  * LO_FILTER_0;
-			hi_result  = p_p_in[1][i]  * HI_FILTER_0;
-			lo_result += p_p_in[1][i]  * LO_FILTER_1;
-			hi_result += p_p_in[2][i]  * HI_FILTER_1;
-			lo_result += p_p_in[2][i]  * LO_FILTER_2;
-			hi_result += p_p_in[3][i]  * HI_FILTER_2;
-			lo_result += p_p_in[3][i]  * LO_FILTER_3;
-			hi_result += p_p_in[4][i]  * HI_FILTER_3;
-			lo_result += p_p_in[4][i]  * LO_FILTER_4;
-			hi_result += p_p_in[5][i]  * HI_FILTER_4;
-			lo_result += p_p_in[5][i]  * LO_FILTER_5;
-			hi_result += p_p_in[6][i]  * HI_FILTER_5;
-			lo_result += p_p_in[6][i]  * LO_FILTER_6;
-			hi_result += p_p_in[7][i]  * HI_FILTER_6;
-			lo_result += p_p_in[7][i]  * LO_FILTER_7;
-			hi_result += p_p_in[8][i]  * HI_FILTER_7;
-			lo_result += p_p_in[8][i]  * LO_FILTER_8;
-			hi_result += p_p_in[9][i]  * HI_FILTER_8;
-			lo_result += p_p_in[9][i]  * LO_FILTER_9;
+			lo_result = p_p_in[0][i] * LO_FILTER_0;
+			hi_result = p_p_in[1][i] * HI_FILTER_0;
+			lo_result += p_p_in[1][i] * LO_FILTER_1;
+			hi_result += p_p_in[2][i] * HI_FILTER_1;
+			lo_result += p_p_in[2][i] * LO_FILTER_2;
+			hi_result += p_p_in[3][i] * HI_FILTER_2;
+			lo_result += p_p_in[3][i] * LO_FILTER_3;
+			hi_result += p_p_in[4][i] * HI_FILTER_3;
+			lo_result += p_p_in[4][i] * LO_FILTER_4;
+			hi_result += p_p_in[5][i] * HI_FILTER_4;
+			lo_result += p_p_in[5][i] * LO_FILTER_5;
+			hi_result += p_p_in[6][i] * HI_FILTER_5;
+			lo_result += p_p_in[6][i] * LO_FILTER_6;
+			hi_result += p_p_in[7][i] * HI_FILTER_6;
+			lo_result += p_p_in[7][i] * LO_FILTER_7;
+			hi_result += p_p_in[8][i] * HI_FILTER_7;
+			lo_result += p_p_in[8][i] * LO_FILTER_8;
+			hi_result += p_p_in[9][i] * HI_FILTER_8;
+			lo_result += p_p_in[9][i] * LO_FILTER_9;
 			hi_result += p_p_in[10][i] * HI_FILTER_9;
 			lo_result += p_p_in[10][i] * LO_FILTER_10;
 			hi_result += p_p_in[11][i] * HI_FILTER_10;
@@ -818,30 +820,30 @@ static NCSError build_qmf_level_output_line(QmfLevelStruct *p_qmf, IEEE4 **p_p_l
 		p_lo_line = p_band->p_output_hl_line;
 		p_hi_line = p_band->p_output_hh_line;
 
-		for( i=0; i < p_qmf->x_size; i++ ) {
+		for (i = 0; i < p_qmf->x_size; i++) {
 			// Generate LL and LH lines
 			register	IEEE4	**p_p_in = p_band->p_p_hi_lines;
 
 			// LO filter starts with even input, HI starts with odd input
-			lo_result  = p_p_in[0][i]  * LO_FILTER_0;
-			hi_result  = p_p_in[1][i]  * HI_FILTER_0;
-			lo_result += p_p_in[1][i]  * LO_FILTER_1;
-			hi_result += p_p_in[2][i]  * HI_FILTER_1;
-			lo_result += p_p_in[2][i]  * LO_FILTER_2;
-			hi_result += p_p_in[3][i]  * HI_FILTER_2;
-			lo_result += p_p_in[3][i]  * LO_FILTER_3;
-			hi_result += p_p_in[4][i]  * HI_FILTER_3;
-			lo_result += p_p_in[4][i]  * LO_FILTER_4;
-			hi_result += p_p_in[5][i]  * HI_FILTER_4;
-			lo_result += p_p_in[5][i]  * LO_FILTER_5;
-			hi_result += p_p_in[6][i]  * HI_FILTER_5;
-			lo_result += p_p_in[6][i]  * LO_FILTER_6;
-			hi_result += p_p_in[7][i]  * HI_FILTER_6;
-			lo_result += p_p_in[7][i]  * LO_FILTER_7;
-			hi_result += p_p_in[8][i]  * HI_FILTER_7;
-			lo_result += p_p_in[8][i]  * LO_FILTER_8;
-			hi_result += p_p_in[9][i]  * HI_FILTER_8;
-			lo_result += p_p_in[9][i]  * LO_FILTER_9;
+			lo_result = p_p_in[0][i] * LO_FILTER_0;
+			hi_result = p_p_in[1][i] * HI_FILTER_0;
+			lo_result += p_p_in[1][i] * LO_FILTER_1;
+			hi_result += p_p_in[2][i] * HI_FILTER_1;
+			lo_result += p_p_in[2][i] * LO_FILTER_2;
+			hi_result += p_p_in[3][i] * HI_FILTER_2;
+			lo_result += p_p_in[3][i] * LO_FILTER_3;
+			hi_result += p_p_in[4][i] * HI_FILTER_3;
+			lo_result += p_p_in[4][i] * LO_FILTER_4;
+			hi_result += p_p_in[5][i] * HI_FILTER_4;
+			lo_result += p_p_in[5][i] * LO_FILTER_5;
+			hi_result += p_p_in[6][i] * HI_FILTER_5;
+			lo_result += p_p_in[6][i] * LO_FILTER_6;
+			hi_result += p_p_in[7][i] * HI_FILTER_6;
+			lo_result += p_p_in[7][i] * LO_FILTER_7;
+			hi_result += p_p_in[8][i] * HI_FILTER_7;
+			lo_result += p_p_in[8][i] * LO_FILTER_8;
+			hi_result += p_p_in[9][i] * HI_FILTER_8;
+			lo_result += p_p_in[9][i] * LO_FILTER_9;
 			hi_result += p_p_in[10][i] * HI_FILTER_9;
 			lo_result += p_p_in[10][i] * LO_FILTER_10;
 			hi_result += p_p_in[11][i] * HI_FILTER_10;
@@ -850,7 +852,7 @@ static NCSError build_qmf_level_output_line(QmfLevelStruct *p_qmf, IEEE4 **p_p_l
 			*p_hi_line++ = hi_result;
 		}
 #endif
-	
+
 	}	/* end band loop */
 #ifndef NCS_VECTOR_CC
 	FLT_TO_INT_FINI();

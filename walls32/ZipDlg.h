@@ -12,9 +12,9 @@
 
 class CZipDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
-	CZipDlg(CPrjDoc *pDoc,CWnd* pParent = NULL);   // standard constructor
+	CZipDlg(CPrjDoc *pDoc, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CZipDlg)
@@ -27,10 +27,10 @@ public:
 	CPrjDoc *m_pDoc;
 	CString m_Message;
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CZipDlg)
-	protected:
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CZipDlg)
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
@@ -42,14 +42,14 @@ protected:
 	BOOL addSavedGrads(LPCSTR fspec);
 
 	char **m_pFile;
-	int m_iFileCnt,m_iFileLen;
+	int m_iFileCnt, m_iFileLen;
 
 	// Generated message map functions
 	//{{AFX_MSG(CZipDlg)
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBrowse();
 	//}}AFX_MSG
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()
 };
 
@@ -58,7 +58,7 @@ protected:
 
 class CZipCreateDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
 	CZipCreateDlg(CWnd* pParent = NULL);   // standard constructor
 
@@ -67,11 +67,11 @@ public:
 
 	BOOL m_bFcn;
 
-// Dialog Data
-	//{{AFX_DATA(CZipCreateDlg)
+	// Dialog Data
+		//{{AFX_DATA(CZipCreateDlg)
 	enum { IDD = IDD_ZIPCREATED };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+	// NOTE: the ClassWizard will add data members here
+//}}AFX_DATA
 
 
 // Overrides

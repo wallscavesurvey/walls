@@ -40,35 +40,35 @@
 #include "cairoint.h"
 
 cairo_private void
-_cairo_box_from_doubles (cairo_box_t *box,
-			 double *x1, double *y1,
-			 double *x2, double *y2)
+_cairo_box_from_doubles(cairo_box_t *box,
+	double *x1, double *y1,
+	double *x2, double *y2)
 {
-    box->p1.x = _cairo_fixed_from_double (*x1);
-    box->p1.y = _cairo_fixed_from_double (*y1);
-    box->p2.x = _cairo_fixed_from_double (*x2);
-    box->p2.y = _cairo_fixed_from_double (*y2);
+	box->p1.x = _cairo_fixed_from_double(*x1);
+	box->p1.y = _cairo_fixed_from_double(*y1);
+	box->p2.x = _cairo_fixed_from_double(*x2);
+	box->p2.y = _cairo_fixed_from_double(*y2);
 }
 
 cairo_private void
-_cairo_box_to_doubles (const cairo_box_t *box,
-		       double *x1, double *y1,
-		       double *x2, double *y2)
+_cairo_box_to_doubles(const cairo_box_t *box,
+	double *x1, double *y1,
+	double *x2, double *y2)
 {
-    *x1 = _cairo_fixed_to_double (box->p1.x);
-    *y1 = _cairo_fixed_to_double (box->p1.y);
-    *x2 = _cairo_fixed_to_double (box->p2.x);
-    *y2 = _cairo_fixed_to_double (box->p2.y);
+	*x1 = _cairo_fixed_to_double(box->p1.x);
+	*y1 = _cairo_fixed_to_double(box->p1.y);
+	*x2 = _cairo_fixed_to_double(box->p2.x);
+	*y2 = _cairo_fixed_to_double(box->p2.y);
 }
 
 void
-_cairo_box_from_rectangle (cairo_box_t                 *box,
-			   const cairo_rectangle_int_t *rect)
+_cairo_box_from_rectangle(cairo_box_t                 *box,
+	const cairo_rectangle_int_t *rect)
 {
-    box->p1.x = _cairo_fixed_from_int (rect->x);
-    box->p1.y = _cairo_fixed_from_int (rect->y);
-    box->p2.x = _cairo_fixed_from_int (rect->x + rect->width);
-    box->p2.y = _cairo_fixed_from_int (rect->y + rect->height);
+	box->p1.x = _cairo_fixed_from_int(rect->x);
+	box->p1.y = _cairo_fixed_from_int(rect->y);
+	box->p2.x = _cairo_fixed_from_int(rect->x + rect->width);
+	box->p2.y = _cairo_fixed_from_int(rect->y + rect->height);
 }
 
 /* XXX We currently have a confusing mix of boxes and rectangles as
@@ -86,44 +86,45 @@ _cairo_box_from_rectangle (cairo_box_t                 *box,
  */
 
 void
-_cairo_box_round_to_rectangle (const cairo_box_t     *box,
-			       cairo_rectangle_int_t *rectangle)
+_cairo_box_round_to_rectangle(const cairo_box_t     *box,
+	cairo_rectangle_int_t *rectangle)
 {
-    rectangle->x = _cairo_fixed_integer_floor (box->p1.x);
-    rectangle->y = _cairo_fixed_integer_floor (box->p1.y);
-    rectangle->width = _cairo_fixed_integer_ceil (box->p2.x) - rectangle->x;
-    rectangle->height = _cairo_fixed_integer_ceil (box->p2.y) - rectangle->y;
+	rectangle->x = _cairo_fixed_integer_floor(box->p1.x);
+	rectangle->y = _cairo_fixed_integer_floor(box->p1.y);
+	rectangle->width = _cairo_fixed_integer_ceil(box->p2.x) - rectangle->x;
+	rectangle->height = _cairo_fixed_integer_ceil(box->p2.y) - rectangle->y;
 }
 
 cairo_bool_t
-_cairo_rectangle_intersect (cairo_rectangle_int_t *dst,
-			    const cairo_rectangle_int_t *src)
+_cairo_rectangle_intersect(cairo_rectangle_int_t *dst,
+	const cairo_rectangle_int_t *src)
 {
-    int x1, y1, x2, y2;
+	int x1, y1, x2, y2;
 
-    x1 = MAX (dst->x, src->x);
-    y1 = MAX (dst->y, src->y);
-    /* Beware the unsigned promotion, fortunately we have bits to spare
-     * as (CAIRO_RECT_INT_MAX - CAIRO_RECT_INT_MIN) < UINT_MAX
-     */
-    x2 = MIN (dst->x + (int) dst->width,  src->x + (int) src->width);
-    y2 = MIN (dst->y + (int) dst->height, src->y + (int) src->height);
+	x1 = MAX(dst->x, src->x);
+	y1 = MAX(dst->y, src->y);
+	/* Beware the unsigned promotion, fortunately we have bits to spare
+	 * as (CAIRO_RECT_INT_MAX - CAIRO_RECT_INT_MIN) < UINT_MAX
+	 */
+	x2 = MIN(dst->x + (int)dst->width, src->x + (int)src->width);
+	y2 = MIN(dst->y + (int)dst->height, src->y + (int)src->height);
 
-    if (x1 >= x2 || y1 >= y2) {
-	dst->x = 0;
-	dst->y = 0;
-	dst->width  = 0;
-	dst->height = 0;
+	if (x1 >= x2 || y1 >= y2) {
+		dst->x = 0;
+		dst->y = 0;
+		dst->width = 0;
+		dst->height = 0;
 
-	return FALSE;
-    } else {
-	dst->x = x1;
-	dst->y = y1;
-	dst->width  = x2 - x1;
-	dst->height = y2 - y1;
+		return FALSE;
+	}
+	else {
+		dst->x = x1;
+		dst->y = y1;
+		dst->width = x2 - x1;
+		dst->height = y2 - y1;
 
-	return TRUE;
-    }
+		return TRUE;
+	}
 }
 
 #define P1x (line->p1.x)
@@ -146,80 +147,84 @@ _cairo_rectangle_intersect (cairo_rectangle_int_t *dst,
  */
 
 cairo_bool_t
-_cairo_box_intersects_line_segment (cairo_box_t *box, cairo_line_t *line)
+_cairo_box_intersects_line_segment(cairo_box_t *box, cairo_line_t *line)
 {
-    cairo_fixed_t t1=0, t2=0, t3=0, t4=0;
-    cairo_int64_t t1y, t2y, t3x, t4x;
+	cairo_fixed_t t1 = 0, t2 = 0, t3 = 0, t4 = 0;
+	cairo_int64_t t1y, t2y, t3x, t4x;
 
-    cairo_fixed_t xlen, ylen;
+	cairo_fixed_t xlen, ylen;
 
-    if (_cairo_box_contains_point(box, &line->p1) ||
-	_cairo_box_contains_point(box, &line->p2))
-	return TRUE;
+	if (_cairo_box_contains_point(box, &line->p1) ||
+		_cairo_box_contains_point(box, &line->p2))
+		return TRUE;
 
-    xlen = P2x - P1x;
-    ylen = P2y - P1y;
+	xlen = P2x - P1x;
+	ylen = P2y - P1y;
 
-    if (xlen) {
-	if (xlen > 0) {
-	    t1 = B1x - P1x;
-	    t2 = B2x - P1x;
-	} else {
-	    t1 = P1x - B2x;
-	    t2 = P1x - B1x;
-	    xlen = - xlen;
+	if (xlen) {
+		if (xlen > 0) {
+			t1 = B1x - P1x;
+			t2 = B2x - P1x;
+		}
+		else {
+			t1 = P1x - B2x;
+			t2 = P1x - B1x;
+			xlen = -xlen;
+		}
+
+		if ((t1 < 0 || t1 > xlen) &&
+			(t2 < 0 || t2 > xlen))
+			return FALSE;
+	}
+	else {
+		/* Fully vertical line -- check that X is in bounds */
+		if (P1x < B1x || P1x > B2x)
+			return FALSE;
 	}
 
-	if ((t1 < 0 || t1 > xlen) &&
-	    (t2 < 0 || t2 > xlen))
-	    return FALSE;
-    } else {
-	/* Fully vertical line -- check that X is in bounds */
-	if (P1x < B1x || P1x > B2x)
-	    return FALSE;
-    }
+	if (ylen) {
+		if (ylen > 0) {
+			t3 = B1y - P1y;
+			t4 = B2y - P1y;
+		}
+		else {
+			t3 = P1y - B2y;
+			t4 = P1y - B1y;
+			ylen = -ylen;
+		}
 
-    if (ylen) {
-	if (ylen > 0) {
-	    t3 = B1y - P1y;
-	    t4 = B2y - P1y;
-	} else {
-	    t3 = P1y - B2y;
-	    t4 = P1y - B1y;
-	    ylen = - ylen;
+		if ((t3 < 0 || t3 > ylen) &&
+			(t4 < 0 || t4 > ylen))
+			return FALSE;
+	}
+	else {
+		/* Fully horizontal line -- check Y */
+		if (P1y < B1y || P1y > B2y)
+			return FALSE;
 	}
 
-	if ((t3 < 0 || t3 > ylen) &&
-	    (t4 < 0 || t4 > ylen))
-	    return FALSE;
-    } else {
-	/* Fully horizontal line -- check Y */
-	if (P1y < B1y || P1y > B2y)
-	    return FALSE;
-    }
+	/* If we had a horizontal or vertical line, then it's already been checked */
+	if (P1x == P2x || P1y == P2y)
+		return TRUE;
 
-    /* If we had a horizontal or vertical line, then it's already been checked */
-    if (P1x == P2x || P1y == P2y)
-	return TRUE;
+	/* Check overlap.  Note that t1 < t2 and t3 < t4 here. */
+	t1y = _cairo_int32x32_64_mul(t1, ylen);
+	t2y = _cairo_int32x32_64_mul(t2, ylen);
+	t3x = _cairo_int32x32_64_mul(t3, xlen);
+	t4x = _cairo_int32x32_64_mul(t4, xlen);
 
-    /* Check overlap.  Note that t1 < t2 and t3 < t4 here. */
-    t1y = _cairo_int32x32_64_mul (t1, ylen);
-    t2y = _cairo_int32x32_64_mul (t2, ylen);
-    t3x = _cairo_int32x32_64_mul (t3, xlen);
-    t4x = _cairo_int32x32_64_mul (t4, xlen);
+	if (_cairo_int64_lt(t1y, t4x) &&
+		_cairo_int64_lt(t3x, t2y))
+		return TRUE;
 
-    if (_cairo_int64_lt(t1y, t4x) &&
-	_cairo_int64_lt(t3x, t2y))
-	return TRUE;
-
-    return FALSE;
+	return FALSE;
 }
 
 cairo_bool_t
-_cairo_box_contains_point (cairo_box_t *box, cairo_point_t *point)
+_cairo_box_contains_point(cairo_box_t *box, cairo_point_t *point)
 {
-    if (point->x < box->p1.x || point->x > box->p2.x ||
-	point->y < box->p1.y || point->y > box->p2.y)
-	return FALSE;
-    return TRUE;
+	if (point->x < box->p1.x || point->x > box->p2.x ||
+		point->y < box->p1.y || point->y > box->p2.y)
+		return FALSE;
+	return TRUE;
 }

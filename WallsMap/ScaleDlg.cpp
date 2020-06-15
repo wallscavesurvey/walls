@@ -13,23 +13,23 @@
 
 IMPLEMENT_DYNAMIC(CScaleDlg, CDialog)
 
-CScaleDlg::CScaleDlg(CWallsMapDoc *pDoc,CWnd* pParent /*=NULL*/)
-	: CDialog(CScaleDlg::IDD, pParent),m_pDoc(pDoc),m_pFolder(NULL)
+CScaleDlg::CScaleDlg(CWallsMapDoc *pDoc, CWnd* pParent /*=NULL*/)
+	: CDialog(CScaleDlg::IDD, pParent), m_pDoc(pDoc), m_pFolder(NULL)
 {
-	m_pLayer=(PML)pDoc->SelectedLayerPtr();
-	if(m_pLayer->IsFolder()) {
-		m_pFolder=m_pLayer;
-		m_pLayer=(PML)m_pLayer->FirstChildPML();
+	m_pLayer = (PML)pDoc->SelectedLayerPtr();
+	if (m_pLayer->IsFolder()) {
+		m_pFolder = m_pLayer;
+		m_pLayer = (PML)m_pLayer->FirstChildPML();
 		VERIFY(m_pLayer);
 	}
-		
-	m_bLayerShowAll=!m_pLayer->scaleRange.bLayerNoShow;
-	m_csLayerZoomIn.Format("%u",m_pLayer->scaleRange.uLayerZoomIn);
-	m_csLayerZoomOut.Format("%u",m_pLayer->scaleRange.uLayerZoomOut);
 
-	m_bLabelShowAll=!m_pLayer->scaleRange.bLabelNoShow;
-	m_csLabelZoomIn.Format("%u",m_pLayer->scaleRange.uLabelZoomIn);
-	m_csLabelZoomOut.Format("%u",m_pLayer->scaleRange.uLabelZoomOut);
+	m_bLayerShowAll = !m_pLayer->scaleRange.bLayerNoShow;
+	m_csLayerZoomIn.Format("%u", m_pLayer->scaleRange.uLayerZoomIn);
+	m_csLayerZoomOut.Format("%u", m_pLayer->scaleRange.uLayerZoomOut);
+
+	m_bLabelShowAll = !m_pLayer->scaleRange.bLabelNoShow;
+	m_csLabelZoomIn.Format("%u", m_pLayer->scaleRange.uLabelZoomIn);
+	m_csLabelZoomOut.Format("%u", m_pLayer->scaleRange.uLabelZoomOut);
 }
 
 CScaleDlg::~CScaleDlg()
@@ -58,36 +58,36 @@ void CScaleDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_LAYER_ZOOMOUT, m_csLayerZoomOut);
 	DDV_MaxChars(pDX, m_csLayerZoomOut, 12);
 
-	if(pDX->m_bSaveAndValidate) {
+	if (pDX->m_bSaveAndValidate) {
 		CScaleRange range;
-		range.bLabelNoShow=!m_bLabelShowAll;
-		range.bLayerNoShow=!m_bLayerShowAll;
-		range.uLabelZoomIn=atoi(m_csLabelZoomIn);
-		range.uLabelZoomOut=atoi(m_csLabelZoomOut);
-		range.uLayerZoomIn=atoi(m_csLayerZoomIn);
-		range.uLayerZoomOut=atoi(m_csLayerZoomOut);
-		if(SetChildRanges(m_pFolder?(PML)m_pFolder:m_pLayer,range)) {
+		range.bLabelNoShow = !m_bLabelShowAll;
+		range.bLayerNoShow = !m_bLayerShowAll;
+		range.uLabelZoomIn = atoi(m_csLabelZoomIn);
+		range.uLabelZoomOut = atoi(m_csLabelZoomOut);
+		range.uLayerZoomIn = atoi(m_csLayerZoomIn);
+		range.uLayerZoomOut = atoi(m_csLayerZoomOut);
+		if (SetChildRanges(m_pFolder ? (PML)m_pFolder : m_pLayer, range)) {
 			m_pDoc->RefreshViews();
 		}
 	}
 }
 
-bool CScaleDlg::SetChildRanges(PML pml,CScaleRange &range)
+bool CScaleDlg::SetChildRanges(PML pml, CScaleRange &range)
 {
-	bool bRet=false;
-	if(!pml->IsFolder()) {
-		if(pml->LayerType()!=TYP_SHP) range.bLabelNoShow=0;
-		if(memcmp(&range,&pml->scaleRange,sizeof(CScaleRange))) {
-			int iVisibility=pml->IsVisible()?pml->Visibility():0;
-			pml->scaleRange=range;
+	bool bRet = false;
+	if (!pml->IsFolder()) {
+		if (pml->LayerType() != TYP_SHP) range.bLabelNoShow = 0;
+		if (memcmp(&range, &pml->scaleRange, sizeof(CScaleRange))) {
+			int iVisibility = pml->IsVisible() ? pml->Visibility() : 0;
+			pml->scaleRange = range;
 			m_pDoc->SetChanged();
-			bRet=pml->IsVisible() && iVisibility!=pml->Visibility();
+			bRet = pml->IsVisible() && iVisibility != pml->Visibility();
 		}
-		range.bLabelNoShow=!m_bLabelShowAll;
+		range.bLabelNoShow = !m_bLabelShowAll;
 		return bRet;
 	}
-	for(pml=(PML)pml->child;pml;pml=(PML)pml->nextsib) {
-	  if(SetChildRanges(pml,range)) bRet=true;
+	for (pml = (PML)pml->child; pml; pml = (PML)pml->nextsib) {
+		if (SetChildRanges(pml, range)) bRet = true;
 	}
 	return bRet;
 }
@@ -97,7 +97,7 @@ BEGIN_MESSAGE_MAP(CScaleDlg, CDialog)
 	ON_BN_CLICKED(IDC_LAYER_NOSHOW, &CScaleDlg::OnBnClickedLayerNoshow)
 	ON_BN_CLICKED(IDC_LABEL_SHOWALL, &CScaleDlg::OnBnClickedLabelNoshow)
 	ON_BN_CLICKED(IDC_LAYER_SHOWALL, &CScaleDlg::OnBnClickedLayerNoshow)
-	ON_MESSAGE(WM_COMMANDHELP,OnCommandHelp)
+	ON_MESSAGE(WM_COMMANDHELP, OnCommandHelp)
 END_MESSAGE_MAP()
 
 
@@ -106,21 +106,21 @@ END_MESSAGE_MAP()
 BOOL CScaleDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	SetWndTitle(this,0,(m_pFolder?m_pFolder:m_pLayer)->Title());
+	SetWndTitle(this, 0, (m_pFolder ? m_pFolder : m_pLayer)->Title());
 
 	{
-		CString csFormat,csMsg;
-		CWallsMapView *pView=m_pDoc->GetFirstView();
-		ASSERT(pView && pView->GetDocument()==m_pDoc);
+		CString csFormat, csMsg;
+		CWallsMapView *pView = m_pDoc->GetFirstView();
+		ASSERT(pView && pView->GetDocument() == m_pDoc);
 		GetDlgItem(IDC_ST_CURRENTSCALE)->GetWindowText(csFormat);
-		csMsg.Format(csFormat,pView->GetScaleDenom());
+		csMsg.Format(csFormat, pView->GetScaleDenom());
 		GetDlgItem(IDC_ST_CURRENTSCALE)->SetWindowText(csMsg);
 	}
 
-	if(m_pLayer->LayerType()!=TYP_SHP) {
-		m_bLabelShowAll=TRUE;
-		Enable(IDC_LABEL_NOSHOW,FALSE);
-		Enable(IDC_LABEL_SHOWALL,FALSE);
+	if (m_pLayer->LayerType() != TYP_SHP) {
+		m_bLabelShowAll = TRUE;
+		Enable(IDC_LABEL_NOSHOW, FALSE);
+		Enable(IDC_LABEL_SHOWALL, FALSE);
 	}
 
 	EnableLayerRange();
@@ -134,25 +134,25 @@ BOOL CScaleDlg::OnInitDialog()
 
 void CScaleDlg::EnableLayerRange()
 {
-	Enable(IDC_LAYER_ZOOMOUT,!m_bLayerShowAll);
-	Enable(IDC_LAYER_ZOOMIN,!m_bLayerShowAll);
+	Enable(IDC_LAYER_ZOOMOUT, !m_bLayerShowAll);
+	Enable(IDC_LAYER_ZOOMIN, !m_bLayerShowAll);
 }
 
 void CScaleDlg::EnableLabelRange()
 {
-	Enable(IDC_LABEL_ZOOMOUT,!m_bLabelShowAll);
-	Enable(IDC_LABEL_ZOOMIN,!m_bLabelShowAll);
+	Enable(IDC_LABEL_ZOOMOUT, !m_bLabelShowAll);
+	Enable(IDC_LABEL_ZOOMIN, !m_bLabelShowAll);
 }
 
 void CScaleDlg::OnBnClickedLabelNoshow()
 {
-	m_bLabelShowAll=!IsChecked(IDC_LABEL_NOSHOW);
+	m_bLabelShowAll = !IsChecked(IDC_LABEL_NOSHOW);
 	EnableLabelRange();
 }
 
 void CScaleDlg::OnBnClickedLayerNoshow()
 {
-	m_bLayerShowAll=!IsChecked(IDC_LAYER_NOSHOW);
+	m_bLayerShowAll = !IsChecked(IDC_LAYER_NOSHOW);
 	EnableLayerRange();
 }
 

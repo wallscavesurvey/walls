@@ -8,7 +8,7 @@ public:
 	CModeless(LPCSTR title, LPCSTR msg, UINT delay);   // standard constructor
 	virtual ~CModeless();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_MODELESS_WIN };
 
 	static CModeless *m_pModeless;

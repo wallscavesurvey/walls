@@ -11,7 +11,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 
-const UINT nMessage=::RegisterWindowMessage("ComboSelEndOK");
+const UINT nMessage = ::RegisterWindowMessage("ComboSelEndOK");
 
 /////////////////////////////////////////////////////////////////////////////
 // CDisabledCombo
@@ -49,166 +49,166 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CDisabledCombo message handlers
 
-void CDisabledCombo::PreSubclassWindow() 
+void CDisabledCombo::PreSubclassWindow()
 {
 	// TODO: Add your specialized code here and/or call the base class
-	ASSERT((GetStyle()&(CBS_OWNERDRAWFIXED|CBS_HASSTRINGS))==(CBS_OWNERDRAWFIXED|CBS_HASSTRINGS));
+	ASSERT((GetStyle()&(CBS_OWNERDRAWFIXED | CBS_HASSTRINGS)) == (CBS_OWNERDRAWFIXED | CBS_HASSTRINGS));
 	CComboBox::PreSubclassWindow();
 }
 
-void CDisabledCombo::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct) 
+void CDisabledCombo::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
 	// TODO: Add your code to draw the specified item
-	CDC* pDC = CDC::FromHandle (lpDrawItemStruct->hDC);
+	CDC* pDC = CDC::FromHandle(lpDrawItemStruct->hDC);
 
 	if (((LONG)(lpDrawItemStruct->itemID) >= 0) &&
 		(lpDrawItemStruct->itemAction & (ODA_DRAWENTIRE | ODA_SELECT)))
 	{
-		BOOL fDisabled = !IsWindowEnabled () || !IsItemEnabled(lpDrawItemStruct->itemID);
+		BOOL fDisabled = !IsWindowEnabled() || !IsItemEnabled(lpDrawItemStruct->itemID);
 
 		COLORREF newTextColor = fDisabled ?
-			RGB(0x80, 0x80, 0x80) : GetSysColor (COLOR_WINDOWTEXT);  // light gray
+			RGB(0x80, 0x80, 0x80) : GetSysColor(COLOR_WINDOWTEXT);  // light gray
 
-		COLORREF oldTextColor = pDC->SetTextColor (newTextColor);
+		COLORREF oldTextColor = pDC->SetTextColor(newTextColor);
 
-		COLORREF newBkColor = GetSysColor (COLOR_WINDOW);
-		COLORREF oldBkColor = pDC->SetBkColor (newBkColor);
+		COLORREF newBkColor = GetSysColor(COLOR_WINDOW);
+		COLORREF oldBkColor = pDC->SetBkColor(newBkColor);
 
 		if (newTextColor == newBkColor)
 			newTextColor = RGB(0xC0, 0xC0, 0xC0);   // dark gray
 
 		if (!fDisabled && ((lpDrawItemStruct->itemState & ODS_SELECTED) != 0))
 		{
-			pDC->SetTextColor (GetSysColor (COLOR_HIGHLIGHTTEXT));
-			pDC->SetBkColor (GetSysColor (COLOR_HIGHLIGHT));
+			pDC->SetTextColor(GetSysColor(COLOR_HIGHLIGHTTEXT));
+			pDC->SetBkColor(GetSysColor(COLOR_HIGHLIGHT));
 		}
 
 		CString strText;
 		GetLBText(lpDrawItemStruct->itemID, strText);
 
-		const RECT &rc=lpDrawItemStruct->rcItem;
+		const RECT &rc = lpDrawItemStruct->rcItem;
 
 		pDC->ExtTextOut(rc.left + 2,
-				  rc.top + 2,// + max(0, (cyItem - m_cyText) / 2),
-				  ETO_OPAQUE, &rc,
-				  strText, strText.GetLength (), NULL);
+			rc.top + 2,// + max(0, (cyItem - m_cyText) / 2),
+			ETO_OPAQUE, &rc,
+			strText, strText.GetLength(), NULL);
 
-		pDC->SetTextColor (oldTextColor);
-		pDC->SetBkColor (oldBkColor);
+		pDC->SetTextColor(oldTextColor);
+		pDC->SetBkColor(oldBkColor);
 	}
-	else if ((LONG)(lpDrawItemStruct->itemID)<0)	// drawing edit text
+	else if ((LONG)(lpDrawItemStruct->itemID) < 0)	// drawing edit text
 	{
-		COLORREF newTextColor = GetSysColor (COLOR_WINDOWTEXT);  // light gray
-		COLORREF oldTextColor = pDC->SetTextColor (newTextColor);
+		COLORREF newTextColor = GetSysColor(COLOR_WINDOWTEXT);  // light gray
+		COLORREF oldTextColor = pDC->SetTextColor(newTextColor);
 
-		COLORREF newBkColor = GetSysColor (COLOR_WINDOW);
-		COLORREF oldBkColor = pDC->SetBkColor (newBkColor);
+		COLORREF newBkColor = GetSysColor(COLOR_WINDOW);
+		COLORREF oldBkColor = pDC->SetBkColor(newBkColor);
 
 		if ((lpDrawItemStruct->itemState & ODS_SELECTED) != 0)
 		{
-			pDC->SetTextColor (GetSysColor (COLOR_HIGHLIGHTTEXT));
-			pDC->SetBkColor (GetSysColor (COLOR_HIGHLIGHT));
+			pDC->SetTextColor(GetSysColor(COLOR_HIGHLIGHTTEXT));
+			pDC->SetBkColor(GetSysColor(COLOR_HIGHLIGHT));
 		}
 
 		CString strText;
 		GetWindowText(strText);
-		const RECT &rc=lpDrawItemStruct->rcItem;
+		const RECT &rc = lpDrawItemStruct->rcItem;
 
 		pDC->ExtTextOut(rc.left + 2,
-				  rc.top + 2,// + max(0, (cyItem - m_cyText) / 2),
-				  ETO_OPAQUE, &rc,
-				  strText, strText.GetLength (), NULL);
+			rc.top + 2,// + max(0, (cyItem - m_cyText) / 2),
+			ETO_OPAQUE, &rc,
+			strText, strText.GetLength(), NULL);
 
-		pDC->SetTextColor (oldTextColor);
-		pDC->SetBkColor (oldBkColor);
+		pDC->SetTextColor(oldTextColor);
+		pDC->SetBkColor(oldBkColor);
 	}
 
 	if ((lpDrawItemStruct->itemAction & ODA_FOCUS) != 0)
 		pDC->DrawFocusRect(&lpDrawItemStruct->rcItem);
-	
+
 }
 
-void CDisabledCombo::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct) 
+void CDisabledCombo::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 {
 	// TODO: Add your code to determine the size of specified item
 	UNREFERENCED_PARAMETER(lpMeasureItemStruct);
 }
 
-int CDisabledCombo::OnCharToItem(UINT nChar, CListBox* pListBox, UINT nIndex) 
+int CDisabledCombo::OnCharToItem(UINT nChar, CListBox* pListBox, UINT nIndex)
 {
 	// TODO: Add your message handler code here and/or call default
-	
-	int ret=CComboBox::OnCharToItem(nChar, pListBox, nIndex);
-	if (ret>=0 && !IsItemEnabled(ret))
+
+	int ret = CComboBox::OnCharToItem(nChar, pListBox, nIndex);
+	if (ret >= 0 && !IsItemEnabled(ret))
 		return -2;
 	else
 		return ret;
 }
 
-void CDisabledCombo::OnSelendok() 
+void CDisabledCombo::OnSelendok()
 {
 	// TODO: Add your control notification handler code here
 	GetWindowText(m_strSavedText);
-	PostMessage(nMessage);	
+	PostMessage(nMessage);
 }
 
-LRESULT CDisabledCombo::OnRealSelEndOK(WPARAM,LPARAM)
+LRESULT CDisabledCombo::OnRealSelEndOK(WPARAM, LPARAM)
 {
 	CString currentText;
 	GetWindowText(currentText);
 
-	int index=FindStringExact(-1,currentText);
-	if (index>=0 && !IsItemEnabled(index))
+	int index = FindStringExact(-1, currentText);
+	if (index >= 0 && !IsItemEnabled(index))
 	{
 		SetWindowText(m_strSavedText);
-		GetParent()->SendMessage(WM_COMMAND,MAKELONG(GetWindowLong(m_hWnd,GWL_ID),CBN_SELCHANGE),(LPARAM)m_hWnd);
+		GetParent()->SendMessage(WM_COMMAND, MAKELONG(GetWindowLong(m_hWnd, GWL_ID), CBN_SELCHANGE), (LPARAM)m_hWnd);
 	}
 
 	return 0;
 }
 
-LRESULT CDisabledCombo::OnCtlColor(WPARAM,LPARAM lParam)
+LRESULT CDisabledCombo::OnCtlColor(WPARAM, LPARAM lParam)
 {
-	if (m_ListBox.m_hWnd==NULL && lParam!=0 && lParam!=(LPARAM)m_hWnd)
+	if (m_ListBox.m_hWnd == NULL && lParam != 0 && lParam != (LPARAM)m_hWnd)
 		m_ListBox.SubclassWindow((HWND)lParam);
 
 	return Default();
 }
 
 
-void CDisabledCombo::PostNcDestroy() 
+void CDisabledCombo::PostNcDestroy()
 {
 	// TODO: Add your specialized code here and/or call the base class
 //	m_ListBox.UnsubclassWindow();
 	m_ListBox.Detach();
-	
+
 	CComboBox::PostNcDestroy();
 }
 
 void CDisabledCombo::RecalcDropWidth()
 {
-    // Reset the dropped width
-    int nNumEntries = GetCount();
-    int nWidth = 0;
-    CString str;
+	// Reset the dropped width
+	int nNumEntries = GetCount();
+	int nWidth = 0;
+	CString str;
 
-    CClientDC dc(this);
-    int nSave = dc.SaveDC();
-    dc.SelectObject(GetFont());
+	CClientDC dc(this);
+	int nSave = dc.SaveDC();
+	dc.SelectObject(GetFont());
 
-    int nScrollWidth = ::GetSystemMetrics(SM_CXVSCROLL);
-    for (int i = 0; i < nNumEntries; i++)
-    {
-        GetLBText(i, str);
-        int nLength = dc.GetTextExtent(str).cx + nScrollWidth;
-        nWidth = max(nWidth, nLength);
-    }
-    
-    // Add margin space to the calculations
-    nWidth += dc.GetTextExtent("0").cx;
+	int nScrollWidth = ::GetSystemMetrics(SM_CXVSCROLL);
+	for (int i = 0; i < nNumEntries; i++)
+	{
+		GetLBText(i, str);
+		int nLength = dc.GetTextExtent(str).cx + nScrollWidth;
+		nWidth = max(nWidth, nLength);
+	}
 
-    dc.RestoreDC(nSave);
-    SetDroppedWidth(nWidth);
+	// Add margin space to the calculations
+	nWidth += dc.GetTextExtent("0").cx;
+
+	dc.RestoreDC(nSave);
+	SetDroppedWidth(nWidth);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -216,7 +216,7 @@ void CDisabledCombo::RecalcDropWidth()
 
 CListBoxInsideComboBox::CListBoxInsideComboBox()
 {
-	m_Parent=NULL;
+	m_Parent = NULL;
 }
 
 CListBoxInsideComboBox::~CListBoxInsideComboBox()
@@ -234,24 +234,24 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CListBoxInsideComboBox message handlers
 
-void CListBoxInsideComboBox::OnLButtonUp(UINT nFlags, CPoint point) 
+void CListBoxInsideComboBox::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
 	CRect rect;	GetClientRect(rect);
 
 	if (rect.PtInRect(point))
 	{
-		BOOL outside=FALSE;
-		int index=((CListBox *)this)->ItemFromPoint(point,outside);
+		BOOL outside = FALSE;
+		int index = ((CListBox *)this)->ItemFromPoint(point, outside);
 		if (!outside && !m_Parent->IsItemEnabled(index))
 			return;	// don't click there
 	}
-	
+
 	CWnd::OnLButtonUp(nFlags, point);
 }
 
 
 void CListBoxInsideComboBox::SetParent(CDisabledCombo *ptr)
 {
-	m_Parent=ptr;
+	m_Parent = ptr;
 }

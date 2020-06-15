@@ -4,61 +4,61 @@
 
 QvPList::QvPList()
 {
-    ptrs  = NULL;
-    nPtrs = ptrsSize = 0;
+	ptrs = NULL;
+	nPtrs = ptrsSize = 0;
 
-    setSize(0);
+	setSize(0);
 }
 
 QvPList::~QvPList()
 {
-    if (ptrs != NULL)
-	delete [] ptrs;
+	if (ptrs != NULL)
+		delete[] ptrs;
 }
 
 int
 QvPList::find(const void *ptr) const
 {
-    int i;
+	int i;
 
-    for (i = 0; i < nPtrs; i++)
-	if (ptrs[i] == ptr)
-	    return(i);
+	for (i = 0; i < nPtrs; i++)
+		if (ptrs[i] == ptr)
+			return(i);
 
-    return -1;
+	return -1;
 }
 
 void
 QvPList::remove(int which)
 {
-    int i;
+	int i;
 
-    for (i = which; i < nPtrs - 1; i++)
-	ptrs[i] = ptrs[i + 1];
+	for (i = which; i < nPtrs - 1; i++)
+		ptrs[i] = ptrs[i + 1];
 
-    setSize(nPtrs - 1);
+	setSize(nPtrs - 1);
 }
 
 void
 QvPList::expand(int size)
 {
-    void	**newPtrs;
-    int	i;
+	void	**newPtrs;
+	int	i;
 
-    if (ptrsSize == 0)
-	ptrsSize = DEFAULT_INITIAL_SIZE;
+	if (ptrsSize == 0)
+		ptrsSize = DEFAULT_INITIAL_SIZE;
 
-    while (size > ptrsSize) {
-	ptrsSize *= 2;
-    }
+	while (size > ptrsSize) {
+		ptrsSize *= 2;
+	}
 
-    newPtrs = new (void *[ptrsSize]);
+	newPtrs = new (void *[ptrsSize]);
 
-    if (ptrs != NULL) {
-	for (i = 0; i < nPtrs; i++)
-	    newPtrs[i] = ptrs[i];
-	delete [] ptrs;
-    }
+	if (ptrs != NULL) {
+		for (i = 0; i < nPtrs; i++)
+			newPtrs[i] = ptrs[i];
+		delete[] ptrs;
+	}
 
-    ptrs = newPtrs;
+	ptrs = newPtrs;
 }

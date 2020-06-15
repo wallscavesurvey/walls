@@ -13,13 +13,13 @@ CDIBWrapper::CDIBWrapper()
 {
 	m_pRT = NULL;
 	m_pBR = NULL;
-    m_hBitmap     = NULL;
-    m_hOldBitmap  = NULL;
+	m_hBitmap = NULL;
+	m_hOldBitmap = NULL;
 }
 
 CDIBWrapper::~CDIBWrapper()
 {
-    DeleteObject();
+	DeleteObject();
 	SafeRelease(&m_pRT);
 	SafeRelease(&m_pBR);
 }
@@ -27,12 +27,12 @@ CDIBWrapper::~CDIBWrapper()
 ID2D1DCRenderTarget * CDIBWrapper::InitRT()
 {
 	if ((!m_pRT && 0 > d2d_pFactory->CreateDCRenderTarget(&d2d_props, &m_pRT)) ||
-			0 > m_pRT->BindDC(m_MemDC, CRect(0, 0, m_iWidth, m_iHeight)))
+		0 > m_pRT->BindDC(m_MemDC, CRect(0, 0, m_iWidth, m_iHeight)))
 	{
-			SafeRelease(&m_pRT);
-			SafeRelease(&m_pBR);
-			ASSERT(0);
-			return NULL;
+		SafeRelease(&m_pRT);
+		SafeRelease(&m_pBR);
+		ASSERT(0);
+		return NULL;
 	}
 	//reset transform --
 	m_pRT->SetTransform(D2D1::Matrix3x2F::Identity());
@@ -43,7 +43,7 @@ ID2D1SolidColorBrush * CDIBWrapper::InitBR(COLORREF rgb, float opacity)
 {
 	ASSERT(m_pRT);
 	if (!m_pBR) {
-		if (0>m_pRT->CreateSolidColorBrush(RGBAtoD2D(rgb,opacity), &m_pBR)) {
+		if (0 > m_pRT->CreateSolidColorBrush(RGBAtoD2D(rgb, opacity), &m_pBR)) {
 			return NULL;
 		}
 	}
@@ -58,15 +58,15 @@ ID2D1SolidColorBrush * CDIBWrapper::InitBR(COLORREF rgb, float opacity)
 // --- Effect : Resets the object to an empty state, and frees all memory used.
 void CDIBWrapper::DeleteObject()
 {
-    // Unselect the bitmap out of the memory DC before deleting bitmap
-    ReleaseMemoryDC();
-    if (m_hBitmap) ::DeleteObject(m_hBitmap);
-    m_hBitmap = NULL;
-    m_ppvBits = NULL;
+	// Unselect the bitmap out of the memory DC before deleting bitmap
+	ReleaseMemoryDC();
+	if (m_hBitmap) ::DeleteObject(m_hBitmap);
+	m_hBitmap = NULL;
+	m_ppvBits = NULL;
 	SafeRelease(&m_pRT);
 	SafeRelease(&m_pBR);
-	m_iHeight=m_iWidth=0;
-    m_iColorTableSize = 0;
+	m_iHeight = m_iWidth = 0;
+	m_iColorTableSize = 0;
 }
 
 // --- In  : pDC   - Points to destination device context
@@ -74,48 +74,48 @@ void CDIBWrapper::DeleteObject()
 // --- Out :
 // --- Returns : TRUE on success
 // --- Effect : Draws the image 1:1 on the device context
-BOOL CDIBWrapper::Draw(HDC destDC,int x,int y) 
-{ 
-    if (!m_hBitmap) return FALSE;
-    BOOL bResult = ::BitBlt(destDC,x,y,GetWidth(),GetHeight(),GetMemoryHDC(destDC),0,0,SRCCOPY);
-    return bResult;
+BOOL CDIBWrapper::Draw(HDC destDC, int x, int y)
+{
+	if (!m_hBitmap) return FALSE;
+	BOOL bResult = ::BitBlt(destDC, x, y, GetWidth(), GetHeight(), GetMemoryHDC(destDC), 0, 0, SRCCOPY);
+	return bResult;
 }
 
-BOOL CDIBWrapper::Fill(HBRUSH hbr) 
-{ 
-    if (!m_hBitmap) return FALSE;
+BOOL CDIBWrapper::Fill(HBRUSH hbr)
+{
+	if (!m_hBitmap) return FALSE;
 
-    BOOL bResult = FALSE;
+	BOOL bResult = FALSE;
 
-    // Create a memory DC compatible with the destination DC
-    CDC* pMemDC = GetMemoryDC();
-    if (!pMemDC) return FALSE;
+	// Create a memory DC compatible with the destination DC
+	CDC* pMemDC = GetMemoryDC();
+	if (!pMemDC) return FALSE;
 
-	HBRUSH hbrOld=(HBRUSH)pMemDC->SelectObject(hbr);
-    bResult = pMemDC->BitBlt(0, 0, GetWidth(), GetHeight(), NULL, 0, 0,PATCOPY);
-    pMemDC->SelectObject(hbrOld);
+	HBRUSH hbrOld = (HBRUSH)pMemDC->SelectObject(hbr);
+	bResult = pMemDC->BitBlt(0, 0, GetWidth(), GetHeight(), NULL, 0, 0, PATCOPY);
+	pMemDC->SelectObject(hbrOld);
 
-    return bResult;
+	return bResult;
 }
 
 // --- In  : pDestDC - Points to destination device context
 //           (x,y)   - point at which the topleft corner of the image is drawn
 //           (cx,cy) - size to stretch the image
 // --- Out : Returns : TRUE on success
-BOOL CDIBWrapper::Stretch(HDC destDC,int x,int y,int cx,int cy,int mode)
-{ 
-    if (!m_hBitmap) return FALSE;
+BOOL CDIBWrapper::Stretch(HDC destDC, int x, int y, int cx, int cy, int mode)
+{
+	if (!m_hBitmap) return FALSE;
 
- 	int iPrevMode=::SetStretchBltMode(destDC,mode);
+	int iPrevMode = ::SetStretchBltMode(destDC, mode);
 	//::SetBrushOrgEx(pDestDC->m_hDC,0,0,NULL);
-	BOOL bResult=::StretchBlt(destDC,x,y,cx,cy,GetMemoryHDC(destDC),0,0,GetWidth(),GetHeight(),SRCCOPY);
+	BOOL bResult = ::StretchBlt(destDC, x, y, cx, cy, GetMemoryHDC(destDC), 0, 0, GetWidth(), GetHeight(), SRCCOPY);
 #ifdef _DEBUG
-	if(!bResult) {
+	if (!bResult) {
 		LastErrorBox();
 	}
 #endif
-	::SetStretchBltMode(destDC,iPrevMode);
-    return bResult;
+	::SetStretchBltMode(destDC, iPrevMode);
+	return bResult;
 }
 
 // --- In  : pDC - device context to use when calling CreateCompatibleDC
@@ -130,46 +130,46 @@ BOOL CDIBWrapper::Stretch(HDC destDC,int x,int y,int cx,int cy,int mode)
 //              the screen may change, then you will need to set "m_bReuseMemDC" to FALSE
 CDC* CDIBWrapper::GetMemoryDC(CDC* pDC /*=NULL*/)
 {
-    if (m_MemDC.GetSafeHdc())   // Already created?
-    {
-        // Flush the GDI batch queue 
-        GdiFlush();
-        return &m_MemDC;
-    }
+	if (m_MemDC.GetSafeHdc())   // Already created?
+	{
+		// Flush the GDI batch queue 
+		GdiFlush();
+		return &m_MemDC;
+	}
 
-    // Create a memory DC compatible with the given DC
-    if (!m_MemDC.CreateCompatibleDC(pDC)) return NULL;
+	// Create a memory DC compatible with the given DC
+	if (!m_MemDC.CreateCompatibleDC(pDC)) return NULL;
 
-    // Select in the bitmap
-    m_hOldBitmap = (HBITMAP) ::SelectObject(m_MemDC.GetSafeHdc(), m_hBitmap);
+	// Select in the bitmap
+	m_hOldBitmap = (HBITMAP) ::SelectObject(m_MemDC.GetSafeHdc(), m_hBitmap);
 
-    // Flush the GDI batch queue 
-    GdiFlush();
+	// Flush the GDI batch queue 
+	GdiFlush();
 
-    return &m_MemDC;
+	return &m_MemDC;
 }
 
 HDC CDIBWrapper::GetMemoryHDC(HDC dc/*dc=NULL*/)
 {
-	HDC hdc=m_MemDC.m_hDC;
-    if (hdc)   // Already created?
-    {
-        // Flush the GDI batch queue 
-        GdiFlush();
-        return hdc;
-    }
+	HDC hdc = m_MemDC.m_hDC;
+	if (hdc)   // Already created?
+	{
+		// Flush the GDI batch queue 
+		GdiFlush();
+		return hdc;
+	}
 
-    // Create a memory DC compatible with the given DC
-   if(!(hdc=::CreateCompatibleDC(dc))) return NULL;
-   VERIFY(m_MemDC.Attach(hdc));
+	// Create a memory DC compatible with the given DC
+	if (!(hdc = ::CreateCompatibleDC(dc))) return NULL;
+	VERIFY(m_MemDC.Attach(hdc));
 
-    // Select in the bitmap
-    m_hOldBitmap = (HBITMAP) ::SelectObject(hdc, m_hBitmap);
+	// Select in the bitmap
+	m_hOldBitmap = (HBITMAP) ::SelectObject(hdc, m_hBitmap);
 
-    // Flush the GDI batch queue 
-    GdiFlush();
+	// Flush the GDI batch queue 
+	GdiFlush();
 
-    return hdc;
+	return hdc;
 }
 
 // --- Returns : TRUE on success
@@ -185,19 +185,19 @@ HDC CDIBWrapper::GetMemoryHDC(HDC dc/*dc=NULL*/)
 //               the same code fragment will still work.
 BOOL CDIBWrapper::ReleaseMemoryDC()
 {
-    if ( !m_MemDC.GetSafeHdc())
-        return TRUE; // Nothing to do
+	if (!m_MemDC.GetSafeHdc())
+		return TRUE; // Nothing to do
 
-    // Flush the GDI batch queue 
-    GdiFlush();
+	// Flush the GDI batch queue 
+	GdiFlush();
 
-    // Select out the current bitmap
-    if (m_hOldBitmap) ::SelectObject(m_MemDC.GetSafeHdc(), m_hOldBitmap);
-    m_hOldBitmap = NULL;
+	// Select out the current bitmap
+	if (m_hOldBitmap) ::SelectObject(m_MemDC.GetSafeHdc(), m_hOldBitmap);
+	m_hOldBitmap = NULL;
 
-    // Delete the memory DC
-    VERIFY(m_MemDC.DeleteDC());
-	m_MemDC.m_hDC=NULL;
+	// Delete the memory DC
+	VERIFY(m_MemDC.DeleteDC());
+	m_MemDC.m_hDC = NULL;
 	return TRUE;
 }
 
@@ -209,74 +209,74 @@ BOOL CDIBWrapper::ReleaseMemoryDC()
 //              lpBits. If failure, then object is initialised back to an empty bitmap.
 BOOL CDIBWrapper::InitBitmap(LPBITMAPINFO lpBitmapInfo)
 {
-    DeleteObject();
+	DeleteObject();
 
-    if (!lpBitmapInfo) return FALSE;
+	if (!lpBitmapInfo) return FALSE;
 
-    HDC hDC = NULL;
-    TRY {
-        BITMAPINFOHEADER& bmih = lpBitmapInfo->bmiHeader;
+	HDC hDC = NULL;
+	TRY{
+		BITMAPINFOHEADER& bmih = lpBitmapInfo->bmiHeader;
 
-        // Compute the number of colors in the color table
-        //m_iColorTableSize = NumColorEntries(bmih.biBitCount, bmih.biCompression, bmih.biClrUsed);
-		m_iColorTableSize = bmih.biClrUsed;
+	// Compute the number of colors in the color table
+	//m_iColorTableSize = NumColorEntries(bmih.biBitCount, bmih.biCompression, bmih.biClrUsed);
+	m_iColorTableSize = bmih.biClrUsed;
 
-        //DWORD dwBitmapInfoSize = sizeof(BITMAPINFOHEADER) + m_iColorTableSize*sizeof(RGBQUAD);
+	//DWORD dwBitmapInfoSize = sizeof(BITMAPINFOHEADER) + m_iColorTableSize*sizeof(RGBQUAD);
 
-        // Copy over BITMAPINFO contents
-        //memcpy(&m_DIBinfo, lpBitmapInfo, dwBitmapInfoSize);
+	// Copy over BITMAPINFO contents
+	//memcpy(&m_DIBinfo, lpBitmapInfo, dwBitmapInfoSize);
 
-        // Should now have all the info we need to create the sucker.
-        //TRACE(_T("Width %d, Height %d, Bits/pixel %d, Image Size %d\n"),
-        //      bmih.biWidth, bmih.biHeight, bmih.biBitCount, bmih.biSizeImage);
+	// Should now have all the info we need to create the sucker.
+	//TRACE(_T("Width %d, Height %d, Bits/pixel %d, Image Size %d\n"),
+	//      bmih.biWidth, bmih.biHeight, bmih.biBitCount, bmih.biSizeImage);
 
-        // Create a DC which will be used to get DIB, then create DIBsection
-        hDC = ::GetDC(NULL);
-        if (!hDC) 
-        {
-            TRACE0("Unable to get DC\n");
-            AfxThrowResourceException();
-        }
+	// Create a DC which will be used to get DIB, then create DIBsection
+	hDC = ::GetDC(NULL);
+	if (!hDC)
+	{
+		TRACE0("Unable to get DC\n");
+		AfxThrowResourceException();
+	}
 
-		m_iBitCount=bmih.biBitCount;
-		m_iHeight=abs(bmih.biHeight);
-		m_iWidth=bmih.biWidth;
+	m_iBitCount = bmih.biBitCount;
+	m_iHeight = abs(bmih.biHeight);
+	m_iWidth = bmih.biWidth;
 
-        if(!bmih.biSizeImage) {
-             bmih.biSizeImage = GetImageSize();
-        }
+	if (!bmih.biSizeImage) {
+		 bmih.biSizeImage = GetImageSize();
+	}
 
-        m_hBitmap = CreateDIBSection(hDC, lpBitmapInfo, DIB_RGB_COLORS, &m_ppvBits, NULL, 0);
-		if (!m_hBitmap)
-        {
-		    TRACE0("CreateDIBSection failed\n");
-            AfxThrowResourceException();
-        }
+	m_hBitmap = CreateDIBSection(hDC, lpBitmapInfo, DIB_RGB_COLORS, &m_ppvBits, NULL, 0);
+	if (!m_hBitmap)
+	{
+		TRACE0("CreateDIBSection failed\n");
+		AfxThrowResourceException();
+	}
 
-        // Flush the GDI batch queue 
-        GdiFlush();
+	// Flush the GDI batch queue 
+	GdiFlush();
 #ifdef _DEBUG
-		if(!GetMemoryHDC(hDC)) {
-		    TRACE0("GetMemoryDC failed\n");
+		if (!GetMemoryHDC(hDC)) {
+			TRACE0("GetMemoryDC failed\n");
 			AfxThrowResourceException();
 		}
 #endif
 		::DeleteObject(hDC);
-		hDC=NULL;
-    }
-    CATCH (CException,e)
-    {
-        e->Delete();
+		hDC = NULL;
+	}
+		CATCH(CException, e)
+	{
+		e->Delete();
 #ifdef _DEBUG
-        _TraceLastError();
+		_TraceLastError();
 #endif
-		if(hDC) ::DeleteObject(hDC);
+		if (hDC) ::DeleteObject(hDC);
 		DeleteObject();
-        return FALSE;
-    }
+		return FALSE;
+	}
 	END_CATCH
 
-    return TRUE;
+		return TRUE;
 }
 
 #ifdef _USE_DIBSAVE
@@ -289,48 +289,48 @@ BOOL CDIBWrapper::Save(LPCTSTR szFile)
 	BITMAPFILEHEADER	hdr;
 	LPBITMAPINFOHEADER	lpbi;
 
-	#define DS_BITMAP_FILEMARKER  ((WORD) ('M' << 8) | 'B')    // is always "BM" = 0x4D42
+#define DS_BITMAP_FILEMARKER  ((WORD) ('M' << 8) | 'B')    // is always "BM" = 0x4D42
 
 	if (!m_hBitmap || m_iColorTableSize)
 		return FALSE;
 
 	CFile file;
-	if( !file.Open( szFile, CFile::modeWrite|CFile::modeCreate) )
+	if (!file.Open(szFile, CFile::modeWrite | CFile::modeCreate))
 		return FALSE;
 
 	DIBSECTION dib;
-	if(!::GetObject(m_hBitmap,sizeof(dib),&dib))
+	if (!::GetObject(m_hBitmap, sizeof(dib), &dib))
 		return FALSE;
 
 	lpbi = &dib.dsBmih;
 
 	//lpbi->biHeight=-lpbi->biHeight;
 
-    DWORD dwBitmapInfoSize = sizeof(BITMAPINFO) + (m_iColorTableSize - 1)*sizeof(RGBQUAD);
-    DWORD dwFileHeaderSize = dwBitmapInfoSize + sizeof(hdr);
+	DWORD dwBitmapInfoSize = sizeof(BITMAPINFO) + (m_iColorTableSize - 1) * sizeof(RGBQUAD);
+	DWORD dwFileHeaderSize = dwBitmapInfoSize + sizeof(hdr);
 
-    // Fill in the fields of the file header 
-    hdr.bfType       = DS_BITMAP_FILEMARKER;
-    hdr.bfSize       = dwFileHeaderSize + lpbi->biSizeImage;
-    hdr.bfReserved1  = 0;
-    hdr.bfReserved2  = 0;
-    hdr.bfOffBits    = dwFileHeaderSize;
+	// Fill in the fields of the file header 
+	hdr.bfType = DS_BITMAP_FILEMARKER;
+	hdr.bfSize = dwFileHeaderSize + lpbi->biSizeImage;
+	hdr.bfReserved1 = 0;
+	hdr.bfReserved2 = 0;
+	hdr.bfOffBits = dwFileHeaderSize;
 
-    // Write the file header 
-    file.Write(&hdr, sizeof(hdr));
+	// Write the file header 
+	file.Write(&hdr, sizeof(hdr));
 
-    // Write the DIB header
-    file.Write(lpbi, dwBitmapInfoSize);
+	// Write the DIB header
+	file.Write(lpbi, dwBitmapInfoSize);
 
-    // Write DIB bits
-    file.Write(GetDIBits(), lpbi->biSizeImage);
+	// Write DIB bits
+	file.Write(GetDIBits(), lpbi->biSizeImage);
 
-    return TRUE;
+	return TRUE;
 
 	/*
 	int nColors = 1 << lpbi->biBitCount;
 
-	// Fill in the fields of the file header 
+	// Fill in the fields of the file header
 	hdr.bfType		= ((WORD) ('M' << 8) | 'B');	// is always "BM"
 	hdr.bfSize		= GlobalSize (m_hBitmap) + sizeof( hdr );
 	hdr.bfReserved1 	= 0;
@@ -338,10 +338,10 @@ BOOL CDIBWrapper::Save(LPCTSTR szFile)
 	hdr.bfOffBits		= (DWORD) (sizeof( hdr ) + lpbi->biSize +
 						nColors * sizeof(RGBQUAD));
 
-	// Write the file header 
+	// Write the file header
 	file.Write( &hdr, sizeof(hdr) );
 
-	// Write the DIB header and the bits 
+	// Write the DIB header and the bits
 	file.Write( lpbi, GlobalSize(m_hBitmap) );
 
 	return TRUE;
@@ -355,20 +355,20 @@ BOOL CDIBWrapper::Save(LPCTSTR szFile)
 #ifdef _DEBUG
 void CDIBWrapper::AssertValid() const
 {
-    ASSERT(m_hBitmap);
+	ASSERT(m_hBitmap);
 
-    DIBSECTION ds;
-    DWORD dwSize = GetObject( m_hBitmap, sizeof(DIBSECTION), &ds );
-    ASSERT(dwSize == sizeof(DIBSECTION));
+	DIBSECTION ds;
+	DWORD dwSize = GetObject(m_hBitmap, sizeof(DIBSECTION), &ds);
+	ASSERT(dwSize == sizeof(DIBSECTION));
 
-    ASSERT(ds.dsBmih.biClrUsed==m_iColorTableSize);
+	ASSERT(ds.dsBmih.biClrUsed == m_iColorTableSize);
 
-    CObject::AssertValid();
+	CObject::AssertValid();
 }
 
 void CDIBWrapper::Dump(CDumpContext& dc) const
 {
-    CObject::Dump(dc);
+	CObject::Dump(dc);
 }
 
 #endif //_DEBUG

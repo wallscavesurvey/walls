@@ -8,14 +8,14 @@
 // from/to application profile and CArchive.
 //
 struct CWindowPlacement : public tagWINDOWPLACEMENT {
-   CWindowPlacement();
-   ~CWindowPlacement();
-   
-   // Read/write to app profile
-   void GetProfileWP();
-   void WriteProfileWP();
+	CWindowPlacement();
+	~CWindowPlacement();
 
-   // Save/restore window pos (from app profile)
-   void Save(CWnd* pWnd);
-   BOOL Restore(CWnd* pWnd);
+	// Read/write to app profile
+	void GetProfileWP();
+	void WriteProfileWP();
+
+	// Save/restore window pos (from app profile)
+	void Save(CWnd* pWnd);
+	BOOL Restore(CWnd* pWnd);
 };

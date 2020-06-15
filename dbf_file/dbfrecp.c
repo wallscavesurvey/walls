@@ -4,5 +4,5 @@
 
 LPVOID DBFAPI dbf_RecPtr(DBF_NO dbf)
 {
-  return _GETDBFU ? _DBFU->U_Rec:NULL;
+	return _GETDBFU ? _DBFU->U_Rec : NULL;
 }

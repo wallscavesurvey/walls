@@ -22,10 +22,10 @@ public:
 
 	void SetSelected(int i)
 	{
-		SetItemState(i,LVIS_SELECTED,LVIS_SELECTED);
-		SetItemState(i,LVIS_FOCUSED,LVIS_FOCUSED);
+		SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+		SetItemState(i, LVIS_FOCUSED, LVIS_FOCUSED);
 	}
-	
+
 private:
 	bool m_bDragging;
 	bool m_bDropBelow;
@@ -53,7 +53,7 @@ protected:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg void OnMovetoTop();
 	afx_msg void OnMovetobottom();
-	afx_msg LRESULT OnTabletQuerySystemGestureStatus(WPARAM,LPARAM);
+	afx_msg LRESULT OnTabletQuerySystemGestureStatus(WPARAM, LPARAM);
 
 	DECLARE_MESSAGE_MAP()
 };

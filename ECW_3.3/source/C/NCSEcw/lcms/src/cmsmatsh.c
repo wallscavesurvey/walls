@@ -51,85 +51,85 @@
 static
 int ComputeTables(LPGAMMATABLE Table[3], LPWORD Out[3], LPL16PARAMS p16)
 {
-    int i, AllLinear;
+	int i, AllLinear;
 
-       cmsCalcL16Params(Table[0] -> nEntries, p16);
+	cmsCalcL16Params(Table[0]->nEntries, p16);
 
-       AllLinear = 0;
-       for (i=0; i < 3; i++)
-       {
-        LPWORD PtrW;
+	AllLinear = 0;
+	for (i = 0; i < 3; i++)
+	{
+		LPWORD PtrW;
 
-        PtrW = (LPWORD) malloc(sizeof(WORD) * p16 -> nSamples);
+		PtrW = (LPWORD)malloc(sizeof(WORD) * p16->nSamples);
 
-        if (PtrW == NULL) return -1;  // Signal error            
-              
-        CopyMemory(PtrW, Table[i] -> GammaTable, sizeof(WORD) * Table[i] -> nEntries);
+		if (PtrW == NULL) return -1;  // Signal error            
 
-        Out[i] = PtrW;      // Set table pointer
+		CopyMemory(PtrW, Table[i]->GammaTable, sizeof(WORD) * Table[i]->nEntries);
 
-        // Linear after all?
+		Out[i] = PtrW;      // Set table pointer
 
-        AllLinear   += cmsIsLinear(PtrW, p16 -> nSamples);
-       }
+		// Linear after all?
 
-       // If is all linear, then supress table interpolation (this
-       // will speed greately some trivial operations. 
-       // Return 1 if present, 0 if all linear
-       
+		AllLinear += cmsIsLinear(PtrW, p16->nSamples);
+	}
 
-       if (AllLinear != 3) return 1;
+	// If is all linear, then supress table interpolation (this
+	// will speed greately some trivial operations. 
+	// Return 1 if present, 0 if all linear
 
-       return 0;
+
+	if (AllLinear != 3) return 1;
+
+	return 0;
 
 }
 
 
 LPMATSHAPER cmsAllocMatShaper2(LPMAT3 Matrix, LPGAMMATABLE In[], LPGAMMATABLE Out[], DWORD Behaviour)
 {
-       LPMATSHAPER NewMatShaper;
-       int rc;
+	LPMATSHAPER NewMatShaper;
+	int rc;
 
-       NewMatShaper = (LPMATSHAPER) malloc(sizeof(MATSHAPER));
-       if (NewMatShaper)
-              ZeroMemory(NewMatShaper, sizeof(MATSHAPER));
+	NewMatShaper = (LPMATSHAPER)malloc(sizeof(MATSHAPER));
+	if (NewMatShaper)
+		ZeroMemory(NewMatShaper, sizeof(MATSHAPER));
 
-       NewMatShaper->dwFlags = Behaviour & (MATSHAPER_ALLSMELTED);
+	NewMatShaper->dwFlags = Behaviour & (MATSHAPER_ALLSMELTED);
 
-       // Fill matrix part
+	// Fill matrix part
 
-       MAT3toFix(&NewMatShaper -> Matrix, Matrix);
+	MAT3toFix(&NewMatShaper->Matrix, Matrix);
 
-       // Reality check
+	// Reality check
 
-       if (!MAT3isIdentity(&NewMatShaper -> Matrix, 0.00001))
-                     NewMatShaper -> dwFlags |= MATSHAPER_HASMATRIX;
+	if (!MAT3isIdentity(&NewMatShaper->Matrix, 0.00001))
+		NewMatShaper->dwFlags |= MATSHAPER_HASMATRIX;
 
-       // Now, on the table characteristics
+	// Now, on the table characteristics
 
-       if (Out) {
+	if (Out) {
 
-            rc = ComputeTables(Out, NewMatShaper ->L, &NewMatShaper ->p16);
-            if (rc < 0) {
-                 cmsFreeMatShaper(NewMatShaper);
-                 return NULL;
-            }
-            if (rc == 1) NewMatShaper -> dwFlags |= MATSHAPER_HASSHAPER;        
-       }
+		rc = ComputeTables(Out, NewMatShaper->L, &NewMatShaper->p16);
+		if (rc < 0) {
+			cmsFreeMatShaper(NewMatShaper);
+			return NULL;
+		}
+		if (rc == 1) NewMatShaper->dwFlags |= MATSHAPER_HASSHAPER;
+	}
 
 
-       if (In) {
+	if (In) {
 
-            rc = ComputeTables(In, NewMatShaper ->L2, &NewMatShaper ->p2_16);
-            if (rc < 0) {
-                cmsFreeMatShaper(NewMatShaper);
-                return NULL;
-            }
-            if (rc == 1) NewMatShaper -> dwFlags |= MATSHAPER_HASINPSHAPER;     
-       }
+		rc = ComputeTables(In, NewMatShaper->L2, &NewMatShaper->p2_16);
+		if (rc < 0) {
+			cmsFreeMatShaper(NewMatShaper);
+			return NULL;
+		}
+		if (rc == 1) NewMatShaper->dwFlags |= MATSHAPER_HASINPSHAPER;
+	}
 
-       
-       return NewMatShaper;
+
+	return NewMatShaper;
 
 }
 
@@ -139,59 +139,59 @@ LPMATSHAPER cmsAllocMatShaper2(LPMAT3 Matrix, LPGAMMATABLE In[], LPGAMMATABLE Ou
 
 LPMATSHAPER cmsAllocMatShaper(LPMAT3 Matrix, LPGAMMATABLE Tables[], DWORD Behaviour)
 {
-       LPMATSHAPER NewMatShaper;
-       int i, AllLinear;
+	LPMATSHAPER NewMatShaper;
+	int i, AllLinear;
 
-       NewMatShaper = (LPMATSHAPER) malloc(sizeof(MATSHAPER));
-       if (NewMatShaper)
-              ZeroMemory(NewMatShaper, sizeof(MATSHAPER));
+	NewMatShaper = (LPMATSHAPER)malloc(sizeof(MATSHAPER));
+	if (NewMatShaper)
+		ZeroMemory(NewMatShaper, sizeof(MATSHAPER));
 
-       NewMatShaper->dwFlags = Behaviour & (MATSHAPER_ALLSMELTED);
+	NewMatShaper->dwFlags = Behaviour & (MATSHAPER_ALLSMELTED);
 
-       // Fill matrix part
+	// Fill matrix part
 
-       MAT3toFix(&NewMatShaper -> Matrix, Matrix);
+	MAT3toFix(&NewMatShaper->Matrix, Matrix);
 
-       // Reality check
+	// Reality check
 
-       if (!MAT3isIdentity(&NewMatShaper -> Matrix, 0.00001))
-                     NewMatShaper -> dwFlags |= MATSHAPER_HASMATRIX;
+	if (!MAT3isIdentity(&NewMatShaper->Matrix, 0.00001))
+		NewMatShaper->dwFlags |= MATSHAPER_HASMATRIX;
 
-       // Now, on the table characteristics
+	// Now, on the table characteristics
 
-       cmsCalcL16Params(Tables[0] -> nEntries, &NewMatShaper -> p16);
+	cmsCalcL16Params(Tables[0]->nEntries, &NewMatShaper->p16);
 
-       // Copy tables
+	// Copy tables
 
-       AllLinear = 0;
-       for (i=0; i < 3; i++)
-       {
-        LPWORD PtrW;
+	AllLinear = 0;
+	for (i = 0; i < 3; i++)
+	{
+		LPWORD PtrW;
 
-        PtrW = (LPWORD) malloc(sizeof(WORD) * NewMatShaper -> p16.nSamples);
+		PtrW = (LPWORD)malloc(sizeof(WORD) * NewMatShaper->p16.nSamples);
 
-        if (PtrW == NULL) {
-              cmsFreeMatShaper(NewMatShaper);
-              return NULL;
-        }
+		if (PtrW == NULL) {
+			cmsFreeMatShaper(NewMatShaper);
+			return NULL;
+		}
 
-        CopyMemory(PtrW, Tables[i] -> GammaTable,
-                            sizeof(WORD) * Tables[i] -> nEntries);
+		CopyMemory(PtrW, Tables[i]->GammaTable,
+			sizeof(WORD) * Tables[i]->nEntries);
 
-        NewMatShaper -> L[i] = PtrW;      // Set table pointer
+		NewMatShaper->L[i] = PtrW;      // Set table pointer
 
-        // Linear after all?
+		// Linear after all?
 
-        AllLinear   += cmsIsLinear(PtrW, NewMatShaper -> p16.nSamples);
-       }
+		AllLinear += cmsIsLinear(PtrW, NewMatShaper->p16.nSamples);
+	}
 
-       // If is all linear, then supress table interpolation (this
-       // will speed greately some trivial operations
+	// If is all linear, then supress table interpolation (this
+	// will speed greately some trivial operations
 
-       if (AllLinear != 3)
-              NewMatShaper -> dwFlags |= MATSHAPER_HASSHAPER;
+	if (AllLinear != 3)
+		NewMatShaper->dwFlags |= MATSHAPER_HASSHAPER;
 
-       return NewMatShaper;
+	return NewMatShaper;
 }
 
 
@@ -200,17 +200,17 @@ LPMATSHAPER cmsAllocMatShaper(LPMAT3 Matrix, LPGAMMATABLE Tables[], DWORD Behavi
 
 void cmsFreeMatShaper(LPMATSHAPER MatShaper)
 {
-       int i;
+	int i;
 
-       if (!MatShaper) return;
+	if (!MatShaper) return;
 
-       for (i=0; i < 3; i++)
-       {
-              if (MatShaper -> L[i]) free(MatShaper ->L[i]);
-              if (MatShaper -> L2[i]) free(MatShaper ->L2[i]);
-       }
+	for (i = 0; i < 3; i++)
+	{
+		if (MatShaper->L[i]) free(MatShaper->L[i]);
+		if (MatShaper->L2[i]) free(MatShaper->L2[i]);
+	}
 
-       free(MatShaper);
+	free(MatShaper);
 }
 
 
@@ -220,91 +220,91 @@ static
 void AllSmeltedBehaviour(LPMATSHAPER MatShaper, WORD In[], WORD Out[])
 {
 
-       WORD tmp[3];
-       WVEC3 InVect, OutVect;
+	WORD tmp[3];
+	WVEC3 InVect, OutVect;
 
-       if (MatShaper -> dwFlags & MATSHAPER_HASINPSHAPER)
-       {
-       InVect.n[VX] = cmsLinearInterpFixed(In[0], MatShaper -> L2[0], &MatShaper -> p2_16);
-       InVect.n[VY] = cmsLinearInterpFixed(In[1], MatShaper -> L2[1], &MatShaper -> p2_16);
-       InVect.n[VZ] = cmsLinearInterpFixed(In[2], MatShaper -> L2[2], &MatShaper -> p2_16);
-       }
-       else
-       {
-            InVect.n[VX] = ToFixedDomain(In[0]);
-            InVect.n[VY] = ToFixedDomain(In[1]);
-            InVect.n[VZ] = ToFixedDomain(In[2]);
-       }
+	if (MatShaper->dwFlags & MATSHAPER_HASINPSHAPER)
+	{
+		InVect.n[VX] = cmsLinearInterpFixed(In[0], MatShaper->L2[0], &MatShaper->p2_16);
+		InVect.n[VY] = cmsLinearInterpFixed(In[1], MatShaper->L2[1], &MatShaper->p2_16);
+		InVect.n[VZ] = cmsLinearInterpFixed(In[2], MatShaper->L2[2], &MatShaper->p2_16);
+	}
+	else
+	{
+		InVect.n[VX] = ToFixedDomain(In[0]);
+		InVect.n[VY] = ToFixedDomain(In[1]);
+		InVect.n[VZ] = ToFixedDomain(In[2]);
+	}
 
 
-       if (MatShaper -> dwFlags & MATSHAPER_HASMATRIX)
-       {       
-                         
-             MAT3evalW(&OutVect, &MatShaper -> Matrix, &InVect);
-       }
-       else {
+	if (MatShaper->dwFlags & MATSHAPER_HASMATRIX)
+	{
 
-           OutVect.n[VX] = InVect.n[VX];
-           OutVect.n[VY] = InVect.n[VY];
-           OutVect.n[VZ] = InVect.n[VZ];
-       }
+		MAT3evalW(&OutVect, &MatShaper->Matrix, &InVect);
+	}
+	else {
 
-             
-       tmp[0] = Clamp_XYZ(FromFixedDomain(OutVect.n[VX]));
-       tmp[1] = Clamp_XYZ(FromFixedDomain(OutVect.n[VY]));
-       tmp[2] = Clamp_XYZ(FromFixedDomain(OutVect.n[VZ]));
+		OutVect.n[VX] = InVect.n[VX];
+		OutVect.n[VY] = InVect.n[VY];
+		OutVect.n[VZ] = InVect.n[VZ];
+	}
 
-       
-           
-       if (MatShaper -> dwFlags & MATSHAPER_HASSHAPER)
-       {
-       Out[0] = cmsLinearInterpLUT16(tmp[0], MatShaper -> L[0], &MatShaper -> p16);
-       Out[1] = cmsLinearInterpLUT16(tmp[1], MatShaper -> L[1], &MatShaper -> p16);
-       Out[2] = cmsLinearInterpLUT16(tmp[2], MatShaper -> L[2], &MatShaper -> p16);
-       }
-       else
-       {
-           Out[0] = tmp[0];
-           Out[1] = tmp[1];
-           Out[2] = tmp[2];
-       }
-        
+
+	tmp[0] = Clamp_XYZ(FromFixedDomain(OutVect.n[VX]));
+	tmp[1] = Clamp_XYZ(FromFixedDomain(OutVect.n[VY]));
+	tmp[2] = Clamp_XYZ(FromFixedDomain(OutVect.n[VZ]));
+
+
+
+	if (MatShaper->dwFlags & MATSHAPER_HASSHAPER)
+	{
+		Out[0] = cmsLinearInterpLUT16(tmp[0], MatShaper->L[0], &MatShaper->p16);
+		Out[1] = cmsLinearInterpLUT16(tmp[1], MatShaper->L[1], &MatShaper->p16);
+		Out[2] = cmsLinearInterpLUT16(tmp[2], MatShaper->L[2], &MatShaper->p16);
+	}
+	else
+	{
+		Out[0] = tmp[0];
+		Out[1] = tmp[1];
+		Out[2] = tmp[2];
+	}
+
 }
 
 
 static
 void InputBehaviour(LPMATSHAPER MatShaper, WORD In[], WORD Out[])
 {
-       WVEC3 InVect, OutVect;
+	WVEC3 InVect, OutVect;
 
-       
-       if (MatShaper -> dwFlags & MATSHAPER_HASSHAPER)
-       {
-       InVect.n[VX] = cmsLinearInterpFixed(In[0], MatShaper -> L[0], &MatShaper -> p16);
-       InVect.n[VY] = cmsLinearInterpFixed(In[1], MatShaper -> L[1], &MatShaper -> p16);
-       InVect.n[VZ] = cmsLinearInterpFixed(In[2], MatShaper -> L[2], &MatShaper -> p16);
-       }
-       else
-       {
-       InVect.n[VX] = ToFixedDomain(In[0]);
-       InVect.n[VY] = ToFixedDomain(In[1]);
-       InVect.n[VZ] = ToFixedDomain(In[2]);
-       }
 
-       if (MatShaper -> dwFlags & MATSHAPER_HASMATRIX)
-       {
-              MAT3evalW(&OutVect, &MatShaper -> Matrix, &InVect);
-       }
-       else
-       {
-       OutVect =  InVect;
-       }
+	if (MatShaper->dwFlags & MATSHAPER_HASSHAPER)
+	{
+		InVect.n[VX] = cmsLinearInterpFixed(In[0], MatShaper->L[0], &MatShaper->p16);
+		InVect.n[VY] = cmsLinearInterpFixed(In[1], MatShaper->L[1], &MatShaper->p16);
+		InVect.n[VZ] = cmsLinearInterpFixed(In[2], MatShaper->L[2], &MatShaper->p16);
+	}
+	else
+	{
+		InVect.n[VX] = ToFixedDomain(In[0]);
+		InVect.n[VY] = ToFixedDomain(In[1]);
+		InVect.n[VZ] = ToFixedDomain(In[2]);
+	}
 
-       // PCS in 1Fixed15 format, adjusting
+	if (MatShaper->dwFlags & MATSHAPER_HASMATRIX)
+	{
+		MAT3evalW(&OutVect, &MatShaper->Matrix, &InVect);
+	}
+	else
+	{
+		OutVect = InVect;
+	}
 
-       Out[0] = (WORD) Clamp_XYZ((OutVect.n[VX]) >> 1);
-       Out[1] = (WORD) Clamp_XYZ((OutVect.n[VY]) >> 1);
-       Out[2] = (WORD) Clamp_XYZ((OutVect.n[VZ]) >> 1);
+	// PCS in 1Fixed15 format, adjusting
+
+	Out[0] = (WORD)Clamp_XYZ((OutVect.n[VX]) >> 1);
+	Out[1] = (WORD)Clamp_XYZ((OutVect.n[VY]) >> 1);
+	Out[2] = (WORD)Clamp_XYZ((OutVect.n[VZ]) >> 1);
 
 }
 
@@ -312,45 +312,45 @@ void InputBehaviour(LPMATSHAPER MatShaper, WORD In[], WORD Out[])
 static
 void OutputBehaviour(LPMATSHAPER MatShaper, WORD In[], WORD Out[])
 {
-       WVEC3 InVect, OutVect;
-       int i;
+	WVEC3 InVect, OutVect;
+	int i;
 
-       // We need to convert from XYZ to RGB, here we must
-       // shift << 1 to pass between 1.15 to 15.16 formats
+	// We need to convert from XYZ to RGB, here we must
+	// shift << 1 to pass between 1.15 to 15.16 formats
 
-       InVect.n[VX] = (Fixed32) In[0] << 1;
-       InVect.n[VY] = (Fixed32) In[1] << 1;
-       InVect.n[VZ] = (Fixed32) In[2] << 1;
+	InVect.n[VX] = (Fixed32)In[0] << 1;
+	InVect.n[VY] = (Fixed32)In[1] << 1;
+	InVect.n[VZ] = (Fixed32)In[2] << 1;
 
-       if (MatShaper -> dwFlags & MATSHAPER_HASMATRIX)
-       {
-              MAT3evalW(&OutVect, &MatShaper -> Matrix, &InVect);
-       }
-       else
-       {
-       OutVect = InVect;
-       }
+	if (MatShaper->dwFlags & MATSHAPER_HASMATRIX)
+	{
+		MAT3evalW(&OutVect, &MatShaper->Matrix, &InVect);
+	}
+	else
+	{
+		OutVect = InVect;
+	}
 
 
-       if (MatShaper -> dwFlags & MATSHAPER_HASSHAPER)
-       {
-              for (i=0; i < 3; i++)
-              {
+	if (MatShaper->dwFlags & MATSHAPER_HASSHAPER)
+	{
+		for (i = 0; i < 3; i++)
+		{
 
-              Out[i] = cmsLinearInterpLUT16(
-                     Clamp_RGB(FromFixedDomain(OutVect.n[i])),
-                     MatShaper -> L[i],
-                     &MatShaper ->p16);
-              }
-       }
-       else
-       {
-       // Result from fixed domain to RGB
+			Out[i] = cmsLinearInterpLUT16(
+				Clamp_RGB(FromFixedDomain(OutVect.n[i])),
+				MatShaper->L[i],
+				&MatShaper->p16);
+		}
+	}
+	else
+	{
+		// Result from fixed domain to RGB
 
-       Out[0] = Clamp_RGB(FromFixedDomain(OutVect.n[VX]));
-       Out[1] = Clamp_RGB(FromFixedDomain(OutVect.n[VY]));
-       Out[2] = Clamp_RGB(FromFixedDomain(OutVect.n[VZ]));
-       }
+		Out[0] = Clamp_RGB(FromFixedDomain(OutVect.n[VX]));
+		Out[1] = Clamp_RGB(FromFixedDomain(OutVect.n[VY]));
+		Out[2] = Clamp_RGB(FromFixedDomain(OutVect.n[VZ]));
+	}
 
 }
 
@@ -360,16 +360,16 @@ void OutputBehaviour(LPMATSHAPER MatShaper, WORD In[], WORD Out[])
 void cmsEvalMatShaper(LPMATSHAPER MatShaper, WORD In[], WORD Out[])
 {
 
-       if ((MatShaper -> dwFlags & MATSHAPER_ALLSMELTED) == MATSHAPER_ALLSMELTED)
-       {
-              AllSmeltedBehaviour(MatShaper, In, Out);
-              return;
-       }
-       if (MatShaper -> dwFlags & MATSHAPER_INPUT)
-       {
-              InputBehaviour(MatShaper, In, Out);
-              return;
-       }
+	if ((MatShaper->dwFlags & MATSHAPER_ALLSMELTED) == MATSHAPER_ALLSMELTED)
+	{
+		AllSmeltedBehaviour(MatShaper, In, Out);
+		return;
+	}
+	if (MatShaper->dwFlags & MATSHAPER_INPUT)
+	{
+		InputBehaviour(MatShaper, In, Out);
+		return;
+	}
 
-       OutputBehaviour(MatShaper, In, Out);
+	OutputBehaviour(MatShaper, In, Out);
 }

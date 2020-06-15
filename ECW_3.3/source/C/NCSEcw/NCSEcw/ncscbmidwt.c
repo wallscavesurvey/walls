@@ -1,16 +1,16 @@
-/********************************************************** 
+/**********************************************************
 ** Copyright 1998 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
-** 
+**
 ** FILE:   	ncscbmidwt.c
 ** CREATED:	9 May 1999
 ** AUTHOR: 	SNS
@@ -20,7 +20,7 @@
 ** [02] sns 17-May-99 Cancelling reads if too many SetViews are pending
 ** [03] sns 17-May-99 Allows NULL entries for queued SetViews
 ** [04] sjc 15-May-00 NCScbmQueueIDWTCallback() called from 2 threads now
-**					  - so need to do check all the time 
+**					  - so need to do check all the time
 ** [05]  ny 23-Nov-00 Mac port changes
 ** [06] sjc 22-May-01 Removed - this is done in Read*() calls already, was causing FMR & FMW hits & crashes.
 ** [07] jmp 23-Jul-01 Put in fix for bug where IDWT thread can be left in a suspended state after a SetView
@@ -31,15 +31,15 @@
 
 #include "NCSEcw.h"
 #if !defined(_WIN32_WCE)
-	#ifdef WIN32
-		#define _CRTDBG_MAP_ALLOC
-		#include "crtdbg.h"
-	#endif
+#ifdef WIN32
+#define _CRTDBG_MAP_ALLOC
+#include "crtdbg.h"
+#endif
 #endif
 #include "NCSLog.h"
 
 
-static void NCScbmThreadIDWT( NCSidwt *pIDWT ); /**[05]**/
+static void NCScbmThreadIDWT(NCSidwt *pIDWT); /**[05]**/
 static void NCScbmThreadIDWTRequeue(NCSFileView *pNCSFileView);
 
 /*******************************************************
@@ -60,8 +60,8 @@ void NCScbmFinishThreadIDWT(NCSidwt *pIDWT)
 	int	nWait = 5000;
 	// we try and shutdown the iDWT thread. Give up after 5 seconds - something horrible has gone wrong
 
-	while( pIDWT->eIDWTState != NCSECW_THREAD_DEAD ) {
-		if( !NCSThreadIsRunning(&(pIDWT->tIDWT)) )
+	while (pIDWT->eIDWTState != NCSECW_THREAD_DEAD) {
+		if (!NCSThreadIsRunning(&(pIDWT->tIDWT)))
 			break;		// thread is now dead
 #ifdef WIN32 //[08]
 		SetEvent(pNCSEcwInfo->m_hSuspendEvent);					/**[07]**/
@@ -70,10 +70,10 @@ void NCScbmFinishThreadIDWT(NCSidwt *pIDWT)
 #endif
 		NCSSleep(100);		// wait to get the thread to pay attention
 		nWait -= 100;
-		if( nWait < 0 )
+		if (nWait < 0)
 			break;		// at this point, we have a serious problem
 	}
-	if(NCSThreadIsRunning(&(pIDWT->tIDWT)) ) {
+	if (NCSThreadIsRunning(&(pIDWT->tIDWT))) {
 		NCSLog(LOG_LOW, "Terminating iDWT thread after wait timeout: 0x%lx\n", pIDWT->tIDWT);
 		NCSThreadTerminate(&(pIDWT->tIDWT));
 	}
@@ -100,11 +100,11 @@ void NCScbmFinishThreadIDWT(NCSidwt *pIDWT)
 **
 ********************************************************/
 void NCScbmQueueIDWTCallback(NCSFileView *pNCSFileView,			// queue a callback for this file view
-								NCSEcwQueueInsertOrder eOrder)	// insert LIFO or FIFO
+	NCSEcwQueueInsertOrder eOrder)	// insert LIFO or FIFO
 {
 	NCSidwt *pIDWT;
 	eOrder;//Keep compiler happy
-	if( pNCSEcwInfo->bShutdown )
+	if (pNCSEcwInfo->bShutdown)
 		return;			// Test this before the MUTEX, in case mutex's cross lock during shutdown
 
 	pIDWT = pNCSEcwInfo->pIDWT;
@@ -114,9 +114,9 @@ void NCScbmQueueIDWTCallback(NCSFileView *pNCSFileView,			// queue a callback fo
 	/*
 	**	If shutting down or trying to get the view quiet, don't process this callback request
 	*/
-	if( pNCSEcwInfo->bShutdown
-	 || pNCSFileView->bGoToQuietState ) {		// do another shutdown test, this time in the mutex
-		// The world is shutting down. Ignore this setview request and quietly exit
+	if (pNCSEcwInfo->bShutdown
+		|| pNCSFileView->bGoToQuietState) {		// do another shutdown test, this time in the mutex
+		   // The world is shutting down. Ignore this setview request and quietly exit
 		pNCSFileView->eCallbackState = NCSECW_VIEW_QUIET;
 		NCSMutexEnd(&pNCSEcwInfo->mutex);
 		return;
@@ -125,11 +125,11 @@ void NCScbmQueueIDWTCallback(NCSFileView *pNCSFileView,			// queue a callback fo
 	/*
 	**	If thread not started yet, then start it
 	*/
-	if( pIDWT->eIDWTState == NCSECW_THREAD_DEAD ) {
+	if (pIDWT->eIDWTState == NCSECW_THREAD_DEAD) {
 #ifdef WIN32 //[08]
 		pNCSEcwInfo->m_hSuspendEvent = CreateEvent(NULL, FALSE, FALSE, NULL);	/**[07]**/
 #endif
-		if( !NCSThreadSpawn(&(pIDWT->tIDWT), (void(*)(void *))NCScbmThreadIDWT, pIDWT, FALSE) ) { /**[05]**/
+		if (!NCSThreadSpawn(&(pIDWT->tIDWT), (void(*)(void *))NCScbmThreadIDWT, pIDWT, FALSE)) { /**[05]**/
 			// thread is dead, and won't start. Just ignore - this is a fatal error
 			NCSMutexEnd(&pNCSEcwInfo->mutex);
 			return;
@@ -143,25 +143,25 @@ void NCScbmQueueIDWTCallback(NCSFileView *pNCSFileView,			// queue a callback fo
 	**	the realloc works as expected on the first call (turns into a malloc)
 	**	The queue expands if there are more requests pending that the current queue length
 	*/
-//[04] #ifdef _DEBUG
+	//[04] #ifdef _DEBUG
 	{
 		// First, do a debug pass to see if the view is already in the list. If so, we have
 		// a problem.
 		INT32	nCurrent = 0;
-		while(nCurrent < pIDWT->nQueueNumber ) {
-			if( pIDWT->ppNCSFileView[nCurrent] == pNCSFileView) {
-//[04]				_ASSERT(0);
+		while (nCurrent < pIDWT->nQueueNumber) {
+			if (pIDWT->ppNCSFileView[nCurrent] == pNCSFileView) {
+				//[04]				_ASSERT(0);
 				NCSMutexEnd(&pNCSEcwInfo->mutex);
 				return;
 			}
 			nCurrent++;
 		}
 	}
-//[04]#endif
+	//[04]#endif
 	pIDWT->nQueueNumber += 1;
-	if( pIDWT->nQueueNumber >= pIDWT->nQueueAllocLength ) {
+	if (pIDWT->nQueueNumber >= pIDWT->nQueueAllocLength) {
 		pIDWT->nQueueAllocLength += NCSECW_IDWT_QUEUE_GRANULARITY;
-		pIDWT->ppNCSFileView = (NCSFileView **) 
+		pIDWT->ppNCSFileView = (NCSFileView **)
 			NCSRealloc(pIDWT->ppNCSFileView, sizeof(NCSFileView *) * pIDWT->nQueueAllocLength, FALSE);
 	}
 	pIDWT->ppNCSFileView[pIDWT->nQueueNumber - 1] = pNCSFileView;
@@ -180,7 +180,7 @@ void NCScbmQueueIDWTCallback(NCSFileView *pNCSFileView,			// queue a callback fo
 	**	that it did wake the other thread. The problem corrects on the next call into
 	**	this thread, but still a problem.
 	*/
-	if(pIDWT->eIDWTState == NCSECW_THREAD_SUSPENDED ) {		/**[07]**/
+	if (pIDWT->eIDWTState == NCSECW_THREAD_SUSPENDED) {		/**[07]**/
 #ifdef WIN32  //[08]
 		SetEvent(pNCSEcwInfo->m_hSuspendEvent);				/**[07]**/
 #else
@@ -204,9 +204,9 @@ void NCScbmQueueIDWTCallback(NCSFileView *pNCSFileView,			// queue a callback fo
 ********************************************************/
 
 
-static void NCScbmThreadIDWT( NCSidwt *pIDWT ) /**[05]**/
+static void NCScbmThreadIDWT(NCSidwt *pIDWT) /**[05]**/
 {
-	if( pNCSEcwInfo->bShutdown ) {
+	if (pNCSEcwInfo->bShutdown) {
 		pIDWT->eIDWTState = NCSECW_THREAD_DEAD;
 #ifdef WIN32
 		NCSThreadExit(0);
@@ -216,25 +216,25 @@ static void NCScbmThreadIDWT( NCSidwt *pIDWT ) /**[05]**/
 	}
 	NCSMutexBegin(&pNCSEcwInfo->mutex);
 
-	while( TRUE ) {
-		pIDWT->eIDWTState = NCSECW_THREAD_ALIVE;		
+	while (TRUE) {
+		pIDWT->eIDWTState = NCSECW_THREAD_ALIVE;
 		/*
 		**	See if there is any work for us. If so, remove it from the queue and process it,
 		*/
-		if( pIDWT->nQueueNumber ) {
+		if (pIDWT->nQueueNumber) {
 			NCSFileView *pNCSFileView;
 			pIDWT->nQueueNumber -= 1;
 			pNCSFileView = pIDWT->ppNCSFileView[pIDWT->nQueueNumber];
-			if( pNCSFileView ) {	// [03] can have NULL (canceled) views in the list
-				if( pNCSFileView->bGoToQuietState ) {		// View is being reset, so ignore the read
+			if (pNCSFileView) {	// [03] can have NULL (canceled) views in the list
+				if (pNCSFileView->bGoToQuietState) {		// View is being reset, so ignore the read
 					pNCSFileView->eCallbackState = NCSECW_VIEW_QUIET;
 				}
 				else {
 					// See if should cancel this read because of pending setviews.
 					// We stop cancelling if we get a continual stream of SetViews,
 					// so *something* is done every so often
-					if( pNCSFileView->nPending >= NCSECW_MAX_SETVIEW_PENDING
-					 && pNCSFileView->nCancelled < NCSECW_MAX_SETVIEW_CANCELS ) {
+					if (pNCSFileView->nPending >= NCSECW_MAX_SETVIEW_PENDING
+						&& pNCSFileView->nCancelled < NCSECW_MAX_SETVIEW_CANCELS) {
 						// [02] cancel this SetView and queue the pending one instead
 						pNCSFileView->nCancelled += 1;
 						pNCSFileView->eCallbackState = NCSECW_VIEW_QUIET;
@@ -248,17 +248,17 @@ static void NCScbmThreadIDWT( NCSidwt *pIDWT ) /**[05]**/
 						NCSMutexEnd(&pNCSEcwInfo->mutex);
 						eStatus = (pNCSFileView->pRefreshCallback)(pNCSFileView);
 #ifdef NOTDEF	//[06] - removed - done in Read*() calls already, was causing FMR & FMW hits						
-						if( pNCSFileView->bGoToQuietState ) {		// View is being reset, so ignore the read
+						if (pNCSFileView->bGoToQuietState) {		// View is being reset, so ignore the read
 							pNCSFileView->eCallbackState = NCSECW_VIEW_QUIET;
 						}
 #endif						
 						NCSMutexBegin(&pNCSEcwInfo->mutex);
 						// If the view was closed, it may no longer exist, so we can only
 						// trust the pointer if there was no error
-						if( eStatus != NCSECW_READ_CANCELLED ) {
+						if (eStatus != NCSECW_READ_CANCELLED) {
 							pNCSFileView->eCallbackState = NCSECW_VIEW_QUIET;
 							pNCSFileView->nCancelled = 0;			// this one was not cancelled
-							if(pNCSFileView->pQmfRegion->nCounter == 0) {
+							if (pNCSFileView->pQmfRegion->nCounter == 0) {
 								// [09] App didn't read anything, so force another refresh callback
 								pNCSFileView->info.nMissedBlocksDuringRead++;
 							}
@@ -271,7 +271,7 @@ static void NCScbmThreadIDWT( NCSidwt *pIDWT ) /**[05]**/
 		/*
 		**	If more work outstanding, release the mutex, and loop again
 		*/
-		if( pIDWT->nQueueNumber ) {
+		if (pIDWT->nQueueNumber) {
 #ifdef MACINTOSH
 			NCSThreadYield();
 #endif
@@ -292,7 +292,7 @@ static void NCScbmThreadIDWT( NCSidwt *pIDWT ) /**[05]**/
 		NCSThreadSuspend();
 #endif
 
-		if( pNCSEcwInfo->bShutdown ) {
+		if (pNCSEcwInfo->bShutdown) {
 			pIDWT->eIDWTState = NCSECW_THREAD_DEAD;
 #ifdef WIN32
 			NCSThreadExit(0);
@@ -325,10 +325,10 @@ static void NCScbmThreadIDWT( NCSidwt *pIDWT ) /**[05]**/
 ********************************************************/
 static void NCScbmThreadIDWTRequeue(NCSFileView *pNCSFileView)
 {
-	if( pNCSFileView->bGoToQuietState )
+	if (pNCSFileView->bGoToQuietState)
 		return;
 
-	if( pNCSFileView->nPending ) {
+	if (pNCSFileView->nPending) {
 		/*
 		**	There is a pending SetView, so load it up and run
 		**	We can just to a SetView to do this; it will sort everything out
@@ -336,21 +336,21 @@ static void NCScbmThreadIDWTRequeue(NCSFileView *pNCSFileView)
 		pNCSFileView->nPending = 0;						// so the SetView will update correctly
 
 		NCScbmSetFileViewEx(pNCSFileView,
-							pNCSFileView->pending.nBands,
-							pNCSFileView->pending.pBandList,
-							pNCSFileView->pending.nTopX,
-							pNCSFileView->pending.nLeftY,
-							pNCSFileView->pending.nBottomX,
-							pNCSFileView->pending.nRightY,
-							pNCSFileView->pending.nSizeX,
-							pNCSFileView->pending.nSizeY,
-							pNCSFileView->pending.fTopX,
-							pNCSFileView->pending.fLeftY,
-							pNCSFileView->pending.fBottomX,
-							pNCSFileView->pending.fRightY);
+			pNCSFileView->pending.nBands,
+			pNCSFileView->pending.pBandList,
+			pNCSFileView->pending.nTopX,
+			pNCSFileView->pending.nLeftY,
+			pNCSFileView->pending.nBottomX,
+			pNCSFileView->pending.nRightY,
+			pNCSFileView->pending.nSizeX,
+			pNCSFileView->pending.nSizeY,
+			pNCSFileView->pending.fTopX,
+			pNCSFileView->pending.fLeftY,
+			pNCSFileView->pending.fBottomX,
+			pNCSFileView->pending.fRightY);
 
 	}
-	else if( pNCSFileView->info.nMissedBlocksDuringRead ) {
+	else if (pNCSFileView->info.nMissedBlocksDuringRead) {
 		/*
 		**	Otherwise, this is a refresh, so start it up. We know everything
 		**	is the same, so we just reset up the QMF structure, and leave everything else
@@ -358,18 +358,18 @@ static void NCScbmThreadIDWTRequeue(NCSFileView *pNCSFileView)
 		*/
 
 		erw_decompress_end_region(pNCSFileView->pQmfRegion);
-		pNCSFileView->pQmfRegion = erw_decompress_start_region( 
-				pNCSFileView->pNCSFile->pTopQmf,
-				pNCSFileView->info.nBands,
-				pNCSFileView->info.pBandList,
-				pNCSFileView->info.nTopX,
-				pNCSFileView->info.nLeftY,
-				pNCSFileView->info.nBottomX,
-				pNCSFileView->info.nRightY,
-				pNCSFileView->info.nSizeX,
-				pNCSFileView->info.nSizeY);
-		_ASSERT( pNCSFileView->pQmfRegion );
-		if( !pNCSFileView->pQmfRegion )
+		pNCSFileView->pQmfRegion = erw_decompress_start_region(
+			pNCSFileView->pNCSFile->pTopQmf,
+			pNCSFileView->info.nBands,
+			pNCSFileView->info.pBandList,
+			pNCSFileView->info.nTopX,
+			pNCSFileView->info.nLeftY,
+			pNCSFileView->info.nBottomX,
+			pNCSFileView->info.nRightY,
+			pNCSFileView->info.nSizeX,
+			pNCSFileView->info.nSizeY);
+		_ASSERT(pNCSFileView->pQmfRegion);
+		if (!pNCSFileView->pQmfRegion)
 			return;			// Fatal error
 		// Last time a block was received for this file view. Initially set to time of File View
 		// Also update last time a Set View was done, to assist cache purging logic
@@ -388,8 +388,8 @@ static void NCScbmThreadIDWTRequeue(NCSFileView *pNCSFileView)
 		**	never get a refresh call, so we test for this case here, and queue the refresh
 		**	here if need be.
 		*/
-		if( (pNCSFileView->nCacheMethod == NCS_CACHE_VIEW) && (pNCSFileView->pRefreshCallback) ) {
-			if( pNCSFileView->info.nBlocksAvailable == pNCSFileView->info.nBlocksInView )		// [02] all blocks are here
+		if ((pNCSFileView->nCacheMethod == NCS_CACHE_VIEW) && (pNCSFileView->pRefreshCallback)) {
+			if (pNCSFileView->info.nBlocksAvailable == pNCSFileView->info.nBlocksInView)		// [02] all blocks are here
 				NCScbmQueueIDWTCallback(pNCSFileView, NCSECW_QUEUE_LIFO);
 		}
 	}

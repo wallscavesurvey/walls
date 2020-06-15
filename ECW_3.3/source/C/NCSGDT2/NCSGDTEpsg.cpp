@@ -2,19 +2,19 @@
 ** Copyright 1999-2004 Earth Resource Mapping Ltd
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** CREATED:  16 Jan 2004
 ** AUTHOR:   Gary Noel
 ** PURPOSE:  Simple encapsulation of the GDT library
-**			 
+**
 ** EDITS:    [xx] ddMmmyy NAME COMMENTS
 **			 [01] 03Aug04 tfl  Added GetGCSGeoKey fn along similar lines
 **			 [02] 10Nov04 tfl  Fixed integer initialisationg problem in dat file search
@@ -62,7 +62,7 @@ CNCSGDTEPSG* CNCSGDTEPSG::sm_pInstance = (CNCSGDTEPSG *)NULL;
 //Singleton acquisition and release methods
 CNCSGDTEPSG *CNCSGDTEPSG::Instance()
 {
-	if (sm_pInstance == (CNCSGDTEPSG *)NULL) 
+	if (sm_pInstance == (CNCSGDTEPSG *)NULL)
 	{
 		sm_pInstance = new CNCSGDTEPSG;
 	}
@@ -86,7 +86,7 @@ CNCSGDTEPSG::CNCSGDTEPSG()
 }
 
 //EPSG <--> ER Mapper projection and datum conversion methods
-CNCSError CNCSGDTEPSG::GetProjectionAndDatum(const INT32 nEPSG, char **projection, char **datum) 
+CNCSError CNCSGDTEPSG::GetProjectionAndDatum(const INT32 nEPSG, char **projection, char **datum)
 {
 	INT32 arrayIndex = 0;
 	string projStr, datumStr;
@@ -98,7 +98,7 @@ CNCSError CNCSGDTEPSG::GetProjectionAndDatum(const INT32 nEPSG, char **projectio
 	//First check the User defined Epsg codes taken from the file PcsKeyProjDatum.dat	
 	for (UINT32 k = 0; k < m_Keys.size(); k++)
 	{
-		if(m_Keys[k].GetEPSG() == nEPSG)
+		if (m_Keys[k].GetEPSG() == nEPSG)
 		{
 			projStr = m_Keys[k].GetProjection();
 			datumStr = m_Keys[k].GetDatum();
@@ -117,19 +117,19 @@ CNCSError CNCSGDTEPSG::GetProjectionAndDatum(const INT32 nEPSG, char **projectio
 		int j = 0;
 		while (array[j].pcs_code != 0)
 		{
-			if (nEPSG == array[j].pcs_code) 
+			if (nEPSG == array[j].pcs_code)
 			{
 				if (array[j].projection != (char *)NULL)
-					*projection=(char *)NCSStrDup(array[j].projection);
+					*projection = (char *)NCSStrDup(array[j].projection);
 
-				else				
+				else
 					*projection = (char *)NULL;
 
 				if (array[j].datum != (char *)NULL)
-					*datum=(char *)NCSStrDup(array[j].datum);
+					*datum = (char *)NCSStrDup(array[j].datum);
 
 				else
-					*datum=(char *)NULL;
+					*datum = (char *)NULL;
 
 				m_InstanceMutex.UnLock();
 				return NCS_SUCCESS;
@@ -148,7 +148,7 @@ INT32 CNCSGDTEPSG::GetEPSG(const char *projection, const char *datum)
 {
 	int match = 0;
 	int arrayIndex = 0;
-	int i=0;
+	int i = 0;
 	string projStr, datumStr;
 	bool bFound = false;
 
@@ -161,9 +161,9 @@ INT32 CNCSGDTEPSG::GetEPSG(const char *projection, const char *datum)
 		projStr = m_Keys[k].GetProjection();
 		datumStr = m_Keys[k].GetDatum();
 
-		if(((char *)projStr.c_str()) && ((char *)datumStr.c_str()) &&
+		if (((char *)projStr.c_str()) && ((char *)datumStr.c_str()) &&
 			!_stricmp(((char *)projStr.c_str()), projection) &&
-			!_stricmp(((char *)datumStr.c_str()), datum)) 
+			!_stricmp(((char *)datumStr.c_str()), datum))
 		{
 			match = m_Keys[k].GetEPSG();
 			bFound = true;
@@ -171,21 +171,21 @@ INT32 CNCSGDTEPSG::GetEPSG(const char *projection, const char *datum)
 		}
 	}
 
-	if(!bFound)
+	if (!bFound)
 	{
 		struct pcs_erm_mapping* array = arrayOfArrays[arrayIndex];
 
 		while (array != NULL)
 		{
-			i=0;
+			i = 0;
 			// Check all projection lists //
-			if (!match) 
+			if (!match)
 			{
-				while (array[i].pcs_code != 0) 
+				while (array[i].pcs_code != 0)
 				{
-					if(array[i].projection && array[i].datum &&
+					if (array[i].projection && array[i].datum &&
 						!strcmp(array[i].projection, projection) &&
-						!strcmp(array[i].datum, datum)) 
+						!strcmp(array[i].datum, datum))
 					{
 						match = array[i].pcs_code;
 						bFound = true;
@@ -194,7 +194,7 @@ INT32 CNCSGDTEPSG::GetEPSG(const char *projection, const char *datum)
 					i++;
 				}
 
-				if(bFound)
+				if (bFound)
 				{
 					break;
 				}
@@ -231,12 +231,12 @@ NCSError CNCSGDTEPSG::LoadCustomKeys(const char *szPath)
 		DatLocation += NCS_FILE_SEP;
 		DatLocation += "PcskeyProjDatum.dat";
 
-		File.open(DatLocation.c_str());	
+		File.open(DatLocation.c_str());
 		int a = 0;
 
 		if (File)
 		{
-			while (getline(File,Line))
+			while (getline(File, Line))
 			{
 				if (!Line.find_first_not_of("*")) //Ignore the line if it starts with a "*"	
 				{

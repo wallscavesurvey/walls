@@ -2,10 +2,10 @@
 
 UINT DBFAPI dbf_NumUsers(DBF_NO dbf)
 {
-  UINT i=0;
-  DBF_pFILEUSR usrp;
+	UINT i = 0;
+	DBF_pFILEUSR usrp;
 
-  if(_GETDBFP)
-    for(usrp=_DBFP->pFileUsr;usrp;usrp=usrp->U_pNext) i++;
-  return i;
+	if (_GETDBFP)
+		for (usrp = _DBFP->pFileUsr; usrp; usrp = usrp->U_pNext) i++;
+	return i;
 }

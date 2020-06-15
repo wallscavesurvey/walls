@@ -2,13 +2,13 @@
 ** Copyright 2002 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:     $Archive: /NCS/Source/C/NCSEcw/NCSJP2/NCSJP2ChannelDefinitionBox.cpp $
@@ -20,9 +20,9 @@
 
 #include "NCSJP2File.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+ //////////////////////////////////////////////////////////////////////
+ // Construction/Destruction
+ //////////////////////////////////////////////////////////////////////
 
 UINT32 CNCSJP2File::CNCSJP2HeaderBox::CNCSJP2ChannelDefinitionBox::sm_nTBox = 'cdef';
 
@@ -40,10 +40,10 @@ CNCSJP2File::CNCSJP2HeaderBox::CNCSJP2ChannelDefinitionBox::~CNCSJP2ChannelDefin
 {
 }
 
-const CNCSJP2File::CNCSJP2HeaderBox::CNCSJP2ChannelDefinitionBox::ChannelDefinition *CNCSJP2File::CNCSJP2HeaderBox::CNCSJP2ChannelDefinitionBox::GetDefinitition(UINT16 iChannel) 
+const CNCSJP2File::CNCSJP2HeaderBox::CNCSJP2ChannelDefinitionBox::ChannelDefinition *CNCSJP2File::CNCSJP2HeaderBox::CNCSJP2ChannelDefinitionBox::GetDefinitition(UINT16 iChannel)
 {
-	for(int i = 0; i < m_nEntries; i++) {
-		if(m_Definitions[i].m_iChannel == iChannel) {
+	for (int i = 0; i < m_nEntries; i++) {
+		if (m_Definitions[i].m_iChannel == iChannel) {
 			return(&m_Definitions[i]);
 		}
 	}
@@ -62,19 +62,19 @@ CNCSError CNCSJP2File::CNCSJP2HeaderBox::CNCSJP2ChannelDefinitionBox::Parse(clas
 	CNCSError Error;
 
 	NCSJP2_CHECKIO_BEGIN(Error, Stream);
-		// Get the palette fields in
-		NCSJP2_CHECKIO(ReadUINT16(m_nEntries));
+	// Get the palette fields in
+	NCSJP2_CHECKIO(ReadUINT16(m_nEntries));
 
-		for(int c = 0; c < m_nEntries; c++) {
-			ChannelDefinition def;
-			UINT16 t16;
-			
-			NCSJP2_CHECKIO(ReadUINT16(def.m_iChannel));
-			NCSJP2_CHECKIO(ReadUINT16(t16)); def.m_eType = (Type)t16;
-			NCSJP2_CHECKIO(ReadUINT16(t16)); def.m_eAssociation = (Association)t16;
-			m_Definitions.push_back(def);
-		}
-		m_bValid = true;
+	for (int c = 0; c < m_nEntries; c++) {
+		ChannelDefinition def;
+		UINT16 t16;
+
+		NCSJP2_CHECKIO(ReadUINT16(def.m_iChannel));
+		NCSJP2_CHECKIO(ReadUINT16(t16)); def.m_eType = (Type)t16;
+		NCSJP2_CHECKIO(ReadUINT16(t16)); def.m_eAssociation = (Association)t16;
+		m_Definitions.push_back(def);
+	}
+	m_bValid = true;
 	NCSJP2_CHECKIO_END();
 	return(Error);
 }
@@ -84,17 +84,17 @@ CNCSError CNCSJP2File::CNCSJP2HeaderBox::CNCSJP2ChannelDefinitionBox::UnParse(cl
 {
 	CNCSError Error;
 
-		// Write out the base box first
+	// Write out the base box first
 	Error = CNCSJP2Box::UnParse(JP2File, Stream);
 	NCSJP2_CHECKIO_BEGIN(Error, Stream);
-		// Get the palette fields in
-		NCSJP2_CHECKIO(WriteUINT16(m_nEntries));
+	// Get the palette fields in
+	NCSJP2_CHECKIO(WriteUINT16(m_nEntries));
 
-		for(int c = 0; c < m_nEntries; c++) {
-			NCSJP2_CHECKIO(WriteUINT16(m_Definitions[c].m_iChannel));
-			NCSJP2_CHECKIO(WriteUINT16(m_Definitions[c].m_eType));
-			NCSJP2_CHECKIO(WriteUINT16(m_Definitions[c].m_eAssociation));
-		}
+	for (int c = 0; c < m_nEntries; c++) {
+		NCSJP2_CHECKIO(WriteUINT16(m_Definitions[c].m_iChannel));
+		NCSJP2_CHECKIO(WriteUINT16(m_Definitions[c].m_eType));
+		NCSJP2_CHECKIO(WriteUINT16(m_Definitions[c].m_eAssociation));
+	}
 	NCSJP2_CHECKIO_END();
 	return(Error);
 }

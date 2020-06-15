@@ -77,29 +77,29 @@ static int class_RString_version = class_RString_version_1_2;
 
 
 class StringRep {
-  public:
-     StringRep( const char*);
-     StringRep( const char*, int len);
-     StringRep( const char*, const char *);
-     StringRep( StringRep&, StringRep&);
-     ~StringRep() { delete str_; }
+public:
+	StringRep(const char*);
+	StringRep(const char*, int len);
+	StringRep(const char*, const char *);
+	StringRep(StringRep&, StringRep&);
+	~StringRep() { delete str_; }
 
-     static StringRep* lambda();
+	static StringRep* lambda();
 
-     char* str_;		// pointer to the character array
-				// (always null-terminated)
-     int refs_;			// reference count
-     int len_;			// length of the character array
-				// (without terminating
-				// null-character) 
-     static StringRep* lambda_;	// pointer to the representation of
-				// the empty string ("")
+	char* str_;		// pointer to the character array
+			   // (always null-terminated)
+	int refs_;			// reference count
+	int len_;			// length of the character array
+			   // (without terminating
+			   // null-character) 
+	static StringRep* lambda_;	// pointer to the representation of
+			   // the empty string ("")
 };
 
 inline StringRep* StringRep::lambda() {
-     if (!lambda_)
-	  lambda_ = new StringRep("");
-     return lambda_;
+	if (!lambda_)
+		lambda_ = new StringRep("");
+	return lambda_;
 }
 
 
@@ -276,116 +276,122 @@ inline StringRep* StringRep::lambda() {
 //</class>
 
 class RString {
- public:
-     // constructors
-     RString();
-     RString( const char*);
-     RString( const char*, int);
-     RString( const RString&);
-     // destructor
-     ~RString();
-     // operators
-     RString& operator =( const RString&);
-     RString& operator =( const char*);
-     RString& operator +=( const RString&);
-     operator const char*() const;
-     const char* string() const;
-     char operator []( int i) const;
+public:
+	// constructors
+	RString();
+	RString(const char*);
+	RString(const char*, int);
+	RString(const RString&);
+	// destructor
+	~RString();
+	// operators
+	RString& operator =(const RString&);
+	RString& operator =(const char*);
+	RString& operator +=(const RString&);
+	operator const char*() const;
+	const char* string() const;
+	char operator [](int i) const;
 
-  private:
-     friend RString operator +( const RString&, const RString&);
-     friend int operator ==( const RString&, const RString&);
-     friend int operator ==( const RString&, const char*);
-     friend int operator ==( const char*, const RString&);
-     friend int operator !=( const RString&, const RString&);
-     friend int operator !=( const RString&, const char*);
-     friend int operator !=( const char*, const RString&);
-     friend int operator <( const RString&, const RString&);
-     friend int operator <( const char*, const RString&);
-     friend int operator <( const RString&, const char*);
+private:
+	friend RString operator +(const RString&, const RString&);
+	friend int operator ==(const RString&, const RString&);
+	friend int operator ==(const RString&, const char*);
+	friend int operator ==(const char*, const RString&);
+	friend int operator !=(const RString&, const RString&);
+	friend int operator !=(const RString&, const char*);
+	friend int operator !=(const char*, const RString&);
+	friend int operator <(const RString&, const RString&);
+	friend int operator <(const char*, const RString&);
+	friend int operator <(const RString&, const char*);
 
-  public:
-     int indexa( const RString& str) const; // index of first character after str in RString.
-					    // 0 <= index <= len
-     int indexa( const char* str) const;    // index == -1, str not found in RString
-     int indexa( int index, const RString& str) const; // indexa starting at index
-     int indexa( int index, const char* str) const;
-     int index( char c) const;	// index of first occurence of character c in
-				// RString. 0 <= index < len.
-				// index == -1, c not found in RString
-     int index( int index, char c) const;		  // index
-							  // starting at index
+public:
+	int indexa(const RString& str) const; // index of first character after str in RString.
+					   // 0 <= index <= len
+	int indexa(const char* str) const;    // index == -1, str not found in RString
+	int indexa(int index, const RString& str) const; // indexa starting at index
+	int indexa(int index, const char* str) const;
+	int index(char c) const;	// index of first occurence of character c in
+			   // RString. 0 <= index < len.
+			   // index == -1, c not found in RString
+	int index(int index, char c) const;		  // index
+							 // starting at index
 
-     RString gSubstrDelim( int index, char delim) const;
-     RString GetSubstrDelim( int index, char delim) const { return
-							    gSubstrDelim( index, delim); } 
-     RString gSubstrIndex( int begin, int end) const;	  // from index begin to end
-     RString GetSubstrIndex( int begin, int end) const { return
-							 gSubstrIndex(
-								      begin, end); }
-     RString gRight( int begin) const;			  // from begin to end of string
-     RString GetRight( int begin) const { return gRight( begin); }
+	RString gSubstrDelim(int index, char delim) const;
+	RString GetSubstrDelim(int index, char delim) const {
+		return
+			gSubstrDelim(index, delim);
+	}
+	RString gSubstrIndex(int begin, int end) const;	  // from index begin to end
+	RString GetSubstrIndex(int begin, int end) const {
+		return
+			gSubstrIndex(
+				begin, end);
+	}
+	RString gRight(int begin) const;			  // from begin to end of string
+	RString GetRight(int begin) const { return gRight(begin); }
 
-     boolean gWord( int& index, const RString& white, RString& word) const;
-     boolean GetWord( int& index, const RString& white, RString& word) const { 
-	  return gWord( index, white, word); }
-     boolean gWordChar( int& index, const char white, RString& word) const;
-     boolean GetWordChar( int& index, const char white, RString& word) const { 
-	  return gWordChar( index, white, word); }
-     RString& gLine( istream& s, char delim = '\n');
-     RString& GetLine( istream& s) { return gLine( s); }
-				
-     int length() const { return rep_->len_; }
+	boolean gWord(int& index, const RString& white, RString& word) const;
+	boolean GetWord(int& index, const RString& white, RString& word) const {
+		return gWord(index, white, word);
+	}
+	boolean gWordChar(int& index, const char white, RString& word) const;
+	boolean GetWordChar(int& index, const char white, RString& word) const {
+		return gWordChar(index, white, word);
+	}
+	RString& gLine(istream& s, char delim = '\n');
+	RString& GetLine(istream& s) { return gLine(s); }
 
-     RString& ignMultChars( char c);
-     RString& subst( char from, char to);
-     RString& subst( const RString& from, const RString& to, boolean caseInSens = true);
-     RString& subst( const RString& from, const RString& to,
-		    const RString& delimiters, boolean caseInSens = true);
+	int length() const { return rep_->len_; }
 
-     RString& invert();
-     RString& tolower();
-     RString& toupper();
-     RString& sgml2Iso();
-     RString& SGMLtoISO() { return sgml2Iso(); }
-     RString& sgmlIso2LowerAscii();
-     RString& SGMLISOtolowerASCII() { return sgmlIso2LowerAscii(); }
-     RString& dos2Unix();
-     RString& Dos2Unix() { return dos2Unix(); }
-     RString& unix2Dos();
-     RString& Unix2Dos() { return unix2Dos(); };
+	RString& ignMultChars(char c);
+	RString& subst(char from, char to);
+	RString& subst(const RString& from, const RString& to, boolean caseInSens = true);
+	RString& subst(const RString& from, const RString& to,
+		const RString& delimiters, boolean caseInSens = true);
 
-     static const RString lambda() { return lambda_; }
-     static const RString& lambdaRef() { return lambda_; }
-  protected:
-     boolean gWordTable( int& index, const char white[], RString& word) const;
-  private:
- friend class HgRegexp;
-     RString( const RString&, const RString&);
+	RString& invert();
+	RString& tolower();
+	RString& toupper();
+	RString& sgml2Iso();
+	RString& SGMLtoISO() { return sgml2Iso(); }
+	RString& sgmlIso2LowerAscii();
+	RString& SGMLISOtolowerASCII() { return sgmlIso2LowerAscii(); }
+	RString& dos2Unix();
+	RString& Dos2Unix() { return dos2Unix(); }
+	RString& unix2Dos();
+	RString& Unix2Dos() { return unix2Dos(); };
 
-     StringRep* rep_;
+	static const RString lambda() { return lambda_; }
+	static const RString& lambdaRef() { return lambda_; }
+protected:
+	boolean gWordTable(int& index, const char white[], RString& word) const;
+private:
+	friend class HgRegexp;
+	RString(const RString&, const RString&);
 
-     static const RString lambda_;
+	StringRep* rep_;
+
+	static const RString lambda_;
 };
-     
-inline int operator >( const RString& s1, const RString& s2) {return (s2 < s1);}
-inline int operator >( const char* s1, const RString& s2) {return (s2 < s1);}
-inline int operator >( const RString& s1, const char* s2) {return (s2 < s1);}
+
+inline int operator >(const RString& s1, const RString& s2) { return (s2 < s1); }
+inline int operator >(const char* s1, const RString& s2) { return (s2 < s1); }
+inline int operator >(const RString& s1, const char* s2) { return (s2 < s1); }
 
 
 inline RString::operator const char*() const {
-     return (const char*) rep_->str_;
+	return (const char*)rep_->str_;
 }
 
 inline const char* RString::string() const {
-     return (const char*) rep_->str_;
+	return (const char*)rep_->str_;
 }
 
-inline char RString::operator []( int i) const {
-     return rep_->str_[i];
+inline char RString::operator [](int i) const {
+	return rep_->str_[i];
 }
 
-inline ostream& operator <<( ostream& o, const RString& s) { return o << s.string(); }
+inline ostream& operator <<(ostream& o, const RString& s) { return o << s.string(); }
 
 #endif
 

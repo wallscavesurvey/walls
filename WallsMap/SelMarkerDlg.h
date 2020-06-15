@@ -26,9 +26,9 @@ class CSelMarkerDlg : public CDialog
 	CDC m_dcBmp;	 // Compatible Memory DC, with m_cBmp already selected
 	HBITMAP m_hBmpOld;    // Handle of old bitmap to save
 
-    CRect m_rectBox;  // Bitmap's client-relative rectangle
+	CRect m_rectBox;  // Bitmap's client-relative rectangle
 	CSize m_sizeBox;  // Size (width and height) of bitmap in pixels
-	CPoint m_ptCtrBox1,m_ptCtrBox2; //Center of box where symbol is drawn
+	CPoint m_ptCtrBox1, m_ptCtrBox2; //Center of box where symbol is drawn
 
 	//Used for drawing symbol --
 	CStatic	m_rectSym;
@@ -50,24 +50,24 @@ class CSelMarkerDlg : public CDialog
 	void UpdateOpacityLabel();
 
 public:
-	CSelMarkerDlg(bool bGPS=false,CWnd* pParent = NULL);   // standard constructor
+	CSelMarkerDlg(bool bGPS = false, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CSelMarkerDlg();
 
-// Dialog Data
+	// Dialog Data
 
-	//Accessed by caller: CMainFrame
+		//Accessed by caller: CMainFrame
 	COLORREF m_clrPrev;
-	SHP_MRK_STYLE m_mstyle_s,*m_pmstyle_s;
-	SHP_MRK_STYLE m_mstyle_h,*m_pmstyle_h;
+	SHP_MRK_STYLE m_mstyle_s, *m_pmstyle_s;
+	SHP_MRK_STYLE m_mstyle_h, *m_pmstyle_h;
 	SHP_MRK_STYLE m_mstyle_t; //gps trackline
 
 	enum { IDD = IDD_SELMARKER };
 
 protected:
 
-	void Enable(UINT id,BOOL bEnable) {GetDlgItem(id)->EnableWindow(bEnable);}
-	void Show(UINT id,bool bShow) {GetDlgItem(id)->ShowWindow(bShow?SW_SHOW:SW_HIDE);}
-	void SetText(UINT id,LPCSTR s) {GetDlgItem(id)->SetWindowText(s);}
+	void Enable(UINT id, BOOL bEnable) { GetDlgItem(id)->EnableWindow(bEnable); }
+	void Show(UINT id, bool bShow) { GetDlgItem(id)->ShowWindow(bShow ? SW_SHOW : SW_HIDE); }
+	void SetText(UINT id, LPCSTR s) { GetDlgItem(id)->SetWindowText(s); }
 
 	virtual BOOL OnInitDialog();
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
@@ -84,7 +84,7 @@ protected:
 	afx_msg void OnSelShape();
 	afx_msg void OnFilled();
 	afx_msg void OnClear();
-	afx_msg LRESULT OnChgColor(WPARAM,LPARAM);
+	afx_msg LRESULT OnChgColor(WPARAM, LPARAM);
 	afx_msg void OnDestroy();
 	afx_msg void OnPaint();
 	afx_msg void OnTabChanged(LPNMHDR pHdr, LRESULT* pResult);

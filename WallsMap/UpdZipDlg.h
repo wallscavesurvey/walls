@@ -11,19 +11,19 @@ class CUpdZipDlg : public CDialog
 	DECLARE_DYNAMIC(CUpdZipDlg)
 
 public:
-	CUpdZipDlg(CShpLayer *pShp,LPCSTR pathName,int iFlags,CWnd* pParent = NULL)
+	CUpdZipDlg(CShpLayer *pShp, LPCSTR pathName, int iFlags, CWnd* pParent = NULL)
 		: m_pShp(pShp)
 		, m_pathName(pathName)
 		, m_iFlags(iFlags)
 		, m_bAddShp(0)
 		, m_bCompleted(false)
-		,CDialog(CUpdZipDlg::IDD, pParent) {}
+		, CDialog(CUpdZipDlg::IDD, pParent) {}
 
 	virtual ~CUpdZipDlg();
 
 	BOOL m_bAddShp;
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_UPDZIP };
 
 private:
@@ -31,16 +31,16 @@ private:
 	void OnCancel();
 	LPCSTR FixPath(LPCSTR ext)
 	{
-		return ReplacePathExt(m_pathName,ext);
+		return ReplacePathExt(m_pathName, ext);
 	}
-	int AddShpComponent(HZIP hz,CString &path,LPCSTR pExt);
-	int CopyShpComponent(HZIP hz,CString &path,LPCSTR pExt);
+	int AddShpComponent(HZIP hz, CString &path, LPCSTR pExt);
+	int CopyShpComponent(HZIP hz, CString &path, LPCSTR pExt);
 
-	void Enable(UINT id,BOOL bEnable) {GetDlgItem(id)->EnableWindow(bEnable);}
-	void Show(UINT id,BOOL bShow) {GetDlgItem(id)->ShowWindow(bShow?SW_SHOW:SW_HIDE);}
-	bool IsVisible(UINT id) {return GetDlgItem(id)->IsWindowVisible()==TRUE;}
-	void SetText(UINT id,LPCSTR s) {GetDlgItem(id)->SetWindowText(s);}
-	void SetS3Test(CString &s0,bool bInit);
+	void Enable(UINT id, BOOL bEnable) { GetDlgItem(id)->EnableWindow(bEnable); }
+	void Show(UINT id, BOOL bShow) { GetDlgItem(id)->ShowWindow(bShow ? SW_SHOW : SW_HIDE); }
+	bool IsVisible(UINT id) { return GetDlgItem(id)->IsWindowVisible() == TRUE; }
+	void SetText(UINT id, LPCSTR s) { GetDlgItem(id)->SetWindowText(s); }
+	void SetS3Test(CString &s0, bool bInit);
 
 	int m_iFlags;
 	UINT m_nNew;

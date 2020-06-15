@@ -9,7 +9,7 @@
 #endif // _MSC_VER > 1000
 
 #ifndef __AFXWIN_H__
-	#error include 'stdafx.h' before including this file for PCH
+#error include 'stdafx.h' before including this file for PCH
 #endif
 
 #include "resource.h"       // main symbols
@@ -35,7 +35,7 @@ public:
 	char m_nwbb_nambuf[128];
 	char m_texbib_date[32];
 	char m_nwbb_date[32];
-	UINT m_texbib_bFlags,m_nwbb_bFlags;
+	UINT m_texbib_bFlags, m_nwbb_bFlags;
 
 	CString m_link;
 	char m_szDBFilePath[_MAX_PATH];
@@ -46,7 +46,7 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CReselectApp)
-	public:
+public:
 	virtual BOOL InitInstance();
 	virtual int ExitInstance();
 	//}}AFX_VIRTUAL
@@ -54,9 +54,9 @@ public:
 // Implementation
 	//{{AFX_MSG(CReselectApp)
 	afx_msg void OnAppAbout();
-		// NOTE - the ClassWizard will add and remove member functions here.
-		//    DO NOT EDIT what you see in these blocks of generated code !
-	//}}AFX_MSG
+	// NOTE - the ClassWizard will add and remove member functions here.
+	//    DO NOT EDIT what you see in these blocks of generated code !
+//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
 

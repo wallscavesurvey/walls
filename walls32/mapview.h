@@ -16,26 +16,26 @@ class CMapView : public CView
 	DECLARE_DYNCREATE(CMapView)
 
 private:
-   bool m_bPanning,m_bPanned,m_bMeasuring; /*,m_bScrollBars,m_bScrolling;*/
-   BOOL m_bCursorInBmp,m_bTracking;
-   int m_iPosX,m_iPosY,m_iPtrX,m_iPtrY,m_iPosMaxX,m_iPosMaxY;
-   CScaleWnd *m_pScaleWnd;
+	bool m_bPanning, m_bPanned, m_bMeasuring; /*,m_bScrollBars,m_bScrolling;*/
+	BOOL m_bCursorInBmp, m_bTracking;
+	int m_iPosX, m_iPosY, m_iPtrX, m_iPtrY, m_iPosMaxX, m_iPosMaxY;
+	CScaleWnd *m_pScaleWnd;
 
-   CPoint m_ptBitmapOverlap,m_ptPan;
+	CPoint m_ptBitmapOverlap, m_ptPan;
 
-   CMapView();			// protected constructor used by dynamic creation
-   CMapFrame *m_pFrame;
-   CPoint m_ptPopup,m_ptPopupRaw;
+	CMapView();			// protected constructor used by dynamic creation
+	CMapFrame *m_pFrame;
+	CPoint m_ptPopup, m_ptPopupRaw;
 
-   void ClearLocate() { if(m_pVecNode) RefreshVecNode(TRUE);}
-   void DrawLocate() { if(m_pVecNode) RefreshVecNode(FALSE);}
-   void SetScalePos();
-  
-// Attributes
+	void ClearLocate() { if (m_pVecNode) RefreshVecNode(TRUE); }
+	void DrawLocate() { if (m_pVecNode) RefreshVecNode(FALSE); }
+	void SetScalePos();
+
+	// Attributes
 
 	int m_iPltrec;
 	BOOL m_bInContext;
-    //CMapView *m_pNextView;
+	//CMapView *m_pNextView;
 	void GetCoordinate(CPoint point);
 	void NewView(CRect &rect);
 	void RefreshCursor();
@@ -48,10 +48,10 @@ private:
 	void CMapView::ShowTrackingTT(CPoint &point);
 #endif
 
-// Operations
+	// Operations
 public:
-	static HCURSOR m_hCursorPan,m_hCursorCross,m_hCursorArrow,m_hCursorMeasure;
-	static HCURSOR m_hCursorIdentify,m_hCursorHand;
+	static HCURSOR m_hCursorPan, m_hCursorCross, m_hCursorArrow, m_hCursorMeasure;
+	static HCURSOR m_hCursorIdentify, m_hCursorHand;
 
 	BOOL m_bIdentify;
 	BOOL m_bProfile;
@@ -65,12 +65,12 @@ public:
 	// Implementation
 private:
 	virtual ~CMapView();
-    BOOL PreCreateWindow(CREATESTRUCT& cs);
+	BOOL PreCreateWindow(CREATESTRUCT& cs);
 
 	MAP_VECNODE *m_pVecNode;
 	CRect m_VecNodeRect;
 	void RefreshVecNode(BOOL bClear);
-    void OnMapZoom(double scale);
+	void OnMapZoom(double scale);
 
 	CPrjDoc *GetDocument() { return (CPrjDoc *)CView::GetDocument(); }
 
@@ -80,7 +80,7 @@ private:
 	virtual void OnActivateView(BOOL bActivate, CView* pActiveView, CView* pDeactiveView);
 	//afx_msg void OnClose();
 	afx_msg void OnUpdateUTM(CCmdUI* pCmdUI);
-    afx_msg LRESULT OnMouseLeave(WPARAM wNone, LPARAM lParam);
+	afx_msg LRESULT OnMouseLeave(WPARAM wNone, LPARAM lParam);
 	afx_msg LRESULT OnExitSizeMove(WPARAM, LPARAM);
 	afx_msg void OnUpdateTravToggle(CCmdUI* pCmdUI);
 	afx_msg void OnTravToggle();

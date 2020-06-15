@@ -25,24 +25,24 @@
 // Unique RString for TreapNameNode::Data (see gentreap.h).
 // Unique means, that no other Data can be appended.
 // **********************************************************
-class URString : public RString 
+class URString : public RString
 {
 public:
-    URString ()                        : RString()     { }
-    URString (const char* s)           : RString(s)    { }
-    URString (const char* s, int len)  : RString(s,len){ }
-    URString (const RString& s)        : RString(s)    { }
+	URString() : RString() { }
+	URString(const char* s) : RString(s) { }
+	URString(const char* s, int len) : RString(s, len) { }
+	URString(const RString& s) : RString(s) { }
 
 private:
-    friend class OidUStringTree;
-    friend class ObjPtrUStringTree;
-    static URString& mergeDataList (const URString& a, const URString& b) 
-    {
-//        cerr << "Fatal Error in URString: two Objects with identical ObjectID!\n";
-//        cerr << "String a:" << a << " String b:" << b << endl;
-        exit(1);
-        return *(new URString());
-    };
+	friend class OidUStringTree;
+	friend class ObjPtrUStringTree;
+	static URString& mergeDataList(const URString& a, const URString& b)
+	{
+		//        cerr << "Fatal Error in URString: two Objects with identical ObjectID!\n";
+		//        cerr << "String a:" << a << " String b:" << b << endl;
+		exit(1);
+		return *(new URString());
+	};
 };
 
 
@@ -51,52 +51,52 @@ private:
 // ----------------------------------------------------------
 // ObjectID ----> URString
 // **********************************************************
-Treapdeclare(OidUStringTree,ObjectID,URString)
+Treapdeclare(OidUStringTree, ObjectID, URString)
 
 // **********************************************************
 // class RStringUOidTree, RStringUOidNode
 // ----------------------------------------------------------
 // RString -> UObjectID
 // **********************************************************
-Treapdeclare(RStringUOidTree,RString,UObjectID)
+Treapdeclare(RStringUOidTree, RString, UObjectID)
 
 
 /////////////////////////////////////////////////////////////////////////////
 // class FlushAction : used for copying a OidUStringTree 
 
-class FlushAction : public OidUStringTreeAction 
+class FlushAction : public OidUStringTreeAction
 {
 public:
-    FlushAction( OidUStringTree* treap) : OidUStringTreeAction(),
-					treap_(treap) {}
-    OidUStringTree* getTreap() { return treap_; }
+	FlushAction(OidUStringTree* treap) : OidUStringTreeAction(),
+		treap_(treap) {}
+	OidUStringTree* getTreap() { return treap_; }
 
 protected:
-    void actionMiddle( const ObjectID& key, URString& data) { 
-	    treap_->insert( key, data);
-    }
-    void actionBefore( const ObjectID&, URString&){}
-    void actionAfter( const ObjectID&, URString&){}
-  
-    OidUStringTree* treap_;
+	void actionMiddle(const ObjectID& key, URString& data) {
+		treap_->insert(key, data);
+	}
+	void actionBefore(const ObjectID&, URString&) {}
+	void actionAfter(const ObjectID&, URString&) {}
+
+	OidUStringTree* treap_;
 };
 
 
 /////////////////////////////////////////////////////////////////////////////
 // 
 
-class UObjectPtr : public ObjectPtr 
+class UObjectPtr : public ObjectPtr
 {
 public:
-    UObjectPtr(HGObject* o = nil)   : ObjectPtr(o)      {};
-    UObjectPtr(const ObjectPtr& ptr) : ObjectPtr(ptr)    {};
+	UObjectPtr(HGObject* o = nil) : ObjectPtr(o) {};
+	UObjectPtr(const ObjectPtr& ptr) : ObjectPtr(ptr) {};
 
 private:
-    friend class ObjPtrUStringTree;
-    static UObjectPtr& mergeDataList (const UObjectPtr& a, const UObjectPtr& b) 
-    {
-        return *(new UObjectPtr());
-    };
+	friend class ObjPtrUStringTree;
+	static UObjectPtr& mergeDataList(const UObjectPtr& a, const UObjectPtr& b)
+	{
+		return *(new UObjectPtr());
+	};
 };
 
 Treapdeclare(ObjPtrUStringTree, RString, UObjectPtr)
@@ -104,23 +104,23 @@ Treapdeclare(ObjPtrUStringTree, RString, UObjectPtr)
 /////////////////////////////////////////////////////////////////////////////
 // class InvalidateAction : used for invalidating a whole ObjPtrUStringTree 
 
-class InvalidateAction : public ObjPtrUStringTreeAction 
+class InvalidateAction : public ObjPtrUStringTreeAction
 {
 public:
-    InvalidateAction( ObjPtrUStringTree* treap) : ObjPtrUStringTreeAction(),
-					                         treap_(treap) {}
-    ObjPtrUStringTree* getTreap() { return treap_; }
+	InvalidateAction(ObjPtrUStringTree* treap) : ObjPtrUStringTreeAction(),
+		treap_(treap) {}
+	ObjPtrUStringTree* getTreap() { return treap_; }
 
 protected:
-    void actionMiddle( const RString& key, UObjectPtr& data) 
-    { 
-        if (data.Obj())
-            data.Obj()->invalidate();
-    }
-    void actionBefore( const RString&, UObjectPtr&){}
-    void actionAfter( const RString&, UObjectPtr&){}
-  
-    ObjPtrUStringTree* treap_;
+	void actionMiddle(const RString& key, UObjectPtr& data)
+	{
+		if (data.Obj())
+			data.Obj()->invalidate();
+	}
+	void actionBefore(const RString&, UObjectPtr&) {}
+	void actionAfter(const RString&, UObjectPtr&) {}
+
+	ObjPtrUStringTree* treap_;
 };
 
 

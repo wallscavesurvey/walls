@@ -8,24 +8,24 @@ class CDisabledCombo;
 
 class CListBoxInsideComboBox : public CWnd
 {
-// Construction
+	// Construction
 public:
 	CListBoxInsideComboBox();
 
-// Attributes
+	// Attributes
 public:
 	CDisabledCombo *m_Parent;
 	void SetParent(CDisabledCombo *);
 
-// Operations
+	// Operations
 public:
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CListBoxInsideComboBox)
-	//}}AFX_VIRTUAL
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CListBoxInsideComboBox)
+		//}}AFX_VIRTUAL
 
-// Implementation
+	// Implementation
 public:
 	virtual ~CListBoxInsideComboBox();
 
@@ -43,11 +43,11 @@ protected:
 
 class CDisabledCombo : public CComboBox
 {
-// Construction
+	// Construction
 public:
 	CDisabledCombo();
 
-// Attributes
+	// Attributes
 public:
 	// default implementation uses LSB of item data; override to get other behaviour
 	virtual BOOL IsItemEnabled(UINT) const;
@@ -56,16 +56,16 @@ protected:
 	CString m_strSavedText;	// saves text between OnSelendok and OnRealSelEndOK calls
 	CListBoxInsideComboBox m_ListBox;
 
-// Operations
+	// Operations
 public:
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CDisabledCombo)
-	public:
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CDisabledCombo)
+public:
 	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 	virtual void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
-	protected:
+protected:
 	virtual void PreSubclassWindow();
 	virtual void PostNcDestroy();
 	//}}AFX_VIRTUAL
@@ -82,8 +82,8 @@ protected:
 	//}}AFX_MSG
 	afx_msg void RecalcDropWidth();
 
-	LRESULT OnCtlColor(WPARAM,LPARAM lParam);
-	afx_msg LRESULT OnRealSelEndOK(WPARAM,LPARAM);
+	LRESULT OnCtlColor(WPARAM, LPARAM lParam);
+	afx_msg LRESULT OnRealSelEndOK(WPARAM, LPARAM);
 
 	DECLARE_MESSAGE_MAP()
 };

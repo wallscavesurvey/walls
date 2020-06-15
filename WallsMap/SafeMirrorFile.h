@@ -6,11 +6,11 @@
 class CSafeMirrorFile : public CMirrorFile
 {
 	// Implementation
-	public:
+public:
 	virtual CString GetFilePath() const; // CFile override
 	BOOL SafeGetStatus(CFileStatus& rStatus) const; // custom GetStatus	with fix from VC.NET 2005
 
-	private:
+private:
 	BOOL WINAPI IsValidFILETIME(const FILETIME& fileTime) const;
 };
 #endif

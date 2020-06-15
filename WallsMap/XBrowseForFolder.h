@@ -16,14 +16,14 @@
 #define XBROWSEFORFOLDER_H
 
 BOOL XBrowseForFolder(HWND hWnd,
-					  LPCTSTR lpszInitialFolder,
-					  int nFolder,
-					  LPCTSTR lpszCaption,
-					  LPTSTR lpszBuf,
-					  DWORD dwBufSize
+	LPCTSTR lpszInitialFolder,
+	int nFolder,
+	LPCTSTR lpszCaption,
+	LPTSTR lpszBuf,
+	DWORD dwBufSize
 #ifdef XUSE_EDITBOX
-					  , BOOL bEditBox = FALSE
+	, BOOL bEditBox = FALSE
 #endif					  
-					  );
+);
 
 #endif //XBROWSEFORFOLDER_H

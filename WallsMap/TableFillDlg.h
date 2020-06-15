@@ -11,10 +11,10 @@ class CTableFillDlg : public CResizeDlg
 	DECLARE_DYNAMIC(CTableFillDlg)
 
 public:
-	CTableFillDlg(WORD nFld,CWnd* pParent = NULL);   // standard constructor
+	CTableFillDlg(WORD nFld, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CTableFillDlg();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_TABLE_FILL };
 
 public:
@@ -29,7 +29,7 @@ protected:
 private:
 	CStatic	m_placement;
 	CRulerRichEditCtrl	m_rtf;
-    CDBGridDlg *m_pGDlg;
+	CDBGridDlg *m_pGDlg;
 	WORD m_nFld;
 	char m_fTyp;
 

@@ -11,10 +11,10 @@ class CTitleDlg : public CDialog
 	DECLARE_DYNAMIC(CTitleDlg)
 
 public:
-	CTitleDlg(LPCSTR pTitle,LPCSTR pWinTitle=NULL,CWnd* pParent = NULL);   // standard constructor
+	CTitleDlg(LPCSTR pTitle, LPCSTR pWinTitle = NULL, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CTitleDlg();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_EDITTITLE };
 	CString m_title;
 	LPCSTR m_pWinTitle;

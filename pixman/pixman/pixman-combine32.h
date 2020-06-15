@@ -24,9 +24,9 @@
 #define GREEN_8(x) (((x) >> G_SHIFT) & MASK)
 #define BLUE_8(x) ((x) & MASK)
 
-/*
- * Helper macros.
- */
+   /*
+	* Helper macros.
+	*/
 
 #define MUL_UN8(a, b, t)						\
     ((t) = (a) * (b) + ONE_HALF, ((((t) >> G_SHIFT ) + (t) ) >> G_SHIFT ))
@@ -41,14 +41,14 @@
 #define DIV_ONE_UN8(x)							\
     (((x) + ONE_HALF + (((x) + ONE_HALF) >> G_SHIFT)) >> G_SHIFT)
 
-/*
- * The methods below use some tricks to be able to do two color
- * components at the same time.
- */
+	/*
+	 * The methods below use some tricks to be able to do two color
+	 * components at the same time.
+	 */
 
-/*
- * x_rb = (x_rb * a) / 255
- */
+	 /*
+	  * x_rb = (x_rb * a) / 255
+	  */
 #define UN8_rb_MUL_UN8(x, a, t)						\
     do									\
     {									\
@@ -58,9 +58,9 @@
 	x &= RB_MASK;							\
     } while (0)
 
-/*
- * x_rb = min (x_rb + y_rb, 255)
- */
+	  /*
+	   * x_rb = min (x_rb + y_rb, 255)
+	   */
 #define UN8_rb_ADD_UN8_rb(x, y, t)					\
     do									\
     {									\
@@ -69,9 +69,9 @@
 	x = (t & RB_MASK);						\
     } while (0)
 
-/*
- * x_rb = (x_rb * a_rb) / 255
- */
+	   /*
+		* x_rb = (x_rb * a_rb) / 255
+		*/
 #define UN8_rb_MUL_UN8_rb(x, a, t)					\
     do									\
     {									\
@@ -82,9 +82,9 @@
 	x = t & RB_MASK;						\
     } while (0)
 
-/*
- * x_c = (x_c * a) / 255
- */
+		/*
+		 * x_c = (x_c * a) / 255
+		 */
 #define UN8x4_MUL_UN8(x, a)						\
     do									\
     {									\
@@ -99,9 +99,9 @@
 	x = r1 | (r2 << G_SHIFT);					\
     } while (0)
 
-/*
- * x_c = (x_c * a) / 255 + y_c
- */
+		 /*
+		  * x_c = (x_c * a) / 255 + y_c
+		  */
 #define UN8x4_MUL_UN8_ADD_UN8x4(x, a, y)				\
     do									\
     {									\
@@ -120,9 +120,9 @@
 	x = r1 | (r2 << G_SHIFT);					\
     } while (0)
 
-/*
- * x_c = (x_c * a + y_c * b) / 255
- */
+		  /*
+		   * x_c = (x_c * a + y_c * b) / 255
+		   */
 #define UN8x4_MUL_UN8_ADD_UN8x4_MUL_UN8(x, a, y, b)			\
     do									\
     {									\
@@ -143,9 +143,9 @@
 	x = r1 | (r2 << G_SHIFT);					\
     } while (0)
 
-/*
- * x_c = (x_c * a_c) / 255
- */
+		   /*
+			* x_c = (x_c * a_c) / 255
+			*/
 #define UN8x4_MUL_UN8x4(x, a)						\
     do									\
     {									\
@@ -162,9 +162,9 @@
 	x = r1 | (r2 << G_SHIFT);					\
     } while (0)
 
-/*
- * x_c = (x_c * a_c) / 255 + y_c
- */
+			/*
+			 * x_c = (x_c * a_c) / 255 + y_c
+			 */
 #define UN8x4_MUL_UN8x4_ADD_UN8x4(x, a, y)				\
     do									\
     {									\
@@ -185,9 +185,9 @@
 	x = r1 | (r2 << G_SHIFT);					\
     } while (0)
 
-/*
- * x_c = (x_c * a_c + y_c * b) / 255
- */
+			 /*
+			  * x_c = (x_c * a_c + y_c * b) / 255
+			  */
 #define UN8x4_MUL_UN8x4_ADD_UN8x4_MUL_UN8(x, a, y, b)			\
     do									\
     {									\
@@ -210,9 +210,9 @@
 	x = r1 | (r2 << G_SHIFT);					\
     } while (0)
 
-/*
-   x_c = min(x_c + y_c, 255)
- */
+			  /*
+				 x_c = min(x_c + y_c, 255)
+			   */
 #define UN8x4_ADD_UN8x4(x, y)						\
     do									\
     {									\

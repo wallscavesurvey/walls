@@ -1,16 +1,16 @@
-/********************************************************** 
+/**********************************************************
 ** Copyright 1998 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
-** 
+**
 ** FILE:   	ecw_open.c
 ** CREATED:	1998
 ** AUTHOR: 	SNS
@@ -31,7 +31,7 @@
 ** [13] rar 18Sep01 Modified erw_decompress_open so that if the Block Table is uncompressed (RAW)
 **                  it is not passed through unpack_data (which just does a memcpy anyway)
 ** [14] sjc 12Jun03 Randomize the start value for the random function to stop noticable artifacts with small tiled output.
-** [15] jx  12Feb04 initialise nCounter to 0. nCounter is added to QmfRegionStruct to fix rounding error in erw_decompress_read_region_line_bil(). 
+** [15] jx  12Feb04 initialise nCounter to 0. nCounter is added to QmfRegionStruct to fix rounding error in erw_decompress_read_region_line_bil().
  *******************************************************/
 
 
@@ -39,64 +39,64 @@
 #include "NCSEcw.h"
 
 #if !defined(_WIN32_WCE)
-	#ifdef WIN32 //[12]
-		#define _CRTDBG_MAP_ALLOC
-		#include "crtdbg.h"
-	#endif
+#ifdef WIN32 //[12]
+#define _CRTDBG_MAP_ALLOC
+#include "crtdbg.h"
+#endif
 #endif
 
-/*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	
-**
-**
-**	erw_decompress_open() at al.  Call with the name of the file to open.
-**	Returns a pointer to the ERW structure, or NULL if an error occurred.
-**
-**	Input filename can be either the ERS or the ERW file - it does not matter
-**
-**	This routine is called once to open an ERW compressed file
-**	to read it.  Once opened using erw_decompress_open(), it can be read multiple times
-**	at different resolutions or geographic resolutions using erw_decompress_start_region().
-**	So you can make multiple region calls (at the same time or sequentially) to a file
-**	that has been opened.
-**
-**	The sequence of usage is:
-**
-**	erw_decompress_open()				- open a file
-**	erw_decompress_start_region()		- define a region to be read at specified resolution
-**	erw_decompress_read_region_line()	- read the next line from the region
-**	erw_decompress_end_region()			- end reading a region.  Call at end of region, or when aborting read
-**	erw_decompress_close()				- close a file
-**
-**
-**	For maximum performance, you should minimize the number of
-**	erw_decompress_open() calls. It is faster to have a single open then multiple
-**	region calls for that single open.
-**	[later note: files are now cached, so multiple open's don't have as much
-**	overhead any more]
-**
-**	You can have multiple open_region() calls open for a single file, or open the file multiple
-**	times. Either technique works and are just as efficient.
-**
-**	If you are aborting a read of a region, but plan to read another region from the
-**	same file, just call erw_decompress_end_region(). If you are aborting all access
-**	to the file, call erw_decompress_end_region() and then erw_decompress_close().
-**
-**	WARNING: do not close the file with one or more start_region() calls still open.
-**	This will corrupt memory.  You should clean up all outstanding close_region()
-**	calls before calling the shutdown stage.
-**
-*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*/
+ /*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
+ **
+ **
+ **	erw_decompress_open() at al.  Call with the name of the file to open.
+ **	Returns a pointer to the ERW structure, or NULL if an error occurred.
+ **
+ **	Input filename can be either the ERS or the ERW file - it does not matter
+ **
+ **	This routine is called once to open an ERW compressed file
+ **	to read it.  Once opened using erw_decompress_open(), it can be read multiple times
+ **	at different resolutions or geographic resolutions using erw_decompress_start_region().
+ **	So you can make multiple region calls (at the same time or sequentially) to a file
+ **	that has been opened.
+ **
+ **	The sequence of usage is:
+ **
+ **	erw_decompress_open()				- open a file
+ **	erw_decompress_start_region()		- define a region to be read at specified resolution
+ **	erw_decompress_read_region_line()	- read the next line from the region
+ **	erw_decompress_end_region()			- end reading a region.  Call at end of region, or when aborting read
+ **	erw_decompress_close()				- close a file
+ **
+ **
+ **	For maximum performance, you should minimize the number of
+ **	erw_decompress_open() calls. It is faster to have a single open then multiple
+ **	region calls for that single open.
+ **	[later note: files are now cached, so multiple open's don't have as much
+ **	overhead any more]
+ **
+ **	You can have multiple open_region() calls open for a single file, or open the file multiple
+ **	times. Either technique works and are just as efficient.
+ **
+ **	If you are aborting a read of a region, but plan to read another region from the
+ **	same file, just call erw_decompress_end_region(). If you are aborting all access
+ **	to the file, call erw_decompress_end_region() and then erw_decompress_close().
+ **
+ **	WARNING: do not close the file with one or more start_region() calls still open.
+ **	This will corrupt memory.  You should clean up all outstanding close_region()
+ **	calls before calling the shutdown stage.
+ **
+ *	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*/
 
 
-/*
-**	Open a QMF file for multiple region reads. File details can be
-**	from a file, or directly from a memory image of the header
-*/
+ /*
+ **	Open a QMF file for multiple region reads. File details can be
+ **	from a file, or directly from a memory image of the header
+ */
 
-QmfLevelStruct *erw_decompress_open( char *p_input_filename,
-			UINT8	*pMemImage,			// if non-NULL, open the memory image not the file
-			BOOLEAN bReadOffsets,
-			BOOLEAN bReadMemImage )
+QmfLevelStruct *erw_decompress_open(char *p_input_filename,
+	UINT8	*pMemImage,			// if non-NULL, open the memory image not the file
+	BOOLEAN bReadOffsets,
+	BOOLEAN bReadMemImage)
 {
 	Byte	the_byte;
 	UINT8	temp_byte;
@@ -127,14 +127,14 @@ QmfLevelStruct *erw_decompress_open( char *p_input_filename,
 	CellSizeUnits	eCellSizeUnits = ECW_CELL_UNITS_METERS;
 	IEEE8	fCellIncrementX = 1.0;
 	IEEE8	fCellIncrementY = 1.0;
-	IEEE8	fOriginX		  = 0.0;
-	IEEE8	fOriginY		  = 0.0;
-	char	szDatum[ECW_MAX_DATUM_LEN]			  = "RAW";	// start with a default Datum
-	char	szProjection[ECW_MAX_PROJECTION_LEN]  = "RAW";	// start with a default Projection
+	IEEE8	fOriginX = 0.0;
+	IEEE8	fOriginY = 0.0;
+	char	szDatum[ECW_MAX_DATUM_LEN] = "RAW";	// start with a default Datum
+	char	szProjection[ECW_MAX_PROJECTION_LEN] = "RAW";	// start with a default Projection
 
 
 	// If reading from memory, set the pIntoMemImage pointer
-	if( pMemImage ) {
+	if (pMemImage) {
 		pIntoMemImage = pMemImage;
 		bReadOffsets = FALSE;
 		bReadMemImage = FALSE;
@@ -148,117 +148,117 @@ QmfLevelStruct *erw_decompress_open( char *p_input_filename,
 	**	If you change the header, you must change BOTH the memory and the file reader version.
 	**	Look for all locations marked [HEADER] and update them as required
 	*/
-	if( pIntoMemImage ) {
+	if (pIntoMemImage) {
 		// [HEADER] read main header from memory image
 		error = 0;
 		temp_byte = *pIntoMemImage++;
-		if (temp_byte != (the_byte = ECW_HEADER_ID_TAG)) { 
-//			ERS_setup_error(ERS_RASTER_ERROR,"The file is not a valid ECW file.");
+		if (temp_byte != (the_byte = ECW_HEADER_ID_TAG)) {
+			//			ERS_setup_error(ERS_RASTER_ERROR,"The file is not a valid ECW file.");
 			error = 1;
 		}
 		else {
 			qmf_version = *pIntoMemImage++;
 			temp_byte = *pIntoMemImage++;				qmf_blocking_format = temp_byte;
 			temp_byte = *pIntoMemImage++;				qmf_compress_format = temp_byte;
-			temp_byte = *pIntoMemImage++;				num_levels = (UINT16) temp_byte;
+			temp_byte = *pIntoMemImage++;				num_levels = (UINT16)temp_byte;
 			temp_byte = *pIntoMemImage++;				qmf_nr_sidebands = temp_byte;
 			temp_int = sread_int32(pIntoMemImage);
-			pIntoMemImage += 4;							x_size = (int) temp_int;
+			pIntoMemImage += 4;							x_size = (int)temp_int;
 			temp_int = sread_int32(pIntoMemImage);
-			pIntoMemImage += 4;							y_size = (int) temp_int;
+			pIntoMemImage += 4;							y_size = (int)temp_int;
 			temp_int16 = sread_int16(pIntoMemImage);
 			pIntoMemImage += 2;							qmf_nr_bands = temp_int16;
 			temp_int16 = sread_int16(pIntoMemImage);
-			pIntoMemImage += 2;							scale_factor = (IEEE4) temp_int16;
+			pIntoMemImage += 2;							scale_factor = (IEEE4)temp_int16;
 			x_block_size = sread_int16(pIntoMemImage);	pIntoMemImage += 2;
 			y_block_size = sread_int16(pIntoMemImage);	pIntoMemImage += 2;
-			if( ERSWAVE_VERSION < qmf_version ) {
-//				ERS_setup_error(ERS_RASTER_ERROR,
-//					"This compressed file is a more recent version than this software, and can not be read. Get the latest software version from www.ermapper.com.");
+			if (ERSWAVE_VERSION < qmf_version) {
+				//				ERS_setup_error(ERS_RASTER_ERROR,
+				//					"This compressed file is a more recent version than this software, and can not be read. Get the latest software version from www.ermapper.com.");
 				error = 1;
 			}
 
 			// some more sanity checking
-			if( num_levels == 0 || qmf_nr_bands == 0 || scale_factor == (IEEE4) 0.0 ) {
-//				ERS_setup_error(ERS_RASTER_ERROR,"The compressed ECW file has an invalid header.");
+			if (num_levels == 0 || qmf_nr_bands == 0 || scale_factor == (IEEE4) 0.0) {
+				//				ERS_setup_error(ERS_RASTER_ERROR,"The compressed ECW file has an invalid header.");
 				error = 1;
 			}
 
 
 			// VERSION 2.0 INFORMATION
-			if( qmf_version > 1 ) {
+			if (qmf_version > 1) {
 				temp_int16 = sread_int16(pIntoMemImage);
 				pIntoMemImage += 2;							nCompressionRate = temp_int16;
-				temp_byte  = *pIntoMemImage++;				eCellSizeUnits	 = temp_byte;
-				sread_ieee8( &fCellIncrementX, pIntoMemImage);	pIntoMemImage += 8;
-				sread_ieee8( &fCellIncrementY, pIntoMemImage);	pIntoMemImage += 8;
-				sread_ieee8( &fOriginX,		 pIntoMemImage);	pIntoMemImage += 8;
-				sread_ieee8( &fOriginY,		 pIntoMemImage);	pIntoMemImage += 8;
+				temp_byte = *pIntoMemImage++;				eCellSizeUnits = temp_byte;
+				sread_ieee8(&fCellIncrementX, pIntoMemImage);	pIntoMemImage += 8;
+				sread_ieee8(&fCellIncrementY, pIntoMemImage);	pIntoMemImage += 8;
+				sread_ieee8(&fOriginX, pIntoMemImage);	pIntoMemImage += 8;
+				sread_ieee8(&fOriginY, pIntoMemImage);	pIntoMemImage += 8;
 
 				strcpy(szDatum, (const char*)pIntoMemImage);			 pIntoMemImage += ECW_MAX_DATUM_LEN;
-				strcpy(szProjection,(const char*)pIntoMemImage);		 pIntoMemImage += ECW_MAX_PROJECTION_LEN;	
+				strcpy(szProjection, (const char*)pIntoMemImage);		 pIntoMemImage += ECW_MAX_PROJECTION_LEN;
 			}
 		}
-		if( error )
+		if (error)
 			return(NULL);
 	}
 	else {
 		// [HEADER] read main header from file
-		if( EcwFileOpenForRead(p_input_filename, &hEcwFile) )
+		if (EcwFileOpenForRead(p_input_filename, &hEcwFile))
 			bEcwFileOpen = FALSE;
 		else
 			bEcwFileOpen = TRUE;
 
 		error = 0;
-		if( bEcwFileOpen ) {
+		if (bEcwFileOpen) {
 			EcwFileReadUint8(hEcwFile, &temp_byte);
-			if (temp_byte != (the_byte = ECW_HEADER_ID_TAG)) { 
-//				ERS_setup_error(ERS_RASTER_ERROR,"The file is not a valid ECW file.");
+			if (temp_byte != (the_byte = ECW_HEADER_ID_TAG)) {
+				//				ERS_setup_error(ERS_RASTER_ERROR,"The file is not a valid ECW file.");
 				error = 1;
 			}
 			else {
 				EcwFileReadUint8(hEcwFile, &qmf_version);
 				EcwFileReadUint8(hEcwFile, &temp_byte);				qmf_blocking_format = temp_byte;
 				EcwFileReadUint8(hEcwFile, &temp_byte);				qmf_compress_format = temp_byte;
-				EcwFileReadUint8(hEcwFile, &temp_byte);				num_levels = (UINT16) temp_byte;
+				EcwFileReadUint8(hEcwFile, &temp_byte);				num_levels = (UINT16)temp_byte;
 				EcwFileReadUint8(hEcwFile, &temp_byte);				qmf_nr_sidebands = temp_byte;
-				EcwFileReadUint32(hEcwFile, &temp_int);				x_size = (int) temp_int;
-				EcwFileReadUint32(hEcwFile, &temp_int);				y_size = (int) temp_int;
+				EcwFileReadUint32(hEcwFile, &temp_int);				x_size = (int)temp_int;
+				EcwFileReadUint32(hEcwFile, &temp_int);				y_size = (int)temp_int;
 				EcwFileReadUint16(hEcwFile, &temp_int16);			qmf_nr_bands = temp_int16;
-				EcwFileReadUint16(hEcwFile, &temp_int16);			scale_factor = (IEEE4) temp_int16;
+				EcwFileReadUint16(hEcwFile, &temp_int16);			scale_factor = (IEEE4)temp_int16;
 				EcwFileReadUint16(hEcwFile, &x_block_size);
 				EcwFileReadUint16(hEcwFile, &y_block_size);
-				if( ERSWAVE_VERSION < qmf_version ) {
-//					ERS_setup_error(ERS_RASTER_ERROR,
-//						"This compressed file is a more recent version than this software, and can not be read. Get the latest software version from www.ermapper.com.");
+				if (ERSWAVE_VERSION < qmf_version) {
+					//					ERS_setup_error(ERS_RASTER_ERROR,
+					//						"This compressed file is a more recent version than this software, and can not be read. Get the latest software version from www.ermapper.com.");
 					error = 1;
 				}
 
 				// some more sanity checking
-				if( num_levels == 0 || qmf_nr_bands == 0 || scale_factor == (IEEE4) 0.0 ) {
-//					ERS_setup_error(ERS_RASTER_ERROR,"The compressed ECW file has an invalid header.");
+				if (num_levels == 0 || qmf_nr_bands == 0 || scale_factor == (IEEE4) 0.0) {
+					//					ERS_setup_error(ERS_RASTER_ERROR,"The compressed ECW file has an invalid header.");
 					error = 1;
 				}
 
 				// VERSION 2.0 INFORMATION
-				if( qmf_version > 1 ) {
+				if (qmf_version > 1) {
 					EcwFileReadUint16(hEcwFile, &temp_int16);			nCompressionRate = temp_int16;
 					EcwFileReadUint8(hEcwFile, &temp_byte);				eCellSizeUnits = temp_byte;
-					EcwFileReadIeee8(hEcwFile,  &fCellIncrementX);
-					EcwFileReadIeee8(hEcwFile,  &fCellIncrementY);
-					EcwFileReadIeee8(hEcwFile,  &fOriginX);
-					EcwFileReadIeee8(hEcwFile,  &fOriginY);
+					EcwFileReadIeee8(hEcwFile, &fCellIncrementX);
+					EcwFileReadIeee8(hEcwFile, &fCellIncrementY);
+					EcwFileReadIeee8(hEcwFile, &fOriginX);
+					EcwFileReadIeee8(hEcwFile, &fOriginY);
 					EcwFileRead(hEcwFile, szDatum, ECW_MAX_DATUM_LEN);
 					EcwFileRead(hEcwFile, szProjection, ECW_MAX_PROJECTION_LEN);
 				}
 			}
 		}
 		else {
-//			ERS_setup_error(ERS_RASTER_ERROR,"Unable to open compressed file.");
+			//			ERS_setup_error(ERS_RASTER_ERROR,"Unable to open compressed file.");
 			error = 1;
 		}
-		if( !bEcwFileOpen || error ) {
-			if( bEcwFileOpen )
+		if (!bEcwFileOpen || error) {
+			if (bEcwFileOpen)
 				EcwFileClose(hEcwFile);
 			return(NULL);
 		}
@@ -269,8 +269,8 @@ QmfLevelStruct *erw_decompress_open( char *p_input_filename,
 	**	Now create the fake file QMF level of the tree
 	*/
 	p_file_qmf = new_qmf_level(x_block_size, y_block_size, num_levels, x_size, y_size, qmf_nr_bands, NULL, NULL, FALSE);
-	if( !p_file_qmf ) {
-		if( bEcwFileOpen )
+	if (!p_file_qmf) {
+		if (bEcwFileOpen)
 			EcwFileClose(hEcwFile);
 		return(NULL);
 	}
@@ -279,13 +279,13 @@ QmfLevelStruct *erw_decompress_open( char *p_input_filename,
 	p_file_qmf->compress_format = qmf_compress_format;
 	p_file_qmf->nr_sidebands = qmf_nr_sidebands;
 	p_file_qmf->scale_factor = scale_factor;
-	p_file_qmf->nr_levels = (UINT8) num_levels;		// [02]
+	p_file_qmf->nr_levels = (UINT8)num_levels;		// [02]
 
 	/*
 	**	Now cycle through the levels of the ERW file, getting each level information
 	*/
 	p_top_qmf = p_smaller_qmf = p_qmf = NULL;
-	for(level = 0; level < num_levels; level++ ) {
+	for (level = 0; level < num_levels; level++) {
 		UINT8	qmf_level;
 		UINT32	qmf_x_size;
 		UINT32	qmf_y_size;
@@ -294,7 +294,7 @@ QmfLevelStruct *erw_decompress_open( char *p_input_filename,
 		/*
 		**	Read level number, X size, Y size
 		*/
-		if( pIntoMemImage ) {
+		if (pIntoMemImage) {
 			// [HEADER] read a QMF header from memory image
 			qmf_level = *pIntoMemImage++;									// level number
 			qmf_x_size = sread_int32(pIntoMemImage); pIntoMemImage += 4;	// level X size
@@ -302,78 +302,78 @@ QmfLevelStruct *erw_decompress_open( char *p_input_filename,
 		}
 		else {
 			// [HEADER] read a QMF header from file
-			if( (error = EcwFileReadUint8(hEcwFile, &qmf_level)) != 0 )				// level number
+			if ((error = EcwFileReadUint8(hEcwFile, &qmf_level)) != 0)				// level number
 				break;
-			if( (error = EcwFileReadUint32(hEcwFile, &qmf_x_size)) != 0 )				// level X size
+			if ((error = EcwFileReadUint32(hEcwFile, &qmf_x_size)) != 0)				// level X size
 				break;
-			if( (error = EcwFileReadUint32(hEcwFile, &qmf_y_size)) != 0 )				// level Y size
+			if ((error = EcwFileReadUint32(hEcwFile, &qmf_y_size)) != 0)				// level Y size
 				break;
 		}
 
 
 		error = 1;
-		if( qmf_level != level
-		 || qmf_x_size >= x_size
-		 || qmf_y_size >= y_size ) {
+		if (qmf_level != level
+			|| qmf_x_size >= x_size
+			|| qmf_y_size >= y_size) {
 			error = 1;			// Error: compressed file error. Unexpected level number
 			break;
 		}
-		p_qmf = new_qmf_level( p_file_qmf->x_block_size,  p_file_qmf->y_block_size,
-							   qmf_level, qmf_x_size, qmf_y_size, qmf_nr_bands, p_smaller_qmf, NULL, FALSE);
-		if( !p_qmf )
+		p_qmf = new_qmf_level(p_file_qmf->x_block_size, p_file_qmf->y_block_size,
+			qmf_level, qmf_x_size, qmf_y_size, qmf_nr_bands, p_smaller_qmf, NULL, FALSE);
+		if (!p_qmf)
 			break;
-		if( !p_top_qmf )
+		if (!p_top_qmf)
 			p_top_qmf = p_qmf;	/* first level, so ensure we point to it */
 
-		p_qmf->p_top_qmf		= p_top_qmf;
-		p_qmf->version			= p_file_qmf->version;
-		p_qmf->blocking_format	= p_file_qmf->blocking_format;
-		p_qmf->compress_format	= p_file_qmf->compress_format;
-		p_qmf->nr_sidebands		= p_file_qmf->nr_sidebands;
-		p_qmf->scale_factor		= p_file_qmf->scale_factor;
-		p_qmf->nr_levels		= (UINT8) num_levels;	// [02]
+		p_qmf->p_top_qmf = p_top_qmf;
+		p_qmf->version = p_file_qmf->version;
+		p_qmf->blocking_format = p_file_qmf->blocking_format;
+		p_qmf->compress_format = p_file_qmf->compress_format;
+		p_qmf->nr_sidebands = p_file_qmf->nr_sidebands;
+		p_qmf->scale_factor = p_file_qmf->scale_factor;
+		p_qmf->nr_levels = (UINT8)num_levels;	// [02]
 
 		p_qmf->nr_x_blocks = QMF_LEVEL_NR_X_BLOCKS(p_qmf);
 		p_qmf->nr_y_blocks = QMF_LEVEL_NR_Y_BLOCKS(p_qmf);
 
 		p_qmf->p_file_qmf = p_file_qmf;
-		if( p_smaller_qmf )
+		if (p_smaller_qmf)
 			p_smaller_qmf->p_larger_qmf = p_qmf;
 		p_smaller_qmf = p_qmf;
 
 		/*
 		**	Read binsizes for this level, one value per band (e.g. 1 band = greyscale; 3 = RGB or YIQ)
 		*/
-		if( pIntoMemImage ) {
+		if (pIntoMemImage) {
 			// [HEADER] read a QMF binsizes from memory image
-			for( band = 0; band < qmf_nr_bands; band++ ) {
-				p_qmf->p_band_bin_size[band] = sread_int32( pIntoMemImage );
+			for (band = 0; band < qmf_nr_bands; band++) {
+				p_qmf->p_band_bin_size[band] = sread_int32(pIntoMemImage);
 				pIntoMemImage += 4;
 			}
 		}
 		else {
 			// [HEADER] read a QMF binsizes from file
-			for( band = 0; band < qmf_nr_bands; band++ ) {
-				if( (error = EcwFileReadUint32(hEcwFile, &p_qmf->p_band_bin_size[band])) != 0 )
+			for (band = 0; band < qmf_nr_bands; band++) {
+				if ((error = EcwFileReadUint32(hEcwFile, &p_qmf->p_band_bin_size[band])) != 0)
 					break;
 			}
 		}
 		error = 0;
 	}
 
-	if( error ) {
-		if( bEcwFileOpen )
+	if (error) {
+		if (bEcwFileOpen)
 			EcwFileClose(hEcwFile);
 		delete_qmf_levels(p_top_qmf);
 		return(NULL);
 	}
 	/* [07] for v 1.0 files, calculate what target compression ratio was based on scale factor */
-	if( qmf_version == 1 ) {
+	if (qmf_version == 1) {
 		UINT32	nBinSize = p_qmf->p_band_bin_size[0];
-		if( p_qmf->compress_format == COMPRESS_YUV )
+		if (p_qmf->compress_format == COMPRESS_YUV)
 			nBinSize = nBinSize / 2;		/* YUV has Y at 1/2 desired compression rate */
-		if( p_qmf->scale_factor >= 1 )
-			nCompressionRate = (UINT16)(p_qmf->p_band_bin_size[0] / (UINT32) p_qmf->scale_factor);
+		if (p_qmf->scale_factor >= 1)
+			nCompressionRate = (UINT16)(p_qmf->p_band_bin_size[0] / (UINT32)p_qmf->scale_factor);
 	}
 
 	/* Attach the file qmf to the end of the tree, currently pointed to by p_qmf */
@@ -384,21 +384,21 @@ QmfLevelStruct *erw_decompress_open( char *p_input_filename,
 	/*
 	**	[02] read file memory image if it is required
 	*/
-	if( bReadMemImage) {
+	if (bReadMemImage) {
 		UINT64	nOffsetPos;
 
-		EcwFileGetPos(hEcwFile, &nOffsetPos );
+		EcwFileGetPos(hEcwFile, &nOffsetPos);
 
-		p_top_qmf->nHeaderMemImageLen = (UINT32) nOffsetPos;
-		p_top_qmf->pHeaderMemImage = (UINT8 *) NCSMalloc(p_top_qmf->nHeaderMemImageLen, FALSE);
+		p_top_qmf->nHeaderMemImageLen = (UINT32)nOffsetPos;
+		p_top_qmf->pHeaderMemImage = (UINT8 *)NCSMalloc(p_top_qmf->nHeaderMemImageLen, FALSE);
 
-		if(!p_top_qmf->pHeaderMemImage) {
+		if (!p_top_qmf->pHeaderMemImage) {
 			return NULL;
 		}
 		nOffsetPos = 0;
 		EcwFileSetPos(hEcwFile, nOffsetPos);
 
-		if( EcwFileRead(hEcwFile, p_top_qmf->pHeaderMemImage, p_top_qmf->nHeaderMemImageLen) ) {
+		if (EcwFileRead(hEcwFile, p_top_qmf->pHeaderMemImage, p_top_qmf->nHeaderMemImageLen)) {
 			EcwFileClose(hEcwFile);
 			delete_qmf_levels(p_top_qmf);
 			return(NULL);
@@ -415,66 +415,68 @@ QmfLevelStruct *erw_decompress_open( char *p_input_filename,
 	**	pointed larger QMF sections their portion of this array.
 	**
 	*/
-//	if( bReadOffsets ) {	// [02]
-	if( !pIntoMemImage ) {
-		while( TRUE ) {			// we only loop once. This is handy so we can break on errors
+	//	if( bReadOffsets ) {	// [02]
+	if (!pIntoMemImage) {
+		while (TRUE) {			// we only loop once. This is handy so we can break on errors
 			UINT8	*p_packed = (UINT8*)NULL;
 			UINT8	*p_unpacked;
 			UINT32	unpacked_length;
 			UINT32	packed_length;
 			UINT8 eFormat = (UINT8)ENCODE_RAW;
 
-			if( (error = EcwFileReadUint32(hEcwFile, &packed_length )) != 0 )
+			if ((error = EcwFileReadUint32(hEcwFile, &packed_length)) != 0)
 				break;
 			unpacked_length = get_qmf_tree_nr_blocks(p_top_qmf) * sizeof(p_top_qmf->p_block_offsets[0]);
 			error = 1;
-			if( packed_length > unpacked_length + 1 )		// sanity check before the malloc
+			if (packed_length > unpacked_length + 1)		// sanity check before the malloc
 				break;
 
-			
-			if( EcwFileRead(hEcwFile, &eFormat, 1) ) {
+
+			if (EcwFileRead(hEcwFile, &eFormat, 1)) {
 				error = TRUE;
 				break;
 			}
-			if(eFormat == ENCODE_RAW) {
+			if (eFormat == ENCODE_RAW) {
 				UINT64 nPos = 0;
 				p_top_qmf->bRawBlockTable = TRUE;
 				p_top_qmf->p_block_offsets = (UINT64 *)NULL;
 
 				EcwFileGetPos(hEcwFile, &nPos);
 				error = EcwFileSetPos(hEcwFile, nPos + packed_length - 1);
-			} else if(bReadOffsets) {
-				p_packed = (UINT8 *) NCSMalloc(packed_length + sizeof(UINT64) - 1, FALSE);
-//			p_packed = (UINT8 *) NCSMalloc(packed_length, FALSE);
+			}
+			else if (bReadOffsets) {
+				p_packed = (UINT8 *)NCSMalloc(packed_length + sizeof(UINT64) - 1, FALSE);
+				//			p_packed = (UINT8 *) NCSMalloc(packed_length, FALSE);
 
-				if( !p_packed )
+				if (!p_packed)
 					break;
 
 				memset(p_packed, 0, sizeof(UINT64) - 1);
 
 				*(p_packed + sizeof(UINT64) - 1) = eFormat;
 
-				if( EcwFileRead(hEcwFile, p_packed + sizeof(UINT64), packed_length - 1) ) {
+				if (EcwFileRead(hEcwFile, p_packed + sizeof(UINT64), packed_length - 1)) {
 					error = TRUE;
-					if(p_packed)
+					if (p_packed)
 						NCSFree(p_packed);
 					break;
 				}
-												//[13]
+				//[13]
 				p_unpacked = NULL;	// [02]
 				error = unpack_data(&p_unpacked, p_packed + sizeof(UINT64) - 1, unpacked_length, 1);
-				
-				if( p_packed )
+
+				if (p_packed)
 					NCSFree(p_packed);
-				if( error )
+				if (error)
 					break;
-	
+
 #ifdef NCSBO_MSBFIRST
 				NCSByteSwapRange64((UINT64*)p_unpacked, (UINT64 *)p_unpacked, unpacked_length / 8);
 #endif
 				p_top_qmf->bRawBlockTable = FALSE;
 				p_top_qmf->p_block_offsets = (UINT64 *)p_unpacked;
-			} else {
+			}
+			else {
 				UINT64 nPos = 0;
 				p_top_qmf->bRawBlockTable = FALSE;
 				p_top_qmf->p_block_offsets = (UINT64 *)NULL;
@@ -489,9 +491,9 @@ QmfLevelStruct *erw_decompress_open( char *p_input_filename,
 
 	// Now set up File Info structure
 	// must set this up so it is always valid for higher levels to rely on
-	p_top_qmf->pFileInfo = (ECWFileInfoEx *) NCSMalloc(sizeof(ECWFileInfoEx), FALSE);
-	if( !p_top_qmf->pFileInfo ) {
-		if( bEcwFileOpen )
+	p_top_qmf->pFileInfo = (ECWFileInfoEx *)NCSMalloc(sizeof(ECWFileInfoEx), FALSE);
+	if (!p_top_qmf->pFileInfo) {
+		if (bEcwFileOpen)
 			EcwFileClose(hEcwFile);
 		delete_qmf_levels(p_top_qmf);
 		return(NULL);
@@ -504,53 +506,54 @@ QmfLevelStruct *erw_decompress_open( char *p_input_filename,
 	// FIXME!! Add in this information
 	p_top_qmf->pFileInfo->nCompressionRate = nCompressionRate;
 	p_top_qmf->pFileInfo->eCellSizeUnits = eCellSizeUnits;
-	
+
 	p_top_qmf->pFileInfo->fCellIncrementX = fCellIncrementX;
 	p_top_qmf->pFileInfo->fCellIncrementY = fCellIncrementY;
-	p_top_qmf->pFileInfo->fOriginX		  = fOriginX;
-	p_top_qmf->pFileInfo->fOriginY		  = fOriginY;
-	p_top_qmf->pFileInfo->szDatum		  = NCSMalloc(ECW_MAX_DATUM_LEN, FALSE);
-	if(!p_top_qmf->pFileInfo->szDatum) {
+	p_top_qmf->pFileInfo->fOriginX = fOriginX;
+	p_top_qmf->pFileInfo->fOriginY = fOriginY;
+	p_top_qmf->pFileInfo->szDatum = NCSMalloc(ECW_MAX_DATUM_LEN, FALSE);
+	if (!p_top_qmf->pFileInfo->szDatum) {
 		return NULL;
 	}
-	strcpy(p_top_qmf->pFileInfo->szDatum,szDatum);
-	p_top_qmf->pFileInfo->szProjection	  = NCSMalloc(ECW_MAX_PROJECTION_LEN, FALSE);
-	if(!p_top_qmf->pFileInfo->szProjection) {
+	strcpy(p_top_qmf->pFileInfo->szDatum, szDatum);
+	p_top_qmf->pFileInfo->szProjection = NCSMalloc(ECW_MAX_PROJECTION_LEN, FALSE);
+	if (!p_top_qmf->pFileInfo->szProjection) {
 		return NULL;
 	}
-	strcpy(p_top_qmf->pFileInfo->szProjection,szProjection);
+	strcpy(p_top_qmf->pFileInfo->szProjection, szProjection);
 
 	p_top_qmf->pFileInfo->pBands = (NCSFileBandInfo*)NCSMalloc(sizeof(NCSFileBandInfo) * p_top_qmf->pFileInfo->nBands, TRUE);
-	if(p_top_qmf->compress_format == COMPRESS_YUV) {
-		p_top_qmf->pFileInfo->eColorSpace =	NCSCS_sRGB;
-	} else {
+	if (p_top_qmf->compress_format == COMPRESS_YUV) {
+		p_top_qmf->pFileInfo->eColorSpace = NCSCS_sRGB;
+	}
+	else {
 		p_top_qmf->pFileInfo->eColorSpace = p_top_qmf->compress_format;
 	}
-	for(b = 0; b < p_top_qmf->pFileInfo->nBands;  b++) {
+	for (b = 0; b < p_top_qmf->pFileInfo->nBands; b++) {
 		p_top_qmf->pFileInfo->pBands[b].nBits = 8;
 		p_top_qmf->pFileInfo->pBands[b].bSigned = FALSE;
 
-		switch(p_top_qmf->compress_format) {
-			case COMPRESS_UINT8:
-					p_top_qmf->pFileInfo->pBands[b].szDesc = NCSStrDup(NCS_BANDDESC_Greyscale);
+		switch (p_top_qmf->compress_format) {
+		case COMPRESS_UINT8:
+			p_top_qmf->pFileInfo->pBands[b].szDesc = NCSStrDup(NCS_BANDDESC_Greyscale);
+			break;
+		case COMPRESS_MULTI:
+			break;
+		case COMPRESS_YUV:
+			switch (b) {
+			case 0:
+				p_top_qmf->pFileInfo->pBands[b].szDesc = NCSStrDup(NCS_BANDDESC_Red);
 				break;
-			case COMPRESS_MULTI:
+			case 1:
+				p_top_qmf->pFileInfo->pBands[b].szDesc = NCSStrDup(NCS_BANDDESC_Green);
 				break;
-			case COMPRESS_YUV:
-					switch(b) {
-						case 0:	
-								p_top_qmf->pFileInfo->pBands[b].szDesc = NCSStrDup(NCS_BANDDESC_Red);
-							break;
-						case 1:	
-								p_top_qmf->pFileInfo->pBands[b].szDesc = NCSStrDup(NCS_BANDDESC_Green);
-							break;
-						case 2:	
-								p_top_qmf->pFileInfo->pBands[b].szDesc = NCSStrDup(NCS_BANDDESC_Blue);
-							break;
-					}
+			case 2:
+				p_top_qmf->pFileInfo->pBands[b].szDesc = NCSStrDup(NCS_BANDDESC_Blue);
 				break;
+			}
+			break;
 		}
-		if(!p_top_qmf->pFileInfo->pBands[b].szDesc) {
+		if (!p_top_qmf->pFileInfo->pBands[b].szDesc) {
 			char buf[32];
 			sprintf(buf, NCS_BANDDESC_Band, b);
 			p_top_qmf->pFileInfo->pBands[b].szDesc = NCSStrDup(buf);
@@ -559,12 +562,12 @@ QmfLevelStruct *erw_decompress_open( char *p_input_filename,
 	p_top_qmf->pFileInfo->eCellType = NCSCT_UINT8;
 
 	// Allocate decompression specific buffers, now we have read the offsets in
-	if(allocate_qmf_buffers(p_top_qmf, FALSE) != NCS_SUCCESS) {
+	if (allocate_qmf_buffers(p_top_qmf, FALSE) != NCS_SUCCESS) {
 		error = 1;
 	}
 
-	if( error ) {
-		if( bEcwFileOpen )
+	if (error) {
+		if (bEcwFileOpen)
 			EcwFileClose(hEcwFile);
 		delete_qmf_levels(p_top_qmf);
 		return(NULL);
@@ -575,7 +578,7 @@ QmfLevelStruct *erw_decompress_open( char *p_input_filename,
 	return(p_top_qmf);
 }
 
-/*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	
+/*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
 **
 **	erw_decompress_start_region().  Initiate reading a region from a compressed file.
 **	The caller specifies the region to read, and the resolution to read it at.
@@ -604,15 +607,15 @@ QmfLevelStruct *erw_decompress_open( char *p_input_filename,
 **		Which input values are used depends on the output value location, specifically
 **		if it is odd or even (this is because we use a 3 tap reconstruction filter;
 **		see collapse_pyr.c for details).
-**		
+**
 **		For a given output location O[N], in either X or Y direction, the two input locations needed
 **		are I[(N-1)/2] and I[(N-1)/2]+1.  For example, X value O[0] needs I[-1] and I[0],
 **		X value O[1] needs I[0] and I[1], X value O[66] needs I[63] and I[62], O[101] needs I[50] and I[51]
 **		so on.
 **
 **		In a two dimensional view, output O[x,y] therefore requires 4 input values:
-**		(1)	I[(x-1)/2,(y-1)/2]		(2)	I[(x-1)/2+1,(y-1)/2]	
-**		(3)	I[(x-1)/2,(y-1)/2+1]	(4)	I[(x-1)/2+1,(y-1)/2+1]	
+**		(1)	I[(x-1)/2,(y-1)/2]		(2)	I[(x-1)/2+1,(y-1)/2]
+**		(3)	I[(x-1)/2,(y-1)/2+1]	(4)	I[(x-1)/2+1,(y-1)/2+1]
 **
 **	3) There is a difference between finding the level to display, and then levels under that level
 **		Note that we use simple N/2 logic to find the level large enough to display (#1) above
@@ -646,7 +649,7 @@ QmfLevelStruct *erw_decompress_open( char *p_input_filename,
 **		this smaller level (size level L-1 is level L wize (n+1/2)).  So the I[47] value
 **		does not exist.  In the same way, value I[-1] does not exist, but is needed to generate
 **		O[0], which requires I[-1] and I[0].
-**	
+**
 **		In both of these cases, we add in REFLECTION handling.  There are 4 possible reflection
 **		values, reflect_start_x, reflect_end_x, reflect_start_y, reflect_end_y. These will be
 **		0 (no reflection) or 1 (reflection required on that side).
@@ -683,12 +686,12 @@ QmfLevelStruct *erw_decompress_open( char *p_input_filename,
 **
 *	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*/
 
-QmfRegionStruct *erw_decompress_start_region( QmfLevelStruct *p_top_qmf,
-				 UINT32 nr_bands_requested,		// number of bands to read
-				 UINT32 *band_list,				// index into actual band numbers from source file
-				 UINT32 start_x, UINT32 start_y,
-				 UINT32 end_x, UINT32 end_y,
-				 UINT32 number_x, UINT32 number_y)
+QmfRegionStruct *erw_decompress_start_region(QmfLevelStruct *p_top_qmf,
+	UINT32 nr_bands_requested,		// number of bands to read
+	UINT32 *band_list,				// index into actual band numbers from source file
+	UINT32 start_x, UINT32 start_y,
+	UINT32 end_x, UINT32 end_y,
+	UINT32 number_x, UINT32 number_y)
 {
 	UINT32	x_size, y_size;
 	QmfRegionLevelStruct	*p_level;
@@ -699,9 +702,9 @@ QmfRegionStruct *erw_decompress_start_region( QmfLevelStruct *p_top_qmf,
 	UINT32		band;
 	Sideband	sideband;
 
-	if(!p_top_qmf) {
-//		ERS_setup_error(ERS_RASTER_ERROR,
-//					"\nerw_decompress_start_region: was given a NULL compressed file structure pointer");
+	if (!p_top_qmf) {
+		//		ERS_setup_error(ERS_RASTER_ERROR,
+		//					"\nerw_decompress_start_region: was given a NULL compressed file structure pointer");
 		return(NULL);
 	}
 
@@ -711,25 +714,25 @@ QmfRegionStruct *erw_decompress_start_region( QmfLevelStruct *p_top_qmf,
 	// Range check region. Must be inside image, and number to extract can not be
 	// larger than start/end region size. So if you want to read from [2,3] to [10,15],
 	// then number_x must be <= (1 + 10 - 2) and number_y must be <= [1 + 15 - 3]
-	if( start_x > end_x || start_y > end_y
-	 || end_x >= x_size || end_y >= y_size
-	 || number_x > (1 + end_x - start_x)
-	 || number_y > (1 + end_y - start_y)
-	 || number_x == 0 || number_y == 0) {
-//		ERS_setup_error(ERS_RASTER_ERROR,
-//					"\nerw_decompress_start_region: invalid region size or extents were selected");
+	if (start_x > end_x || start_y > end_y
+		|| end_x >= x_size || end_y >= y_size
+		|| number_x > (1 + end_x - start_x)
+		|| number_y > (1 + end_y - start_y)
+		|| number_x == 0 || number_y == 0) {
+		//		ERS_setup_error(ERS_RASTER_ERROR,
+		//					"\nerw_decompress_start_region: invalid region size or extents were selected");
 		return(NULL);
 	}
 	// Sanity check band list
-	if( nr_bands_requested > p_top_qmf->nr_bands ) {
-//		ERS_setup_error(ERS_RASTER_ERROR,
-//					"\nerw_decompress_start_region: More bands were requested than exist in the file");
+	if (nr_bands_requested > p_top_qmf->nr_bands) {
+		//		ERS_setup_error(ERS_RASTER_ERROR,
+		//					"\nerw_decompress_start_region: More bands were requested than exist in the file");
 		return(NULL);
 	}
-	for( band = 0; band < nr_bands_requested; band++ ) {
-		if( band_list[band] >= p_top_qmf->nr_bands ) {
-//			ERS_setup_error(ERS_RASTER_ERROR,
-//					"\nerw_decompress_start_region: an illegal range of bands was selected to read");
+	for (band = 0; band < nr_bands_requested; band++) {
+		if (band_list[band] >= p_top_qmf->nr_bands) {
+			//			ERS_setup_error(ERS_RASTER_ERROR,
+			//					"\nerw_decompress_start_region: an illegal range of bands was selected to read");
 			return(NULL);
 		}
 	}
@@ -747,15 +750,15 @@ QmfRegionStruct *erw_decompress_start_region( QmfLevelStruct *p_top_qmf,
 	// these decide the edges of the level to use
 	output_level_start_x = start_x; output_level_end_x = end_x;
 	output_level_start_y = start_y; output_level_end_y = end_y;
-	output_level_size_x  = 1 + output_level_end_x - output_level_start_x;		// start_y and end_y are stated in file units
-	output_level_size_y  = 1 + output_level_end_y - output_level_start_y;		// so are x values
+	output_level_size_x = 1 + output_level_end_x - output_level_start_x;		// start_y and end_y are stated in file units
+	output_level_size_y = 1 + output_level_end_y - output_level_start_y;		// so are x values
 	// start searching at the level below the file level	
 	p_qmf = p_top_qmf->p_file_qmf->p_smaller_qmf;
 	// search for the smallest level that covers the number_[x|y] requested
 	// Note that the level_height/width are the output size generated from
 	// this level (e.g. 2 x this level size)
-	while((output_level_size_y > number_y * 2) && (output_level_size_x > number_x * 2) ) {
-		if( !p_qmf->p_smaller_qmf )
+	while ((output_level_size_y > number_y * 2) && (output_level_size_x > number_x * 2)) {
+		if (!p_qmf->p_smaller_qmf)
 			break;	// force usage of the top level
 		// scale down to the next level. We always treat odd numbers as scaling down to smaller
 		output_level_start_x /= 2;
@@ -763,8 +766,8 @@ QmfRegionStruct *erw_decompress_start_region( QmfLevelStruct *p_top_qmf,
 		output_level_end_x = output_level_end_x / 2;
 		output_level_end_y = output_level_end_y / 2;
 		// These must be recalculated not scaled, as the width/height might go to zero
-		output_level_size_x  = 1 + output_level_end_x - output_level_start_x;		// start_y and end_y are stated in file units
-		output_level_size_y  = 1 + output_level_end_y - output_level_start_y;		// so are x values
+		output_level_size_x = 1 + output_level_end_x - output_level_start_x;		// start_y and end_y are stated in file units
+		output_level_size_y = 1 + output_level_end_y - output_level_start_y;		// so are x values
 		p_qmf = p_qmf->p_smaller_qmf;
 	}
 
@@ -776,24 +779,24 @@ QmfRegionStruct *erw_decompress_start_region( QmfLevelStruct *p_top_qmf,
 	// so we just grab the first pixel. Where this pixel is gathered from is
 	// debatable.  We pick the center pixel. The result is a big performance improvement.
 	// This means single point point profiling, of course, will be much faster.
-	if( number_x == 1 ) {
-		output_level_start_x += ((output_level_end_x - output_level_start_x)/2);
+	if (number_x == 1) {
+		output_level_start_x += ((output_level_end_x - output_level_start_x) / 2);
 		output_level_end_x = output_level_start_x;
 		output_level_size_x = 1;
 	}
-	if( number_y == 1 ) {
-		output_level_start_y += ((output_level_end_y - output_level_start_y)/2);
+	if (number_y == 1) {
+		output_level_start_y += ((output_level_end_y - output_level_start_y) / 2);
 		output_level_end_y = output_level_start_y;
 		output_level_size_y = 1;
 	}
 
 
 	// Set up the region info and allocate the structure pointers
-	p_region = (QmfRegionStruct *) NCSMalloc(sizeof(QmfRegionStruct), FALSE);
-	if( !p_region )
+	p_region = (QmfRegionStruct *)NCSMalloc(sizeof(QmfRegionStruct), FALSE);
+	if (!p_region)
 		return(NULL);
 
-//	p_region->random_value = 1;			// [11] start seed with initial random value
+	//	p_region->random_value = 1;			// [11] start seed with initial random value
 	p_region->random_value = 0xd4c5c239 ^ (UINT32)((output_level_start_x + output_level_start_y * p_qmf->x_size)/* * NCSGetTimeStampMs()*/);//[14]
 	p_region->p_top_qmf = p_top_qmf;
 	p_region->p_largest_qmf = p_qmf;	// largest level we have to go to
@@ -823,25 +826,25 @@ QmfRegionStruct *erw_decompress_start_region( QmfLevelStruct *p_top_qmf,
 	**		and if not MULTI mode (e.g. only greyscale or YUV), then turn on texture noise
 	** [10] Only add texture noise if one of the larger QMF levels
 	*/
-	if( pNCSEcwInfo->bNoTextureDither == FALSE ) {
+	if (pNCSEcwInfo->bNoTextureDither == FALSE) {
 		// Only turn on texture noise if compression rate was high enough to warrant it
-		if( ((p_top_qmf->compress_format == COMPRESS_UINT8 && p_top_qmf->pFileInfo->nCompressionRate > 4)
- 		    || (p_top_qmf->compress_format == COMPRESS_YUV && p_top_qmf->pFileInfo->nCompressionRate > 9))
-		 && ((p_region->p_largest_qmf->level > 2) || (p_top_qmf->nr_levels < 3)) /* [10] */ ) {
+		if (((p_top_qmf->compress_format == COMPRESS_UINT8 && p_top_qmf->pFileInfo->nCompressionRate > 4)
+			|| (p_top_qmf->compress_format == COMPRESS_YUV && p_top_qmf->pFileInfo->nCompressionRate > 9))
+			&& ((p_region->p_largest_qmf->level > 2) || (p_top_qmf->nr_levels < 3)) /* [10] */) {
 			p_region->bAddTextureNoise = TRUE;
 			// [11] no longer using srand
 		}
-		else		
+		else
 			p_region->bAddTextureNoise = FALSE;
 	}
 	else
 		p_region->bAddTextureNoise = FALSE;
 
 	// now set up increment information
-	p_region->start_line = (IEEE4) output_level_start_y;	/**[06]**/
-	p_region->current_line = (IEEE4) output_level_start_y;
-	p_region->increment_y = (IEEE4) output_level_size_y / (IEEE4) number_y;
-	p_region->increment_x = (IEEE4) output_level_size_x / (IEEE4) number_x;
+	p_region->start_line = (IEEE4)output_level_start_y;	/**[06]**/
+	p_region->current_line = (IEEE4)output_level_start_y;
+	p_region->increment_y = (IEEE4)output_level_size_y / (IEEE4)number_y;
+	p_region->increment_x = (IEEE4)output_level_size_x / (IEEE4)number_x;
 	p_region->nCounter = 0;
 
 	p_region->p_p_ll_line = (IEEE4 **)
@@ -850,28 +853,28 @@ QmfRegionStruct *erw_decompress_start_region( QmfLevelStruct *p_top_qmf,
 		NCSMalloc(sizeof(IEEE4) * output_level_size_x * p_region->used_bands, FALSE);	// final output line, created by generated qmf level
 	// now set up region level buffer structures
 	p_region->p_levels = (QmfRegionLevelStruct *)
-		NCSMalloc(sizeof(QmfRegionLevelStruct) * (p_qmf->level+1) , FALSE);
+		NCSMalloc(sizeof(QmfRegionLevelStruct) * (p_qmf->level + 1), FALSE);
 
-	if( !(p_region->p_p_ll_line) || !(p_region->p_ll_buffer) || !p_region->p_levels ) {
-		if( p_region->p_p_ll_line ) 
+	if (!(p_region->p_p_ll_line) || !(p_region->p_ll_buffer) || !p_region->p_levels) {
+		if (p_region->p_p_ll_line)
 			NCSFree(p_region->p_p_ll_line);
-		if( p_region->p_ll_buffer )
+		if (p_region->p_ll_buffer)
 			NCSFree(p_region->p_ll_buffer);
-		if( p_region->p_levels )
+		if (p_region->p_levels)
 			NCSFree(p_region->p_levels);
-		if( p_region )
+		if (p_region)
 			NCSFree(p_region);
-//		ERS_setup_error(ERS_RASTER_ERROR,
-//					"\nerw_decompress_start_region: unable to allocate level buffers");
+		//		ERS_setup_error(ERS_RASTER_ERROR,
+		//					"\nerw_decompress_start_region: unable to allocate level buffers");
 		return(NULL);
 	}
 	// set up pointers to the output buffer
-	for( band = 0; band < p_qmf->p_file_qmf->nr_bands; band++ )
+	for (band = 0; band < p_qmf->p_file_qmf->nr_bands; band++)
 		p_region->p_p_ll_line[band] = p_region->p_ll_buffer + (band * output_level_size_x);
 
 	// set buffer pointers to NULL in case we need to free later; need to know what has been allocated so far
 	p_qmf = p_region->p_largest_qmf;
-	while(p_qmf) {
+	while (p_qmf) {
 		p_region->p_levels[p_qmf->level].buffer_ptr = NULL;
 		p_region->p_levels[p_qmf->level].p_x_blocks = NULL;
 		p_region->p_levels[p_qmf->level].have_blocks = FALSE;
@@ -895,7 +898,7 @@ QmfRegionStruct *erw_decompress_start_region( QmfLevelStruct *p_top_qmf,
 	// the level values are the start/end/size for this level data
 
 	p_qmf = p_region->p_largest_qmf;
-	while(p_qmf) {
+	while (p_qmf) {
 		UINT32	level_start_y, level_end_y, level_size_y;
 		UINT32	level_start_x, level_end_x, level_size_x;
 		UINT32	reflect_start_x, reflect_start_y, reflect_end_x, reflect_end_y;
@@ -903,25 +906,25 @@ QmfRegionStruct *erw_decompress_start_region( QmfLevelStruct *p_top_qmf,
 		UINT32	last_x_block;
 
 		p_level = &(p_region->p_levels[p_qmf->level]);
-		p_level->p_region	= p_region;
-		p_level->p_qmf		= p_qmf;
+		p_level->p_region = p_region;
+		p_level->p_qmf = p_qmf;
 		// set up level information from previous level's output information
 		// Must handle reflection where the start or end might be at zero.
 		// We only check start reflection based on start_[x|y], as if end_[x|y] is zero
 		// and needs left/top reflection, then so will start values be zero. Same logic
 		// in reverse for the end - sorting end values out must sort out high start values
 		// also.
-		if( output_level_start_x ) {
-			level_start_x	= (output_level_start_x - 1)/2;		// (N-1)/2
+		if (output_level_start_x) {
+			level_start_x = (output_level_start_x - 1) / 2;		// (N-1)/2
 			reflect_start_x = 0;
 		}
 		else {
 			level_start_x = 0;
 			reflect_start_x = 1;
 		}
-		if( output_level_end_x < (p_qmf->p_larger_qmf->x_size-1) ) {
-			if( output_level_end_x )
-				level_end_x	= (output_level_end_x   - 1)/2+1;	// (N-1)/2+1
+		if (output_level_end_x < (p_qmf->p_larger_qmf->x_size - 1)) {
+			if (output_level_end_x)
+				level_end_x = (output_level_end_x - 1) / 2 + 1;	// (N-1)/2+1
 			else
 				level_end_x = 0;
 			reflect_end_x = 0;
@@ -931,17 +934,17 @@ QmfRegionStruct *erw_decompress_start_region( QmfLevelStruct *p_top_qmf,
 			reflect_end_x = 1;
 		}
 
-		if( output_level_start_y ) {
-			level_start_y	= (output_level_start_y - 1)/2;		// (N-1)/2
+		if (output_level_start_y) {
+			level_start_y = (output_level_start_y - 1) / 2;		// (N-1)/2
 			reflect_start_y = 0;
 		}
 		else {
 			level_start_y = 0;
 			reflect_start_y = 1;
 		}
-		if( output_level_end_y < (p_qmf->p_larger_qmf->y_size-1) ) {
-			if( output_level_end_y )
-				level_end_y	= (output_level_end_y - 1)/2+1;	// (N-1)/2+1
+		if (output_level_end_y < (p_qmf->p_larger_qmf->y_size - 1)) {
+			if (output_level_end_y)
+				level_end_y = (output_level_end_y - 1) / 2 + 1;	// (N-1)/2+1
 			else
 				level_end_y = 0;
 			reflect_end_y = 0;
@@ -952,42 +955,42 @@ QmfRegionStruct *erw_decompress_start_region( QmfLevelStruct *p_top_qmf,
 		}
 
 		// these values EXCLUDE the reflection size
-		level_size_x	= 1 + level_end_x - level_start_x;
-		level_size_y	= 1 + level_end_y - level_start_y;
+		level_size_x = 1 + level_end_x - level_start_x;
+		level_size_y = 1 + level_end_y - level_start_y;
 
 		// set up values start / end X values etc.
 
-		p_level->reflect_start_x	= (UINT8)reflect_start_x;
-		p_level->reflect_end_x		= (UINT8)reflect_end_x;
-		p_level->reflect_start_y	= (UINT8)reflect_start_y;
-		p_level->reflect_end_y		= (UINT8)reflect_end_y;
+		p_level->reflect_start_x = (UINT8)reflect_start_x;
+		p_level->reflect_end_x = (UINT8)reflect_end_x;
+		p_level->reflect_start_y = (UINT8)reflect_start_y;
+		p_level->reflect_end_y = (UINT8)reflect_end_y;
 
 		// track level information EXCLUDING reflections
-		p_level->level_start_x	= level_start_x;
-		p_level->level_end_x	= level_end_x;
-		p_level->level_size_x	= level_size_x;
-		p_level->level_start_y	= level_start_y;
-		p_level->level_end_y	= level_end_y;
-		p_level->level_size_y	= level_size_y;
+		p_level->level_start_x = level_start_x;
+		p_level->level_end_x = level_end_x;
+		p_level->level_size_x = level_size_x;
+		p_level->level_start_y = level_start_y;
+		p_level->level_end_y = level_end_y;
+		p_level->level_size_y = level_size_y;
 
-		p_level->output_level_start_x	= output_level_start_x;
-		p_level->output_level_end_x		= output_level_end_x;
-		p_level->output_level_size_x	= output_level_size_x;
-		p_level->output_level_start_y	= output_level_start_y;
-		p_level->output_level_end_y		= output_level_end_y;
-		p_level->output_level_size_y	= output_level_size_y;
-		if( p_level->p_qmf->x_size <= level_end_x
-		 || p_level->p_qmf->y_size <= level_end_y ) {
+		p_level->output_level_start_x = output_level_start_x;
+		p_level->output_level_end_x = output_level_end_x;
+		p_level->output_level_size_x = output_level_size_x;
+		p_level->output_level_start_y = output_level_start_y;
+		p_level->output_level_end_y = output_level_end_y;
+		p_level->output_level_size_y = output_level_size_y;
+		if (p_level->p_qmf->x_size <= level_end_x
+			|| p_level->p_qmf->y_size <= level_end_y) {
 
-//			ERS_setup_error(ERS_RASTER_ERROR,"\nerw_decompress_start_Region: level size is smaller than expected");
+			//			ERS_setup_error(ERS_RASTER_ERROR,"\nerw_decompress_start_Region: level size is smaller than expected");
 			erw_decompress_end_region(p_region);
 			return(NULL);
-		}			
+		}
 
 		// Work out starting and ending block number in the X direction set of blocks, then
 		// set up enough pointers to X blocks as needed for a line in this level
-		start_x_block	= level_start_x / p_level->p_qmf->x_block_size;
-		last_x_block	= level_end_x   / p_level->p_qmf->x_block_size;
+		start_x_block = level_start_x / p_level->p_qmf->x_block_size;
+		last_x_block = level_end_x / p_level->p_qmf->x_block_size;
 		p_level->start_x_block = start_x_block;
 		p_level->x_block_count = 1 + last_x_block - start_x_block;
 
@@ -998,13 +1001,13 @@ QmfRegionStruct *erw_decompress_start_region( QmfLevelStruct *p_top_qmf,
 		// last X block might be smaller than the multiple of x_block_size * (last_x_block+1)
 		{
 			UINT32	last_pixel;
-			last_pixel = (last_x_block+1) * p_level->p_qmf->x_block_size - 1;
-			if( last_pixel >= p_level->p_qmf->x_size )
+			last_pixel = (last_x_block + 1) * p_level->p_qmf->x_block_size - 1;
+			if (last_pixel >= p_level->p_qmf->x_size)
 				last_pixel = p_level->p_qmf->x_size - 1;
 			p_level->last_block_skip = last_pixel - level_end_x;
 		}
 		// now go and init the line decompression blocks
-		if( unpack_init_lines(p_level) ) {
+		if (unpack_init_lines(p_level)) {
 			erw_decompress_end_region(p_region);
 			return(NULL);
 		}
@@ -1020,34 +1023,34 @@ QmfRegionStruct *erw_decompress_start_region( QmfLevelStruct *p_top_qmf,
 		// or for data gathering outside the area of interest, so these lines are allocated
 		// with TWO more values than needed for the level.
 		p_level->buffer_ptr =
-			(IEEE4 *) NCSMalloc(sizeof(IEEE4) * p_qmf->nr_bands * (level_size_x+2) * 2 * MAX_SIDEBAND, TRUE);	// add 2 to line lengths **[06]** - changed to calloc()
-		if( !p_level->buffer_ptr ) {
+			(IEEE4 *)NCSMalloc(sizeof(IEEE4) * p_qmf->nr_bands * (level_size_x + 2) * 2 * MAX_SIDEBAND, TRUE);	// add 2 to line lengths **[06]** - changed to calloc()
+		if (!p_level->buffer_ptr) {
 			//ERS_setup_error(ERS_RASTER_ERROR,"\nerw_decompress_start_region: out of memory while allocating level buffers");
 			erw_decompress_end_region(p_region);
 			return(NULL);
 		}
 		// point into the buffers. We keep line types together, e.g. line0[LL] and line1[LL]
 		// This improves CPU caching of lines, resulting in faster execution.
-		p_level->p_p_line0 = (IEEE4 **) NCSMalloc( sizeof(IEEE4 *) * p_level->used_bands * MAX_SIDEBAND, FALSE);
-		p_level->p_p_line1 = (IEEE4 **) NCSMalloc( sizeof(IEEE4 *) * p_level->used_bands * MAX_SIDEBAND, FALSE);
-		p_level->p_p_line1_ll_sideband = (IEEE4 **) NCSMalloc( sizeof(IEEE4 *) * p_level->used_bands, FALSE);
-		if( !p_level->p_p_line0 || !p_level->p_p_line1 || !p_level->p_p_line1_ll_sideband) {
+		p_level->p_p_line0 = (IEEE4 **)NCSMalloc(sizeof(IEEE4 *) * p_level->used_bands * MAX_SIDEBAND, FALSE);
+		p_level->p_p_line1 = (IEEE4 **)NCSMalloc(sizeof(IEEE4 *) * p_level->used_bands * MAX_SIDEBAND, FALSE);
+		p_level->p_p_line1_ll_sideband = (IEEE4 **)NCSMalloc(sizeof(IEEE4 *) * p_level->used_bands, FALSE);
+		if (!p_level->p_p_line0 || !p_level->p_p_line1 || !p_level->p_p_line1_ll_sideband) {
 			//ERS_setup_error(ERS_RASTER_ERROR,"\nerw_decompress_start_region: out of memory while allocating level band buffers");
 			erw_decompress_end_region(p_region);
 		}
-		for( band = 0; band < p_level->used_bands; band++ ) {
-			for( sideband = LL_SIDEBAND; sideband < MAX_SIDEBAND; sideband++ ) {
+		for (band = 0; band < p_level->used_bands; band++) {
+			for (sideband = LL_SIDEBAND; sideband < MAX_SIDEBAND; sideband++) {
 				p_level->p_p_line0[DECOMP_INDEX] = DECOMP_LEVEL_LINE01(p_level, band, sideband, 0);
 				p_level->p_p_line1[DECOMP_INDEX] = DECOMP_LEVEL_LINE01(p_level, band, sideband, 1);
 			}
 			p_level->p_p_line1_ll_sideband[band] = p_level->p_p_line1[band * MAX_SIDEBAND + LL_SIDEBAND] +
-												   p_level->reflect_start_x;
+				p_level->reflect_start_x;
 		}
 		// and set up output values for the next smaller level
 		output_level_start_x = level_start_x;	output_level_end_x = level_end_x;
 		output_level_start_y = level_start_y;	output_level_end_y = level_end_y;
-		output_level_size_x  = level_size_x;
-		output_level_size_y	 = level_size_y;
+		output_level_size_x = level_size_x;
+		output_level_size_y = level_size_y;
 
 		p_qmf = p_qmf->p_smaller_qmf;
 	}
@@ -1055,7 +1058,7 @@ QmfRegionStruct *erw_decompress_start_region( QmfLevelStruct *p_top_qmf,
 	return(p_region);
 }
 
-/*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	
+/*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
 **
 **	erw_decompress_end_region().  Finished with and deallocate
 **	the region structure. Can be called at the true end,
@@ -1065,33 +1068,33 @@ QmfRegionStruct *erw_decompress_start_region( QmfLevelStruct *p_top_qmf,
 **
 *	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*/
 
-void erw_decompress_end_region( QmfRegionStruct *p_region )
+void erw_decompress_end_region(QmfRegionStruct *p_region)
 {
 	int level;
 	QmfRegionLevelStruct	*p_level;
-	
-	if( !p_region )
+
+	if (!p_region)
 		return;
 	level = p_region->p_largest_qmf->level;
-	while(level >= 0) {
+	while (level >= 0) {
 		p_level = &p_region->p_levels[level];
 		unpack_free_lines(p_level);		// handles freeing anything under the x_blocks pointer
-		NCS_SAFE_FREE((char *) p_region->p_levels[level].buffer_ptr);
-		NCS_SAFE_FREE((char *) p_level->p_p_line0);
-		NCS_SAFE_FREE((char *) p_level->p_p_line1);
-		NCS_SAFE_FREE((char *) p_level->p_p_line1_ll_sideband);
+		NCS_SAFE_FREE((char *)p_region->p_levels[level].buffer_ptr);
+		NCS_SAFE_FREE((char *)p_level->p_p_line0);
+		NCS_SAFE_FREE((char *)p_level->p_p_line1);
+		NCS_SAFE_FREE((char *)p_level->p_p_line1_ll_sideband);
 		p_level->p_p_line1 = NULL;
 		--level;
 	}
 
-	NCS_SAFE_FREE((char *) p_region->p_p_ll_line);
-	NCS_SAFE_FREE((char *) p_region->p_ll_buffer);
-	NCS_SAFE_FREE((char *) p_region->p_levels);
-	NCS_SAFE_FREE((char *) p_region);
+	NCS_SAFE_FREE((char *)p_region->p_p_ll_line);
+	NCS_SAFE_FREE((char *)p_region->p_ll_buffer);
+	NCS_SAFE_FREE((char *)p_region->p_levels);
+	NCS_SAFE_FREE((char *)p_region);
 
 }
 
-/*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	
+/*	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
 **
 **	erw_decompress_close(). Closes a ERW file.
 **
@@ -1099,7 +1102,7 @@ void erw_decompress_end_region( QmfRegionStruct *p_region )
 **
 *	*	*	*	*	*	*	*	*	*	*	*	*	*	*	*/
 
-void erw_decompress_close( QmfLevelStruct *p_top_qmf )
+void erw_decompress_close(QmfLevelStruct *p_top_qmf)
 {
 	delete_qmf_levels(p_top_qmf);
 }

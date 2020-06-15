@@ -15,7 +15,7 @@ public:
 	CThumbListCtrl();
 	virtual ~CThumbListCtrl();
 
-	bool IsMovingSelected() {return m_bDragging;}
+	bool IsMovingSelected() { return m_bDragging; }
 
 private:
 
@@ -29,7 +29,7 @@ private:
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
 
 #ifdef _USE_TT
-	BOOL OnToolTipText( UINT id, NMHDR * pNMHDR, LRESULT * pResult );
+	BOOL OnToolTipText(UINT id, NMHDR * pNMHDR, LRESULT * pResult);
 	virtual int OnToolHitTest(CPoint point, TOOLINFO * pTI) const;
 	//WCHAR *m_pwchTip;
 	//TCHAR *m_pchTip;
@@ -39,11 +39,11 @@ private:
 	bool m_bDragging;
 	bool m_bInitDrag;
 	bool m_bDropBelow;
-	int m_nDragIndex,m_nDragX,m_nScrollOff;
+	int m_nDragIndex, m_nDragX, m_nScrollOff;
 	bool m_bBarDrawn;
 	int m_nDropIndex;
 	int m_nItemWidth;
-	CRect m_crRange,m_crDrag;
+	CRect m_crRange, m_crDrag;
 	UINT_PTR m_nTimer;
 	int m_nTimerDir;
 

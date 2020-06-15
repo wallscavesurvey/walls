@@ -17,22 +17,22 @@ protected:
 
 // Attributes
 public:
-   //Set in CPrjView::OnInitialUpdate() to control resizing (not yet used)
-   //POINT m_FrameSize;
-   
-   CButtonBar m_PrjDlgBar;
-   CPrjList *m_pPrjList;
-   
-// Operations
+	//Set in CPrjView::OnInitialUpdate() to control resizing (not yet used)
+	//POINT m_FrameSize;
+
+	CButtonBar m_PrjDlgBar;
+	CPrjList *m_pPrjList;
+
+	// Operations
 private:
 	BOOL ChkNcLButtonDown(UINT nHitTest);
 
-// Implementation
+	// Implementation
 protected:
 	BOOL m_bIconTitle;
 	virtual ~CPrjFrame() {};
 	BOOL PreCreateWindow(CREATESTRUCT& cs);
-	 
+
 	afx_msg void OnIconEraseBkgnd(CDC* pDC);
 	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 

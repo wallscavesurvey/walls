@@ -14,7 +14,7 @@ public:
 	CGPSOptionsDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CGPSOptionsDlg();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_GPS_OPTIONS };
 
 	int m_nConfirmCnts[GPS_NUM_CONFIRMCNTS];

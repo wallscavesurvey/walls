@@ -5,9 +5,9 @@
 
 class QvChildList : public QvNodeList {
 
-  public:
-    QvChildList();
-    ~QvChildList();
+public:
+	QvChildList();
+	~QvChildList();
 };
 
 #endif /* _QV_CHILD_LIST_ */

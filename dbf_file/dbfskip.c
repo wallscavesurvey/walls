@@ -8,14 +8,14 @@
 
 #include "a__dbf.h"
 
-int DBFAPI dbf_Skip(DBF_NO dbf,long n)
+int DBFAPI dbf_Skip(DBF_NO dbf, long n)
 {
-  if(!_GETDBFU || _dbf_CommitUsrRec()) return dbf_errno;
+	if (!_GETDBFU || _dbf_CommitUsrRec()) return dbf_errno;
 
-  if(!_DBFU->U_Recno || !(n+=(long)_DBFU->U_Recno) ||
-    (DWORD)n>_dbf_pFile->H.NumRecs) return dbf_errno=DBF_ErrEOF;
+	if (!_DBFU->U_Recno || !(n += (long)_DBFU->U_Recno) ||
+		(DWORD)n > _dbf_pFile->H.NumRecs) return dbf_errno = DBF_ErrEOF;
 
-  _DBFU->U_Recno=(DWORD)n;
-  _DBFU->U_Recoff=(DWORD)(n-1L)*_dbf_pFile->H.SizRec;
-  return _dbf_LoadUsrRec();
+	_DBFU->U_Recno = (DWORD)n;
+	_DBFU->U_Recoff = (DWORD)(n - 1L)*_dbf_pFile->H.SizRec;
+	return _dbf_LoadUsrRec();
 }

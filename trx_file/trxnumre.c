@@ -2,5 +2,5 @@
 
 DWORD TRXAPI trx_NumRecs(TRX_NO trx)
 {
-  return _GETTRXT?_TRXT->NumKeys:0L;
+	return _GETTRXT ? _TRXT->NumKeys : 0L;
 }

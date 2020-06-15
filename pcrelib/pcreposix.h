@@ -21,7 +21,7 @@ be there. I hope. */
 extern "C" {
 #endif
 
-/* Options defined by POSIX. */
+	/* Options defined by POSIX. */
 
 #define REG_ICASE     0x01
 #define REG_NEWLINE   0x02
@@ -36,50 +36,50 @@ to slot PCRE into existing programs that make POSIX calls. */
 
 /* Error values. Not all these are relevant or used by the wrapper. */
 
-enum {
-  REG_ASSERT = 1,  /* internal error ? */
-  REG_BADBR,       /* invalid repeat counts in {} */
-  REG_BADPAT,      /* pattern error */
-  REG_BADRPT,      /* ? * + invalid */
-  REG_EBRACE,      /* unbalanced {} */
-  REG_EBRACK,      /* unbalanced [] */
-  REG_ECOLLATE,    /* collation error - not relevant */
-  REG_ECTYPE,      /* bad class */
-  REG_EESCAPE,     /* bad escape sequence */
-  REG_EMPTY,       /* empty expression */
-  REG_EPAREN,      /* unbalanced () */
-  REG_ERANGE,      /* bad range inside [] */
-  REG_ESIZE,       /* expression too big */
-  REG_ESPACE,      /* failed to get memory */
-  REG_ESUBREG,     /* bad back reference */
-  REG_INVARG,      /* bad argument */
-  REG_NOMATCH      /* match failed */
-};
+	enum {
+		REG_ASSERT = 1,  /* internal error ? */
+		REG_BADBR,       /* invalid repeat counts in {} */
+		REG_BADPAT,      /* pattern error */
+		REG_BADRPT,      /* ? * + invalid */
+		REG_EBRACE,      /* unbalanced {} */
+		REG_EBRACK,      /* unbalanced [] */
+		REG_ECOLLATE,    /* collation error - not relevant */
+		REG_ECTYPE,      /* bad class */
+		REG_EESCAPE,     /* bad escape sequence */
+		REG_EMPTY,       /* empty expression */
+		REG_EPAREN,      /* unbalanced () */
+		REG_ERANGE,      /* bad range inside [] */
+		REG_ESIZE,       /* expression too big */
+		REG_ESPACE,      /* failed to get memory */
+		REG_ESUBREG,     /* bad back reference */
+		REG_INVARG,      /* bad argument */
+		REG_NOMATCH      /* match failed */
+	};
 
 
-/* The structure representing a compiled regular expression. */
+	/* The structure representing a compiled regular expression. */
 
-typedef struct {
-  void *re_pcre;
-  size_t re_nsub;
-  size_t re_erroffset;
-} regex_t;
+	typedef struct {
+		void *re_pcre;
+		size_t re_nsub;
+		size_t re_erroffset;
+	} regex_t;
 
-/* The structure in which a captured offset is returned. */
+	/* The structure in which a captured offset is returned. */
 
-typedef int regoff_t;
+	typedef int regoff_t;
 
-typedef struct {
-  regoff_t rm_so;
-  regoff_t rm_eo;
-} regmatch_t;
+	typedef struct {
+		regoff_t rm_so;
+		regoff_t rm_eo;
+	} regmatch_t;
 
-/* The functions */
+	/* The functions */
 
-extern int regcomp(regex_t *, const char *, int);
-extern int regexec(const regex_t *, const char *, size_t, regmatch_t *, int);
-extern size_t regerror(int, const regex_t *, char *, size_t);
-extern void regfree(regex_t *);
+	extern int regcomp(regex_t *, const char *, int);
+	extern int regexec(const regex_t *, const char *, size_t, regmatch_t *, int);
+	extern size_t regerror(int, const regex_t *, char *, size_t);
+	extern void regfree(regex_t *);
 
 #ifdef __cplusplus
 }   /* extern "C" */

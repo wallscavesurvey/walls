@@ -6,12 +6,12 @@
 
 LPBYTE DBFAPI dbf_HdrRes16(DBF_NO dbf)
 {
-  if(!_GETDBFP) return 0;
-  return (LPBYTE)_DBFP->H.Res2;
+	if (!_GETDBFP) return 0;
+	return (LPBYTE)_DBFP->H.Res2;
 }
 
 LPBYTE DBFAPI dbf_HdrRes2(DBF_NO dbf)
 {
-  if(!_GETDBFP) return 0;
-  return (LPBYTE)&_DBFP->H.Res1;
+	if (!_GETDBFP) return 0;
+	return (LPBYTE)&_DBFP->H.Res1;
 }

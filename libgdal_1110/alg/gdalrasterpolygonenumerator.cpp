@@ -37,16 +37,16 @@ CPL_CVSID("$Id: gdalrasterpolygonenumerator.cpp 24379 2012-05-04 01:26:19Z warme
 /*                    GDALRasterPolygonEnumerator()                     */
 /************************************************************************/
 
-GDALRasterPolygonEnumerator::GDALRasterPolygonEnumerator( 
-    int nConnectedness )
+GDALRasterPolygonEnumerator::GDALRasterPolygonEnumerator(
+	int nConnectedness)
 
 {
-    panPolyIdMap = NULL;
-    panPolyValue = NULL;
-    nNextPolygonId = 0;
-    nPolyAlloc = 0;
-    this->nConnectedness = nConnectedness;
-    CPLAssert( nConnectedness == 4 || nConnectedness == 8 );
+	panPolyIdMap = NULL;
+	panPolyValue = NULL;
+	nNextPolygonId = 0;
+	nPolyAlloc = 0;
+	this->nConnectedness = nConnectedness;
+	CPLAssert(nConnectedness == 4 || nConnectedness == 8);
 }
 
 /************************************************************************/
@@ -56,7 +56,7 @@ GDALRasterPolygonEnumerator::GDALRasterPolygonEnumerator(
 GDALRasterPolygonEnumerator::~GDALRasterPolygonEnumerator()
 
 {
-    Clear();
+	Clear();
 }
 
 /************************************************************************/
@@ -66,14 +66,14 @@ GDALRasterPolygonEnumerator::~GDALRasterPolygonEnumerator()
 void GDALRasterPolygonEnumerator::Clear()
 
 {
-    CPLFree( panPolyIdMap );
-    CPLFree( panPolyValue );
-    
-    panPolyIdMap = NULL;
-    panPolyValue = NULL;
-    
-    nNextPolygonId = 0;
-    nPolyAlloc = 0;
+	CPLFree(panPolyIdMap);
+	CPLFree(panPolyValue);
+
+	panPolyIdMap = NULL;
+	panPolyValue = NULL;
+
+	nNextPolygonId = 0;
+	nPolyAlloc = 0;
 }
 
 /************************************************************************/
@@ -82,19 +82,19 @@ void GDALRasterPolygonEnumerator::Clear()
 /*      Update the polygon map to indicate the merger of two polygons.  */
 /************************************************************************/
 
-void GDALRasterPolygonEnumerator::MergePolygon( int nSrcId, int nDstId )
+void GDALRasterPolygonEnumerator::MergePolygon(int nSrcId, int nDstId)
 
 {
-    while( panPolyIdMap[nDstId] != nDstId )
-        nDstId = panPolyIdMap[nDstId];
+	while (panPolyIdMap[nDstId] != nDstId)
+		nDstId = panPolyIdMap[nDstId];
 
-    while( panPolyIdMap[nSrcId] != nSrcId )
-        nSrcId = panPolyIdMap[nSrcId];
+	while (panPolyIdMap[nSrcId] != nSrcId)
+		nSrcId = panPolyIdMap[nSrcId];
 
-    if( nSrcId == nDstId )
-        return;
+	if (nSrcId == nDstId)
+		return;
 
-    panPolyIdMap[nSrcId] = nDstId;
+	panPolyIdMap[nSrcId] = nDstId;
 }
 
 /************************************************************************/
@@ -104,24 +104,24 @@ void GDALRasterPolygonEnumerator::MergePolygon( int nSrcId, int nDstId )
 /*      if needed.                                                      */
 /************************************************************************/
 
-int GDALRasterPolygonEnumerator::NewPolygon( GInt32 nValue )
+int GDALRasterPolygonEnumerator::NewPolygon(GInt32 nValue)
 
 {
-    int nPolyId = nNextPolygonId;
+	int nPolyId = nNextPolygonId;
 
-    if( nNextPolygonId >= nPolyAlloc )
-    {
-        nPolyAlloc = nPolyAlloc * 2 + 20;
-        panPolyIdMap = (GInt32 *) CPLRealloc(panPolyIdMap,nPolyAlloc*4);
-        panPolyValue = (GInt32 *) CPLRealloc(panPolyValue,nPolyAlloc*4);
-    }
+	if (nNextPolygonId >= nPolyAlloc)
+	{
+		nPolyAlloc = nPolyAlloc * 2 + 20;
+		panPolyIdMap = (GInt32 *)CPLRealloc(panPolyIdMap, nPolyAlloc * 4);
+		panPolyValue = (GInt32 *)CPLRealloc(panPolyValue, nPolyAlloc * 4);
+	}
 
-    nNextPolygonId++;
+	nNextPolygonId++;
 
-    panPolyIdMap[nPolyId] = nPolyId;
-    panPolyValue[nPolyId] = nValue;
+	panPolyIdMap[nPolyId] = nPolyId;
+	panPolyValue[nPolyId] = nValue;
 
-    return nPolyId;
+	return nPolyId;
 }
 
 /************************************************************************/
@@ -135,22 +135,22 @@ int GDALRasterPolygonEnumerator::NewPolygon( GInt32 nValue )
 void GDALRasterPolygonEnumerator::CompleteMerges()
 
 {
-    int iPoly;
-    int nFinalPolyCount = 0;
+	int iPoly;
+	int nFinalPolyCount = 0;
 
-    for( iPoly = 0; iPoly < nNextPolygonId; iPoly++ )
-    {
-        while( panPolyIdMap[iPoly] 
-               != panPolyIdMap[panPolyIdMap[iPoly]] )
-            panPolyIdMap[iPoly] = panPolyIdMap[panPolyIdMap[iPoly]];
+	for (iPoly = 0; iPoly < nNextPolygonId; iPoly++)
+	{
+		while (panPolyIdMap[iPoly]
+			!= panPolyIdMap[panPolyIdMap[iPoly]])
+			panPolyIdMap[iPoly] = panPolyIdMap[panPolyIdMap[iPoly]];
 
-        if( panPolyIdMap[iPoly] == iPoly )
-            nFinalPolyCount++;
-    }
+		if (panPolyIdMap[iPoly] == iPoly)
+			nFinalPolyCount++;
+	}
 
-    CPLDebug( "GDALRasterPolygonEnumerator", 
-              "Counted %d polygon fragments forming %d final polygons.", 
-              nNextPolygonId, nFinalPolyCount );
+	CPLDebug("GDALRasterPolygonEnumerator",
+		"Counted %d polygon fragments forming %d final polygons.",
+		nNextPolygonId, nFinalPolyCount);
 }
 
 /************************************************************************/
@@ -159,89 +159,89 @@ void GDALRasterPolygonEnumerator::CompleteMerges()
 /*      Assign ids to polygons, one line at a time.                     */
 /************************************************************************/
 
-void GDALRasterPolygonEnumerator::ProcessLine( 
-    GInt32 *panLastLineVal, GInt32 *panThisLineVal,
-    GInt32 *panLastLineId,  GInt32 *panThisLineId,
-    int nXSize )
+void GDALRasterPolygonEnumerator::ProcessLine(
+	GInt32 *panLastLineVal, GInt32 *panThisLineVal,
+	GInt32 *panLastLineId, GInt32 *panThisLineId,
+	int nXSize)
 
 {
-    int i;
+	int i;
 
-/* -------------------------------------------------------------------- */
-/*      Special case for the first line.                                */
-/* -------------------------------------------------------------------- */
-    if( panLastLineVal == NULL )
-    {
-        for( i=0; i < nXSize; i++ )
-        {
-            if( i == 0 || panThisLineVal[i] != panThisLineVal[i-1] )
-            {
-                panThisLineId[i] = NewPolygon( panThisLineVal[i] );
-            }
-            else
-                panThisLineId[i] = panThisLineId[i-1];
-        }
+	/* -------------------------------------------------------------------- */
+	/*      Special case for the first line.                                */
+	/* -------------------------------------------------------------------- */
+	if (panLastLineVal == NULL)
+	{
+		for (i = 0; i < nXSize; i++)
+		{
+			if (i == 0 || panThisLineVal[i] != panThisLineVal[i - 1])
+			{
+				panThisLineId[i] = NewPolygon(panThisLineVal[i]);
+			}
+			else
+				panThisLineId[i] = panThisLineId[i - 1];
+		}
 
-        return;
-    }
+		return;
+	}
 
-/* -------------------------------------------------------------------- */
-/*      Process each pixel comparing to the previous pixel, and to      */
-/*      the last line.                                                  */
-/* -------------------------------------------------------------------- */
-    for( i = 0; i < nXSize; i++ )
-    {
-        if( i > 0 && panThisLineVal[i] == panThisLineVal[i-1] )
-        {
-            panThisLineId[i] = panThisLineId[i-1];        
+	/* -------------------------------------------------------------------- */
+	/*      Process each pixel comparing to the previous pixel, and to      */
+	/*      the last line.                                                  */
+	/* -------------------------------------------------------------------- */
+	for (i = 0; i < nXSize; i++)
+	{
+		if (i > 0 && panThisLineVal[i] == panThisLineVal[i - 1])
+		{
+			panThisLineId[i] = panThisLineId[i - 1];
 
-            if( panLastLineVal[i] == panThisLineVal[i] 
-                && (panPolyIdMap[panLastLineId[i]]
-                    != panPolyIdMap[panThisLineId[i]]) )
-            {
-                MergePolygon( panLastLineId[i], panThisLineId[i] );
-            }
+			if (panLastLineVal[i] == panThisLineVal[i]
+				&& (panPolyIdMap[panLastLineId[i]]
+					!= panPolyIdMap[panThisLineId[i]]))
+			{
+				MergePolygon(panLastLineId[i], panThisLineId[i]);
+			}
 
-            if( nConnectedness == 8 
-                && panLastLineVal[i-1] == panThisLineVal[i] 
-                && (panPolyIdMap[panLastLineId[i-1]]
-                    != panPolyIdMap[panThisLineId[i]]) )
-            {
-                MergePolygon( panLastLineId[i-1], panThisLineId[i] );
-            }
+			if (nConnectedness == 8
+				&& panLastLineVal[i - 1] == panThisLineVal[i]
+				&& (panPolyIdMap[panLastLineId[i - 1]]
+					!= panPolyIdMap[panThisLineId[i]]))
+			{
+				MergePolygon(panLastLineId[i - 1], panThisLineId[i]);
+			}
 
-            if( nConnectedness == 8 && i < nXSize-1 
-                && panLastLineVal[i+1] == panThisLineVal[i] 
-                && (panPolyIdMap[panLastLineId[i+1]]
-                    != panPolyIdMap[panThisLineId[i]]) )
-            {
-                MergePolygon( panLastLineId[i+1], panThisLineId[i] );
-            }
-        }
-        else if( panLastLineVal[i] == panThisLineVal[i] )
-        {
-            panThisLineId[i] = panLastLineId[i];
-        }
-        else if( i > 0 && nConnectedness == 8 
-                 && panLastLineVal[i-1] == panThisLineVal[i] )
-        {
-            panThisLineId[i] = panLastLineId[i-1];
+			if (nConnectedness == 8 && i < nXSize - 1
+				&& panLastLineVal[i + 1] == panThisLineVal[i]
+				&& (panPolyIdMap[panLastLineId[i + 1]]
+					!= panPolyIdMap[panThisLineId[i]]))
+			{
+				MergePolygon(panLastLineId[i + 1], panThisLineId[i]);
+			}
+		}
+		else if (panLastLineVal[i] == panThisLineVal[i])
+		{
+			panThisLineId[i] = panLastLineId[i];
+		}
+		else if (i > 0 && nConnectedness == 8
+			&& panLastLineVal[i - 1] == panThisLineVal[i])
+		{
+			panThisLineId[i] = panLastLineId[i - 1];
 
-            if( i < nXSize-1 && panLastLineVal[i+1] == panThisLineVal[i]
-                && (panPolyIdMap[panLastLineId[i+1]]
-                != panPolyIdMap[panThisLineId[i]]) )
-            {
-                MergePolygon( panLastLineId[i+1], panThisLineId[i] );
-            }
-        }
-        else if( i < nXSize-1 && nConnectedness == 8 
-                 && panLastLineVal[i+1] == panThisLineVal[i] )
-        {
-            panThisLineId[i] = panLastLineId[i+1];
-        }
-        else
-            panThisLineId[i] = 
-                NewPolygon( panThisLineVal[i] );
-    }
+			if (i < nXSize - 1 && panLastLineVal[i + 1] == panThisLineVal[i]
+				&& (panPolyIdMap[panLastLineId[i + 1]]
+					!= panPolyIdMap[panThisLineId[i]]))
+			{
+				MergePolygon(panLastLineId[i + 1], panThisLineId[i]);
+			}
+		}
+		else if (i < nXSize - 1 && nConnectedness == 8
+			&& panLastLineVal[i + 1] == panThisLineVal[i])
+		{
+			panThisLineId[i] = panLastLineId[i + 1];
+		}
+		else
+			panThisLineId[i] =
+			NewPolygon(panThisLineVal[i]);
+	}
 }
 

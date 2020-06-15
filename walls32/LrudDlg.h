@@ -14,7 +14,7 @@ class CSegView;
 
 class CLrudDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
 	CLrudDlg(CPrjDoc *pDoc, CSegView *pSV, CWnd* pParent = NULL);   // standard constructor
 
@@ -31,7 +31,7 @@ public:
 	CPrjDoc *m_pDoc;
 
 	BOOL m_bMapsActive;
-	void EnableApply(BOOL bEnable) {GetDlgItem(IDC_APPLY)->EnableWindow(bEnable);}
+	void EnableApply(BOOL bEnable) { GetDlgItem(IDC_APPLY)->EnableWindow(bEnable); }
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
@@ -40,7 +40,7 @@ protected:
 
 	BOOL HasChanged();
 
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 	afx_msg void OnBnClickedApply();
 	afx_msg void OnBnClickedSVGUse();
 	afx_msg void OnBnClickedLRUD(UINT id);

@@ -4,9 +4,9 @@
 #include "QvSubField.h"
 
 class QvMFFloat : public QvMField {
-  public:
-    float *values;
-    QV_MFIELD_HEADER(QvMFFloat);
+public:
+	float *values;
+	QV_MFIELD_HEADER(QvMFFloat);
 };
 
 #endif /* _QV_MF_FLOAT_ */

@@ -6,9 +6,9 @@
 
 class CCopyFileDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
-	CCopyFileDlg(LPSTR pTitle,CWnd* pParent = NULL);	// standard constructor
+	CCopyFileDlg(LPSTR pTitle, CWnd* pParent = NULL);	// standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CCopyFileDlg)
@@ -18,9 +18,9 @@ public:
 	CString m_szDateSrc;
 	CString m_szDateTgt;
 
-// Implementation
+	// Implementation
 protected:
-    LPSTR m_pTitle;
+	LPSTR m_pTitle;
 
 	// Generated message map functions
 	//{{AFX_MSG(CCopyFileDlg)
@@ -31,6 +31,6 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-int MyCopyFile(const char *source,char *target,int bOverwrite);
+int MyCopyFile(const char *source, char *target, int bOverwrite);
 extern BOOL bMoveFile;
 extern BOOL bCopiedFile;

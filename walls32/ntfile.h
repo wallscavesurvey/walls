@@ -20,8 +20,8 @@
 #define NTV_NUMBUFS 10
 
 typedef struct {
-    DWORD checksum;
-    DWORD maxid;
+	DWORD checksum;
+	DWORD maxid;
 } NTVHdr;
 
 #define pNTVHdr ((NTVHdr FAR *)HdrRes16())
@@ -34,20 +34,20 @@ class CNTVFile : public CDBFile {
 private:
 	static DBF_FLDDEF m_FldDef[NTV_NUMFLDS];
 	int alloc_cache();
-   
+
 public:
 	int Open(const char* pszFileName);
 	int Create(const char* pszFileName);
 
-	DWORD Checksum() {return pNTVHdr->checksum;}
+	DWORD Checksum() { return pNTVHdr->checksum; }
 	//long FAR *FixOffset() {return pNTVHdr->fixoffset;}
-	DWORD MaxID() {return pNTVHdr->maxid;}
-	
-	void SetChecksum(DWORD checksum) {pNTVHdr->checksum=checksum;}
-	void SetMaxID(DWORD id) {pNTVHdr->maxid=id;}
+	DWORD MaxID() { return pNTVHdr->maxid; }
 
-	WORD Version() {return *(WORD *)HdrRes2();}
-	void SetVersion(WORD ver) {*(WORD *)HdrRes2()=ver;}
+	void SetChecksum(DWORD checksum) { pNTVHdr->checksum = checksum; }
+	void SetMaxID(DWORD id) { pNTVHdr->maxid = id; }
+
+	WORD Version() { return *(WORD *)HdrRes2(); }
+	void SetVersion(WORD ver) { *(WORD *)HdrRes2() = ver; }
 };
 
 #endif

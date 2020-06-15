@@ -4,36 +4,36 @@
  * Copyright (c) 1991-1997 Sam Leffler
  * Copyright (c) 1991-1997 Silicon Graphics, Inc.
  *
- * Permission to use, copy, modify, distribute, and sell this software and 
+ * Permission to use, copy, modify, distribute, and sell this software and
  * its documentation for any purpose is hereby granted without fee, provided
  * that (i) the above copyright notices and this permission notice appear in
  * all copies of the software and related documentation, and (ii) the names of
  * Sam Leffler and Silicon Graphics may not be used in any advertising or
  * publicity relating to the software without the specific, prior written
  * permission of Sam Leffler and Silicon Graphics.
- * 
- * THE SOFTWARE IS PROVIDED "AS-IS" AND WITHOUT WARRANTY OF ANY KIND, 
- * EXPRESS, IMPLIED OR OTHERWISE, INCLUDING WITHOUT LIMITATION, ANY 
- * WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  
- * 
+ *
+ * THE SOFTWARE IS PROVIDED "AS-IS" AND WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS, IMPLIED OR OTHERWISE, INCLUDING WITHOUT LIMITATION, ANY
+ * WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+ *
  * IN NO EVENT SHALL SAM LEFFLER OR SILICON GRAPHICS BE LIABLE FOR
  * ANY SPECIAL, INCIDENTAL, INDIRECT OR CONSEQUENTIAL DAMAGES OF ANY KIND,
  * OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
- * WHETHER OR NOT ADVISED OF THE POSSIBILITY OF DAMAGE, AND ON ANY THEORY OF 
- * LIABILITY, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE 
+ * WHETHER OR NOT ADVISED OF THE POSSIBILITY OF DAMAGE, AND ON ANY THEORY OF
+ * LIABILITY, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
  * OF THIS SOFTWARE.
  */
 
-/*
- * TIFF Library.
- *
- * Tiled Image Support Routines.
- */
+ /*
+  * TIFF Library.
+  *
+  * Tiled Image Support Routines.
+  */
 #include "tiffiop.h"
 
-/*
- * Compute which tile an (x,y,z,s) value is in.
- */
+  /*
+   * Compute which tile an (x,y,z,s) value is in.
+   */
 uint32
 TIFFComputeTile(TIFF* tif, uint32 x, uint32 y, uint32 z, uint16 s)
 {
@@ -45,24 +45,24 @@ TIFFComputeTile(TIFF* tif, uint32 x, uint32 y, uint32 z, uint16 s)
 
 	if (td->td_imagedepth == 1)
 		z = 0;
-	if (dx == (uint32) -1)
+	if (dx == (uint32)-1)
 		dx = td->td_imagewidth;
-	if (dy == (uint32) -1)
+	if (dy == (uint32)-1)
 		dy = td->td_imagelength;
-	if (dz == (uint32) -1)
+	if (dz == (uint32)-1)
 		dz = td->td_imagedepth;
 	if (dx != 0 && dy != 0 && dz != 0) {
 		uint32 xpt = TIFFhowmany_32(td->td_imagewidth, dx);
 		uint32 ypt = TIFFhowmany_32(td->td_imagelength, dy);
 		uint32 zpt = TIFFhowmany_32(td->td_imagedepth, dz);
 
-		if (td->td_planarconfig == PLANARCONFIG_SEPARATE) 
+		if (td->td_planarconfig == PLANARCONFIG_SEPARATE)
 			tile = (xpt*ypt*zpt)*s +
-			     (xpt*ypt)*(z/dz) +
-			     xpt*(y/dy) +
-			     x/dx;
+			(xpt*ypt)*(z / dz) +
+			xpt * (y / dy) +
+			x / dx;
 		else
-			tile = (xpt*ypt)*(z/dz) + xpt*(y/dy) + x/dx;
+			tile = (xpt*ypt)*(z / dz) + xpt * (y / dy) + x / dx;
 	}
 	return (tile);
 }
@@ -78,31 +78,31 @@ TIFFCheckTile(TIFF* tif, uint32 x, uint32 y, uint32 z, uint16 s)
 
 	if (x >= td->td_imagewidth) {
 		TIFFErrorExt(tif->tif_clientdata, tif->tif_name,
-			     "%lu: Col out of range, max %lu",
-			     (unsigned long) x,
-			     (unsigned long) (td->td_imagewidth - 1));
+			"%lu: Col out of range, max %lu",
+			(unsigned long)x,
+			(unsigned long)(td->td_imagewidth - 1));
 		return (0);
 	}
 	if (y >= td->td_imagelength) {
 		TIFFErrorExt(tif->tif_clientdata, tif->tif_name,
-			     "%lu: Row out of range, max %lu",
-			     (unsigned long) y,
-			     (unsigned long) (td->td_imagelength - 1));
+			"%lu: Row out of range, max %lu",
+			(unsigned long)y,
+			(unsigned long)(td->td_imagelength - 1));
 		return (0);
 	}
 	if (z >= td->td_imagedepth) {
 		TIFFErrorExt(tif->tif_clientdata, tif->tif_name,
-			     "%lu: Depth out of range, max %lu",
-			     (unsigned long) z,
-			     (unsigned long) (td->td_imagedepth - 1));
+			"%lu: Depth out of range, max %lu",
+			(unsigned long)z,
+			(unsigned long)(td->td_imagedepth - 1));
 		return (0);
 	}
 	if (td->td_planarconfig == PLANARCONFIG_SEPARATE &&
-	    s >= td->td_samplesperpixel) {
+		s >= td->td_samplesperpixel) {
 		TIFFErrorExt(tif->tif_clientdata, tif->tif_name,
-			     "%lu: Sample out of range, max %lu",
-			     (unsigned long) s,
-			     (unsigned long) (td->td_samplesperpixel - 1));
+			"%lu: Sample out of range, max %lu",
+			(unsigned long)s,
+			(unsigned long)(td->td_samplesperpixel - 1));
 		return (0);
 	}
 	return (1);
@@ -120,20 +120,20 @@ TIFFNumberOfTiles(TIFF* tif)
 	uint32 dz = td->td_tiledepth;
 	uint32 ntiles;
 
-	if (dx == (uint32) -1)
+	if (dx == (uint32)-1)
 		dx = td->td_imagewidth;
-	if (dy == (uint32) -1)
+	if (dy == (uint32)-1)
 		dy = td->td_imagelength;
-	if (dz == (uint32) -1)
+	if (dz == (uint32)-1)
 		dz = td->td_imagedepth;
 	ntiles = (dx == 0 || dy == 0 || dz == 0) ? 0 :
-	    _TIFFMultiply32(tif, _TIFFMultiply32(tif, TIFFhowmany_32(td->td_imagewidth, dx),
-	    TIFFhowmany_32(td->td_imagelength, dy),
-	    "TIFFNumberOfTiles"),
-	    TIFFhowmany_32(td->td_imagedepth, dz), "TIFFNumberOfTiles");
+		_TIFFMultiply32(tif, _TIFFMultiply32(tif, TIFFhowmany_32(td->td_imagewidth, dx),
+			TIFFhowmany_32(td->td_imagelength, dy),
+			"TIFFNumberOfTiles"),
+			TIFFhowmany_32(td->td_imagedepth, dz), "TIFFNumberOfTiles");
 	if (td->td_planarconfig == PLANARCONFIG_SEPARATE)
 		ntiles = _TIFFMultiply32(tif, ntiles, td->td_samplesperpixel,
-		    "TIFFNumberOfTiles");
+			"TIFFNumberOfTiles");
 	return (ntiles);
 }
 
@@ -149,10 +149,10 @@ TIFFTileRowSize64(TIFF* tif)
 	if (td->td_tilelength == 0 || td->td_tilewidth == 0)
 		return (0);
 	rowsize = _TIFFMultiply64(tif, td->td_bitspersample, td->td_tilewidth,
-	    "TIFFTileRowSize");
+		"TIFFTileRowSize");
 	if (td->td_planarconfig == PLANARCONFIG_CONTIG)
 		rowsize = _TIFFMultiply64(tif, rowsize, td->td_samplesperpixel,
-		    "TIFFTileRowSize");
+			"TIFFTileRowSize");
 	return (TIFFhowmany8_64(rowsize));
 }
 tmsize_t
@@ -161,12 +161,12 @@ TIFFTileRowSize(TIFF* tif)
 	static const char module[] = "TIFFTileRowSize";
 	uint64 m;
 	tmsize_t n;
-	m=TIFFTileRowSize64(tif);
-	n=(tmsize_t)m;
-	if ((uint64)n!=m)
+	m = TIFFTileRowSize64(tif);
+	n = (tmsize_t)m;
+	if ((uint64)n != m)
 	{
-		TIFFErrorExt(tif->tif_clientdata,module,"Integer overflow");
-		n=0;
+		TIFFErrorExt(tif->tif_clientdata, module, "Integer overflow");
+		n = 0;
 	}
 	return(n);
 }
@@ -180,12 +180,12 @@ TIFFVTileSize64(TIFF* tif, uint32 nrows)
 	static const char module[] = "TIFFVTileSize64";
 	TIFFDirectory *td = &tif->tif_dir;
 	if (td->td_tilelength == 0 || td->td_tilewidth == 0 ||
-	    td->td_tiledepth == 0)
+		td->td_tiledepth == 0)
 		return (0);
-	if ((td->td_planarconfig==PLANARCONFIG_CONTIG)&&
-	    (td->td_photometric==PHOTOMETRIC_YCBCR)&&
-	    (td->td_samplesperpixel==3)&&
-	    (!isUpSampled(tif)))
+	if ((td->td_planarconfig == PLANARCONFIG_CONTIG) &&
+		(td->td_photometric == PHOTOMETRIC_YCBCR) &&
+		(td->td_samplesperpixel == 3) &&
+		(!isUpSampled(tif)))
 	{
 		/*
 		 * Packed YCbCr data contain one Cb+Cr for every
@@ -201,26 +201,26 @@ TIFFVTileSize64(TIFF* tif, uint32 nrows)
 		uint32 samplingblocks_ver;
 		uint64 samplingrow_samples;
 		uint64 samplingrow_size;
-		TIFFGetFieldDefaulted(tif,TIFFTAG_YCBCRSUBSAMPLING,ycbcrsubsampling+0,
-		    ycbcrsubsampling+1);
+		TIFFGetFieldDefaulted(tif, TIFFTAG_YCBCRSUBSAMPLING, ycbcrsubsampling + 0,
+			ycbcrsubsampling + 1);
 		if ((ycbcrsubsampling[0] != 1 && ycbcrsubsampling[0] != 2 && ycbcrsubsampling[0] != 4)
-		    ||(ycbcrsubsampling[1] != 1 && ycbcrsubsampling[1] != 2 && ycbcrsubsampling[1] != 4))
+			|| (ycbcrsubsampling[1] != 1 && ycbcrsubsampling[1] != 2 && ycbcrsubsampling[1] != 4))
 		{
-			TIFFErrorExt(tif->tif_clientdata,module,
-				     "Invalid YCbCr subsampling (%dx%d)", 
-				     ycbcrsubsampling[0], 
-				     ycbcrsubsampling[1] );
+			TIFFErrorExt(tif->tif_clientdata, module,
+				"Invalid YCbCr subsampling (%dx%d)",
+				ycbcrsubsampling[0],
+				ycbcrsubsampling[1]);
 			return 0;
 		}
-		samplingblock_samples=ycbcrsubsampling[0]*ycbcrsubsampling[1]+2;
-		samplingblocks_hor=TIFFhowmany_32(td->td_tilewidth,ycbcrsubsampling[0]);
-		samplingblocks_ver=TIFFhowmany_32(nrows,ycbcrsubsampling[1]);
-		samplingrow_samples=_TIFFMultiply64(tif,samplingblocks_hor,samplingblock_samples,module);
-		samplingrow_size=TIFFhowmany8_64(_TIFFMultiply64(tif,samplingrow_samples,td->td_bitspersample,module));
-		return(_TIFFMultiply64(tif,samplingrow_size,samplingblocks_ver,module));
+		samplingblock_samples = ycbcrsubsampling[0] * ycbcrsubsampling[1] + 2;
+		samplingblocks_hor = TIFFhowmany_32(td->td_tilewidth, ycbcrsubsampling[0]);
+		samplingblocks_ver = TIFFhowmany_32(nrows, ycbcrsubsampling[1]);
+		samplingrow_samples = _TIFFMultiply64(tif, samplingblocks_hor, samplingblock_samples, module);
+		samplingrow_size = TIFFhowmany8_64(_TIFFMultiply64(tif, samplingrow_samples, td->td_bitspersample, module));
+		return(_TIFFMultiply64(tif, samplingrow_size, samplingblocks_ver, module));
 	}
 	else
-		return(_TIFFMultiply64(tif,nrows,TIFFTileRowSize64(tif),module));
+		return(_TIFFMultiply64(tif, nrows, TIFFTileRowSize64(tif), module));
 }
 tmsize_t
 TIFFVTileSize(TIFF* tif, uint32 nrows)
@@ -228,12 +228,12 @@ TIFFVTileSize(TIFF* tif, uint32 nrows)
 	static const char module[] = "TIFFVTileSize";
 	uint64 m;
 	tmsize_t n;
-	m=TIFFVTileSize64(tif,nrows);
-	n=(tmsize_t)m;
-	if ((uint64)n!=m)
+	m = TIFFVTileSize64(tif, nrows);
+	n = (tmsize_t)m;
+	if ((uint64)n != m)
 	{
-		TIFFErrorExt(tif->tif_clientdata,module,"Integer overflow");
-		n=0;
+		TIFFErrorExt(tif->tif_clientdata, module, "Integer overflow");
+		n = 0;
 	}
 	return(n);
 }
@@ -252,12 +252,12 @@ TIFFTileSize(TIFF* tif)
 	static const char module[] = "TIFFTileSize";
 	uint64 m;
 	tmsize_t n;
-	m=TIFFTileSize64(tif);
-	n=(tmsize_t)m;
-	if ((uint64)n!=m)
+	m = TIFFTileSize64(tif);
+	n = (tmsize_t)m;
+	if ((uint64)n != m)
 	{
-		TIFFErrorExt(tif->tif_clientdata,module,"Integer overflow");
-		n=0;
+		TIFFErrorExt(tif->tif_clientdata, module, "Integer overflow");
+		n = 0;
 	}
 	return(n);
 }
@@ -277,10 +277,10 @@ TIFFDefaultTileSize(TIFF* tif, uint32* tw, uint32* th)
 void
 _TIFFDefaultTileSize(TIFF* tif, uint32* tw, uint32* th)
 {
-	(void) tif;
-	if (*(int32*) tw < 1)
+	(void)tif;
+	if (*(int32*)tw < 1)
 		*tw = 256;
-	if (*(int32*) th < 1)
+	if (*(int32*)th < 1)
 		*th = 256;
 	/* roundup to a multiple of 16 per the spec */
 	if (*tw & 0xf)

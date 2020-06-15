@@ -2,13 +2,13 @@
 ** Copyright 1999 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:   	NCSUtil/timer.h
@@ -27,7 +27,7 @@ struct NCSTimer {
 	BOOLEAN			bRun;
 	BOOLEAN			bClear;
 	BOOLEAN			bRunning;
-	void			(*pFunc)(void*);
+	void(*pFunc)(void*);
 	void			*pData;
 	NCSTimeStampMs	tsNextEvent;
 	NCSTimeStampMs	tsPeriod;
@@ -39,12 +39,12 @@ static void NCSTimerFunc(NCSTimer *pTimer);
 ** Create a Timer.  Actual timer period is tsPeriod + exec time of pFunc.
 */
 NCSTimer *NCSTimerCreate(NCSTimeStampMs	tsPeriod,
-						 void			(*pFunc)(void*),
-						 void			*pData)
+	void(*pFunc)(void*),
+	void			*pData)
 {
 	NCSTimer *pTimer;
 
-	if((pTimer = (NCSTimer *)NCSMalloc(sizeof(NCSTimer), TRUE)) != NULL) {
+	if ((pTimer = (NCSTimer *)NCSMalloc(sizeof(NCSTimer), TRUE)) != NULL) {
 		pTimer->tsPeriod = tsPeriod;
 		pTimer->pFunc = pFunc;
 		pTimer->pData = pData;
@@ -53,7 +53,7 @@ NCSTimer *NCSTimerCreate(NCSTimeStampMs	tsPeriod,
 		pTimer->bClear = FALSE;
 		pTimer->bRunning = FALSE;
 
-		if(NCSThreadSpawn(&(pTimer->tid), (void(*)(void*))NCSTimerFunc, pTimer, FALSE)) {
+		if (NCSThreadSpawn(&(pTimer->tid), (void(*)(void*))NCSTimerFunc, pTimer, FALSE)) {
 			return(pTimer);
 		}
 		NCSFree(pTimer);
@@ -66,7 +66,7 @@ NCSTimer *NCSTimerCreate(NCSTimeStampMs	tsPeriod,
 */
 void NCSTimerStart(NCSTimer *pTimer)
 {
-	if(pTimer && !pTimer->bRunning) {
+	if (pTimer && !pTimer->bRunning) {
 		pTimer->tsNextEvent = NCSGetTimeStampMs() + pTimer->tsPeriod;
 		pTimer->bRunning = TRUE;
 	}
@@ -77,7 +77,7 @@ void NCSTimerStart(NCSTimer *pTimer)
 */
 void NCSTimerStop(NCSTimer *pTimer)
 {
-	if(pTimer) {
+	if (pTimer) {
 		pTimer->bRunning = FALSE;
 	}
 }
@@ -87,10 +87,10 @@ void NCSTimerStop(NCSTimer *pTimer)
 */
 void NCSTimerDestroy(NCSTimer *pTimer)
 {
-	if(pTimer) {
+	if (pTimer) {
 		pTimer->bRun = FALSE;
 
-		while(!pTimer->bClear && NCSThreadIsRunning(&(pTimer->tid))) {
+		while (!pTimer->bClear && NCSThreadIsRunning(&(pTimer->tid))) {
 			NCSSleep(50);
 		}
 		NCSThreadFreeInfo(&(pTimer->tid));
@@ -121,12 +121,13 @@ void NCSTimerSetData(NCSTimer *pTimer, void *pData)
 */
 static void NCSTimerFunc(NCSTimer *pTimer)
 {
-	if(pTimer) {
-		while(pTimer->bRun) {
-			if((NCSGetTimeStampMs() > pTimer->tsNextEvent) && pTimer->bRunning) {
+	if (pTimer) {
+		while (pTimer->bRun) {
+			if ((NCSGetTimeStampMs() > pTimer->tsNextEvent) && pTimer->bRunning) {
 				(*pTimer->pFunc)(pTimer->pData);
 				pTimer->tsNextEvent = NCSGetTimeStampMs() + pTimer->tsPeriod;
-			} else {
+			}
+			else {
 				NCSSleep(100);
 			}
 		}

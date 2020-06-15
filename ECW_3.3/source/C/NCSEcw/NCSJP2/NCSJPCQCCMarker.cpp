@@ -2,13 +2,13 @@
 ** Copyright 2002 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:     $Archive: /NCS/Source/C/NCSEcw/NCSJP2/NCSJPCQCCMarker.cpp $
@@ -21,18 +21,18 @@
 #include "NCSJPCQCCMarker.h"
 #include "NCSJPC.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+ //////////////////////////////////////////////////////////////////////
+ // Construction/Destruction
+ //////////////////////////////////////////////////////////////////////
 
-// Constructor
+ // Constructor
 CNCSJPCQCCMarker::CNCSJPCQCCMarker()
 {
 	// Initialise the base marker class members
 	m_eMarker = QCC;
 }
 
-CNCSJPCQCCMarker::CNCSJPCQCCMarker(const class CNCSJPCQCDMarker& src )
+CNCSJPCQCCMarker::CNCSJPCQCCMarker(const class CNCSJPCQCDMarker& src)
 {
 	*this = src;
 }
@@ -50,22 +50,23 @@ CNCSError CNCSJPCQCCMarker::Parse(CNCSJPC &JPC, CNCSJPCIOStream &Stream)
 	m_bHaveMarker = true;
 
 	NCSJP2_CHECKIO_BEGIN(Error, Stream);
-		UINT8 t8;
-		INT32 nLength;
-		NCSJP2_CHECKIO(ReadUINT16(m_nLength));	
-		if(JPC.m_SIZ.m_nCsiz < 257) {
-			NCSJP2_CHECKIO(ReadUINT8(t8));
-			m_nCqcc = t8;
-			nLength = m_nLength - 1;
-		} else {
-			NCSJP2_CHECKIO(ReadUINT16(m_nCqcc));
-			nLength = m_nLength - 2;
-		}
-		NCSJP2_CHECKIO_ERROR(((CNCSJPCQuantizationParameter*)this)->Parse(JPC, Stream, nLength));
+	UINT8 t8;
+	INT32 nLength;
+	NCSJP2_CHECKIO(ReadUINT16(m_nLength));
+	if (JPC.m_SIZ.m_nCsiz < 257) {
+		NCSJP2_CHECKIO(ReadUINT8(t8));
+		m_nCqcc = t8;
+		nLength = m_nLength - 1;
+	}
+	else {
+		NCSJP2_CHECKIO(ReadUINT16(m_nCqcc));
+		nLength = m_nLength - 2;
+	}
+	NCSJP2_CHECKIO_ERROR(((CNCSJPCQuantizationParameter*)this)->Parse(JPC, Stream, nLength));
 
-		if(Error == NCS_SUCCESS) {
-			m_bValid = true;
-		}
+	if (Error == NCS_SUCCESS) {
+		m_bValid = true;
+	}
 	NCSJP2_CHECKIO_END();
 	return(Error);
 }
@@ -77,19 +78,20 @@ CNCSError CNCSJPCQCCMarker::UnParse(CNCSJPC &JPC, CNCSJPCIOStream &Stream)
 
 	Error = CNCSJPCMarker::UnParse(JPC, Stream);
 	NCSJP2_CHECKIO_BEGIN(Error, Stream);
-		NCSJP2_CHECKIO(WriteUINT16(m_nLength));
-		if(JPC.m_SIZ.m_nCsiz < 257) {
-			NCSJP2_CHECKIO(WriteUINT8((UINT8)m_nCqcc));
-		} else {
-			NCSJP2_CHECKIO(WriteUINT16(m_nCqcc));
-		}
-		NCSJP2_CHECKIO_ERROR(CNCSJPCQuantizationParameter::UnParse(JPC, Stream));
+	NCSJP2_CHECKIO(WriteUINT16(m_nLength));
+	if (JPC.m_SIZ.m_nCsiz < 257) {
+		NCSJP2_CHECKIO(WriteUINT8((UINT8)m_nCqcc));
+	}
+	else {
+		NCSJP2_CHECKIO(WriteUINT16(m_nCqcc));
+	}
+	NCSJP2_CHECKIO_ERROR(CNCSJPCQuantizationParameter::UnParse(JPC, Stream));
 	NCSJP2_CHECKIO_END();
 	return(Error);
 }
 
 // Assignment operator
-class CNCSJPCQCCMarker& CNCSJPCQCCMarker::operator=( const class CNCSJPCQCDMarker& src )
+class CNCSJPCQCCMarker& CNCSJPCQCCMarker::operator=(const class CNCSJPCQCDMarker& src)
 {
 	*(CNCSJPCQuantizationParameter*)this = src;
 	return(*this);

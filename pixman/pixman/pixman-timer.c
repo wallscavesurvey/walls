@@ -32,35 +32,35 @@
 static pixman_timer_t *timers;
 
 static void
-dump_timers (void)
+dump_timers(void)
 {
-    pixman_timer_t *timer;
+	pixman_timer_t *timer;
 
-    for (timer = timers; timer != NULL; timer = timer->next)
-    {
-	printf ("%s:   total: %llu     n: %llu      avg: %f\n",
-	        timer->name,
-	        timer->total,
-	        timer->n_times,
-	        timer->total / (double)timer->n_times);
-    }
+	for (timer = timers; timer != NULL; timer = timer->next)
+	{
+		printf("%s:   total: %llu     n: %llu      avg: %f\n",
+			timer->name,
+			timer->total,
+			timer->n_times,
+			timer->total / (double)timer->n_times);
+	}
 }
 
 void
-pixman_timer_register (pixman_timer_t *timer)
+pixman_timer_register(pixman_timer_t *timer)
 {
-    static int initialized;
+	static int initialized;
 
-    int atexit (void (*function)(void));
+	int atexit(void(*function)(void));
 
-    if (!initialized)
-    {
-	atexit (dump_timers);
-	initialized = 1;
-    }
+	if (!initialized)
+	{
+		atexit(dump_timers);
+		initialized = 1;
+	}
 
-    timer->next = timers;
-    timers = timer;
+	timer->next = timers;
+	timers = timer;
 }
 
 #endif

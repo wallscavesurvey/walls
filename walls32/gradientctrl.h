@@ -41,11 +41,11 @@ class CGradientCtrlImpl;
 
 class CGradientCtrl : public CWnd
 {
-// Construction
+	// Construction
 public:
 	CGradientCtrl();
 	BOOL Create(const RECT& rect, CWnd* pParentWnd, UINT nID);
-	
+
 	enum Orientation
 	{
 		ForceHorizontal,
@@ -53,41 +53,41 @@ public:
 		Auto
 	};
 
-// Attributes
+	// Attributes
 public:
-	int GetHistWidth() const {return m_Impl->m_HistWidth;}
-	int GetHistLength() const {return m_Impl->m_HistLength;}
-	float *GetHistValue() {return m_Impl->m_pHistValue;}
-	int GetGradientWidth() const {return m_Width;}
+	int GetHistWidth() const { return m_Impl->m_HistWidth; }
+	int GetHistLength() const { return m_Impl->m_HistLength; }
+	float *GetHistValue() { return m_Impl->m_pHistValue; }
+	int GetGradientWidth() const { return m_Width; }
 	void SetGradientWidth(int iWidth)
 	{
 		m_Width = iWidth; m_Impl->GetGradientFrame();
 	}
-	int GetSelIndex() const {return m_Selected;}
+	int GetSelIndex() const { return m_Selected; }
 	int SetSelIndex(int iSel);
 	const CPeg GetSelPeg() const;
-	CGradient& GetGradient() {return m_Gradient;}
-	void SetGradient(CGradient src) {m_Gradient = src;}
+	CGradient& GetGradient() { return m_Gradient; }
+	void SetGradient(CGradient src) { m_Gradient = src; }
 	void ShowTooltips(BOOL bShow = true);
-	Orientation GetOrientation() const {return m_Orientation;}
-	void SetOrientation(Orientation orientation) {m_Orientation = orientation;}
+	Orientation GetOrientation() const { return m_Orientation; }
+	void SetOrientation(Orientation orientation) { m_Orientation = orientation; }
 	BOOL GetPegSide(BOOL rightup) const;
 	void SetPegSide(BOOL setrightup, BOOL enable);
 	void SetTooltipFormat(const CString format);
 	CString GetTooltipFormat() const;
 
-// Operations
+	// Operations
 public:
 	int MoveSelected(double newpos, BOOL bUpdate);
 	COLORREF SetColorSelected(COLORREF crNewColor, BOOL bUpdate);
 
-// Internals
+	// Internals
 protected:
 	BOOL RegisterWindowClass();
 	void GetPegRgn(CRgn *rgn);
 	void SendBasicNotification(UINT code, CPeg peg, int index);
-	void SendSelectedMessage(UINT code) {SendBasicNotification(code,GetSelPeg(),m_Selected);}
-	void CreatePeg(double pos,COLORREF color);
+	void SendSelectedMessage(UINT code) { SendBasicNotification(code, GetSelPeg(), m_Selected); }
+	void CreatePeg(double pos, COLORREF color);
 
 	CGradient m_Gradient;
 	int m_Width;
@@ -104,12 +104,12 @@ protected:
 
 	friend class CGradientCtrlImpl;
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CGradientCtrl)
-	public:
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CGradientCtrl)
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+protected:
 	virtual void PreSubclassWindow();
 	//}}AFX_VIRTUAL
 
@@ -119,7 +119,7 @@ public:
 
 	// Generated message map functions
 protected:
-	afx_msg LRESULT OnMouseLeave(WPARAM wParam,LPARAM strText);
+	afx_msg LRESULT OnMouseLeave(WPARAM wParam, LPARAM strText);
 	//{{AFX_MSG(CGradientCtrl)
 	afx_msg void OnPaint();
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);

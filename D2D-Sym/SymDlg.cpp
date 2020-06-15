@@ -7,7 +7,7 @@
 
 // CSymDlg dialog
 
-static int m_nSavedCX,m_nSavedCY,m_nSavedX,m_nSavedY;
+static int m_nSavedCX, m_nSavedCY, m_nSavedX, m_nSavedY;
 
 IMPLEMENT_DYNAMIC(CSymDlg, CDialog)
 
@@ -33,10 +33,10 @@ void CSymDlg::DoDataExchange(CDataExchange* pDX)
 	DDV_MinMaxDouble(pDX, m_fVecSize, 0.0, 10.0);
 	DDX_Control(pDX, IDC_SPINSIZE_OUT, m_Spin_Outline);
 	DDX_Control(pDX, IDC_SPINSIZE_VEC, m_Spin_Vecsize);
-	DDX_Control(pDX,IDC_COLOR_SYM,m_BtnSym);
-	DDX_Control(pDX,IDC_COLOR_LINE,m_BtnLine);
-	DDX_Control(pDX,IDC_COLOR_VEC,m_BtnVec);
-	DDX_Control(pDX,IDC_COLOR_BACK,m_BtnBack);
+	DDX_Control(pDX, IDC_COLOR_SYM, m_BtnSym);
+	DDX_Control(pDX, IDC_COLOR_LINE, m_BtnLine);
+	DDX_Control(pDX, IDC_COLOR_VEC, m_BtnVec);
+	DDX_Control(pDX, IDC_COLOR_BACK, m_BtnBack);
 	DDX_Control(pDX, IDC_OPACITY_SYM, m_sliderSym);
 	DDX_Control(pDX, IDC_OPACITY_VEC, m_sliderVec);
 	DDX_Slider(pDX, IDC_OPACITY_SYM, m_iOpacitySym);
@@ -47,22 +47,22 @@ void CSymDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_VEC_COUNT, m_cbVecCount);
 	DDX_CBIndex(pDX, IDC_VEC_COUNT, m_iVecCountIdx);
 
-	if(!pDX->m_bSaveAndValidate) {
+	if (!pDX->m_bSaveAndValidate) {
 		m_BtnSym.SetColor(m_clrSym);
 		m_BtnLine.SetColor(m_clrLine);
 		m_BtnVec.SetColor(m_clrVec);
 		m_BtnBack.SetColor(m_clrBack);
-		m_Spin_Outline.SetRange(0,100);
-		m_Spin_Vecsize.SetRange(0,100);
+		m_Spin_Outline.SetRange(0, 100);
+		m_Spin_Vecsize.SetRange(0, 100);
 	}
-	m_Spin_Outline.SetPos((int)(m_fLineSize*10));
-	m_Spin_Vecsize.SetPos((int)(m_fVecSize*10));
+	m_Spin_Outline.SetPos((int)(m_fLineSize * 10));
+	m_Spin_Vecsize.SetPos((int)(m_fVecSize * 10));
 }
 
 BEGIN_MESSAGE_MAP(CSymDlg, CDialog)
 	ON_WM_DESTROY()
 	ON_BN_CLICKED(IDC_APPLY, &CSymDlg::OnBnClickedApply)
-    ON_MESSAGE(CPN_SELCHANGE, OnChgColor)
+	ON_MESSAGE(CPN_SELCHANGE, OnChgColor)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPINSIZE, OnSymSize)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPINSIZE_OUT, OnOutSize)
 	ON_NOTIFY(UDN_DELTAPOS, IDC_SPINSIZE_VEC, OnOutSize)
@@ -87,98 +87,98 @@ BOOL CSymDlg::OnInitDialog()
 
 	//m_cbVecCount.SetRe
 
-    ((CSpinButtonCtrl *)GetDlgItem(IDC_SPINSIZE))->SetRange(0,100);
+	((CSpinButtonCtrl *)GetDlgItem(IDC_SPINSIZE))->SetRange(0, 100);
 
-	m_sliderSym.SetRange(0,100);
-	m_sliderVec.SetRange(0,100);
+	m_sliderSym.SetRange(0, 100);
+	m_sliderVec.SetRange(0, 100);
 
-	if(!m_nSavedCX) {
+	if (!m_nSavedCX) {
 		CRect r;
 		GetWindowRect(&r);
 		m_nSavedX = r.left;
 		m_nSavedY = r.top;
-		m_nSavedCX=r.Width();
-		m_nSavedCY=r.Height();
+		m_nSavedCX = r.Width();
+		m_nSavedCY = r.Height();
 		AfxGetMainWnd()->GetWindowRect(&r);
-		m_nSavedX=r.right-m_nSavedCX;
-		m_nSavedY=r.top;
+		m_nSavedX = r.right - m_nSavedCX;
+		m_nSavedY = r.top;
 	}
-	CDialog::SetWindowPos(0,m_nSavedX,m_nSavedY,0,0,SWP_NOACTIVATE|SWP_NOZORDER|SWP_NOSIZE|SWP_NOREDRAW);
+	CDialog::SetWindowPos(0, m_nSavedX, m_nSavedY, 0, 0, SWP_NOACTIVATE | SWP_NOZORDER | SWP_NOSIZE | SWP_NOREDRAW);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-LRESULT CSymDlg::OnChgColor(WPARAM clr,LPARAM id)
+LRESULT CSymDlg::OnChgColor(WPARAM clr, LPARAM id)
 {
-	m_pView->UpdateColor(id,clr);
+	m_pView->UpdateColor(id, clr);
 	return TRUE;
 }
 
 void CSymDlg::OnBnClickedApply()
 {
-	if(UpdateData())
+	if (UpdateData())
 		m_pView->UpdateSymbols(*this);
 }
 
 BOOL CSymDlg::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 {
-		// Slider Control
-	int id=0;
+	// Slider Control
+	int id = 0;
 	int i;
-	if(wParam == m_sliderSym.GetDlgCtrlID())
+	if (wParam == m_sliderSym.GetDlgCtrlID())
 	{
-		i=m_sliderSym.GetPos();
-		id=IDC_ST_OPACITY_SYM;
+		i = m_sliderSym.GetPos();
+		id = IDC_ST_OPACITY_SYM;
 	}
-	else if(wParam == m_sliderVec.GetDlgCtrlID())
+	else if (wParam == m_sliderVec.GetDlgCtrlID())
 	{
-		i=m_sliderVec.GetPos();
-		id=IDC_ST_OPACITY_VEC;
+		i = m_sliderVec.GetPos();
+		id = IDC_ST_OPACITY_VEC;
 	}
-	if(id) {
+	if (id) {
 		CString s;
-		s.Format("%3d %%",i);
+		s.Format("%3d %%", i);
 		GetDlgItem(id)->SetWindowText(s);
-		m_pView->UpdateOpacity(id,i);
+		m_pView->UpdateOpacity(id, i);
 	}
 	return CDialog::OnNotify(wParam, lParam, pResult);
 }
 
-void CSymDlg::OnSymSize(NMHDR* pNMHDR, LRESULT* pResult) 
+void CSymDlg::OnSymSize(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	NM_UPDOWN* pNMUpDown = (NM_UPDOWN*)pNMHDR;
-	int i=pNMUpDown->iPos+pNMUpDown->iDelta;
-	if (i<=1) {
-		i = (pNMUpDown->iDelta>0) ? 2 : 0;
-		((CSpinButtonCtrl *)GetDlgItem(IDC_SPINSIZE))->SetPos(i?1:0);
+	int i = pNMUpDown->iPos + pNMUpDown->iDelta;
+	if (i <= 1) {
+		i = (pNMUpDown->iDelta > 0) ? 2 : 0;
+		((CSpinButtonCtrl *)GetDlgItem(IDC_SPINSIZE))->SetPos(i ? 1 : 0);
 	}
-	else if(i>100) i=100;
+	else if (i > 100) i = 100;
 	m_iSymSize = i;
 	m_pView->UpdateSymSize(i);
 	*pResult = 0;
 }
 
-void CSymDlg::OnOutSize(NMHDR* pNMHDR, LRESULT* pResult) 
+void CSymDlg::OnOutSize(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	NM_UPDOWN* pNMUpDown = (NM_UPDOWN*)pNMHDR;
-	int i=pNMUpDown->iPos+pNMUpDown->iDelta;
-	*pResult=1;
-	if(i<0 || i>100) 
+	int i = pNMUpDown->iPos + pNMUpDown->iDelta;
+	*pResult = 1;
+	if (i < 0 || i>100)
 		return;
 
-	UINT id=0;
-	if(pNMHDR->idFrom==IDC_SPINSIZE_OUT)
-		id=IDC_EDIT_LINE_SZ;
-	else if(pNMHDR->idFrom==IDC_SPINSIZE_VEC)
-		id=IDC_EDIT_VEC_SZ;
-	if(!id) return;
+	UINT id = 0;
+	if (pNMHDR->idFrom == IDC_SPINSIZE_OUT)
+		id = IDC_EDIT_LINE_SZ;
+	else if (pNMHDR->idFrom == IDC_SPINSIZE_VEC)
+		id = IDC_EDIT_VEC_SZ;
+	if (!id) return;
 
 	char buf[8];
-	sprintf(buf,"%.1f",i/10.0);
+	sprintf(buf, "%.1f", i / 10.0);
 	GetDlgItem(id)->SetWindowTextA(buf);
-   
-	if(UpdateData()) {
+
+	if (UpdateData()) {
 		m_pView->UpdateSymbols(*this);
 	}
 }
@@ -189,8 +189,8 @@ void CSymDlg::OnDestroy()
 	GetWindowRect(&r);
 	m_nSavedX = r.left;
 	m_nSavedY = r.top;
-	m_nSavedCX=r.Width();
-	m_nSavedCY=r.Height();
+	m_nSavedCX = r.Width();
+	m_nSavedCY = r.Height();
 
 	CDialog::OnDestroy();
 }

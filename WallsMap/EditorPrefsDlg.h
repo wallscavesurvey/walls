@@ -15,7 +15,7 @@ public:
 	CEditorPrefsDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CEditorPrefsDlg();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_EDITOR_PREFS };
 
 	BOOL m_bEditRTF;
@@ -44,8 +44,8 @@ protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
-	afx_msg LRESULT OnChgColor(WPARAM,LPARAM);
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+	afx_msg LRESULT OnChgColor(WPARAM, LPARAM);
+	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 	afx_msg void OnBnClickedFont();
 	afx_msg void OnClickedTxtcomp();
 

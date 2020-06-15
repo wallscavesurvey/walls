@@ -9,7 +9,7 @@ class CFindDlgTbl : public CFindReplaceDialog
 	DECLARE_DYNAMIC(CFindDlgTbl)
 
 public:
-	CFindDlgTbl(LPCSTR fName,int iCol,BYTE fTyp);
+	CFindDlgTbl(LPCSTR fName, int iCol, BYTE fTyp);
 	virtual ~CFindDlgTbl();
 
 	CEditLabel m_ce;
@@ -24,7 +24,7 @@ public:
 	BYTE m_fTyp;
 	int m_iCol;
 
-	void SetColumnData(LPCSTR pNam,int iCol,BYTE fTyp);
+	void SetColumnData(LPCSTR pNam, int iCol, BYTE fTyp);
 
 	int GetColumnSel()
 	{
@@ -35,12 +35,12 @@ private:
 
 	CComboBox m_cbLookIn;
 	void EnableControls();
-	void Enable(UINT id,BOOL bEnable) {GetDlgItem(id)->EnableWindow(bEnable);}
+	void Enable(UINT id, BOOL bEnable) { GetDlgItem(id)->EnableWindow(bEnable); }
 
 	afx_msg void OnBnClickedSelectAll();
 	afx_msg void OnEnChangeFindWhat();
 	afx_msg void OnFindNext();
-	afx_msg void OnSelChangeLookIn(); 
+	afx_msg void OnSelChangeLookIn();
 
 	DECLARE_MESSAGE_MAP()
 

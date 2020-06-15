@@ -12,7 +12,7 @@ class CPrjDoc;
 
 class CExpSefDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
 	CExpSefDlg(CWnd* pParent = NULL);   // standard constructor
 
@@ -26,14 +26,14 @@ public:
 	CPrjDoc *m_pDoc;
 	CPrjListNode *m_pNode;
 
-// Overrides
+	// Overrides
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
 
-// Implementation
+	// Implementation
 protected:
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 	afx_msg void OnBrowse();
 	afx_msg void OnBnClickedUseAllsef();
 	afx_msg void OnBnClickedUseVdist();

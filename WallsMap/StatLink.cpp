@@ -29,9 +29,9 @@ END_MESSAGE_MAP()
 //
 CStaticLink::CStaticLink()
 {
-	m_colorUnvisited = RGB(0,0,255);		 // blue
-	m_colorVisited   = RGB(128,0,128);	 // purple
-	m_bVisited       = FALSE;				 // not visited yet
+	m_colorUnvisited = RGB(0, 0, 255);		 // blue
+	m_colorVisited = RGB(128, 0, 128);	 // purple
+	m_bVisited = FALSE;				 // not visited yet
 }
 
 //////////////////
@@ -48,7 +48,7 @@ HBRUSH CStaticLink::CtlColor(CDC* pDC, UINT nCtlColor)
 		// Otherwise, I'll never get any mouse clicks!
 		::SetWindowLong(m_hWnd, GWL_STYLE, dwStyle | SS_NOTIFY);
 	}
-	
+
 	HBRUSH hbr = NULL;
 	if ((dwStyle & 0xFF) <= SS_RIGHT) {
 
@@ -76,14 +76,14 @@ HBRUSH CStaticLink::CtlColor(CDC* pDC, UINT nCtlColor)
 }
 LPCSTR CStaticLink::SetLink(LPCSTR pLink)
 {
-	m_bVisited=FALSE;				 // not visited yet
-	SetWindowText(m_link=pLink);
+	m_bVisited = FALSE;				 // not visited yet
+	SetWindowText(m_link = pLink);
 	return pLink;
 }
 
 LPCSTR CStaticLink::GetLink()
 {
-	if(m_link.IsEmpty()) GetWindowText(m_link);
+	if (m_link.IsEmpty()) GetWindowText(m_link);
 	return m_link;
 }
 
@@ -96,7 +96,7 @@ void CStaticLink::OnClicked()
 		GetWindowText(m_link);	// ..get it from window text
 
 	CString url("http://");
-	url+=m_link;
+	url += m_link;
 
 	// Call ShellExecute to run the file.
 	// For an URL, this means opening it in the browser.
@@ -105,7 +105,8 @@ void CStaticLink::OnClicked()
 	if ((UINT)h > 32) {
 		m_bVisited = TRUE;	// (not really--might not have found link)
 		Invalidate();			// repaint to show visited color
-	} else {
+	}
+	else {
 		MessageBeep(0);		// unable to execute file!
 		TRACE(_T("*** WARNING: CStaticLink: unable to execute file %s\n"),
 			(LPCTSTR)url);

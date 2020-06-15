@@ -16,8 +16,8 @@ public:
 	void GetStrFromFont(CString &Str) const;
 	BOOL GetFontFromStr(PSTR str);
 
-	BOOL GetFontFromDialog(DWORD dwFlags=CF_SCREENFONTS,COLORREF *pClr=NULL,
-			CDC *pPrinterDC=NULL, CWnd *pParentWnd=NULL);
+	BOOL GetFontFromDialog(DWORD dwFlags = CF_SCREENFONTS, COLORREF *pClr = NULL,
+		CDC *pPrinterDC = NULL, CWnd *pParentWnd = NULL);
 };
 
 #endif

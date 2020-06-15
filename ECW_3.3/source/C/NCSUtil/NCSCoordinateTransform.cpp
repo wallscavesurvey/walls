@@ -3,13 +3,13 @@
 ** Copyright 1989-2000 - Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** CLASS(ES):	CNCSCoordinateTramsform
@@ -34,24 +34,24 @@
 //////////////////////////////////////////////////////////////////////
 
 CNCSCoordinateTransform::CNCSCoordinateTransform(CNCSCoordinateSystem *pSrc,
-												 CNCSCoordinateSystem *pDest)
+	CNCSCoordinateSystem *pDest)
 {
 	m_pSrcCoordSys = new(CNCSCoordinateSystem);
 	m_pDestCoordSys = new(CNCSCoordinateSystem);
 
-	if(pSrc)
+	if (pSrc)
 		*m_pSrcCoordSys = *pSrc;
-	if(pDest)
+	if (pDest)
 		*m_pDestCoordSys = *pDest;
 
 }
 
 CNCSCoordinateTransform::~CNCSCoordinateTransform()
 {
-	if(m_pSrcCoordSys)
+	if (m_pSrcCoordSys)
 		delete(m_pSrcCoordSys);
 
-	if(m_pDestCoordSys)
+	if (m_pDestCoordSys)
 		delete(m_pDestCoordSys);
 }
 
@@ -67,7 +67,7 @@ CNCSCoordinateTransform::~CNCSCoordinateTransform()
 //***************************************************************************
 NCSError CNCSCoordinateTransform::GetSrcCoordSys(CNCSCoordinateSystem *pCoord)
 {
-	NCSError nRet= NCS_SUCCESS;
+	NCSError nRet = NCS_SUCCESS;
 
 	*pCoord = *m_pSrcCoordSys;
 
@@ -85,7 +85,7 @@ NCSError CNCSCoordinateTransform::GetSrcCoordSys(CNCSCoordinateSystem *pCoord)
 //***************************************************************************
 NCSError CNCSCoordinateTransform::SetSrcCoordSys(CNCSCoordinateSystem *pCoord)
 {
-	NCSError nRet= NCS_SUCCESS;
+	NCSError nRet = NCS_SUCCESS;
 
 	*m_pSrcCoordSys = *pCoord;
 
@@ -102,9 +102,9 @@ NCSError CNCSCoordinateTransform::SetSrcCoordSys(CNCSCoordinateSystem *pCoord)
 // RETURNS:		Always returns NCS_SUCCESS
 // NOTES:
 //***************************************************************************
-NCSError CNCSCoordinateTransform::GetDestCoordSys( CNCSCoordinateSystem *pCoord)
+NCSError CNCSCoordinateTransform::GetDestCoordSys(CNCSCoordinateSystem *pCoord)
 {
-	NCSError nRet= NCS_SUCCESS;
+	NCSError nRet = NCS_SUCCESS;
 
 	*pCoord = *m_pDestCoordSys;
 
@@ -120,9 +120,9 @@ NCSError CNCSCoordinateTransform::GetDestCoordSys( CNCSCoordinateSystem *pCoord)
 // RETURNS:		Always returns NCS_SUCCESS
 // NOTES:
 //***************************************************************************
-NCSError CNCSCoordinateTransform::SetDestCoordSys( CNCSCoordinateSystem *pCoord)
+NCSError CNCSCoordinateTransform::SetDestCoordSys(CNCSCoordinateSystem *pCoord)
 {
-	NCSError nRet= NCS_SUCCESS;
+	NCSError nRet = NCS_SUCCESS;
 
 	*m_pDestCoordSys = *pCoord;
 
@@ -144,34 +144,34 @@ NCSError CNCSCoordinateTransform::SetDestCoordSys( CNCSCoordinateSystem *pCoord)
 //				support projection mappings, this function currently scales
 //				dependant on unit type.
 //***************************************************************************
-NCSError CNCSCoordinateTransform::Transform(CNCSPoint *pSrc,CNCSPoint *pDest)
+NCSError CNCSCoordinateTransform::Transform(CNCSPoint *pSrc, CNCSPoint *pDest)
 {
-	NCSError nRet= NCS_SUCCESS;
+	NCSError nRet = NCS_SUCCESS;
 	IEEE8 dConversionFactor;
 
 	//test to see if the two coordinate systems are compatible
 	nRet = m_pSrcCoordSys->IsCompatible(m_pDestCoordSys);
-	if(m_pSrcCoordSys->m_pCoordinateSystemName && m_pDestCoordSys->m_pCoordinateSystemName)
+	if (m_pSrcCoordSys->m_pCoordinateSystemName && m_pDestCoordSys->m_pCoordinateSystemName)
 	{
-		if(!strcmp(m_pSrcCoordSys->m_pCoordinateSystemName,NCS_LINEAR_COORD_SYS) &&
-		   !strcmp(m_pDestCoordSys->m_pCoordinateSystemName,NCS_LINEAR_COORD_SYS))
+		if (!strcmp(m_pSrcCoordSys->m_pCoordinateSystemName, NCS_LINEAR_COORD_SYS) &&
+			!strcmp(m_pDestCoordSys->m_pCoordinateSystemName, NCS_LINEAR_COORD_SYS))
 		{
-			if(nRet == NCS_SUCCESS)
+			if (nRet == NCS_SUCCESS)
 			{
 				//scale cell size to output cell size...
 				//this is the only valid conversion allowed without
 				//performing a coordinate system transformation :-(.
-				switch(m_pDestCoordSys->m_nUnits)
+				switch (m_pDestCoordSys->m_nUnits)
 				{
 				case ECW_CELL_UNITS_METERS:
-					if(m_pSrcCoordSys->m_nUnits == ECW_CELL_UNITS_FEET)
+					if (m_pSrcCoordSys->m_nUnits == ECW_CELL_UNITS_FEET)
 						dConversionFactor = NCS_FEET_FACTOR;
 					else
 						dConversionFactor = 1.0;
 					break;
 
 				case ECW_CELL_UNITS_FEET:
-					if(m_pSrcCoordSys->m_nUnits == ECW_CELL_UNITS_METERS)
+					if (m_pSrcCoordSys->m_nUnits == ECW_CELL_UNITS_METERS)
 						dConversionFactor = 1.0 / NCS_FEET_FACTOR;
 					else
 						dConversionFactor = 1.0;
@@ -182,9 +182,9 @@ NCSError CNCSCoordinateTransform::Transform(CNCSPoint *pSrc,CNCSPoint *pDest)
 					break;
 				}
 
-				pDest->m_dX = (pSrc->m_dX ) * dConversionFactor;
-				pDest->m_dY = (pSrc->m_dY ) * dConversionFactor;
-				
+				pDest->m_dX = (pSrc->m_dX) * dConversionFactor;
+				pDest->m_dY = (pSrc->m_dY) * dConversionFactor;
+
 			}
 		}
 		else

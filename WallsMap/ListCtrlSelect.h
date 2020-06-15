@@ -1,17 +1,17 @@
 namespace ListCtrlEx {
 
-void SetCurSel(
-      CListCtrl& ctrl,
-      int ixItem,
-      bool ensureVisible = true);
+	void SetCurSel(
+		CListCtrl& ctrl,
+		int ixItem,
+		bool ensureVisible = true);
 
-int GetCurSel(const CListCtrl& ctrl);
+	int GetCurSel(const CListCtrl& ctrl);
 
-void SetFocusItem(
-      CListCtrl& ctrl,
-      int ixItem,
-      bool ensureVisible = true);
+	void SetFocusItem(
+		CListCtrl& ctrl,
+		int ixItem,
+		bool ensureVisible = true);
 
-int GetFocusItem(const CListCtrl& ctrl);
+	int GetFocusItem(const CListCtrl& ctrl);
 
 } // namespace ListCtrlEx

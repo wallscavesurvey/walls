@@ -44,55 +44,55 @@
 
 class HgMessage
 {
-  public:
-    typedef void (*cleanupfunc)(void);
+public:
+	typedef void(*cleanupfunc)(void);
 
-    static void init(                   // initialisation
-      const RString& progname,          //   program name
-      cleanupfunc = nil);               //   optional cleanup function
+	static void init(                   // initialisation
+		const RString& progname,          //   program name
+		cleanupfunc = nil);               //   optional cleanup function
 
-    static void message(                // messages
-      const char* msg                   //   message
-    );
+	static void message(                // messages
+		const char* msg                   //   message
+	);
 
-    static void message(                // messages
-      const RString& msg                //   message
-    );
+	static void message(                // messages
+		const RString& msg                //   message
+	);
 
-    static void error(                  // errors (non-fatal)
-      const char* msg                   //   message
-    );
+	static void error(                  // errors (non-fatal)
+		const char* msg                   //   message
+	);
 
-    static void error(                  // errors (non-fatal)
-      const RString& msg                //   message
-    );
+	static void error(                  // errors (non-fatal)
+		const RString& msg                //   message
+	);
 
-    static void fatalError(             // fatal errors (execution is terminated)
-      const char* msg,                  //   message
-      int code = -1                     //   exit code
-    );
+	static void fatalError(             // fatal errors (execution is terminated)
+		const char* msg,                  //   message
+		int code = -1                     //   exit code
+	);
 
-    static void fatalError(             // fatal errors (execution is terminated)
-      const RString& msg,               //   message
-      int code = -1                     //   exit code
-    );
+	static void fatalError(             // fatal errors (execution is terminated)
+		const RString& msg,               //   message
+		int code = -1                     //   exit code
+	);
 
-  private:
-    static RString progname_;
-    static cleanupfunc cleanup_;
+private:
+	static RString progname_;
+	static cleanupfunc cleanup_;
 };
 
 
-inline void HgMessage::message( const RString& msg) {
-     message( msg.string());
+inline void HgMessage::message(const RString& msg) {
+	message(msg.string());
 }
 
-inline void HgMessage::error( const RString& msg) {
-     error( msg.string());
+inline void HgMessage::error(const RString& msg) {
+	error(msg.string());
 }
 
-inline void HgMessage::fatalError( const RString& msg, int code) {
-     fatalError( msg.string(), code);
+inline void HgMessage::fatalError(const RString& msg, int code) {
+	fatalError(msg.string(), code);
 }
 
 

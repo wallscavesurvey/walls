@@ -35,53 +35,53 @@ class MaterialGroup;
 
 
 class Polyhedron
-: public GeometricObject
+	: public GeometricObject
 {
-  public:
-    Polyhedron (int obj_n, int par = 0, const char* name = 0, const Polyhedron* copy = 0);
-    ~Polyhedron ();
+public:
+	Polyhedron(int obj_n, int par = 0, const char* name = 0, const Polyhedron* copy = 0);
+	~Polyhedron();
 
-    int readObjFile (FILE*, SDFScene*);
-    void print (int);
-    void writeData (ostream&) const;
-    void writeVRML (ostream&) const;
+	int readObjFile(FILE*, SDFScene*);
+	void print(int);
+	void writeData(ostream&) const;
+	void writeVRML(ostream&) const;
 
-    unsigned long numFaces () const  { return num_faces_; }
+	unsigned long numFaces() const { return num_faces_; }
 
-    int sharedInfo () const  { return copy_ ? copy_->getobj_num () : 0; }
+	int sharedInfo() const { return copy_ ? copy_->getobj_num() : 0; }
 
-    void setupNormals ();               // trfmat available - compute normals
-    void groupAnchorsChanged ();        // anchor groups have changed
-    void groupSelectionChanged ();      // selected group has changed
+	void setupNormals();               // trfmat available - compute normals
+	void groupAnchorsChanged();        // anchor groups have changed
+	void groupSelectionChanged();      // selected group has changed
 
-    void draw_ (int hilitindex, int texturing, const colorRGB* col_anchorface, const colorRGB* col_anchoredge);
-    // do drawing in object coordinates
+	void draw_(int hilitindex, int texturing, const colorRGB* col_anchorface, const colorRGB* col_anchoredge);
+	// do drawing in object coordinates
 
-    int rayhits_ (const point3D& A, const vector3D& b, float tnear, float& tmin,
-                  vector3D* normal, const StringArray** groups);
+	int rayhits_(const point3D& A, const vector3D& b, float tnear, float& tmin,
+		vector3D* normal, const StringArray** groups);
 
-  private:
-    void definePickableFaces ();        // set facepickable_
-    void defineSelectedFaces ();        // set faceselected_
+private:
+	void definePickableFaces();        // set facepickable_
+	void defineSelectedFaces();        // set faceselected_
 
-    void writeFacesVRML (ostream&, const face*, int n, const Material*) const;
+	void writeFacesVRML(ostream&, const face*, int n, const Material*) const;
 
-    const Polyhedron* copy_;            // pointer to master for copies (nil for original)
+	const Polyhedron* copy_;            // pointer to master for copies (nil for original)
 
-    int num_verts_;
-    point3D* vertexlist_;               // array of vertex coordinates
-    int num_normals_;
-    vector3D* normallist_;              // array of normal coordinates
-    int num_texverts_;
-    point2D* texvertlist_;              // array of texture coordinates
-    int num_faces_;
-    face* facelist_;                    // array of faces (vertexindices and normalindices)
-    int* facepickable_;                 // flag-array: face in anchor group or not
-    int* faceselected_;                 // flag-array: face in selected group or not
+	int num_verts_;
+	point3D* vertexlist_;               // array of vertex coordinates
+	int num_normals_;
+	vector3D* normallist_;              // array of normal coordinates
+	int num_texverts_;
+	point2D* texvertlist_;              // array of texture coordinates
+	int num_faces_;
+	face* facelist_;                    // array of faces (vertexindices and normalindices)
+	int* facepickable_;                 // flag-array: face in anchor group or not
+	int* faceselected_;                 // flag-array: face in selected group or not
 
-    slist* matgrouplist_;               // list of material groups
-                                        // (face index, face count, material pointer)
-    slist* facegrouplist_;              // lsit of face groups (for picking)
+	slist* matgrouplist_;               // list of material groups
+										// (face index, face count, material pointer)
+	slist* facegrouplist_;              // lsit of face groups (for picking)
 };
 
 

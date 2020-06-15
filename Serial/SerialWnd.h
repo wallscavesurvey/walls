@@ -60,7 +60,7 @@
 
 class CSerialWnd : public CSerialEx
 {
-// Construction
+	// Construction
 public:
 	CSerialWnd();
 	virtual ~CSerialWnd();
@@ -69,12 +69,12 @@ public:
 	HANDLE ghMutex;
 	BOOL m_bReceiveAll;
 
-// Operations
+	// Operations
 public:
 
 	void ParserReset()
 	{
-		if(!m_hThread) {
+		if (!m_hThread) {
 			m_NMEAParser.Reset();
 		}
 	}
@@ -83,14 +83,14 @@ public:
 	// need to use the full devicename (i.e. "COM1") to open the port.
 	// if eBaudrate==EBaudUnknown, no port initialization will occur after CSerialEx::Open() is called
 
-	virtual LONG Open (LPCTSTR lpszDevice, EBaudrate eBaudrate, HWND hwndDest, UINT nComMsg=WM_NULL, LPARAM lParam=0, DWORD dwInQueue = 0, DWORD dwOutQueue = 0);
+	virtual LONG Open(LPCTSTR lpszDevice, EBaudrate eBaudrate, HWND hwndDest, UINT nComMsg = WM_NULL, LPARAM lParam = 0, DWORD dwInQueue = 0, DWORD dwOutQueue = 0);
 
 	// Close the serial port.
-	virtual LONG Close (void);
+	virtual LONG Close(void);
 
 protected:
 	// Event handler that is called when 
-	virtual void OnEvent (EEvent eEvent, EError eError);
+	virtual void OnEvent(EEvent eEvent, EError eError);
 
 public:
 	// Default Serial notification message

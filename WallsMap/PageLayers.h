@@ -29,17 +29,17 @@ public:
 
 	void RefreshListItem(PTL ptl);
 	void RedrawList();
-    void OnDrop();
+	void OnDrop();
 	bool SaveColumnWidths();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_PAGE_LAYERS };
 
 private:
 #ifdef _DEBUG
 	BOOL CheckTree();
 #endif
-	void AdvDlgCtrl(int n)	{while(n--) CDialog::NextDlgCtrl();}
+	void AdvDlgCtrl(int n) { while (n--) CDialog::NextDlgCtrl(); }
 
 	PTL GetPTL(HTREEITEM hItem)
 	{
@@ -52,7 +52,7 @@ private:
 	void UpdateButtons();
 	//void SaveLayerStatus();
 	void OnClose();
-	void OnEditPaste(); 
+	void OnEditPaste();
 	void OnOpenfolder();
 	int EditTitle(CString &s);
 
@@ -69,7 +69,7 @@ protected:
 	//afx_msg void OnKeydownList(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnMoveLayerToTop();
 	afx_msg void OnMoveLayerToBottom();
-	afx_msg LRESULT OnRetFocus(WPARAM,LPARAM);
+	afx_msg LRESULT OnRetFocus(WPARAM, LPARAM);
 	afx_msg void OnBnClickedLayerAdd();
 	afx_msg void OnBnClickedLayerConv();
 	afx_msg void OnBnClickedScaleRange();

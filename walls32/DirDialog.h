@@ -12,16 +12,16 @@
 
 class CDirDialog
 {
-  public:
-    CDirDialog();
-    virtual ~CDirDialog();
-    int DoBrowse(HWND hWndOwner=NULL);
+public:
+	CDirDialog();
+	virtual ~CDirDialog();
+	int DoBrowse(HWND hWndOwner = NULL);
 
-    CString m_strPath;
-    CString m_strInitDir;
-    CString m_strSelDir;
-    CString m_strTitle;
-    int  m_iImageIndex;
+	CString m_strPath;
+	CString m_strInitDir;
+	CString m_strSelDir;
+	CString m_strTitle;
+	int  m_iImageIndex;
 };
 
 #endif // !defined(AFX_DIRDIALOG_H__62FFAC92_1DEE_11D1_B87A_0060979CDF6D__INCLUDED_)

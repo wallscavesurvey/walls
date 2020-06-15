@@ -1,16 +1,16 @@
-/********************************************************** 
+/**********************************************************
 ** Copyright 1998 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
-** 
+**
 ** FILE:   	fileio_decompress.c
 ** CREATED:	1998
 ** AUTHOR: 	SNS
@@ -28,16 +28,16 @@
 #include <winbase.h>
 #endif
 
-/*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
-**	Decompress File IO routines.
-*	*	*	*	*	*	*	*	*	*	*	*	*	*	*/
+ /*	*	*	*	*	*	*	*	*	*	*	*	*	*	*
+ **	Decompress File IO routines.
+ *	*	*	*	*	*	*	*	*	*	*	*	*	*	*/
 
-//[02] - begin
-static NCSError (NCS_CALL *pFileOpenUserCB)(char *szFileName, void **ppClientData) = NULL;
-static NCSError (NCS_CALL *pFileCloseUserCB)(void *pClientData) = NULL;	
-static NCSError (NCS_CALL *pFileReadUserCB)(void *pClientData, void *pBuffer, UINT32 nLength) = NULL;
-static NCSError (NCS_CALL *pFileSeekUserCB)(void *pClientData, UINT64 nOffset) = NULL;
-static NCSError (NCS_CALL *pFileTellUserCB)(void *pClientData, UINT64 *pOffset) = NULL;
+ //[02] - begin
+static NCSError(NCS_CALL *pFileOpenUserCB)(char *szFileName, void **ppClientData) = NULL;
+static NCSError(NCS_CALL *pFileCloseUserCB)(void *pClientData) = NULL;
+static NCSError(NCS_CALL *pFileReadUserCB)(void *pClientData, void *pBuffer, UINT32 nLength) = NULL;
+static NCSError(NCS_CALL *pFileSeekUserCB)(void *pClientData, UINT64 nOffset) = NULL;
+static NCSError(NCS_CALL *pFileTellUserCB)(void *pClientData, UINT64 *pOffset) = NULL;
 
 /*
 **	NCSecwSetIOCallbacks()
@@ -46,20 +46,20 @@ static NCSError (NCS_CALL *pFileTellUserCB)(void *pClientData, UINT64 *pOffset) 
 ** This can be used to read from memory etc., instead of disk.
 */
 #ifdef NCSJPC_ECW_SUPPORT
-NCSError NCSecwSetIOCallbacks_ECW(NCSError (NCS_CALL *pOpenCB)(char *szFileName, void **ppClientData),
-							  NCSError (NCS_CALL *pCloseCB)(void *pClientData),
-							  NCSError (NCS_CALL *pReadCB)(void *pClientData, void *pBuffer, UINT32 nLength),
-							  NCSError (NCS_CALL *pSeekCB)(void *pClientData, UINT64 nOffset),
-							  NCSError (NCS_CALL *pTellCB)(void *pClientData, UINT64 *pOffset))
+NCSError NCSecwSetIOCallbacks_ECW(NCSError(NCS_CALL *pOpenCB)(char *szFileName, void **ppClientData),
+	NCSError(NCS_CALL *pCloseCB)(void *pClientData),
+	NCSError(NCS_CALL *pReadCB)(void *pClientData, void *pBuffer, UINT32 nLength),
+	NCSError(NCS_CALL *pSeekCB)(void *pClientData, UINT64 nOffset),
+	NCSError(NCS_CALL *pTellCB)(void *pClientData, UINT64 *pOffset))
 #else
-NCSError NCSecwSetIOCallbacks(NCSError (NCS_CALL *pOpenCB)(char *szFileName, void **ppClientData),
-							  NCSError (NCS_CALL *pCloseCB)(void *pClientData),
-							  NCSError (NCS_CALL *pReadCB)(void *pClientData, void *pBuffer, UINT32 nLength),
-							  NCSError (NCS_CALL *pSeekCB)(void *pClientData, UINT64 nOffset),
-							  NCSError (NCS_CALL *pTellCB)(void *pClientData, UINT64 *pOffset))
+NCSError NCSecwSetIOCallbacks(NCSError(NCS_CALL *pOpenCB)(char *szFileName, void **ppClientData),
+	NCSError(NCS_CALL *pCloseCB)(void *pClientData),
+	NCSError(NCS_CALL *pReadCB)(void *pClientData, void *pBuffer, UINT32 nLength),
+	NCSError(NCS_CALL *pSeekCB)(void *pClientData, UINT64 nOffset),
+	NCSError(NCS_CALL *pTellCB)(void *pClientData, UINT64 *pOffset))
 #endif
 {
-	if(pOpenCB && pCloseCB && pReadCB && pSeekCB && pTellCB) {
+	if (pOpenCB && pCloseCB && pReadCB && pSeekCB && pTellCB) {
 		pFileOpenUserCB = pOpenCB;
 		pFileCloseUserCB = pCloseCB;
 		pFileReadUserCB = pReadCB;
@@ -67,7 +67,8 @@ NCSError NCSecwSetIOCallbacks(NCSError (NCS_CALL *pOpenCB)(char *szFileName, voi
 		pFileTellUserCB = pTellCB;
 
 		return(NCS_SUCCESS);
-	} else {
+	}
+	else {
 		return(NCS_INVALID_PARAMETER);
 	}
 }
@@ -82,13 +83,14 @@ NCSError NCSecwSetIOCallbacks(NCSError (NCS_CALL *pOpenCB)(char *szFileName, voi
 
 BOOLEAN EcwFileOpenForRead(char *szFilename, ECWFILE *pFile)
 {
-	if(pFileOpenUserCB) {	//[02]
+	if (pFileOpenUserCB) {	//[02]
 		return((*pFileOpenUserCB)(szFilename, &(pFile->pClientData)) == NCS_SUCCESS ? FALSE : TRUE);
 	}
 
-	if(NCSFileOpen(OS_STRING(szFilename), NCS_FILE_READ, &(pFile->hFile)) == NCS_SUCCESS) {
+	if (NCSFileOpen(OS_STRING(szFilename), NCS_FILE_READ, &(pFile->hFile)) == NCS_SUCCESS) {
 		return(FALSE);
-	} else {
+	}
+	else {
 		return(TRUE);
 	}
 }
@@ -98,13 +100,14 @@ BOOLEAN EcwFileOpenForRead(char *szFilename, ECWFILE *pFile)
 */
 BOOLEAN EcwFileClose(ECWFILE hFile)								// Closes file
 {
-	if(pFileCloseUserCB) {	//[02]
+	if (pFileCloseUserCB) {	//[02]
 		return((*pFileCloseUserCB)(hFile.pClientData) == NCS_SUCCESS ? FALSE : TRUE);
 	}
 
-	if(NCSFileClose(hFile.hFile) == NCS_SUCCESS) {
+	if (NCSFileClose(hFile.hFile) == NCS_SUCCESS) {
 		return(FALSE);
-	} else {
+	}
+	else {
 		return(TRUE);
 	}
 }
@@ -117,13 +120,14 @@ BOOLEAN EcwFileClose(ECWFILE hFile)								// Closes file
 */
 BOOLEAN EcwFileRead(ECWFILE hFile, void *pBuffer, UINT32 nLength)
 {
-	if(pFileReadUserCB) {	//[02]
+	if (pFileReadUserCB) {	//[02]
 		return((*pFileReadUserCB)(hFile.pClientData, pBuffer, nLength) == NCS_SUCCESS ? FALSE : TRUE);
 	}
 
-	if(NCSFileRead(hFile.hFile, pBuffer, nLength, &nLength) == NCS_SUCCESS) {
+	if (NCSFileRead(hFile.hFile, pBuffer, nLength, &nLength) == NCS_SUCCESS) {
 		return(FALSE);
-	} else {
+	}
+	else {
 		return(TRUE);
 	}
 }
@@ -136,13 +140,14 @@ BOOLEAN EcwFileRead(ECWFILE hFile, void *pBuffer, UINT32 nLength)
 */
 BOOLEAN EcwFileSetPos(ECWFILE hFile, UINT64 nOffset)
 {
-	if(pFileSeekUserCB) {	//[02]
+	if (pFileSeekUserCB) {	//[02]
 		return((*pFileSeekUserCB)(hFile.pClientData, nOffset) == NCS_SUCCESS ? FALSE : TRUE);
 	}
 
-	if(NCSFileSeekNative(hFile.hFile, nOffset, NCS_FILE_SEEK_START) == (INT64)nOffset) {
+	if (NCSFileSeekNative(hFile.hFile, nOffset, NCS_FILE_SEEK_START) == (INT64)nOffset) {
 		return(FALSE);
-	} else {
+	}
+	else {
 		return(TRUE);
 	}
 }
@@ -156,7 +161,7 @@ BOOLEAN EcwFileSetPos(ECWFILE hFile, UINT64 nOffset)
 */
 BOOLEAN EcwFileGetPos(ECWFILE hFile, UINT64 *pOffset)
 {
-	if(pFileTellUserCB) {	//[02]
+	if (pFileTellUserCB) {	//[02]
 		return((*pFileTellUserCB)(hFile.pClientData, pOffset) == NCS_SUCCESS ? FALSE : TRUE);
 	}
 	*pOffset = NCSFileTellNative(hFile.hFile);
@@ -182,16 +187,17 @@ BOOLEAN EcwFileGetPos(ECWFILE hFile, UINT64 *pOffset)
 
 BOOLEAN EcwFileReadUint8(ECWFILE hFile, UINT8 *sym)
 {
-	if(pFileReadUserCB) {
-		return(	EcwFileRead(hFile, sym, sizeof(*sym)));
-	} else {
-		return( NCSFileReadUINT8_MSB(hFile.hFile, sym) == NCS_SUCCESS ? FALSE : TRUE );
+	if (pFileReadUserCB) {
+		return(EcwFileRead(hFile, sym, sizeof(*sym)));
+	}
+	else {
+		return(NCSFileReadUINT8_MSB(hFile.hFile, sym) == NCS_SUCCESS ? FALSE : TRUE);
 	}
 }
 
 BOOLEAN EcwFileReadUint16(ECWFILE hFile, UINT16 *sym16)
 {
-	if(pFileReadUserCB) {
+	if (pFileReadUserCB) {
 		UINT16 sym;
 
 		BOOLEAN bRval = EcwFileRead(hFile, &sym, sizeof(sym));
@@ -200,14 +206,15 @@ BOOLEAN EcwFileReadUint16(ECWFILE hFile, UINT16 *sym16)
 #endif // NCSBO_LSBFIRST
 		*sym16 = sym;
 		return(bRval);
-	} else {
-		return( NCSFileReadUINT16_MSB(hFile.hFile, sym16) == NCS_SUCCESS ? FALSE : TRUE );
+	}
+	else {
+		return(NCSFileReadUINT16_MSB(hFile.hFile, sym16) == NCS_SUCCESS ? FALSE : TRUE);
 	}
 }
 
 BOOLEAN EcwFileReadUint32(ECWFILE hFile, UINT32 *sym32)
 {
-	if(pFileReadUserCB) {
+	if (pFileReadUserCB) {
 		UINT32 sym;
 
 		BOOLEAN bRval = EcwFileRead(hFile, &sym, sizeof(sym));
@@ -216,15 +223,16 @@ BOOLEAN EcwFileReadUint32(ECWFILE hFile, UINT32 *sym32)
 #endif // NCSBO_LSBFIRST
 		*sym32 = sym;
 		return(bRval);
-	} else {
-		return( NCSFileReadUINT32_MSB(hFile.hFile, sym32) == NCS_SUCCESS ? FALSE : TRUE );
+	}
+	else {
+		return(NCSFileReadUINT32_MSB(hFile.hFile, sym32) == NCS_SUCCESS ? FALSE : TRUE);
 	}
 }
 
 
 BOOLEAN EcwFileReadIeee8(ECWFILE hFile, IEEE8 *symd8)
 {
-	if(pFileReadUserCB) {
+	if (pFileReadUserCB) {
 		IEEE8 sym;
 
 		BOOLEAN bRval = EcwFileRead(hFile, &sym, sizeof(sym));
@@ -233,8 +241,9 @@ BOOLEAN EcwFileReadIeee8(ECWFILE hFile, IEEE8 *symd8)
 #endif // NCSBO_MSBFIRST
 		*symd8 = sym;
 		return(bRval);
-	} else {
-		return( NCSFileReadIEEE8_LSB(hFile.hFile, symd8) == NCS_SUCCESS ? FALSE : TRUE );
+	}
+	else {
+		return(NCSFileReadIEEE8_LSB(hFile.hFile, symd8) == NCS_SUCCESS ? FALSE : TRUE);
 	}
 }
 
@@ -251,18 +260,18 @@ UINT32 sread_int32(UINT8 *p_s)
 	return(*((UINT32*)p_s));
 #endif
 #else
-	#if !defined(_WIN32_WCE)
-		return(NCSByteSwap32(*((UINT32*)p_s)));
-	#else
-		UINT8 *ptr = p_s;
-		UINT8 p1 = *ptr++;
-		UINT8 p2 = *ptr++;
-		UINT8 p3 = *ptr++;
-		UINT8 p4 = *ptr;
+#if !defined(_WIN32_WCE)
+	return(NCSByteSwap32(*((UINT32*)p_s)));
+#else
+	UINT8 *ptr = p_s;
+	UINT8 p1 = *ptr++;
+	UINT8 p2 = *ptr++;
+	UINT8 p3 = *ptr++;
+	UINT8 p4 = *ptr;
 
-		UINT32 ps = (p4 << 24) | (p3 << 16) | (p2 << 8) | p1;
-		return(NCSByteSwap32(ps));
-	#endif
+	UINT32 ps = (p4 << 24) | (p3 << 16) | (p2 << 8) | p1;
+	return(NCSByteSwap32(ps));
+#endif
 #endif
 }
 

@@ -5,20 +5,22 @@
 #include "QvSubField.h"
 
 class QvSFEnum : public QvSField {
-  public:
-    int value;
-    QV_SFIELD_HEADER(QvSFEnum);
+public:
+	int value;
+	QV_SFIELD_HEADER(QvSFEnum);
 
-    // Sets up value/name correspondances
-    void setEnums(int num, const int vals[], const QvName names[])
-	{ numEnums = num; enumValues = vals; enumNames = names; }
+	// Sets up value/name correspondances
+	void setEnums(int num, const int vals[], const QvName names[])
+	{
+		numEnums = num; enumValues = vals; enumNames = names;
+	}
 
-    int			numEnums;	// Number of enumeration values
-    const int		*enumValues;	// Enumeration values
-    const QvName	*enumNames;	// Mnemonic names of values
+	int			numEnums;	// Number of enumeration values
+	const int		*enumValues;	// Enumeration values
+	const QvName	*enumNames;	// Mnemonic names of values
 
-    // Looks up enum name, returns value. Returns FALSE if not found.
-    QvBool		findEnumValue(const QvName &name, int &val) const;
+	// Looks up enum name, returns value. Returns FALSE if not found.
+	QvBool		findEnumValue(const QvName &name, int &val) const;
 };
 
 #define	QV_NODE_SET_SF_ENUM_TYPE(fieldName, enumType)			      \

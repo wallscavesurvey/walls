@@ -20,20 +20,20 @@
 
 class CTabEdit : public CEdit
 {
-// Construction
+	// Construction
 public:
 	CTabEdit();
 
-// Attributes
+	// Attributes
 public:
 
-// Operations
+	// Operations
 public:
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CTabEdit)
-	public:
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CTabEdit)
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	//}}AFX_VIRTUAL
 
@@ -56,40 +56,40 @@ protected:
 
 class CFindTabDlg : public CFindReplaceDialog
 {
-// Construction
+	// Construction
 public:
 	CFindTabDlg(BOOL bFindOnly);   // standard constructor
-	CTabCombo m_tabEdit,m_tabReplace;
+	CTabCombo m_tabEdit, m_tabReplace;
 	BOOL m_bFindOnly;
-	BOOL GetUseRegEx() {return ((CButton *)GetDlgItem(IDC_USEREGEX))->GetCheck();}
+	BOOL GetUseRegEx() { return ((CButton *)GetDlgItem(IDC_USEREGEX))->GetCheck(); }
 	LPCSTR GetFindStringPtr() const {
-		GetDlgItem(IDC_FINDSTRING)->GetWindowText(m_fr.lpstrFindWhat,128);
+		GetDlgItem(IDC_FINDSTRING)->GetWindowText(m_fr.lpstrFindWhat, 128);
 		return m_fr.lpstrFindWhat;
 	}
 	LPCSTR GetReplaceStringPtr() const {
-		GetDlgItem(IDC_REPLSTRING)->GetWindowText(m_fr.lpstrReplaceWith,128);
+		GetDlgItem(IDC_REPLSTRING)->GetWindowText(m_fr.lpstrReplaceWith, 128);
 		return m_fr.lpstrReplaceWith;
 	}
-	void SetUseRegEx(BOOL bUse) {((CButton *)GetDlgItem(IDC_USEREGEX))->SetCheck(bUse);}
-	void SetFocusToEdit() {GetDlgItem(edt1)->SetFocus();}
+	void SetUseRegEx(BOOL bUse) { ((CButton *)GetDlgItem(IDC_USEREGEX))->SetCheck(bUse); }
+	void SetFocusToEdit() { GetDlgItem(edt1)->SetFocus(); }
 
-// Dialog Data
-	//{{AFX_DATA(CFindTabDlg)
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+	// Dialog Data
+		//{{AFX_DATA(CFindTabDlg)
+			// NOTE: the ClassWizard will add data members here
+		//}}AFX_DATA
 
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CFindTabDlg)
-	//}}AFX_VIRTUAL
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CFindTabDlg)
+		//}}AFX_VIRTUAL
 
-// Implementation
+	// Implementation
 
 protected:
 	afx_msg void OnEditchangeFindstring();
 	afx_msg void OnSelchangeFindStr();
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 
 	// Generated message map functions
 	//{{AFX_MSG(CFindTabDlg)

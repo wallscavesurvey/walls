@@ -20,29 +20,29 @@ static char THIS_FILE[] = __FILE__;
 // CExpavDlg dialog
 
 
-CExpavDlg::CExpavDlg(CSegListNode *pNode,SEGSTATS *st,CWnd* pParent /*=NULL*/)
+CExpavDlg::CExpavDlg(CSegListNode *pNode, SEGSTATS *st, CWnd* pParent /*=NULL*/)
 	: CDialog(CExpavDlg::IDD, pParent)
 {
-	CPrjDoc *pDoc=pSV->GetDocument();
-	m_uTypes=pDoc->m_uShapeTypes;
-	m_b3DType = (m_uTypes&SHP_3D)!=0;
-	m_bUTM = (m_uTypes&SHP_UTM)!=0;
-	m_bFlags = (m_uTypes&SHP_FLAGS)!=0;
-	m_bNotes = (m_uTypes&SHP_NOTES)!=0;
-	m_bStations = (m_uTypes&SHP_STATIONS)!=0;
-	m_bVectors = (m_uTypes&SHP_VECTORS)!=0;
-	m_bWalls = pSV->HasFloors() && (m_uTypes&SHP_WALLS)!=0;
+	CPrjDoc *pDoc = pSV->GetDocument();
+	m_uTypes = pDoc->m_uShapeTypes;
+	m_b3DType = (m_uTypes&SHP_3D) != 0;
+	m_bUTM = (m_uTypes&SHP_UTM) != 0;
+	m_bFlags = (m_uTypes&SHP_FLAGS) != 0;
+	m_bNotes = (m_uTypes&SHP_NOTES) != 0;
+	m_bStations = (m_uTypes&SHP_STATIONS) != 0;
+	m_bVectors = (m_uTypes&SHP_VECTORS) != 0;
+	m_bWalls = pSV->HasFloors() && (m_uTypes&SHP_WALLS) != 0;
 
 #ifdef _USE_SHPX
-	m_bWallshpx_enable=(!LEN_ISFEET() && CPrjDoc::m_pReviewNode->InheritedState(FLG_GRIDMASK));
-	m_bWallshpx = m_bWallshpx_enable && (m_uTypes&SHP_WALLSHPX)!=0;
+	m_bWallshpx_enable = (!LEN_ISFEET() && CPrjDoc::m_pReviewNode->InheritedState(FLG_GRIDMASK));
+	m_bWallshpx = m_bWallshpx_enable && (m_uTypes&SHP_WALLSHPX) != 0;
 #endif
-		//Get default pathname --
-	m_pathname=pDoc->ShapeFilePath();
-	m_shpbase=pNode->Name();
-	if(m_shpbase.IsEmpty()) m_shpbase=CPrjDoc::m_pReviewNode->BaseName();
-	m_st=st;
-	m_pNode=pNode;
+	//Get default pathname --
+	m_pathname = pDoc->ShapeFilePath();
+	m_shpbase = pNode->Name();
+	if (m_shpbase.IsEmpty()) m_shpbase = CPrjDoc::m_pReviewNode->BaseName();
+	m_st = st;
+	m_pNode = pNode;
 	//{{AFX_DATA_INIT(CExpavDlg)
 	//}}AFX_DATA_INIT
 }
@@ -68,41 +68,41 @@ void CExpavDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Radio(pDX, IDC_LATLONG, m_bUTM);
 	//}}AFX_DATA_MAP
 
-	if(pDX->m_bSaveAndValidate) {
+	if (pDX->m_bSaveAndValidate) {
 
-		CPrjDoc *pDoc=pSV->GetDocument();
+		CPrjDoc *pDoc = pSV->GetDocument();
 
-		int i=strlen(m_pathname)-1;
-		if(i>=0 && (m_pathname[i]=='\\' || m_pathname[i]=='/')) m_pathname.GetBufferSetLength(i);
+		int i = strlen(m_pathname) - 1;
+		if (i >= 0 && (m_pathname[i] == '\\' || m_pathname[i] == '/')) m_pathname.GetBufferSetLength(i);
 
-		UINT flags=m_uTypes=(m_bFlags*SHP_FLAGS)+(m_bNotes*SHP_NOTES)+
-			(m_bStations*SHP_STATIONS)+(m_bVectors*SHP_VECTORS)+(m_bWalls*SHP_WALLS)+
+		UINT flags = m_uTypes = (m_bFlags*SHP_FLAGS) + (m_bNotes*SHP_NOTES) +
+			(m_bStations*SHP_STATIONS) + (m_bVectors*SHP_VECTORS) + (m_bWalls*SHP_WALLS) +
 #ifdef _USE_SHPX
-			(m_bWallshpx*SHP_WALLSHPX)+
+			(m_bWallshpx*SHP_WALLSHPX) +
 #endif
-			(m_b3DType*SHP_3D)+(m_bUTM*SHP_UTM);
+			(m_b3DType*SHP_3D) + (m_bUTM*SHP_UTM);
 
-		if(!m_st->numnotes) flags&=~SHP_NOTES;
-		if(!m_st->numflags) flags&=~SHP_FLAGS;
-		if(!(flags&(SHP_STATIONS+SHP_VECTORS+SHP_FLAGS+SHP_NOTES+SHP_WALLS))) {
+		if (!m_st->numnotes) flags &= ~SHP_NOTES;
+		if (!m_st->numflags) flags &= ~SHP_FLAGS;
+		if (!(flags&(SHP_STATIONS + SHP_VECTORS + SHP_FLAGS + SHP_NOTES + SHP_WALLS))) {
 			AfxMessageBox(IDS_SHP_NOTYPES);
 			return;
 		}
 
 		//Let's see if the directory needs to be created --
 		char buf[MAX_PATH];
-		if(!DirCheck(strcat(strcpy(buf,m_pathname),"\\x"),TRUE)) return;
+		if (!DirCheck(strcat(strcpy(buf, m_pathname), "\\x"), TRUE)) return;
 
-		if(i=pSV->ExportSHP(this,m_pathname,m_shpbase,m_pNode,flags)) {
+		if (i = pSV->ExportSHP(this, m_pathname, m_shpbase, m_pNode, flags)) {
 			pDoc->SetShapeFilePath(m_pathname);
-			pDoc->m_uShapeTypes=m_uTypes;
+			pDoc->m_uShapeTypes = m_uTypes;
 		}
 
 	}
 }
 
 BEGIN_MESSAGE_MAP(CExpavDlg, CDialog)
-    ON_MESSAGE(WM_COMMANDHELP,OnCommandHelp)
+	ON_MESSAGE(WM_COMMANDHELP, OnCommandHelp)
 	//{{AFX_MSG_MAP(CExpavDlg)
 	ON_BN_CLICKED(IDBROWSE, OnBrowse)
 	//}}AFX_MSG_MAP
@@ -111,75 +111,75 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CExpavDlg message handlers
 
-BOOL CExpavDlg::OnInitDialog() 
+BOOL CExpavDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	SetWndTitle(this,0,m_pNode->Title());
-	
-	Enable(IDC_SHP_FLAGS,m_st->numflags>0);
-	Enable(IDC_SHP_NOTES,m_st->numnotes>0);
+	SetWndTitle(this, 0, m_pNode->Title());
+
+	Enable(IDC_SHP_FLAGS, m_st->numflags > 0);
+	Enable(IDC_SHP_NOTES, m_st->numnotes > 0);
 #ifdef _USE_SHPX
-	Enable(IDC_WALLSHPX,m_bWallshpx_enable);
+	Enable(IDC_WALLSHPX, m_bWallshpx_enable);
 #endif
-	Enable(IDC_SHP_WALLS,pSV->HasFloors());
+	Enable(IDC_SHP_WALLS, pSV->HasFloors());
 
 	{
-		PRJREF *pr=CPrjDoc::m_pReviewNode->GetAssignedRef();
+		PRJREF *pr = CPrjDoc::m_pReviewNode->GetAssignedRef();
 		ASSERT(pr);
-		if(pr && abs(pr->zone)>60) {
+		if (pr && abs(pr->zone) > 60) {
 			CString s;
-			s.Format("UPS %c Meters",(pr->zone>0)?'N':'S');
+			s.Format("UPS %c Meters", (pr->zone > 0) ? 'N' : 'S');
 			GetDlgItem(IDC_UTM)->SetWindowText(s);
 		}
 	}
-	
+
 	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+				  // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CExpavDlg::OnBrowse() 
+void CExpavDlg::OnBrowse()
 {
 	int i;
 	CString strFilter;
 	CString Path;
-	CEdit *pwP=(CEdit *)GetDlgItem(IDC_SHPPATH);
-	CEdit *pwB=(CEdit *)GetDlgItem(IDC_SHPBASE);
-		
+	CEdit *pwP = (CEdit *)GetDlgItem(IDC_SHPPATH);
+	CEdit *pwB = (CEdit *)GetDlgItem(IDC_SHPBASE);
+
 	pwP->GetWindowText(Path);
 	pwB->GetWindowText(m_shpbase);
-	if((i=Path.GetLength())>0 && Path[i-1]!='\\') Path+="\\";
-	Path+=m_shpbase;
+	if ((i = Path.GetLength()) > 0 && Path[i - 1] != '\\') Path += "\\";
+	Path += m_shpbase;
 
-	if(!AddFilter(strFilter,IDS_SHP_FILES) ||
-	   !AddFilter(strFilter,AFX_IDS_ALLFILTER)) return;
-	   
-	if(!DoPromptPathName(Path,
-	  OFN_HIDEREADONLY,
-	  2,strFilter,FALSE,
-	  IDS_SHP_BROWSE,
-	  ".SHP")) return;
-	
-	char *pnam=trx_Stpnam(Path.GetBuffer(0));
-	*trx_Stpext(pnam)=0;
-	if((i=strlen(pnam)-2)>0 && pnam[i]=='_') pnam[i]=0;
-	if(*(pnam-1)=='\\') *(pnam-1)=0;
+	if (!AddFilter(strFilter, IDS_SHP_FILES) ||
+		!AddFilter(strFilter, AFX_IDS_ALLFILTER)) return;
+
+	if (!DoPromptPathName(Path,
+		OFN_HIDEREADONLY,
+		2, strFilter, FALSE,
+		IDS_SHP_BROWSE,
+		".SHP")) return;
+
+	char *pnam = trx_Stpnam(Path.GetBuffer(0));
+	*trx_Stpext(pnam) = 0;
+	if ((i = strlen(pnam) - 2) > 0 && pnam[i] == '_') pnam[i] = 0;
+	if (*(pnam - 1) == '\\') *(pnam - 1) = 0;
 	pwP->SetWindowText(Path);
 
 	pwB->SetWindowText(pnam);
-	pwB->SetSel(0,-1);
+	pwB->SetSel(0, -1);
 	pwB->SetFocus();
 }
 
 void CExpavDlg::StatusMsg(int veccount)
 {
 	char buf[40];
-	sprintf(buf,"%s exported:%8u",(pExpShp->shp_type==SHP_WALLS)?"Polygons":"Vectors",veccount);
+	sprintf(buf, "%s exported:%8u", (pExpShp->shp_type == SHP_WALLS) ? "Polygons" : "Vectors", veccount);
 	GetDlgItem(IDC_ST_COUNTER)->SetWindowText(buf);
 }
 
 LRESULT CExpavDlg::OnCommandHelp(WPARAM wNone, LPARAM lParam)
 {
-	AfxGetApp()->WinHelp(130,HELP_CONTEXT);
+	AfxGetApp()->WinHelp(130, HELP_CONTEXT);
 	return TRUE;
 }
 

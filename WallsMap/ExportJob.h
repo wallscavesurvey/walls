@@ -10,7 +10,7 @@
 // CExportJob class used by CExpandNTI and CExportNTI --
 
 // Message used for progress notification
-const UINT WM_MYPROGRESS = WM_USER+1;
+const UINT WM_MYPROGRESS = WM_USER + 1;
 
 #define NTI_JP2K_NUMRATES 16
 //extern float jp2k_rates[NTI_JP2K_NUMRATES];
@@ -39,10 +39,10 @@ class CExportNTI;
 class CExportJob : public CThreadJob {
 public:
 	virtual UINT DoWork();
-	void SetLayer(CImageLayer *pLayer) {m_pImgLayer=pLayer;}
-	void SetWindow(const CRect &rect,BOOL bExtentWindow) {crWindow=rect;m_bExtentWindow=bExtentWindow;}
-	void SetExpanding(BOOL bExpanding) {m_bExpanding=bExpanding;}
-	void SetPathName(LPCSTR pathName) {m_pathName=pathName;}
+	void SetLayer(CImageLayer *pLayer) { m_pImgLayer = pLayer; }
+	void SetWindow(const CRect &rect, BOOL bExtentWindow) { crWindow = rect; m_bExtentWindow = bExtentWindow; }
+	void SetExpanding(BOOL bExpanding) { m_bExpanding = bExpanding; }
+	void SetPathName(LPCSTR pathName) { m_pathName = pathName; }
 
 	static CNTIFile nti;
 private:

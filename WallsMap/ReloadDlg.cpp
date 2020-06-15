@@ -11,7 +11,7 @@
 
 IMPLEMENT_DYNAMIC(CReloadDlg, CDialog)
 
-CReloadDlg::CReloadDlg(LPCSTR pTitle,int nSubset,int nDeleted,BOOL bRestoreLayout,CWnd* pParent /*=NULL*/)
+CReloadDlg::CReloadDlg(LPCSTR pTitle, int nSubset, int nDeleted, BOOL bRestoreLayout, CWnd* pParent /*=NULL*/)
 	: CDialog(CReloadDlg::IDD, pParent)
 	, m_pTitle(pTitle)
 	, m_nSubset(nSubset)
@@ -40,12 +40,12 @@ BOOL CReloadDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	CString fmt,s;
+	CString fmt, s;
 	GetWindowText(fmt);
-	s.Format(fmt,m_pTitle);
+	s.Format(fmt, m_pTitle);
 	SetWindowText(s);
 	GetDlgItem(IDC_ST_DESC)->GetWindowTextA(fmt);
-	s.Format(fmt,m_nDeleted);
+	s.Format(fmt, m_nDeleted);
 	GetDlgItem(IDC_ST_DESC)->SetWindowTextA(s);
 
 	// TODO:  Add extra initialization here

@@ -28,8 +28,8 @@
 #define ELT_DATA(elt) (void *)	((char*) (elt) - list->data_size)
 #define NEXT_TO_ELT(next)	(skip_elt_t *) ((char *) (next) - offsetof (skip_elt_t, next))
 
-/* Four 256 element lookup tables back to back implementing a linear
- * feedback shift register of degree 32. */
+ /* Four 256 element lookup tables back to back implementing a linear
+  * feedback shift register of degree 32. */
 static unsigned const _cairo_lfsr_random_lut[1024] = {
  0x00000000, 0x9a795537, 0xae8bff59, 0x34f2aa6e, 0xc76eab85, 0x5d17feb2,
  0x69e554dc, 0xf39c01eb, 0x14a4023d, 0x8edd570a, 0xba2ffd64, 0x2056a853,
@@ -201,63 +201,63 @@ static unsigned const _cairo_lfsr_random_lut[1024] = {
  0x950aa27a, 0x1534d211, 0xa17d296e, 0x21435905, 0x3b789c8f, 0xbb46ece4,
  0xded13bcb, 0x5eef4ba0, 0x44d48e2a, 0xc4eafe41, 0x70a3053e, 0xf09d7555,
  0xeaa6b0df, 0x6a98c0b4, 0x184c1316, 0x9872637d, 0x8249a6f7, 0x0277d69c,
- 0xb63e2de3, 0x36005d88, 0x2c3b9802, 0xac05e869};
+ 0xb63e2de3, 0x36005d88, 0x2c3b9802, 0xac05e869 };
 
 static unsigned _cairo_lfsr_random_state = 0x12345678;
 
 static unsigned
 lfsr_random(void)
 {
-    unsigned next;
-    next  = _cairo_lfsr_random_lut[((_cairo_lfsr_random_state>> 0) & 0xFF) + 0*256];
-    next ^= _cairo_lfsr_random_lut[((_cairo_lfsr_random_state>> 8) & 0xFF) + 1*256];
-    next ^= _cairo_lfsr_random_lut[((_cairo_lfsr_random_state>>16) & 0xFF) + 2*256];
-    next ^= _cairo_lfsr_random_lut[((_cairo_lfsr_random_state>>24) & 0xFF) + 3*256];
-    return _cairo_lfsr_random_state = next;
+	unsigned next;
+	next = _cairo_lfsr_random_lut[((_cairo_lfsr_random_state >> 0) & 0xFF) + 0 * 256];
+	next ^= _cairo_lfsr_random_lut[((_cairo_lfsr_random_state >> 8) & 0xFF) + 1 * 256];
+	next ^= _cairo_lfsr_random_lut[((_cairo_lfsr_random_state >> 16) & 0xFF) + 2 * 256];
+	next ^= _cairo_lfsr_random_lut[((_cairo_lfsr_random_state >> 24) & 0xFF) + 3 * 256];
+	return _cairo_lfsr_random_state = next;
 }
 
 /*
  * Initialize an empty skip list
  */
 void
-_cairo_skip_list_init (cairo_skip_list_t		*list,
-		cairo_skip_list_compare_t	 compare,
-		size_t			 elt_size)
+_cairo_skip_list_init(cairo_skip_list_t		*list,
+	cairo_skip_list_compare_t	 compare,
+	size_t			 elt_size)
 {
-    int i;
+	int i;
 
-    list->compare = compare;
-    list->elt_size = elt_size;
-    list->data_size = elt_size - sizeof (skip_elt_t);
+	list->compare = compare;
+	list->elt_size = elt_size;
+	list->data_size = elt_size - sizeof(skip_elt_t);
 
-    for (i = 0; i < MAX_LEVEL; i++) {
-	list->chains[i] = NULL;
-    }
+	for (i = 0; i < MAX_LEVEL; i++) {
+		list->chains[i] = NULL;
+	}
 
-    for (i = 0; i < MAX_FREELIST_LEVEL; i++) {
-	list->freelists[i] = NULL;
-    }
+	for (i = 0; i < MAX_FREELIST_LEVEL; i++) {
+		list->freelists[i] = NULL;
+	}
 
-    list->max_level = 0;
+	list->max_level = 0;
 }
 
 void
-_cairo_skip_list_fini (cairo_skip_list_t *list)
+_cairo_skip_list_fini(cairo_skip_list_t *list)
 {
-    skip_elt_t *elt;
-    int i;
+	skip_elt_t *elt;
+	int i;
 
-    while ((elt = list->chains[0])) {
-	_cairo_skip_list_delete_given (list, elt);
-    }
-    for (i=0; i<MAX_FREELIST_LEVEL; i++) {
-	elt = list->freelists[i];
-	while (elt) {
-	    skip_elt_t *nextfree = elt->prev;
-	    free (ELT_DATA(elt));
-	    elt = nextfree;
+	while ((elt = list->chains[0])) {
+		_cairo_skip_list_delete_given(list, elt);
 	}
-    }
+	for (i = 0; i < MAX_FREELIST_LEVEL; i++) {
+		elt = list->freelists[i];
+		while (elt) {
+			skip_elt_t *nextfree = elt->prev;
+			free(ELT_DATA(elt));
+			elt = nextfree;
+		}
+	}
 }
 
 /*
@@ -267,219 +267,219 @@ _cairo_skip_list_fini (cairo_skip_list_t *list)
  * Note that level numbers run 1 <= level < MAX_LEVEL
  */
 static int
-random_level (void)
+random_level(void)
 {
-    int	level = 0;
-    /* tricky bit -- each bit is '1' 75% of the time.
-     * This works because we only use the lower MAX_LEVEL
-     * bits, and MAX_LEVEL < 16 */
-    long int	bits = lfsr_random();
-    bits |= bits >> 16;
+	int	level = 0;
+	/* tricky bit -- each bit is '1' 75% of the time.
+	 * This works because we only use the lower MAX_LEVEL
+	 * bits, and MAX_LEVEL < 16 */
+	long int	bits = lfsr_random();
+	bits |= bits >> 16;
 
-    while (++level < MAX_LEVEL)
-    {
-	if (bits & 1)
-	    break;
-	bits >>= 1;
-    }
-    return level;
+	while (++level < MAX_LEVEL)
+	{
+		if (bits & 1)
+			break;
+		bits >>= 1;
+	}
+	return level;
 }
 
 static void *
-alloc_node_for_level (cairo_skip_list_t *list, unsigned level)
+alloc_node_for_level(cairo_skip_list_t *list, unsigned level)
 {
-    int freelist_level = FREELIST_FOR_LEVEL (level);
-    if (list->freelists[freelist_level]) {
-	skip_elt_t *elt = list->freelists[freelist_level];
-	list->freelists[freelist_level] = elt->prev;
-	return ELT_DATA(elt);
-    }
-    return malloc (list->elt_size
-		   + (FREELIST_MAX_LEVEL_FOR (level) - 1) * sizeof (skip_elt_t *));
+	int freelist_level = FREELIST_FOR_LEVEL(level);
+	if (list->freelists[freelist_level]) {
+		skip_elt_t *elt = list->freelists[freelist_level];
+		list->freelists[freelist_level] = elt->prev;
+		return ELT_DATA(elt);
+	}
+	return malloc(list->elt_size
+		+ (FREELIST_MAX_LEVEL_FOR(level) - 1) * sizeof(skip_elt_t *));
 }
 
 static void
-free_elt (cairo_skip_list_t *list, skip_elt_t *elt)
+free_elt(cairo_skip_list_t *list, skip_elt_t *elt)
 {
-    int level = elt->prev_index + 1;
-    int freelist_level = FREELIST_FOR_LEVEL (level);
-    elt->prev = list->freelists[freelist_level];
-    list->freelists[freelist_level] = elt;
+	int level = elt->prev_index + 1;
+	int freelist_level = FREELIST_FOR_LEVEL(level);
+	elt->prev = list->freelists[freelist_level];
+	list->freelists[freelist_level] = elt;
 }
 
 /*
  * Insert 'data' into the list
  */
 void *
-_cairo_skip_list_insert (cairo_skip_list_t *list, void *data, int unique)
+_cairo_skip_list_insert(cairo_skip_list_t *list, void *data, int unique)
 {
-    skip_elt_t **update[MAX_LEVEL];
-    skip_elt_t *prev[MAX_LEVEL];
-    char *data_and_elt;
-    skip_elt_t *elt, **next;
-    int	    i, level, prev_index;
+	skip_elt_t **update[MAX_LEVEL];
+	skip_elt_t *prev[MAX_LEVEL];
+	char *data_and_elt;
+	skip_elt_t *elt, **next;
+	int	    i, level, prev_index;
 
-    /*
-     * Find links along each chain
-     */
-    elt = NULL;
-    next = list->chains;
-    for (i = list->max_level; --i >= 0; )
-    {
-	if (elt != next[i])
+	/*
+	 * Find links along each chain
+	 */
+	elt = NULL;
+	next = list->chains;
+	for (i = list->max_level; --i >= 0; )
 	{
-	    for (; (elt = next[i]); next = elt->next)
-	    {
-		int cmp = list->compare (list, ELT_DATA(elt), data);
-		if (unique && 0 == cmp)
-		    return ELT_DATA(elt);
-		if (cmp > 0)
-		    break;
-	    }
+		if (elt != next[i])
+		{
+			for (; (elt = next[i]); next = elt->next)
+			{
+				int cmp = list->compare(list, ELT_DATA(elt), data);
+				if (unique && 0 == cmp)
+					return ELT_DATA(elt);
+				if (cmp > 0)
+					break;
+			}
+		}
+		update[i] = next;
+		if (next != list->chains)
+			prev[i] = NEXT_TO_ELT(next);
+		else
+			prev[i] = NULL;
 	}
-        update[i] = next;
-	if (next != list->chains)
-	    prev[i] = NEXT_TO_ELT (next);
-	else
-	    prev[i] = NULL;
-    }
-    level = random_level ();
-    prev_index = level - 1;
-
-    /*
-     * Create new list element
-     */
-    if (level > list->max_level)
-    {
-	level = list->max_level + 1;
+	level = random_level();
 	prev_index = level - 1;
-	prev[prev_index] = NULL;
-	update[list->max_level] = list->chains;
-	list->max_level = level;
-    }
 
-    data_and_elt = alloc_node_for_level (list, level);
-    if (data_and_elt == NULL) {
-	_cairo_error_throw (CAIRO_STATUS_NO_MEMORY);
-	return NULL;
-    }
+	/*
+	 * Create new list element
+	 */
+	if (level > list->max_level)
+	{
+		level = list->max_level + 1;
+		prev_index = level - 1;
+		prev[prev_index] = NULL;
+		update[list->max_level] = list->chains;
+		list->max_level = level;
+	}
 
-    memcpy (data_and_elt, data, list->data_size);
-    elt = (skip_elt_t *) (data_and_elt + list->data_size);
+	data_and_elt = alloc_node_for_level(list, level);
+	if (data_and_elt == NULL) {
+		_cairo_error_throw(CAIRO_STATUS_NO_MEMORY);
+		return NULL;
+	}
 
-    elt->prev_index = prev_index;
-    elt->prev = prev[prev_index];
+	memcpy(data_and_elt, data, list->data_size);
+	elt = (skip_elt_t *)(data_and_elt + list->data_size);
 
-    /*
-     * Insert into all chains
-     */
-    for (i = 0; i < level; i++)
-    {
-	elt->next[i] = update[i][i];
-	if (elt->next[i] && elt->next[i]->prev_index == i)
-	    elt->next[i]->prev = elt;
-	update[i][i] = elt;
-    }
+	elt->prev_index = prev_index;
+	elt->prev = prev[prev_index];
 
-    return data_and_elt;
+	/*
+	 * Insert into all chains
+	 */
+	for (i = 0; i < level; i++)
+	{
+		elt->next[i] = update[i][i];
+		if (elt->next[i] && elt->next[i]->prev_index == i)
+			elt->next[i]->prev = elt;
+		update[i][i] = elt;
+	}
+
+	return data_and_elt;
 }
 
 void *
-_cairo_skip_list_find (cairo_skip_list_t *list, void *data)
+_cairo_skip_list_find(cairo_skip_list_t *list, void *data)
 {
-    int i;
-    skip_elt_t **next = list->chains;
-    skip_elt_t *elt;
+	int i;
+	skip_elt_t **next = list->chains;
+	skip_elt_t *elt;
 
-    /*
-     * Walk chain pointers one level at a time
-     */
-    for (i = list->max_level; --i >= 0;)
-	while (next[i] && list->compare (list, data, ELT_DATA(next[i])) > 0)
-	{
-	    next = next[i]->next;
-	}
-    /*
-     * Here we are
-     */
-    elt = next[0];
-    if (elt && list->compare (list, data, ELT_DATA (elt)) == 0)
-	return ELT_DATA (elt);
+	/*
+	 * Walk chain pointers one level at a time
+	 */
+	for (i = list->max_level; --i >= 0;)
+		while (next[i] && list->compare(list, data, ELT_DATA(next[i])) > 0)
+		{
+			next = next[i]->next;
+		}
+	/*
+	 * Here we are
+	 */
+	elt = next[0];
+	if (elt && list->compare(list, data, ELT_DATA(elt)) == 0)
+		return ELT_DATA(elt);
 
-    return NULL;
+	return NULL;
 }
 
 void
-_cairo_skip_list_delete (cairo_skip_list_t *list, void *data)
+_cairo_skip_list_delete(cairo_skip_list_t *list, void *data)
 {
-    skip_elt_t **update[MAX_LEVEL], *prev[MAX_LEVEL];
-    skip_elt_t *elt, **next;
-    int	i;
+	skip_elt_t **update[MAX_LEVEL], *prev[MAX_LEVEL];
+	skip_elt_t *elt, **next;
+	int	i;
 
-    /*
-     * Find links along each chain
-     */
-    next = list->chains;
-    for (i = list->max_level; --i >= 0; )
-    {
-	for (; (elt = next[i]); next = elt->next)
-	{
-	    if (list->compare (list, ELT_DATA (elt), data) >= 0)
-		break;
-	}
-        update[i] = &next[i];
-	if (next == list->chains)
-	    prev[i] = NULL;
-	else
-	    prev[i] = NEXT_TO_ELT (next);
-    }
-    elt = next[0];
-    assert (list->compare (list, ELT_DATA (elt), data) == 0);
-    for (i = 0; i < list->max_level && *update[i] == elt; i++) {
-	*update[i] = elt->next[i];
-	if (elt->next[i] && elt->next[i]->prev_index == i)
-	    elt->next[i]->prev = prev[i];
-    }
-    while (list->max_level > 0 && list->chains[list->max_level - 1] == NULL)
-	list->max_level--;
-    free_elt (list, elt);
-}
-
-void
-_cairo_skip_list_delete_given (cairo_skip_list_t *list, skip_elt_t *given)
-{
-    skip_elt_t **update[MAX_LEVEL], *prev[MAX_LEVEL];
-    skip_elt_t *elt, **next;
-    int	i;
-
-    /*
-     * Find links along each chain
-     */
-    if (given->prev)
-	next = given->prev->next;
-    else
+	/*
+	 * Find links along each chain
+	 */
 	next = list->chains;
-    for (i = given->prev_index + 1; --i >= 0; )
-    {
-	for (; (elt = next[i]); next = elt->next)
+	for (i = list->max_level; --i >= 0; )
 	{
-	    if (elt == given)
-		break;
+		for (; (elt = next[i]); next = elt->next)
+		{
+			if (list->compare(list, ELT_DATA(elt), data) >= 0)
+				break;
+		}
+		update[i] = &next[i];
+		if (next == list->chains)
+			prev[i] = NULL;
+		else
+			prev[i] = NEXT_TO_ELT(next);
 	}
-        update[i] = &next[i];
-	if (next == list->chains)
-	    prev[i] = NULL;
+	elt = next[0];
+	assert(list->compare(list, ELT_DATA(elt), data) == 0);
+	for (i = 0; i < list->max_level && *update[i] == elt; i++) {
+		*update[i] = elt->next[i];
+		if (elt->next[i] && elt->next[i]->prev_index == i)
+			elt->next[i]->prev = prev[i];
+	}
+	while (list->max_level > 0 && list->chains[list->max_level - 1] == NULL)
+		list->max_level--;
+	free_elt(list, elt);
+}
+
+void
+_cairo_skip_list_delete_given(cairo_skip_list_t *list, skip_elt_t *given)
+{
+	skip_elt_t **update[MAX_LEVEL], *prev[MAX_LEVEL];
+	skip_elt_t *elt, **next;
+	int	i;
+
+	/*
+	 * Find links along each chain
+	 */
+	if (given->prev)
+		next = given->prev->next;
 	else
-	    prev[i] = NEXT_TO_ELT (next);
-    }
-    elt = next[0];
-    assert (elt == given);
-    for (i = 0; i < (given->prev_index + 1) && *update[i] == elt; i++) {
-	*update[i] = elt->next[i];
-	if (elt->next[i] && elt->next[i]->prev_index == i)
-	    elt->next[i]->prev = prev[i];
-    }
-    while (list->max_level > 0 && list->chains[list->max_level - 1] == NULL)
-	list->max_level--;
-    free_elt (list, elt);
+		next = list->chains;
+	for (i = given->prev_index + 1; --i >= 0; )
+	{
+		for (; (elt = next[i]); next = elt->next)
+		{
+			if (elt == given)
+				break;
+		}
+		update[i] = &next[i];
+		if (next == list->chains)
+			prev[i] = NULL;
+		else
+			prev[i] = NEXT_TO_ELT(next);
+	}
+	elt = next[0];
+	assert(elt == given);
+	for (i = 0; i < (given->prev_index + 1) && *update[i] == elt; i++) {
+		*update[i] = elt->next[i];
+		if (elt->next[i] && elt->next[i]->prev_index == i)
+			elt->next[i]->prev = prev[i];
+	}
+	while (list->max_level > 0 && list->chains[list->max_level - 1] == NULL)
+		list->max_level--;
+	free_elt(list, elt);
 }

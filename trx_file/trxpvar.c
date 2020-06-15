@@ -15,13 +15,13 @@ int _trx_errLine;
 
 apfcn_i _trx_FormatError(void)
 {
-  return _trx_pFile->Cf.Errno=trx_errno=TRX_ErrFormat;
+	return _trx_pFile->Cf.Errno = trx_errno = TRX_ErrFormat;
 }
 
 #ifdef _TRX_TEST
 apfcn_i _trx_FormatErrorLine(int line)
 {
-  _trx_errLine=line;
-  return _trx_FormatError();
+	_trx_errLine = line;
+	return _trx_FormatError();
 }
 #endif

@@ -33,95 +33,95 @@
 
 CPL_CVSID("$Id: hfa_overviews.cpp 25583 2013-01-30 18:48:22Z bishop $");
 
-CPLErr HFAAuxBuildOverviews( const char *pszOvrFilename, 
-                             GDALDataset *poParentDS,
-                             GDALDataset **ppoODS,
-                             int nBands, int *panBandList,
-                             int nNewOverviews, int *panNewOverviewList, 
-                             const char *pszResampling, 
-                             GDALProgressFunc pfnProgress, 
-                             void *pProgressData )
+CPLErr HFAAuxBuildOverviews(const char *pszOvrFilename,
+	GDALDataset *poParentDS,
+	GDALDataset **ppoODS,
+	int nBands, int *panBandList,
+	int nNewOverviews, int *panNewOverviewList,
+	const char *pszResampling,
+	GDALProgressFunc pfnProgress,
+	void *pProgressData)
 
 {
-/* ==================================================================== */
-/*      If the .aux file doesn't exist yet then create it now.          */
-/* ==================================================================== */
-    if( *ppoODS == NULL )
-    {
-        GDALDataType eDT = GDT_Unknown;
-/* -------------------------------------------------------------------- */
-/*      Determine the band datatype, and verify that all bands are      */
-/*      the same.                                                       */
-/* -------------------------------------------------------------------- */
-        int iBand;
+	/* ==================================================================== */
+	/*      If the .aux file doesn't exist yet then create it now.          */
+	/* ==================================================================== */
+	if (*ppoODS == NULL)
+	{
+		GDALDataType eDT = GDT_Unknown;
+		/* -------------------------------------------------------------------- */
+		/*      Determine the band datatype, and verify that all bands are      */
+		/*      the same.                                                       */
+		/* -------------------------------------------------------------------- */
+		int iBand;
 
-        for( iBand = 0; iBand < nBands; iBand++ )
-        {
-            GDALRasterBand *poBand = 
-                poParentDS->GetRasterBand( panBandList[iBand] );
+		for (iBand = 0; iBand < nBands; iBand++)
+		{
+			GDALRasterBand *poBand =
+				poParentDS->GetRasterBand(panBandList[iBand]);
 
-            if( iBand == 0 )
-                eDT = poBand->GetRasterDataType();
-            else
-            {
-                if( eDT != poBand->GetRasterDataType() )
-                {
-                    CPLError( CE_Failure, CPLE_NotSupported, 
-                              "HFAAuxBuildOverviews() doesn't support a mixture of band"
-                              " data types." );
-                    return CE_Failure;
-                }
-            }
-        }
+			if (iBand == 0)
+				eDT = poBand->GetRasterDataType();
+			else
+			{
+				if (eDT != poBand->GetRasterDataType())
+				{
+					CPLError(CE_Failure, CPLE_NotSupported,
+						"HFAAuxBuildOverviews() doesn't support a mixture of band"
+						" data types.");
+					return CE_Failure;
+				}
+			}
+		}
 
-/* -------------------------------------------------------------------- */
-/*      Create the HFA (.aux) file.  We create it with                  */
-/*      COMPRESSED=YES so that no space will be allocated for the       */
-/*      base band.                                                      */
-/* -------------------------------------------------------------------- */
-        GDALDriver *poHFADriver = (GDALDriver *) GDALGetDriverByName("HFA");
-        if (poHFADriver == NULL)
-        {
-            CPLError( CE_Failure, CPLE_AppDefined, 
-                      "HFA driver is unavailable." );
-            return CE_Failure;
-        }
-        
-        const char *apszOptions[4] = { "COMPRESSED=YES", "AUX=YES", 
-                                       NULL, NULL };
-        
-        CPLString osDepFileOpt = "DEPENDENT_FILE=";
-        osDepFileOpt += CPLGetFilename(poParentDS->GetDescription());
-        apszOptions[2] = osDepFileOpt.c_str();
+		/* -------------------------------------------------------------------- */
+		/*      Create the HFA (.aux) file.  We create it with                  */
+		/*      COMPRESSED=YES so that no space will be allocated for the       */
+		/*      base band.                                                      */
+		/* -------------------------------------------------------------------- */
+		GDALDriver *poHFADriver = (GDALDriver *)GDALGetDriverByName("HFA");
+		if (poHFADriver == NULL)
+		{
+			CPLError(CE_Failure, CPLE_AppDefined,
+				"HFA driver is unavailable.");
+			return CE_Failure;
+		}
 
-        *ppoODS = 
-            poHFADriver->Create( pszOvrFilename, 
-                                 poParentDS->GetRasterXSize(), 
-                                 poParentDS->GetRasterYSize(), 
-                                 poParentDS->GetRasterCount(), eDT, (char **)apszOptions );
+		const char *apszOptions[4] = { "COMPRESSED=YES", "AUX=YES",
+									   NULL, NULL };
 
-        if( *ppoODS == NULL )
-            return CE_Failure;
-    }
+		CPLString osDepFileOpt = "DEPENDENT_FILE=";
+		osDepFileOpt += CPLGetFilename(poParentDS->GetDescription());
+		apszOptions[2] = osDepFileOpt.c_str();
 
-/* ==================================================================== */
-/*      Create the layers.  We depend on the normal buildoverviews      */
-/*      support for HFA to do this.  But we disable the internal        */
-/*      computation of the imagery for these layers.                    */
-/*                                                                      */
-/*      We avoid regenerating the new layers here, because if we did    */
-/*      it would use the base layer from the .aux file as the source    */
-/*      data, and that is fake (all invalid tiles).                     */
-/* ==================================================================== */
-    CPLString oAdjustedResampling = "NO_REGEN:";
-    oAdjustedResampling += pszResampling;
+		*ppoODS =
+			poHFADriver->Create(pszOvrFilename,
+				poParentDS->GetRasterXSize(),
+				poParentDS->GetRasterYSize(),
+				poParentDS->GetRasterCount(), eDT, (char **)apszOptions);
 
-    CPLErr eErr = 
-        (*ppoODS)->BuildOverviews( oAdjustedResampling,
-                                   nNewOverviews, panNewOverviewList,
-                                   nBands, panBandList,
-                                   pfnProgress, pProgressData );
+		if (*ppoODS == NULL)
+			return CE_Failure;
+	}
 
-    return eErr;
+	/* ==================================================================== */
+	/*      Create the layers.  We depend on the normal buildoverviews      */
+	/*      support for HFA to do this.  But we disable the internal        */
+	/*      computation of the imagery for these layers.                    */
+	/*                                                                      */
+	/*      We avoid regenerating the new layers here, because if we did    */
+	/*      it would use the base layer from the .aux file as the source    */
+	/*      data, and that is fake (all invalid tiles).                     */
+	/* ==================================================================== */
+	CPLString oAdjustedResampling = "NO_REGEN:";
+	oAdjustedResampling += pszResampling;
+
+	CPLErr eErr =
+		(*ppoODS)->BuildOverviews(oAdjustedResampling,
+			nNewOverviews, panNewOverviewList,
+			nBands, panBandList,
+			pfnProgress, pProgressData);
+
+	return eErr;
 }
 
