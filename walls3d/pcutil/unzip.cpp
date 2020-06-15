@@ -24,27 +24,27 @@ using namespace std;
 
 // Tables for deflate from PKZIP's appnote.txt. 
 // Order of the bit length code lengths 
-static unsigned border[] = {    
-        16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15};
+static unsigned border[] = {
+		16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15 };
 // Copy lengths for literal codes 257..285 
-static unsigned short cplens[] = {         
-        3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31,
-        35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258, 0, 0};
-        // note: see note #13 above about the 258 in this list. 
+static unsigned short cplens[] = {
+		3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31,
+		35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258, 0, 0 };
+// note: see note #13 above about the 258 in this list. 
 // Extra bits for literal codes 257..285 
-static unsigned short cplext[] = {         
-        0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2,
-        3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0, 99, 99}; // 99==invalid 
+static unsigned short cplext[] = {
+		0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2,
+		3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 0, 99, 99 }; // 99==invalid 
 // Copy offsets for distance codes 0..29 
-static unsigned short cpdist[] = {         
-        1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193,
-        257, 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145,
-        8193, 12289, 16385, 24577};
+static unsigned short cpdist[] = {
+		1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193,
+		257, 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145,
+		8193, 12289, 16385, 24577 };
 // Extra bits for distance codes 
-static unsigned short cpdext[] = {         
-        0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
-        7, 7, 8, 8, 9, 9, 10, 10, 11, 11,
-        12, 12, 13, 13};
+static unsigned short cpdext[] = {
+		0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6,
+		7, 7, 8, 8, 9, 9, 10, 10, 11, 11,
+		12, 12, 13, 13 };
 
 // Table of CRC-32's of all single-byte values (made by makecrc.c)
 unsigned long crc_32_tab[] = {
@@ -103,128 +103,128 @@ unsigned long crc_32_tab[] = {
 };
 
 unsigned int mask_bits[] = {
-    0x0000,
-    0x0001, 0x0003, 0x0007, 0x000f, 0x001f, 0x003f, 0x007f, 0x00ff,
-    0x01ff, 0x03ff, 0x07ff, 0x0fff, 0x1fff, 0x3fff, 0x7fff, 0xffff
+	0x0000,
+	0x0001, 0x0003, 0x0007, 0x000f, 0x001f, 0x003f, 0x007f, 0x00ff,
+	0x01ff, 0x03ff, 0x07ff, 0x0fff, 0x1fff, 0x3fff, 0x7fff, 0xffff
 };
 
 CUnzip::CUnzip()
 {
-  // original crc 
-  orig_crc=0L;     
-  // original uncompressed length 
-  orig_len=0L;     
-  // output count
-  bytes_out=0L;
-  // handles to buffers  
-  m_pcInBuf=NULL;
-  m_iInPtr=0;
-  m_iInSize=0;
-  m_pcOutBuf=NULL;
-  m_iMethod=NO_METHOD;
+	// original crc 
+	orig_crc = 0L;
+	// original uncompressed length 
+	orig_len = 0L;
+	// output count
+	bytes_out = 0L;
+	// handles to buffers  
+	m_pcInBuf = NULL;
+	m_iInPtr = 0;
+	m_iInSize = 0;
+	m_pcOutBuf = NULL;
+	m_iMethod = NO_METHOD;
 }
 
 CUnzip::~CUnzip()
 {
-  // release resources
-  delete[](m_pcInBuf);
-  delete[](m_pcOutBuf);
-  /*delete[](slide);*/
+	// release resources
+	delete[](m_pcInBuf);
+	delete[](m_pcOutBuf);
+	/*delete[](slide);*/
 
-  if(InSt.is_open())
-  {
-    InSt.close();
-  }
-  if(OutSt.is_open())
-  {
-    OutSt.close();
-  }
+	if (InSt.is_open())
+	{
+		InSt.close();
+	}
+	if (OutSt.is_open())
+	{
+		OutSt.close();
+	}
 }
 
 // opesd input file, checks for magic and
 // positions file pointer for further work
 int CUnzip::CheckMagic(const char* pInFile)
 {
-  // buffer for magic number
-  unsigned char magic[2];  
+	// buffer for magic number
+	unsigned char magic[2];
 
-  // open input file
-  InSt.open((const char*)pInFile,ios::in);
-  if(!InSt)
-  {
-    AfxMessageBox("CUnzip: could not open file.",MB_OK|MB_ICONSTOP,0);
-    return(UNZIP_ERROR);
-  }
+	// open input file
+	InSt.open((const char*)pInFile, ios::in);
+	if (!InSt)
+	{
+		AfxMessageBox("CUnzip: could not open file.", MB_OK | MB_ICONSTOP, 0);
+		return(UNZIP_ERROR);
+	}
 
-  // allocate buffers
-  m_pcInBuf=new char[INBUFSIZ+INBUF_EXTRA];
-  if(m_pcInBuf==0)
-  {
-    AfxMessageBox("CUnzip: Error allocating input buffer",
-                   MB_OK|MB_ICONSTOP,0);
-    return(UNZIP_ERROR);
-  }
+	// allocate buffers
+	m_pcInBuf = new char[INBUFSIZ + INBUF_EXTRA];
+	if (m_pcInBuf == 0)
+	{
+		AfxMessageBox("CUnzip: Error allocating input buffer",
+			MB_OK | MB_ICONSTOP, 0);
+		return(UNZIP_ERROR);
+	}
 
-  // get magic number from file
-  magic[0]=GetByte(InSt);
-  magic[1]=GetByte(InSt);
+	// get magic number from file
+	magic[0] = GetByte(InSt);
+	magic[1] = GetByte(InSt);
 
-  // test, if gnu-zipped archive
-  if(memcmp(magic, GZIP_MAGIC, 2) == 0 ||
-     memcmp(magic, OLD_GZIP_MAGIC, 2) == 0)
-  {
-  	m_iMethod=GetByte(InSt);
-    if(m_iMethod!=DEFLATED)
-    {
-      AfxMessageBox("CUnzip: unknown GZIP version used",MB_OK|MB_ICONSTOP,0);
-      return(UNZIP_ERROR);
-    }
+	// test, if gnu-zipped archive
+	if (memcmp(magic, GZIP_MAGIC, 2) == 0 ||
+		memcmp(magic, OLD_GZIP_MAGIC, 2) == 0)
+	{
+		m_iMethod = GetByte(InSt);
+		if (m_iMethod != DEFLATED)
+		{
+			AfxMessageBox("CUnzip: unknown GZIP version used", MB_OK | MB_ICONSTOP, 0);
+			return(UNZIP_ERROR);
+		}
 
-  }
-  // pkunzip not implemented yet
-/*  else
-  if(memcmp(magic, PKZIP_MAGIC, 2)== 0 && inptr == 2 &&
-     memcmp((char*)inbuf, PKZIP_MAGIC, 4) == 0)
-  {
-    // To simplify the code, we support a zip file when alone only.
-    // We are thus guaranteed that the entire local header fits in inbuf.
-    m_iInptr=0;
-    if(check_zipfile(InSt)!=OK)
-      return(UNZIP_ERROR);
-  }*/
-  else
-  if(memcmp(magic,PACK_MAGIC,2)==0)
-  {
-    m_iMethod=PACKED;
-  }
-  else
-  if(memcmp(magic,LZW_MAGIC,2)==0)
-  {
-    m_iMethod=COMPRESSED;
-  }
-  else
-  if(memcmp(magic,LZH_MAGIC,2)==0)
-  {
-    m_iMethod=LZHED;
-  }
-  return(m_iMethod);
+	}
+	// pkunzip not implemented yet
+  /*  else
+	if(memcmp(magic, PKZIP_MAGIC, 2)== 0 && inptr == 2 &&
+	   memcmp((char*)inbuf, PKZIP_MAGIC, 4) == 0)
+	{
+	  // To simplify the code, we support a zip file when alone only.
+	  // We are thus guaranteed that the entire local header fits in inbuf.
+	  m_iInptr=0;
+	  if(check_zipfile(InSt)!=OK)
+		return(UNZIP_ERROR);
+	}*/
+	else
+		if (memcmp(magic, PACK_MAGIC, 2) == 0)
+		{
+			m_iMethod = PACKED;
+		}
+		else
+			if (memcmp(magic, LZW_MAGIC, 2) == 0)
+			{
+				m_iMethod = COMPRESSED;
+			}
+			else
+				if (memcmp(magic, LZH_MAGIC, 2) == 0)
+				{
+					m_iMethod = LZHED;
+				}
+	return(m_iMethod);
 }
 
-int CUnzip::NeedBits(unsigned int BitNum,unsigned long* pBitBuffer,
-                      unsigned int* pBitCount)
+int CUnzip::NeedBits(unsigned int BitNum, unsigned long* pBitBuffer,
+	unsigned int* pBitCount)
 {
-  while(*pBitCount<BitNum)
-  {
-    *pBitBuffer|=((unsigned long)GetByte(InSt))<<*pBitCount;
-    *pBitCount+=8;
-    if(m_iInSize==0)
-    {
-      AfxMessageBox("CUnzip: unexpected end of file.",
-                    MB_OK|MB_ICONSTOP,0);
-      return(FALSE);
-    }
-  }
-  return(TRUE);
+	while (*pBitCount < BitNum)
+	{
+		*pBitBuffer |= ((unsigned long)GetByte(InSt)) << *pBitCount;
+		*pBitCount += 8;
+		if (m_iInSize == 0)
+		{
+			AfxMessageBox("CUnzip: unexpected end of file.",
+				MB_OK | MB_ICONSTOP, 0);
+			return(FALSE);
+		}
+	}
+	return(TRUE);
 }
 
 
@@ -232,314 +232,313 @@ int CUnzip::NeedBits(unsigned int BitNum,unsigned long* pBitBuffer,
 // gets a new block
 unsigned char CUnzip::GetByte(ifstream& InSt)
 {
-  // check, if there is data...
-  if(m_iInPtr>=m_iInSize)
-  {
-    // yeah, have to get new data
-    InSt.read(m_pcInBuf,INBUFSIZ);
-    m_iInSize=(UINT)InSt.gcount();
-    // reset file counter
-    m_iInPtr=0;
-  }
-  return(m_pcInBuf[m_iInPtr++]);
-} 
+	// check, if there is data...
+	if (m_iInPtr >= m_iInSize)
+	{
+		// yeah, have to get new data
+		InSt.read(m_pcInBuf, INBUFSIZ);
+		m_iInSize = (UINT)InSt.gcount();
+		// reset file counter
+		m_iInPtr = 0;
+	}
+	return(m_pcInBuf[m_iInPtr++]);
+}
 
 // Unzip: unzips up to now only gzip!
-int CUnzip::Unzip(char* pOutFile,char* pszTempPath, char* pszExt)
+int CUnzip::Unzip(char* pOutFile, char* pszTempPath, char* pszExt)
 {
-  // compression flags 
-  unsigned char flags;     
-  // magic header 
-  int count;
- 
-  // check, if CheckMagic was called before
-  if(m_iMethod==NO_METHOD)
-  {
-    AfxMessageBox("CUnzip: Internal error - No Method defined",
-                   MB_OK|MB_ICONSTOP,0);
-    return(UNZIP_ERROR);
-  }
+	// compression flags 
+	unsigned char flags;
+	// magic header 
+	int count;
 
-  m_pcOutBuf=new unsigned char[2L*WSIZE];
-  if(m_pcOutBuf==0)
-  {
-    AfxMessageBox("CUnzip: Error allocating output buffer",MB_OK,0);
-    return(UNZIP_ERROR);
-  }
+	// check, if CheckMagic was called before
+	if (m_iMethod == NO_METHOD)
+	{
+		AfxMessageBox("CUnzip: Internal error - No Method defined",
+			MB_OK | MB_ICONSTOP, 0);
+		return(UNZIP_ERROR);
+	}
 
- /* slide=new unsigned char[2L*WSIZE];
-  if(slide==0)
-  {
-    AfxMessageBox("CUnzip: Error allocating buffer",MB_OK,0);
-    return(UNZIP_ERROR);
-  }*/
+	m_pcOutBuf = new unsigned char[2L * WSIZE];
+	if (m_pcOutBuf == 0)
+	{
+		AfxMessageBox("CUnzip: Error allocating output buffer", MB_OK, 0);
+		return(UNZIP_ERROR);
+	}
 
-  // decompress with right algorithm
-  switch(m_iMethod)
-  {
-    case DEFLATED:
-      // get flags
-      flags=GetByte(InSt);
+	/* slide=new unsigned char[2L*WSIZE];
+	 if(slide==0)
+	 {
+	   AfxMessageBox("CUnzip: Error allocating buffer",MB_OK,0);
+	   return(UNZIP_ERROR);
+	 }*/
 
-      // check for encryption
-      if((flags&ENCRYPTED)!=0)
-      {
-        AfxMessageBox("CUnzip: data is encrypted",MB_OK|MB_ICONSTOP,0);
-        return(UNZIP_ERROR);
-      }
+	 // decompress with right algorithm
+	switch (m_iMethod)
+	{
+	case DEFLATED:
+		// get flags
+		flags = GetByte(InSt);
 
-      // check for multiple volumes
-      if((flags&CONTINUATION)!=0)
-      {
-        AfxMessageBox("CUnzip: multi-part gzip file",MB_OK|MB_ICONSTOP,0);
-        return(UNZIP_ERROR);
-      }
+		// check for encryption
+		if ((flags&ENCRYPTED) != 0)
+		{
+			AfxMessageBox("CUnzip: data is encrypted", MB_OK | MB_ICONSTOP, 0);
+			return(UNZIP_ERROR);
+		}
 
-      if((flags&RESERVED)!=0)
-      {
-        AfxMessageBox("CUnzip: unknown flags",MB_OK|MB_ICONSTOP,0);
-        return(UNZIP_ERROR);
-      }
+		// check for multiple volumes
+		if ((flags&CONTINUATION) != 0)
+		{
+			AfxMessageBox("CUnzip: multi-part gzip file", MB_OK | MB_ICONSTOP, 0);
+			return(UNZIP_ERROR);
+		}
 
-      // originally stamp and extra flag and os-type ignored:
-      count=6;
-      while(count--)
-        GetByte(InSt);
+		if ((flags&RESERVED) != 0)
+		{
+			AfxMessageBox("CUnzip: unknown flags", MB_OK | MB_ICONSTOP, 0);
+			return(UNZIP_ERROR);
+		}
 
-      if((flags&EXTRA_FIELD)!=0)
-      {
-        unsigned len =(unsigned)GetByte(InSt);
-        len |= ((unsigned)GetByte(InSt))<<8;
-        AfxMessageBox("CUnzip: extra field ignored",MB_OK,0);
-        while(len--)
-          GetByte(InSt);
-      }
+		// originally stamp and extra flag and os-type ignored:
+		count = 6;
+		while (count--)
+			GetByte(InSt);
 
-      // Get original file name
-      if((flags & ORIG_NAME)!=0)
-      {
-        // Copy the base name. Keep a directory prefix intact. 
-        strcpy(m_pcOutName,pszTempPath);
-        int iLenBuf=strlen(m_pcOutName);
-        char *pcTemp=m_pcOutName+iLenBuf;
-        int count=0;
-        while(TRUE)
-        {
-          *pcTemp=(char)GetByte(InSt);
-          count++;
-          if(*pcTemp++=='\0')
-            break;
-          if(pcTemp>=m_pcOutName+OUTNAME_SIZE)
-          {
-            AfxMessageBox("CUnzip: corrupted input -- file name too large",
-                           MB_OK|MB_ICONSTOP,0);
-            return(UNZIP_ERROR);
-          }
-        }
+		if ((flags&EXTRA_FIELD) != 0)
+		{
+			unsigned len = (unsigned)GetByte(InSt);
+			len |= ((unsigned)GetByte(InSt)) << 8;
+			AfxMessageBox("CUnzip: extra field ignored", MB_OK, 0);
+			while (len--)
+				GetByte(InSt);
+		}
 
-        // no long filenames in Win 3.x!
-        if(count>8)
-        {
-          *(m_pcOutName+iLenBuf+8)=0;
-          if((pcTemp=strchr(m_pcOutName,'.')))
-          {
-            *pcTemp=0;
-          }
-          strcat(m_pcOutName,pszExt);
-        }
-      }
-      else
-      {
-        AfxMessageBox("CUnzip: No original filename stored",
-                       MB_OK|MB_ICONSTOP,0);
-        return(UNZIP_ERROR);
-      }
+		// Get original file name
+		if ((flags & ORIG_NAME) != 0)
+		{
+			// Copy the base name. Keep a directory prefix intact. 
+			strcpy(m_pcOutName, pszTempPath);
+			int iLenBuf = strlen(m_pcOutName);
+			char *pcTemp = m_pcOutName + iLenBuf;
+			int count = 0;
+			while (TRUE)
+			{
+				*pcTemp = (char)GetByte(InSt);
+				count++;
+				if (*pcTemp++ == '\0')
+					break;
+				if (pcTemp >= m_pcOutName + OUTNAME_SIZE)
+				{
+					AfxMessageBox("CUnzip: corrupted input -- file name too large",
+						MB_OK | MB_ICONSTOP, 0);
+					return(UNZIP_ERROR);
+				}
+			}
 
-      // Discard file comment if any 
- 	  if((flags&COMMENT)!=0)
-  	  {
-  	    while(GetByte(InSt)!=0)
-          ;
-      }
+			// no long filenames in Win 3.x!
+			if (count > 8)
+			{
+				*(m_pcOutName + iLenBuf + 8) = 0;
+				if ((pcTemp = strchr(m_pcOutName, '.')))
+				{
+					*pcTemp = 0;
+				}
+				strcat(m_pcOutName, pszExt);
+			}
+		}
+		else
+		{
+			AfxMessageBox("CUnzip: No original filename stored",
+				MB_OK | MB_ICONSTOP, 0);
+			return(UNZIP_ERROR);
+		}
 
-      // open outputfile
-      OutSt.open(m_pcOutName,ios::out|ios::trunc|ios::binary);
-      if(OutSt.fail())
-      {
-        AfxMessageBox("CUnzip: could not open outputfile.",MB_OK|MB_ICONSTOP,0);
-        return(UNZIP_ERROR);
-      }
+		// Discard file comment if any 
+		if ((flags&COMMENT) != 0)
+		{
+			while (GetByte(InSt) != 0)
+				;
+		}
 
-      // and now really decompress!
-      if(Inflate(InSt))
-        return(UNZIP_ERROR);  
-    break;
+		// open outputfile
+		OutSt.open(m_pcOutName, ios::out | ios::trunc | ios::binary);
+		if (OutSt.fail())
+		{
+			AfxMessageBox("CUnzip: could not open outputfile.", MB_OK | MB_ICONSTOP, 0);
+			return(UNZIP_ERROR);
+		}
 
-    case STORED:
-    case COMPRESSED:
-    case PACKED:
-    case LZHED:
-    case MAX_METHODS:
+		// and now really decompress!
+		if (Inflate(InSt))
+			return(UNZIP_ERROR);
+		break;
 
-    case NO_METHOD:
-    default:
-      AfxMessageBox("CUnzip: Internal error - Method not implemented.",
-                     MB_OK|MB_ICONSTOP,0);
-      return(UNZIP_ERROR);
-    break;
-  }
-  // copy file name to calling class
-  strcpy(pOutFile,m_pcOutName);
-  return(UNZIP_OK);
+	case STORED:
+	case COMPRESSED:
+	case PACKED:
+	case LZHED:
+	case MAX_METHODS:
+
+	case NO_METHOD:
+	default:
+		AfxMessageBox("CUnzip: Internal error - Method not implemented.",
+			MB_OK | MB_ICONSTOP, 0);
+		return(UNZIP_ERROR);
+		break;
+	}
+	// copy file name to calling class
+	strcpy(pOutFile, m_pcOutName);
+	return(UNZIP_OK);
 }
 
 
 int CUnzip::Inflate(ifstream& InSt)
 {
-  // last block flag 
-  int e;                
-  // result code 
-  int r;                
-  // maximum struct huft's malloc'ed 
-  unsigned h;           
+	// last block flag 
+	int e;
+	// result code 
+	int r;
+	// maximum struct huft's malloc'ed 
+	unsigned h;
 
-  // initialize window, bit buffer
-  lbits = 9;          
-  // bits in base distance lookup table 
-  dbits = 6;          
- 
-  m_OutCount=0;
-  bk=0;
-  bb=0;
+	// initialize window, bit buffer
+	lbits = 9;
+	// bits in base distance lookup table 
+	dbits = 6;
 
-  // decompress until the last block 
-  h=0;
-  do
-  {
-    hufts=0;
-    r=inflate_block(&e);
-    if(r!=0)
-      return(r);
-    if(hufts>h)
-      h=hufts;
-  }
-  while(!e);
+	m_OutCount = 0;
+	bk = 0;
+	bb = 0;
 
-  // Undo too much lookahead. The next read will be byte aligned so we
-  // can discard unused bits in the last meaningful byte.
-  while(bk>=8)
-  {
-    bk-=8;
-    m_iInPtr--;
-  }
+	// decompress until the last block 
+	h = 0;
+	do
+	{
+		hufts = 0;
+		r = inflate_block(&e);
+		if (r != 0)
+			return(r);
+		if (hufts > h)
+			h = hufts;
+	} while (!e);
 
-  // flush out m_pcOutBuf 
-  flush_output(m_OutCount);
+	// Undo too much lookahead. The next read will be byte aligned so we
+	// can discard unused bits in the last meaningful byte.
+	while (bk >= 8)
+	{
+		bk -= 8;
+		m_iInPtr--;
+	}
 
-  // return success 
-  return(0);
+	// flush out m_pcOutBuf 
+	flush_output(m_OutCount);
+
+	// return success 
+	return(0);
 }
 
 // decompress an inflated block 
 int CUnzip::inflate_block(int* e)
 {
-  // block type 
-  unsigned t;           
-  // bit buffer 
-  register unsigned long b;       
-  // number of bits in bit buffer 
-  register unsigned k;  
+	// block type 
+	unsigned t;
+	// bit buffer 
+	register unsigned long b;
+	// number of bits in bit buffer 
+	register unsigned k;
 
-  // make local bit buffer 
-  b=bb;
-  k=bk;
+	// make local bit buffer 
+	b = bb;
+	k = bk;
 
-  // read in last block bit 
-  if(NeedBits(1,&b,&k)==FALSE)
-    return(3);
-  *e=(int)b&1;
-  DUMPBITS(1)
+	// read in last block bit 
+	if (NeedBits(1, &b, &k) == FALSE)
+		return(3);
+	*e = (int)b & 1;
+	DUMPBITS(1)
 
-  // read in block type 
-  if(NeedBits(2,&b,&k)==FALSE)
-    return(3);
-  t = (unsigned)b & 3;
-  DUMPBITS(2)
-
-
-  /* restore the global bit buffer */
-  bb = b;
-  bk = k;
+		// read in block type 
+		if (NeedBits(2, &b, &k) == FALSE)
+			return(3);
+	t = (unsigned)b & 3;
+	DUMPBITS(2)
 
 
-  /* inflate that block type */
-  if (t == 2)
-    return inflate_dynamic();
-  if (t == 0)
-    return inflate_stored();
-  if (t == 1)
-    return inflate_fixed();
+		/* restore the global bit buffer */
+		bb = b;
+	bk = k;
 
 
-  /* bad block type */
-  return(2);
+	/* inflate that block type */
+	if (t == 2)
+		return inflate_dynamic();
+	if (t == 0)
+		return inflate_stored();
+	if (t == 1)
+		return inflate_fixed();
+
+
+	/* bad block type */
+	return(2);
 }
 
 
 int CUnzip::inflate_stored()
 /* "decompress" an inflated type 0 (stored) block. */
 {
-  unsigned n;           /* number of bytes in block */
-  unsigned int w;           /* current window position */
-  register unsigned long b;       /* bit buffer */
-  register unsigned k;  /* number of bits in bit buffer */
+	unsigned n;           /* number of bytes in block */
+	unsigned int w;           /* current window position */
+	register unsigned long b;       /* bit buffer */
+	register unsigned k;  /* number of bits in bit buffer */
 
 
-  /* make local copies of globals */
-  b = bb;                       /* initialize bit buffer */
-  k = bk;
-  w = m_OutCount;                       /* initialize window position */
+	/* make local copies of globals */
+	b = bb;                       /* initialize bit buffer */
+	k = bk;
+	w = m_OutCount;                       /* initialize window position */
 
 
-  /* go to byte boundary */
-  n = k & 7;
-  DUMPBITS(n);
+	/* go to byte boundary */
+	n = k & 7;
+	DUMPBITS(n);
 
 
-  /* get the length and its complement */
-  if(NeedBits(16,&b,&k)==FALSE)
-    return(2);
-  n = ((unsigned)b & 0xffff);
-  DUMPBITS(16)
+	/* get the length and its complement */
+	if (NeedBits(16, &b, &k) == FALSE)
+		return(2);
+	n = ((unsigned)b & 0xffff);
+	DUMPBITS(16)
 
-  if(NeedBits(16,&b,&k)==FALSE)
-    return(2);
-  if (n != (unsigned)((~b) & 0xffff))
-    // error in compressed data 
-    return(1);                   
-  DUMPBITS(16)
-
-
-  /* read and output the compressed data */
-  while (n--)
-  {
-    if(NeedBits(8,&b,&k)==FALSE)
-      return(2);
-    m_pcOutBuf[w++] = (unsigned char)b;
-    if (w == WSIZE)
-    {
-      flush_output(w);
-      w = 0;
-    }
-    DUMPBITS(8)
-  }
+		if (NeedBits(16, &b, &k) == FALSE)
+			return(2);
+	if (n != (unsigned)((~b) & 0xffff))
+		// error in compressed data 
+		return(1);
+	DUMPBITS(16)
 
 
-  /* restore the globals from the locals */
-  m_OutCount = w;                       /* restore global window pointer */
-  bb = b;                       /* restore global bit buffer */
-  bk = k;
-  return(0);
+		/* read and output the compressed data */
+		while (n--)
+		{
+			if (NeedBits(8, &b, &k) == FALSE)
+				return(2);
+			m_pcOutBuf[w++] = (unsigned char)b;
+			if (w == WSIZE)
+			{
+				flush_output(w);
+				w = 0;
+			}
+			DUMPBITS(8)
+		}
+
+
+	/* restore the globals from the locals */
+	m_OutCount = w;                       /* restore global window pointer */
+	bb = b;                       /* restore global bit buffer */
+	bk = k;
+	return(0);
 }
 
 // decompress an inflated type 1 (fixed Huffman codes) block.  We should
@@ -547,280 +546,279 @@ int CUnzip::inflate_stored()
 // Huffman tables. 
 int CUnzip::inflate_fixed()
 {
-  int i;                /* temporary variable */
-  struct huft *tl;      /* literal/length code table */
-  struct huft *td;      /* distance code table */
-  int bl;               /* lookup bits for tl */
-  int bd;               /* lookup bits for td */
-  unsigned l[288];      /* length list for huft_build */
+	int i;                /* temporary variable */
+	struct huft *tl;      /* literal/length code table */
+	struct huft *td;      /* distance code table */
+	int bl;               /* lookup bits for tl */
+	int bd;               /* lookup bits for td */
+	unsigned l[288];      /* length list for huft_build */
 
 
-  /* set up literal table */
-  for (i = 0; i < 144; i++)
-    l[i] = 8;
-  for (; i < 256; i++)
-    l[i] = 9;
-  for (; i < 280; i++)
-    l[i] = 7;
-  for (; i < 288; i++)          /* make a complete, but wrong code set */
-    l[i] = 8;
-  bl = 7;
-  if ((i = huft_build(l, 288, 257, cplens, cplext, &tl, &bl)) != 0)
-    return i;
+	/* set up literal table */
+	for (i = 0; i < 144; i++)
+		l[i] = 8;
+	for (; i < 256; i++)
+		l[i] = 9;
+	for (; i < 280; i++)
+		l[i] = 7;
+	for (; i < 288; i++)          /* make a complete, but wrong code set */
+		l[i] = 8;
+	bl = 7;
+	if ((i = huft_build(l, 288, 257, cplens, cplext, &tl, &bl)) != 0)
+		return i;
 
-  // set up distance table 
-  for (i = 0; i < 30; i++)      /* make an incomplete code set */
-    l[i] = 5;
-  bd = 5;
-  if ((i = huft_build(l, 30, 0, cpdist, cpdext, &td, &bd)) > 1)
-  {
-    huft_free(tl);
-    return i;
-  }
+	// set up distance table 
+	for (i = 0; i < 30; i++)      /* make an incomplete code set */
+		l[i] = 5;
+	bd = 5;
+	if ((i = huft_build(l, 30, 0, cpdist, cpdext, &td, &bd)) > 1)
+	{
+		huft_free(tl);
+		return i;
+	}
 
-  // decompress until an end-of-block code 
-  if (inflate_codes(tl, td, bl, bd))
-    return 1;
+	// decompress until an end-of-block code 
+	if (inflate_codes(tl, td, bl, bd))
+		return 1;
 
-  // free the decoding tables, return 
-  huft_free(tl);
-  huft_free(td);
-  return 0;
+	// free the decoding tables, return 
+	huft_free(tl);
+	huft_free(td);
+	return 0;
 }
 
 
 // decompress an inflated type 2 (dynamic Huffman codes) block. 
 int CUnzip::inflate_dynamic()
 {
-  int i;                /* temporary variables */
-  unsigned j;
-  unsigned int iLastLength;
-  unsigned m;           /* mask for bit lengths table */
-  unsigned n;           /* number of lengths to get */
-  struct huft *tl;      /* literal/length code table */
-  struct huft *td;      /* distance code table */
-  int bl;               /* lookup bits for tl */
-  int bd;               /* lookup bits for td */
-  unsigned nb;          /* number of bit length codes */
-  unsigned nl;          /* number of literal/length codes */
-  unsigned nd;          /* number of distance codes */
+	int i;                /* temporary variables */
+	unsigned j;
+	unsigned int iLastLength;
+	unsigned m;           /* mask for bit lengths table */
+	unsigned n;           /* number of lengths to get */
+	struct huft *tl;      /* literal/length code table */
+	struct huft *td;      /* distance code table */
+	int bl;               /* lookup bits for tl */
+	int bd;               /* lookup bits for td */
+	unsigned nb;          /* number of bit length codes */
+	unsigned nl;          /* number of literal/length codes */
+	unsigned nd;          /* number of distance codes */
 #ifdef PKZIP_BUG_WORKAROUND
-  unsigned ll[288+32];  /* literal/length and distance code lengths */
+	unsigned ll[288 + 32];  /* literal/length and distance code lengths */
 #else
-  unsigned ll[286+30];  /* literal/length and distance code lengths */
+	unsigned ll[286 + 30];  /* literal/length and distance code lengths */
 #endif
-  register unsigned long b;       /* bit buffer */
-  register unsigned k;  /* number of bits in bit buffer */
+	register unsigned long b;       /* bit buffer */
+	register unsigned k;  /* number of bits in bit buffer */
 
-  // make local bit buffer 
-  b=bb;
-  k=bk;
+	// make local bit buffer 
+	b = bb;
+	k = bk;
 
-  // read in table lengths 
-  if(NeedBits(5,&b,&k)==FALSE)
-    return(2);
-  // number of literal/length codes 
-  nl = 257 + ((unsigned)b & 0x1f);      
-  DUMPBITS(5)
+	// read in table lengths 
+	if (NeedBits(5, &b, &k) == FALSE)
+		return(2);
+	// number of literal/length codes 
+	nl = 257 + ((unsigned)b & 0x1f);
+	DUMPBITS(5)
 
-  if(NeedBits(5,&b,&k)==FALSE)
-    return(2);
-  // number of distance codes 
-  nd = 1 + ((unsigned)b & 0x1f);        
-  DUMPBITS(5)
+		if (NeedBits(5, &b, &k) == FALSE)
+			return(2);
+	// number of distance codes 
+	nd = 1 + ((unsigned)b & 0x1f);
+	DUMPBITS(5)
 
-  if(NeedBits(4,&b,&k)==FALSE)
-    return(2);
-  // number of bit length codes 
-  nb = 4 + ((unsigned)b & 0xf);         
-  DUMPBITS(4)
+		if (NeedBits(4, &b, &k) == FALSE)
+			return(2);
+	// number of bit length codes 
+	nb = 4 + ((unsigned)b & 0xf);
+	DUMPBITS(4)
 
 #ifdef PKZIP_BUG_WORKAROUND
-  if (nl > 288 || nd > 32)
+		if (nl > 288 || nd > 32)
 #else
-  if (nl > 286 || nd > 30)
+		if (nl > 286 || nd > 30)
 #endif 
-    // bad lengths 
-    return(1);                   
+			// bad lengths 
+			return(1);
 
 
-  // read in bit-length-code lengths 
-  for (j = 0; j < nb; j++)
-  {
-    if(NeedBits(3,&b,&k)==FALSE)
-      return(2);
-    ll[border[j]] = (unsigned)b & 7;
-    DUMPBITS(3)
-  }
+	// read in bit-length-code lengths 
+	for (j = 0; j < nb; j++)
+	{
+		if (NeedBits(3, &b, &k) == FALSE)
+			return(2);
+		ll[border[j]] = (unsigned)b & 7;
+		DUMPBITS(3)
+	}
 
-  for(; j < 19; j++)
-    ll[border[j]]=0;
+	for (; j < 19; j++)
+		ll[border[j]] = 0;
 
 
-  // build decoding table for trees--single level, 7 bit lookup 
-  bl = 7;
-  if ((i = huft_build(ll, 19, 19, NULL, NULL, &tl, &bl)) != 0)
-  {
-    if (i==1)
-      huft_free(tl);
-    // incomplete code set 
-    return(i);                   
-  }
+	// build decoding table for trees--single level, 7 bit lookup 
+	bl = 7;
+	if ((i = huft_build(ll, 19, 19, NULL, NULL, &tl, &bl)) != 0)
+	{
+		if (i == 1)
+			huft_free(tl);
+		// incomplete code set 
+		return(i);
+	}
 
-  // read in literal and distance code lengths 
-  n = nl + nd;
-  m = mask_bits[bl];
-  i=0;
-  iLastLength=0;
-  while ((unsigned)i < n)
-  {
-    if(NeedBits((unsigned)bl,&b,&k)==FALSE)
-      return(2);
-    j = (td = tl + ((unsigned)b & m))->b;
-    DUMPBITS(j)
+	// read in literal and distance code lengths 
+	n = nl + nd;
+	m = mask_bits[bl];
+	i = 0;
+	iLastLength = 0;
+	while ((unsigned)i < n)
+	{
+		if (NeedBits((unsigned)bl, &b, &k) == FALSE)
+			return(2);
+		j = (td = tl + ((unsigned)b & m))->b;
+		DUMPBITS(j)
 
-    j = td->v.n;
-    if(j<16)
-    {                 /* length of code in bits (0..15) */
-      iLastLength=j;
-      ll[i++]=iLastLength;          
-    }
-    else if (j == 16)           /* repeat last length 3 to 6 times */
-    {
-      if(NeedBits(2,&b,&k)==FALSE)
-        return(2);
-      j = 3 + ((unsigned)b & 3);
-      DUMPBITS(2)
+			j = td->v.n;
+		if (j < 16)
+		{                 /* length of code in bits (0..15) */
+			iLastLength = j;
+			ll[i++] = iLastLength;
+		}
+		else if (j == 16)           /* repeat last length 3 to 6 times */
+		{
+			if (NeedBits(2, &b, &k) == FALSE)
+				return(2);
+			j = 3 + ((unsigned)b & 3);
+			DUMPBITS(2)
 
-      if((unsigned)i + j > n)
-        return(1);
+				if ((unsigned)i + j > n)
+					return(1);
 
-      while(j--)
-        ll[i++]=iLastLength;
-    }
-    else if (j == 17)           /* 3 to 10 zero length codes */
-    {
-      if(NeedBits(3,&b,&k)==FALSE)
-        return(2);
-      j = 3 + ((unsigned)b & 7);
-      DUMPBITS(3)
+			while (j--)
+				ll[i++] = iLastLength;
+		}
+		else if (j == 17)           /* 3 to 10 zero length codes */
+		{
+			if (NeedBits(3, &b, &k) == FALSE)
+				return(2);
+			j = 3 + ((unsigned)b & 7);
+			DUMPBITS(3)
 
-      if((unsigned)i + j > n)
-        return 1;
+				if ((unsigned)i + j > n)
+					return 1;
 
-      while(j--)
-        ll[i++]=0;
-      iLastLength=0;
-    }
-    else                        /* j == 18: 11 to 138 zero length codes */
-    {
-      if(NeedBits(7,&b,&k)==FALSE)
-        return(2);
-      j = 11 + ((unsigned)b & 0x7f);
-      DUMPBITS(7)
+			while (j--)
+				ll[i++] = 0;
+			iLastLength = 0;
+		}
+		else                        /* j == 18: 11 to 138 zero length codes */
+		{
+			if (NeedBits(7, &b, &k) == FALSE)
+				return(2);
+			j = 11 + ((unsigned)b & 0x7f);
+			DUMPBITS(7)
 
-      if ((unsigned)i + j > n)
-        return 1;
+				if ((unsigned)i + j > n)
+					return 1;
 
-      while(j--)
-        ll[i++]=0;
-      iLastLength=0;
-    }
-  }
+			while (j--)
+				ll[i++] = 0;
+			iLastLength = 0;
+		}
+	}
 
-  // free decoding table for trees 
-  huft_free(tl);
+	// free decoding table for trees 
+	huft_free(tl);
 
-  // restore the global bit buffer 
-  bb = b;
-  bk = k;
+	// restore the global bit buffer 
+	bb = b;
+	bk = k;
 
-  // build the decoding tables for literal/length and distance codes 
-  bl = lbits;
-  if ((i = huft_build(ll, nl, 257, cplens, cplext, &tl, &bl)) != 0)
-  {
-    if (i == 1) {
-      fprintf(stderr, " incomplete literal tree\n");
-      huft_free(tl);
-    }
-    return i;                   /* incomplete code set */
-  }
-  bd = dbits;
-  if ((i = huft_build(ll + nl, nd, 0, cpdist, cpdext, &td, &bd)) != 0)
-  {
-    if (i == 1) {
-      fprintf(stderr, " incomplete distance tree\n");
+	// build the decoding tables for literal/length and distance codes 
+	bl = lbits;
+	if ((i = huft_build(ll, nl, 257, cplens, cplext, &tl, &bl)) != 0)
+	{
+		if (i == 1) {
+			fprintf(stderr, " incomplete literal tree\n");
+			huft_free(tl);
+		}
+		return i;                   /* incomplete code set */
+	}
+	bd = dbits;
+	if ((i = huft_build(ll + nl, nd, 0, cpdist, cpdext, &td, &bd)) != 0)
+	{
+		if (i == 1) {
+			fprintf(stderr, " incomplete distance tree\n");
 #ifdef PKZIP_BUG_WORKAROUND
-      i = 0;
-    }
+			i = 0;
+		}
 #else
-      huft_free(td);
-    }
-    huft_free(tl);
-    return i;                   /* incomplete code set */
+			huft_free(td);
+	}
+		huft_free(tl);
+		return i;                   /* incomplete code set */
 #endif
-  }
-
-  // decompress until an end-of-block code 
-  if (inflate_codes(tl, td, bl, bd))
-    return 1;
-
-
-  /* free the decoding tables, return */
-  huft_free(tl);
-  huft_free(td);
-  return(0);
 }
-   
+
+	// decompress until an end-of-block code 
+	if (inflate_codes(tl, td, bl, bd))
+		return 1;
+
+
+	/* free the decoding tables, return */
+	huft_free(tl);
+	huft_free(td);
+	return(0);
+}
+
 
 // Write the output window window[0..outcnt-1] and update crc and bytes_out.
 // (Used for the decompressed data only.)
 void CUnzip::flush_window()
 {
-  if(m_OutCount==0)
-    return;
-  updcrc(m_pcOutBuf,m_OutCount);
+	if (m_OutCount == 0)
+		return;
+	updcrc(m_pcOutBuf, m_OutCount);
 
-  OutSt.write((const char *)m_pcOutBuf,m_OutCount);
-  bytes_out+=(unsigned long)m_OutCount;
-  m_OutCount=0;
+	OutSt.write((const char *)m_pcOutBuf, m_OutCount);
+	bytes_out += (unsigned long)m_OutCount;
+	m_OutCount = 0;
 }
 
 // Run a set of bytes through the crc shift register.  If s is a NULL
 // pointer, then initialize the crc shift register contents instead.
 // Return the current crc in either case.
-unsigned long CUnzip::updcrc(unsigned char* s,unsigned int n)
+unsigned long CUnzip::updcrc(unsigned char* s, unsigned int n)
 {
-  register unsigned long c;         /* temporary variable */
+	register unsigned long c;         /* temporary variable */
 
-  static unsigned long crc = (unsigned long)0xffffffffL; /* shift register contents */
+	static unsigned long crc = (unsigned long)0xffffffffL; /* shift register contents */
 
-  if(s==NULL)
-  {
-    c = 0xffffffffL;
-  }
-  else
-  {
-    c=crc;
-    if(n)
-      do
-      {
-        c=crc_32_tab[((int)c ^ (*s++)) & 0xff] ^ (c >> 8);
-      }
-      while(--n);
-  }
-  crc=c;
-  return(c ^ 0xffffffffL);       /* (instead of ~c for 64-bit machines) */
+	if (s == NULL)
+	{
+		c = 0xffffffffL;
+	}
+	else
+	{
+		c = crc;
+		if (n)
+			do
+			{
+				c = crc_32_tab[((int)c ^ (*s++)) & 0xff] ^ (c >> 8);
+			} while (--n);
+	}
+	crc = c;
+	return(c ^ 0xffffffffL);       /* (instead of ~c for 64-bit machines) */
 }
 
 
 
-/*unsigned *b;             code lengths in bits (all assumed <= BMAX) 
-unsigned n;              number of codes (assumed <= N_MAX) 
-unsigned s;              number of simple-valued codes (0..s-1) 
-unsigned short *d;                  list of base values for non-simple codes 
-unsigned short *e;                  list of extra bits for non-simple codes 
-struct huft **t;         result: starting table 
+/*unsigned *b;             code lengths in bits (all assumed <= BMAX)
+unsigned n;              number of codes (assumed <= N_MAX)
+unsigned s;              number of simple-valued codes (0..s-1)
+unsigned short *d;                  list of base values for non-simple codes
+unsigned short *e;                  list of extra bits for non-simple codes
+struct huft **t;         result: starting table
 int *m;                  maximum lookup bits, returns actual */
 
 // Given a list of code lengths and a maximum table size, make a set of
@@ -828,239 +826,237 @@ int *m;                  maximum lookup bits, returns actual */
 // the given code set is incomplete (the tables are still built in this
 // case), two if the input is invalid (all zero length codes or an
 // oversubscribed set of lengths), and three if not enough memory. 
-int CUnzip::huft_build(unsigned int* b,unsigned int n,unsigned int s,
-               unsigned short* d,unsigned short* e,struct huft** t,
-               int* m)
+int CUnzip::huft_build(unsigned int* b, unsigned int n, unsigned int s,
+	unsigned short* d, unsigned short* e, struct huft** t,
+	int* m)
 {
-  unsigned a;                   /* counter for codes of length k */
-  unsigned c[BMAX+1];           /* bit length count table */
-  unsigned f;                   /* i repeats in table every f entries */
-  int g;                        /* maximum code length */
-  int h;                        /* table level */
-  register unsigned i;          /* counter, current code */
-  register unsigned j;          /* counter */
-  register int k;               /* number of bits in current code */
-  int l;                        /* bits per table (returned in m) */
-  register unsigned *p;         /* pointer into c[], b[], or v[] */
-  register struct huft *q;      /* points to current table */
-  struct huft r;                /* table entry for structure assignment */
-  struct huft *u[BMAX];         /* table stack */
-  unsigned v[N_MAX];            /* values in order of bit length */
-  register int w;               /* bits before this table == (l * h) */
-  unsigned x[BMAX+1];           /* bit offsets, then code stack */
-  unsigned *xp;                 /* pointer into x */
-  int y;                        /* number of dummy codes added */
-  unsigned z;                   /* number of entries in current table */
+	unsigned a;                   /* counter for codes of length k */
+	unsigned c[BMAX + 1];           /* bit length count table */
+	unsigned f;                   /* i repeats in table every f entries */
+	int g;                        /* maximum code length */
+	int h;                        /* table level */
+	register unsigned i;          /* counter, current code */
+	register unsigned j;          /* counter */
+	register int k;               /* number of bits in current code */
+	int l;                        /* bits per table (returned in m) */
+	register unsigned *p;         /* pointer into c[], b[], or v[] */
+	register struct huft *q;      /* points to current table */
+	struct huft r;                /* table entry for structure assignment */
+	struct huft *u[BMAX];         /* table stack */
+	unsigned v[N_MAX];            /* values in order of bit length */
+	register int w;               /* bits before this table == (l * h) */
+	unsigned x[BMAX + 1];           /* bit offsets, then code stack */
+	unsigned *xp;                 /* pointer into x */
+	int y;                        /* number of dummy codes added */
+	unsigned z;                   /* number of entries in current table */
 
 
-  /* Generate counts for each bit length */
-  memset(c,0,sizeof(c));
-  p=b;
-  i=n;
-  do
-  {
-    c[*p]++;                    /* assume all entries <= BMAX */
-    p++;                      /* Can't combine with above line (Solaris bug) */
-  }
-  while(--i);
+	/* Generate counts for each bit length */
+	memset(c, 0, sizeof(c));
+	p = b;
+	i = n;
+	do
+	{
+		c[*p]++;                    /* assume all entries <= BMAX */
+		p++;                      /* Can't combine with above line (Solaris bug) */
+	} while (--i);
 
-  if (c[0]==n)                /* null input--all zero length codes */
-  {
-    *t=(struct huft *)NULL;
-    *m=0;
-    return(0);
-  }
-
-
-  // Find minimum and maximum length, bound *m by those 
-  l=*m;
-  for(j=1;j<=BMAX;j++)
-    if(c[j])
-      break;
-
-  // minimum code length 
-  k=j;                        
-  if((unsigned)l<j)
-    l=j;
-
-  for (i=BMAX;i;i--)
-    if (c[i])
-      break;
-
-  // maximum code length 
-  g=i;                        
-  if((unsigned)l>i)
-    l=i;
-  *m=l;
-
-  // Adjust last length count to fill out codes, if needed 
-  for (y=(1<<j);j<i;j++,y<<=1)
-    if((y-=c[j])<0)
-      // bad input: more codes than bits 
-      return(2);                 
-
-  if((y-=c[i])<0)
-    return(2);
-
-  c[i]+=y;
-
-  // Generate starting offsets into the value table for each length 
-  j=0;
-  x[1]=0;
-  p=c+1;
-  xp=x+2;
-
-  // note that i == g from above 
-  while(--i)
-  {                 
-    *xp++=(j+=*p++);
-  }
-
-  // Make a table of values in order of bit lengths 
-  p=b;
-  i=0;
-  do
-  {
-    if((j=*p++)!=0)
-      v[x[j]++]=i;
-  }
-  while(++i<n);
-
-  // Generate the Huffman codes and for each, make the table entries 
-  i=0;
-  // first Huffman code is zero 
-  x[0]=0;                 
-  // grab values in bit order 
-  p=v;                        
-  // no tables yet--level -1 
-  h=-1;                       
-  // bits decoded == (l * h) 
-  w=-l;                       
-  // just to keep compilers happy 
-  u[0]=(struct huft *)NULL;   
-  q=(struct huft *)NULL;      
-  z=0;                        
-
-  // go through the bit lengths (k already is bits in shortest code) 
-  for (;k<=g;k++)
-  {
-    a=c[k];
-    while(a--)
-    {
-      // here i is the Huffman code of length k bits for value *p 
-      // make tables up to required level 
-      while(k>w+l)
-      {
-        h++;
-        // previous table always l bits 
-        w+=l;                 
-
-        // compute minimum size table less than or equal to l bits 
-        // upper limit on table size 
-        z=(z=g-w)>(unsigned)l ? l : z;  
-
-        // try a k-w bit table 
-        if ((f = 1 << (j = k - w)) > a + 1)     
-        {                       
-          // too few codes for k-w bit table 
-          // deduct codes from patterns left 
-          f-=a+1;           
-          xp=c+k;
-
-          // try smaller tables up to z bits 
-          while(++j<z)       
-          {
-            if((f<<=1)<=*++xp)
-               // enough codes to use up j bits 
-              break;           
-            // else deduct codes from patterns 
-            f-=*xp;           
-          }
-        }
-        // table entries for j-bit table 
-        z=1<<j;             
-
-        // allocate and link in new table 
-        q=(struct huft *)malloc((z + 1)*sizeof(struct huft));
-        if(q==(struct huft *)NULL)
-        {
-          if(h)
-            huft_free(u[0]);
-          // not enough memory 
-          return(3);             
-        }
-
-        // track memory usage 
-        hufts+=z+1;         
-        // link to list for huft_free() 
-        *t=q+1;             
-        *(t=&(q->v.t))=(struct huft *)NULL;
-        // table starts after link 
-        u[h]=++q;             
-
-        // connect to last table, if there is one 
-        if(h)
-        {
-          // save pattern for backing up 
-          x[h]=i;             
-          // bits to dump before this table 
-          r.b=(unsigned char)l;         
-          // bits in this table
-          r.e=(unsigned char)(16 + j);  
-          // pointer to this table 
-          r.v.t=q;           
-          // (get around Turbo C bug)  
-          j= i >> (w-l);     
-          // connect to last table 
-          u[h-1][j]= r;        
-        }
-      }
-
-      // set up table entry in r 
-      r.b=(unsigned char)(k-w);
-      if (p >= v + n)
-        // out of values--invalid code 
-        r.e = 99;               
-      else
-      if(*p<s)
-      {
-        // 256 is end-of-block code 
-        r.e=(unsigned char)(*p < 256 ? 16 : 15);
-        // simple code is just the value     
-        r.v.n=(unsigned short)(*p);  
-        // one compiler does not like *p++            
-        p++;                           
-      }
-      else
-      {
-        // non-simple--look up in lists 
-        r.e=(unsigned char)e[*p-s];   
-        r.v.n = d[*p++ - s];
-      }
-
-      // fill code-like entries with r 
-      f=1<<(k - w);
-      for(j=i>>w;j<z;j+=f)
-        q[j]=r;
-
-      // backwards increment the k-bit code i 
-      for (j=1<<(k - 1);i&j;j>>=1)
-        i^=j;
-      i^=j;
-
-      // backup over finished tables 
-      while((i&((1<<w)-1))!=x[h])
-      {
-        // don't need to update q 
-        h--;                    
-        w-=l;
-      }
-    }
-  }
+	if (c[0] == n)                /* null input--all zero length codes */
+	{
+		*t = (struct huft *)NULL;
+		*m = 0;
+		return(0);
+	}
 
 
-  // Return true (1) if we were given an incomplete table 
-  return((y!=0)&&(g!=1));
+	// Find minimum and maximum length, bound *m by those 
+	l = *m;
+	for (j = 1; j <= BMAX; j++)
+		if (c[j])
+			break;
+
+	// minimum code length 
+	k = j;
+	if ((unsigned)l < j)
+		l = j;
+
+	for (i = BMAX; i; i--)
+		if (c[i])
+			break;
+
+	// maximum code length 
+	g = i;
+	if ((unsigned)l > i)
+		l = i;
+	*m = l;
+
+	// Adjust last length count to fill out codes, if needed 
+	for (y = (1 << j); j < i; j++, y <<= 1)
+		if ((y -= c[j]) < 0)
+			// bad input: more codes than bits 
+			return(2);
+
+	if ((y -= c[i]) < 0)
+		return(2);
+
+	c[i] += y;
+
+	// Generate starting offsets into the value table for each length 
+	j = 0;
+	x[1] = 0;
+	p = c + 1;
+	xp = x + 2;
+
+	// note that i == g from above 
+	while (--i)
+	{
+		*xp++ = (j += *p++);
+	}
+
+	// Make a table of values in order of bit lengths 
+	p = b;
+	i = 0;
+	do
+	{
+		if ((j = *p++) != 0)
+			v[x[j]++] = i;
+	} while (++i < n);
+
+	// Generate the Huffman codes and for each, make the table entries 
+	i = 0;
+	// first Huffman code is zero 
+	x[0] = 0;
+	// grab values in bit order 
+	p = v;
+	// no tables yet--level -1 
+	h = -1;
+	// bits decoded == (l * h) 
+	w = -l;
+	// just to keep compilers happy 
+	u[0] = (struct huft *)NULL;
+	q = (struct huft *)NULL;
+	z = 0;
+
+	// go through the bit lengths (k already is bits in shortest code) 
+	for (; k <= g; k++)
+	{
+		a = c[k];
+		while (a--)
+		{
+			// here i is the Huffman code of length k bits for value *p 
+			// make tables up to required level 
+			while (k > w + l)
+			{
+				h++;
+				// previous table always l bits 
+				w += l;
+
+				// compute minimum size table less than or equal to l bits 
+				// upper limit on table size 
+				z = (z = g - w) > (unsigned)l ? l : z;
+
+				// try a k-w bit table 
+				if ((f = 1 << (j = k - w)) > a + 1)
+				{
+					// too few codes for k-w bit table 
+					// deduct codes from patterns left 
+					f -= a + 1;
+					xp = c + k;
+
+					// try smaller tables up to z bits 
+					while (++j < z)
+					{
+						if ((f <<= 1) <= *++xp)
+							// enough codes to use up j bits 
+							break;
+						// else deduct codes from patterns 
+						f -= *xp;
+					}
+				}
+				// table entries for j-bit table 
+				z = 1 << j;
+
+				// allocate and link in new table 
+				q = (struct huft *)malloc((z + 1) * sizeof(struct huft));
+				if (q == (struct huft *)NULL)
+				{
+					if (h)
+						huft_free(u[0]);
+					// not enough memory 
+					return(3);
+				}
+
+				// track memory usage 
+				hufts += z + 1;
+				// link to list for huft_free() 
+				*t = q + 1;
+				*(t = &(q->v.t)) = (struct huft *)NULL;
+				// table starts after link 
+				u[h] = ++q;
+
+				// connect to last table, if there is one 
+				if (h)
+				{
+					// save pattern for backing up 
+					x[h] = i;
+					// bits to dump before this table 
+					r.b = (unsigned char)l;
+					// bits in this table
+					r.e = (unsigned char)(16 + j);
+					// pointer to this table 
+					r.v.t = q;
+					// (get around Turbo C bug)  
+					j = i >> (w - l);
+					// connect to last table 
+					u[h - 1][j] = r;
+				}
+			}
+
+			// set up table entry in r 
+			r.b = (unsigned char)(k - w);
+			if (p >= v + n)
+				// out of values--invalid code 
+				r.e = 99;
+			else
+				if (*p < s)
+				{
+					// 256 is end-of-block code 
+					r.e = (unsigned char)(*p < 256 ? 16 : 15);
+					// simple code is just the value     
+					r.v.n = (unsigned short)(*p);
+					// one compiler does not like *p++            
+					p++;
+				}
+				else
+				{
+					// non-simple--look up in lists 
+					r.e = (unsigned char)e[*p - s];
+					r.v.n = d[*p++ - s];
+				}
+
+			// fill code-like entries with r 
+			f = 1 << (k - w);
+			for (j = i >> w; j < z; j += f)
+				q[j] = r;
+
+			// backwards increment the k-bit code i 
+			for (j = 1 << (k - 1); i&j; j >>= 1)
+				i ^= j;
+			i ^= j;
+
+			// backup over finished tables 
+			while ((i&((1 << w) - 1)) != x[h])
+			{
+				// don't need to update q 
+				h--;
+				w -= l;
+			}
+		}
+	}
+
+
+	// Return true (1) if we were given an incomplete table 
+	return((y != 0) && (g != 1));
 }
 
 // Free the malloc'ed tables built by huft_build(), which makes a linked
@@ -1068,138 +1064,136 @@ int CUnzip::huft_build(unsigned int* b,unsigned int n,unsigned int s,
 // each table. 
 int CUnzip::huft_free(struct huft* HufTables)
 {
-  register struct huft* HufCount;
-  register struct huft* HufHelp;
+	register struct huft* HufCount;
+	register struct huft* HufHelp;
 
 
-  // Go through linked list, freeing from the malloced (t[-1]) address. 
-  HufCount=HufTables;
-  while(HufCount!=(struct huft *)NULL)
-  {
-    HufHelp=(--HufCount)->v.t;
-    free(HufCount);
-    HufCount=HufHelp;
-  } 
-  return(0);
+	// Go through linked list, freeing from the malloced (t[-1]) address. 
+	HufCount = HufTables;
+	while (HufCount != (struct huft *)NULL)
+	{
+		HufHelp = (--HufCount)->v.t;
+		free(HufCount);
+		HufCount = HufHelp;
+	}
+	return(0);
 }
 
-/*struct huft *tl, *td;    literal/length and distance decoder tables 
-int bl, bd;              number of bits decoded by tl[] and td[] 
+/*struct huft *tl, *td;    literal/length and distance decoder tables
+int bl, bd;              number of bits decoded by tl[] and td[]
  inflate (decompress) the codes in a deflated (compressed) block.
    Return an error code or zero if it all goes ok. */
-int CUnzip::inflate_codes(struct huft* tl,struct huft* td,int bl,int bd)
+int CUnzip::inflate_codes(struct huft* tl, struct huft* td, int bl, int bd)
 {
-  register unsigned e;  /* table entry flag/number of extra bits */
-  unsigned n, d;        /* length and index for copy */
-  unsigned int w;           /* current window position */
-  struct huft *t;       /* pointer to table entry */
-  unsigned ml, md;      /* masks for bl and bd bits */
-  register unsigned long b;       /* bit buffer */
-  register unsigned k;  /* number of bits in bit buffer */
+	register unsigned e;  /* table entry flag/number of extra bits */
+	unsigned n, d;        /* length and index for copy */
+	unsigned int w;           /* current window position */
+	struct huft *t;       /* pointer to table entry */
+	unsigned ml, md;      /* masks for bl and bd bits */
+	register unsigned long b;       /* bit buffer */
+	register unsigned k;  /* number of bits in bit buffer */
 
 
-  // make local copies of globals 
-  // initialize bit buffer 
-  b = bb;                       
-  k = bk;
-  // initialize window position 
-  w = m_OutCount;                       
+	// make local copies of globals 
+	// initialize bit buffer 
+	b = bb;
+	k = bk;
+	// initialize window position 
+	w = m_OutCount;
 
-  // inflate the coded data 
-  // precompute masks for speed 
-  ml = mask_bits[bl];           
-  md = mask_bits[bd];
+	// inflate the coded data 
+	// precompute masks for speed 
+	ml = mask_bits[bl];
+	md = mask_bits[bd];
 
-  // do until end of block 
-  while(TRUE)                      
-  {
-    if(NeedBits((unsigned)bl,&b,&k)==FALSE)
-      return(2);
-    if ((e = (t = tl + ((unsigned)b & ml))->e) > 16)
-      do {
-        if (e == 99)
-          return(1);
-        DUMPBITS(t->b)
-        e -= 16;
-        if(NeedBits(e,&b,&k)==FALSE)
-          return(2);
-      } while ((e = (t = t->v.t + ((unsigned)b & mask_bits[e]))->e) > 16);
-    DUMPBITS(t->b)
-    if (e == 16)                /* then it's a literal */
-    {
-      m_pcOutBuf[w++] = (unsigned char)t->v.n;
-      if (w == WSIZE)
-      {
-        flush_output(w);
-        w = 0;
-      }
-    }
-    else                        /* it's an EOB or a length */
-    {
-      /* exit if end of block */
-      if (e == 15)
-        break;
+	// do until end of block 
+	while (TRUE)
+	{
+		if (NeedBits((unsigned)bl, &b, &k) == FALSE)
+			return(2);
+		if ((e = (t = tl + ((unsigned)b & ml))->e) > 16)
+			do {
+				if (e == 99)
+					return(1);
+				DUMPBITS(t->b)
+					e -= 16;
+				if (NeedBits(e, &b, &k) == FALSE)
+					return(2);
+			} while ((e = (t = t->v.t + ((unsigned)b & mask_bits[e]))->e) > 16);
+			DUMPBITS(t->b)
+				if (e == 16)                /* then it's a literal */
+				{
+					m_pcOutBuf[w++] = (unsigned char)t->v.n;
+					if (w == WSIZE)
+					{
+						flush_output(w);
+						w = 0;
+					}
+				}
+				else                        /* it's an EOB or a length */
+				{
+					/* exit if end of block */
+					if (e == 15)
+						break;
 
-      /* get length of block to copy */
-      if(NeedBits(e,&b,&k)==FALSE)
-        return(2);
-      n = t->v.n + ((unsigned)b & mask_bits[e]);
-      DUMPBITS(e);
+					/* get length of block to copy */
+					if (NeedBits(e, &b, &k) == FALSE)
+						return(2);
+					n = t->v.n + ((unsigned)b & mask_bits[e]);
+					DUMPBITS(e);
 
-      /* decode distance of block to copy */
-      if(NeedBits((unsigned)bd,&b,&k)==FALSE)
-        return(2);
-      if ((e = (t = td + ((unsigned)b & md))->e) > 16)
-        do {
-          if (e == 99)
-            return 1;
-          DUMPBITS(t->b)
-          e -= 16;
-          if(NeedBits(e,&b,&k)==FALSE)
-            return(2);
-        } while ((e = (t = t->v.t + ((unsigned)b & mask_bits[e]))->e) > 16);
-      DUMPBITS(t->b)
-      if(NeedBits(e,&b,&k)==FALSE)
-        return(2);
-      d = w - t->v.n - ((unsigned)b & mask_bits[e]);
-      DUMPBITS(e)
-/*      Tracevv((stderr,"\\[%d,%d]", w-d, n));*/
+					/* decode distance of block to copy */
+					if (NeedBits((unsigned)bd, &b, &k) == FALSE)
+						return(2);
+					if ((e = (t = td + ((unsigned)b & md))->e) > 16)
+						do {
+							if (e == 99)
+								return 1;
+							DUMPBITS(t->b)
+								e -= 16;
+							if (NeedBits(e, &b, &k) == FALSE)
+								return(2);
+						} while ((e = (t = t->v.t + ((unsigned)b & mask_bits[e]))->e) > 16);
+						DUMPBITS(t->b)
+							if (NeedBits(e, &b, &k) == FALSE)
+								return(2);
+						d = w - t->v.n - ((unsigned)b & mask_bits[e]);
+						DUMPBITS(e)
+							/*      Tracevv((stderr,"\\[%d,%d]", w-d, n));*/
 
-      /* do the copy */
-      do {
-        n -= (e = (e = WSIZE - ((d &= WSIZE-1) > w ? d : w)) > n ? n : e);
+								  /* do the copy */
+							do {
+								n -= (e = (e = WSIZE - ((d &= WSIZE - 1) > w ? d : w)) > n ? n : e);
 #if !defined(NOMEMCPY) && !defined(DEBUG)
-        // (this test assumes unsigned comparison) 
-        if (w - d >= e)         
-        {
-          memcpy(m_pcOutBuf+w,m_pcOutBuf+d,(size_t)e);
-          w += e;
-          d += e;
-        }
-        else                      /* do it slow to avoid memcpy() overlap */
+								// (this test assumes unsigned comparison) 
+								if (w - d >= e)
+								{
+									memcpy(m_pcOutBuf + w, m_pcOutBuf + d, (size_t)e);
+									w += e;
+									d += e;
+								}
+								else                      /* do it slow to avoid memcpy() overlap */
 #endif /* !NOMEMCPY */
-          do
-          {
-            m_pcOutBuf[w++]=m_pcOutBuf[d++];
-          }
-          while (--e);
-        if (w == WSIZE)
-        {
-          flush_output(w);
-          w = 0;
-        }
-      }
-      while(n);
-    }
-  }
+									do
+									{
+										m_pcOutBuf[w++] = m_pcOutBuf[d++];
+									} while (--e);
+									if (w == WSIZE)
+									{
+										flush_output(w);
+										w = 0;
+									}
+							} while (n);
+				}
+	}
 
 
-  // restore the globals from the locals 
-  m_OutCount=w;                 
-  // restore global bit buffer       
-  bb = b;                       
-  bk = k;
+	// restore the globals from the locals 
+	m_OutCount = w;
+	// restore global bit buffer       
+	bb = b;
+	bk = k;
 
-  // done 
-  return(0);
+	// done 
+	return(0);
 }

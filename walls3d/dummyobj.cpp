@@ -28,9 +28,9 @@
 
 
 
-void DummyObject::print ()
+void DummyObject::print()
 {
-  cout << "Dummyobject. ";
+	cout << "Dummyobject. ";
 
-  Object3D::printobj ();  // name, number, channels
+	Object3D::printobj();  // name, number, channels
 }

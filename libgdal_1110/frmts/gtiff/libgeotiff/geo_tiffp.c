@@ -15,26 +15,26 @@
  * notice accompanies any products derived therefrom.
  *
  **********************************************************************/
- 
+
 #include "geotiff.h"    /* public GTIFF interface */
 
 #include "geo_tiffp.h"  /* Private TIFF interface */
 #include "geo_keyp.h"   /* Private GTIFF interface */
 
-/* tiff size array global */
+ /* tiff size array global */
 gsize_t _gtiff_size[] = { 0, 1, 2, 4, 8, 1, 4, 8, 1, 2, 4, 1 };
 
-static int        _GTIFGetField (tiff_t *tif, pinfo_t tag, int *count, void *value );
-static int        _GTIFSetField (tiff_t *tif, pinfo_t tag, int  count, void *value );
-static tagtype_t  _GTIFTagType  (tiff_t *tif, pinfo_t tag);
+static int        _GTIFGetField(tiff_t *tif, pinfo_t tag, int *count, void *value);
+static int        _GTIFSetField(tiff_t *tif, pinfo_t tag, int  count, void *value);
+static tagtype_t  _GTIFTagType(tiff_t *tif, pinfo_t tag);
 
 /*
- * Set up default TIFF handlers. 
+ * Set up default TIFF handlers.
  */
 void _GTIFSetDefaultTIFF(TIFFMethod *method)
 {
 	if (!method) return;
-	
+
 	method->get = _GTIFGetField;
 	method->set = _GTIFSetField;
 	method->type = _GTIFTagType;
@@ -42,19 +42,19 @@ void _GTIFSetDefaultTIFF(TIFFMethod *method)
 
 gdata_t _GTIFcalloc(gsize_t size)
 {
-    gdata_t data=(gdata_t)_TIFFmalloc((tsize_t)size);
-	if (data) _TIFFmemset((tdata_t)data,0,(tsize_t)size);
+	gdata_t data = (gdata_t)_TIFFmalloc((tsize_t)size);
+	if (data) _TIFFmemset((tdata_t)data, 0, (tsize_t)size);
 	return data;
 }
 
 gdata_t _GTIFrealloc(gdata_t ptr, gsize_t size)
 {
-    return( _TIFFrealloc((tdata_t)ptr, (tsize_t) size) );
+	return(_TIFFrealloc((tdata_t)ptr, (tsize_t)size));
 }
 
-void _GTIFmemcpy(gdata_t out,gdata_t in,gsize_t size)
+void _GTIFmemcpy(gdata_t out, gdata_t in, gsize_t size)
 {
-	_TIFFmemcpy((tdata_t)out,(tdata_t)in,(tsize_t)size);
+	_TIFFmemcpy((tdata_t)out, (tdata_t)in, (tsize_t)size);
 }
 
 void _GTIFFree(gdata_t data)
@@ -69,47 +69,47 @@ void _GTIFFree(gdata_t data)
  * containing the values. Allocate a copy of the actual
  * buffer, sized up for updating.
  */
-static int _GTIFGetField (tiff_t *tif, pinfo_t tag, int *count, void *val )
+static int _GTIFGetField(tiff_t *tif, pinfo_t tag, int *count, void *val)
 {
 	int status;
-	unsigned short scount=0;
+	unsigned short scount = 0;
 	char *tmp;
 	char *value;
-	gsize_t size = _gtiff_size[_GTIFTagType (tif,tag)];
-	
-	if (_GTIFTagType(tif,  tag) == TYPE_ASCII)
+	gsize_t size = _gtiff_size[_GTIFTagType(tif, tag)];
+
+	if (_GTIFTagType(tif, tag) == TYPE_ASCII)
 	{
-		status = TIFFGetField((TIFF *)tif,tag,&tmp);
+		status = TIFFGetField((TIFF *)tif, tag, &tmp);
 		if (!status) return status;
-		scount = (unsigned short) (strlen(tmp)+1);
+		scount = (unsigned short)(strlen(tmp) + 1);
 	}
-	else status = TIFFGetField((TIFF *)tif,tag,&scount,&tmp);
+	else status = TIFFGetField((TIFF *)tif, tag, &scount, &tmp);
 	if (!status) return status;
-	
+
 	*count = scount;
 
-	value = (char *)_GTIFcalloc( (scount+MAX_VALUES)*size);
+	value = (char *)_GTIFcalloc((scount + MAX_VALUES)*size);
 	if (!value) return 0;
-	
-	_TIFFmemcpy( value, tmp,  size * scount);
-	
+
+	_TIFFmemcpy(value, tmp, size * scount);
+
 	*(char **)val = value;
 	return status;
 }
 
-/* 
+/*
  * Set a GeoTIFF TIFF field.
  */
-static int _GTIFSetField (tiff_t *tif, pinfo_t tag, int count, void *value )
+static int _GTIFSetField(tiff_t *tif, pinfo_t tag, int count, void *value)
 {
 	int status;
-	unsigned short scount = (unsigned short) count;
+	unsigned short scount = (unsigned short)count;
 
 	/* libtiff ASCII uses null-delimiter */
-	if (_GTIFTagType(tif,  tag) == TYPE_ASCII)
-		status = TIFFSetField((TIFF *)tif,tag,value);
-	else 
-		status = TIFFSetField((TIFF *)tif,tag,scount,value);
+	if (_GTIFTagType(tif, tag) == TYPE_ASCII)
+		status = TIFFSetField((TIFF *)tif, tag, value);
+	else
+		status = TIFFSetField((TIFF *)tif, tag, scount, value);
 	return status;
 }
 
@@ -123,23 +123,23 @@ static int _GTIFSetField (tiff_t *tif, pinfo_t tag, int count, void *value )
  *  is provided for those TIFF implementations that provide
  *  for tag-type queries.
  */
-static tagtype_t  _GTIFTagType  (tiff_t *tif, pinfo_t tag)
+static tagtype_t  _GTIFTagType(tiff_t *tif, pinfo_t tag)
 {
 	tagtype_t ttype;
 
-	(void) tif; /* dummy reference */
-	
+	(void)tif; /* dummy reference */
+
 	switch (tag)
 	{
-		case GTIFF_ASCIIPARAMS:    ttype=TYPE_ASCII; break;
-		case GTIFF_PIXELSCALE:
-		case GTIFF_TRANSMATRIX:
-		case GTIFF_TIEPOINTS:
-		case GTIFF_DOUBLEPARAMS:   ttype=TYPE_DOUBLE; break;
-		case GTIFF_GEOKEYDIRECTORY: ttype=TYPE_SHORT; break;
-		default: ttype = TYPE_UNKNOWN;
+	case GTIFF_ASCIIPARAMS:    ttype = TYPE_ASCII; break;
+	case GTIFF_PIXELSCALE:
+	case GTIFF_TRANSMATRIX:
+	case GTIFF_TIEPOINTS:
+	case GTIFF_DOUBLEPARAMS:   ttype = TYPE_DOUBLE; break;
+	case GTIFF_GEOKEYDIRECTORY: ttype = TYPE_SHORT; break;
+	default: ttype = TYPE_UNKNOWN;
 	}
-	
+
 	return ttype;
 }
 

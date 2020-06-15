@@ -2,13 +2,13 @@
 ** Copyright 2002 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:     $Archive: /NCS/Source/C/NCSEcw/NCSJP2/NCSJPCRGNMarker.cpp $
@@ -21,11 +21,11 @@
 #include "NCSJPCRGNMarker.h"
 #include "NCSJPC.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+ //////////////////////////////////////////////////////////////////////
+ // Construction/Destruction
+ //////////////////////////////////////////////////////////////////////
 
-// Constructor
+ // Constructor
 CNCSJPCRGNMarker::CNCSJPCRGNMarker()
 {
 	// Initialise the base marker class members
@@ -49,29 +49,31 @@ CNCSError CNCSJPCRGNMarker::Parse(CNCSJPC &JPC, CNCSJPCIOStream &Stream)
 	m_bHaveMarker = true;
 
 	NCSJP2_CHECKIO_BEGIN(Error, Stream);
-		NCSJP2_CHECKIO(ReadUINT16(m_nLength));
+	NCSJP2_CHECKIO(ReadUINT16(m_nLength));
 
-		UINT8 t8;
+	UINT8 t8;
 
-		if(JPC.m_SIZ.m_nCsiz < 257) {
-			NCSJP2_CHECKIO(ReadUINT8(t8));
-			m_nCrgn = t8;
-		} else {
-			NCSJP2_CHECKIO(ReadUINT16(m_nCrgn));
-		}
-		
+	if (JPC.m_SIZ.m_nCsiz < 257) {
 		NCSJP2_CHECKIO(ReadUINT8(t8));
-		if(t8 == 0x0) {
-			m_eSrgn = IMPLICIT;
+		m_nCrgn = t8;
+	}
+	else {
+		NCSJP2_CHECKIO(ReadUINT16(m_nCrgn));
+	}
 
-			NCSJP2_CHECKIO(ReadUINT8(m_nSPrgn));
-		} else {
-			Error = NCS_FILEIO_ERROR;
-		}
+	NCSJP2_CHECKIO(ReadUINT8(t8));
+	if (t8 == 0x0) {
+		m_eSrgn = IMPLICIT;
 
-		if(Error == NCS_SUCCESS) {
-			m_bValid = true;
-		}
+		NCSJP2_CHECKIO(ReadUINT8(m_nSPrgn));
+	}
+	else {
+		Error = NCS_FILEIO_ERROR;
+	}
+
+	if (Error == NCS_SUCCESS) {
+		m_bValid = true;
+	}
 	NCSJP2_CHECKIO_END();
 	return(Error);
 }
@@ -84,16 +86,17 @@ CNCSError CNCSJPCRGNMarker::UnParse(CNCSJPC &JPC, CNCSJPCIOStream &Stream)
 
 	Error = CNCSJPCMarker::UnParse(JPC, Stream);
 	NCSJP2_CHECKIO_BEGIN(Error, Stream);
-		NCSJP2_CHECKIO(WriteUINT16(m_nLength));
+	NCSJP2_CHECKIO(WriteUINT16(m_nLength));
 
-		if(JPC.m_SIZ.m_nCsiz < 257) {
-			NCSJP2_CHECKIO(WriteUINT8((UINT8)m_nCrgn));
-		} else {
-			NCSJP2_CHECKIO(WriteUINT16(m_nCrgn));
-		}
-		
-		NCSJP2_CHECKIO(WriteUINT8((UINT8)m_eSrgn));
-		NCSJP2_CHECKIO(WriteUINT8(m_nSPrgn));
+	if (JPC.m_SIZ.m_nCsiz < 257) {
+		NCSJP2_CHECKIO(WriteUINT8((UINT8)m_nCrgn));
+	}
+	else {
+		NCSJP2_CHECKIO(WriteUINT16(m_nCrgn));
+	}
+
+	NCSJP2_CHECKIO(WriteUINT8((UINT8)m_eSrgn));
+	NCSJP2_CHECKIO(WriteUINT8(m_nSPrgn));
 	NCSJP2_CHECKIO_END();
 	return(Error);
 }

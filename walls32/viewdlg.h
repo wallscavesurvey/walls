@@ -10,9 +10,9 @@ struct VIEWFORMAT;
 class CViewDlg : public CDialog
 {
 	DECLARE_DYNAMIC(CViewDlg)
-// Construction
+	// Construction
 public:
-	CViewDlg(VIEWFORMAT *pVF,const char *pNameOfOrigin,CWnd* pParent = NULL);	// standard constructor
+	CViewDlg(VIEWFORMAT *pVF, const char *pNameOfOrigin, CWnd* pParent = NULL);	// standard constructor
 
 #ifdef CTLCOL
 	WNDPROC m_oldDlgProc;
@@ -20,9 +20,9 @@ public:
 #endif
 
 	BOOL m_bInches;
-	double m_fScaleRatio,m_fMetersPerCM;
+	double m_fScaleRatio, m_fMetersPerCM;
 
-	CLinkEditF m_leScaleRatio,m_leMetersPerCM;
+	CLinkEditF m_leScaleRatio, m_leMetersPerCM;
 
 	const char *m_pNameOfOrigin;
 	//static BOOL m_bScaleRatio;
@@ -43,9 +43,9 @@ public:
 
 private:
 	void RefreshPageUnits();
-	void SwitchPageUnits(UINT id,BOOL bInches);
+	void SwitchPageUnits(UINT id, BOOL bInches);
 
-// Implementation
+	// Implementation
 public:
 	void UpdateRatioFromMeters();
 	void UpdateMetersFromRatio();
@@ -54,26 +54,26 @@ protected:
 
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	VIEWFORMAT *m_pVF;
-	
+
 	UINT CheckData();
-	
-	void Enable(int id,BOOL bEnable)
+
+	void Enable(int id, BOOL bEnable)
 	{
-	   GetDlgItem(id)->EnableWindow(bEnable);
+		GetDlgItem(id)->EnableWindow(bEnable);
 	}
 
-    void SetCheck(int id,BOOL bChecked)
-    {
-       ((CButton *)GetDlgItem(id))->SetCheck(bChecked);
-    }
-    
-    BOOL GetCheck(int id)
-    {
-       return ((CButton *)GetDlgItem(id))->GetCheck();
-    }
-    
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
-   
+	void SetCheck(int id, BOOL bChecked)
+	{
+		((CButton *)GetDlgItem(id))->SetCheck(bChecked);
+	}
+
+	BOOL GetCheck(int id)
+	{
+		return ((CButton *)GetDlgItem(id))->GetCheck();
+	}
+
+	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+
 	// Generated message map functions
 	//{{AFX_MSG(CViewDlg)
 	virtual BOOL OnInitDialog();

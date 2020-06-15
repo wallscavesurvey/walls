@@ -31,7 +31,7 @@
 
 //StringKeyRefTree Seen;      // Links and Documents we have already seen
 
-const char* invisibleLink = "invisible"; 
+const char* invisibleLink = "invisible";
 
 
 /////////////////////////////////////////////////////////////////
@@ -39,25 +39,25 @@ const char* invisibleLink = "invisible";
 //
 BaseLinkNode* makeLinkNode(Anchor* a, Document* d)
 {
-/*
-    if (!a->LinkType().length() || a->LinkType() == "inline")
-        return new TextLinkNode(a);
-    else
-    if (a->LinkType() == "PostScript")
-        return new PSLinkNode(a);
-*/
-    BaseLinkNode* n = 0;
+	/*
+		if (!a->LinkType().length() || a->LinkType() == "inline")
+			return new TextLinkNode(a);
+		else
+		if (a->LinkType() == "PostScript")
+			return new PSLinkNode(a);
+	*/
+	BaseLinkNode* n = 0;
 
-    switch(d->getType())
-    {
-        case TextDocumentType       : n = new TextLinkNode(a); break;
-        case PostScriptDocumentType : n = new PSLinkNode(a); break;
-        case ImageDocumentType      : n = new ImageLinkNode(a); break;
+	switch (d->getType())
+	{
+	case TextDocumentType: n = new TextLinkNode(a); break;
+	case PostScriptDocumentType: n = new PSLinkNode(a); break;
+	case ImageDocumentType: n = new ImageLinkNode(a); break;
 
-        default : n = 0;
-    }
+	default: n = 0;
+	}
 
-    return n;
+	return n;
 }
 
 
@@ -66,95 +66,95 @@ BaseLinkNode* makeLinkNode(Anchor* a, Document* d)
 //
 BaseLinkNode::BaseLinkNode(Anchor* a) : DLListNode()
 {
-    docType_  = HGObjectType;
-    seen_     = 0;
+	docType_ = HGObjectType;
+	seen_ = 0;
 
-    if (a)
-    {
-        srcId_    = a->IDString();
-        destId_   = a->Dest();
-        if (!destId_.length())
-            destId_ = a->Hint().gRight(4);  // not a Hyper-G link, but a URL!
-        linkType_ = a->LinkType();
-        if (linkType_ == "intag")
-        {
-            if (Object(a->Info()).field("TagAttr=") == "SRC")
-                linkType_ = "inline";
-        }
+	if (a)
+	{
+		srcId_ = a->IDString();
+		destId_ = a->Dest();
+		if (!destId_.length())
+			destId_ = a->Hint().gRight(4);  // not a Hyper-G link, but a URL!
+		linkType_ = a->LinkType();
+		if (linkType_ == "intag")
+		{
+			if (Object(a->Info()).field("TagAttr=") == "SRC")
+				linkType_ = "inline";
+		}
 
-        UObjectPtr destUObj;
-        HGObject::cachedObjects_.find(destId_, destUObj);
-        destObj_ = destUObj;
-        if (destObj_.Obj())
-            seen_ = destObj_.Obj()->seen();
-//        else
-//        KeyRefPtr dummy;
-//        seen_     = Seen.find( destId_, dummy);
-    }
+		UObjectPtr destUObj;
+		HGObject::cachedObjects_.find(destId_, destUObj);
+		destObj_ = destUObj;
+		if (destObj_.Obj())
+			seen_ = destObj_.Obj()->seen();
+		//        else
+		//        KeyRefPtr dummy;
+		//        seen_     = Seen.find( destId_, dummy);
+	}
 
-    srcData_ = destData_ = 0;
+	srcData_ = destData_ = 0;
 }
 
 BaseLinkNode::BaseLinkNode(BaseLinkNode* node) : DLListNode()
 {
-    if (node)
-    {
-        srcId_ = node->srcId_;
-        destId_ = node->destId_;
-        linkType_ = node->linkType_;
-        docType_ = node->docType_;
-        seen_ = node->seen_;
-        destObj_ = node->destObj_;
-    }
-    else
-        seen_     = 0;
+	if (node)
+	{
+		srcId_ = node->srcId_;
+		destId_ = node->destId_;
+		linkType_ = node->linkType_;
+		docType_ = node->docType_;
+		seen_ = node->seen_;
+		destObj_ = node->destObj_;
+	}
+	else
+		seen_ = 0;
 
-    srcData_ = 0;
-    destData_ = 0;
+	srcData_ = 0;
+	destData_ = 0;
 }
 
 BaseLinkNode::~BaseLinkNode()
 {
-    delete srcData_;
-    delete destData_;
+	delete srcData_;
+	delete destData_;
 }
 
 void BaseLinkNode::markSeen()
 {
-    seen_ = 1;
-    if (destObj_.Obj())
-        destObj_.Obj()->markSeen();
+	seen_ = 1;
+	if (destObj_.Obj())
+		destObj_.Obj()->markSeen();
 }
 
 void BaseLinkNode::updateStatus()
 {
-/*
-    KeyRefPtr dummy;
-    seen_     = Seen.find( destId_, dummy);
-*/
-    UObjectPtr destUObj;
-    HGObject::cachedObjects_.find(destId_, destUObj);
-    destObj_ = destUObj;
-    if (destObj_.Obj())
-        seen_ = destObj_.Obj()->seen();
+	/*
+		KeyRefPtr dummy;
+		seen_     = Seen.find( destId_, dummy);
+	*/
+	UObjectPtr destUObj;
+	HGObject::cachedObjects_.find(destId_, destUObj);
+	destObj_ = destUObj;
+	if (destObj_.Obj())
+		seen_ = destObj_.Obj()->seen();
 }
 
 
 boolean BaseLinkNode::alreadySeen()
 {
-    if (seen_)              // required if we manually want to mark link as seen!
-        return seen_;       // (pre-marking)
+	if (seen_)              // required if we manually want to mark link as seen!
+		return seen_;       // (pre-marking)
 
-    if (destObj_.Obj())
-        return destObj_.Obj()->seen();
+	if (destObj_.Obj())
+		return destObj_.Obj()->seen();
 
-    UObjectPtr destUObj;
-    HGObject::cachedObjects_.find(destId_, destUObj);
-    destObj_ = destUObj;
-    if (destObj_.Obj())
-        return destObj_.Obj()->seen();
-    else
-        return 0;
+	UObjectPtr destUObj;
+	HGObject::cachedObjects_.find(destId_, destUObj);
+	destObj_ = destUObj;
+	if (destObj_.Obj())
+		return destObj_.Obj()->seen();
+	else
+		return 0;
 }
 
 
@@ -162,57 +162,57 @@ boolean BaseLinkNode::alreadySeen()
 // Class LinkList: 
 //
 
-BaseLinkNode* LinkList::find(BaseLinkData* lData) 
+BaseLinkNode* LinkList::find(BaseLinkData* lData)
 {
-    // find first node with offset >= this offset
+	// find first node with offset >= this offset
 	BaseLinkNode* n = getFirst();
-    for (; n && n->getLinkData()->operator <(lData); n = getNext(n)) ;
-    return n;
+	for (; n && n->getLinkData()->operator <(lData); n = getNext(n));
+	return n;
 }
 
-void LinkList::insert(BaseLinkNode* n) 
+void LinkList::insert(BaseLinkNode* n)
 {
-    if (!n)
-        return;
+	if (!n)
+		return;
 
-    // insert at (AFTER) correct position so that ordering remains intact
-    BaseLinkNode* t = find(n->getLinkData());
-    if (t) 
-    {
-        for (; t && t->getLinkData()->operator <(n->getLinkData()); 
-             t = getNext(t))
-        {
-            if (n->getLinkData() == t->getLinkData() &&
-                n->getDestId() == t->getDestId())
-                return; // same link already included!
-        }
+	// insert at (AFTER) correct position so that ordering remains intact
+	BaseLinkNode* t = find(n->getLinkData());
+	if (t)
+	{
+		for (; t && t->getLinkData()->operator <(n->getLinkData());
+			t = getNext(t))
+		{
+			if (n->getLinkData() == t->getLinkData() &&
+				n->getDestId() == t->getDestId())
+				return; // same link already included!
+		}
 
-        if (t)
-            insertBefore(n, t);
-    }
-    else
-        addTail( n);
+		if (t)
+			insertBefore(n, t);
+	}
+	else
+		addTail(n);
 }
 
 
 void LinkList::insert(Anchor* anchor, Document* doc)
 {
-    if (anchor->IsSrc())
-        insert(makeLinkNode(anchor, doc));
-    else    // we have a destination anchor !
-    {
-        // find out whether we have a source anchor which points to this destination anchor !
-        for (BaseLinkNode* n = getFirst(); n; n = getNext(n))
-            if (n && n->getDestId() == anchor->IDString()) // ok, we found a source anchor that fits !
-                n->setDestData(anchor);
-    }
+	if (anchor->IsSrc())
+		insert(makeLinkNode(anchor, doc));
+	else    // we have a destination anchor !
+	{
+		// find out whether we have a source anchor which points to this destination anchor !
+		for (BaseLinkNode* n = getFirst(); n; n = getNext(n))
+			if (n && n->getDestId() == anchor->IDString()) // ok, we found a source anchor that fits !
+				n->setDestData(anchor);
+	}
 }
 
 
 void LinkList::updateLinksStatus()
 {
-    for (BaseLinkNode* n = getFirst(); n; n = getNext(n))
-        n->updateStatus();
+	for (BaseLinkNode* n = getFirst(); n; n = getNext(n))
+		n->updateStatus();
 }
 
 
@@ -222,12 +222,12 @@ void LinkList::updateLinksStatus()
 
 int TextLinkData::operator <(BaseLinkData* d)
 {
-    return startOffset_ < ((TextLinkData*)d)->startOffset_ ? 1 : 0;
+	return startOffset_ < ((TextLinkData*)d)->startOffset_ ? 1 : 0;
 }
 
 int TextLinkData::operator >(BaseLinkData* d)
 {
-    return startOffset_ > ((TextLinkData*)d)->startOffset_ ? 1 : 0;
+	return startOffset_ > ((TextLinkData*)d)->startOffset_ ? 1 : 0;
 }
 
 
@@ -237,43 +237,43 @@ int TextLinkData::operator >(BaseLinkData* d)
 
 TextLinkNode::TextLinkNode(Anchor* src) : BaseLinkNode(src)
 {
-    docType_ = TextDocumentType;
-    srcData_ = makeLinkData(src);
+	docType_ = TextDocumentType;
+	srcData_ = makeLinkData(src);
 }
 
 
 TextLinkNode::TextLinkNode(BaseLinkNode* node) : BaseLinkNode(node)
 {
-    if (docType_ == TextDocumentType)
-    {
-        if (node->getSrcData())
-            srcData_ = new TextLinkData(((TextLinkData*)node->getSrcData())->startOffset_, 
-                                        ((TextLinkData*)node->getSrcData())->endOffset_);
+	if (docType_ == TextDocumentType)
+	{
+		if (node->getSrcData())
+			srcData_ = new TextLinkData(((TextLinkData*)node->getSrcData())->startOffset_,
+			((TextLinkData*)node->getSrcData())->endOffset_);
 
-        if (node->getDestData())
-            destData_ = new TextLinkData(((TextLinkData*)node->getDestData())->startOffset_, 
-                                         ((TextLinkData*)node->getDestData())->endOffset_);
-    }
+		if (node->getDestData())
+			destData_ = new TextLinkData(((TextLinkData*)node->getDestData())->startOffset_,
+			((TextLinkData*)node->getDestData())->endOffset_);
+	}
 }
 
 BaseLinkData* TextLinkNode::makeLinkData(Anchor* anch)
 {
-    RString pos = anch->Position();
-    long startpos = 0;
-    long endpos = 0;
+	RString pos = anch->Position();
+	long startpos = 0;
+	long endpos = 0;
 
-    if (pos != invisibleLink)
-        if (sscanf(pos.string(), "%ld %ld", &startpos, &endpos) != 2)
-            sscanf(pos.string(), "0x%lx 0x%lx", &startpos, &endpos);
+	if (pos != invisibleLink)
+		if (sscanf(pos.string(), "%ld %ld", &startpos, &endpos) != 2)
+			sscanf(pos.string(), "0x%lx 0x%lx", &startpos, &endpos);
 
-    BaseLinkData* lData = new TextLinkData(startpos, endpos);
+	BaseLinkData* lData = new TextLinkData(startpos, endpos);
 
-    if (lData)
-        TRACE("TextLinkNode::TextLinkNode: source: %s, dest.: %s, type: %s, offset:%d-%d, seen:%d\n", 
-              (const char*)srcId_, (const char*)destId_, (const char*)linkType_, 
-              ((TextLinkData*)lData)->startOffset_, ((TextLinkData*)lData)->endOffset_, (int)alreadySeen());
+	if (lData)
+		TRACE("TextLinkNode::TextLinkNode: source: %s, dest.: %s, type: %s, offset:%d-%d, seen:%d\n",
+		(const char*)srcId_, (const char*)destId_, (const char*)linkType_,
+			((TextLinkData*)lData)->startOffset_, ((TextLinkData*)lData)->endOffset_, (int)alreadySeen());
 
-    return lData;
+	return lData;
 }
 
 /////////////////////////////////////////////////////////////////
@@ -282,39 +282,39 @@ BaseLinkData* TextLinkNode::makeLinkData(Anchor* anch)
 
 int PSLinkData::operator <(BaseLinkData* d)
 {
-    if (p_ < ((PSLinkData*)d)->p_)  // check page !
-        return 1;
-    else
-    if (p_ > ((PSLinkData*)d)->p_)
-        return 0;
-    else
-    if (x_ < ((PSLinkData*)d)->x_)  // same page, so check x !
-        return 1;
-    else
-    if (x_ > ((PSLinkData*)d)->x_)
-        return 0;
-    else
-    if (y_ < ((PSLinkData*)d)->y_)  // same x, so check y !
-        return 1;
-    else
-    if (y_ > ((PSLinkData*)d)->y_)
-        return 0;
-    else
-    if (w_ < ((PSLinkData*)d)->w_)  // same y, so check w !
-        return 1;
-    else
-    if (w_ > ((PSLinkData*)d)->w_)
-        return 0;
-    else
-    if (h_ < ((PSLinkData*)d)->h_)  // same w, so check h !
-        return 1;
-    else
-        return 0;                   // equal or less, so take less (we can't express eq.)
+	if (p_ < ((PSLinkData*)d)->p_)  // check page !
+		return 1;
+	else
+		if (p_ > ((PSLinkData*)d)->p_)
+			return 0;
+		else
+			if (x_ < ((PSLinkData*)d)->x_)  // same page, so check x !
+				return 1;
+			else
+				if (x_ > ((PSLinkData*)d)->x_)
+					return 0;
+				else
+					if (y_ < ((PSLinkData*)d)->y_)  // same x, so check y !
+						return 1;
+					else
+						if (y_ > ((PSLinkData*)d)->y_)
+							return 0;
+						else
+							if (w_ < ((PSLinkData*)d)->w_)  // same y, so check w !
+								return 1;
+							else
+								if (w_ > ((PSLinkData*)d)->w_)
+									return 0;
+								else
+									if (h_ < ((PSLinkData*)d)->h_)  // same w, so check h !
+										return 1;
+									else
+										return 0;                   // equal or less, so take less (we can't express eq.)
 }
 
 int PSLinkData::operator >(BaseLinkData* d)
 {
-    return PSLinkData::operator <(d) ? 0 : 1;
+	return PSLinkData::operator <(d) ? 0 : 1;
 }
 
 
@@ -324,71 +324,71 @@ int PSLinkData::operator >(BaseLinkData* d)
 
 PSLinkNode::PSLinkNode(Anchor* a) : BaseLinkNode(a)
 {
-    docType_ = PostScriptDocumentType;
-    srcData_ = makeLinkData(a);
+	docType_ = PostScriptDocumentType;
+	srcData_ = makeLinkData(a);
 }
 
 PSLinkNode::PSLinkNode(BaseLinkNode* node) : BaseLinkNode(node)
 {
-    if (docType_ == PostScriptDocumentType)
-    {
-        if (node->getSrcData())
-            srcData_ = new PSLinkData(((PSLinkData*)node->getSrcData())->p_, 
-                                      ((PSLinkData*)node->getSrcData())->x_, 
-                                      ((PSLinkData*)node->getSrcData())->y_, 
-                                      ((PSLinkData*)node->getSrcData())->w_, 
-                                      ((PSLinkData*)node->getSrcData())->h_);
+	if (docType_ == PostScriptDocumentType)
+	{
+		if (node->getSrcData())
+			srcData_ = new PSLinkData(((PSLinkData*)node->getSrcData())->p_,
+			((PSLinkData*)node->getSrcData())->x_,
+				((PSLinkData*)node->getSrcData())->y_,
+				((PSLinkData*)node->getSrcData())->w_,
+				((PSLinkData*)node->getSrcData())->h_);
 
-        if (node->getDestData())
-            destData_ = new PSLinkData(((PSLinkData*)node->getDestData())->p_, 
-                                       ((PSLinkData*)node->getDestData())->x_, 
-                                       ((PSLinkData*)node->getDestData())->y_, 
-                                       ((PSLinkData*)node->getDestData())->w_, 
-                                       ((PSLinkData*)node->getDestData())->h_);
-    }
+		if (node->getDestData())
+			destData_ = new PSLinkData(((PSLinkData*)node->getDestData())->p_,
+			((PSLinkData*)node->getDestData())->x_,
+				((PSLinkData*)node->getDestData())->y_,
+				((PSLinkData*)node->getDestData())->w_,
+				((PSLinkData*)node->getDestData())->h_);
+	}
 }
 
 BaseLinkData* PSLinkNode::makeLinkData(Anchor* a)
 {
-    long p = 0;         // postscript page
-    long x = 0;         // upper
-    long y = 0;         // left
-    long w = 0;         // width
-    long h = 0;         // height of link rectangle
-    int ret = 0;
-    int iVersion=1;
+	long p = 0;         // postscript page
+	long x = 0;         // upper
+	long y = 0;         // left
+	long w = 0;         // width
+	long h = 0;         // height of link rectangle
+	int ret = 0;
+	int iVersion = 1;
 
-    // is the link version 2.0?
-    if(!strncmp((const char*)a->Position(),"V20@",4))
-    {
-      // V2.0
-      iVersion=2;
-      if(a->Position() != invisibleLink)
-        ret=sscanf(((const char*)a->Position())+4, "%d:%d,%d,%d,%d", &p, &x, &y, &w, &h);
-    }
-    else
-      // V1.0
-      if (a->Position() != invisibleLink)
-        ret = sscanf((const char*)a->Position(), "%d:%d,%d,%d,%d", &p, &x, &y, &w, &h);
+	// is the link version 2.0?
+	if (!strncmp((const char*)a->Position(), "V20@", 4))
+	{
+		// V2.0
+		iVersion = 2;
+		if (a->Position() != invisibleLink)
+			ret = sscanf(((const char*)a->Position()) + 4, "%d:%d,%d,%d,%d", &p, &x, &y, &w, &h);
+	}
+	else
+		// V1.0
+		if (a->Position() != invisibleLink)
+			ret = sscanf((const char*)a->Position(), "%d:%d,%d,%d,%d", &p, &x, &y, &w, &h);
 
 
 
-    BaseLinkData* lData = new PSLinkData(iVersion,p, x, y, w, h);
-    if (ret == 5)
-    {
-        TRACE("PSLinkNode::PSLinkNode: source: %s, dest.: %s, type: %s, version:%d.0 position:%d:%d,%d,%d,%d, seen:%d\n", 
-              (const char*)srcId_, (const char*)destId_, (const char*)linkType_, 
-              ((PSLinkData*)lData)->iVersion_,
-              ((PSLinkData*)lData)->p_, ((PSLinkData*)lData)->x_, ((PSLinkData*)lData)->y_, 
-              ((PSLinkData*)lData)->w_, ((PSLinkData*)lData)->h_, (int)alreadySeen());
-        return lData;
-    }
-    else
-    {
-        TRACE("Error: PSLinkNode::PSLinkNode: source: %s, dest.: %s, type: %s, position:%s, seen:%d\n", 
-              (const char*)srcId_, (const char*)destId_, (const char*)linkType_, (const char*)a->Position(), (int)alreadySeen());
-        return lData;
-    }
+	BaseLinkData* lData = new PSLinkData(iVersion, p, x, y, w, h);
+	if (ret == 5)
+	{
+		TRACE("PSLinkNode::PSLinkNode: source: %s, dest.: %s, type: %s, version:%d.0 position:%d:%d,%d,%d,%d, seen:%d\n",
+			(const char*)srcId_, (const char*)destId_, (const char*)linkType_,
+			((PSLinkData*)lData)->iVersion_,
+			((PSLinkData*)lData)->p_, ((PSLinkData*)lData)->x_, ((PSLinkData*)lData)->y_,
+			((PSLinkData*)lData)->w_, ((PSLinkData*)lData)->h_, (int)alreadySeen());
+		return lData;
+	}
+	else
+	{
+		TRACE("Error: PSLinkNode::PSLinkNode: source: %s, dest.: %s, type: %s, position:%s, seen:%d\n",
+			(const char*)srcId_, (const char*)destId_, (const char*)linkType_, (const char*)a->Position(), (int)alreadySeen());
+		return lData;
+	}
 }
 
 /////////////////////////////////////////////////////////////////
@@ -397,56 +397,56 @@ BaseLinkData* PSLinkNode::makeLinkData(Anchor* a)
 
 int ImageLinkData::operator <(BaseLinkData* d)
 {
-    float myX, yourX, myY, yourY;
-    if (type_ == CircleType)
-    {
-        myX = x_ - rw_;
-        myY = y_ + rw_;;
-    }
-    else
-    {
-        myX = x_;
-        myY = y_;
-    }
+	float myX, yourX, myY, yourY;
+	if (type_ == CircleType)
+	{
+		myX = x_ - rw_;
+		myY = y_ + rw_;;
+	}
+	else
+	{
+		myX = x_;
+		myY = y_;
+	}
 
-    if (((ImageLinkData*)d)->type_ == CircleType)
-    {
-        yourX = ((ImageLinkData*)d)->x_ + ((ImageLinkData*)d)->rw_;
-        yourY = ((ImageLinkData*)d)->y_ - ((ImageLinkData*)d)->rw_;
-    }
-    else
-    {
-        yourX = ((ImageLinkData*)d)->x_;
-        yourY = ((ImageLinkData*)d)->y_;
-    }
+	if (((ImageLinkData*)d)->type_ == CircleType)
+	{
+		yourX = ((ImageLinkData*)d)->x_ + ((ImageLinkData*)d)->rw_;
+		yourY = ((ImageLinkData*)d)->y_ - ((ImageLinkData*)d)->rw_;
+	}
+	else
+	{
+		yourX = ((ImageLinkData*)d)->x_;
+		yourY = ((ImageLinkData*)d)->y_;
+	}
 
-    if (myX < yourX)   // check x !
-        return 1;
-    else
-    if (myX > yourX)
-        return 0;
-    else
-    if (myY < yourY)   // same x, so check y !
-        return 1;
-    else
-    if (myY > yourY)
-        return 0;
-    else
-    if (rw_ < ((ImageLinkData*)d)->rw_) // same y, so check rw !
-        return 1;
-    else
-    if (rw_ > ((ImageLinkData*)d)->rw_)
-        return 0;
-    else
-    if (h_ < ((ImageLinkData*)d)->h_)   // same rw, so check h !
-        return 1;
-    else
-        return 0;                       // equal or less, so take less (we can't express eq.)
+	if (myX < yourX)   // check x !
+		return 1;
+	else
+		if (myX > yourX)
+			return 0;
+		else
+			if (myY < yourY)   // same x, so check y !
+				return 1;
+			else
+				if (myY > yourY)
+					return 0;
+				else
+					if (rw_ < ((ImageLinkData*)d)->rw_) // same y, so check rw !
+						return 1;
+					else
+						if (rw_ > ((ImageLinkData*)d)->rw_)
+							return 0;
+						else
+							if (h_ < ((ImageLinkData*)d)->h_)   // same rw, so check h !
+								return 1;
+							else
+								return 0;                       // equal or less, so take less (we can't express eq.)
 }
 
 int ImageLinkData::operator >(BaseLinkData* d)
 {
-    return ImageLinkData::operator <(d) ? 0 : 1;
+	return ImageLinkData::operator <(d) ? 0 : 1;
 }
 
 
@@ -456,64 +456,64 @@ int ImageLinkData::operator >(BaseLinkData* d)
 
 ImageLinkNode::ImageLinkNode(Anchor* a) : BaseLinkNode(a)
 {
-    docType_ = ImageDocumentType;
-    srcData_ = makeLinkData(a);
+	docType_ = ImageDocumentType;
+	srcData_ = makeLinkData(a);
 }
 
 ImageLinkNode::ImageLinkNode(BaseLinkNode* node) : BaseLinkNode(node)
 {
-    if (docType_ == ImageDocumentType)
-    {
-        if (node->getSrcData())
-            srcData_ = new ImageLinkData(((ImageLinkData*)node->getSrcData())->type_, 
-                                      ((ImageLinkData*)node->getSrcData())->x_, 
-                                      ((ImageLinkData*)node->getSrcData())->y_, 
-                                      ((ImageLinkData*)node->getSrcData())->rw_, 
-                                      ((ImageLinkData*)node->getSrcData())->h_);
+	if (docType_ == ImageDocumentType)
+	{
+		if (node->getSrcData())
+			srcData_ = new ImageLinkData(((ImageLinkData*)node->getSrcData())->type_,
+			((ImageLinkData*)node->getSrcData())->x_,
+				((ImageLinkData*)node->getSrcData())->y_,
+				((ImageLinkData*)node->getSrcData())->rw_,
+				((ImageLinkData*)node->getSrcData())->h_);
 
-        if (node->getDestData())
-            destData_ = new ImageLinkData(((ImageLinkData*)node->getDestData())->type_, 
-                                       ((ImageLinkData*)node->getDestData())->x_, 
-                                       ((ImageLinkData*)node->getDestData())->y_, 
-                                       ((ImageLinkData*)node->getDestData())->rw_, 
-                                       ((ImageLinkData*)node->getDestData())->h_);
-    }
+		if (node->getDestData())
+			destData_ = new ImageLinkData(((ImageLinkData*)node->getDestData())->type_,
+			((ImageLinkData*)node->getDestData())->x_,
+				((ImageLinkData*)node->getDestData())->y_,
+				((ImageLinkData*)node->getDestData())->rw_,
+				((ImageLinkData*)node->getDestData())->h_);
+	}
 }
 
 BaseLinkData* ImageLinkNode::makeLinkData(Anchor* a)
 {
-    // default dummy values for invisible link !
-    float x  = 0.0f;
-    float y  = 0.0f;
-    float rw = 0.0f;
-    float h  = 0.0f;
-    ImageLinkType type = RectType;
-    RString pos = a->Position();
+	// default dummy values for invisible link !
+	float x = 0.0f;
+	float y = 0.0f;
+	float rw = 0.0f;
+	float h = 0.0f;
+	ImageLinkType type = RectType;
+	RString pos = a->Position();
 
-    if (pos != invisibleLink)
-    {
-        RString typeStr = pos.gSubstrDelim(0, ' ');
-        pos = pos.gRight(pos.index(' ')+1);
-        if (typeStr == "Circle")
-        {
-            type = CircleType;
-            sscanf((const char*)pos, "%f %f %f", &x, &y, &rw);
-        }
-        else
-        {
-            if (typeStr == "Ellipse")
-                type = EllipseType;
-            else
-                type = RectType;
-            sscanf((const char*)pos, "%f %f %f %f", &x, &y, &rw, &h);
-        }
-    }
+	if (pos != invisibleLink)
+	{
+		RString typeStr = pos.gSubstrDelim(0, ' ');
+		pos = pos.gRight(pos.index(' ') + 1);
+		if (typeStr == "Circle")
+		{
+			type = CircleType;
+			sscanf((const char*)pos, "%f %f %f", &x, &y, &rw);
+		}
+		else
+		{
+			if (typeStr == "Ellipse")
+				type = EllipseType;
+			else
+				type = RectType;
+			sscanf((const char*)pos, "%f %f %f %f", &x, &y, &rw, &h);
+		}
+	}
 
-    BaseLinkData* lData = new ImageLinkData(type, x, y, rw, h);
-    TRACE("ImageLinkNode::ImageLinkNode: source: %s, dest.: %s, type: %s, position:%d %f,%f,%f,%f, seen:%d\n", 
-          (const char*)srcId_, (const char*)destId_, (const char*)linkType_, 
-          ((ImageLinkData*)lData)->type_, ((ImageLinkData*)lData)->x_, ((ImageLinkData*)lData)->y_, 
-          ((ImageLinkData*)lData)->rw_, ((ImageLinkData*)lData)->h_, (int)alreadySeen());
-    return lData;
+	BaseLinkData* lData = new ImageLinkData(type, x, y, rw, h);
+	TRACE("ImageLinkNode::ImageLinkNode: source: %s, dest.: %s, type: %s, position:%d %f,%f,%f,%f, seen:%d\n",
+		(const char*)srcId_, (const char*)destId_, (const char*)linkType_,
+		((ImageLinkData*)lData)->type_, ((ImageLinkData*)lData)->x_, ((ImageLinkData*)lData)->y_,
+		((ImageLinkData*)lData)->rw_, ((ImageLinkData*)lData)->h_, (int)alreadySeen());
+	return lData;
 }
 

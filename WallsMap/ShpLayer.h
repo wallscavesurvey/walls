@@ -56,7 +56,7 @@ class CCompareDlg;
 #define SHP_SIZ_TREELABEL 256
 #define LEN_NEW_POINT_STR 11
 
-enum e_shp_edit {SHP_EDITSHP=1,SHP_EDITDBF=2,SHP_EDITADD=4,SHP_EDITDEL=8,SHP_SELECTED=16,SHP_EDITCLR=32,SHP_EDITLOC=64};
+enum e_shp_edit { SHP_EDITSHP = 1, SHP_EDITDBF = 2, SHP_EDITADD = 4, SHP_EDITDEL = 8, SHP_SELECTED = 16, SHP_EDITCLR = 32, SHP_EDITLOC = 64 };
 //#define SHP_MINVAL (-1.0e+38)
 
 struct SHP_COLUMNS {
@@ -65,12 +65,12 @@ struct SHP_COLUMNS {
 };
 
 struct SHP_POLY_DATA {
-	bool IsDeleted() const {return (len&0x80000000)!=0;}
-	void SetLen(UINT l) {len=l;}
-	void Delete() {len|=0x80000000;}
-	void UnDelete() {len&=~0x80000000;}
-	UINT MaskedLen() const {return len&~0x80000000;}
-	UINT Len() const {return len;}
+	bool IsDeleted() const { return (len & 0x80000000) != 0; }
+	void SetLen(UINT l) { len = l; }
+	void Delete() { len |= 0x80000000; }
+	void UnDelete() { len &= ~0x80000000; }
+	UINT MaskedLen() const { return len & ~0x80000000; }
+	UINT Len() const { return len; }
 	UINT off; //file offset to NumParts
 private:
 	UINT len; //length in bytes of data to read starting at NumParts (high bit set if deleted)
@@ -89,17 +89,17 @@ class CDBGridDlg;
 class CShpLayer;
 class CQuadTree;
 
-enum {LF_LAT,LF_LON,LF_EAST,LF_NORTH,LF_ZONE,LF_DATUM,LF_UPDATED,LF_CREATED,NUM_LOCFLDS};
+enum { LF_LAT, LF_LON, LF_EAST, LF_NORTH, LF_ZONE, LF_DATUM, LF_UPDATED, LF_CREATED, NUM_LOCFLDS };
 
 struct SHP_DBFILE { //size=84
-	SHP_DBFILE() : nUsers(0), pbuf(NULL), pbuflen(0), pShpEditor(NULL), pvxc(NULL),pvxc_ignore(NULL),pvxd(NULL),ppoly(NULL),
-	   pDBGridDlg(NULL), lblfld(0), keyfld(0), pfxfld(0), noloc_dir(6), noloc_lat(0.0),noloc_lon(0.0), bTypeZ(0), bHaveTmpshp(0) {}
+	SHP_DBFILE() : nUsers(0), pbuf(NULL), pbuflen(0), pShpEditor(NULL), pvxc(NULL), pvxc_ignore(NULL), pvxd(NULL), ppoly(NULL),
+		pDBGridDlg(NULL), lblfld(0), keyfld(0), pfxfld(0), noloc_dir(6), noloc_lat(0.0), noloc_lon(0.0), bTypeZ(0), bHaveTmpshp(0) {}
 	CShpDBF db;
 	CDBTFile dbt;   //memo file
 	VEC_BYTE vdbe;  //edit flags
 	VEC_BYTE locFldTyp;  //indexes of special fields (+1) for each field
 	VEC_BYTE vxsrch; //fld numbers of label followed by searchable fields based on template alone
-	double noloc_lat,noloc_lon; //out-of-range corner lat/lon, direction = noloc_dir 
+	double noloc_lat, noloc_lon; //out-of-range corner lat/lon, direction = noloc_dir 
 	PVEC_XCOMBO pvxc; //field template parameters
 	PVEC_XCOMBO pvxc_ignore;
 	PVEC_XDESC pvxd; //field descriptions from template (tooltips)
@@ -128,11 +128,11 @@ struct SHP_DBFILE { //size=84
 	static bool bEditorPreserved;
 	static CString csEditorName;
 
-	static LPCSTR sLocflds[NUM_LOCFLDS],sLocflds_old[NUM_LOCFLDS];
-	static bool GetTimestampName(SHP_DBFILE *pdbfile,BOOL bUpdating);
+	static LPCSTR sLocflds[NUM_LOCFLDS], sLocflds_old[NUM_LOCFLDS];
+	static bool GetTimestampName(SHP_DBFILE *pdbfile, BOOL bUpdating);
 
 	static int GetLocFldTyp(LPCSTR pNam);
-	int GetLocFldTyp(UINT fNum) {return locFldTyp.size()?locFldTyp[fNum-1]:0;}
+	int GetLocFldTyp(UINT fNum) { return locFldTyp.size() ? locFldTyp[fNum - 1] : 0; }
 	bool InitRecbuf();
 	void Clear();
 	bool InitLocFlds(); //fills locFldTyp and locFldNum
@@ -141,7 +141,7 @@ struct SHP_DBFILE { //size=84
 	int  Reopen(bool bReadOnly);
 	bool SaveAllowed(BOOL bEditing)
 	{
-		return bEditorPrompted || !HasTimestamp(bEditing) || GetTimestampName(this,bEditing);
+		return bEditorPrompted || !HasTimestamp(bEditing) || GetTimestampName(this, bEditing);
 	}
 };
 
@@ -156,18 +156,18 @@ struct SHP_DBFILE { //size=84
 
 struct SEQ_DATA {
 	SEQ_DATA() : seq_fcn(NULL), seq_pval(NULL), seq_buf(NULL), seq_len(0), seq_siz(0) {}
-	SEQ_DATA(TRXFCN_IF fcn,LPVOID *pval) :
-		seq_fcn(fcn),seq_pval(pval),seq_buf(NULL),seq_len(0),seq_siz(0) {}
-	~SEQ_DATA() {free(seq_buf);}
+	SEQ_DATA(TRXFCN_IF fcn, LPVOID *pval) :
+		seq_fcn(fcn), seq_pval(pval), seq_buf(NULL), seq_len(0), seq_siz(0) {}
+	~SEQ_DATA() { free(seq_buf); }
 
-	void Free() {free(seq_buf); seq_buf=NULL;}
+	void Free() { free(seq_buf); seq_buf = NULL; }
 
-	void Init(TRXFCN_IF fcn,LPVOID *pval)
+	void Init(TRXFCN_IF fcn, LPVOID *pval)
 	{
-		seq_fcn=fcn;
-		seq_pval=pval;
+		seq_fcn = fcn;
+		seq_pval = pval;
 		Free();
-		seq_len=seq_siz=0;
+		seq_len = seq_siz = 0;
 	}
 	TRXFCN_IF seq_fcn;
 	LPVOID *seq_pval;
@@ -194,7 +194,7 @@ typedef VEC_TRXREC::iterator it_trxrec;
 
 struct COMPSHP {
 	COMPSHP() : pShp(NULL), bSel(FALSE) {};
-	COMPSHP(CShpLayer *pS,BOOL b) : pShp(pS), bSel(FALSE) {};
+	COMPSHP(CShpLayer *pS, BOOL b) : pShp(pS), bSel(FALSE) {};
 	CShpLayer *pShp;
 	BOOL bSel;
 };
@@ -208,32 +208,32 @@ extern VEC_CSTR seq_vlinks;
 int CALLBACK seq_fcn(int i);
 
 //globals used by compare fcns --
-extern CTRXFile c_Trx,c_Trxref,c_Trxlinks,c_Trxkey; //global indexes
+extern CTRXFile c_Trx, c_Trxref, c_Trxlinks, c_Trxkey; //global indexes
 
-class CShpLayer : public CMapLayer 
+class CShpLayer : public CMapLayer
 {
 public:
-	enum {MARKER_MAXLINEW=15,MARKER_MAXSIZE=61};
-	enum {EXT_SHP,EXT_DBF,EXT_SHX,EXT_DBT,EXT_DBE,EXT_PRJ,EXT_TMPSHP,EXT_QPJ,EXT_SBN,EXT_SBX,EXT_COUNT};
+	enum { MARKER_MAXLINEW = 15, MARKER_MAXSIZE = 61 };
+	enum { EXT_SHP, EXT_DBF, EXT_SHX, EXT_DBT, EXT_DBE, EXT_PRJ, EXT_TMPSHP, EXT_QPJ, EXT_SBN, EXT_SBX, EXT_COUNT };
 	static const LPCSTR shp_ext[EXT_COUNT];
 	static const LPCSTR lpstrFile_pfx;
 	enum e_shp {
 		SHP_NULL,
 		SHP_POINT,
-		SHP_POLYLINE=3,
-		SHP_POLYGON=5,
-		SHP_MULTIPOINT=8,
-		SHP_POINTZ=11,
-		SHP_POLYLINEZ=13,
-		SHP_POLYGONZ=15,
-		SHP_MULTIPOINTZ=18,
-		SHP_POINTM=21,
-		SHP_POLYLINEM=23,
-		SHP_POLYGONM=25,
-		SHP_MULTIPOINTM=28,
-		SHP_MULTIPATCH=31
+		SHP_POLYLINE = 3,
+		SHP_POLYGON = 5,
+		SHP_MULTIPOINT = 8,
+		SHP_POINTZ = 11,
+		SHP_POLYLINEZ = 13,
+		SHP_POLYGONZ = 15,
+		SHP_MULTIPOINTZ = 18,
+		SHP_POINTM = 21,
+		SHP_POLYLINEM = 23,
+		SHP_POLYGONM = 25,
+		SHP_MULTIPOINTM = 28,
+		SHP_MULTIPATCH = 31
 	};
-	enum {SHP_NUMTYPES=13};
+	enum { SHP_NUMTYPES = 13 };
 	static LPCSTR shp_typname[SHP_NUMTYPES];
 	static int shp_typcode[SHP_NUMTYPES];
 	static LPCSTR ShpTypName(int code);
@@ -241,17 +241,17 @@ public:
 	CShpLayer();
 	virtual ~CShpLayer();
 	virtual int LayerType() const;
-	virtual BOOL Open(LPCTSTR lpszPathName,UINT uFlags);
+	virtual BOOL Open(LPCTSTR lpszPathName, UINT uFlags);
 	//virtual BOOL GetDIBits();
-	virtual int CopyToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,double fScale);
+	virtual int CopyToDIB(CDIBWrapper *pDestDIB, const CFltRect &geoExt, double fScale);
 	virtual void AppendInfo(CString &s) const;
 	//void AppendCoordSystemOrg(CString &cs) const;
-	int SelectEditedShapes(UINT &count,UINT uFlags, BOOL bAddToSel, CFltRect *pRectView);
+	int SelectEditedShapes(UINT &count, UINT uFlags, BOOL bAddToSel, CFltRect *pRectView);
 	void ClearDBE();
 	BOOL SetLblFld(UINT fld);
-	BOOL CheckFldTypes(LPCSTR pathName,UINT uFlags);
+	BOOL CheckFldTypes(LPCSTR pathName, UINT uFlags);
 	void InitSrchFlds(UINT nLblFld);
-	BYTE & RecEditFlag(UINT uRec) {return (*m_vdbe)[uRec-1];}
+	BYTE & RecEditFlag(UINT uRec) { return (*m_vdbe)[uRec - 1]; }
 	void ChkEditDBF(UINT rec);
 	void SetSrchFlds(const std::vector<CString> &vcs);
 	BOOL GetSrchFlds(CString &fldnam) const;
@@ -261,85 +261,85 @@ public:
 	static int	DbfileIndex(LPCSTR pathName);
 	static bool DeleteComponents(LPCSTR pathName);
 	static bool check_overwrite(LPCSTR pathName);
-	static BOOL FileCreate(CSafeMirrorFile &cf,LPSTR ebuf,LPCSTR pathName,LPCSTR pExt);
-	static void InitShpHdr(SHP_MAIN_HDR &hdr,int typ,UINT sizData,const CFltRect &extent,const CFltRect *pextz);
+	static BOOL FileCreate(CSafeMirrorFile &cf, LPSTR ebuf, LPCSTR pathName, LPCSTR pExt);
+	static void InitShpHdr(SHP_MAIN_HDR &hdr, int typ, UINT sizData, const CFltRect &extent, const CFltRect *pextz);
 	static __int32 FlipBytes(__int32 nData)
 	{
 		__asm mov eax, [nData];
 		__asm bswap eax;
-		__asm mov [nData], eax; // you can take this out but leave it just to be sure
+		__asm mov[nData], eax; // you can take this out but leave it just to be sure
 		return(nData);
 	}
 
 #ifdef _XLS
-	BOOL ExportXLS(CDlgExportXLS *pDlg,LPCSTR xlsName,CShpDef &shpdef,VEC_DWORD &vRec);
+	BOOL ExportXLS(CDlgExportXLS *pDlg, LPCSTR xlsName, CShpDef &shpdef, VEC_DWORD &vRec);
 	bool ExportRecordsXLS(VEC_DWORD &vRec);
 #endif
 
-	BOOL InitShpDef(CShpDef &shpdef,BOOL bUseLayout,bool bXLS=false);
-	BOOL ExportShapes(LPCSTR shpName,CShpDef &shpdef,VEC_DWORD &vRec);
-	bool ExportRecords(VEC_DWORD &vRec,bool bSelected);
-	bool FitExtent(VEC_DWORD &vRec,BOOL bZoom);
-	LPCSTR GetMemoTitle(CString &title,const EDITED_MEMO &memo);
-	BOOL ConfirmAppendShp(CShpLayer *pShpSrc,BYTE *pFldSrc);
-	UINT CopyShpRec(CShpLayer *pSrcLayer,UINT uSrcRec,BYTE *pFldSrc,bool bUpdateLocFlds,TRUNC_DATA &td);
-	static void WritePrjFile(LPCSTR pathName,int bNad83,int utm_zone);
+	BOOL InitShpDef(CShpDef &shpdef, BOOL bUseLayout, bool bXLS = false);
+	BOOL ExportShapes(LPCSTR shpName, CShpDef &shpdef, VEC_DWORD &vRec);
+	bool ExportRecords(VEC_DWORD &vRec, bool bSelected);
+	bool FitExtent(VEC_DWORD &vRec, BOOL bZoom);
+	LPCSTR GetMemoTitle(CString &title, const EDITED_MEMO &memo);
+	BOOL ConfirmAppendShp(CShpLayer *pShpSrc, BYTE *pFldSrc);
+	UINT CopyShpRec(CShpLayer *pSrcLayer, UINT uSrcRec, BYTE *pFldSrc, bool bUpdateLocFlds, TRUNC_DATA &td);
+	static void WritePrjFile(LPCSTR pathName, int bNad83, int utm_zone);
 	static void Sort_Vec_ptNode(VEC_PTNODE &vec_pn);
 	static void Sort_Vec_ShpRec(VEC_SHPREC &vec_shprec);
 
-	static int AddMemoLink(LPCSTR fpath,VEC_CSTR &vlinks,SEQ_DATA &s,LPCSTR pRootDir,int rootLen);
-	int GetFieldMemoLinks(LPSTR pStart,LPSTR fPath,VEC_CSTR &vlinks,SEQ_DATA &s,LPCSTR pRootDir,int rootLen,VEC_CSTR *pvBadLinks=NULL);
-	int GetMemoLinks(VEC_CSTR &vlinks,SEQ_DATA &s,LPCSTR pRootDir,int rootLen);
+	static int AddMemoLink(LPCSTR fpath, VEC_CSTR &vlinks, SEQ_DATA &s, LPCSTR pRootDir, int rootLen);
+	int GetFieldMemoLinks(LPSTR pStart, LPSTR fPath, VEC_CSTR &vlinks, SEQ_DATA &s, LPCSTR pRootDir, int rootLen, VEC_CSTR *pvBadLinks = NULL);
+	int GetMemoLinks(VEC_CSTR &vlinks, SEQ_DATA &s, LPCSTR pRootDir, int rootLen);
 
 	bool HasOpenRecord();
 	bool HasPendingEdits();
 	bool HasEditedText(CMemoEditDlg *pDlg);
-	void SetDlgEditable(CMemoEditDlg *pDlg,bool bEditable);
+	void SetDlgEditable(CMemoEditDlg *pDlg, bool bEditable);
 	bool HasEditedMemo();
 
-	bool OpenMemo(CDialog *pParentDlg,EDITED_MEMO &memo,BOOL bViewMode);
-	bool IsMemoOpen(DWORD nRec,UINT nFld);
+	bool OpenMemo(CDialog *pParentDlg, EDITED_MEMO &memo, BOOL bViewMode);
+	bool IsMemoOpen(DWORD nRec, UINT nFld);
 	void OpenTable(VEC_DWORD *pVec);
 	bool ToggleDelete(DWORD rec);
 	bool IsAdditionPending();
 	void OutOfZoneMsg(int iZone);
 
-	static int XC_ParseDefinition(XCOMBODATA &xc,DBF_FLDDEF &Fld,LPCSTR p0,BOOL bDynamic=0);
+	static int XC_ParseDefinition(XCOMBODATA &xc, DBF_FLDDEF &Fld, LPCSTR p0, BOOL bDynamic = 0);
 	PXCOMBODATA	XC_GetXComboData(int nFld);
 	LPCSTR XC_GetXDesc(int nFld);
 
 
-	BOOL		XC_RefreshInitFlds(LPBYTE pRec,const CFltPoint &fpt,BOOL bReinit,CFltPoint *pOldPt=NULL);
+	BOOL		XC_RefreshInitFlds(LPBYTE pRec, const CFltPoint &fpt, BOOL bReinit, CFltPoint *pOldPt = NULL);
 	void		XC_GetFldOptions(LPSTR pathName);
-	LPCSTR		XC_GetInitStr(CString &s,XCOMBODATA &xc,const CFltPoint &fpt,LPBYTE pRec=NULL,CFltPoint *pOldPt=NULL);
+	LPCSTR		XC_GetInitStr(CString &s, XCOMBODATA &xc, const CFltPoint &fpt, LPBYTE pRec = NULL, CFltPoint *pOldPt = NULL);
 	BOOL	    XC_PutInitStr(LPCSTR p, DBF_pFLDDEF pFld, LPBYTE pDst, CDBTFile *pdbt);
-	void		XC_GetDefinition(CString &s,PXCOMBODATA pxc);
+	void		XC_GetDefinition(CString &s, PXCOMBODATA pxc);
 	void		XC_FlushFields(UINT nRec);
 
 	bool IsFldReadOnly(int nFld)
 	{
-	  PXCOMBODATA pXCMB;
-	  return !bIgnoreEditTS && (pXCMB=XC_GetXComboData(nFld)) && (pXCMB->wFlgs&XC_READONLY);
+		PXCOMBODATA pXCMB;
+		return !bIgnoreEditTS && (pXCMB = XC_GetXComboData(nFld)) && (pXCMB->wFlgs&XC_READONLY);
 	}
-	bool HasXCFlds() {return m_pdbfile->pvxc!=NULL;}
-	bool HasXDFlds() {return m_pdbfile->pvxd!=NULL;}
-	bool HasXFlds() {return m_pdbfile->pvxc!=NULL || m_pdbfile->pvxd!=NULL;}
-	bool HasMemos() {return m_pdb->HasMemos();}
-	void UpdateLocFlds(DWORD rec,LPBYTE pRecBuf);
-	bool HasLocFlds() {return m_pdbfile->HasLocFlds();}
-	bool HasTimestamp(BOOL bEditing) {return m_pdbfile->HasTimestamp(bEditing);}
-	bool IsShpEditable() const {return (m_uFlags&NTL_FLG_EDITABLE)!=0 && ShpTypeOrg()==SHP_POINT;}
+	bool HasXCFlds() { return m_pdbfile->pvxc != NULL; }
+	bool HasXDFlds() { return m_pdbfile->pvxd != NULL; }
+	bool HasXFlds() { return m_pdbfile->pvxc != NULL || m_pdbfile->pvxd != NULL; }
+	bool HasMemos() { return m_pdb->HasMemos(); }
+	void UpdateLocFlds(DWORD rec, LPBYTE pRecBuf);
+	bool HasLocFlds() { return m_pdbfile->HasLocFlds(); }
+	bool HasTimestamp(BOOL bEditing) { return m_pdbfile->HasTimestamp(bEditing); }
+	bool IsShpEditable() const { return (m_uFlags&NTL_FLG_EDITABLE) != 0 && ShpTypeOrg() == SHP_POINT; }
 
-	BYTE KeyFld() {return m_pdbfile->keyfld;}
+	BYTE KeyFld() { return m_pdbfile->keyfld; }
 
 	//void ShowTimestamps(UINT rec);
-	void UpdateTimestamp(LPBYTE pRecBuf,BOOL bCreating);
-	static void GetTimestampString(CString &s,LPCSTR pName);
+	void UpdateTimestamp(LPBYTE pRecBuf, BOOL bCreating);
+	static void GetTimestampString(CString &s, LPCSTR pName);
 
-	int GetLocFldTyp(UINT fNum) {return m_pdbfile->GetLocFldTyp(fNum);}
+	int GetLocFldTyp(UINT fNum) { return m_pdbfile->GetLocFldTyp(fNum); }
 
-	static double GetDouble(LPCSTR pSrc,UINT len);
-	UINT GetFieldValue(CString &s,int nFld);
+	static double GetDouble(LPCSTR pSrc, UINT len);
+	UINT GetFieldValue(CString &s, int nFld);
 	UINT GetPolyRange(UINT rec);
 
 	void UpdateTitleDisplay();
@@ -347,60 +347,60 @@ public:
 
 	bool CanAppendShpLayer(CShpLayer *pLayer)
 	{
-		return ShpTypeOrg()==SHP_POINT && IsEditable() && m_pdb->FieldsCompatible(pLayer->m_pdb)>0;
+		return ShpTypeOrg() == SHP_POINT && IsEditable() && m_pdb->FieldsCompatible(pLayer->m_pdb) > 0;
 	}
 
 	bool IsGridDlgOpen();
-	void TestMemos(BOOL bOnLoad=FALSE);
+	void TestMemos(BOOL bOnLoad = FALSE);
 
 	BOOL SaveShp();
 	BOOL SetEditable();
-	void SaveEditedMemo(EDITED_MEMO &memo,CString &csData);
+	void SaveEditedMemo(EDITED_MEMO &memo, CString &csData);
 
 	//Compare functions --
-	int ParseFldKey(UINT f,LPSTR p0); //in ShpLayer_CC.cpp
-	LPSTR m_pKeyGenerator,m_pUnkName,m_pUnkPfx;
+	int ParseFldKey(UINT f, LPSTR p0); //in ShpLayer_CC.cpp
+	LPSTR m_pKeyGenerator, m_pUnkName, m_pUnkPfx;
 	int CompareUpdates(BOOL bIncludeAll);
 	int CompareNewRecs();
-	int CompareShp(CString &csPathName,CString &summary,VEC_COMPSHP &vCompShp,WORD *pwFld,VEC_WORD &vFldsIgnored,BOOL bIncludeAll);
-	static void GetCompareStats(UINT &nLinks,UINT &nNew,UINT &nfiles,__int64 &sz);
-	LPCSTR InitRootPath(CString &path,WORD &rootPathLen); //returns (LPCSTR)path
-	int AppendUpdateRec(CShpDBF &db,CDBTFile *pdbt,TRXREC &trxrec,int iFlags);
-	int ExportUpdateShp(LPSTR pathbuf,CString &pathName,int iFlags);
-	int ExportUpdateDbf(LPSTR pathBuf,CString &pathName,int iFlags);
+	int CompareShp(CString &csPathName, CString &summary, VEC_COMPSHP &vCompShp, WORD *pwFld, VEC_WORD &vFldsIgnored, BOOL bIncludeAll);
+	static void GetCompareStats(UINT &nLinks, UINT &nNew, UINT &nfiles, __int64 &sz);
+	LPCSTR InitRootPath(CString &path, WORD &rootPathLen); //returns (LPCSTR)path
+	int AppendUpdateRec(CShpDBF &db, CDBTFile *pdbt, TRXREC &trxrec, int iFlags);
+	int ExportUpdateShp(LPSTR pathbuf, CString &pathName, int iFlags);
+	int ExportUpdateDbf(LPSTR pathBuf, CString &pathName, int iFlags);
 	int InitTrxkey(LPCSTR *ppMsg);
 	int ResetTrxkey(int *pnLenPfx);
 
-	bool ListRecHeader(TRXREC *pTrxrec=NULL,bool bCrlf=true);
+	bool ListRecHeader(TRXREC *pTrxrec = NULL, bool bCrlf = true);
 	bool OpenCompareLog();
 	bool CompareLocs(bool bChangedPfx);
-	int  CheckTS(WORD f,WORD fc,bool bRevised);
+	int  CheckTS(WORD f, WORD fc, bool bRevised);
 
-	bool IsNotLocated(double lat,double lon);
-	bool IsNotLocated(const CFltPoint &fpt) {return IsNotLocated(fpt.y,fpt.x);}
+	bool IsNotLocated(double lat, double lon);
+	bool IsNotLocated(const CFltPoint &fpt) { return IsNotLocated(fpt.y, fpt.x); }
 	bool ChkNotLocated(CFltPoint &fpt);
-	void ListFieldContent(LPCSTR pL,LPCSTR pR);
+	void ListFieldContent(LPCSTR pL, LPCSTR pR);
 	void ListMemoFields();
-	LPCSTR GetRecordLabel(LPSTR pLabel,UINT sizLabel,DWORD rec);
-	LPCSTR GetTitleLabel(CString &s,DWORD rec)
+	LPCSTR GetRecordLabel(LPSTR pLabel, UINT sizLabel, DWORD rec);
+	LPCSTR GetTitleLabel(CString &s, DWORD rec)
 	{
 		char label[80];
-		s.Format("%s:  %s",Title(),GetRecordLabel(label,80,rec));
+		s.Format("%s:  %s", Title(), GetRecordLabel(label, 80, rec));
 		return (LPCSTR)s;
 	}
-	void InitFlyToPt(CFltPoint &fpt,DWORD rec);
-	void OnLaunchGE(VEC_DWORD &vRec,CFltPoint *pfpt=NULL);
-	void OnLaunchWebMap(DWORD rec,CFltPoint *pfpt=NULL);
-	void OnOptionsGE(VEC_DWORD &vRec,CFltPoint *fpt=NULL);
-	bool GetFieldTextGE(CString &text,DWORD rec,UINT nFld,BOOL bSkipEmpty);
-	bool InitDescGE(CString &text,DWORD rec,VEC_BYTE &vFld,BOOL bSkipEmpty);
+	void InitFlyToPt(CFltPoint &fpt, DWORD rec);
+	void OnLaunchGE(VEC_DWORD &vRec, CFltPoint *pfpt = NULL);
+	void OnLaunchWebMap(DWORD rec, CFltPoint *pfpt = NULL);
+	void OnOptionsGE(VEC_DWORD &vRec, CFltPoint *fpt = NULL);
+	bool GetFieldTextGE(CString &text, DWORD rec, UINT nFld, BOOL bSkipEmpty);
+	bool InitDescGE(CString &text, DWORD rec, VEC_BYTE &vFld, BOOL bSkipEmpty);
 
-	int  ConvertPointsTo(CFltPoint *pFpt,int iNad,int iZone,UINT cnt);
-	void ConvertPointsFrom(CFltPoint *pFpt,int iNad,int iZone,UINT iCount);
-	void ConvertPointsFromOrg(CFltPoint *pt,int iCnt);
+	int  ConvertPointsTo(CFltPoint *pFpt, int iNad, int iZone, UINT cnt);
+	void ConvertPointsFrom(CFltPoint *pFpt, int iNad, int iZone, UINT iCount);
+	void ConvertPointsFromOrg(CFltPoint *pt, int iCnt);
 
-	BOOL ConvertProjection(int iNad,int iZone,BOOL bUpdateViews);
-	void UpdateShpExtent(bool bPrj=true);
+	BOOL ConvertProjection(int iNad, int iZone, BOOL bUpdateViews);
+	void UpdateShpExtent(bool bPrj = true);
 
 	static void UpdateExtent(CFltRect &extent, const CFltPoint &fpt);
 	static void UpdateExtent(CFltRect &extent, const CFltRect &ext);
@@ -408,70 +408,70 @@ public:
 	void CancelMemoMsg(EDITED_MEMO &memo);
 
 	void UpdateDocsWithPoint(UINT iPoint);
-	BYTE ShpType() const {return m_pdbfile->shpType;}
-	BYTE ShpTypeOrg() const {return m_pdbfile->shpTypeOrg;}
-	int NadOrg() const {return m_pdbfile->iNad;}
-	INT8 ZoneOrg() const {return m_pdbfile->iZone;}
+	BYTE ShpType() const { return m_pdbfile->shpType; }
+	BYTE ShpTypeOrg() const { return m_pdbfile->shpTypeOrg; }
+	int NadOrg() const { return m_pdbfile->iNad; }
+	INT8 ZoneOrg() const { return m_pdbfile->iZone; }
 
-	BYTE & EditFlag(UINT rec0) {return (*m_vdbe)[rec0];}
+	BYTE & EditFlag(UINT rec0) { return (*m_vdbe)[rec0]; }
 
 	bool IsRecDeleted(UINT rec)
 	{
-		return ShpType()==SHP_POINT && ((*m_vdbe)[rec-1]&SHP_EDITDEL)!=0 || m_pdbfile->ppoly && m_pdbfile->ppoly[rec-1].IsDeleted(); 
+		return ShpType() == SHP_POINT && ((*m_vdbe)[rec - 1] & SHP_EDITDEL) != 0 || m_pdbfile->ppoly && m_pdbfile->ppoly[rec - 1].IsDeleted();
 	}
 	bool IsPtRecDeleted(UINT rec)
 	{
-		return ((*m_vdbe)[rec-1]&SHP_EDITDEL)!=0; 
+		return ((*m_vdbe)[rec - 1] & SHP_EDITDEL) != 0;
 	}
-	bool IsRecSelected(UINT rec) {return ((*m_vdbe)[rec-1]&SHP_SELECTED)!=0;}
-	bool IsRecEdited(UINT rec) {return ((*m_vdbe)[rec-1]&~(SHP_SELECTED|SHP_EDITDEL))!=0;}
-	bool IsSameProjection(CShpLayer *pLayer) {return pLayer->m_iNadOrg==m_iNadOrg && pLayer->m_iZoneOrg==m_iZoneOrg;}
-	bool IsBeingEdited() {return HasOpenRecord() || HasEditedMemo() || !IsEditable() && m_pdbfile->pShpEditor;}
+	bool IsRecSelected(UINT rec) { return ((*m_vdbe)[rec - 1] & SHP_SELECTED) != 0; }
+	bool IsRecEdited(UINT rec) { return ((*m_vdbe)[rec - 1] & ~(SHP_SELECTED | SHP_EDITDEL)) != 0; }
+	bool IsSameProjection(CShpLayer *pLayer) { return pLayer->m_iNadOrg == m_iNadOrg && pLayer->m_iZoneOrg == m_iZoneOrg; }
+	bool IsBeingEdited() { return HasOpenRecord() || HasEditedMemo() || !IsEditable() && m_pdbfile->pShpEditor; }
 
 	void SetRecSelected(UINT rec)
 	{
-		(*m_vdbe)[rec-1]|=SHP_SELECTED;
+		(*m_vdbe)[rec - 1] |= SHP_SELECTED;
 	}
 
 	void SetRecUnselected(UINT rec)
 	{
-		(*m_vdbe)[rec-1]&=~SHP_SELECTED;
+		(*m_vdbe)[rec - 1] &= ~SHP_SELECTED;
 	}
 
 	void FixTitle()
 	{
-		if(!_stricmp(trx_Stpext(m_csTitle),SHP_EXT)) 
-			m_csTitle.Truncate(m_csTitle.GetLength()-4);
+		if (!_stricmp(trx_Stpext(m_csTitle), SHP_EXT))
+			m_csTitle.Truncate(m_csTitle.GetLength() - 4);
 	}
 
-	LPSTR GetFullFromRelative(LPSTR buf,LPCSTR pPath)
+	LPSTR GetFullFromRelative(LPSTR buf, LPCSTR pPath)
 	{
 		//see utility.h
-		return ::GetFullFromRelative(buf,pPath,m_pathName);
+		return ::GetFullFromRelative(buf, pPath, m_pathName);
 	}
 
-	LPSTR GetRelativePath(LPSTR buf,LPCSTR pPath,BOOL bNoNameOnPath)
+	LPSTR GetRelativePath(LPSTR buf, LPCSTR pPath, BOOL bNoNameOnPath)
 	{
 		//see utility.h
-		return ::GetRelativePath(buf,pPath,PathName(),bNoNameOnPath);
+		return ::GetRelativePath(buf, pPath, PathName(), bNoNameOnPath);
 	}
 
 	bool SaveAllowed(BOOL bEditing)
 	{
 		return m_pdbfile->SaveAllowed(bEditing);
 	}
-	int ConfirmSaveMemo(HWND hWnd, const EDITED_MEMO &memo,BOOL bForceClose);
+	int ConfirmSaveMemo(HWND hWnd, const EDITED_MEMO &memo, BOOL bForceClose);
 	//bool DiscardChgOK(const EDITED_MEMO &memo);
 	BOOL OpenLinkedDoc(LPCSTR pPath);
 	void UpdateImage(CImageList *pImageList);
-	void GetTooltip(UINT rec,LPSTR buf);
-	BOOL GetMatches(VEC_BYTE *pvSrchFlds,LPCSTR target,WORD wFlags,const CFltRect &frRect);
-	DWORD InitEditBuf(CFltPoint &fpt,DWORD rec);
+	void GetTooltip(UINT rec, LPSTR buf);
+	BOOL GetMatches(VEC_BYTE *pvSrchFlds, LPCSTR target, WORD wFlags, const CFltRect &frRect);
+	DWORD InitEditBuf(CFltPoint &fpt, DWORD rec);
 	bool SwapSrchFlds(VEC_BYTE &vSrchFlds);
-	int FindInRecord(VEC_BYTE *pvSrchFlds,LPCSTR target,int lenTarget,WORD wFlags);
+	int FindInRecord(VEC_BYTE *pvSrchFlds, LPCSTR target, int lenTarget, WORD wFlags);
 	SHP_POLY_DATA * Init_ppoly();
 	void UnInit_ppoly();
-	DWORD ShpPolyTest(const CFltPoint &fpt,DWORD fRec=0,double *pdist=NULL);
+	DWORD ShpPolyTest(const CFltPoint &fpt, DWORD fRec = 0, double *pdist = NULL);
 	void UpdatePolyExtent();
 	void AllocateQT();
 
@@ -487,27 +487,27 @@ public:
 	SHP_MRK_STYLE m_mstyle;
 	COLORREF m_crLbl;
 	CLogFont m_font;
-	UINT m_nLblFld,m_nLayerIndex;
+	UINT m_nLblFld, m_nLayerIndex;
 	//UINT m_nKmlFld;
 	CShpDBF *m_pdb;
 	SHP_DBFILE *m_pdbfile;
-	UINT m_nNumRecs,m_uDelCount;
+	UINT m_nNumRecs, m_uDelCount;
 	CBitmap m_bmImage;
 
-	static UINT m_uKmlRange,m_uIconSize,m_uLabelSize;
+	static UINT m_uKmlRange, m_uIconSize, m_uLabelSize;
 	static CPtNode *m_pPtNode;
 	static HFONT m_hfFieldList;
 	static WORD m_nFieldListCharWidth;
 	static char *new_point_str;
 	static bool m_bShpReeditMsg;
 	static bool m_bSelectedMarkerChg;
-	static bool m_bChangedGEPref,m_bChangedGEPath;
+	static bool m_bChangedGEPref, m_bChangedGEPath;
 	static VEC_DWORD m_vGridRecs;
 	static CShpLayer *m_pGridShp;
-	static SHP_MRK_STYLE m_mstyle_sD,m_mstyle_hD,m_mstyle_s,m_mstyle_h;
+	static SHP_MRK_STYLE m_mstyle_sD, m_mstyle_hD, m_mstyle_s, m_mstyle_h;
 	static CString m_csIconSingle;
 	static CString m_csIconMultiple;
-	static LPCSTR pIconMultiple,pIconSingle;
+	static LPCSTR pIconMultiple, pIconSingle;
 
 	BYTE m_bEditFlags;
 	bool m_bConverted;
@@ -526,52 +526,52 @@ public:
 
 private:
 	void ResourceAllocMsg(LPCSTR pathName);
-	BOOL OpenDBF(LPSTR pathName,int shpTyp,UINT uFlags);
-	BOOL OpenDBE(LPSTR pathName,UINT uFlags);
+	BOOL OpenDBF(LPSTR pathName, int shpTyp, UINT uFlags);
+	BOOL OpenDBE(LPSTR pathName, UINT uFlags);
 	void CloseDBF();
-	bool InitTextLabels(CDC *pDC,BOOL bInit);
-	void UpdateLayerWithPoint(UINT iPoint,CFltPoint &fpt);
-	int CreateShp(LPSTR ebuf,LPCSTR shpPathName,VEC_DWORD &vRec,VEC_FLTPOINT &vFpt,const CShpDef &shpdef);
-	void LaunchGE(CString &kmlPath,VEC_DWORD &vRec,BOOL bFly,CFltPoint *pfpt=NULL);
+	bool InitTextLabels(CDC *pDC, BOOL bInit);
+	void UpdateLayerWithPoint(UINT iPoint, CFltPoint &fpt);
+	int CreateShp(LPSTR ebuf, LPCSTR shpPathName, VEC_DWORD &vRec, VEC_FLTPOINT &vFpt, const CShpDef &shpdef);
+	void LaunchGE(CString &kmlPath, VEC_DWORD &vRec, BOOL bFly, CFltPoint *pfpt = NULL);
 	UINT ParseNextFieldName(LPSTR &p0);
 	bool EditFlagsCleared();
 
 	LPBYTE Realloc_pbuf(UINT size)
 	{
-		return m_pdbfile->pbuf=(LPBYTE)realloc(m_pdbfile->pbuf,m_pdbfile->pbuflen=size);
+		return m_pdbfile->pbuf = (LPBYTE)realloc(m_pdbfile->pbuf, m_pdbfile->pbuflen = size);
 	}
 
 	COLORREF &MainColor()
 	{
-		return (ShpType()==SHP_POINT)?m_mstyle.crBkg:m_mstyle.crMrk;
+		return (ShpType() == SHP_POINT) ? m_mstyle.crBkg : m_mstyle.crMrk;
 	}
 	void SetShapeClr();
 	void SetShapeClr(COLORREF clr)
 	{
-		MainColor()=clr;
+		MainColor() = clr;
 	}
 
-	int CopyPolygonsToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,double fScale);
-	int CopyPolylinesToDIB(CDIBWrapper *pDestDIB,const CFltRect &geoExt,double fScale);
+	int CopyPolygonsToDIB(CDIBWrapper *pDestDIB, const CFltRect &geoExt, double fScale);
+	int CopyPolylinesToDIB(CDIBWrapper *pDestDIB, const CFltRect &geoExt, double fScale);
 
-	static bool StoreText(LPCSTR s,int lenf,LPBYTE pDest);
-	static void StoreZone(int i,char typ,int len,LPBYTE pDest);
-	static bool StoreDouble(double x,int len,int dec,LPBYTE pDest);
-	static bool StoreExponential(double x,int len,int dec,LPBYTE pDest);
+	static bool StoreText(LPCSTR s, int lenf, LPBYTE pDest);
+	static void StoreZone(int i, char typ, int len, LPBYTE pDest);
+	static bool StoreDouble(double x, int len, int dec, LPBYTE pDest);
+	static bool StoreExponential(double x, int len, int dec, LPBYTE pDest);
 
-	void StoreRecDouble(double x,LPBYTE pRec,UINT f)
+	void StoreRecDouble(double x, LPBYTE pRec, UINT f)
 	{
-		StoreDouble(x,m_pdb->FldLen(f),m_pdb->FldDec(f),pRec+m_pdb->FldOffset(f));
+		StoreDouble(x, m_pdb->FldLen(f), m_pdb->FldDec(f), pRec + m_pdb->FldOffset(f));
 	}
 
-	void StoreRecZone(int i,LPBYTE pRec,UINT f)
+	void StoreRecZone(int i, LPBYTE pRec, UINT f)
 	{
-		StoreZone(i,m_pdb->FldTyp(f),m_pdb->FldLen(f),pRec+m_pdb->FldOffset(f));
+		StoreZone(i, m_pdb->FldTyp(f), m_pdb->FldLen(f), pRec + m_pdb->FldOffset(f));
 	}
 
-	void StoreRecText(LPCSTR s,LPBYTE pRec,UINT f)
+	void StoreRecText(LPCSTR s, LPBYTE pRec, UINT f)
 	{
-		StoreText(s,m_pdb->FldLen(f),pRec+m_pdb->FldOffset(f));
+		StoreText(s, m_pdb->FldLen(f), pRec + m_pdb->FldOffset(f));
 	}
 
 	//Data --
@@ -582,27 +582,27 @@ private:
 
 struct SHPOPT {
 	SHPOPT() {}
-	SHPOPT(CShpLayer *pS,bool bAdv)
+	SHPOPT(CShpLayer *pS, bool bAdv)
 		: pShp(pS)
-		, pvSrchFlds(bAdv?pS->m_pvSrchFlds:&pS->m_vSrchFlds)
-		, bSearchExcluded(bAdv?pS->m_bSearchExcluded:pS->IsSearchExcluded())
+		, pvSrchFlds(bAdv ? pS->m_pvSrchFlds : &pS->m_vSrchFlds)
+		, bSearchExcluded(bAdv ? pS->m_bSearchExcluded : pS->IsSearchExcluded())
 		, bChanged(false) {}
 
 	~SHPOPT()
 	{
-		if(bChanged) {
-			ASSERT(pvSrchFlds!=&pShp->m_vSrchFlds);
+		if (bChanged) {
+			ASSERT(pvSrchFlds != &pShp->m_vSrchFlds);
 			delete pvSrchFlds;
 		}
 	}
 	void ReplaceFlds(VEC_BYTE &vnew)
 	{
-		if(!bChanged) {
-			pvSrchFlds=new VEC_BYTE(vnew);
-			bChanged=true;
+		if (!bChanged) {
+			pvSrchFlds = new VEC_BYTE(vnew);
+			bChanged = true;
 		}
 		else {
-			ASSERT(pvSrchFlds!=&pShp->m_vSrchFlds);
+			ASSERT(pvSrchFlds != &pShp->m_vSrchFlds);
 			pvSrchFlds->swap(vnew);
 		}
 	}
@@ -624,11 +624,11 @@ void __inline ClearVecShpopt()
 
 class CConvertHint : public CObject
 {
-//	DECLARE_DYNAMIC(CSyncHint)
+	//	DECLARE_DYNAMIC(CSyncHint)
 public:
-	CConvertHint(CShpLayer *pShp,int iNad,int iZone) :m_pShp(pShp),m_iNad(iNad),m_iZone(iZone) {}
+	CConvertHint(CShpLayer *pShp, int iNad, int iZone) :m_pShp(pShp), m_iNad(iNad), m_iZone(iZone) {}
 	CShpLayer *m_pShp;
-	int m_iNad,m_iZone;
+	int m_iNad, m_iZone;
 };
 
 #endif

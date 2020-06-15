@@ -2,13 +2,13 @@
 ** Copyright 1999 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:   	NCSQueue.h
@@ -20,27 +20,29 @@
 
 #include "NCSQueue.h"
 
-/*
-** Create a Queue
-*/
+ /*
+ ** Create a Queue
+ */
 NCSQueue *NCSQueueCreate(NCSPool *pPool, UINT32 iQueueStructSize, UINT32 iQueueNodeSize)
 {
 	NCSQueue *pQueue;
 
-	if((pQueue = (NCSQueue*)NCSMalloc(iQueueStructSize, TRUE)) != NULL) {
-		
+	if ((pQueue = (NCSQueue*)NCSMalloc(iQueueStructSize, TRUE)) != NULL) {
+
 		NCSMutexInit(&(pQueue->mMutex));
 
 		pQueue->qsStats.iNodeSize = iQueueNodeSize;
-		if(pPool) {
+		if (pPool) {
 			pQueue->pPool = pPool;
-		} else {
+		}
+		else {
 			pQueue->pPool = NCSPoolCreate(iQueueNodeSize, 1024);
 			pQueue->bOurPool = TRUE;
 		}
-		if(pQueue->pPool) {
+		if (pQueue->pPool) {
 			return(pQueue);
-		} else {
+		}
+		else {
 			NCSQueueDestroy(pQueue);
 		}
 	}
@@ -52,12 +54,12 @@ NCSQueue *NCSQueueCreate(NCSPool *pPool, UINT32 iQueueStructSize, UINT32 iQueueN
 */
 void NCSQueueDestroy(NCSQueue *pQueue)
 {
-	if(pQueue) {
-		while(NCSQueueFirstNode(pQueue)) {
+	if (pQueue) {
+		while (NCSQueueFirstNode(pQueue)) {
 			NCSQueueRemoveNode(pQueue, NCSQueueFirstNode(pQueue));
 		}
 
-		if(pQueue->pPool && pQueue->bOurPool) {
+		if (pQueue->pPool && pQueue->bOurPool) {
 			NCSPoolDestroy(pQueue->pPool);
 		}
 		NCSMutexFini(&(pQueue->mMutex));
@@ -87,18 +89,19 @@ void NCSQueueDestroyNode(NCSQueue *pQueue, NCSQueueNode *pNode)
 void NCSQueueAppendNode(NCSQueue *pQueue, NCSQueueNode *pNode)
 {
 	NCSTimeStampMs tsStart = 0;
-	
-	if(pQueue->bCollectStats) {
+
+	if (pQueue->bCollectStats) {
 		tsStart = NCSGetTimeStampMs();
 	}
 	NCSQueueLock(pQueue);
 
-	if(pQueue->pLast) {
+	if (pQueue->pLast) {
 		pQueue->pLast->pNext = pNode;
 		pNode->pPrev = pQueue->pLast;
 		pNode->pNext = (NCSQueueNode*)NULL;
 		pQueue->pLast = pNode;
-	} else {
+	}
+	else {
 		pQueue->pFirst = pNode;
 		pQueue->pLast = pNode;
 		pNode->pPrev = (NCSQueueNode*)NULL;
@@ -106,7 +109,7 @@ void NCSQueueAppendNode(NCSQueue *pQueue, NCSQueueNode *pNode)
 	}
 	pQueue->qsStats.nNodes += 1;
 
-	if(pQueue->bCollectStats) {
+	if (pQueue->bCollectStats) {
 		pQueue->qsStats.nPeakNodes = MAX(pQueue->qsStats.nNodes, pQueue->qsStats.nPeakNodes);
 		pQueue->qsStats.nAppends += 1;
 		pQueue->qsStats.tsAppendTime += NCSGetTimeStampMs() - tsStart;
@@ -121,25 +124,25 @@ void NCSQueueAppendNode(NCSQueue *pQueue, NCSQueueNode *pNode)
 void NCSQueueInsertNode(NCSQueue *pQueue, NCSQueueNode *pNode, NCSQueueNode *pCurr)
 {
 	NCSTimeStampMs tsStart = 0;
-	
-	if(pQueue->bCollectStats) {
+
+	if (pQueue->bCollectStats) {
 		tsStart = NCSGetTimeStampMs();
 	}
 
 	pNode->pPrev = pCurr->pPrev;
-	if(pNode->pPrev) {
+	if (pNode->pPrev) {
 		pNode->pPrev->pNext = pNode;
 	}
 	pCurr->pPrev = pNode;
 	pNode->pNext = pCurr;
 
-	if(pCurr == NCSQueueFirstNode(pQueue)) {
+	if (pCurr == NCSQueueFirstNode(pQueue)) {
 		pQueue->pFirst = pNode;
 	}
-	
+
 	pQueue->qsStats.nNodes += 1;
 
-	if(pQueue->bCollectStats) {
+	if (pQueue->bCollectStats) {
 		pQueue->qsStats.nPeakNodes = MAX(pQueue->qsStats.nNodes, pQueue->qsStats.nPeakNodes);
 		pQueue->qsStats.nInserts += 1;
 		pQueue->qsStats.tsInsertTime += NCSGetTimeStampMs() - tsStart;
@@ -153,38 +156,40 @@ void NCSQueueInsertNode(NCSQueue *pQueue, NCSQueueNode *pNode, NCSQueueNode *pCu
 NCSQueueNode *NCSQueueRemoveNode(NCSQueue *pQueue, NCSQueueNode *pNode)
 {
 	NCSTimeStampMs tsStart = 0;
-	
-	if(pQueue->bCollectStats) {
+
+	if (pQueue->bCollectStats) {
 		tsStart = NCSGetTimeStampMs();
 	}
 	NCSQueueLock(pQueue);
 
-	if(NCSQueueFirstNode(pQueue)) {
-		if(!pNode) {
+	if (NCSQueueFirstNode(pQueue)) {
+		if (!pNode) {
 			pNode = NCSQueueFirstNode(pQueue);
 			pQueue->pFirst = pNode->pNext;
-		} else if(pNode == NCSQueueFirstNode(pQueue)) {
+		}
+		else if (pNode == NCSQueueFirstNode(pQueue)) {
 			pQueue->pFirst = pNode->pNext;
 		}
-		if(pNode == NCSQueueLastNode(pQueue)) {
+		if (pNode == NCSQueueLastNode(pQueue)) {
 			pQueue->pLast = pNode->pPrev;
 		}
 
-		if(pNode->pNext) {
+		if (pNode->pNext) {
 			pNode->pNext->pPrev = pNode->pPrev;
 		}
-		if(pNode->pPrev) {
+		if (pNode->pPrev) {
 			pNode->pPrev->pNext = pNode->pNext;
 		}
 		pNode->pPrev = (NCSQueueNode*)NULL;
 		pNode->pNext = (NCSQueueNode*)NULL;
 
 		pQueue->qsStats.nNodes -= 1;
-	} else {
+	}
+	else {
 		pNode = (NCSQueueNode*)NULL;
 	}
-	
-	if(pQueue->bCollectStats) {
+
+	if (pQueue->bCollectStats) {
 		pQueue->qsStats.nRemoves += 1;
 		pQueue->qsStats.tsRemoveTime += NCSGetTimeStampMs() - tsStart;
 	}

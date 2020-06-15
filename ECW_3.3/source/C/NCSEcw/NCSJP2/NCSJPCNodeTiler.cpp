@@ -2,13 +2,13 @@
 ** Copyright 2003 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:     $Archive: /NCS/Source/C/NCSEcw/NCSJP2/NCSJPCSubBand.cpp $
@@ -20,17 +20,17 @@
 
 #include "NCSJPCNodeTiler.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+ //////////////////////////////////////////////////////////////////////
+ // Construction/Destruction
+ //////////////////////////////////////////////////////////////////////
 
-	/** Default constructor, initialises members */
+	 /** Default constructor, initialises members */
 CNCSJPCNodeTiler::CNCSJPCNodeTiler()
 {
 	m_pCtx = NULL;
 }
 
-	/** Virtual destructor */
+/** Virtual destructor */
 CNCSJPCNodeTiler::~CNCSJPCNodeTiler()
 {
 }
@@ -41,10 +41,10 @@ bool CNCSJPCNodeTiler::UnLink(ContextID nCtx, UINT16 nInputs)
 	bool bRet = true;
 	m_pCtx = (Context*)GetContext(nCtx);
 	UINT32 nNodes = GetNumNodesWide() * GetNumNodesHigh();
-	for(UINT32 n = 0; n < (UINT32)NCSMax(1, nInputs); n++) {
-		for(UINT32 i = 0; i < nNodes; i++) {
+	for (UINT32 n = 0; n < (UINT32)NCSMax(1, nInputs); n++) {
+		for (UINT32 i = 0; i < nNodes; i++) {
 			CNCSJPCNode *pNode = GetNodePtr(i, (UINT16)n);
-			if(pNode) {
+			if (pNode) {
 				bRet &= pNode->UnLink(nCtx);
 			}
 		}
@@ -63,63 +63,64 @@ bool CNCSJPCNodeTiler::ReadLine(ContextID nCtx, CNCSJPCBuffer *pDst, UINT16 iCom
 	INT32 nX = pDst->GetX0();
 	INT32 nY = pDst->GetY0();
 	UINT32 nWidth = pDst->GetWidth();
-	
+
 	m_pCtx = (Context*)GetContext(nCtx);
 
-	if(nNodesHigh && nNodesWide) {
+	if (nNodesHigh && nNodesWide) {
 		CNCSJPCNode *pNode;
-		if(nNodesHigh == 1 && nNodesWide == 1) {
+		if (nNodesHigh == 1 && nNodesWide == 1) {
 			pNode = GetNodePtr(0, iComponent);
-			if(pNode && pNode->GetX0() <= nX && pNode->GetX1() >= pDst->GetX1() &&
+			if (pNode && pNode->GetX0() <= nX && pNode->GetX1() >= pDst->GetX1() &&
 				pNode->GetY0() <= nY && pNode->GetY1() >= pDst->GetY1()) {
 				return(pNode->ReadLine(nCtx, pDst, iComponent));
 			}
 		}
 		pNode = GetNodePtr(0, iComponent);
-		if(pNode) {
+		if (pNode) {
 			INT32 nY0 = pNode->GetY0();
 			UINT32 ny;
-			for(ny = 0; ny < nNodesHigh; ny++) {
+			for (ny = 0; ny < nNodesHigh; ny++) {
 				pNode = GetNodePtr(ny * nNodesWide);
-				if(pNode) {
+				if (pNode) {
 					INT32 nY1 = pNode->GetY1();
 					UINT32 nNodeHeight = nY1 - nY0;
 					nY0 = nY1;
 
-					if(nY >= nCurY && nY < nCurY + (INT32)nNodeHeight) {
+					if (nY >= nCurY && nY < nCurY + (INT32)nNodeHeight) {
 						break;
 					}
 					nCurY += nNodeHeight;
-				} else {
+				}
+				else {
 					bRet = false;
 					break;
 				}
 			}
-			if(ny < nNodesHigh) {
+			if (ny < nNodesHigh) {
 				INT32 nCurX = 0;
 				bRet = false;
 				pNode = GetNodePtr(ny * nNodesWide, iComponent);
-				if(pNode) {
+				if (pNode) {
 					INT32 nX0 = pNode->GetX0();
 					CNCSJPCBuffer tmp;
-					
-					for(UINT32 nx = 0; nx < nNodesWide && nWidth; nx++) {
+
+					for (UINT32 nx = 0; nx < nNodesWide && nWidth; nx++) {
 						CNCSJPCNode *pNode = GetNodePtr(nx + ny * nNodesWide, iComponent);
-						
-						if(pNode) {
+
+						if (pNode) {
 							INT32 nX1 = pNode->GetX1();
 							UINT32 nNodeWidth = nX1 - nX0;//pCB->GetWidth();
 							nX0 = nX1;
-							if(nX >= nCurX && nX < nCurX + (INT32)nNodeWidth) {
+							if (nX >= nCurX && nX < nCurX + (INT32)nNodeWidth) {
 								UINT32 nNodeReadWidth = NCSMin(nWidth, nNodeWidth - (nX - nCurX));
 
 								tmp.Assign(nX - nCurX, nY - nCurY, nNodeReadWidth, (UINT32)1, pDst->GetType(), (UINT8*)pDst->GetPtr() + pDst->Size(pDst->GetType(), nBufferOffset), pDst->GetStep());
 
-								bRet = pNode->ReadLine(nCtx, 
-													   &tmp,
-													   iComponent);
+								bRet = pNode->ReadLine(nCtx,
+									&tmp,
+									iComponent);
 								tmp.Release();
-								if(!bRet) {
+								if (!bRet) {
 									*(CNCSError*)this = *(CNCSError*)pNode;
 									break;
 								}
@@ -128,18 +129,20 @@ bool CNCSJPCNodeTiler::ReadLine(ContextID nCtx, CNCSJPCBuffer *pDst, UINT16 iCom
 								nWidth -= nNodeReadWidth;
 							}
 							nCurX += nNodeWidth;
-						} else {
+						}
+						else {
 							bRet = false;
 							break;
 						}
 					}
-				} else {
+				}
+				else {
 					bRet = false;
 				}
 			}
 		}
 	}
-	if(nWidth) {
+	if (nWidth) {
 		memset(((UINT8*)pDst->GetPtr()) + Size(pDst->GetType(), nBufferOffset), 0, (size_t)Size(pDst->GetType(), nWidth));
 		bRet = true;
 	}
@@ -153,15 +156,16 @@ bool CNCSJPCNodeTiler::WriteLine(ContextID nCtx, CNCSJPCBuffer *pSrc, UINT16 iCo
 	UINT32 nNodesWide = GetNumNodesWide();
 	UINT32 nNodesHigh = GetNumNodesHigh();
 
-	if(nNodesWide == 1 && nNodesHigh == 1) {
+	if (nNodesWide == 1 && nNodesHigh == 1) {
 		bRet = GetNodePtr(0)->WriteLine(nCtx, pSrc, iComponent);
-	} else {
+	}
+	else {
 		UINT32 nNodeHeight = GetNodeHeight();
 		INT32 nNodeY = (pSrc->GetY0() - GetY0()) / nNodeHeight;
 		UINT32 nNodesOffset = nNodeY * nNodesWide;
 
 		nNodesWide += nNodesOffset;
-		for(UINT32 nNode = nNodesOffset; nNode < nNodesWide; nNode++) {
+		for (UINT32 nNode = nNodesOffset; nNode < nNodesWide; nNode++) {
 			bRet &= GetNodePtr(nNode)->WriteLine(nCtx, pSrc, iComponent);
 		}
 	}

@@ -40,7 +40,7 @@ CPL_CVSID("$Id: cpl_strtod.cpp 27044 2014-03-16 23:41:27Z rouault $");
 // Fix it here not touching the compiler options.
 #if defined(HAVE_STRTOF) && !HAVE_DECL_STRTOF
 extern "C" {
-extern float strtof(const char *nptr, char **endptr);
+	extern float strtof(const char *nptr, char **endptr);
 }
 #endif
 
@@ -51,10 +51,10 @@ extern float strtof(const char *nptr, char **endptr);
 
 static float CPLNaN(void)
 {
-    float fNan;
-    int nNan = 0x7FC00000;
-    memcpy(&fNan, &nNan, 4);
-    return fNan;
+	float fNan;
+	int nNan = 0x7FC00000;
+	memcpy(&fNan, &nNan, 4);
+	return fNan;
 }
 
 #    define NAN CPLNan()
@@ -62,12 +62,12 @@ static float CPLNaN(void)
 #endif
 
 #ifndef INFINITY
-    static CPL_INLINE double CPLInfinity(void)
-    {
-        static double ZERO = 0;
-        return 1.0 / ZERO; /* MSVC doesn't like 1.0 / 0.0 */
-    }
-    #define INFINITY CPLInfinity()
+static CPL_INLINE double CPLInfinity(void)
+{
+	static double ZERO = 0;
+	return 1.0 / ZERO; /* MSVC doesn't like 1.0 / 0.0 */
+}
+#define INFINITY CPLInfinity()
 #endif
 
 /************************************************************************/
@@ -94,7 +94,7 @@ static float CPLNaN(void)
  */
 double CPLAtofDelim(const char *nptr, char point)
 {
-  return CPLStrtodDelim(nptr, 0, point);
+	return CPLStrtodDelim(nptr, 0, point);
 }
 
 /************************************************************************/
@@ -136,7 +136,7 @@ double CPLAtofDelim(const char *nptr, char point)
  */
 double CPLAtof(const char *nptr)
 {
-  return CPLStrtod(nptr, 0);
+	return CPLStrtod(nptr, 0);
 }
 
 /************************************************************************/
@@ -149,9 +149,9 @@ double CPLAtof(const char *nptr)
  * This function converts the initial portion of the string pointed to
  * by nptr to double floating point representation. This function does the
  * same as standard atof(), but it allows a variety of locale representations.
- * That is it supports numeric values with either a comma or a period for 
- * the decimal delimiter. 
- * 
+ * That is it supports numeric values with either a comma or a period for
+ * the decimal delimiter.
+ *
  * PS. The M stands for Multi-lingual.
  *
  * @param nptr The string to convert.
@@ -159,21 +159,21 @@ double CPLAtof(const char *nptr)
  * @return Converted value, if any.  Zero on failure.
  */
 
-double CPLAtofM( const char *nptr )
+double CPLAtofM(const char *nptr)
 
 {
-    int i;
-    const static int nMaxSearch = 50;
+	int i;
+	const static int nMaxSearch = 50;
 
-    for( i = 0; i < nMaxSearch; i++ )
-    {
-        if( nptr[i] == ',' )
-            return CPLStrtodDelim( nptr, 0, ',' );
-        else if( nptr[i] == '.' || nptr[i] == '\0' )
-            return CPLStrtodDelim( nptr, 0, '.' );
-    }
+	for (i = 0; i < nMaxSearch; i++)
+	{
+		if (nptr[i] == ',')
+			return CPLStrtodDelim(nptr, 0, ',');
+		else if (nptr[i] == '.' || nptr[i] == '\0')
+			return CPLStrtodDelim(nptr, 0, '.');
+	}
 
-    return CPLStrtodDelim( nptr, 0, '.' );
+	return CPLStrtodDelim(nptr, 0, '.');
 }
 
 /************************************************************************/
@@ -183,44 +183,44 @@ double CPLAtofM( const char *nptr )
 static char* CPLReplacePointByLocalePoint(const char* pszNumber, char point)
 {
 #if defined(WIN32CE) || defined(__ANDROID__)
-    static char byPoint = 0;
-    if (byPoint == 0)
-    {
-        char szBuf[16];
-        sprintf(szBuf, "%.1f", 1.0);
-        byPoint = szBuf[1];
-    }
-    if (point != byPoint)
-    {
-        const char* pszPoint = strchr(pszNumber, point);
-        if (pszPoint)
-        {
-            char* pszNew = CPLStrdup(pszNumber);
-            pszNew[pszPoint - pszNumber] = byPoint;
-            return pszNew;
-        }
-    }
+	static char byPoint = 0;
+	if (byPoint == 0)
+	{
+		char szBuf[16];
+		sprintf(szBuf, "%.1f", 1.0);
+		byPoint = szBuf[1];
+	}
+	if (point != byPoint)
+	{
+		const char* pszPoint = strchr(pszNumber, point);
+		if (pszPoint)
+		{
+			char* pszNew = CPLStrdup(pszNumber);
+			pszNew[pszPoint - pszNumber] = byPoint;
+			return pszNew;
+		}
+	}
 #else
-    struct lconv *poLconv = localeconv();
-    if ( poLconv
-         && poLconv->decimal_point
-         && strlen(poLconv->decimal_point) > 0 )
-    {
-        char    byPoint = poLconv->decimal_point[0];
+	struct lconv *poLconv = localeconv();
+	if (poLconv
+		&& poLconv->decimal_point
+		&& strlen(poLconv->decimal_point) > 0)
+	{
+		char    byPoint = poLconv->decimal_point[0];
 
-        if (point != byPoint)
-        {
-            const char* pszPoint = strchr(pszNumber, point);
-            if (pszPoint)
-            {
-                char* pszNew = CPLStrdup(pszNumber);
-                pszNew[pszPoint - pszNumber] = byPoint;
-                return pszNew;
-            }
-        }
-    }
+		if (point != byPoint)
+		{
+			const char* pszPoint = strchr(pszNumber, point);
+			if (pszPoint)
+			{
+				char* pszNew = CPLStrdup(pszNumber);
+				pszNew[pszPoint - pszNumber] = byPoint;
+				return pszNew;
+			}
+		}
+	}
 #endif
-    return (char*) pszNumber;
+	return (char*)pszNumber;
 }
 
 /************************************************************************/
@@ -246,53 +246,53 @@ static char* CPLReplacePointByLocalePoint(const char* pszNumber, char point)
  */
 double CPLStrtodDelim(const char *nptr, char **endptr, char point)
 {
-    while( *nptr == ' ' )
-        nptr ++;
+	while (*nptr == ' ')
+		nptr++;
 
-    if (nptr[0] == '-')
-    {
-        if (strcmp(nptr, "-1.#QNAN") == 0 ||
-            strcmp(nptr, "-1.#IND") == 0)
-            return NAN;
+	if (nptr[0] == '-')
+	{
+		if (strcmp(nptr, "-1.#QNAN") == 0 ||
+			strcmp(nptr, "-1.#IND") == 0)
+			return NAN;
 
-        if (strcmp(nptr,"-inf") == 0 ||
-            strcmp(nptr,"-1.#INF") == 0)
-            return -INFINITY;
-    }
-    else if (nptr[0] == '1')
-    {
-        if (strcmp(nptr, "1.#QNAN") == 0)
-            return NAN;
-        if (strcmp (nptr,"1.#INF") == 0)
-            return INFINITY;
-    }
-    else if (nptr[0] == 'i' && strcmp(nptr,"inf") == 0)
-        return INFINITY;
-    else if (nptr[0] == 'n' && strcmp(nptr,"nan") == 0)
-        return NAN;
+		if (strcmp(nptr, "-inf") == 0 ||
+			strcmp(nptr, "-1.#INF") == 0)
+			return -INFINITY;
+	}
+	else if (nptr[0] == '1')
+	{
+		if (strcmp(nptr, "1.#QNAN") == 0)
+			return NAN;
+		if (strcmp(nptr, "1.#INF") == 0)
+			return INFINITY;
+	}
+	else if (nptr[0] == 'i' && strcmp(nptr, "inf") == 0)
+		return INFINITY;
+	else if (nptr[0] == 'n' && strcmp(nptr, "nan") == 0)
+		return NAN;
 
-/* -------------------------------------------------------------------- */
-/*  We are implementing a simple method here: copy the input string     */
-/*  into the temporary buffer, replace the specified decimal delimiter  */
-/*  with the one, taken from locale settings and use standard strtod()  */
-/*  on that buffer.                                                     */
-/* -------------------------------------------------------------------- */
-    double      dfValue;
-    int         nError;
+	/* -------------------------------------------------------------------- */
+	/*  We are implementing a simple method here: copy the input string     */
+	/*  into the temporary buffer, replace the specified decimal delimiter  */
+	/*  with the one, taken from locale settings and use standard strtod()  */
+	/*  on that buffer.                                                     */
+	/* -------------------------------------------------------------------- */
+	double      dfValue;
+	int         nError;
 
-    char*       pszNumber = CPLReplacePointByLocalePoint(nptr, point);
+	char*       pszNumber = CPLReplacePointByLocalePoint(nptr, point);
 
-    dfValue = strtod( pszNumber, endptr );
-    nError = errno;
+	dfValue = strtod(pszNumber, endptr);
+	nError = errno;
 
-    if ( endptr )
-        *endptr = (char *)nptr + (*endptr - pszNumber);
+	if (endptr)
+		*endptr = (char *)nptr + (*endptr - pszNumber);
 
-    if (pszNumber != (char*) nptr)
-        CPLFree( pszNumber );
+	if (pszNumber != (char*)nptr)
+		CPLFree(pszNumber);
 
-    errno = nError;
-    return dfValue;
+	errno = nError;
+	return dfValue;
 }
 
 /************************************************************************/
@@ -318,7 +318,7 @@ double CPLStrtodDelim(const char *nptr, char **endptr, char point)
  */
 double CPLStrtod(const char *nptr, char **endptr)
 {
-    return CPLStrtodDelim(nptr, endptr, '.');
+	return CPLStrtodDelim(nptr, endptr, '.');
 }
 
 /************************************************************************/
@@ -345,33 +345,33 @@ double CPLStrtod(const char *nptr, char **endptr)
 float CPLStrtofDelim(const char *nptr, char **endptr, char point)
 {
 #if defined(HAVE_STRTOF)
-/* -------------------------------------------------------------------- */
-/*  We are implementing a simple method here: copy the input string     */
-/*  into the temporary buffer, replace the specified decimal delimiter  */
-/*  with the one, taken from locale settings and use standard strtof()  */
-/*  on that buffer.                                                     */
-/* -------------------------------------------------------------------- */
+	/* -------------------------------------------------------------------- */
+	/*  We are implementing a simple method here: copy the input string     */
+	/*  into the temporary buffer, replace the specified decimal delimiter  */
+	/*  with the one, taken from locale settings and use standard strtof()  */
+	/*  on that buffer.                                                     */
+	/* -------------------------------------------------------------------- */
 
-    double      dfValue;
-    int         nError;
+	double      dfValue;
+	int         nError;
 
-    char*       pszNumber = CPLReplacePointByLocalePoint(nptr, point);
+	char*       pszNumber = CPLReplacePointByLocalePoint(nptr, point);
 
-    dfValue = strtof( pszNumber, endptr );
-    nError = errno;
+	dfValue = strtof(pszNumber, endptr);
+	nError = errno;
 
-    if ( endptr )
-        *endptr = (char *)nptr + (*endptr - pszNumber);
+	if (endptr)
+		*endptr = (char *)nptr + (*endptr - pszNumber);
 
-    if (pszNumber != (char*) nptr)
-        CPLFree( pszNumber );
+	if (pszNumber != (char*)nptr)
+		CPLFree(pszNumber);
 
-    errno = nError;
-    return dfValue;
+	errno = nError;
+	return dfValue;
 
 #else
 
-    return (float)CPLStrtodDelim(nptr, endptr, point);
+	return (float)CPLStrtodDelim(nptr, endptr, point);
 
 #endif /* HAVE_STRTOF */
 }
@@ -399,7 +399,7 @@ float CPLStrtofDelim(const char *nptr, char **endptr, char point)
  */
 float CPLStrtof(const char *nptr, char **endptr)
 {
-    return CPLStrtofDelim(nptr, endptr, '.');
+	return CPLStrtofDelim(nptr, endptr, '.');
 }
 
 /* END OF FILE */

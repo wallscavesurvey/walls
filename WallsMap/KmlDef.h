@@ -5,7 +5,7 @@
 class CShpLayer;
 
 struct GE_POINT {
-	GE_POINT(LPCSTR label,DWORD rec,double lat,double lon)
+	GE_POINT(LPCSTR label, DWORD rec, double lat, double lon)
 		: m_csLabel(label)
 		, m_rec(rec)
 		, m_lat(lat)
@@ -13,12 +13,12 @@ struct GE_POINT {
 	{}
 	DWORD m_rec;
 	CString m_csLabel;
-	double m_lat,m_lon;
+	double m_lat, m_lon;
 };
 
 typedef std::vector<GE_POINT> VEC_GE_POINT;
 
-BOOL GE_Launch(CShpLayer *pShp,LPCSTR pathName,GE_POINT *pt,UINT numpts,BOOL bFly);
+BOOL GE_Launch(CShpLayer *pShp, LPCSTR pathName, GE_POINT *pt, UINT numpts, BOOL bFly);
 bool GE_IsInstalled();
 extern bool GE_Checked;
 CString &GE_Path();

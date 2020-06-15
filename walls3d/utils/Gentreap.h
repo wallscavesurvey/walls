@@ -75,14 +75,14 @@ using namespace std;
 // 
 //</class>
 
-class TreapNode{
- public:
-     TreapNode();
-     virtual ~TreapNode();
+class TreapNode {
+public:
+	TreapNode();
+	virtual ~TreapNode();
 
-     long p_;
-     TreapNode* left_;
-     TreapNode* right_;
+	long p_;
+	TreapNode* left_;
+	TreapNode* right_;
 };
 
 //<class>
@@ -130,28 +130,28 @@ class TreapNode{
 //</class>
 
 class Treap {
-  public:
-     const TreapNode* maxKeyNode() const; 
-     const TreapNode* minKeyNode() const;
-     void free() { delete root_; root_ = nil;};
-     boolean deleteFlag() const { return delete_;};
-     void setDeleteFlag( boolean v) { delete_ = v;};
-  protected:
-     Treap() : root_( nil), delete_(1) {};
-     ~Treap() { if (delete_) delete root_;};
-     void rotateRight( TreapNode*&);
-     void rotateLeft( TreapNode*&);
+public:
+	const TreapNode* maxKeyNode() const;
+	const TreapNode* minKeyNode() const;
+	void free() { delete root_; root_ = nil; };
+	boolean deleteFlag() const { return delete_; };
+	void setDeleteFlag(boolean v) { delete_ = v; };
+protected:
+	Treap() : root_(nil), delete_(1) {};
+	~Treap() { if (delete_) delete root_; };
+	void rotateRight(TreapNode*&);
+	void rotateLeft(TreapNode*&);
 
-     TreapNode* root_;
-    
-  private:
-     const TreapNode* maxKeyNode( const TreapNode*) const; 
-     const TreapNode* minKeyNode( const TreapNode*) const; 
-     friend ostream& operator <<( ostream& s, Treap & t ); // gives statistics about the Treap
-     void count( const TreapNode* node, int idx);
-     int histogram[MAXHIST];
+	TreapNode* root_;
 
-     boolean delete_;		// should the destructor delete all nodes
+private:
+	const TreapNode* maxKeyNode(const TreapNode*) const;
+	const TreapNode* minKeyNode(const TreapNode*) const;
+	friend ostream& operator <<(ostream& s, Treap & t); // gives statistics about the Treap
+	void count(const TreapNode* node, int idx);
+	int histogram[MAXHIST];
+
+	boolean delete_;		// should the destructor delete all nodes
 };
 
 

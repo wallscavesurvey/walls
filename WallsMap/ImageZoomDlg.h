@@ -8,10 +8,10 @@ class CImageZoomDlg : public CDialog
 	DECLARE_DYNAMIC(CImageZoomDlg)
 
 public:
-	CImageZoomDlg(LPCSTR pTitle,CWnd* pParent = NULL);   // standard constructor
+	CImageZoomDlg(LPCSTR pTitle, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CImageZoomDlg();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_IMGZOOM };
 
 protected:

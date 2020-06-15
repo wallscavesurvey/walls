@@ -13,7 +13,7 @@ public:
 	CEditImageDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CEditImageDlg();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_EDITIMAGE };
 
 private:
@@ -25,7 +25,7 @@ private:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//afx_msg void OnBnClickedBrowse();
 
-	void SetRO(UINT id) {((CEdit *)GetDlgItem(id))->SetReadOnly();}
+	void SetRO(UINT id) { ((CEdit *)GetDlgItem(id))->SetReadOnly(); }
 
 	DECLARE_MESSAGE_MAP()
 

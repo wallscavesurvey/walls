@@ -34,20 +34,20 @@ int  LCMSEXPORT cmsErrorAction(int lAbort);
 // ******************************************************************
 
 static int nDoAbort = LCMS_ERROR_ABORT;
-static cmsErrorHandlerFunction UserErrorHandler = (cmsErrorHandlerFunction) NULL;
+static cmsErrorHandlerFunction UserErrorHandler = (cmsErrorHandlerFunction)NULL;
 
 
 int LCMSEXPORT cmsErrorAction(int nAction)
 {
-       int nOld = nDoAbort;    
-       nDoAbort = nAction;
+	int nOld = nDoAbort;
+	nDoAbort = nAction;
 
-       return nOld;
+	return nOld;
 }
 
 void LCMSEXPORT cmsSetErrorHandler(cmsErrorHandlerFunction Fn)
 {
-    UserErrorHandler = Fn;
+	UserErrorHandler = Fn;
 }
 
 
@@ -56,59 +56,59 @@ void LCMSEXPORT cmsSetErrorHandler(cmsErrorHandlerFunction Fn)
 
 void cmsSignalError(int ErrorCode, const char *ErrorText, ...)
 {
-       va_list args;
+	va_list args;
 
-       
-       if (nDoAbort == LCMS_ERROR_IGNORE) return;
 
-        va_start(args, ErrorText);
+	if (nDoAbort == LCMS_ERROR_IGNORE) return;
 
-        if (UserErrorHandler != NULL) {
+	va_start(args, ErrorText);
 
-            char Buffer[1024];
-            
-            vsprintf(Buffer, ErrorText, args);
-            va_end(args);   
+	if (UserErrorHandler != NULL) {
 
-            if (UserErrorHandler(ErrorCode, Buffer)) {     
-                   
-                return;
-            }
-       }
+		char Buffer[1024];
+
+		vsprintf(Buffer, ErrorText, args);
+		va_end(args);
+
+		if (UserErrorHandler(ErrorCode, Buffer)) {
+
+			return;
+		}
+	}
 
 #if defined( __CONSOLE__ ) || defined( NON_WINDOWS )
 
-              fprintf(stderr, "lcms: Error #%d; ", ErrorCode);
-              vfprintf(stderr, ErrorText, args);
-              fprintf(stderr, "\n");
-              va_end(args);
+	fprintf(stderr, "lcms: Error #%d; ", ErrorCode);
+	vfprintf(stderr, ErrorText, args);
+	fprintf(stderr, "\n");
+	va_end(args);
 
-              if (nDoAbort == LCMS_ERROR_ABORT) exit(1);
+	if (nDoAbort == LCMS_ERROR_ABORT) exit(1);
 #else
-              {
-              char Buffer1[1024];
-              char Buffer2[256];
+	{
+		char Buffer1[1024];
+		char Buffer2[256];
 
-              sprintf(Buffer1, "Error #%x; ", ErrorCode);
-              vsprintf(Buffer2, ErrorText, args);
-              strcat(Buffer1, Buffer2);
-              MessageBoxA(NULL, Buffer1, "Little cms",
-                                          MB_OK|MB_ICONSTOP
+		sprintf(Buffer1, "Error #%x; ", ErrorCode);
+		vsprintf(Buffer2, ErrorText, args);
+		strcat(Buffer1, Buffer2);
+		MessageBoxA(NULL, Buffer1, "Little cms",
+			MB_OK | MB_ICONSTOP
 #ifndef _WIN32_WCE
-										  |MB_TASKMODAL
+			| MB_TASKMODAL
 #endif
-										  );
-              va_end(args);
+		);
+		va_end(args);
 
-              if (nDoAbort == LCMS_ERROR_ABORT) {
+		if (nDoAbort == LCMS_ERROR_ABORT) {
 
 #ifdef __BORLANDC__
-                    _cexit();
+			_cexit();
 #endif
 
-                  FatalAppExit(0, TEXT("lcms is terminating application"));
-              }
+			FatalAppExit(0, TEXT("lcms is terminating application"));
+		}
 
-              }
+	}
 #endif
 }

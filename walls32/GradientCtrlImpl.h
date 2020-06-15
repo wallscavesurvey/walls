@@ -13,7 +13,7 @@
 
 class CGradientCtrl;
 
-class CGradientCtrlImpl  
+class CGradientCtrlImpl
 {
 public:
 	CGradientCtrlImpl(CGradientCtrl *owner);
@@ -30,21 +30,21 @@ protected:
 	void DrawSelPeg(CDC *dc, CPoint point, int direction);
 	void DrawPeg(CDC *dc, CPoint point, COLORREF color, int direction);
 	void DrawEndPegs(CDC *dc);
-	
+
 	int PointFromPos(double pos);
 	double PosFromPoint(int point);
 	int GetPegIndent(int index);
 	int PtInPeg(CPoint point);
 
 	void GetPegRect(int index, CRect *rect, bool right);
-	
+
 	void ParseToolTipLine(CString &tiptext, CPeg peg);
 	void ShowTooltip(CPoint point, CString text);
 	CString ExtractLine(CString source, int line);
 	void SetTooltipText(CString text);
 	void DestroyTooltip();
 	void SynchronizeTooltips();
-	BOOL GetNearbyValueStr(int x,CString &valstr);
+	BOOL GetNearbyValueStr(int x, CString &valstr);
 
 	bool IsVertical();
 	int GetDrawWidth();
@@ -53,11 +53,11 @@ protected:
 	TOOLINFO m_ToolInfo;
 	CGradientCtrl *m_Owner;
 	CToolTipCtrl m_ToolTipCtrl;
-	int m_RectCount,m_HistWidth,m_HistLength;
+	int m_RectCount, m_HistWidth, m_HistLength;
 	CRect m_GradFrame;
 	float *m_pHistValue;
 	WORD *m_pHistArray;
-	BOOL m_LeftDownSide,m_RightUpSide;
+	BOOL m_LeftDownSide, m_RightUpSide;
 
 	CPeg m_Null;
 

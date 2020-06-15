@@ -40,10 +40,10 @@ class CDlgSymbolsPoly : public CDialog
 
 
 public:
-	CDlgSymbolsPoly(CWallsMapDoc *pDoc,CShpLayer *pLayer,CWnd* pParent = NULL);   // standard constructor
+	CDlgSymbolsPoly(CWallsMapDoc *pDoc, CShpLayer *pLayer, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CDlgSymbolsPoly();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_SYMBOLS_POLY };
 
 private:
@@ -58,17 +58,17 @@ private:
 	void RefreshIdxDepth();
 	void UpdateLineSize(int inc0);
 	void Hide(UINT id) { GetDlgItem(id)->ShowWindow(SW_HIDE); }
-	void Enable(UINT id,BOOL bEnable) {	GetDlgItem(id)->EnableWindow(bEnable); }
+	void Enable(UINT id, BOOL bEnable) { GetDlgItem(id)->EnableWindow(bEnable); }
 
 	afx_msg void OnLineSize(NMHDR* pNMHDR, LRESULT* pResult);
-    afx_msg void OnIdxDepth(NMHDR* pNMHDR, LRESULT* pResult) ;
+	afx_msg void OnIdxDepth(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnEnChangeLineSize();
 	afx_msg void OnBnClickedApply();
 	afx_msg void OnSelField();
 	afx_msg void OnFilled();
 	afx_msg void OnClear();
 	afx_msg void OnLblFont();
-	afx_msg LRESULT OnChgColor(WPARAM,LPARAM);
+	afx_msg LRESULT OnChgColor(WPARAM, LPARAM);
 	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 
 	DECLARE_MESSAGE_MAP()

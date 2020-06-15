@@ -1,16 +1,16 @@
-/********************************************************** 
+/**********************************************************
 ** Copyright 1998 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
-** 
+**
 ** FILE:   	pack.c	- packs (encodes) quantized data stream
 ** CREATED:	1998
 ** AUTHOR: 	SNS
@@ -56,7 +56,7 @@
 **	(2)	The pack_data() routine tries multiple encoding/compression techniques
 **		to decide which is the best for the data. Thus, it is fairly slow to
 **		compress, but decompress is fast.
-**		
+**
 **	Note that in all cases:
 **	(1)	Lengths are handed to these routines in bytes, not symbol lengths
 **
@@ -88,7 +88,7 @@
 
 #include "rangecode.c"		/* IMPORTANT!! Include this in-line for performance */
 
-//#define ENCODE_RANGE_ONLY // ONLY use ENCODE_RANGE
+ //#define ENCODE_RANGE_ONLY // ONLY use ENCODE_RANGE
 #define ECW_ENCODE_RANGE
 #define ECW_ENCODE_ZEROS
 #define ECW_ENCODE_RUN_ZERO
@@ -112,8 +112,8 @@
 
 
 NCSError	pack_data(QmfLevelStruct *p_top_qmf,
-			  UINT8 **p_packed,	UINT32 *packed_length,
-			  UINT8 *p_raw,		UINT32 raw_length, UINT8 symbol_size_hint, BOOLEAN bTryHuffman)
+	UINT8 **p_packed, UINT32 *packed_length,
+	UINT8 *p_raw, UINT32 raw_length, UINT8 symbol_size_hint, BOOLEAN bTryHuffman)
 {
 	register	UINT8 *p_try_packed;
 	UINT8		*pRunPacked = NULL;		// pointer to Run Zero or Huffman packed data, if any
@@ -122,8 +122,8 @@ NCSError	pack_data(QmfLevelStruct *p_top_qmf,
 	// must have enough space for partial overrun during compression attempt
 	// With range encoding, we need 5 + 1 + 3, so 20 is safe. We don't ever
 	// write this extra to disk, of course.
-	p_try_packed = (UINT8 *) NCSMalloc(raw_length * 2 + 20, FALSE);
-	if( !p_try_packed )
+	p_try_packed = (UINT8 *)NCSMalloc(raw_length * 2 + 20, FALSE);
+	if (!p_try_packed)
 		return(NCS_COULDNT_ALLOC_MEMORY);
 
 #ifdef NEVER_PERFORMANCE_TESTING
@@ -132,31 +132,31 @@ NCSError	pack_data(QmfLevelStruct *p_top_qmf,
 	return(NCS_SUCCESS);
 #endif
 
-	*packed_length  = raw_length;
+	*packed_length = raw_length;
 
-	encode_format	= ENCODE_RANGE;
-//	encode_format	= ENCODE_RAW;	// DEBUG TEST - set this to force no packing
+	encode_format = ENCODE_RANGE;
+	//	encode_format	= ENCODE_RAW;	// DEBUG TEST - set this to force no packing
 
-	//
-	// Try range encoding
-	//	For 16 bit symbols only:
-	//	First try difference encoding with 8 bit values. If we can fit them
-	//	into 8 bits, we use this instead, as it is faster and always more
-	//	efficient than straight range encoding. There is no point doing 16 bit
-	//	range - it is less efficient that normal 16 bit range encoding.
-	//	We encode a start 16 bit value, then ALL the values (including for the first
-	//	symbol - this value will therefor always be zero). We do this as it makes
-	//	line by line decoding much simpler.
-	//	At the end of encoding, if we note that all values were zero,
-	//	we just encode the block as ZERO's. This will result in much faster decode.
-	//
-	//	[10] If ZERO encoding failed, and after trying RANGE8 encoding, try RUN_ZERO or HUFFMAN,
-	//	and pick the best (=shortest).  Then try RANGE8 encoding only if RANGE8 failed (so still
-	//	try it if RANGE8 failed but RUN_ZERO or HUFFMAN generated reasonable results.
-	//
-	//	Failing any of the above (or not 16 bit symbols), straight range encoding is tried.
-	//
-	if( encode_format == ENCODE_RANGE ) {	// try range encoding
+		//
+		// Try range encoding
+		//	For 16 bit symbols only:
+		//	First try difference encoding with 8 bit values. If we can fit them
+		//	into 8 bits, we use this instead, as it is faster and always more
+		//	efficient than straight range encoding. There is no point doing 16 bit
+		//	range - it is less efficient that normal 16 bit range encoding.
+		//	We encode a start 16 bit value, then ALL the values (including for the first
+		//	symbol - this value will therefor always be zero). We do this as it makes
+		//	line by line decoding much simpler.
+		//	At the end of encoding, if we note that all values were zero,
+		//	we just encode the block as ZERO's. This will result in much faster decode.
+		//
+		//	[10] If ZERO encoding failed, and after trying RANGE8 encoding, try RUN_ZERO or HUFFMAN,
+		//	and pick the best (=shortest).  Then try RANGE8 encoding only if RANGE8 failed (so still
+		//	try it if RANGE8 failed but RUN_ZERO or HUFFMAN generated reasonable results.
+		//
+		//	Failing any of the above (or not 16 bit symbols), straight range encoding is tried.
+		//
+	if (encode_format == ENCODE_RANGE) {	// try range encoding
 		register	UINT8 *p_try_raw;
 		register	UINT32 count;
 
@@ -170,19 +170,19 @@ NCSError	pack_data(QmfLevelStruct *p_top_qmf,
 #ifndef ENCODE_RANGE_ONLY
 		// try difference encoding (order 1) encoding
 		// We always encode the first value as 16 bit, so we need at least 2 symbols to work with
-		if( symbol_size_hint == 2 && raw_length >= 4) {
+		if (symbol_size_hint == 2 && raw_length >= 4) {
 			register	INT8	*p_diff, *p_try_diff;
 			register	INT32	prev;
 			register	UINT8	ok_zeros;
 			register	UINT8	ok_8bit;
 			register	INT16	*p_try_raw16;
 
-			p_diff = p_try_diff = (INT8 *) NCSMalloc(raw_length*2 + 20, FALSE);
-			if( !p_diff ) {
+			p_diff = p_try_diff = (INT8 *)NCSMalloc(raw_length * 2 + 20, FALSE);
+			if (!p_diff) {
 				NCS_SAFE_FREE(p_try_packed);
 				return(NCS_COULDNT_ALLOC_MEMORY);
 			}
-			p_try_raw16 = (INT16 *) p_raw;
+			p_try_raw16 = (INT16 *)p_raw;
 			count = raw_length / 2;		// we want nr. symbols, not data length in bytes
 #ifdef ECW_ENCODE_ZEROS
 			ok_zeros = TRUE;
@@ -191,97 +191,97 @@ NCSError	pack_data(QmfLevelStruct *p_top_qmf,
 #endif
 			ok_8bit = TRUE;
 			prev = *p_try_raw16;
-			if( prev < -1 || prev > 1 )
+			if (prev < -1 || prev > 1)
 				ok_zeros = FALSE;		// not a zero block
 
 			// try and 8 bit difference encode
-			while(count--) {
+			while (count--) {
 				register	INT32	symbol;
 				symbol = *p_try_raw16++;	// note that first value is always zero - this is OK
-				if( (symbol - prev) > MAX_INT8
-				|| (symbol - prev) < MIN_INT8 ) {
-						ok_zeros = FALSE;
-						ok_8bit = FALSE;
-						break;			// can't do 8 bit range packing, so abort
+				if ((symbol - prev) > MAX_INT8
+					|| (symbol - prev) < MIN_INT8) {
+					ok_zeros = FALSE;
+					ok_8bit = FALSE;
+					break;			// can't do 8 bit range packing, so abort
 				}
-				if( symbol )			// [08] zero encode for true zeros only
+				if (symbol)			// [08] zero encode for true zeros only
 					ok_zeros = FALSE;	// can't do zero's, but try 8 bit differencing
 
-				*p_try_diff++ = (INT8) (symbol - prev);
+				*p_try_diff++ = (INT8)(symbol - prev);
 				prev = symbol;
 			}
 
-			if( ok_zeros ) {
+			if (ok_zeros) {
 				// encode the block by marketing that it was all zeros. So we don't write
 				// anything (other than the encode_format value)
 				encode_format = ENCODE_ZEROS;
 				*packed_length = 0;		// well, that was simple.
 			}
 #ifdef ECW_8BITRANGE_ENCODE		// [13]
-			else if( ok_8bit ) {
+			else if (ok_8bit) {
 				// it was OK, so go ahead and encode using this. We have to re-fetch the first symbol
 				// from raw, and write it as a 16 bit symbol, then a 0 value for the first difference
 				register	int ch;
 				encode_format = ENCODE_RANGE8;
-				p_try_raw16 = (INT16 *) p_raw;	// need the first value again
+				p_try_raw16 = (INT16 *)p_raw;	// need the first value again
 
 				count = raw_length / 2;		// we want nr. symbols, not data length in bytes
 				p_try_diff = p_diff;
 				prev = *p_try_raw16;		// write 1st symbol as 16 bit
 
 				rc.p_packed = p_try_packed + 1;		// must leave room for encoding type symbol
-				initqsmodel(&qsm,257,12,2000,NULL,1);
-				start_encoding(&rc,0);
+				initqsmodel(&qsm, 257, 12, 2000, NULL, 1);
+				start_encoding(&rc, 0);
 
 #if defined(NCSBO_MSBFIRST) && 0 // MDT -- removed from Mac build due to lack of time- Huffman/zero/raw supported
 				//	This test is due to only 2 entry paths into the pack_data routine.  
 				//	The preamble handles the swapping, the qencode_qmf_level_output_block doesn't.
 				//	in the future handle other cases.
 				//	
-				if(2 == symbol_size_hint)
-					NCSByteSwap16( prev );
+				if (2 == symbol_size_hint)
+					NCSByteSwap16(prev);
 #endif
 				// top 8 bits 1st symbol
-				ch = (int)  ((prev >> 8) & 0xff);
-				syfreq = qsgetfreq(&qsm,ch,&ltfreq);
-				encode_shift(&rc,syfreq,ltfreq,12);
-				qsupdate(&qsm,ch);
+				ch = (int)((prev >> 8) & 0xff);
+				syfreq = qsgetfreq(&qsm, ch, &ltfreq);
+				encode_shift(&rc, syfreq, ltfreq, 12);
+				qsupdate(&qsm, ch);
 
 				// bottom 8 bits 1st symbol
-				ch = (int)  (prev & 0xff);
-				syfreq = qsgetfreq(&qsm,ch,&ltfreq);
-				encode_shift(&rc,syfreq,ltfreq,12);
-				qsupdate(&qsm,ch);
+				ch = (int)(prev & 0xff);
+				syfreq = qsgetfreq(&qsm, ch, &ltfreq);
+				encode_shift(&rc, syfreq, ltfreq, 12);
+				qsupdate(&qsm, ch);
 
 #if defined(NCSBO_MSBFIRST) && 0 // MDT -- removed from Mac build due to lack of time- Huffman/zero/raw supported
 				//	This test is due to only 2 entry paths into the pack_data routine.  
 				//	The preamble handles the swapping, the qencode_qmf_level_output_block doesn't.
 				//	in the future handle other cases.
 				//	
-				if(2 == symbol_size_hint)
-					NCSByteSwap16( prev );	// put back
+				if (2 == symbol_size_hint)
+					NCSByteSwap16(prev);	// put back
 #endif	
 				// now write the 8 bit difference encoded symbols. Note that the first value
 				// WILL get written, even though it is always zero by definition. This is so
 				// that decoding becomes a lot simpler
-				while(count--) {
-					if( rc.bytecount >= raw_length) {	// ran out of room. Try normal range encoding
+				while (count--) {
+					if (rc.bytecount >= raw_length) {	// ran out of room. Try normal range encoding
 						encode_format = ENCODE_RANGE;
 						done_encoding(&rc);
 						deleteqsmodel(&qsm);
 						break;		// abort the compression
 					}
 
-					ch = (int)  ((*p_try_diff++) & 0xff);
+					ch = (int)((*p_try_diff++) & 0xff);
 
-					syfreq = qsgetfreq(&qsm,ch,&ltfreq);
-					encode_shift(&rc,syfreq,ltfreq,12);
-					qsupdate(&qsm,ch);
+					syfreq = qsgetfreq(&qsm, ch, &ltfreq);
+					encode_shift(&rc, syfreq, ltfreq, 12);
+					qsupdate(&qsm, ch);
 				}
 
 				// write 256 as end of stream marker
-				syfreq = qsgetfreq(&qsm,256,&ltfreq);
-				encode_shift(&rc,syfreq,ltfreq,12);
+				syfreq = qsgetfreq(&qsm, 256, &ltfreq);
+				encode_shift(&rc, syfreq, ltfreq, 12);
 				done_encoding(&rc);
 				*packed_length = rc.bytecount;
 				deleteqsmodel(&qsm);
@@ -306,42 +306,42 @@ NCSError	pack_data(QmfLevelStruct *p_top_qmf,
 			**		can only handle 14 bits of data.  So we clip data to this range (it should never
 			**		exceed this range anyway, if all went well at higher level quantizer routines).
 			*/
-			if( encode_format != ENCODE_ZEROS ) {
+			if (encode_format != ENCODE_ZEROS) {
 				// True RUNZERO *and* HUFFMAN. Use the best of these if it was better than RANGE8
-				register UINT16	*pTryPacked = (UINT16 *) p_diff;		// can use the difference buffer, as RANGE8 is done with that buffer
-				register INT16	*pTryRaw = (INT16 *) p_raw;				// cast input to 16 bit values
+				register UINT16	*pTryPacked = (UINT16 *)p_diff;		// can use the difference buffer, as RANGE8 is done with that buffer
+				register INT16	*pTryRaw = (INT16 *)p_raw;				// cast input to 16 bit values
 				register UINT32 nRawLength;
 				register UINT16 nZeroCount;
 
 				nRawLength = raw_length / 2;
 				nZeroCount = 0;
-				while( nRawLength-- ) {
+				while (nRawLength--) {
 					register INT16	nValue = *pTryRaw++;
-					if( nValue ) {
+					if (nValue) {
 						// flush any outstanding zero's, and pack and output this value
-						if( nZeroCount ) {
+						if (nZeroCount) {
 							// flush and reset zero count to zero
 							*pTryPacked++ = nZeroCount | RUN_MASK;
 							nZeroCount = 0;
 						}
 						// output value with adjusted sign bit
-						if( nValue < 0 ) {
-							if( nValue <= MIN_BIN_VALUE )
+						if (nValue < 0) {
+							if (nValue <= MIN_BIN_VALUE)
 								*pTryPacked++ = ((UINT16)-(MIN_BIN_VALUE)) | SIGN_MASK;
 							else
-								*pTryPacked++ = ((UINT16) (-nValue)) | SIGN_MASK;
+								*pTryPacked++ = ((UINT16)(-nValue)) | SIGN_MASK;
 						}
 						else {
-							if( nValue >= MAX_BIN_VALUE )
+							if (nValue >= MAX_BIN_VALUE)
 								*pTryPacked++ = MAX_BIN_VALUE;
 							else
-								*pTryPacked++ = (UINT16) nValue;
+								*pTryPacked++ = (UINT16)nValue;
 						}
 					}
 					else {
 						// Increment zero count, and flush if equal to maximum zero length
 						nZeroCount += 1;
-						if( nZeroCount == MAX_RUN_LENGTH ) {
+						if (nZeroCount == MAX_RUN_LENGTH) {
 							// flush and reset zero count to zero
 							*pTryPacked++ = nZeroCount | RUN_MASK;
 							nZeroCount = 0;
@@ -349,7 +349,7 @@ NCSError	pack_data(QmfLevelStruct *p_top_qmf,
 					}
 				}
 				// Flush trailing zeros
-				if( nZeroCount ) {
+				if (nZeroCount) {
 					// flush and reset zero count to zero
 					*pTryPacked++ = nZeroCount | RUN_MASK;
 					nZeroCount = 0;
@@ -358,18 +358,18 @@ NCSError	pack_data(QmfLevelStruct *p_top_qmf,
 				//
 				//	Swap UINT16 Stream here
 				//
-				if(2 == symbol_size_hint)
-					{
-					UINT32	cbPacked = (((UINT8 *)pTryPacked) - ((UINT8 *) p_diff));
+				if (2 == symbol_size_hint)
+				{
+					UINT32	cbPacked = (((UINT8 *)pTryPacked) - ((UINT8 *)p_diff));
 					UINT32	c;
 					UINT16	*pSwapped2;
-					
+
 					pSwapped2 = (UINT16*)(p_diff);
-					for(c=0;c<cbPacked;c+=2)
-						{
-						*pSwapped2++ = NCSByteSwap16( *pSwapped2++ ); 
-						}
+					for (c = 0; c < cbPacked; c += 2)
+					{
+						*pSwapped2++ = NCSByteSwap16(*pSwapped2++);
 					}
+				}
 #endif
 				// Now compute length of zero run length array. We do this last,
 				// to save having to keep a length counter during zero packing
@@ -377,11 +377,11 @@ NCSError	pack_data(QmfLevelStruct *p_top_qmf,
 				// [11] Also try huffman encoding
 				{
 					UINT32	nPackedLength;
-					UINT8	*pEndPacked = (UINT8 *) pTryPacked;		// convert to UINT8 ptr for offset calculcation
+					UINT8	*pEndPacked = (UINT8 *)pTryPacked;		// convert to UINT8 ptr for offset calculcation
 
-					nPackedLength = (UINT32)(pEndPacked - ((UINT8 *) p_diff));
+					nPackedLength = (UINT32)(pEndPacked - ((UINT8 *)p_diff));
 #ifdef ECW_ENCODE_RUN_ZERO
-					if( *packed_length > nPackedLength ) {
+					if (*packed_length > nPackedLength) {
 						// Well, Run Zero was shorter...
 						encode_format = ENCODE_RUN_ZERO;
 						*packed_length = nPackedLength;
@@ -389,7 +389,7 @@ NCSError	pack_data(QmfLevelStruct *p_top_qmf,
 					}
 #endif //ECW_ENCODE_RUN_ZERO
 #ifdef ECW_HUFFMAN_ENCODE
-					if(bTryHuffman) {
+					if (bTryHuffman) {
 						UINT8	*pHuffman;
 						UINT32	nHuffmanLength;
 						// Now see if Huffman was any better.
@@ -397,21 +397,21 @@ NCSError	pack_data(QmfLevelStruct *p_top_qmf,
 						// [12] huffman_encode docs say "encoded_stream size should be twice as large
 						// as symbol stream size to be safe", but we found a case where there was a 3
 						// byte overrun, so make a buffer twice the size + 16 for some extra padding.
-						pHuffman = (UINT8 *) NCSMalloc(raw_length * 4 + 16, FALSE);	// [12]
-						if( !pHuffman )
+						pHuffman = (UINT8 *)NCSMalloc(raw_length * 4 + 16, FALSE);	// [12]
+						if (!pHuffman)
 							return(NCS_COULDNT_ALLOC_MEMORY);				// SERIOUS ERROR
 
-						nHuffmanLength = pack_huffman(pHuffman, (INT16 *) p_diff, nPackedLength);
-			
+						nHuffmanLength = pack_huffman(pHuffman, (INT16 *)p_diff, nPackedLength);
+
 #ifdef _DEBUG
 						if (nHuffmanLength > raw_length * 4 + 16)
 							return(NCS_INVALID_PARAMETER);				// overran pHuffman
 #endif
 #if defined(NCSBO_MSBFIRST)
 						// Now for MAC -- force Huffman
-						if(1) {
+						if (1) {
 #else
-						if(*packed_length > nHuffmanLength ) {
+						if (*packed_length > nHuffmanLength) {
 #endif 
 							encode_format = ENCODE_HUFFMAN;
 							pRunPacked = pHuffman;
@@ -421,63 +421,63 @@ NCSError	pack_data(QmfLevelStruct *p_top_qmf,
 						else {
 							NCSFree(pHuffman);
 						}
-					}
+						}
 #endif
+					}
 				}
-			}
 
-			if( !pRunPacked )		// If the RunPacked or Huffman failed, ditch this packing
-				NCS_SAFE_FREE((char *) p_diff);
-		}
+			if (!pRunPacked)		// If the RunPacked or Huffman failed, ditch this packing
+				NCS_SAFE_FREE((char *)p_diff);
+			}
 #endif // ENCODE_RANGE_ONLY
 
 #ifdef ECW_ENCODE_RANGE
 		// Do normal range encoding if the RANGE8 failed. Later, test against HUFFMAN or RUN_ZERO to see what was best
-		if( encode_format == ENCODE_RANGE
-) { //		 || encode_format == ENCODE_RUN_ZERO
-//			 || encode_format == ENCODE_HUFFMAN ) {
+		if (encode_format == ENCODE_RANGE
+			) { //		 || encode_format == ENCODE_RUN_ZERO
+			//			 || encode_format == ENCODE_HUFFMAN ) {
 			p_try_raw = p_raw;
 			count = raw_length;
 			rc.p_packed = p_try_packed + 1;		// must leave room for encoding type symbol
-			initqsmodel(&qsm,257,12,2000,NULL,1);
-			start_encoding(&rc,0);
+			initqsmodel(&qsm, 257, 12, 2000, NULL, 1);
+			start_encoding(&rc, 0);
 
-			while(count--) {
+			while (count--) {
 				register	int	ch;
-				if( rc.bytecount >= raw_length)
+				if (rc.bytecount >= raw_length)
 					break;		// abort the compression
-				ch = (int)  ((*p_try_raw++) & 0xff);
-				syfreq = qsgetfreq(&qsm,ch,&ltfreq);
-				encode_shift(&rc,syfreq,ltfreq,12);
-				qsupdate(&qsm,ch);
+				ch = (int)((*p_try_raw++) & 0xff);
+				syfreq = qsgetfreq(&qsm, ch, &ltfreq);
+				encode_shift(&rc, syfreq, ltfreq, 12);
+				qsupdate(&qsm, ch);
 			}
 			// write 256 as end of stream marker
-			syfreq = qsgetfreq(&qsm,256,&ltfreq);
-			encode_shift(&rc,syfreq,ltfreq,12);
+			syfreq = qsgetfreq(&qsm, 256, &ltfreq);
+			encode_shift(&rc, syfreq, ltfreq, 12);
 			done_encoding(&rc);
 			deleteqsmodel(&qsm);
-			if( rc.bytecount < *packed_length) {
+			if (rc.bytecount < *packed_length) {
 				// we were better than the other attempts, so throw the other packed alternative away
 				*packed_length = rc.bytecount;
 				encode_format = ENCODE_RANGE;
 				// Make sure the runpacked memory is freed
-				if( pRunPacked ) {
-					NCSFree( (char *) pRunPacked );
+				if (pRunPacked) {
+					NCSFree((char *)pRunPacked);
 					pRunPacked = NULL;
 				}
 			}
 		}
 #endif // ECW_ENCODE_RANGE
-		if( pRunPacked ) {
+		if (pRunPacked) {
 			// one of the methods (RUN_ZERO or HUFFMAN) worked better, so copy that data
 			memcpy(p_try_packed + 1, pRunPacked, *packed_length);
-			NCSFree( (char *) pRunPacked );
+			NCSFree((char *)pRunPacked);
 			pRunPacked = NULL;
 		}
-	}
+		}
 
 
-	if( *packed_length < raw_length ) {
+	if (*packed_length < raw_length) {
 		// range compression generated output smaller than RAW
 		*p_try_packed = (UINT8)encode_format;
 		*packed_length += 1;
@@ -488,9 +488,10 @@ NCSError	pack_data(QmfLevelStruct *p_top_qmf,
 		*p_try_packed = ENCODE_RAW;
 
 #ifdef NCSBO_MSBFIRST	
-		if(2 == symbol_size_hint) {
+		if (2 == symbol_size_hint) {
 			NCSByteSwapRange16((UINT16*)(p_try_packed + 1), (UINT16*)p_raw, raw_length / 2);
-		} else {	
+		}
+		else {
 			memcpy(p_try_packed + 1, p_raw, raw_length);
 		}
 #else
@@ -500,9 +501,9 @@ NCSError	pack_data(QmfLevelStruct *p_top_qmf,
 		*p_packed = p_try_packed;
 	}
 
-//printf("Encode: [%d] from %6d to %6d (%4.1lf%%)\n",
-//	   *p_try_packed, raw_length, *packed_length,
-//		(IEEE8) ((IEEE8) *packed_length / (IEEE8) raw_length) * 100.0);
+	//printf("Encode: [%d] from %6d to %6d (%4.1lf%%)\n",
+	//	   *p_try_packed, raw_length, *packed_length,
+	//		(IEEE8) ((IEEE8) *packed_length / (IEEE8) raw_length) * 100.0);
 
 	return(NCS_SUCCESS);
-}
+	}

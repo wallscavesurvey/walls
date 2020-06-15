@@ -9,11 +9,11 @@
 
 class QvSwitch : public QvGroup {
 
-    QV_NODE_HEADER(QvSwitch);
+	QV_NODE_HEADER(QvSwitch);
 
-  public:
-    // Fields
-    QvSFLong		whichChild;	// Child to traverse
+public:
+	// Fields
+	QvSFLong		whichChild;	// Child to traverse
 };
 
 #endif /* _QV_SWITCH_ */

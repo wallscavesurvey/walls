@@ -32,9 +32,9 @@ END_MESSAGE_MAP()
 //
 CStaticLink::CStaticLink()
 {
-	m_colorUnvisited = RGB(0,0,255);		 // blue
-	m_colorVisited   = RGB(128,0,128);	 // purple
-	m_bVisited       = FALSE;				 // not visited yet
+	m_colorUnvisited = RGB(0, 0, 255);		 // blue
+	m_colorVisited = RGB(128, 0, 128);	 // purple
+	m_bVisited = FALSE;				 // not visited yet
 }
 
 //////////////////
@@ -51,7 +51,7 @@ HBRUSH CStaticLink::CtlColor(CDC* pDC, UINT nCtlColor)
 		// Otherwise, I'll never get any mouse clicks!
 		::SetWindowLong(m_hWnd, GWL_STYLE, dwStyle | SS_NOTIFY);
 	}
-	
+
 	HBRUSH hbr = NULL;
 	if ((dwStyle & 0xFF) <= SS_RIGHT) {
 

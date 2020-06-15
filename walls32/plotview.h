@@ -38,18 +38,18 @@ class CMapFrame;
 class CPlotView : public CPanelView
 {
 	DECLARE_DYNCREATE(CPlotView)
-	
+
 protected:
 
 	CPlotView();
 
-	CPrjDoc *GetDocument() {return (CPrjDoc *)CView::GetDocument();}
+	CPrjDoc *GetDocument() { return (CPrjDoc *)CView::GetDocument(); }
 	virtual void OnInitialUpdate();
-	virtual void OnUpdate(CView *pSender,LPARAM lHint,CObject *pHint);
+	virtual void OnUpdate(CView *pSender, LPARAM lHint, CObject *pHint);
 	virtual void OnDraw(CDC* pDC);
-	virtual BOOL PreTranslateMessage(MSG* pMsg );
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
-// Form Data
+	// Form Data
 public:
 	//{{AFX_DATA(CPlotView)
 	enum { IDD = IDD_PLOTDLG };
@@ -65,32 +65,32 @@ public:
 	int m_iTrav;		// Highlighted string (piSTR[] index +1)
 	int m_iSys;         // Highlighted system (piSYS[] index +1) 
 	CPoint m_ptBmp;     // Position for upper left corner of bitmap
-	int m_iOverlapX,m_iOverlapY; //Frame overlap in printer pixels
-    static CRect m_rectBmp;  // Bitmap's client-relative rectangle in view
+	int m_iOverlapX, m_iOverlapY; //Frame overlap in printer pixels
+	static CRect m_rectBmp;  // Bitmap's client-relative rectangle in view
 	static UINT m_uMetaRes;  // Metafile resolution (used by CPrjDoc::PlotFrame())
 	static POINT *m_pathPoint; //Path drawing in CPrjDoc::PlotFrame()
-	
+
 	CFixedTracker m_tracker;
 	HCURSOR m_hCursorBmp;
-	
+
 	int m_iView;			  //Current orientation;
 	VIEWFORMAT *m_pViewFormat;
 	VIEWFORMAT m_vfSaved[2];
-	
-    double m_xscale;			//pixels per meter computed in CPrjDoc::PlotTraverse()
-    double m_fPrintAspectRatio; //Ratio of Y pixels to X pixels (set in OnBeginPrinting)
-    double m_fPanelWidth;	  //Panel width in meters
+
+	double m_xscale;			//pixels per meter computed in CPrjDoc::PlotTraverse()
+	double m_fPrintAspectRatio; //Ratio of Y pixels to X pixels (set in OnBeginPrinting)
+	double m_fPanelWidth;	  //Panel width in meters
 	BOOL m_bTrackerActive;
 	int m_iTrackerWidth;      //Current tracker width in pixels
 	CDC *m_pDCPrint;          //Set in OnPrint(), used by CPrjDoc::PlotFrame()
 	UINT m_nCurPage;          //Same -- Current page
 	DPOINT *m_pPanPoint;      //Set/reset by OnLButtonDblClk() when panning
-	BOOL m_bCursorInBmp,m_bTracking;
-	
+	BOOL m_bCursorInBmp, m_bTracking;
+
 	BOOL m_bInches;			  //For scale and frame size formatting
 	BOOL m_bProfile;
 	BOOL m_bExternUpdate;
-    
+
 	static PRJFONT m_FrameFont;
 	static PRJFONT m_LabelPrntFont;
 	static PRJFONT m_LabelScrnFont;
@@ -98,12 +98,12 @@ public:
 	static PRJFONT m_NotePrntFont;
 	static PRJFONT m_NoteScrnFont;
 	static PRJFONT m_NoteExportFont;
-	
+
 	static MAPFORMAT m_mfFrame, m_mfPrint, m_mfExport;
 	static const MAPFORMAT m_mfDflt[3];
 	static GRIDFORMAT m_GridFormat;
 	static char *szMapFormat;
-	
+
 	CBitmap m_cBmpBkg;    // Bitmap containing map and highlighted system
 private:
 	CBitmap m_cBmp;       // Displayed bitmap with highlighted traverse
@@ -113,10 +113,10 @@ private:
 	CBitmap m_bmRotate;   // Bitmap for owner-draw rotate buttons 
 	CDC m_dcRotBmp;
 	HBITMAP m_hRotBmpOld;
-	BOOL m_bPrinterOptions,m_bMeasuring; //Used when invoking CMapDlg()
-	bool m_bPanning,m_bPanned;
-    
-// Operations
+	BOOL m_bPrinterOptions, m_bMeasuring; //Used when invoking CMapDlg()
+	bool m_bPanning, m_bPanned;
+
+	// Operations
 private:
 #ifdef VISTA_INC
 	void ShowTrackingTT(CPoint &point);
@@ -126,7 +126,7 @@ private:
 	BOOL TrackerOK();
 	void LabelProfileButton(BOOL bProfile);
 	void SetOptions(MAPFORMAT *pMF);
-	void DrawFrame(CDC *pDC,CRect *pClip);
+	void DrawFrame(CDC *pDC, CRect *pClip);
 	void DisableButton(UINT id);
 	void RefreshMeasure();
 	void OnFindPrevNext(int iNext);
@@ -134,44 +134,44 @@ private:
 	BOOL ZoomOutOK();
 
 public:
-    static void Initialize();
-    static void Terminate();
-   
-	CReView *GetReView() {return (CReView *)m_pTabView;}
-	CPageView *GetPageView() {return GetReView()->GetPageView();} //Used by CPrjDoc::PlotFrame()
+	static void Initialize();
+	static void Terminate();
+
+	CReView *GetReView() { return (CReView *)m_pTabView; }
+	CPageView *GetPageView() { return GetReView()->GetPageView(); } //Used by CPrjDoc::PlotFrame()
 	void LoadViews();
 	void SaveViews();
 	void EnableRecall(BOOL bEnable);
-	void ClearTracker(BOOL bDisp=TRUE);
-	void SetTravChecks(BOOL bTravSelected,BOOL bVisible);
-	void SetTrackerPos(int l,int t,int r,int b);
+	void ClearTracker(BOOL bDisp = TRUE);
+	void SetTravChecks(BOOL bTravSelected, BOOL bVisible);
+	void SetTrackerPos(int l, int t, int r, int b);
 	int GetTrackerPos(CPoint *pt);
 	void ViewMsg();
-    void ResetContents();
+	void ResetContents();
 	void EnableDefaultButtons(BOOL bDefEnable);
-    void EnableSysButtons(BOOL bEnable)
-    {
-    	Enable(IDC_SYSSTATIC,bEnable);
-    	Enable(IDC_SYSNEXT,bEnable);
-    	Enable(IDC_SYSPREV,bEnable);
-    }
-    void EnableTravButtons(BOOL bEnable)
-    {
-    	Enable(IDC_TRAVSTATIC,bEnable);
-    	Enable(IDC_TRAVNEXT,bEnable);
-    	Enable(IDC_TRAVPREV,bEnable);
-    }
+	void EnableSysButtons(BOOL bEnable)
+	{
+		Enable(IDC_SYSSTATIC, bEnable);
+		Enable(IDC_SYSNEXT, bEnable);
+		Enable(IDC_SYSPREV, bEnable);
+	}
+	void EnableTravButtons(BOOL bEnable)
+	{
+		Enable(IDC_TRAVSTATIC, bEnable);
+		Enable(IDC_TRAVNEXT, bEnable);
+		Enable(IDC_TRAVPREV, bEnable);
+	}
 
 	BOOL IsEnabled(UINT id)
-    {
+	{
 		return GetDlgItem(id)->IsWindowEnabled();
 	}
 
-    void EnableTraverse(BOOL bEnable)
-    {
-    	Enable(IDC_TRAVSELECTED,bEnable);
-    	Enable(IDC_TRAVFLOATED,bEnable);
-    }
+	void EnableTraverse(BOOL bEnable)
+	{
+		Enable(IDC_TRAVSELECTED, bEnable);
+		Enable(IDC_TRAVFLOATED, bEnable);
+	}
 
 	double PanelWidth()
 	{
@@ -189,32 +189,32 @@ public:
 	afx_msg void OnMapExport();
 	afx_msg void OnChgView();
 	afx_msg void OnUpdateUTM(CCmdUI* pCmdUI);
-    afx_msg LRESULT OnMouseLeave(WPARAM wNone, LPARAM lParam);
+	afx_msg LRESULT OnMouseLeave(WPARAM wNone, LPARAM lParam);
 
 protected:
 	virtual ~CPlotView();
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
-		
-    // Printing support
-    virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
-    virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
-    virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
-	virtual void OnPrint(CDC *pDC,CPrintInfo *pInfo);
-	virtual void OnEndPrintPreview(CDC* pDC,CPrintInfo* pInfo,POINT point,CPreviewView* pView);
 
-	void ToggleNoteFlag(UINT id,UINT flag);
+	// Printing support
+	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
+	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
+	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
+	virtual void OnPrint(CDC *pDC, CPrintInfo *pInfo);
+	virtual void OnEndPrintPreview(CDC* pDC, CPrintInfo* pInfo, POINT point, CPreviewView* pView);
+
+	void ToggleNoteFlag(UINT id, UINT flag);
 	afx_msg void OnFlagToggle();
 	afx_msg void OnExternNotes();
 
 	afx_msg void OnUpdateTravToggle(CCmdUI* pCmdUI);
 	afx_msg void OnTravToggle();
-    afx_msg void OnSysNext();
-    afx_msg void OnSysPrev();
-    afx_msg void OnTravNext();
-    afx_msg void OnTravPrev();
-    afx_msg void OnSysCommand(UINT nChar,LONG lParam);
-    afx_msg void OnEditFind();
-    afx_msg void OnFindNext();
+	afx_msg void OnSysNext();
+	afx_msg void OnSysPrev();
+	afx_msg void OnTravNext();
+	afx_msg void OnTravPrev();
+	afx_msg void OnSysCommand(UINT nChar, LONG lParam);
+	afx_msg void OnEditFind();
+	afx_msg void OnFindNext();
 
 #ifdef _SAV_LBL
 	afx_msg void OnExternLabels();

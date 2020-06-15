@@ -10,8 +10,8 @@
 
 IMPLEMENT_DYNAMIC(CBackClrDlg, CDialog)
 
-CBackClrDlg::CBackClrDlg(LPCSTR pTitle,COLORREF cr,CWnd* pParent) :
-	m_pTitle(pTitle),m_cr(cr),CDialog(CBackClrDlg::IDD, pParent) {}
+CBackClrDlg::CBackClrDlg(LPCSTR pTitle, COLORREF cr, CWnd* pParent) :
+	m_pTitle(pTitle), m_cr(cr), CDialog(CBackClrDlg::IDD, pParent) {}
 
 CBackClrDlg::~CBackClrDlg()
 {
@@ -20,13 +20,13 @@ CBackClrDlg::~CBackClrDlg()
 void CBackClrDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	DDX_Control(pDX,IDC_BKCOLOR,m_BtnBkg);
+	DDX_Control(pDX, IDC_BKCOLOR, m_BtnBkg);
 }
 
 
 BEGIN_MESSAGE_MAP(CBackClrDlg, CDialog)
-    ON_MESSAGE(CPN_SELCHANGE, OnChgColor)
-    ON_MESSAGE(WM_COMMANDHELP,OnCommandHelp)
+	ON_MESSAGE(CPN_SELCHANGE, OnChgColor)
+	ON_MESSAGE(WM_COMMANDHELP, OnCommandHelp)
 END_MESSAGE_MAP()
 
 
@@ -44,9 +44,9 @@ BOOL CBackClrDlg::OnInitDialog()
 	return TRUE;  // return TRUE unless you set the focus to a control
 }
 
-LRESULT CBackClrDlg::OnChgColor(WPARAM clr,LPARAM id)
+LRESULT CBackClrDlg::OnChgColor(WPARAM clr, LPARAM id)
 {
-	m_cr=clr;
+	m_cr = clr;
 	return TRUE;
 }
 

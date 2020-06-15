@@ -39,7 +39,7 @@
 	Close() the file, the original file will be deleted and the mirrored file will be renamed to the original
 	file name. When Abort() is called, the mirrored file will be deleted and the original files will still
 	safely exist on disk.
-	
+
 	Interface:
 	The class CMirrorFile only overrides functions of its base class and does not add new functions.
 	These are:
@@ -89,7 +89,7 @@ BOOL CSafeMirrorFile::SafeGetStatus(CFileStatus& rStatus) const
 	memset(&rStatus, 0, sizeof(CFileStatus));
 
 	// copy file name from cached m_strFileName
-	lstrcpyn(rStatus.m_szFullName, m_strFileName,_countof(rStatus.m_szFullName));
+	lstrcpyn(rStatus.m_szFullName, m_strFileName, _countof(rStatus.m_szFullName));
 
 	if (m_hFile != hFileNull)
 	{
@@ -112,18 +112,18 @@ BOOL CSafeMirrorFile::SafeGetStatus(CFileStatus& rStatus) const
 				rStatus.m_attribute = 0;
 			else
 			{
-				rStatus.m_attribute = (BYTE) dwAttribute;
-				#ifdef _DEBUG
-					// MFC BUG: m_attribute is only a BYTE wide
-					if (dwAttribute & ~0xFF)
+				rStatus.m_attribute = (BYTE)dwAttribute;
+#ifdef _DEBUG
+				// MFC BUG: m_attribute is only a BYTE wide
+				if (dwAttribute & ~0xFF)
 					TRACE("Warning: CFile::GetStatus() returns m_attribute without high-order flags.\n");
-				#endif
+#endif
 			}
 		}
 
 		// convert times as appropriate
 		// some file systems may not record file creation time, file access	time etc
-		if ( IsValidFILETIME(ftCreate) )
+		if (IsValidFILETIME(ftCreate))
 		{
 			rStatus.m_ctime = CTime(ftCreate);
 		}
@@ -132,7 +132,7 @@ BOOL CSafeMirrorFile::SafeGetStatus(CFileStatus& rStatus) const
 			rStatus.m_ctime = CTime();
 		}
 
-		if ( IsValidFILETIME(ftAccess) )
+		if (IsValidFILETIME(ftAccess))
 		{
 			rStatus.m_atime = CTime(ftAccess);
 		}
@@ -141,7 +141,7 @@ BOOL CSafeMirrorFile::SafeGetStatus(CFileStatus& rStatus) const
 			rStatus.m_atime = CTime();
 		}
 
-		if ( IsValidFILETIME(ftModify) )
+		if (IsValidFILETIME(ftModify))
 		{
 			rStatus.m_mtime = CTime(ftModify);
 		}

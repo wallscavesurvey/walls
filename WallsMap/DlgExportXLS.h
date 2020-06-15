@@ -25,15 +25,15 @@ class CDlgExportXLS : public CDialog
 	virtual BOOL OnInitDialog();
 
 public:
-	CDlgExportXLS(CShpLayer *pShp,VEC_DWORD &vRec,CWnd* pParent = NULL);   // standard constructor
+	CDlgExportXLS(CShpLayer *pShp, VEC_DWORD &vRec, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CDlgExportXLS();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_EXPORT_XLS };
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	void SetText(UINT id,LPCSTR text) {GetDlgItem(id)->SetWindowText(text);}
+	void SetText(UINT id, LPCSTR text) { GetDlgItem(id)->SetWindowText(text); }
 
 	DECLARE_MESSAGE_MAP()
 public:

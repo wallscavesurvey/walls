@@ -19,7 +19,9 @@ struct CToolBarData
 	WORD wItemCount;
 
 	WORD* items()
-		{ return ( WORD* )( this + 1 ); }
+	{
+		return (WORD*)(this + 1);
+	}
 
 };
 
@@ -28,27 +30,27 @@ struct CToolBarData
 
 class CRRECToolbar : public CToolBar
 {
-// Construction
+	// Construction
 public:
 	CRRECToolbar();
-	BOOL Create( CWnd* parent, CRect& rect );
+	BOOL Create(CWnd* parent, CRect& rect);
 
-// Attributes
+	// Attributes
 public:
 
-// Operations
+	// Operations
 public:
 
-	void SetFontName( const CString& font );
-	void SetFontSize( int size );
-	void SetFontColor( COLORREF color );
+	void SetFontName(const CString& font);
+	void SetFontSize(int size);
+	void SetFontColor(COLORREF color);
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CRRECToolbar)
-	//}}AFX_VIRTUAL
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CRRECToolbar)
+		//}}AFX_VIRTUAL
 
-// Implementation
+	// Implementation
 public:
 	virtual ~CRRECToolbar();
 
@@ -56,7 +58,7 @@ public:
 protected:
 	afx_msg void OnSelchangeFont();
 	afx_msg void OnSelchangeSize();
-	afx_msg LRESULT OnColorButton( WPARAM, LPARAM );
+	afx_msg LRESULT OnColorButton(WPARAM, LPARAM);
 	//afx_msg BOOL OnEraseBkgnd(CDC* pDC); //won't work
 
 	DECLARE_MESSAGE_MAP()

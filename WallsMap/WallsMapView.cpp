@@ -45,8 +45,8 @@ BEGIN_MESSAGE_MAP(CWallsMapView, CView)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
-	ON_MESSAGE(WM_MOUSELEAVE,OnMouseLeave)
-	ON_MESSAGE(WM_MOUSEHOVER,OnMouseHover)
+	ON_MESSAGE(WM_MOUSELEAVE, OnMouseLeave)
+	ON_MESSAGE(WM_MOUSEHOVER, OnMouseHover)
 	ON_MESSAGE(WM_EXITSIZEMOVE, OnExitSizeMove)
 	ON_WM_SETCURSOR()
 	ON_COMMAND(ID_CONTEXT_ZOOM6_25, OnContextZoom625)
@@ -65,7 +65,7 @@ BEGIN_MESSAGE_MAP(CWallsMapView, CView)
 	ON_COMMAND(ID_CONTEXT_ZOOMOUT, OnContextZoomout)
 	ON_WM_SIZE()
 	ON_COMMAND(ID_CTR_ONPOSITION, OnCenterOnPosition)
-	ON_UPDATE_COMMAND_UI(ID_CTR_ONPOSITION,OnUpdateCenterOnPosition )
+	ON_UPDATE_COMMAND_UI(ID_CTR_ONPOSITION, OnUpdateCenterOnPosition)
 	ON_COMMAND(ID_SYNC_ONPOINT, OnSyncOnpoint)
 	ON_UPDATE_COMMAND_UI(ID_SYNC_ONPOINT, OnUpdateSyncOnpoint)
 	ON_COMMAND(ID_CTR_ONPOINT, OnCenterOnPoint)
@@ -92,13 +92,13 @@ BEGIN_MESSAGE_MAP(CWallsMapView, CView)
 	ON_UPDATE_COMMAND_UI(ID_SHOW_LABELS, OnUpdateShowLabels)
 	ON_COMMAND(ID_SHOW_MARKERS, OnHideMarkers)
 	ON_UPDATE_COMMAND_UI(ID_SHOW_MARKERS, OnUpdateShowMarkers)
-	ON_COMMAND(ID_AVERAGE_COLORS,OnAverageColors)
+	ON_COMMAND(ID_AVERAGE_COLORS, OnAverageColors)
 	ON_UPDATE_COMMAND_UI(ID_AVERAGE_COLORS, OnUpdateAverageColors)
-	ON_COMMAND(ID_SAVE_HISTORY,OnSaveHistory)
+	ON_COMMAND(ID_SAVE_HISTORY, OnSaveHistory)
 	ON_UPDATE_COMMAND_UI(ID_SAVE_HISTORY, OnUpdateSaveHistory)
-	ON_COMMAND(ID_SAVE_LAYERWINDOW,OnSaveLayers)
+	ON_COMMAND(ID_SAVE_LAYERWINDOW, OnSaveLayers)
 	ON_UPDATE_COMMAND_UI(ID_SAVE_LAYERWINDOW, OnUpdateSaveLayers)
-	ON_COMMAND(ID_RESTOREVIEW,OnRestoreView)
+	ON_COMMAND(ID_RESTOREVIEW, OnRestoreView)
 	ON_UPDATE_COMMAND_UI(ID_RESTOREVIEW, OnUpdateRestoreView)
 	ON_COMMAND(ID_ZOOM_BACK, OnGoBackward)
 	ON_UPDATE_COMMAND_UI(ID_ZOOM_BACK, OnUpdateGoBackward)
@@ -109,18 +109,18 @@ BEGIN_MESSAGE_MAP(CWallsMapView, CView)
 	ON_COMMAND(ID_OPTIONS_BKCOLOR, OnOptionsBkcolor)
 	ON_COMMAND(ID_EDIT_SHAPE, OnEditShape)
 	ON_COMMAND(ID_RELOCATE_SHAPE, OnRelocateShape)
-	ON_COMMAND_RANGE(ID_APPENDLAYER_0,ID_APPENDLAYER_N,OnAddShape)
+	ON_COMMAND_RANGE(ID_APPENDLAYER_0, ID_APPENDLAYER_N, OnAddShape)
 	ON_COMMAND(ID_FINDLABEL, OnFindlabel)
 	ON_UPDATE_COMMAND_UI(ID_FINDLABEL, OnUpdateFindlabel)
 	ON_COMMAND(ID_ADDLAYER, OnAddLayer)
-	ON_UPDATE_COMMAND_UI(ID_ADDLAYER,OnUpdateAddLayer)
+	ON_UPDATE_COMMAND_UI(ID_ADDLAYER, OnUpdateAddLayer)
 
 	ON_COMMAND(ID_SELECT_EDITED, OnSelectEdited)
 	ON_UPDATE_COMMAND_UI(ID_SELECT_EDITED, OnUpdateSelectEdited)
 	ON_COMMAND(ID_TOOL_SELECT, OnToolSelect)
-	ON_UPDATE_COMMAND_UI(ID_TOOL_SELECT,OnUpdateToolSelect)
+	ON_UPDATE_COMMAND_UI(ID_TOOL_SELECT, OnUpdateToolSelect)
 	ON_COMMAND(ID_SELECT_ADD, OnSelectAdd)
-	ON_UPDATE_COMMAND_UI(ID_SELECT_ADD,OnUpdateSelectAdd)
+	ON_UPDATE_COMMAND_UI(ID_SELECT_ADD, OnUpdateSelectAdd)
 	ON_COMMAND(ID_EXPORT_PNG, OnExportPng)
 
 	ON_COMMAND(ID_SCALEUNITS_FEET, OnScaleUnitsToggle)
@@ -143,35 +143,35 @@ BEGIN_MESSAGE_MAP(CWallsMapView, CView)
 	ON_COMMAND(ID_LAUNCH_GE, OnLaunchGE)
 	//ON_COMMAND(ID_OPTIONS_GE, OnOptionsGE)
 	//ON_UPDATE_COMMAND_UI(ID_LAUNCH_GE, OnUpdateLaunchGe)
-    ON_MESSAGE(WM_COMMANDHELP,OnCommandHelp)
-	ON_COMMAND(ID_IMAGE_OPACITY,OnImageOpacity)
+	ON_MESSAGE(WM_COMMANDHELP, OnCommandHelp)
+	ON_COMMAND(ID_IMAGE_OPACITY, OnImageOpacity)
 	ON_MESSAGE(WM_TABLET_QUERYSYSTEMGESTURESTATUS, OnTabletQuerySystemGestureStatus)
 
 	ON_COMMAND(ID_GPS_TRACKING, OnGpsTracking)
 	ON_UPDATE_COMMAND_UI(ID_GPS_TRACKING, OnUpdateGpsTracking)
-	ON_UPDATE_COMMAND_UI(ID_GPS_CENTER,OnUpdateCtrOnGPSPoint)
-	ON_COMMAND(ID_GPS_CENTER,OnCtrOnGPSPoint)
+	ON_UPDATE_COMMAND_UI(ID_GPS_CENTER, OnUpdateCtrOnGPSPoint)
+	ON_COMMAND(ID_GPS_CENTER, OnCtrOnGPSPoint)
 	ON_COMMAND(ID_GPS_DISPLAYTRACK, &CWallsMapView::OnGpsDisplaytrack)
 	ON_UPDATE_COMMAND_UI(ID_GPS_DISPLAYTRACK, &CWallsMapView::OnUpdateGpsDisplaytrack)
 	ON_COMMAND(ID_GPS_ENABLECENTERING, &CWallsMapView::OnGpsEnablecentering)
 	ON_UPDATE_COMMAND_UI(ID_GPS_ENABLECENTERING, &CWallsMapView::OnUpdateGpsEnablecentering)
 
-	ON_REGISTERED_MESSAGE(WM_PROPVIEWDOC,OnPropViewDoc)
-	END_MESSAGE_MAP()
+	ON_REGISTERED_MESSAGE(WM_PROPVIEWDOC, OnPropViewDoc)
+END_MESSAGE_MAP()
 
-int CWallsMapView::m_nMdiShift=0;
-bool CWallsMapView::m_bMarkCenter=false;
-CWallsMapView *CWallsMapView::m_pViewDrag=NULL;
-CWallsMapView *CWallsMapView::m_pSyncView=NULL;
-bool CWallsMapView::m_bTestPoint=false;
+int CWallsMapView::m_nMdiShift = 0;
+bool CWallsMapView::m_bMarkCenter = false;
+CWallsMapView *CWallsMapView::m_pViewDrag = NULL;
+CWallsMapView *CWallsMapView::m_pSyncView = NULL;
+bool CWallsMapView::m_bTestPoint = false;
 
 static GEODATA GD;
 
 static TOOLINFO g_toolItem;
 static HWND g_hwndTrackingTT;
 
-static int nad27=GF_NAD27();
-static int wgs84=GF_WGS84();
+static int nad27 = GF_NAD27();
+static int wgs84 = GF_WGS84();
 static bool bHaveGpsPos;
 static CFltPoint fptGpsPos;
 
@@ -179,29 +179,29 @@ static CFltPoint fptGpsPos;
 
 CWallsMapView::CWallsMapView() : m_hist(LEN_HISTORY)
 {
-   m_fScale = 0.0; //for testing
-   m_ptBitmapOverlap.x=m_ptBitmapOverlap.y=0;
-   m_uAction = CWallsMapDoc::ACTION_NOCOORD;
-   m_iFullView = -1;
-   m_pViewDrag=NULL;
-   m_wndTooltip=NULL;
-   m_pMapPtNode=NULL;
-   m_pScaleWnd=NULL;
-   m_bTracking=m_bFirstViewDisplayed=m_bUseMarkPosition=m_bTrackRubber=m_bMeasuring=false;
-   m_bAutoCenterGPS=m_bTrackingGPS=false;
-   m_bDisplayTrack=true;
-   m_bSync=m_bSyncCursor=m_bNoHist=FALSE;
+	m_fScale = 0.0; //for testing
+	m_ptBitmapOverlap.x = m_ptBitmapOverlap.y = 0;
+	m_uAction = CWallsMapDoc::ACTION_NOCOORD;
+	m_iFullView = -1;
+	m_pViewDrag = NULL;
+	m_wndTooltip = NULL;
+	m_pMapPtNode = NULL;
+	m_pScaleWnd = NULL;
+	m_bTracking = m_bFirstViewDisplayed = m_bUseMarkPosition = m_bTrackRubber = m_bMeasuring = false;
+	m_bAutoCenterGPS = m_bTrackingGPS = false;
+	m_bDisplayTrack = true;
+	m_bSync = m_bSyncCursor = m_bNoHist = FALSE;
 }
 
 CWallsMapView::~CWallsMapView()
 {
-	if(m_pScaleWnd) {
+	if (m_pScaleWnd) {
 		ASSERT(FALSE);
 		delete m_pScaleWnd;
 	}
 	m_DIB.DeleteObject();
 	DestroyTooltip();
-	m_pViewDrag=NULL;
+	m_pViewDrag = NULL;
 }
 
 BOOL CWallsMapView::PreCreateWindow(CREATESTRUCT& cs)
@@ -266,27 +266,27 @@ void CWallsMapView::DrawOutlines(CDC *pDC)
 	GetClientRect(&client);
 
 	CFltRect geoExtClient;
-	ClientPtToGeoPt(client.TopLeft(),geoExtClient.tl);
-	ClientPtToGeoPt(client.BottomRight(),geoExtClient.br);
-	GetDocument()->LayerSet().DrawOutlines(pDC,geoExtClient,m_fScale);
+	ClientPtToGeoPt(client.TopLeft(), geoExtClient.tl);
+	ClientPtToGeoPt(client.BottomRight(), geoExtClient.br);
+	GetDocument()->LayerSet().DrawOutlines(pDC, geoExtClient, m_fScale);
 }
 
 void CWallsMapView::DrawCross(const CPoint &pt)
 {
-    CClientDC dc(this);
-    dc.SetROP2(R2_NOT);
-    dc.SetBkMode(TRANSPARENT);
-    dc.MoveTo(pt.x-15,pt.y);
-	dc.LineTo(pt.x+15,pt.y);
-    dc.MoveTo(pt.x,pt.y-15);
-	dc.LineTo(pt.x,pt.y+15);
+	CClientDC dc(this);
+	dc.SetROP2(R2_NOT);
+	dc.SetBkMode(TRANSPARENT);
+	dc.MoveTo(pt.x - 15, pt.y);
+	dc.LineTo(pt.x + 15, pt.y);
+	dc.MoveTo(pt.x, pt.y - 15);
+	dc.LineTo(pt.x, pt.y + 15);
 }
 
 void CWallsMapView::MarkCenterPt()
 {
 	CRect client;
 	GetClientRect(&client);
-	CPoint pt=client.CenterPoint();
+	CPoint pt = client.CenterPoint();
 	pt.y++;
 	DrawCross(pt);
 }
@@ -297,10 +297,10 @@ void CWallsMapView::MarkPosition()
 	GetClientRect(&client);
 
 	CFltRect geoExtClient;
-	ClientPtToGeoPt(client.TopLeft(),geoExtClient.tl);
-	ClientPtToGeoPt(client.BottomRight(),geoExtClient.br);
-  	CPoint pt(_rnd(m_fScale*(m_fMarkPosition.x-geoExtClient.l)),_rnd(m_fScale*(geoExtClient.t-m_fMarkPosition.y)));
-	if(client.PtInRect(pt)) {
+	ClientPtToGeoPt(client.TopLeft(), geoExtClient.tl);
+	ClientPtToGeoPt(client.BottomRight(), geoExtClient.br);
+	CPoint pt(_rnd(m_fScale*(m_fMarkPosition.x - geoExtClient.l)), _rnd(m_fScale*(geoExtClient.t - m_fMarkPosition.y)));
+	if (client.PtInRect(pt)) {
 		DrawCross(pt);
 	}
 }
@@ -309,48 +309,48 @@ void CWallsMapView::DrawGPSTrackSymbol(CDC *pDC)
 {
 	CRect client;
 	GetClientRect(&client);
-	CWallsMapDoc *pDoc=GetDocument();
+	CWallsMapDoc *pDoc = GetDocument();
 	ASSERT(!vptGPS.empty());
 
 	CFltRect geoExtClient;
-	ClientPtToGeoPt(client.TopLeft(),geoExtClient.tl);
-	ClientPtToGeoPt(client.BottomRight(),geoExtClient.br);
+	ClientPtToGeoPt(client.TopLeft(), geoExtClient.tl);
+	ClientPtToGeoPt(client.BottomRight(), geoExtClient.br);
 
-	bool bDrawLn=m_bDisplayTrack && vptGPS.size()>1;
+	bool bDrawLn = m_bDisplayTrack && vptGPS.size() > 1;
 
 	CFltPoint fpt(vptGPS.back());
 	pDoc->GetConvertedGPSPoint(fpt);
 
-  	CPoint ptSym(_rnd(m_fScale*(fpt.x-geoExtClient.l)),_rnd(m_fScale*(geoExtClient.t-fpt.y)));
+	CPoint ptSym(_rnd(m_fScale*(fpt.x - geoExtClient.l)), _rnd(m_fScale*(geoExtClient.t - fpt.y)));
 
-	if(m_bAutoCenterGPS) {
-		WORD flg=(CGPSPortSettingDlg::m_wFlags&GPS_FLG_AUTOCENTER);
-		double pc=(flg==0)?0.25:((flg==1)?0.15:0.05);
+	if (m_bAutoCenterGPS) {
+		WORD flg = (CGPSPortSettingDlg::m_wFlags&GPS_FLG_AUTOCENTER);
+		double pc = (flg == 0) ? 0.25 : ((flg == 1) ? 0.15 : 0.05);
 		CRect r(client);
-		r.InflateRect(-(int)(pc*r.Width()),-(int)(pc*r.Height()));
-		if(!r.PtInRect(ptSym)) {
+		r.InflateRect(-(int)(pc*r.Width()), -(int)(pc*r.Height()));
+		if (!r.PtInRect(ptSym)) {
 			PostMessage(WM_PROPVIEWDOC);
 			return;
 		}
 	}
 
 	CRect rectSym(client);
-	rectSym.InflateRect(50,50,50,50);
+	rectSym.InflateRect(50, 50, 50, 50);
 
-	bool bDrawPt=rectSym.PtInRect(ptSym)==TRUE;
-	UINT len=vptGPS.size();
-	if(bDrawPt || bDrawLn) {
+	bool bDrawPt = rectSym.PtInRect(ptSym) == TRUE;
+	UINT len = vptGPS.size();
+	if (bDrawPt || bDrawLn) {
 		ASSERT(pGPSDlg);
-		ID2D1DCRenderTarget *prt=NULL;
+		ID2D1DCRenderTarget *prt = NULL;
 		if (0 > d2d_pFactory->CreateDCRenderTarget(&d2d_props, &prt) || 0 > prt->BindDC(pDC->m_hDC, client)) {
 			SafeRelease(&prt);
 			ASSERT(0);
 			return;
 		}
-		
-		if(bDrawLn) {
-			ID2D1SolidColorBrush *pbr=NULL;
-			if (0 > prt->CreateSolidColorBrush(RGBAtoD2D(pGPSDlg->m_mstyle_t.crMrk, pGPSDlg->m_mstyle_t.iOpacitySym/100.0f), &pbr)) {
+
+		if (bDrawLn) {
+			ID2D1SolidColorBrush *pbr = NULL;
+			if (0 > prt->CreateSolidColorBrush(RGBAtoD2D(pGPSDlg->m_mstyle_t.crMrk, pGPSDlg->m_mstyle_t.iOpacitySym / 100.0f), &pbr)) {
 				prt->Release();
 				return;
 			}
@@ -359,19 +359,19 @@ void CWallsMapView::DrawGPSTrackSymbol(CDC *pDC)
 
 			int ibuf = 4 * client.Width();
 			CRect rectTrack(client);
-			rectTrack.InflateRect(ibuf,ibuf,ibuf,ibuf);
-			bool bNeedConvert=!pDoc->IsGeoWgs84();
-			bool bLastPt=false; //later, save point to allow clipping!(?)
+			rectTrack.InflateRect(ibuf, ibuf, ibuf, ibuf);
+			bool bNeedConvert = !pDoc->IsGeoWgs84();
+			bool bLastPt = false; //later, save point to allow clipping!(?)
 			float w = pGPSDlg->m_mstyle_t.fLineWidth;
 			CD2DPointF lastPtF;
 
-			for(it_gpsfix it=vptGPS.begin();it!=vptGPS.end();it++) {
-				fpt=*it;
-				if(bNeedConvert) pDoc->GetConvertedGPSPoint(fpt);
-				CPoint pt(_rnd(m_fScale*(fpt.x-geoExtClient.l)),_rnd(m_fScale*(geoExtClient.t-fpt.y)));
-				if(rectTrack.PtInRect(pt)) {
+			for (it_gpsfix it = vptGPS.begin(); it != vptGPS.end(); it++) {
+				fpt = *it;
+				if (bNeedConvert) pDoc->GetConvertedGPSPoint(fpt);
+				CPoint pt(_rnd(m_fScale*(fpt.x - geoExtClient.l)), _rnd(m_fScale*(geoExtClient.t - fpt.y)));
+				if (rectTrack.PtInRect(pt)) {
 					CD2DPointF ptF(pt);
-					if(bLastPt) {
+					if (bLastPt) {
 						prt->DrawLine(lastPtF, ptF, pbr, w, d2d_pStrokeStyleRnd);
 					}
 					if (bLastPt = it->flag == 0) {
@@ -379,14 +379,14 @@ void CWallsMapView::DrawGPSTrackSymbol(CDC *pDC)
 					}
 				}
 				else {
-					bLastPt=false;
+					bLastPt = false;
 				}
 			}
 			VERIFY(0 <= prt->EndDraw());
 			pbr->Release();
 		}
 
-		if(bDrawPt) {
+		if (bDrawPt) {
 			prt->BeginDraw();
 			CPlaceMark::PlotStyleSymbol(prt, pGPSDlg->m_mstyle_s, ptSym);
 			CPlaceMark::PlotStyleSymbol(prt, pGPSDlg->m_mstyle_h, ptSym);
@@ -403,50 +403,50 @@ void CWallsMapView::MarkGridSelection()
 	GetClientRect(&client);
 
 	CFltRect geoExtClient;
-	ClientPtToGeoPt(client.TopLeft(),geoExtClient.tl);
-	ClientPtToGeoPt(client.BottomRight(),geoExtClient.br);
-    CClientDC dc(this);
-    dc.SetROP2(R2_NOT);
-    dc.SetBkMode(TRANSPARENT);
+	ClientPtToGeoPt(client.TopLeft(), geoExtClient.tl);
+	ClientPtToGeoPt(client.BottomRight(), geoExtClient.br);
+	CClientDC dc(this);
+	dc.SetROP2(R2_NOT);
+	dc.SetBkMode(TRANSPARENT);
 
-	for(VEC_DWORD::iterator it=CShpLayer::m_vGridRecs.begin();it!=CShpLayer::m_vGridRecs.end();it++) {
-		CFltPoint fpt(CShpLayer::m_pGridShp->m_fpt[*it-1]);
-		CPoint pt(_rnd(m_fScale*(fpt.x-geoExtClient.l)),_rnd(m_fScale*(geoExtClient.t-fpt.y)));
-		dc.MoveTo(pt.x-15,pt.y);
-		dc.LineTo(pt.x+15,pt.y);
-		dc.MoveTo(pt.x,pt.y-15);
-		dc.LineTo(pt.x,pt.y+15);
+	for (VEC_DWORD::iterator it = CShpLayer::m_vGridRecs.begin(); it != CShpLayer::m_vGridRecs.end(); it++) {
+		CFltPoint fpt(CShpLayer::m_pGridShp->m_fpt[*it - 1]);
+		CPoint pt(_rnd(m_fScale*(fpt.x - geoExtClient.l)), _rnd(m_fScale*(geoExtClient.t - fpt.y)));
+		dc.MoveTo(pt.x - 15, pt.y);
+		dc.LineTo(pt.x + 15, pt.y);
+		dc.MoveTo(pt.x, pt.y - 15);
+		dc.LineTo(pt.x, pt.y + 15);
 	}
 }
 
 void CWallsMapView::MarkSelected(CDC *pDC)
 {
-	CWallsMapDoc *pDoc=GetDocument();
-	if(!pDoc->m_vec_shprec.size()) return;
+	CWallsMapDoc *pDoc = GetDocument();
+	if (!pDoc->m_vec_shprec.size()) return;
 
-	bool bInitMrk=false;
+	bool bInitMrk = false;
 	ID2D1DCRenderTarget *prt;
 	CPlaceMark pm_s;
-	CPoint ptHL(INT_MIN,0);
+	CPoint ptHL(INT_MIN, 0);
 	CRect client;
 	GetClientRect(&client);
 
 	CFltRect geoExtClient;
-	ClientPtToGeoPt(client.TopLeft(),geoExtClient.tl);
-	ClientPtToGeoPt(client.BottomRight(),geoExtClient.br);
+	ClientPtToGeoPt(client.TopLeft(), geoExtClient.tl);
+	ClientPtToGeoPt(client.BottomRight(), geoExtClient.br);
 
 	for (it_shprec it = pDoc->m_vec_shprec.begin(); it != pDoc->m_vec_shprec.end(); it++) {
-		ASSERT(it->pShp->ShpType()==CShpLayer::SHP_POINT);
+		ASSERT(it->pShp->ShpType() == CShpLayer::SHP_POINT);
 
 		//gflags breakpoint triggered here when cancelling new point!
-		
-		if(!it->rec || !it->pShp->IsVisible() || !it->pShp->ExtentOverlap(geoExtClient) ||
-			(it->pShp->m_pdbfile->vdbe[it->rec-1]&SHP_EDITDEL)) continue;
 
-		CFltPoint fpt(it->pShp->m_fpt[it->rec-1]);
-		if(fpt.x<geoExtClient.r && fpt.x>geoExtClient.l && fpt.y>geoExtClient.b && fpt.y<geoExtClient.t) {
-			if(!bInitMrk) {
-				if(0 > d2d_pFactory->CreateDCRenderTarget(&d2d_props,&prt) ||
+		if (!it->rec || !it->pShp->IsVisible() || !it->pShp->ExtentOverlap(geoExtClient) ||
+			(it->pShp->m_pdbfile->vdbe[it->rec - 1] & SHP_EDITDEL)) continue;
+
+		CFltPoint fpt(it->pShp->m_fpt[it->rec - 1]);
+		if (fpt.x<geoExtClient.r && fpt.x>geoExtClient.l && fpt.y > geoExtClient.b && fpt.y < geoExtClient.t) {
+			if (!bInitMrk) {
+				if (0 > d2d_pFactory->CreateDCRenderTarget(&d2d_props, &prt) ||
 					0 > prt->BindDC(*pDC, client)) {
 					SafeRelease(&prt);
 					ASSERT(0);
@@ -457,17 +457,17 @@ void CWallsMapView::MarkSelected(CDC *pDC)
 				prt->BeginDraw();
 			}
 
-			CPoint pt((int)(m_fScale*(fpt.x-m_geoExtDIB.l))+m_ptBitmapOverlap.x,
-				      (int)(m_fScale*(m_geoExtDIB.t-fpt.y))+m_ptBitmapOverlap.y);
+			CPoint pt((int)(m_fScale*(fpt.x - m_geoExtDIB.l)) + m_ptBitmapOverlap.x,
+				(int)(m_fScale*(m_geoExtDIB.t - fpt.y)) + m_ptBitmapOverlap.y);
 
-			if(app_pShowDlg->IsRecHighlighted(it->pShp,it->rec))
-				ptHL=pt;
+			if (app_pShowDlg->IsRecHighlighted(it->pShp, it->rec))
+				ptHL = pt;
 
 			pm_s.Plot(prt, pt);
 		}
 	}
 	if (bInitMrk) {
-	 	if(ptHL.x != INT_MIN) {
+		if (ptHL.x != INT_MIN) {
 			CPlaceMark::PlotStyleSymbol(prt, CShpLayer::m_mstyle_h, ptHL);
 		}
 		VERIFY(0 <= prt->EndDraw());
@@ -482,93 +482,93 @@ void CWallsMapView::OnDraw(CDC* pDC)
 
 	GetClientRect(&client);
 
-	if(!m_DIB.GetHandle()) {
-		::FillRect(pDC->m_hDC,client,hBrush);
-		m_bSyncCursor=FALSE;
+	if (!m_DIB.GetHandle()) {
+		::FillRect(pDC->m_hDC, client, hBrush);
+		m_bSyncCursor = FALSE;
 	}
 	else {
 
-		CRect image(0,0,m_DIB.GetWidth(),m_DIB.GetHeight());
+		CRect image(0, 0, m_DIB.GetWidth(), m_DIB.GetHeight());
 		image.OffsetRect(m_ptBitmapOverlap);
 		CRect overlap;
-		if(!overlap.IntersectRect(&client,&image)) {
-			::FillRect(pDC->m_hDC,client,hBrush);
+		if (!overlap.IntersectRect(&client, &image)) {
+			::FillRect(pDC->m_hDC, client, hBrush);
 		}
 		else {
-			if(overlap!=client) {
-				if(image.top>0) ::FillRect(pDC->m_hDC,CRect(0,0,client.right,image.top),hBrush);
-				if(image.left>0) ::FillRect(pDC->m_hDC,CRect(0,0,image.left,client.bottom),hBrush);
-				if(image.right<client.right) ::FillRect(pDC->m_hDC,CRect(image.right,0,client.right,client.bottom),hBrush);
-				if(image.bottom<client.bottom) ::FillRect(pDC->m_hDC,CRect(0,image.bottom,client.right,client.bottom),hBrush);
+			if (overlap != client) {
+				if (image.top > 0) ::FillRect(pDC->m_hDC, CRect(0, 0, client.right, image.top), hBrush);
+				if (image.left > 0) ::FillRect(pDC->m_hDC, CRect(0, 0, image.left, client.bottom), hBrush);
+				if (image.right < client.right) ::FillRect(pDC->m_hDC, CRect(image.right, 0, client.right, client.bottom), hBrush);
+				if (image.bottom < client.bottom) ::FillRect(pDC->m_hDC, CRect(0, image.bottom, client.right, client.bottom), hBrush);
 			}
-			m_DIB.Draw(pDC->m_hDC,m_ptBitmapOverlap);
+			m_DIB.Draw(pDC->m_hDC, m_ptBitmapOverlap);
 		}
-		m_bSyncCursor=FALSE;
+		m_bSyncCursor = FALSE;
 	}
 
-	if(!(m_uAction&CWallsMapDoc::ACTION_PANNED)) {
+	if (!(m_uAction&CWallsMapDoc::ACTION_PANNED)) {
 
-		if(GetDocument()->m_bDrawOutlines) {
+		if (GetDocument()->m_bDrawOutlines) {
 			DrawOutlines(pDC);
 		}
 
-		if(app_pShowDlg && GetDocument()==app_pShowDlg->m_pDoc && GetDocument()->m_bMarkSelected) {
+		if (app_pShowDlg && GetDocument() == app_pShowDlg->m_pDoc && GetDocument()->m_bMarkSelected) {
 			MarkSelected(pDC);
 		}
 
-		if(m_bTrackingGPS)
+		if (m_bTrackingGPS)
 		{
 			DrawGPSTrackSymbol(pDC);
 		}
 
-		if(m_bMarkCenter) {
+		if (m_bMarkCenter) {
 			MarkCenterPt();
-			m_bMarkCenter=false;
+			m_bMarkCenter = false;
 		}
 
-		if(m_bUseMarkPosition) {
+		if (m_bUseMarkPosition) {
 			MarkPosition();
 		}
 
-		if(CShpLayer::m_pGridShp) {
-			if(CShpLayer::m_pGridShp->ShpType()!=CShpLayer::SHP_POINT)
+		if (CShpLayer::m_pGridShp) {
+			if (CShpLayer::m_pGridShp->ShpType() != CShpLayer::SHP_POINT)
 				MarkCenterPt();
 			else MarkGridSelection();
-			CShpLayer::m_pGridShp=NULL;
+			CShpLayer::m_pGridShp = NULL;
 			VEC_DWORD().swap(CShpLayer::m_vGridRecs);
 		}
 
-		if(m_bSync && m_pSyncView && m_pSyncView!=this) {
+		if (m_bSync && m_pSyncView && m_pSyncView != this) {
 			DrawSyncCursor();
 		}
 	}
 }
 
-BOOL CWallsMapView::ClearDIB(int width,int height)
+BOOL CWallsMapView::ClearDIB(int width, int height)
 {
 	ASSERT(width && height);
 
-	if(!m_DIB.GetHandle() || m_DIB.GetWidth()!=width || m_DIB.GetHeight()!=height) {
+	if (!m_DIB.GetHandle() || m_DIB.GetWidth() != width || m_DIB.GetHeight() != height) {
 		BITMAPINFOHEADER bmi;
-		memset(&bmi,0,sizeof(bmi));
+		memset(&bmi, 0, sizeof(bmi));
 		bmi.biSize = sizeof(BITMAPINFOHEADER);
 		bmi.biWidth = width;
 		bmi.biHeight = -height;
 		bmi.biPlanes = 1;
-		bmi.biSizeImage = height*((3*width+3)&~3);
+		bmi.biSizeImage = height * ((3 * width + 3)&~3);
 		bmi.biBitCount = 24;
 		bmi.biCompression = BI_RGB;
-		if(!m_DIB.InitBitmap((LPBITMAPINFO)&bmi)) return FALSE;
+		if (!m_DIB.InitBitmap((LPBITMAPINFO)&bmi)) return FALSE;
 	}
 	return m_DIB.Fill(GetDocument()->m_hbrBack);
 }
 
 void CWallsMapView::RefreshDIB()
 {
-	m_bNoHist=TRUE;
+	m_bNoHist = TRUE;
 	CFltPoint fpt;
-	UpdateDIB(GetClientCenter(fpt),m_fScale);
-	m_bNoHist=FALSE;
+	UpdateDIB(GetClientCenter(fpt), m_fScale);
+	m_bNoHist = FALSE;
 }
 
 void CWallsMapView::GetViewExtent(CFltRect &fRect)
@@ -576,8 +576,8 @@ void CWallsMapView::GetViewExtent(CFltRect &fRect)
 	//Called when exporting
 	CRect rect;
 	GetClientRect(&rect);
-	ClientPtToGeoPt(rect.TopLeft(),fRect.tl);
-	ClientPtToGeoPt(rect.BottomRight(),fRect.br);
+	ClientPtToGeoPt(rect.TopLeft(), fRect.tl);
+	ClientPtToGeoPt(rect.BottomRight(), fRect.br);
 }
 
 bool CWallsMapView::UpdateRestoredView()
@@ -585,19 +585,19 @@ bool CWallsMapView::UpdateRestoredView()
 	//restore last view by revising newScale and fptCenter.
 	//compute scale such that the displayed vertical extent is the same
 	ASSERT(GetDocument()->IsTransformed());
-	CRestorePosition *pRP=GetDocument()->GetRestorePosition();
-	if(pRP && pRP->uStatus>=1 && pRP->geoHeight>0.0 && GetDocument()->IsProjected()!=(fabs(pRP->ptGeo.x)<180 && fabs(pRP->ptGeo.y)<90)) {
+	CRestorePosition *pRP = GetDocument()->GetRestorePosition();
+	if (pRP && pRP->uStatus >= 1 && pRP->geoHeight > 0.0 && GetDocument()->IsProjected() != (fabs(pRP->ptGeo.x) < 180 && fabs(pRP->ptGeo.y) < 90)) {
 		CRect crView;
 		GetClientRect(&crView);
 		//oldrange = pRP->height/pRP->scale = crView.Height()/newScale
-		UpdateDIB(pRP->ptGeo,crView.Height()/pRP->geoHeight);
-		return m_bFirstViewDisplayed=true;
+		UpdateDIB(pRP->ptGeo, crView.Height() / pRP->geoHeight);
+		return m_bFirstViewDisplayed = true;
 	}
-	m_bFirstViewDisplayed=true; //at least insure next view is saved
+	m_bFirstViewDisplayed = true; //at least insure next view is saved
 	return false;
 }
 
-void CWallsMapView::UpdateDIB(const CFltPoint &fptGeoCtr,double newScale)
+void CWallsMapView::UpdateDIB(const CFltPoint &fptGeoCtr, double newScale)
 {
 	// Upon input:
 	// fptGeoCtr	- desired new center in current client
@@ -611,14 +611,14 @@ void CWallsMapView::UpdateDIB(const CFltPoint &fptGeoCtr,double newScale)
 	// m_fScale				- set to newScale
 
 
-	if(!m_bNoHist)
-			m_hist.Add(HIST_REC(fptGeoCtr,newScale));
+	if (!m_bNoHist)
+		m_hist.Add(HIST_REC(fptGeoCtr, newScale));
 
 	CRect client;
 	GetClientRect(&client);
 
-	m_geoExtDIB.l=m_fViewOrigin.x=fptGeoCtr.x-client.right/(2.0*newScale);
-	m_geoExtDIB.r=m_fViewOrigin.x+client.right/newScale;
+	m_geoExtDIB.l = m_fViewOrigin.x = fptGeoCtr.x - client.right / (2.0*newScale);
+	m_geoExtDIB.r = m_fViewOrigin.x + client.right / newScale;
 
 	/*
 	if(m_fSignY>0.0) {
@@ -631,36 +631,36 @@ void CWallsMapView::UpdateDIB(const CFltPoint &fptGeoCtr,double newScale)
 	}
 	*/
 
-	m_geoExtDIB.t=m_fViewOrigin.y=fptGeoCtr.y-m_fSignY*(client.bottom/(2.0*newScale));
-	m_geoExtDIB.b=m_fViewOrigin.y+m_fSignY*(client.bottom/newScale);
+	m_geoExtDIB.t = m_fViewOrigin.y = fptGeoCtr.y - m_fSignY * (client.bottom / (2.0*newScale));
+	m_geoExtDIB.b = m_fViewOrigin.y + m_fSignY * (client.bottom / newScale);
 
-	UINT w=0,h=0;
+	UINT w = 0, h = 0;
 	CFltRect extDoc;
-	GetDocument()->GetExtent(&extDoc,TRUE);
+	GetDocument()->GetExtent(&extDoc, TRUE);
 
-	if(m_geoExtDIB.IntersectWith(extDoc)) {
-		if(GetDocument()->HasShpLayers()) {
+	if (m_geoExtDIB.IntersectWith(extDoc)) {
+		if (GetDocument()->HasShpLayers()) {
 			//Avoid truncation of labels
-			m_geoExtDIB.r+=128/newScale;
-			m_geoExtDIB.b-=128/newScale;
+			m_geoExtDIB.r += 128 / newScale;
+			m_geoExtDIB.b -= 128 / newScale;
 		}
-		w=(UINT)(m_geoExtDIB.Width()*newScale+0.5);
-		h=(UINT)(m_geoExtDIB.Height()*newScale+0.5);
+		w = (UINT)(m_geoExtDIB.Width()*newScale + 0.5);
+		h = (UINT)(m_geoExtDIB.Height()*newScale + 0.5);
 	}
 
-	m_ptBitmapOverlap.x=m_ptBitmapOverlap.y=0;
-	CShpLayer::m_pPtNode=&m_ptNode;
+	m_ptBitmapOverlap.x = m_ptBitmapOverlap.y = 0;
+	CShpLayer::m_pPtNode = &m_ptNode;
 
-	if(!w || !h) {
+	if (!w || !h) {
 		m_DIB.DeleteObject();
-		m_iFullView=0;
-		m_ptNode.Init(0,0,0);
+		m_iFullView = 0;
+		m_ptNode.Init(0, 0, 0);
 	}
 	else {
 		//Initialize new destination bitmap --
-		ClearDIB(w,h);
-		m_ptBitmapOverlap.x=(int)((m_geoExtDIB.l-m_fViewOrigin.x)*newScale);
-		m_ptBitmapOverlap.y=(int)(m_fSignY*(m_geoExtDIB.t-m_fViewOrigin.y)*newScale);
+		ClearDIB(w, h);
+		m_ptBitmapOverlap.x = (int)((m_geoExtDIB.l - m_fViewOrigin.x)*newScale);
+		m_ptBitmapOverlap.y = (int)(m_fSignY*(m_geoExtDIB.t - m_fViewOrigin.y)*newScale);
 
 		//Might as well make scale exactly correct for extent --
 		//m_geoExtDIB.r=m_geoExtDIB.l+w/newScale;
@@ -673,16 +673,16 @@ void CWallsMapView::UpdateDIB(const CFltPoint &fptGeoCtr,double newScale)
 		//			1			- Only a portion of the image is contained in the region.
 		//			2			- All of the image is contained in the region.
 
-		m_iFullView=GetDocument()->CopyToDIB(&m_DIB,m_geoExtDIB,newScale);
+		m_iFullView = GetDocument()->CopyToDIB(&m_DIB, m_geoExtDIB, newScale);
 	}
 
-	ASSERT(newScale>0.0);
+	ASSERT(newScale > 0.0);
 
-	if(m_pScaleWnd && (m_fScale!=newScale || !GetDocument()->IsProjected())) {
-		m_fScale=newScale;;
+	if (m_pScaleWnd && (m_fScale != newScale || !GetDocument()->IsProjected())) {
+		m_fScale = newScale;;
 		DrawScale();
 	}
-	else m_fScale=newScale;
+	else m_fScale = newScale;
 
 	//Point m_ptBitmapOverlap will change during pan operation --
 	//UpdateZoomPane();
@@ -690,24 +690,24 @@ void CWallsMapView::UpdateDIB(const CFltPoint &fptGeoCtr,double newScale)
 	Invalidate(FALSE); //don't erase background
 
 	//We've just repainted the view. No cursor should be visible --
-	m_bSyncCursor=FALSE;
+	m_bSyncCursor = FALSE;
 
-	if(m_bSync && m_pSyncView==this) {
+	if (m_bSync && m_pSyncView == this) {
 		//Other views will now center at the geographic point
 		//corresponding to this window's new center --
-		CSyncHint syncHint(&fptGeoCtr,newScale);
-		GetMF()->UpdateViews(this,LHINT_SYNCSTART,&syncHint);
+		CSyncHint syncHint(&fptGeoCtr, newScale);
+		GetMF()->UpdateViews(this, LHINT_SYNCSTART, &syncHint);
 	}
-	m_uAction&=CWallsMapDoc::ACTION_NOCOORD;
+	m_uAction &= CWallsMapDoc::ACTION_NOCOORD;
 
-	if((GetDocument()->m_uEnableFlags&NTL_FLG_RESTOREVIEW) && m_bFirstViewDisplayed) {
+	if ((GetDocument()->m_uEnableFlags&NTL_FLG_RESTOREVIEW) && m_bFirstViewDisplayed) {
 		//restore last view by revising newScale and fptCenter.
 		//compute scale such that the displayed vertical extent is the same
-		CRestorePosition *pRP=GetDocument()->GetRestorePosition();
-		if(pRP) {
-			pRP->geoHeight=client.Height()/newScale;
-			ClientPtToGeoPt(client.CenterPoint(),pRP->ptGeo);
-			pRP->uStatus=2;
+		CRestorePosition *pRP = GetDocument()->GetRestorePosition();
+		if (pRP) {
+			pRP->geoHeight = client.Height() / newScale;
+			ClientPtToGeoPt(client.CenterPoint(), pRP->ptGeo);
+			pRP->uStatus = 2;
 			GetDocument()->SetChanged(1); //save without prompting upon close
 		}
 	}
@@ -719,23 +719,23 @@ void CWallsMapView::InitFullViewWindow()
 	//Called only from OnInitialUpdate() --
 
 	CWallsMapDoc* pDoc = GetDocument();
-	CChildFrame * pParentFr=(CChildFrame *)GetParentFrame();
+	CChildFrame * pParentFr = (CChildFrame *)GetParentFrame();
 
-	bool bTrans=pDoc->IsTransformed();
-	bool bTile=(bTrans && CMainFrame::IsPref(PRF_OPEN_MAXIMIZED));
+	bool bTrans = pDoc->IsTransformed();
+	bool bTile = (bTrans && CMainFrame::IsPref(PRF_OPEN_MAXIMIZED));
 
 	CRect crView;
 
 	pParentFr->GetParentFrame()->GetClientRect(&crView);
-	int i=GetMF()->ToolBarHt();
-	if(i<2) i=2;
-	crView.InflateRect(0,0,-4,-(i+GetMF()->StatusBarHt()+2));
+	int i = GetMF()->ToolBarHt();
+	if (i < 2) i = 2;
+	crView.InflateRect(0, 0, -4, -(i + GetMF()->StatusBarHt() + 2));
 
-	if(!bTile) {
+	if (!bTile) {
 		//Reduce size for cascade-style open --
-		crView.InflateRect(-INC_MDISHIFT,-INC_MDISHIFT,-INC_MDISHIFT*MAX_MDISHIFT,-INC_MDISHIFT*MAX_MDISHIFT);
-		crView.OffsetRect(m_nMdiShift*INC_MDISHIFT,m_nMdiShift*INC_MDISHIFT);
-		if(++m_nMdiShift>MAX_MDISHIFT) m_nMdiShift=0;
+		crView.InflateRect(-INC_MDISHIFT, -INC_MDISHIFT, -INC_MDISHIFT * MAX_MDISHIFT, -INC_MDISHIFT * MAX_MDISHIFT);
+		crView.OffsetRect(m_nMdiShift*INC_MDISHIFT, m_nMdiShift*INC_MDISHIFT);
+		if (++m_nMdiShift > MAX_MDISHIFT) m_nMdiShift = 0;
 	}
 
 	//crView is now the MDI frame's client area we are making available for
@@ -743,78 +743,78 @@ void CWallsMapView::InitFullViewWindow()
 
 	CFltPoint geoSize;
 	double fScale;  //<window width>/<geographical extent or image pixels>
-	bool bFitWidth=false;
-	bool bCheckedVisible=false;
+	bool bFitWidth = false;
+	bool bCheckedVisible = false;
 
-	UINT xSizeMax=crView.Width()-m_xBorders;
-	UINT ySizeMax=crView.Height()-m_yBorders;
-	ASSERT(xSizeMax>0 && ySizeMax>0);
+	UINT xSizeMax = crView.Width() - m_xBorders;
+	UINT ySizeMax = crView.Height() - m_yBorders;
+	ASSERT(xSizeMax > 0 && ySizeMax > 0);
 
-	if(!(GetDocument()->m_uEnableFlags&NTL_FLG_RESTOREVIEW)) {
+	if (!(GetDocument()->m_uEnableFlags&NTL_FLG_RESTOREVIEW)) {
 
-		pDoc->GetExtent(&m_geoExtDIB,TRUE); //Get extent assuming enabled (checked) layers will be shown
+		pDoc->GetExtent(&m_geoExtDIB, TRUE); //Get extent assuming enabled (checked) layers will be shown
 
-_recheck:
+	_recheck:
 
-		geoSize=m_geoExtDIB.Size();
+		geoSize = m_geoExtDIB.Size();
 
-		if(geoSize.x*ySizeMax>=geoSize.y*xSizeMax) {
-			bFitWidth=true;
-			fScale=xSizeMax/geoSize.x;
+		if (geoSize.x*ySizeMax >= geoSize.y*xSizeMax) {
+			bFitWidth = true;
+			fScale = xSizeMax / geoSize.x;
 		}
 		else {
-			fScale=ySizeMax/geoSize.y;
+			fScale = ySizeMax / geoSize.y;
 		}
 
 		//fScale = desired screen pixels per geo_unit
 
-		double fZoom=fScale/MaxImagePixelsPerGeoUnit(); //fZoom = screen pixels / image pixels
-		if(fZoom>1.0) {
-			fZoom=1.0;
-			fScale=MaxImagePixelsPerGeoUnit();
+		double fZoom = fScale / MaxImagePixelsPerGeoUnit(); //fZoom = screen pixels / image pixels
+		if (fZoom > 1.0) {
+			fZoom = 1.0;
+			fScale = MaxImagePixelsPerGeoUnit();
 		}
 
 		{
 			CFltRect fRect(m_geoExtDIB);
-			pDoc->LayerSet().GetScaledExtent(m_geoExtDIB,fScale);
-			if(memcmp(&fRect,&m_geoExtDIB,sizeof(CFltRect)))
+			pDoc->LayerSet().GetScaledExtent(m_geoExtDIB, fScale);
+			if (memcmp(&fRect, &m_geoExtDIB, sizeof(CFltRect)))
 				goto _recheck;
 		}
 
-		UINT x=(UINT)(fScale*geoSize.x+0.5);
-		UINT y=(UINT)(fScale*geoSize.y+0.5);
-		if(!x) x++;
-		if(!y) y++;
+		UINT x = (UINT)(fScale*geoSize.x + 0.5);
+		UINT y = (UINT)(fScale*geoSize.y + 0.5);
+		if (!x) x++;
+		if (!y) y++;
 
-		if(bTile) {
+		if (bTile) {
 			//frame will be visible while loading data!
-			if(bFitWidth) {
-				xSizeMax=x+m_xBorders;
-				ySizeMax+=m_yBorders;
+			if (bFitWidth) {
+				xSizeMax = x + m_xBorders;
+				ySizeMax += m_yBorders;
 			}
 			else {
-				xSizeMax+=m_xBorders;
-				ySizeMax=y+m_yBorders;
+				xSizeMax += m_xBorders;
+				ySizeMax = y + m_yBorders;
 			}
 		}
 		else {
-			xSizeMax=x+m_xBorders;
-			ySizeMax=y+m_yBorders;
+			xSizeMax = x + m_xBorders;
+			ySizeMax = y + m_yBorders;
 		}
 	}
 
-	pParentFr->SetWindowPos(0,crView.left,crView.top,xSizeMax,ySizeMax,SWP_NOZORDER);
+	pParentFr->SetWindowPos(0, crView.left, crView.top, xSizeMax, ySizeMax, SWP_NOZORDER);
 
-	if(bTile) {
-		::PostMessage(GetMF()->m_hWndMDIClient,WM_MDITILE,MDITILE_VERTICAL,0);
+	if (bTile) {
+		::PostMessage(GetMF()->m_hWndMDIClient, WM_MDITILE, MDITILE_VERTICAL, 0);
 	}
 	else {
-		if(GetDocument()->m_uEnableFlags&NTL_FLG_RESTOREVIEW) {
+		if (GetDocument()->m_uEnableFlags&NTL_FLG_RESTOREVIEW) {
 			ASSERT(!m_bFirstViewDisplayed);
-			if(UpdateRestoredView()) 
+			if (UpdateRestoredView())
 				return;
 		}
-		UpdateDIB(m_geoExtDIB.Center(),fScale);
+		UpdateDIB(m_geoExtDIB.Center(), fScale);
 	}
 }
 
@@ -822,18 +822,18 @@ void CWallsMapView::SetScalePos()
 {
 	CRect client;
 	GetClientRect(&client);
-	m_pScaleWnd->SetWindowPos(NULL,0,client.bottom-BAR_HEIGHT,m_pScaleWnd->m_width,
-		BAR_HEIGHT,SWP_NOZORDER|SWP_SHOWWINDOW);
-	m_pScaleWnd->m_bottom=client.bottom;
+	m_pScaleWnd->SetWindowPos(NULL, 0, client.bottom - BAR_HEIGHT, m_pScaleWnd->m_width,
+		BAR_HEIGHT, SWP_NOZORDER | SWP_SHOWWINDOW);
+	m_pScaleWnd->m_bottom = client.bottom;
 }
 
 double CWallsMapView::MetersPerPixel(double scale)
 {
-	if(!GetDocument()->IsProjected()) {
-		double m=(m_geoExtDIB.t+m_geoExtDIB.b)/2;
-		return (MetricDistance(m,0,m,1)*1000)/scale;
+	if (!GetDocument()->IsProjected()) {
+		double m = (m_geoExtDIB.t + m_geoExtDIB.b) / 2;
+		return (MetricDistance(m, 0, m, 1) * 1000) / scale;
 	}
-	return 1.0/scale;
+	return 1.0 / scale;
 }
 
 /*
@@ -850,16 +850,16 @@ void CWallsMapView::MaximizeWindow()
 
 CMDIChildWnd * CWallsMapView::ComputeBorders()
 {
-	CMDIChildWnd *pParentFr=(CMDIChildWnd *)GetParentFrame();
-	CRect crView,crViewCl;
+	CMDIChildWnd *pParentFr = (CMDIChildWnd *)GetParentFrame();
+	CRect crView, crViewCl;
 	pParentFr->GetWindowRect(&crView);
 	pParentFr->GetClientRect(&crViewCl);
 	pParentFr->ClientToScreen(&crViewCl);
-	m_xBorders=crView.Width()-crViewCl.Width();
-	m_yBorders=crView.Height()-crViewCl.Height();
-	ASSERT(m_xBorders>=0 && m_yBorders>=0);
-	m_xBorders+=4;
-	m_yBorders+=4;
+	m_xBorders = crView.Width() - crViewCl.Width();
+	m_yBorders = crView.Height() - crViewCl.Height();
+	ASSERT(m_xBorders >= 0 && m_yBorders >= 0);
+	m_xBorders += 4;
+	m_yBorders += 4;
 	return pParentFr;
 }
 
@@ -867,19 +867,19 @@ void CWallsMapView::OnInitialUpdate()
 {
 	GetMF()->ClearStatusPanes();
 
-	if(GetDocument()->IsTransformed()) {
-		m_fSignY=-1.0;
+	if (GetDocument()->IsTransformed()) {
+		m_fSignY = -1.0;
 		// CStatic initialization --
 		m_pScaleWnd = new CScaleWnd;
 		VERIFY(m_pScaleWnd->Create(this));
 	}
-	else m_fSignY=1.0; 
+	else m_fSignY = 1.0;
 
 
-	CMDIChildWnd *pParentFr=ComputeBorders();
+	CMDIChildWnd *pParentFr = ComputeBorders();
 
 	InitFullViewWindow();
-	m_bTrackingGPS=pGPSDlg && pGPSDlg->HavePos() && GetDocument()->IsGeoRefSupported();
+	m_bTrackingGPS = pGPSDlg && pGPSDlg->HavePos() && GetDocument()->IsGeoRefSupported();
 }
 
 /*
@@ -911,7 +911,7 @@ void CWallsMapView::OnUpdateViewNozoom(CCmdUI *pCmdUI)
 void CWallsMapView::OnSetFocus(CWnd* pOldWnd)
 {
 	CView::OnSetFocus(pOldWnd);
-	m_pViewDrag=this;
+	m_pViewDrag = this;
 }
 
 
@@ -920,13 +920,13 @@ void CWallsMapView::OnLButtonDblClk(UINT nFlags, CPoint point)
 	// TODO: Add your message handler code here and/or call default
 
 	ASSERT(!(m_uAction&CWallsMapDoc::ACTION_PAN));
-	CWallsMapDoc *pDoc=GetDocument();
-	if(IsSelecting()) {
+	CWallsMapDoc *pDoc = GetDocument();
+	if (IsSelecting()) {
 		SetSelecting(0);
-		pDoc->m_uActionFlags=0;
+		pDoc->m_uActionFlags = 0;
 	}
 	else {
-		if(pDoc->m_uActionFlags==CWallsMapDoc::ACTION_MEASURE)
+		if (pDoc->m_uActionFlags == CWallsMapDoc::ACTION_MEASURE)
 			pDoc->OnToolMeasure();
 		else pDoc->OnViewPan();
 	}
@@ -936,114 +936,114 @@ void CWallsMapView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
 
-	if(m_bSync) {
-		if(m_bSyncCursor) DrawSyncCursor();
-		GetMF()->UpdateViews(this,LHINT_SYNCHIDECURSOR);
+	if (m_bSync) {
+		if (m_bSyncCursor) DrawSyncCursor();
+		GetMF()->UpdateViews(this, LHINT_SYNCHIDECURSOR);
 		//We'll restore cursors in OnLButtonUp() --
-		m_pSyncView=this;
+		m_pSyncView = this;
 	}
 
-	if(IsSelecting()) {
-			if(GetDocument()->HasShpPtLayers()) {
-				CRectTracker tracker;
-				//m_uAction=flag;
-				//Sets capture and waits for LButtonUp (may be part of a double-click) --
-				m_bTrackRubber=true;
-				if(tracker.TrackRubberBand(this, point, TRUE)) {
-					m_bTrackRubber=false;
-					tracker.m_rect.NormalizeRect();
-					if(tracker.m_rect.Width()>8 || tracker.m_rect.Height()>8) {
-						CRect client;
-						GetClientRect(&client);
-						if(client.IntersectRect(&client,&tracker.m_rect)) {
-							CPoint pt=client.CenterPoint();
-							EditShape(pt.x,(client.Width()+1)/2,pt.y,(client.Height()+1)/2);
-						}
-					}
-				}
-				else m_bTrackRubber=false;
-			}
-	}
-	else {
-		UINT flag=GetDocument()->m_uActionFlags;
-
-		switch(flag) {
-			case 0:
-			case CWallsMapDoc::ACTION_ZOOMIN:
-			case CWallsMapDoc::ACTION_ZOOMOUT:
-				{
-					CFixedTracker tracker;
+	if (IsSelecting()) {
+		if (GetDocument()->HasShpPtLayers()) {
+			CRectTracker tracker;
+			//m_uAction=flag;
+			//Sets capture and waits for LButtonUp (may be part of a double-click) --
+			m_bTrackRubber = true;
+			if (tracker.TrackRubberBand(this, point, TRUE)) {
+				m_bTrackRubber = false;
+				tracker.m_rect.NormalizeRect();
+				if (tracker.m_rect.Width() > 8 || tracker.m_rect.Height() > 8) {
 					CRect client;
 					GetClientRect(&client);
-					tracker.m_pr=&client;
-					m_uAction=flag;
-					//Sets capture and waits for LButtonUp (may be part of a double-click) --
-					m_bTrackRubber=true;
-					if(tracker.TrackRubberBand(this, point, TRUE)) {
-						m_bTrackRubber=false;
-						tracker.m_rect.NormalizeRect();
-						int pxwidth=tracker.m_rect.Width();
-						if(pxwidth>=client.right) return;
-						double fNewScale;
-						if(pxwidth>=MIN_TRACKERWIDTH) {
-							fNewScale=(!flag || flag==CWallsMapDoc::ACTION_ZOOMIN)?
-								((m_fScale*client.right)/pxwidth):((m_fScale*pxwidth)/client.right);
-
-							if(IsScaleOK(fNewScale)) {
-								UpdateOnClientPt(tracker.m_rect.CenterPoint(),fNewScale);
-							}
-						}
+					if (client.IntersectRect(&client, &tracker.m_rect)) {
+						CPoint pt = client.CenterPoint();
+						EditShape(pt.x, (client.Width() + 1) / 2, pt.y, (client.Height() + 1) / 2);
 					}
-					else {
-						m_bTrackRubber=false;
-						if(flag && tracker.m_rect.IsRectEmpty()) {
-							m_ptPopup=tracker.m_rect.CenterPoint();
-							ASSERT(client.PtInRect(m_ptPopup));
-
-							if((!flag || flag==CWallsMapDoc::ACTION_ZOOMIN)) OnContextZoomin();
-							else OnContextZoomout();
-						}
-					}
-					m_uAction=0;
 				}
-				break;
+			}
+			else m_bTrackRubber = false;
+		}
+	}
+	else {
+		UINT flag = GetDocument()->m_uActionFlags;
 
-			case CWallsMapDoc::ACTION_MEASURE:
-				m_ptMeasure=point;
-				m_bMeasuring=true;
+		switch (flag) {
+		case 0:
+		case CWallsMapDoc::ACTION_ZOOMIN:
+		case CWallsMapDoc::ACTION_ZOOMOUT:
+		{
+			CFixedTracker tracker;
+			CRect client;
+			GetClientRect(&client);
+			tracker.m_pr = &client;
+			m_uAction = flag;
+			//Sets capture and waits for LButtonUp (may be part of a double-click) --
+			m_bTrackRubber = true;
+			if (tracker.TrackRubberBand(this, point, TRUE)) {
+				m_bTrackRubber = false;
+				tracker.m_rect.NormalizeRect();
+				int pxwidth = tracker.m_rect.Width();
+				if (pxwidth >= client.right) return;
+				double fNewScale;
+				if (pxwidth >= MIN_TRACKERWIDTH) {
+					fNewScale = (!flag || flag == CWallsMapDoc::ACTION_ZOOMIN) ?
+						((m_fScale*client.right) / pxwidth) : ((m_fScale*pxwidth) / client.right);
 
-			case CWallsMapDoc::ACTION_PAN:
-				m_uAction=flag;
-				m_ptDrag=point;
-				//TrackMouse(m_hWnd);
-				break;
+					if (IsScaleOK(fNewScale)) {
+						UpdateOnClientPt(tracker.m_rect.CenterPoint(), fNewScale);
+					}
+				}
+			}
+			else {
+				m_bTrackRubber = false;
+				if (flag && tracker.m_rect.IsRectEmpty()) {
+					m_ptPopup = tracker.m_rect.CenterPoint();
+					ASSERT(client.PtInRect(m_ptPopup));
+
+					if ((!flag || flag == CWallsMapDoc::ACTION_ZOOMIN)) OnContextZoomin();
+					else OnContextZoomout();
+				}
+			}
+			m_uAction = 0;
+		}
+		break;
+
+		case CWallsMapDoc::ACTION_MEASURE:
+			m_ptMeasure = point;
+			m_bMeasuring = true;
+
+		case CWallsMapDoc::ACTION_PAN:
+			m_uAction = flag;
+			m_ptDrag = point;
+			//TrackMouse(m_hWnd);
+			break;
 		}
 	}
 }
 
 bool CWallsMapView::RefreshPannedView()
 {
-	bool bRet=false;
+	bool bRet = false;
 
-	m_fViewOrigin.x=m_geoExtDIB.l-m_ptBitmapOverlap.x/m_fScale;
-	m_fViewOrigin.y=m_geoExtDIB.t-m_ptBitmapOverlap.y/(m_fSignY*m_fScale);
+	m_fViewOrigin.x = m_geoExtDIB.l - m_ptBitmapOverlap.x / m_fScale;
+	m_fViewOrigin.y = m_geoExtDIB.t - m_ptBitmapOverlap.y / (m_fSignY*m_fScale);
 
 	CFltRect geoExtClient;
 	CRect client;
 	GetClientRect(&client);
 
 	//ClientPtToGeoPt() uses m_fViewOrigin --
-	ClientPtToGeoPt(client.TopLeft(),geoExtClient.tl);
-	ClientPtToGeoPt(client.BottomRight(),geoExtClient.br);
+	ClientPtToGeoPt(client.TopLeft(), geoExtClient.tl);
+	ClientPtToGeoPt(client.BottomRight(), geoExtClient.br);
 
 	CFltRect geoExtDoc;
-	GetDocument()->GetExtent(&geoExtDoc,TRUE);
+	GetDocument()->GetExtent(&geoExtDoc, TRUE);
 
-	if(geoExtClient.IntersectWith(geoExtDoc)) {
+	if (geoExtClient.IntersectWith(geoExtDoc)) {
 		//The client contains some part of document (should always be the case when panning) --
-		if(!m_geoExtDIB.ContainsRect(geoExtClient)) {
+		if (!m_geoExtDIB.ContainsRect(geoExtClient)) {
 			UpdateOnClientPt(client.CenterPoint());
-			bRet=true;
+			bRet = true;
 		}
 		else Invalidate(FALSE);
 	}
@@ -1052,312 +1052,312 @@ bool CWallsMapView::RefreshPannedView()
 
 void CWallsMapView::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	m_bMeasuring=false;
-	if(m_bSync) m_pSyncView=this;
-	if(m_uAction&CWallsMapDoc::ACTION_PAN) {
-		if(point!=m_ptDrag) {
-			m_ptBitmapOverlap+=(point-m_ptDrag);
-			m_uAction|=CWallsMapDoc::ACTION_PANNED;
+	m_bMeasuring = false;
+	if (m_bSync) m_pSyncView = this;
+	if (m_uAction&CWallsMapDoc::ACTION_PAN) {
+		if (point != m_ptDrag) {
+			m_ptBitmapOverlap += (point - m_ptDrag);
+			m_uAction |= CWallsMapDoc::ACTION_PANNED;
 		}
 		//if m_iFullView==2, the bitmap contains the entire image,
 		//so no updating is needed when panning --
-		if((m_uAction&CWallsMapDoc::ACTION_PANNED)) {
+		if ((m_uAction&CWallsMapDoc::ACTION_PANNED)) {
 			//Refresh bitmap only if required --
 			RefreshPannedView();
-			if(m_bSync) {
+			if (m_bSync) {
 				//Redrawing of other views may be necessary even if this view doesn't require it--
-				GetMF()->UpdateViews(this,LHINT_POSTTILE);
-				ASSERT(m_pSyncView==this);
+				GetMF()->UpdateViews(this, LHINT_POSTTILE);
+				ASSERT(m_pSyncView == this);
 			}
 		}
 	}
-	else if(m_uAction&CWallsMapDoc::ACTION_MEASURE) {
+	else if (m_uAction&CWallsMapDoc::ACTION_MEASURE) {
 		RefreshMeasure();
-		if(g_hwndTrackingTT) {
-			::SendMessage(g_hwndTrackingTT,TTM_TRACKACTIVATE, (WPARAM)FALSE, (LPARAM)&g_toolItem);
+		if (g_hwndTrackingTT) {
+			::SendMessage(g_hwndTrackingTT, TTM_TRACKACTIVATE, (WPARAM)FALSE, (LPARAM)&g_toolItem);
 			::DestroyWindow(g_hwndTrackingTT);
 			g_hwndTrackingTT = NULL;
 		}
 	}
 
-	if(m_bSync) {
-		UpdateViewsAtPoint(point,LHINT_SYNCSHOWCURSOR);
+	if (m_bSync) {
+		UpdateViewsAtPoint(point, LHINT_SYNCSHOWCURSOR);
 	}
-	m_uAction=0;
+	m_uAction = 0;
 }
 
 void CWallsMapView::RefreshMeasure()
 {
-    CClientDC dc(this);
-    dc.SetROP2(R2_NOT);
-    dc.SetBkMode(TRANSPARENT);
-    dc.MoveTo(m_ptDrag);
+	CClientDC dc(this);
+	dc.SetROP2(R2_NOT);
+	dc.SetBkMode(TRANSPARENT);
+	dc.MoveTo(m_ptDrag);
 	dc.LineTo(m_ptMeasure);
 }
 
-void CWallsMapView::OnUpdateStatusBar(CCmdUI* pCmdUI,int id)
+void CWallsMapView::OnUpdateStatusBar(CCmdUI* pCmdUI, int id)
 {
 	CString cs;
 	CFltPoint ptGeo;
 
-	switch(id) {
-		case STAT_ZOOM:
-			if(IsPointerValid()) {
-				//Get zoom percentage for image beneath cursor --
-				CFltPoint ptGeo;
-				ClientPtToGeoPt(m_ptDrag,ptGeo);
-				double zoom=m_fScale/ImagePixelsPerGeoUnit(ptGeo);
-				if(zoom>0.0) cs.Format("%s%%",GetPercentStr(zoom*100));
-			}
-			break;
+	switch (id) {
+	case STAT_ZOOM:
+		if (IsPointerValid()) {
+			//Get zoom percentage for image beneath cursor --
+			CFltPoint ptGeo;
+			ClientPtToGeoPt(m_ptDrag, ptGeo);
+			double zoom = m_fScale / ImagePixelsPerGeoUnit(ptGeo);
+			if (zoom > 0.0) cs.Format("%s%%", GetPercentStr(zoom * 100));
+		}
+		break;
 
-		case STAT_SCALE:
-			{
-				CWallsMapDoc *pDoc=GetDocument();
-				if(!GetDocument()->IsTransformed()) break;
+	case STAT_SCALE:
+	{
+		CWallsMapDoc *pDoc = GetDocument();
+		if (!GetDocument()->IsTransformed()) break;
 
-				cs.Format("1:%u",GetScaleDenom());
-			}
-			break;
+		cs.Format("1:%u", GetScaleDenom());
+	}
+	break;
 
-		case STAT_DATUM:
-			if(m_uAction&(CWallsMapDoc::ACTION_PAN|CWallsMapDoc::ACTION_SELECT)) return;
-			if(GetDocument()->IsDatumToggled()) GetDocument()->GetOtherDatumName(cs);
-			else GetDocument()->GetDatumName(cs);
-			break;
+	case STAT_DATUM:
+		if (m_uAction&(CWallsMapDoc::ACTION_PAN | CWallsMapDoc::ACTION_SELECT)) return;
+		if (GetDocument()->IsDatumToggled()) GetDocument()->GetOtherDatumName(cs);
+		else GetDocument()->GetDatumName(cs);
+		break;
 
-		case STAT_SIZE:
-			if(IsPointerValid()) {
+	case STAT_SIZE:
+		if (IsPointerValid()) {
 
-				CPoint pt((m_uAction&CWallsMapDoc::ACTION_MEASURE)?m_ptMeasure:m_ptDrag);
-				CFltPoint ptGeo;
-				ClientPtToGeoPt(pt,ptGeo);
-				CImageLayer *pLayer=GetTopNteLayer(ptGeo);
-				if(pLayer) {
-					int elev=((CNtiLayer *)pLayer)->GetApproxElev(ptGeo);
-					if(elev!=CNTERecord::NODATA) {
-						if(GetDocument()->IsElevUnitsFeet())
-							cs.Format("Elev: %d ft",elev);
-						else
-							cs.Format("Elev: %.1f m",elev*0.3048);
-					}
-				}
-				else if(pLayer=GetTopImageLayer(ptGeo)) {
-					cs.Format("%dx%dx%d",pLayer->Width(),pLayer->Height(),pLayer->BitsPerSample()*pLayer->Bands());
+			CPoint pt((m_uAction&CWallsMapDoc::ACTION_MEASURE) ? m_ptMeasure : m_ptDrag);
+			CFltPoint ptGeo;
+			ClientPtToGeoPt(pt, ptGeo);
+			CImageLayer *pLayer = GetTopNteLayer(ptGeo);
+			if (pLayer) {
+				int elev = ((CNtiLayer *)pLayer)->GetApproxElev(ptGeo);
+				if (elev != CNTERecord::NODATA) {
+					if (GetDocument()->IsElevUnitsFeet())
+						cs.Format("Elev: %d ft", elev);
+					else
+						cs.Format("Elev: %.1f m", elev*0.3048);
 				}
 			}
-			break;
-
-		case STAT_DEG:
-		case STAT_XY:
-			{
-				if(!IsPointerValid()) break;
-
-				CPoint pt((m_uAction&CWallsMapDoc::ACTION_MEASURE)?m_ptMeasure:m_ptDrag);
-				CFltPoint ptGeo0;
-				ClientPtToGeoPt(pt,ptGeo0);
-				CWallsMapDoc *pDoc=GetDocument();
-				bool bTrans=pDoc->IsTransformed();
-				if(bTrans && pDoc->IsGeoRefSupported()) {
-					if(!pDoc->IsValidGeoPt(ptGeo0)) break;
-					if(id==STAT_XY) {
-						int zone=pDoc->IsDatumToggled()?pDoc->GetUTMOtherDatum(ptGeo0):pDoc->GetUTMCoordinates(ptGeo0);
-						if(zone)
-							cs.Format("UTM  %.1f E  %.1f N  %u%c",ptGeo0.x,ptGeo0.y,abs(zone),(zone>0)?'N':'S');
-					}
-					else {
-						if(pDoc->IsDatumToggled()) pDoc->LayerSet().GetDEGOtherDatum(ptGeo0);
-						else pDoc->GetDEGCoordinates(ptGeo0);
-						if(fabs(ptGeo0.y)<90.0 && fabs(ptGeo0.x)<=180.0)
-							cs.Format("%.5f%c %c  %.5f%c %c",fabs(ptGeo0.y),0xB0,
-								(ptGeo0.y<0)?'S':'N',fabs(ptGeo0.x),0xB0,(ptGeo0.x<0)?'W':'E');
-					}
-				}
-				else if(id==STAT_DEG)
-					cs.Format("%.1f x %.1f",ptGeo0.x,ptGeo0.y);
+			else if (pLayer = GetTopImageLayer(ptGeo)) {
+				cs.Format("%dx%dx%d", pLayer->Width(), pLayer->Height(), pLayer->BitsPerSample()*pLayer->Bands());
 			}
-			break;
+		}
+		break;
+
+	case STAT_DEG:
+	case STAT_XY:
+	{
+		if (!IsPointerValid()) break;
+
+		CPoint pt((m_uAction&CWallsMapDoc::ACTION_MEASURE) ? m_ptMeasure : m_ptDrag);
+		CFltPoint ptGeo0;
+		ClientPtToGeoPt(pt, ptGeo0);
+		CWallsMapDoc *pDoc = GetDocument();
+		bool bTrans = pDoc->IsTransformed();
+		if (bTrans && pDoc->IsGeoRefSupported()) {
+			if (!pDoc->IsValidGeoPt(ptGeo0)) break;
+			if (id == STAT_XY) {
+				int zone = pDoc->IsDatumToggled() ? pDoc->GetUTMOtherDatum(ptGeo0) : pDoc->GetUTMCoordinates(ptGeo0);
+				if (zone)
+					cs.Format("UTM  %.1f E  %.1f N  %u%c", ptGeo0.x, ptGeo0.y, abs(zone), (zone > 0) ? 'N' : 'S');
+			}
+			else {
+				if (pDoc->IsDatumToggled()) pDoc->LayerSet().GetDEGOtherDatum(ptGeo0);
+				else pDoc->GetDEGCoordinates(ptGeo0);
+				if (fabs(ptGeo0.y) < 90.0 && fabs(ptGeo0.x) <= 180.0)
+					cs.Format("%.5f%c %c  %.5f%c %c", fabs(ptGeo0.y), 0xB0,
+					(ptGeo0.y < 0) ? 'S' : 'N', fabs(ptGeo0.x), 0xB0, (ptGeo0.x < 0) ? 'W' : 'E');
+			}
+		}
+		else if (id == STAT_DEG)
+			cs.Format("%.1f x %.1f", ptGeo0.x, ptGeo0.y);
+	}
+	break;
 	}
 	pCmdUI->SetText(cs);
 }
 
 static HWND CreateTrackingToolTip(HWND hWnd)
 {
-    // Create a tooltip.
-    HWND hwndTT = CreateWindowEx(WS_EX_TOPMOST, TOOLTIPS_CLASS, NULL, 
-                                 WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP, 
-                                 CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, 
-                                 hWnd, NULL, NULL, NULL);
+	// Create a tooltip.
+	HWND hwndTT = CreateWindowEx(WS_EX_TOPMOST, TOOLTIPS_CLASS, NULL,
+		WS_POPUP | TTS_NOPREFIX | TTS_ALWAYSTIP,
+		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
+		hWnd, NULL, NULL, NULL);
 
-    if (!hwndTT)
-    {
-      return NULL;
-    }
+	if (!hwndTT)
+	{
+		return NULL;
+	}
 
-    // Set up the tool information. In this case, the "tool" is the entire parent window.
-    
-    g_toolItem.cbSize   = sizeof(TOOLINFO);
-    g_toolItem.uFlags   = TTF_IDISHWND | TTF_TRACK | TTF_ABSOLUTE;
-    g_toolItem.hwnd     = hWnd;
-    g_toolItem.hinst    = NULL;
-    g_toolItem.lpszText = "0,0";
-    g_toolItem.uId      = (UINT_PTR)hWnd;
-    
-    GetClientRect (hWnd, &g_toolItem.rect);
+	// Set up the tool information. In this case, the "tool" is the entire parent window.
 
-    // Associate the tooltip with the tool window.
-    
-    SendMessage(hwndTT, TTM_ADDTOOL, 0, (LPARAM) (LPTOOLINFO) &g_toolItem);	
-    
-    return hwndTT;
+	g_toolItem.cbSize = sizeof(TOOLINFO);
+	g_toolItem.uFlags = TTF_IDISHWND | TTF_TRACK | TTF_ABSOLUTE;
+	g_toolItem.hwnd = hWnd;
+	g_toolItem.hinst = NULL;
+	g_toolItem.lpszText = "0,0";
+	g_toolItem.uId = (UINT_PTR)hWnd;
+
+	GetClientRect(hWnd, &g_toolItem.rect);
+
+	// Associate the tooltip with the tool window.
+
+	SendMessage(hwndTT, TTM_ADDTOOL, 0, (LPARAM)(LPTOOLINFO)&g_toolItem);
+
+	return hwndTT;
 }
 
 double CWallsMapView::GetDragAz()
 {
-	int dy=m_ptDrag.y-m_ptMeasure.y,dx=m_ptMeasure.x-m_ptDrag.x;
-	double d=atan2((double)dx,(double)dy)*(180/M_PI);
-	if(d<0.0) d+=360.0;
+	int dy = m_ptDrag.y - m_ptMeasure.y, dx = m_ptMeasure.x - m_ptDrag.x;
+	double d = atan2((double)dx, (double)dy)*(180 / M_PI);
+	if (d < 0.0) d += 360.0;
 	return d;
 }
 
 void CWallsMapView::GetDragDistAz(CString &cs)
 {
-	CWallsMapDoc *pDoc=GetDocument();
-	bool bTrans=pDoc->IsTransformed();
+	CWallsMapDoc *pDoc = GetDocument();
+	bool bTrans = pDoc->IsTransformed();
 	CFltPoint ptGeo0;
-	ClientPtToGeoPt(m_ptDrag,ptGeo0);
+	ClientPtToGeoPt(m_ptDrag, ptGeo0);
 
-	if(!bTrans || pDoc->IsGeoRefSupported() && pDoc->IsValidGeoPt(ptGeo0)) {
+	if (!bTrans || pDoc->IsGeoRefSupported() && pDoc->IsValidGeoPt(ptGeo0)) {
 		double dist;
 		CFltPoint ptGeo;
-		ClientPtToGeoPt(m_ptMeasure,ptGeo);
-		if(!bTrans || pDoc->IsProjected()) {
-			ptGeo0.x-=ptGeo.x;
-			ptGeo0.y-=ptGeo.y;
-			dist=sqrt(ptGeo0.x*ptGeo0.x+ptGeo0.y*ptGeo0.y);
+		ClientPtToGeoPt(m_ptMeasure, ptGeo);
+		if (!bTrans || pDoc->IsProjected()) {
+			ptGeo0.x -= ptGeo.x;
+			ptGeo0.y -= ptGeo.y;
+			dist = sqrt(ptGeo0.x*ptGeo0.x + ptGeo0.y*ptGeo0.y);
 		}
 		else {
-			dist=1000*MetricDistance(ptGeo0.y,ptGeo0.x,ptGeo.y,ptGeo.x);
+			dist = 1000 * MetricDistance(ptGeo0.y, ptGeo0.x, ptGeo.y, ptGeo.x);
 		}
 
 		LPCSTR pu;
-		UINT dec=0;
+		UINT dec = 0;
 
-		if(!bTrans) {
-			pu="px";
-			if(dist<100) dec=1;
+		if (!bTrans) {
+			pu = "px";
+			if (dist < 100) dec = 1;
 		}
 		else {
-			if(pDoc->IsFeetUnits()) {
-				dist/=0.3048;
-				if(dist>=5280.0) {
-					dist/=5280;
-					pu="mi";
+			if (pDoc->IsFeetUnits()) {
+				dist /= 0.3048;
+				if (dist >= 5280.0) {
+					dist /= 5280;
+					pu = "mi";
 				}
-				else pu="ft";
+				else pu = "ft";
 			}
 			else {
-				if(dist>=1000) {
-					dist/=1000;
-					pu="km";
+				if (dist >= 1000) {
+					dist /= 1000;
+					pu = "km";
 				}
-				else pu="m";
+				else pu = "m";
 			}
-			dec=(dist<10)?2:1;
+			dec = (dist < 10) ? 2 : 1;
 		}
 		char fmt[16];
-		sprintf(fmt,"%%.%uf %s, ",dec,pu);
-		cs.Format(fmt,dist);
+		sprintf(fmt, "%%.%uf %s, ", dec, pu);
+		cs.Format(fmt, dist);
 	}
-	cs.AppendFormat("%.1f°",GetDragAz());
+	cs.AppendFormat("%.1f°", GetDragAz());
 }
 
 void CWallsMapView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// point units are client pixels --
 
-	m_uAction&=~CWallsMapDoc::ACTION_NOCOORD;
+	m_uAction &= ~CWallsMapDoc::ACTION_NOCOORD;
 
-	if(!m_bTracking) {
+	if (!m_bTracking) {
 		TrackMouse(m_hWnd);
-		m_bTracking=true;
+		m_bTracking = true;
 	}
 
-	if(m_uAction&CWallsMapDoc::ACTION_SELECT) {
-		if(m_wndTooltip)
+	if (m_uAction&CWallsMapDoc::ACTION_SELECT) {
+		if (m_wndTooltip)
 			DestroyTooltip();
 		return;
 	}
 
-	m_pViewDrag=this;
-	if(m_uAction&CWallsMapDoc::ACTION_PAN) {
-		if(point!=m_ptDrag) {
-			CPoint ptDiff(point-m_ptDrag);
-			m_ptBitmapOverlap+=(ptDiff);
-			m_ptDrag=point;
-			m_uAction|=CWallsMapDoc::ACTION_PANNED;
+	m_pViewDrag = this;
+	if (m_uAction&CWallsMapDoc::ACTION_PAN) {
+		if (point != m_ptDrag) {
+			CPoint ptDiff(point - m_ptDrag);
+			m_ptBitmapOverlap += (ptDiff);
+			m_ptDrag = point;
+			m_uAction |= CWallsMapDoc::ACTION_PANNED;
 			Invalidate(FALSE);
-			if(m_bSync) {
-				ASSERT(m_pSyncView==this);
-				CSyncHint hint((CFltPoint *)&ptDiff,0);
-				GetMF()->UpdateViews(this,LHINT_SYNCPAN,&hint);
+			if (m_bSync) {
+				ASSERT(m_pSyncView == this);
+				CSyncHint hint((CFltPoint *)&ptDiff, 0);
+				GetMF()->UpdateViews(this, LHINT_SYNCPAN, &hint);
 			}
 		}
-		if(!(nFlags&MK_LBUTTON)) {
-			OnLButtonUp(nFlags,point);
+		if (!(nFlags&MK_LBUTTON)) {
+			OnLButtonUp(nFlags, point);
 		}
 		return;
 	}
 
-	if(m_uAction&CWallsMapDoc::ACTION_MEASURE) {
+	if (m_uAction&CWallsMapDoc::ACTION_MEASURE) {
 		ASSERT(m_bMeasuring);
-		if(m_wndTooltip)
+		if (m_wndTooltip)
 			DestroyTooltip();
 
-		if(m_ptMeasure.x==point.x && m_ptMeasure.y==point.y)
+		if (m_ptMeasure.x == point.x && m_ptMeasure.y == point.y)
 			return;
 
 		RefreshMeasure();
-		m_ptMeasure=point;
+		m_ptMeasure = point;
 		RefreshMeasure();
 
-		bool bNew=false;
+		bool bNew = false;
 
-		if(!g_hwndTrackingTT) {
-			g_hwndTrackingTT=CreateTrackingToolTip(m_hWnd);
-			bNew=true;
+		if (!g_hwndTrackingTT) {
+			g_hwndTrackingTT = CreateTrackingToolTip(m_hWnd);
+			bNew = true;
 		}
-		if(g_hwndTrackingTT) {
+		if (g_hwndTrackingTT) {
 			CString s;
 			GetDragDistAz(s);
 			g_toolItem.lpszText = s.GetBuffer();
-			::SendMessage(g_hwndTrackingTT,TTM_SETTOOLINFO, 0, (LPARAM)&g_toolItem);
-            // Position the tooltip. The coordinates are adjusted so that the tooltip does not overlap the mouse pointer.
+			::SendMessage(g_hwndTrackingTT, TTM_SETTOOLINFO, 0, (LPARAM)&g_toolItem);
+			// Position the tooltip. The coordinates are adjusted so that the tooltip does not overlap the mouse pointer.
 			ClientToScreen(&point);
-			::SendMessage(g_hwndTrackingTT,TTM_TRACKPOSITION, 0, (LPARAM)MAKELONG(point.x + 10, point.y - 20));
-			if(bNew) {
+			::SendMessage(g_hwndTrackingTT, TTM_TRACKPOSITION, 0, (LPARAM)MAKELONG(point.x + 10, point.y - 20));
+			if (bNew) {
 				// Activate the tooltip.
-				::SendMessage(g_hwndTrackingTT,TTM_TRACKACTIVATE, (WPARAM)TRUE, (LPARAM)&g_toolItem);
+				::SendMessage(g_hwndTrackingTT, TTM_TRACKACTIVATE, (WPARAM)TRUE, (LPARAM)&g_toolItem);
 			}
 		}
 	}
 	else {
-		m_ptDrag=point;
-		if(m_bSync) {
-			if(m_pSyncView!=this) {
-				m_pSyncView=this;
+		m_ptDrag = point;
+		if (m_bSync) {
+			if (m_pSyncView != this) {
+				m_pSyncView = this;
 				//TrackMouse(m_hWnd);
 			}
 			else
-				UpdateViewsAtPoint(point,LHINT_SYNCSHOWCURSOR);
+				UpdateViewsAtPoint(point, LHINT_SYNCSHOWCURSOR);
 		}
-		if(GetDocument()->HasShpPtLayers()) {
-			if(m_wndTooltip) {
+		if (GetDocument()->HasShpPtLayers()) {
+			if (m_wndTooltip) {
 				ASSERT(m_pMapPtNode);
-				MAP_PTNODE *pn=GetPtNode(point.x,point.y);
-				if(!pn) DestroyTooltip();
-				else if(pn!=m_pMapPtNode) {
-					m_pMapPtNode=pn;
+				MAP_PTNODE *pn = GetPtNode(point.x, point.y);
+				if (!pn) DestroyTooltip();
+				else if (pn != m_pMapPtNode) {
+					m_pMapPtNode = pn;
 					SetTooltipText();
 				}
 			}
@@ -1374,81 +1374,81 @@ void CWallsMapView::OnMouseMove(UINT nFlags, CPoint point)
 	}
 }
 
-LRESULT CWallsMapView::OnMouseLeave(WPARAM wParam,LPARAM strText)
+LRESULT CWallsMapView::OnMouseLeave(WPARAM wParam, LPARAM strText)
 {
-	m_uAction|=CWallsMapDoc::ACTION_NOCOORD;
+	m_uAction |= CWallsMapDoc::ACTION_NOCOORD;
 
-	m_bTracking=false;
+	m_bTracking = false;
 
-	if(m_wndTooltip) {
+	if (m_wndTooltip) {
 		DestroyTooltip();
 	}
-	if(m_bSync) {
-		if(m_bSyncCursor) DrawSyncCursor();
-		GetMF()->UpdateViews(this,LHINT_SYNCHIDECURSOR);
+	if (m_bSync) {
+		if (m_bSyncCursor) DrawSyncCursor();
+		GetMF()->UpdateViews(this, LHINT_SYNCHIDECURSOR);
 		//We'll restore cursors in OnLButtonUp() --
-		m_pSyncView=NULL;
+		m_pSyncView = NULL;
 	}
 
-	if(m_uAction&(CWallsMapDoc::ACTION_MEASURE|CWallsMapDoc::ACTION_PAN)) {
-		OnLButtonUp(0,m_ptDrag);
+	if (m_uAction&(CWallsMapDoc::ACTION_MEASURE | CWallsMapDoc::ACTION_PAN)) {
+		OnLButtonUp(0, m_ptDrag);
 	}
-	m_pViewDrag=NULL;
+	m_pViewDrag = NULL;
 	return FALSE;
 }
 
-LRESULT CWallsMapView::OnMouseHover(WPARAM wParam,LPARAM lParam)
+LRESULT CWallsMapView::OnMouseHover(WPARAM wParam, LPARAM lParam)
 {
-	if(m_uAction&(CWallsMapDoc::ACTION_MEASURE|CWallsMapDoc::ACTION_SELECT))
+	if (m_uAction&(CWallsMapDoc::ACTION_MEASURE | CWallsMapDoc::ACTION_SELECT))
 		return FALSE;
 	int xPos = (int)(short)LOWORD(lParam);
 	int yPos = (int)(short)HIWORD(lParam);
 	ASSERT(!m_wndTooltip);
-	if(m_wndTooltip) DestroyTooltip();
-	if(m_pMapPtNode=GetPtNode(xPos,yPos)) {
-		ShowTooltip(CPoint(xPos,yPos+20));
+	if (m_wndTooltip) DestroyTooltip();
+	if (m_pMapPtNode = GetPtNode(xPos, yPos)) {
+		ShowTooltip(CPoint(xPos, yPos + 20));
 	}
 	return FALSE;
 }
 
-LRESULT CWallsMapView::OnExitSizeMove( WPARAM , LPARAM )
+LRESULT CWallsMapView::OnExitSizeMove(WPARAM, LPARAM)
 {
-	if(m_iFullView==0 || m_iFullView==1) {
+	if (m_iFullView == 0 || m_iFullView == 1) {
 		//CSize szTotal=GetTotalSize();
-		CSize szTotal=m_DIB.GetSize();
+		CSize szTotal = m_DIB.GetSize();
 
 		CRect client;
 		GetClientRect(&client);
-		if(client.right>szTotal.cx || client.bottom>szTotal.cy) {
+		if (client.right > szTotal.cx || client.bottom > szTotal.cy) {
 			//Window size increase --
-			CWallsMapDoc *pDoc=GetDocument();
+			CWallsMapDoc *pDoc = GetDocument();
 			CFltPoint ptGeo;
-			ClientPtToGeoPt(CPoint(client.right,client.bottom),ptGeo);
-			if((ptGeo.x<pDoc->Extent().r && client.right>szTotal.cx) ||
-					(m_fSignY*(ptGeo.y-pDoc->Extent().b)<0.0 && client.bottom>szTotal.cy)) {
+			ClientPtToGeoPt(CPoint(client.right, client.bottom), ptGeo);
+			if ((ptGeo.x<pDoc->Extent().r && client.right>szTotal.cx) ||
+				(m_fSignY*(ptGeo.y - pDoc->Extent().b) < 0.0 && client.bottom > szTotal.cy)) {
 				UpdateOnClientPt(client.CenterPoint());
 			}
 		}
 	}
-    return 0;
+	return 0;
 }
 
 BOOL CWallsMapView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
-    HCURSOR hc;
-	if(IsSelecting()) {
-		hc=(IsSelecting()==2)?theApp.m_hCursorSelectAdd:theApp.m_hCursorSelect;
+	HCURSOR hc;
+	if (IsSelecting()) {
+		hc = (IsSelecting() == 2) ? theApp.m_hCursorSelectAdd : theApp.m_hCursorSelect;
 	}
 	else {
-		UINT flag=GetDocument()->m_uActionFlags;
-		switch(flag) {
-			case CWallsMapDoc::ACTION_ZOOMIN: hc=theApp.m_hCursorZoomIn; break;
-			case CWallsMapDoc::ACTION_ZOOMOUT: hc=theApp.m_hCursorZoomOut; break;
-			case CWallsMapDoc::ACTION_PAN: hc=theApp.m_hCursorHand; break;
-			case CWallsMapDoc::ACTION_MEASURE: hc=theApp.m_hCursorMeasure; break;
+		UINT flag = GetDocument()->m_uActionFlags;
+		switch (flag) {
+		case CWallsMapDoc::ACTION_ZOOMIN: hc = theApp.m_hCursorZoomIn; break;
+		case CWallsMapDoc::ACTION_ZOOMOUT: hc = theApp.m_hCursorZoomOut; break;
+		case CWallsMapDoc::ACTION_PAN: hc = theApp.m_hCursorHand; break;
+		case CWallsMapDoc::ACTION_MEASURE: hc = theApp.m_hCursorMeasure; break;
 			//case CWallsMapDoc::ACTION_SELECT: hc=theApp.m_hCursorSelect; break;
 			//default: hc=theApp.m_hCursorCross; break;
-			default: hc=theApp.m_hCursorArrow; break;
+		default: hc = theApp.m_hCursorArrow; break;
 		}
 	}
 	::SetCursor(hc);
@@ -1457,10 +1457,10 @@ BOOL CWallsMapView::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 
 void CWallsMapView::CenterOnPtPopup(double scale)
 {
-	ASSERT(scale>=0.0);
-	if(scale<=0.0) return;
-	if(m_bSync)	m_pSyncView=this;
-	UpdateOnClientPt(m_ptPopup,scale);
+	ASSERT(scale >= 0.0);
+	if (scale <= 0.0) return;
+	if (m_bSync)	m_pSyncView = this;
+	UpdateOnClientPt(m_ptPopup, scale);
 	//if(m_bSync)	TrackMouse(m_hWnd);
 }
 
@@ -1468,31 +1468,31 @@ void CWallsMapView::CenterOnPtPopup(double scale)
 void CWallsMapView::CenterOnPointDlg(CFltPoint *pfpt)
 {
 	CFltPoint fpt;
-	if(!pfpt) {
+	if (!pfpt) {
 		//called from toolbar
 		CRect client;
 		GetClientRect(&client);
-		ClientPtToGeoPt(client.CenterPoint(),fpt);
+		ClientPtToGeoPt(client.CenterPoint(), fpt);
 	}
-	else fpt=*pfpt;
-	CCenterViewDlg dlg(fpt,this);
-	int id=dlg.DoModal();
-	if(id!=IDOK) return;
-	double f=m_fScale;
-	if(dlg.m_bZoom) {
-		if(IsScaleOK(f*4)) f*=4;
-		else if(IsScaleOK(f*2)) f*=2;
+	else fpt = *pfpt;
+	CCenterViewDlg dlg(fpt, this);
+	int id = dlg.DoModal();
+	if (id != IDOK) return;
+	double f = m_fScale;
+	if (dlg.m_bZoom) {
+		if (IsScaleOK(f * 4)) f *= 4;
+		else if (IsScaleOK(f * 2)) f *= 2;
 	}
 
-	if(dlg.m_bMark) {
-		m_bUseMarkPosition=true;
-		m_fMarkPosition=dlg.m_fpt;
+	if (dlg.m_bMark) {
+		m_bUseMarkPosition = true;
+		m_fMarkPosition = dlg.m_fpt;
 	}
 	else {
-		m_bUseMarkPosition=m_bMarkCenter=false;
+		m_bUseMarkPosition = m_bMarkCenter = false;
 	}
 
-	UpdateDIB(dlg.m_fpt,f);
+	UpdateDIB(dlg.m_fpt, f);
 }
 #endif
 
@@ -1500,15 +1500,15 @@ void CWallsMapView::OnCenterOnPoint()
 {
 #ifdef _USE_CTR
 	CFltPoint fpt;
-	ClientPtToGeoPt(m_ptPopup,fpt);
+	ClientPtToGeoPt(m_ptPopup, fpt);
 	CenterOnPointDlg(&fpt);
 #else
 	CRect client;
 	GetClientRect(&client);
 
-	m_ptBitmapOverlap-=(m_ptPopup-client.CenterPoint());
+	m_ptBitmapOverlap -= (m_ptPopup - client.CenterPoint());
 
-	if(m_bSync) m_pSyncView=this;
+	if (m_bSync) m_pSyncView = this;
 
 	RefreshPannedView();
 #endif
@@ -1516,35 +1516,35 @@ void CWallsMapView::OnCenterOnPoint()
 
 void CWallsMapView::OnUpdateCenterOnPosition(CCmdUI *pCmdUI)
 {
-	pCmdUI->Enable(GetDocument()->IsTransformed()==true);
+	pCmdUI->Enable(GetDocument()->IsTransformed() == true);
 }
 
 void CWallsMapView::OnCenterOnPosition()
 {
 	CFltPoint fpt;
-	if(m_bUseMarkPosition) fpt=m_fMarkPosition;
+	if (m_bUseMarkPosition) fpt = m_fMarkPosition;
 	else {
 		CRect client;
 		GetClientRect(&client);
-		ClientPtToGeoPt(client.CenterPoint(),fpt);
+		ClientPtToGeoPt(client.CenterPoint(), fpt);
 	}
 	CenterOnPointDlg(&fpt);
 }
 
 void CWallsMapView::OnContextZoomSpecify()
 {
-	double zoom=m_fScale/PopupPixelsPerGeoUnit();
-	if(zoom<0.0) {
+	double zoom = m_fScale / PopupPixelsPerGeoUnit();
+	if (zoom < 0.0) {
 		ASSERT(0);
 		return;
 	}
 	CPercentDlg dlg(zoom*100.0);
-	if(dlg.DoModal()==IDOK) {
-		double fScale=(dlg.m_fPercent/100.0)*m_fScale/zoom;
+	if (dlg.DoModal() == IDOK) {
+		double fScale = (dlg.m_fPercent / 100.0)*m_fScale / zoom;
 		//Note: fScale = fZoom * MaxImagePixelsPerGeoUnit() = (screen pixels / geo-units)
 		//Size of document in screen pixels will be fZoom * MaxImagePixelsPerGeoUnit() * (geo_width+geo_height).
 		//Let's require this size to be at least 8 for now --
-		if(IsScaleOK(fScale))
+		if (IsScaleOK(fScale))
 			CenterOnPtPopup(fScale);
 	}
 }
@@ -1565,7 +1565,7 @@ BOOL CWallsMapView::IsScaleOK(double fScale)
 	else m*=512;
 	return fScale<=m && fScale*GetDocument()->ExtentHalfPerim()>=8.0;
 	*/
-	return fScale<=100000000.0 && fScale*GetDocument()->ExtentHalfPerim()>=8.0;
+	return fScale <= 100000000.0 && fScale*GetDocument()->ExtentHalfPerim() >= 8.0;
 }
 #endif
 
@@ -1576,374 +1576,374 @@ void CWallsMapView::OnContextNozoom()
 
 void CWallsMapView::OnUpdateContextNozoom(CCmdUI *pCmdUI)
 {
-	pCmdUI->SetCheck(m_fScale==PopupPixelsPerGeoUnit());
+	pCmdUI->SetCheck(m_fScale == PopupPixelsPerGeoUnit());
 }
 
 void CWallsMapView::OnContextZoom50()
 {
-	CenterOnPtPopup(PopupPixelsPerGeoUnit()/2);
+	CenterOnPtPopup(PopupPixelsPerGeoUnit() / 2);
 }
 
 void CWallsMapView::OnUpdateContextZoom50(CCmdUI *pCmdUI)
 {
-	pCmdUI->SetCheck(m_fScale==PopupPixelsPerGeoUnit()/2);
+	pCmdUI->SetCheck(m_fScale == PopupPixelsPerGeoUnit() / 2);
 }
 
 void CWallsMapView::OnContextZoom25()
 {
-	CenterOnPtPopup(PopupPixelsPerGeoUnit()/4);
+	CenterOnPtPopup(PopupPixelsPerGeoUnit() / 4);
 }
 
 void CWallsMapView::OnUpdateContextZoom25(CCmdUI *pCmdUI)
 {
-	pCmdUI->SetCheck(m_fScale==PopupPixelsPerGeoUnit()/4);
+	pCmdUI->SetCheck(m_fScale == PopupPixelsPerGeoUnit() / 4);
 }
 
 void CWallsMapView::OnContextZoom12()
 {
-	CenterOnPtPopup(PopupPixelsPerGeoUnit()/8);
+	CenterOnPtPopup(PopupPixelsPerGeoUnit() / 8);
 }
 
 void CWallsMapView::OnUpdateContextZoom12(CCmdUI *pCmdUI)
 {
-	pCmdUI->SetCheck(m_fScale==PopupPixelsPerGeoUnit()/8);
+	pCmdUI->SetCheck(m_fScale == PopupPixelsPerGeoUnit() / 8);
 }
 
 void CWallsMapView::OnContextZoom625()
 {
-	CenterOnPtPopup(PopupPixelsPerGeoUnit()/16);
+	CenterOnPtPopup(PopupPixelsPerGeoUnit() / 16);
 }
 
 void CWallsMapView::OnUpdateContextZoom625(CCmdUI *pCmdUI)
 {
-	pCmdUI->SetCheck(m_fScale==PopupPixelsPerGeoUnit()/16);
+	pCmdUI->SetCheck(m_fScale == PopupPixelsPerGeoUnit() / 16);
 }
 
 void CWallsMapView::OnContextZoom3125()
 {
-	CenterOnPtPopup(PopupPixelsPerGeoUnit()/32);
+	CenterOnPtPopup(PopupPixelsPerGeoUnit() / 32);
 }
 
 void CWallsMapView::OnUpdateContextZoom3125(CCmdUI *pCmdUI)
 {
-	pCmdUI->SetCheck(m_fScale==PopupPixelsPerGeoUnit()/32);
+	pCmdUI->SetCheck(m_fScale == PopupPixelsPerGeoUnit() / 32);
 }
 
 void CWallsMapView::OnContextZoomin()
 {
-	if(IsScaleOK(2*m_fScale))
-		CenterOnPtPopup(2*m_fScale);
+	if (IsScaleOK(2 * m_fScale))
+		CenterOnPtPopup(2 * m_fScale);
 }
 
 void CWallsMapView::OnContextZoomout()
 {
-	if(IsScaleOK(m_fScale/2))
-		CenterOnPtPopup(m_fScale/2);
+	if (IsScaleOK(m_fScale / 2))
+		CenterOnPtPopup(m_fScale / 2);
 }
 
 double CWallsMapView::GetPtSyncCursorFromHint(CObject *pHint)
 {
-	const CLayerSet &ls_sync=m_pSyncView->GetDocument()->LayerSet();
-	const CLayerSet &ls=GetDocument()->LayerSet();
-	CFltPoint fpt=*((CSyncHint *)pHint)->fpt;
-	double scale=((CSyncHint *)pHint)->fupx; //Requested (screen pixels / geo-units)
-	if(ls.IsTransformed()) {
+	const CLayerSet &ls_sync = m_pSyncView->GetDocument()->LayerSet();
+	const CLayerSet &ls = GetDocument()->LayerSet();
+	CFltPoint fpt = *((CSyncHint *)pHint)->fpt;
+	double scale = ((CSyncHint *)pHint)->fupx; //Requested (screen pixels / geo-units)
+	if (ls.IsTransformed()) {
 		//If any datum is nonzero (meaning specified), it must be WGS84 (1) or NAD27 (2).
-		ASSERT(ls_sync.m_iNad<3 && ls.m_iNad<3);
+		ASSERT(ls_sync.m_iNad < 3 && ls.m_iNad < 3);
 		//If both are zero, WGS84 is assumed, else if one is zero it's assumed to be same as other --
-		int src_datum=ls_sync.m_iNad?(ls_sync.m_iNad==1?geo_WGS84_datum:geo_NAD27_datum):0;
-		int dst_datum=ls.m_iNad?(ls.m_iNad==1?geo_WGS84_datum:geo_NAD27_datum):src_datum;
-		if(!dst_datum) dst_datum=src_datum=geo_WGS84_datum;
-		else if(!src_datum) src_datum=dst_datum;
+		int src_datum = ls_sync.m_iNad ? (ls_sync.m_iNad == 1 ? geo_WGS84_datum : geo_NAD27_datum) : 0;
+		int dst_datum = ls.m_iNad ? (ls.m_iNad == 1 ? geo_WGS84_datum : geo_NAD27_datum) : src_datum;
+		if (!dst_datum) dst_datum = src_datum = geo_WGS84_datum;
+		else if (!src_datum) src_datum = dst_datum;
 
-		if(ls.IsProjected()) {
+		if (ls.IsProjected()) {
 			//This document is UTM --
-			if(!ls_sync.IsProjected()) {
+			if (!ls_sync.IsProjected()) {
 
 				ASSERT(ls.m_iZone);
 
 				//Convert Lat/Long scale to UTM scale --
 				//Requested scale is currently (screen pixels/degrees), so multiply by (degrees/meters) --
-				scale/=MetersPerDegreeLat(fpt.y);
+				scale /= MetersPerDegreeLat(fpt.y);
 				//Convert Lat/Long to this window's datum if required --
-				if(dst_datum!=src_datum) {
+				if (dst_datum != src_datum) {
 					//Convert from WGS84 to NAD27 if src_datum==geo_WGS84_datum --
-					geo_FromToWGS84(src_datum==geo_WGS84_datum,&fpt.y,&fpt.x,
-						(src_datum==geo_WGS84_datum)?dst_datum:src_datum);
+					geo_FromToWGS84(src_datum == geo_WGS84_datum, &fpt.y, &fpt.x,
+						(src_datum == geo_WGS84_datum) ? dst_datum : src_datum);
 				}
 
 				//Convert Lat/Lon to UTM, while forcing zone to ls.m_iZone --
-				int zone=ls.m_iZone;
-				if(!geo_LatLon2UTM(fpt,&zone,dst_datum))
+				int zone = ls.m_iZone;
+				if (!geo_LatLon2UTM(fpt, &zone, dst_datum))
 					return -1;
 			}
 			else {
-				int src_zone=ls_sync.m_iZone;
-				int dst_zone=ls.m_iZone;
-				ASSERT(src_zone+dst_zone!=0 && abs(src_zone)<=60 && abs(dst_zone)<=60);
-				if(!src_zone) src_zone=dst_zone;
-				else if(!dst_zone) dst_zone=src_zone;
-				if(src_datum!=dst_datum || src_zone!=dst_zone) {
+				int src_zone = ls_sync.m_iZone;
+				int dst_zone = ls.m_iZone;
+				ASSERT(src_zone + dst_zone != 0 && abs(src_zone) <= 60 && abs(dst_zone) <= 60);
+				if (!src_zone) src_zone = dst_zone;
+				else if (!dst_zone) dst_zone = src_zone;
+				if (src_datum != dst_datum || src_zone != dst_zone) {
 					//Switch to Lat/Lon required first --
-					geo_UTM2LatLon(fpt,src_zone,src_datum);
-					if(src_datum!=dst_datum) {
-						geo_FromToWGS84(src_datum==geo_WGS84_datum,&fpt.y,&fpt.x,
-							(src_datum==geo_WGS84_datum)?dst_datum:src_datum);
+					geo_UTM2LatLon(fpt, src_zone, src_datum);
+					if (src_datum != dst_datum) {
+						geo_FromToWGS84(src_datum == geo_WGS84_datum, &fpt.y, &fpt.x,
+							(src_datum == geo_WGS84_datum) ? dst_datum : src_datum);
 					}
 					//Force to dst_zone (since dst_zone!=0) --
-					if(!geo_LatLon2UTM(fpt,&dst_zone,dst_datum))
+					if (!geo_LatLon2UTM(fpt, &dst_zone, dst_datum))
 						return -1;
 				}
 			}
 		}
 		else {
 			//This document is Lat/Long --
-			if(ls_sync.IsProjected()) {
+			if (ls_sync.IsProjected()) {
 				ASSERT(ls_sync.m_iZone);
 				//Convert UTM to Lat/Long --
-				geo_UTM2LatLon(fpt,ls_sync.m_iZone,src_datum);
+				geo_UTM2LatLon(fpt, ls_sync.m_iZone, src_datum);
 				//and switch datums if required --
-				if(src_datum!=dst_datum) {
-					geo_FromToWGS84(src_datum==geo_WGS84_datum,&fpt.y,&fpt.x,
-						(src_datum==geo_WGS84_datum)?dst_datum:src_datum);
+				if (src_datum != dst_datum) {
+					geo_FromToWGS84(src_datum == geo_WGS84_datum, &fpt.y, &fpt.x,
+						(src_datum == geo_WGS84_datum) ? dst_datum : src_datum);
 				}
-			    //Convert UTM scale to Lat/Long scale --
-				scale*=MetersPerDegreeLat(fpt.y);
+				//Convert UTM scale to Lat/Long scale --
+				scale *= MetersPerDegreeLat(fpt.y);
 			}
 			else {
 				//Both documents are Lat/Long --
-				if(src_datum!=dst_datum) {
-					geo_FromToWGS84(src_datum==geo_WGS84_datum,&fpt.y,&fpt.x,
-						(src_datum==geo_WGS84_datum)?dst_datum:src_datum);
+				if (src_datum != dst_datum) {
+					geo_FromToWGS84(src_datum == geo_WGS84_datum, &fpt.y, &fpt.x,
+						(src_datum == geo_WGS84_datum) ? dst_datum : src_datum);
 				}
 			}
 		}
 	}
-	GeoPtToClientPt(fpt,m_ptSyncCursor);
+	GeoPtToClientPt(fpt, m_ptSyncCursor);
 	return scale;
 }
 
-void CWallsMapView::OnUpdate(CView *pView,LPARAM lHint,CObject* pHint)
+void CWallsMapView::OnUpdate(CView *pView, LPARAM lHint, CObject* pHint)
 {
-	switch(lHint) {
+	switch (lHint) {
 
-		case LHINT_CONVERT :
-			{
-				const CConvertHint &cvt=(const CConvertHint &)*pHint;
-				//Convert view's origin and scale in the same way as a point and length in cvt.m_pShp
-				//would be converted to cvt.m_iNad and cvt.m_iZone --
-				CRect client;
-				GetClientRect(&client);
-				CFltPoint ptGeoCenter;
-				ClientPtToGeoPt(client.CenterPoint(),ptGeoCenter);
-				//m_fScale is pixels per geounit (meters or degrees)
-				ASSERT(cvt.m_pShp->IsProjected()==(cvt.m_pShp->Zone()!=0));
-				if(cvt.m_pShp->IsProjected()!=(cvt.m_iZone!=0)) {
-					if(cvt.m_iZone) {
-						//Converting from Lat/Long to UTM (degrees to meters)
-						//m_fScale is pixels/degrees, so divide by meters/degrees
-						m_fScale /= (MetricDistance(ptGeoCenter.y,0,ptGeoCenter.y,1)*1000); //m_fScale = px per meters
-						cvt.m_pShp->ConvertPointsTo(&ptGeoCenter,cvt.m_iNad,cvt.m_iZone,1);
-					}
-					else {
-						//Converting from UTM to Lat/Long (meters to degrees)
-						//m_fScale is pixels/meters, so multiply by meters/degrees --
-						cvt.m_pShp->ConvertPointsTo(&ptGeoCenter,cvt.m_iNad,cvt.m_iZone,1);
-						m_fScale *= (MetricDistance(ptGeoCenter.y,0,ptGeoCenter.y,1)*1000); //m_fScale = px per degrees
-					}
-				}
-				else {
-					cvt.m_pShp->ConvertPointsTo(&ptGeoCenter,cvt.m_iNad,cvt.m_iZone,1);
-				}
-				//Now calculate m_fViewOrigin, which is geo position of top left corner of client area
-				//assuming ptGeoCenter is geo position of client center --
-				m_fViewOrigin.x=ptGeoCenter.x-(client.Width()/2)/m_fScale;
-				m_fViewOrigin.y=ptGeoCenter.y+(client.Height()/2)/m_fScale;
-
-				//Clear the view history!
-				m_hist.Clear();
-			}
-			break;
-
-		case LHINT_REFRESH :
-			if(!m_bTestPoint || m_bTestPointVisible) {
-				RefreshDIB();
-			}
-
-		case LHINT_REPAINT :
-			Invalidate(FALSE);
-			break;
-
-		case LHINT_ENABLEGPS :
-			{
-				bool bEnable=pGPSDlg && pGPSDlg->HavePos();
-				if(bEnable!=m_bTrackingGPS) {
-					m_bTrackingGPS=bEnable;
-					Invalidate(FALSE);
-				}
-			}
-			break;
-
-		case LHINT_GPSTRACKPT :
-			if(m_bTrackingGPS && !m_bTrackRubber && !m_bMeasuring) Invalidate(FALSE);
-			break;
-
-		case LHINT_TESTPOINT :
-			{
-				CFltRect viewExt;
-				GetViewExtent(viewExt);
-				if(viewExt.IsPtInside(*((CSyncHint *)pHint)->fpt)) {
-					m_bTestPointVisible=m_bTestPoint=true;
-				}
-				else m_bTestPointVisible=false;
-			}
-			break;
-
-		case LHINT_FITIMAGE :
-			OnFitImage();
-			break;
-
-		case LHINT_UPDATEDIB :
-			RefreshDIB();
-			Invalidate(FALSE);
-			break;
-
-		case LHINT_PRETILE :
-			((CChildFrame *)GetParent())->m_bResizing=true;
-			if(m_DIB.GetHandle())
-				GetClientCenter(m_fptPopup);
-			break;
-
-		case LHINT_POSTTILE :
-			if(((CChildFrame *)GetParent())->m_bResizing) {
-				((CChildFrame *)GetParent())->m_bResizing=false;
-				if(!m_DIB.GetHandle()) {
-					ASSERT(m_iFullView==-1);
-					FitImage(TRUE);
-				}
-				else {
-					GeoPtToClientPt(m_fptPopup,m_ptPopup);
-					//OnCenterOnPoint();
-					CRect client;
-					GetClientRect(&client);
-
-					m_ptBitmapOverlap-=(m_ptPopup-client.CenterPoint());
-
-					if(m_bSync) m_pSyncView=this;
-
-					RefreshPannedView();
-				}
-				if(m_bSync) {
-					if(m_bSyncCursor) DrawSyncCursor();
-					m_pSyncView=NULL;
-				}
-				/*
-				if(m_bSync && m_pSyncView==this) {
-					if(m_bSyncCursor) DrawSyncCursor();
-					GetMF()->UpdateViews(this,LHINT_SYNCHIDECURSOR);
-					m_pSyncView=NULL;
-				}
-				*/
+	case LHINT_CONVERT:
+	{
+		const CConvertHint &cvt = (const CConvertHint &)*pHint;
+		//Convert view's origin and scale in the same way as a point and length in cvt.m_pShp
+		//would be converted to cvt.m_iNad and cvt.m_iZone --
+		CRect client;
+		GetClientRect(&client);
+		CFltPoint ptGeoCenter;
+		ClientPtToGeoPt(client.CenterPoint(), ptGeoCenter);
+		//m_fScale is pixels per geounit (meters or degrees)
+		ASSERT(cvt.m_pShp->IsProjected() == (cvt.m_pShp->Zone() != 0));
+		if (cvt.m_pShp->IsProjected() != (cvt.m_iZone != 0)) {
+			if (cvt.m_iZone) {
+				//Converting from Lat/Long to UTM (degrees to meters)
+				//m_fScale is pixels/degrees, so divide by meters/degrees
+				m_fScale /= (MetricDistance(ptGeoCenter.y, 0, ptGeoCenter.y, 1) * 1000); //m_fScale = px per meters
+				cvt.m_pShp->ConvertPointsTo(&ptGeoCenter, cvt.m_iNad, cvt.m_iZone, 1);
 			}
 			else {
+				//Converting from UTM to Lat/Long (meters to degrees)
+				//m_fScale is pixels/meters, so multiply by meters/degrees --
+				cvt.m_pShp->ConvertPointsTo(&ptGeoCenter, cvt.m_iNad, cvt.m_iZone, 1);
+				m_fScale *= (MetricDistance(ptGeoCenter.y, 0, ptGeoCenter.y, 1) * 1000); //m_fScale = px per degrees
+			}
+		}
+		else {
+			cvt.m_pShp->ConvertPointsTo(&ptGeoCenter, cvt.m_iNad, cvt.m_iZone, 1);
+		}
+		//Now calculate m_fViewOrigin, which is geo position of top left corner of client area
+		//assuming ptGeoCenter is geo position of client center --
+		m_fViewOrigin.x = ptGeoCenter.x - (client.Width() / 2) / m_fScale;
+		m_fViewOrigin.y = ptGeoCenter.y + (client.Height() / 2) / m_fScale;
+
+		//Clear the view history!
+		m_hist.Clear();
+	}
+	break;
+
+	case LHINT_REFRESH:
+		if (!m_bTestPoint || m_bTestPointVisible) {
+			RefreshDIB();
+		}
+
+	case LHINT_REPAINT:
+		Invalidate(FALSE);
+		break;
+
+	case LHINT_ENABLEGPS:
+	{
+		bool bEnable = pGPSDlg && pGPSDlg->HavePos();
+		if (bEnable != m_bTrackingGPS) {
+			m_bTrackingGPS = bEnable;
+			Invalidate(FALSE);
+		}
+	}
+	break;
+
+	case LHINT_GPSTRACKPT:
+		if (m_bTrackingGPS && !m_bTrackRubber && !m_bMeasuring) Invalidate(FALSE);
+		break;
+
+	case LHINT_TESTPOINT:
+	{
+		CFltRect viewExt;
+		GetViewExtent(viewExt);
+		if (viewExt.IsPtInside(*((CSyncHint *)pHint)->fpt)) {
+			m_bTestPointVisible = m_bTestPoint = true;
+		}
+		else m_bTestPointVisible = false;
+	}
+	break;
+
+	case LHINT_FITIMAGE:
+		OnFitImage();
+		break;
+
+	case LHINT_UPDATEDIB:
+		RefreshDIB();
+		Invalidate(FALSE);
+		break;
+
+	case LHINT_PRETILE:
+		((CChildFrame *)GetParent())->m_bResizing = true;
+		if (m_DIB.GetHandle())
+			GetClientCenter(m_fptPopup);
+		break;
+
+	case LHINT_POSTTILE:
+		if (((CChildFrame *)GetParent())->m_bResizing) {
+			((CChildFrame *)GetParent())->m_bResizing = false;
+			if (!m_DIB.GetHandle()) {
+				ASSERT(m_iFullView == -1);
+				FitImage(TRUE);
+			}
+			else {
+				GeoPtToClientPt(m_fptPopup, m_ptPopup);
+				//OnCenterOnPoint();
+				CRect client;
+				GetClientRect(&client);
+
+				m_ptBitmapOverlap -= (m_ptPopup - client.CenterPoint());
+
+				if (m_bSync) m_pSyncView = this;
+
 				RefreshPannedView();
-				//m_uAction=CWallsMapDoc::ACTION_PANNED;
-				//Invalidate(FALSE);
 			}
-			break;
+			if (m_bSync) {
+				if (m_bSyncCursor) DrawSyncCursor();
+				m_pSyncView = NULL;
+			}
+			/*
+			if(m_bSync && m_pSyncView==this) {
+				if(m_bSyncCursor) DrawSyncCursor();
+				GetMF()->UpdateViews(this,LHINT_SYNCHIDECURSOR);
+				m_pSyncView=NULL;
+			}
+			*/
+		}
+		else {
+			RefreshPannedView();
+			//m_uAction=CWallsMapDoc::ACTION_PANNED;
+			//Invalidate(FALSE);
+		}
+		break;
 
-		case LHINT_UPDATESIZE :
-			PostMessage(WM_EXITSIZEMOVE);
-			break;
+	case LHINT_UPDATESIZE:
+		PostMessage(WM_EXITSIZEMOVE);
+		break;
 
-		case LHINT_SYNCSTART :
-			{
-				ASSERT(pView && pView!=this);
-				CWallsMapDoc *pDoc=GetDocument();
-				if(!pDoc->IsSyncCompatible(((CWallsMapView *)pView)->GetDocument())) break;
+	case LHINT_SYNCSTART:
+	{
+		ASSERT(pView && pView != this);
+		CWallsMapDoc *pDoc = GetDocument();
+		if (!pDoc->IsSyncCompatible(((CWallsMapView *)pView)->GetDocument())) break;
 
-				ASSERT(m_pSyncView && m_pSyncView!=this && m_pSyncView==(CWallsMapView *)pView);
-				//ASSERT(!m_bSync);
+		ASSERT(m_pSyncView && m_pSyncView != this && m_pSyncView == (CWallsMapView *)pView);
+		//ASSERT(!m_bSync);
 
-				//The new controlling view, pView, has just been painted.
-				//We are requesting this view to be repainted with a new center.
-				//When the window is redrawn (in OnDraw) a cursor will be also
-				//be displayed --
+		//The new controlling view, pView, has just been painted.
+		//We are requesting this view to be repainted with a new center.
+		//When the window is redrawn (in OnDraw) a cursor will be also
+		//be displayed --
 
-				//m_fScale is this view's current scale, (screen pixels/ geo_units).
-				//ps->fupx is the requested scale. ps->fpt is the requested
-				//geographic point to center on. We must express that in current client
-				//coordinates --
+		//m_fScale is this view's current scale, (screen pixels/ geo_units).
+		//ps->fupx is the requested scale. ps->fpt is the requested
+		//geographic point to center on. We must express that in current client
+		//coordinates --
 
-				double scale=GetPtSyncCursorFromHint(pHint);
-				if(scale>0) {
-					m_bSync=TRUE;
+		double scale = GetPtSyncCursorFromHint(pHint);
+		if (scale > 0) {
+			m_bSync = TRUE;
 
-					/*if(m_fScale==scale) { //Haven't tested this -- not really worth it:
-						m_ptBitmapOverlap-=(m_ptSyncCursor-GetClientCenter());
-						RefreshPannedView();
-					}
-					else */
-					UpdateOnClientPt(m_ptSyncCursor,scale);
+			/*if(m_fScale==scale) { //Haven't tested this -- not really worth it:
+				m_ptBitmapOverlap-=(m_ptSyncCursor-GetClientCenter());
+				RefreshPannedView();
+			}
+			else */
+			UpdateOnClientPt(m_ptSyncCursor, scale);
+		}
+	}
+	break;
+
+	case LHINT_SYNCSTOP:
+		if (m_bSync) {
+			ASSERT(!m_bSyncCursor || m_pSyncView != this);
+			if (m_bSyncCursor) DrawSyncCursor();
+			m_bSync = FALSE;
+		}
+		break;
+
+	case LHINT_SYNCSHOWCURSOR:
+		if (m_bSync) {
+			if (m_bSyncCursor) DrawSyncCursor();
+			if (m_pSyncView) {
+				ASSERT(m_pSyncView != this && m_pSyncView == (CWallsMapView *)pView);
+				if (GetPtSyncCursorFromHint(pHint) >= 0) {
+					DrawSyncCursor();
 				}
 			}
-			break;
+		}
+		break;
 
-		case LHINT_SYNCSTOP :
-			if(m_bSync) {
-				ASSERT(!m_bSyncCursor || m_pSyncView!=this); 
-				if(m_bSyncCursor) DrawSyncCursor();
-				m_bSync=FALSE;
-			}
-			break;
+	case LHINT_SYNCHIDECURSOR:
+		if (m_bSync && m_bSyncCursor) DrawSyncCursor();
+		break;
 
-		case LHINT_SYNCSHOWCURSOR :
-			if(m_bSync) {
-				if(m_bSyncCursor) DrawSyncCursor();
-				if(m_pSyncView) {
-					ASSERT(m_pSyncView!=this && m_pSyncView==(CWallsMapView *)pView);
-					if(GetPtSyncCursorFromHint(pHint)>=0) {
-						DrawSyncCursor();
-					}
-				}
-			}
-			break;
+	case LHINT_SYNCPAN:
+		if (m_bSync) {
+			m_ptBitmapOverlap += *(CPoint *)(((CSyncHint *)pHint)->fpt);
+			m_uAction = CWallsMapDoc::ACTION_PANNED;
+			Invalidate(FALSE);
+		}
+		break;
 
-		case LHINT_SYNCHIDECURSOR :
-			if(m_bSync && m_bSyncCursor) DrawSyncCursor();
-			break;
-
-		case LHINT_SYNCPAN :
-			if(m_bSync) {
-				m_ptBitmapOverlap+=*(CPoint *)(((CSyncHint *)pHint)->fpt);
-				m_uAction=CWallsMapDoc::ACTION_PANNED;
-				Invalidate(FALSE);
-			}
-			break;
-
-		default	: CView::OnUpdate(pView,lHint,pHint);
+	default: CView::OnUpdate(pView, lHint, pHint);
 	}
 }
 
-void CWallsMapView::UpdateViewsAtPoint(const CPoint &point,LPARAM lHint)
+void CWallsMapView::UpdateViewsAtPoint(const CPoint &point, LPARAM lHint)
 {
 	CFltPoint fpt;
-	ClientPtToGeoPt(point,fpt);
-	CSyncHint hint(&fpt,0);
-	GetMF()->UpdateViews(this,lHint,&hint);
+	ClientPtToGeoPt(point, fpt);
+	CSyncHint hint(&fpt, 0);
+	GetMF()->UpdateViews(this, lHint, &hint);
 }
 
 void CWallsMapView::OnSize(UINT nType, int cx, int cy)
 {
 	CView::OnSize(nType, cx, cy);
 
-	if(m_pScaleWnd && cy!=m_pScaleWnd->m_bottom)
+	if (m_pScaleWnd && cy != m_pScaleWnd->m_bottom)
 		SetScalePos();
 
-	if(m_iFullView>=0 && !((CChildFrame *)GetParent())->m_bResizing) {
+	if (m_iFullView >= 0 && !((CChildFrame *)GetParent())->m_bResizing) {
 
 		// TODO: Add your message handler code here
-		if(nType==SIZE_RESTORED && m_iFullView<2) {
+		if (nType == SIZE_RESTORED && m_iFullView < 2) {
 			PostMessage(WM_EXITSIZEMOVE);
 		}
 	}
@@ -1951,17 +1951,17 @@ void CWallsMapView::OnSize(UINT nType, int cx, int cy)
 
 void CWallsMapView::OnUpdateSyncOnpoint(CCmdUI *pCmdUI)
 {
-	pCmdUI->Enable(m_bSync || !CMainFrame::m_bSync && GetMF()->NumSyncCompatible(GetDocument())>0);
+	pCmdUI->Enable(m_bSync || !CMainFrame::m_bSync && GetMF()->NumSyncCompatible(GetDocument()) > 0);
 	pCmdUI->SetCheck(m_bSync);
 }
 
 void CWallsMapView::OnSyncOnpoint()
 {
-	if(m_bSync) SyncStop();
+	if (m_bSync) SyncStop();
 	else {
 		ASSERT(!CMainFrame::m_bSync && !m_pSyncView);
-		CMainFrame::m_bSync=m_bSync=TRUE;
-		m_pSyncView=this;
+		CMainFrame::m_bSync = m_bSync = TRUE;
+		m_pSyncView = this;
 		UpdateOnClientPt(m_ptPopup);
 		//TrackMouse(m_hWnd);
 	}
@@ -1969,10 +1969,10 @@ void CWallsMapView::OnSyncOnpoint()
 
 void CWallsMapView::FitImage(BOOL bVisible)
 {
- 	//bVisible==2 : zoom to specific layer
+	//bVisible==2 : zoom to specific layer
 
-	if((GetDocument()->m_uEnableFlags&NTL_FLG_RESTOREVIEW) && !m_bFirstViewDisplayed) {
-		if(UpdateRestoredView()) 
+	if ((GetDocument()->m_uEnableFlags&NTL_FLG_RESTOREVIEW) && !m_bFirstViewDisplayed) {
+		if (UpdateRestoredView())
 			return;
 	}
 	CRect client;
@@ -1980,34 +1980,34 @@ void CWallsMapView::FitImage(BOOL bVisible)
 	double fScale;  //<window width>/<geographical extent or image pixels>
 	CFltPoint geoSize;
 	CFltRect geoExt;
-	CLayerSet &lset=GetDocument()->LayerSet();
-	
-	lset.GetExtent(&geoExt,bVisible);
+	CLayerSet &lset = GetDocument()->LayerSet();
+
+	lset.GetExtent(&geoExt, bVisible);
 
 _refit:
 
-	geoSize=geoExt.Size();
+	geoSize = geoExt.Size();
 
-	if(geoSize.x*client.bottom>=geoSize.y*client.right) {
+	if (geoSize.x*client.bottom >= geoSize.y*client.right) {
 		//Fit width
-		fScale=client.right/geoSize.x;
+		fScale = client.right / geoSize.x;
 	}
 	else {
-		fScale=client.bottom/geoSize.y;
+		fScale = client.bottom / geoSize.y;
 	}
 
 	//if(bVisible!=2 && fScale>MaxImagePixelsPerGeoUnit())
-	if(!bVisible && fScale>MaxImagePixelsPerGeoUnit())
-		fScale=MaxImagePixelsPerGeoUnit();
+	if (!bVisible && fScale > MaxImagePixelsPerGeoUnit())
+		fScale = MaxImagePixelsPerGeoUnit();
 
-	if(bVisible==1) {
+	if (bVisible == 1) {
 		CFltRect fRect(geoExt);
-		lset.GetScaledExtent(geoExt,fScale);
-		if(memcmp(&fRect,&geoExt,sizeof(CFltRect)))
+		lset.GetScaledExtent(geoExt, fScale);
+		if (memcmp(&fRect, &geoExt, sizeof(CFltRect)))
 			goto _refit;
 	}
 
-	UpdateDIB(geoExt.Center(),fScale);
+	UpdateDIB(geoExt.Center(), fScale);
 }
 
 void CWallsMapView::OnFitImage()
@@ -2022,7 +2022,7 @@ void CWallsMapView::OnFitExtent()
 
 void CWallsMapView::OnUpdateFitImage(CCmdUI *pCmdUI)
 {
-	pCmdUI->Enable(GetDocument()->FirstVisibleIndex()>=0);
+	pCmdUI->Enable(GetDocument()->FirstVisibleIndex() >= 0);
 }
 
 void CWallsMapView::DrawSyncCursor()
@@ -2031,35 +2031,35 @@ void CWallsMapView::DrawSyncCursor()
 	GetClientRect(&client);
 	CClientDC dc(this);
 	dc.SetROP2(R2_NOT);
-    dc.SetBkMode(TRANSPARENT);
-    dc.MoveTo(0,m_ptSyncCursor.y);
-	dc.LineTo(client.right,m_ptSyncCursor.y);
-    dc.MoveTo(m_ptSyncCursor.x,0);
-	dc.LineTo(m_ptSyncCursor.x,client.bottom);
-	m_bSyncCursor=!m_bSyncCursor;
+	dc.SetBkMode(TRANSPARENT);
+	dc.MoveTo(0, m_ptSyncCursor.y);
+	dc.LineTo(client.right, m_ptSyncCursor.y);
+	dc.MoveTo(m_ptSyncCursor.x, 0);
+	dc.LineTo(m_ptSyncCursor.x, client.bottom);
+	m_bSyncCursor = !m_bSyncCursor;
 }
 
 BOOL CWallsMapView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
 	// TODO: Add your message handler code here and/or call default
-	if(zDelta) {
-		if(m_bSync && m_pSyncView && m_pSyncView!=this) {
+	if (zDelta) {
+		if (m_bSync && m_pSyncView && m_pSyncView != this) {
 			m_pSyncView->GetParentFrame()->ActivateFrame();
-			return m_pSyncView->OnMouseWheel(nFlags,zDelta,pt);
+			return m_pSyncView->OnMouseWheel(nFlags, zDelta, pt);
 		}
 		CRect client;
 		GetClientRect(&client);
 
-		if(CMainFrame::IsPref(PRF_ZOOM_FROMCURSOR)) {
+		if (CMainFrame::IsPref(PRF_ZOOM_FROMCURSOR)) {
 			ScreenToClient(&pt);
-			if(!client.PtInRect(pt)) return FALSE;
-			m_ptPopup=pt;
+			if (!client.PtInRect(pt)) return FALSE;
+			m_ptPopup = pt;
 		}
 		else {
-			m_ptPopup=client.CenterPoint();
+			m_ptPopup = client.CenterPoint();
 		}
 
-		if((zDelta<0 && !CMainFrame::IsPref(PRF_ZOOM_FORWARDOUT)) || (zDelta>0 && CMainFrame::IsPref(PRF_ZOOM_FORWARDOUT)))
+		if ((zDelta < 0 && !CMainFrame::IsPref(PRF_ZOOM_FORWARDOUT)) || (zDelta > 0 && CMainFrame::IsPref(PRF_ZOOM_FORWARDOUT)))
 			OnContextZoomout();
 		else
 			OnContextZoomin();
@@ -2071,53 +2071,53 @@ BOOL CWallsMapView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 
 void CWallsMapView::OnDestroy()
 {
-	if(m_bSync) SyncStop();
-	if(m_pScaleWnd) {
+	if (m_bSync) SyncStop();
+	if (m_pScaleWnd) {
 		m_pScaleWnd->DestroyWindow();
 		delete m_pScaleWnd;
-		m_pScaleWnd=NULL;
+		m_pScaleWnd = NULL;
 	}
 }
 
 void CWallsMapView::OnOptionsShowoutlines()
 {
-	CWallsMapDoc *pDoc=GetDocument();
+	CWallsMapDoc *pDoc = GetDocument();
 	ASSERT(pDoc->IsTransformed());
-	pDoc->m_bDrawOutlines=(pDoc->m_bDrawOutlines==1)?0:1;
+	pDoc->m_bDrawOutlines = (pDoc->m_bDrawOutlines == 1) ? 0 : 1;
 	pDoc->RepaintViews();
 }
 
 void CWallsMapView::OnUpdateOptionsShowoutlines(CCmdUI *pCmdUI)
 {
-	BOOL bEnable=GetDocument()->IsTransformed();
+	BOOL bEnable = GetDocument()->IsTransformed();
 	pCmdUI->Enable(bEnable);
-	pCmdUI->SetCheck(bEnable && GetDocument()->m_bDrawOutlines==1);
+	pCmdUI->SetCheck(bEnable && GetDocument()->m_bDrawOutlines == 1);
 }
 
 
 void CWallsMapView::OnOptionsShowselected()
 {
-	CWallsMapDoc *pDoc=GetDocument();
+	CWallsMapDoc *pDoc = GetDocument();
 	ASSERT(pDoc->IsTransformed());
-	pDoc->m_bDrawOutlines=(pDoc->m_bDrawOutlines==2)?0:2;
+	pDoc->m_bDrawOutlines = (pDoc->m_bDrawOutlines == 2) ? 0 : 2;
 	pDoc->RepaintViews();
 }
 
 void CWallsMapView::OnUpdateOptionsShowselected(CCmdUI *pCmdUI)
 {
-	BOOL bEnable=GetDocument()->IsTransformed();
+	BOOL bEnable = GetDocument()->IsTransformed();
 	pCmdUI->Enable(bEnable);
-	pCmdUI->SetCheck(bEnable && GetDocument()->m_bDrawOutlines==2);
+	pCmdUI->SetCheck(bEnable && GetDocument()->m_bDrawOutlines == 2);
 }
 
 void CWallsMapView::OnActivateView(BOOL bActivate, CView* pActiveView, CView* pDeactiveView)
 {
 	CView::OnActivateView(bActivate, pActiveView, pDeactiveView);
 
-	m_pViewDrag=this;
-	if (bActivate && hPropHook && GetDocument()!=pLayerSheet->GetDoc())
+	m_pViewDrag = this;
+	if (bActivate && hPropHook && GetDocument() != pLayerSheet->GetDoc())
 	{
-		pLayerSheet->SendMessage(WM_PROPVIEWDOC,(WPARAM)GetDocument(),(LPARAM)LHINT_NEWDOC);
+		pLayerSheet->SendMessage(WM_PROPVIEWDOC, (WPARAM)GetDocument(), (LPARAM)LHINT_NEWDOC);
 	}
 }
 
@@ -2126,177 +2126,177 @@ void CWallsMapView::OnRButtonDown(UINT nFlags, CPoint point)
 	CView::OnRButtonDown(nFlags, point);
 }
 
-static void DelMenuItem(CMenu *popup,int pos,int cnt)
+static void DelMenuItem(CMenu *popup, int pos, int cnt)
 {
-	while(cnt--) popup->DeleteMenu(pos,MF_BYPOSITION);
+	while (cnt--) popup->DeleteMenu(pos, MF_BYPOSITION);
 }
 
 void CWallsMapView::OnRButtonUp(UINT nFlags, CPoint point)
 {
-	if(m_bSync) {
-		if(m_bSyncCursor) DrawSyncCursor();
-		GetMF()->UpdateViews(this,LHINT_SYNCHIDECURSOR);
+	if (m_bSync) {
+		if (m_bSyncCursor) DrawSyncCursor();
+		GetMF()->UpdateViews(this, LHINT_SYNCHIDECURSOR);
 		//We'll restore cursors in OnRButtonUp() --
-		m_pSyncView=this;
+		m_pSyncView = this;
 	}
 
 	DestroyTooltip();
 
 	//NOTE: point inits are client pixels --
 	CMenu menu;
-	HMENU hPopup=NULL;
+	HMENU hPopup = NULL;
 
-	if(GetDocument()->IsTransformed()) {
+	if (GetDocument()->IsTransformed()) {
 		CRect scRect;
 		m_pScaleWnd->GetWindowRect(&scRect);
 		ScreenToClient(&scRect);
-		if(scRect.PtInRect(point)) {
-			if(menu.LoadMenu(IDR_SCALE_CONTEXT)) {
+		if (scRect.PtInRect(point)) {
+			if (menu.LoadMenu(IDR_SCALE_CONTEXT)) {
 				CMenu* pPopup = menu.GetSubMenu(0);
 				ASSERT(pPopup != NULL);
-				pPopup->CheckMenuItem(ID_SCALEUNITS_FEET,GetDocument()->IsFeetUnits()?(MF_CHECKED|MF_BYCOMMAND):(MF_UNCHECKED|MF_BYCOMMAND));
-				pPopup->CheckMenuItem(ID_SCALEUNITS_METERS,GetDocument()->IsFeetUnits()?(MF_UNCHECKED|MF_BYCOMMAND):(MF_CHECKED|MF_BYCOMMAND));
+				pPopup->CheckMenuItem(ID_SCALEUNITS_FEET, GetDocument()->IsFeetUnits() ? (MF_CHECKED | MF_BYCOMMAND) : (MF_UNCHECKED | MF_BYCOMMAND));
+				pPopup->CheckMenuItem(ID_SCALEUNITS_METERS, GetDocument()->IsFeetUnits() ? (MF_UNCHECKED | MF_BYCOMMAND) : (MF_CHECKED | MF_BYCOMMAND));
 				ClientToScreen(&point);
-				VERIFY(pPopup->TrackPopupMenu(TPM_LEFTALIGN|TPM_RIGHTBUTTON,point.x,point.y,GetParentFrame()));
-				m_bTracking=false;
-				if(m_bSync)	m_pSyncView=this;
+				VERIFY(pPopup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, GetParentFrame()));
+				m_bTracking = false;
+				if (m_bSync)	m_pSyncView = this;
 			}
 			return;
 		}
 	}
 
-	m_pMapPtNode=GetPtNode(point.x,point.y);
+	m_pMapPtNode = GetPtNode(point.x, point.y);
 
-	if(menu.LoadMenu(IDR_VIEW_CONTEXT))
+	if (menu.LoadMenu(IDR_VIEW_CONTEXT))
 	{
 		CMenu* pPopup = menu.GetSubMenu(0);
 		ASSERT(pPopup != NULL);
 
 		CFltPoint ptGeo;
-		ClientPtToGeoPt(point,ptGeo);
-		bool bTrans=GetDocument()->IsTransformed();
-		bool bValid=bTrans && GetDocument()->IsValidGeoPt(ptGeo);
+		ClientPtToGeoPt(point, ptGeo);
+		bool bTrans = GetDocument()->IsTransformed();
+		bool bValid = bTrans && GetDocument()->IsValidGeoPt(ptGeo);
 
-		bHaveGpsPos=pGPSDlg && pGPSDlg->HavePos();
+		bHaveGpsPos = pGPSDlg && pGPSDlg->HavePos();
 
-		if(!bHaveGpsPos) {
-			DelMenuItem(pPopup,12,5);
+		if (!bHaveGpsPos) {
+			DelMenuItem(pPopup, 12, 5);
 		}
-		else if(m_bTrackingGPS && !vptGPS.empty()) {
+		else if (m_bTrackingGPS && !vptGPS.empty()) {
 			//save current GPS coordinates --
-			fptGpsPos=vptGPS.back();
+			fptGpsPos = vptGPS.back();
 			GetDocument()->GetConvertedGPSPoint(fptGpsPos);
 		}
-		else bHaveGpsPos=false;
+		else bHaveGpsPos = false;
 
-		if(!bValid || !GetDocument()->IsGeoRefSupported()) {
+		if (!bValid || !GetDocument()->IsGeoRefSupported()) {
 			//delete divider, GE, and web mapping section
-			DelMenuItem(pPopup,9,3);
+			DelMenuItem(pPopup, 9, 3);
 		}
 		else {
 			CString s;
-			if(GetMF()->GetWebMapName(s)) {
-				pPopup->ModifyMenu(ID_LAUNCH_WEBMAP,MF_BYCOMMAND|MF_STRING,ID_LAUNCH_WEBMAP,s);
+			if (GetMF()->GetWebMapName(s)) {
+				pPopup->ModifyMenu(ID_LAUNCH_WEBMAP, MF_BYCOMMAND | MF_STRING, ID_LAUNCH_WEBMAP, s);
 			}
-			if(!GE_IsInstalled()) {
-				pPopup->DeleteMenu(ID_LAUNCH_GE,MF_BYCOMMAND);
+			if (!GE_IsInstalled()) {
+				pPopup->DeleteMenu(ID_LAUNCH_GE, MF_BYCOMMAND);
 			}
 		}
 
-		if(ImagePixelsPerGeoUnit(ptGeo)<=0.0) {
-			pPopup->DeleteMenu(2,MF_BYPOSITION); //zoom to level...
-			pPopup->DeleteMenu(ID_CONTEXT_NOZOOM,MF_BYCOMMAND); //zoom 1:1
-			pPopup->DeleteMenu(ID_IMAGE_OPACITY,MF_BYCOMMAND);
+		if (ImagePixelsPerGeoUnit(ptGeo) <= 0.0) {
+			pPopup->DeleteMenu(2, MF_BYPOSITION); //zoom to level...
+			pPopup->DeleteMenu(ID_CONTEXT_NOZOOM, MF_BYCOMMAND); //zoom 1:1
+			pPopup->DeleteMenu(ID_IMAGE_OPACITY, MF_BYCOMMAND);
 		}
-		else if(!bValid) {
-			pPopup->DeleteMenu(ID_IMAGE_OPACITY,MF_BYCOMMAND);
+		else if (!bValid) {
+			pPopup->DeleteMenu(ID_IMAGE_OPACITY, MF_BYCOMMAND);
 		}
 
 		//else pPopup->DeleteMenu(ID_OPTIONS_BKCOLOR,MF_BYCOMMAND);
 
-		int npos=0;
+		int npos = 0;
 
-		if(bValid && m_pMapPtNode) {
+		if (bValid && m_pMapPtNode) {
 			char text[SHP_TOOLTIP_SIZ];
-			GetTooltip(m_pMapPtNode,text);
+			GetTooltip(m_pMapPtNode, text);
 			CString msg;
-			msg.Format("Select points near %s",text[0]?text:"cursor");
-			pPopup->InsertMenu(0,MF_BYPOSITION,MF_SEPARATOR);
-			pPopup->InsertMenu(0,MF_BYPOSITION,ID_EDIT_SHAPE,(LPCSTR)msg); //will relain the first item
-			npos=1;
+			msg.Format("Select points near %s", text[0] ? text : "cursor");
+			pPopup->InsertMenu(0, MF_BYPOSITION, MF_SEPARATOR);
+			pPopup->InsertMenu(0, MF_BYPOSITION, ID_EDIT_SHAPE, (LPCSTR)msg); //will relain the first item
+			npos = 1;
 		}
 
-		int iTyp=(app_pShowDlg && app_pShowDlg->m_pDoc==GetDocument() &&
-				app_pShowDlg->SelectedLayer() && app_pShowDlg->SelectedLayer()->IsShpEditable());
+		int iTyp = (app_pShowDlg && app_pShowDlg->m_pDoc == GetDocument() &&
+			app_pShowDlg->SelectedLayer() && app_pShowDlg->SelectedLayer()->IsShpEditable());
 
-		if(bValid && (iTyp && app_pShowDlg->IsAddingRec() || GetDocument()->GetAppendableLayers(NULL))) {
+		if (bValid && (iTyp && app_pShowDlg->IsAddingRec() || GetDocument()->GetAppendableLayers(NULL))) {
 			CString s;
 
-			if(iTyp) { //appendable layer or item is selected --
-				iTyp=app_pShowDlg->GetRelocateStr(s);
+			if (iTyp) { //appendable layer or item is selected --
+				iTyp = app_pShowDlg->GetRelocateStr(s);
 				//iTyp=1(add pt to root),2(add pt similar to sel),3(relocate sel),or 4(relocate new point)
-				if(!npos)
-					pPopup->InsertMenu(0,MF_BYPOSITION,MF_SEPARATOR);
-				pPopup->InsertMenu(npos++,MF_BYPOSITION,(iTyp>2)?ID_RELOCATE_SHAPE:ID_APPENDLAYER_N,s);
-				if(iTyp==3)
-					pPopup->InsertMenu(npos++,MF_BYPOSITION,ID_APPENDLAYER_N,"Add similar point");
+				if (!npos)
+					pPopup->InsertMenu(0, MF_BYPOSITION, MF_SEPARATOR);
+				pPopup->InsertMenu(npos++, MF_BYPOSITION, (iTyp > 2) ? ID_RELOCATE_SHAPE : ID_APPENDLAYER_N, s);
+				if (iTyp == 3)
+					pPopup->InsertMenu(npos++, MF_BYPOSITION, ID_APPENDLAYER_N, "Add similar point");
 			}
 
-			if(!iTyp || iTyp!=4 &&
-					!(iTyp==1 && CLayerSet::vAppendLayers.size()==1)/* == !already prompted */) {
-				if(!npos)
-					pPopup->InsertMenu(0,MF_BYPOSITION,MF_SEPARATOR);
-				if(CLayerSet::vAppendLayers.size()==1) {
-					s.Format("Add %s point to %s",bHaveGpsPos?"GPS":"new",CLayerSet::vAppendLayers[0]->Title());
-					pPopup->InsertMenu(npos++,MF_BYPOSITION,ID_APPENDLAYER_0,s);
+			if (!iTyp || iTyp != 4 &&
+				!(iTyp == 1 && CLayerSet::vAppendLayers.size() == 1)/* == !already prompted */) {
+				if (!npos)
+					pPopup->InsertMenu(0, MF_BYPOSITION, MF_SEPARATOR);
+				if (CLayerSet::vAppendLayers.size() == 1) {
+					s.Format("Add %s point to %s", bHaveGpsPos ? "GPS" : "new", CLayerSet::vAppendLayers[0]->Title());
+					pPopup->InsertMenu(npos++, MF_BYPOSITION, ID_APPENDLAYER_0, s);
 				}
 				else {
-					hPopup=CreatePopupMenu();
-					if(hPopup) {
-						CShpLayer *pLayer=(iTyp==1)?app_pShowDlg->SelectedLayer():NULL;
-						UINT id=ID_APPENDLAYER_0;
-						for(VEC_TREELAYER::const_iterator p=CLayerSet::vAppendLayers.begin();p!=CLayerSet::vAppendLayers.end();p++,id++) {
-							if(*p!=pLayer)
-								VERIFY(AppendMenu(hPopup,MF_STRING,id,(LPCTSTR)(*p)->Title()));
+					hPopup = CreatePopupMenu();
+					if (hPopup) {
+						CShpLayer *pLayer = (iTyp == 1) ? app_pShowDlg->SelectedLayer() : NULL;
+						UINT id = ID_APPENDLAYER_0;
+						for (VEC_TREELAYER::const_iterator p = CLayerSet::vAppendLayers.begin(); p != CLayerSet::vAppendLayers.end(); p++, id++) {
+							if (*p != pLayer)
+								VERIFY(AppendMenu(hPopup, MF_STRING, id, (LPCTSTR)(*p)->Title()));
 						}
-						s.Format("Add %s point to layer...",bHaveGpsPos?"GPS":"new");
-						pPopup->InsertMenu(npos++,MF_BYPOSITION|MF_POPUP,(UINT_PTR)hPopup,s);
+						s.Format("Add %s point to layer...", bHaveGpsPos ? "GPS" : "new");
+						pPopup->InsertMenu(npos++, MF_BYPOSITION | MF_POPUP, (UINT_PTR)hPopup, s);
 					}
 				}
 			}
 		}
 
-		if(!bValid) {
-			pPopup->DeleteMenu(ID_CTR_ONPOINT,MF_BYCOMMAND);
-			pPopup->DeleteMenu(ID_SYNC_ONPOINT,MF_BYCOMMAND);
+		if (!bValid) {
+			pPopup->DeleteMenu(ID_CTR_ONPOINT, MF_BYCOMMAND);
+			pPopup->DeleteMenu(ID_SYNC_ONPOINT, MF_BYCOMMAND);
 		}
 
-		if(!GetDocument()->ShpLayersVisible()) {
-			pPopup->DeleteMenu(ID_HIDEMARKERS,MF_BYCOMMAND);
-			pPopup->DeleteMenu(ID_HIDELABELS,MF_BYCOMMAND);
-			pPopup->DeleteMenu(ID_TOOL_SELECT,MF_BYCOMMAND);
+		if (!GetDocument()->ShpLayersVisible()) {
+			pPopup->DeleteMenu(ID_HIDEMARKERS, MF_BYCOMMAND);
+			pPopup->DeleteMenu(ID_HIDELABELS, MF_BYCOMMAND);
+			pPopup->DeleteMenu(ID_TOOL_SELECT, MF_BYCOMMAND);
 		}
 		else {
-			if(!GetDocument()->HasShpPtLayers()) {
-				pPopup->DeleteMenu(ID_TOOL_SELECT,MF_BYCOMMAND);
+			if (!GetDocument()->HasShpPtLayers()) {
+				pPopup->DeleteMenu(ID_TOOL_SELECT, MF_BYCOMMAND);
 			}
-			if(GetDocument()->MarkersHidden()) {
-				pPopup->ModifyMenu(ID_HIDEMARKERS,MF_BYCOMMAND,ID_SHOW_MARKERS,"Show markers");
+			if (GetDocument()->MarkersHidden()) {
+				pPopup->ModifyMenu(ID_HIDEMARKERS, MF_BYCOMMAND, ID_SHOW_MARKERS, "Show markers");
 			}
-			if(GetDocument()->LabelsHidden()) {
-				pPopup->ModifyMenu(ID_HIDELABELS,MF_BYCOMMAND,ID_SHOW_LABELS,"Show labels");
+			if (GetDocument()->LabelsHidden()) {
+				pPopup->ModifyMenu(ID_HIDELABELS, MF_BYCOMMAND, ID_SHOW_LABELS, "Show labels");
 			}
 		}
-		m_ptPopup=point;
+		m_ptPopup = point;
 		ClientToScreen(&point);
 
-		VERIFY(pPopup->TrackPopupMenu(TPM_LEFTALIGN|TPM_RIGHTBUTTON,point.x,point.y,GetParentFrame()));
-		m_bTracking=false;
+		VERIFY(pPopup->TrackPopupMenu(TPM_LEFTALIGN | TPM_RIGHTBUTTON, point.x, point.y, GetParentFrame()));
+		m_bTracking = false;
 		//if(m_bSync)	TrackMouse(m_hWnd);
-		if(m_bSync)	m_pSyncView=this;
+		if (m_bSync)	m_pSyncView = this;
 	}
 
-	if(hPopup) DestroyMenu(hPopup);
+	if (hPopup) DestroyMenu(hPopup);
 
 	//CView::OnRButtonUp(nFlags, point);
 }
@@ -2345,23 +2345,23 @@ void CWallsMapView::ShowTooltip(CPoint point)
 
 	// CREATE A TOOLTIP WINDOW
 	m_wndTooltip = CreateWindowEx(WS_EX_TOPMOST,
-		TOOLTIPS_CLASS, NULL, TTS_NOPREFIX | TTS_ALWAYSTIP,		
+		TOOLTIPS_CLASS, NULL, TTS_NOPREFIX | TTS_ALWAYSTIP,
 		CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT,
 		NULL, NULL, NULL, NULL);
 
 	ASSERT(m_wndTooltip);
-	if(!m_wndTooltip) return;
+	if (!m_wndTooltip) return;
 	// INITIALIZE MEMBERS OF THE TOOLINFO STRUCTURE
-	GetTooltip(m_pMapPtNode,text);
-	memset(&m_ToolInfo,0,sizeof(TOOLINFO));
+	GetTooltip(m_pMapPtNode, text);
+	memset(&m_ToolInfo, 0, sizeof(TOOLINFO));
 	m_ToolInfo.cbSize = sizeof(TOOLINFO)
 		//***HACK TO ALLOW TOOLTIP DISPLAY WHEN _WIN32_WINNT>=0x501 !!!! Seems necessary only here. Hopefully this is harmless.
-		-sizeof(LPVOID);
+		- sizeof(LPVOID);
 	m_ToolInfo.uFlags = TTF_TRACK; // | TTF_ABSOLUTE doesn't help with 0x501;
 	//m_ToolInfo.hwnd = NULL;
 	//m_ToolInfo.hinst = NULL;
 	//m_ToolInfo.uId = uid;
-	m_ToolInfo.lpszText = text;		
+	m_ToolInfo.lpszText = text;
 	// ToolTip control will cover the whole window
 	//m_ToolInfo.rect.left = 0;
 	//m_ToolInfo.rect.top = 0;
@@ -2370,39 +2370,39 @@ void CWallsMapView::ShowTooltip(CPoint point)
 
 #if 0
 	//part pf TOOLINFO structure --
-	#if (_WIN32_IE >= 0x0300)
-		LPARAM lParam;
-	#endif
-	#if (_WIN32_WINNT >= 0x0501)
-		void *lpReserved;
-	#endif
+#if (_WIN32_IE >= 0x0300)
+	LPARAM lParam;
+#endif
+#if (_WIN32_WINNT >= 0x0501)
+	void *lpReserved;
+#endif
 #endif
 
 	// SEND AN ADDTOOL MESSAGE TO THE TOOLTIP CONTROL WINDOW
-	VERIFY(::SendMessage(m_wndTooltip, TTM_ADDTOOL, 0, (LPARAM) (LPTOOLINFO) &m_ToolInfo));
+	VERIFY(::SendMessage(m_wndTooltip, TTM_ADDTOOL, 0, (LPARAM)(LPTOOLINFO)&m_ToolInfo));
 	VERIFY(TrackMouse(m_hWnd));
-	m_bTracking=true;
+	m_bTracking = true;
 	ClientToScreen(&point);
 
-	::SendMessage(m_wndTooltip, TTM_TRACKPOSITION, 0, (LPARAM)(DWORD) MAKELONG(point.x, point.y));
+	::SendMessage(m_wndTooltip, TTM_TRACKPOSITION, 0, (LPARAM)(DWORD)MAKELONG(point.x, point.y));
 
-	VERIFY(::SendMessage(m_wndTooltip, TTM_TRACKACTIVATE, TRUE, (LPARAM)(LPTOOLINFO) &m_ToolInfo));
+	VERIFY(::SendMessage(m_wndTooltip, TTM_TRACKACTIVATE, TRUE, (LPARAM)(LPTOOLINFO)&m_ToolInfo));
 }
 
 void CWallsMapView::SetTooltipText()
-{	
-	if(m_wndTooltip)
+{
+	if (m_wndTooltip)
 	{
 		char text[SHP_TOOLTIP_SIZ];
-		GetTooltip(m_pMapPtNode,text);
-		m_ToolInfo.lpszText = text;	
-		::SendMessage(m_wndTooltip, TTM_SETTOOLINFO, 0, (LPARAM)(LPTOOLINFO) &m_ToolInfo);   	
+		GetTooltip(m_pMapPtNode, text);
+		m_ToolInfo.lpszText = text;
+		::SendMessage(m_wndTooltip, TTM_SETTOOLINFO, 0, (LPARAM)(LPTOOLINFO)&m_ToolInfo);
 	}
 }
 
 void CWallsMapView::DestroyTooltip()
 {
-	if(m_wndTooltip) {
+	if (m_wndTooltip) {
 		::DestroyWindow(m_wndTooltip);
 		m_wndTooltip = NULL;
 		m_pMapPtNode = NULL;
@@ -2411,13 +2411,13 @@ void CWallsMapView::DestroyTooltip()
 
 void CWallsMapView::OnGoBackward()
 {
-	HIST_REC &rec=m_hist.GetPrev();
-	m_bNoHist=TRUE;
-	if(m_bSync)	m_pSyncView=this;
-	UpdateDIB(rec.geoCtr,rec.scale);
+	HIST_REC &rec = m_hist.GetPrev();
+	m_bNoHist = TRUE;
+	if (m_bSync)	m_pSyncView = this;
+	UpdateDIB(rec.geoCtr, rec.scale);
 	m_hist.dec_pos(m_hist.pos_current);
 	//if(m_bSync)	TrackMouse(m_hWnd);
-	m_bNoHist=FALSE;
+	m_bNoHist = FALSE;
 }
 
 void CWallsMapView::OnUpdateGoBackward(CCmdUI *pCmdUI)
@@ -2427,14 +2427,14 @@ void CWallsMapView::OnUpdateGoBackward(CCmdUI *pCmdUI)
 
 void CWallsMapView::OnGoForward()
 {
-	int end=m_hist.pos_end;
-	HIST_REC &rec=m_hist.GetNext();
-	m_bNoHist=TRUE;
-	if(m_bSync)	m_pSyncView=this;
-	UpdateDIB(rec.geoCtr,rec.scale);
+	int end = m_hist.pos_end;
+	HIST_REC &rec = m_hist.GetNext();
+	m_bNoHist = TRUE;
+	if (m_bSync)	m_pSyncView = this;
+	UpdateDIB(rec.geoCtr, rec.scale);
 	m_hist.inc_pos(m_hist.pos_current);
 	//if(m_bSync)	TrackMouse(m_hWnd);
-	m_bNoHist=FALSE;
+	m_bNoHist = FALSE;
 }
 
 void CWallsMapView::OnUpdateGoForward(CCmdUI *pCmdUI)
@@ -2453,15 +2453,15 @@ void CWallsMapView::OnUpdateToolMeasure(CCmdUI *pCmdUI)
 
 void CWallsMapView::OnOptionsBkcolor()
 {
-	CWallsMapDoc *pDoc=GetDocument();
-	CBackClrDlg dlg(pDoc->GetTitle(),pDoc->m_clrBack);
-	if(dlg.DoModal()==IDOK && pDoc->m_clrBack!=dlg.m_cr) {
+	CWallsMapDoc *pDoc = GetDocument();
+	CBackClrDlg dlg(pDoc->GetTitle(), pDoc->m_clrBack);
+	if (dlg.DoModal() == IDOK && pDoc->m_clrBack != dlg.m_cr) {
 		::DeleteObject(pDoc->m_hbrBack);
-		pDoc->m_clrBack=dlg.m_cr;
-		if(dlg.m_cr==RGB(0,0,0) || dlg.m_cr==RGB(255,255,255))
-			pDoc->m_hbrBack=(HBRUSH)::GetStockObject(dlg.m_cr?WHITE_BRUSH:BLACK_BRUSH);
+		pDoc->m_clrBack = dlg.m_cr;
+		if (dlg.m_cr == RGB(0, 0, 0) || dlg.m_cr == RGB(255, 255, 255))
+			pDoc->m_hbrBack = (HBRUSH)::GetStockObject(dlg.m_cr ? WHITE_BRUSH : BLACK_BRUSH);
 		else
-			pDoc->m_hbrBack=::CreateSolidBrush(dlg.m_cr);
+			pDoc->m_hbrBack = ::CreateSolidBrush(dlg.m_cr);
 		pDoc->RefreshViews();
 		pDoc->SetChanged();
 	}
@@ -2469,159 +2469,159 @@ void CWallsMapView::OnOptionsBkcolor()
 
 void CWallsMapView::OnAverageColors()
 {
-	GetDocument()->m_uEnableFlags^=NTL_FLG_AVERAGE;
+	GetDocument()->m_uEnableFlags ^= NTL_FLG_AVERAGE;
 	GetDocument()->SetChanged();
-	GetMF()->UpdateViews(NULL,LHINT_UPDATEDIB);
+	GetMF()->UpdateViews(NULL, LHINT_UPDATEDIB);
 }
 
 void CWallsMapView::OnUpdateAverageColors(CCmdUI *pCmdUI)
 {
 	pCmdUI->Enable(TRUE);
-	pCmdUI->SetCheck((GetDocument()->m_uEnableFlags&NTL_FLG_AVERAGE)!=0);
+	pCmdUI->SetCheck((GetDocument()->m_uEnableFlags&NTL_FLG_AVERAGE) != 0);
 }
 
 void CWallsMapView::OnSaveHistory()
 {
-	GetDocument()->m_uEnableFlags^=NTL_FLG_SAVEHISTORY;
+	GetDocument()->m_uEnableFlags ^= NTL_FLG_SAVEHISTORY;
 	GetDocument()->SetChanged();
 }
 
 void CWallsMapView::OnUpdateSaveHistory(CCmdUI *pCmdUI)
 {
-	BOOL bNTL=GetDocument()->m_bExtensionNTL!=0;
+	BOOL bNTL = GetDocument()->m_bExtensionNTL != 0;
 	pCmdUI->Enable(bNTL);
-	pCmdUI->SetCheck(bNTL && (GetDocument()->m_uEnableFlags&NTL_FLG_SAVEHISTORY)!=0);
+	pCmdUI->SetCheck(bNTL && (GetDocument()->m_uEnableFlags&NTL_FLG_SAVEHISTORY) != 0);
 }
 
 void CWallsMapView::OnSaveLayers()
 {
-	GetDocument()->m_uEnableFlags^=NTL_FLG_SAVELAYERS;
+	GetDocument()->m_uEnableFlags ^= NTL_FLG_SAVELAYERS;
 	GetDocument()->SetChanged();
 }
 
 void CWallsMapView::OnUpdateSaveLayers(CCmdUI *pCmdUI)
 {
-	BOOL bNTL=GetDocument()->m_bExtensionNTL!=0;
+	BOOL bNTL = GetDocument()->m_bExtensionNTL != 0;
 	pCmdUI->Enable(bNTL);
-	pCmdUI->SetCheck(bNTL && (GetDocument()->m_uEnableFlags&NTL_FLG_SAVELAYERS)!=0);
+	pCmdUI->SetCheck(bNTL && (GetDocument()->m_uEnableFlags&NTL_FLG_SAVELAYERS) != 0);
 }
 
 void CWallsMapView::OnRestoreView()
 {
-	GetDocument()->m_uEnableFlags^=NTL_FLG_RESTOREVIEW;
-	if(GetDocument()->m_uEnableFlags&NTL_FLG_RESTOREVIEW) {
-		CRestorePosition *pRP=GetDocument()->GetRestorePosition();
-		if(pRP) {
+	GetDocument()->m_uEnableFlags ^= NTL_FLG_RESTOREVIEW;
+	if (GetDocument()->m_uEnableFlags&NTL_FLG_RESTOREVIEW) {
+		CRestorePosition *pRP = GetDocument()->GetRestorePosition();
+		if (pRP) {
 			CRect crView;
 			GetClientRect(&crView);
 			//oldrange = pRP->height/pRP->scale = crView.Height()/newScale
-			ClientPtToGeoPt(crView.CenterPoint(),pRP->ptGeo);
-			pRP->geoHeight=crView.Height()/m_fScale;
-			pRP->uStatus=2;
-			m_bFirstViewDisplayed=true;
+			ClientPtToGeoPt(crView.CenterPoint(), pRP->ptGeo);
+			pRP->geoHeight = crView.Height() / m_fScale;
+			pRP->uStatus = 2;
+			m_bFirstViewDisplayed = true;
 		}
 	}
 	else {
 		GetDocument()->DeleteRestorePosition();
-		m_bFirstViewDisplayed=false;
+		m_bFirstViewDisplayed = false;
 	}
 	GetDocument()->SetChanged();
 }
 
 void CWallsMapView::OnUpdateRestoreView(CCmdUI *pCmdUI)
 {
-	BOOL bNTL=GetDocument()->m_bExtensionNTL!=0;
+	BOOL bNTL = GetDocument()->m_bExtensionNTL != 0;
 	pCmdUI->Enable(bNTL);
-	pCmdUI->SetCheck(bNTL && (GetDocument()->m_uEnableFlags&NTL_FLG_RESTOREVIEW)!=0);
+	pCmdUI->SetCheck(bNTL && (GetDocument()->m_uEnableFlags&NTL_FLG_RESTOREVIEW) != 0);
 }
 
-void CWallsMapView::EditShape(int x,int cx,int y,int cy)
+void CWallsMapView::EditShape(int x, int cx, int y, int cy)
 {
-	if(!CheckShowDlg()) return;
+	if (!CheckShowDlg()) return;
 	//if(app_pShowDlg && app_pShowDlg->CancelSelChange()) return;
-	CWallsMapDoc *pDoc=GetDocument();
+	CWallsMapDoc *pDoc = GetDocument();
 
-	bool bMerging=IsSelecting()==2 && app_pShowDlg && app_pShowDlg->m_pDoc==pDoc &&
-		app_pShowDlg->NumSelected()>0;
+	bool bMerging = IsSelecting() == 2 && app_pShowDlg && app_pShowDlg->m_pDoc == pDoc &&
+		app_pShowDlg->NumSelected() > 0;
 
 	VEC_PTNODE vec_pn;
-	VEC_SHPREC &vec_shprec=CLayerSet::vec_shprec_srch;
+	VEC_SHPREC &vec_shprec = CLayerSet::vec_shprec_srch;
 	ASSERT(!vec_shprec.size());
 
-	int nPts=m_ptNode.GetVecPtNode(vec_pn,x-m_ptBitmapOverlap.x,cx,y-m_ptBitmapOverlap.y,cy,bMerging);
+	int nPts = m_ptNode.GetVecPtNode(vec_pn, x - m_ptBitmapOverlap.x, cx, y - m_ptBitmapOverlap.y, cy, bMerging);
 
 	//Build new vector of CShpLayer pointers and record numbers for this document --
 
-	if(nPts) {
-		if(bMerging)
-			nPts+=app_pShowDlg->NumSelected();
+	if (nPts) {
+		if (bMerging)
+			nPts += app_pShowDlg->NumSelected();
 
-		if(pDoc->SelectionLimited(nPts)) {
+		if (pDoc->SelectionLimited(nPts)) {
 			return;
 		}
 		pDoc->InitLayerIndices();
 	}
-	else if(bMerging) return;
+	else if (bMerging) return;
 
-	if(bMerging) {
+	if (bMerging) {
 		vec_shprec.reserve(nPts);
 		pDoc->StoreSelectedRecs();
 	}
 	else {
 		ASSERT(!vec_shprec.size());
 		vec_shprec.reserve(nPts);
-		if(nPts>1)
+		if (nPts > 1)
 			CShpLayer::Sort_Vec_ptNode(vec_pn);
 	}
 
 	//Now add the new selected points --
-	for(VEC_PTNODE::iterator it=vec_pn.begin();it!=vec_pn.end();it++) {
+	for (VEC_PTNODE::iterator it = vec_pn.begin(); it != vec_pn.end(); it++) {
 		//ASSERT(!(*it)->pLayer->IsRecSelected((*it)->rec)); no longer true
-		vec_shprec.push_back(SHPREC((*it)->pLayer,(*it)->rec));
+		vec_shprec.push_back(SHPREC((*it)->pLayer, (*it)->rec));
 	}
 
-	if(bMerging && vec_shprec.size()>1) {
+	if (bMerging && vec_shprec.size() > 1) {
 		CShpLayer::Sort_Vec_ShpRec(vec_shprec);
 	}
 
-	ASSERT(nPts==vec_shprec.size());
+	ASSERT(nPts == vec_shprec.size());
 
 	pDoc->ReplaceVecShprec();
 	//also resets selected record flags
-	if(!app_pShowDlg)
-		VERIFY(app_pShowDlg==new CShowShapeDlg(pDoc));
+	if (!app_pShowDlg)
+		VERIFY(app_pShowDlg == new CShowShapeDlg(pDoc));
 	else app_pShowDlg->ReInit(pDoc);
 }
 
 void CWallsMapView::OnEditShape()
 {
 	ASSERT(m_pMapPtNode && !m_wndTooltip);
-	EditShape(m_ptPopup.x,VNODE_NEAR_LIMIT_SQRT,m_ptPopup.y,VNODE_NEAR_LIMIT_SQRT);
+	EditShape(m_ptPopup.x, VNODE_NEAR_LIMIT_SQRT, m_ptPopup.y, VNODE_NEAR_LIMIT_SQRT);
 }
 
 void CWallsMapView::OnRelocateShape()
 {
 	ASSERT(app_pShowDlg);
 	CFltPoint fpt;
-	ClientPtToGeoPt(m_ptPopup,fpt);
+	ClientPtToGeoPt(m_ptPopup, fpt);
 	app_pShowDlg->Relocate(fpt);
 }
 
 void CWallsMapView::OnFindlabel()
 {
-	if(!CheckShowDlg()) return;
+	if (!CheckShowDlg()) return;
 
 	//if(app_pShowDlg && app_pShowDlg->CancelSelChange()) return;
 
-	CWallsMapDoc *pDoc=GetDocument();
+	CWallsMapDoc *pDoc = GetDocument();
 
 	ASSERT(pDoc->HasSearchableLayers());
 
-	CAdvSearchDlg dlg(pDoc,AfxGetMainWnd());
+	CAdvSearchDlg dlg(pDoc, AfxGetMainWnd());
 
-	if(IDOK==dlg.DoModal()) {
-		if(!app_pShowDlg) {
-			VERIFY(app_pShowDlg==new CShowShapeDlg(pDoc));
+	if (IDOK == dlg.DoModal()) {
+		if (!app_pShowDlg) {
+			VERIFY(app_pShowDlg == new CShowShapeDlg(pDoc));
 		}
 		else {
 			app_pShowDlg->ReInit(pDoc);
@@ -2646,15 +2646,15 @@ void CWallsMapView::OnUpdateAddLayer(CCmdUI *pCmdUI)
 
 void CWallsMapView::OnSelectEdited()
 {
-	if(!CheckShowDlg()) return;
+	if (!CheckShowDlg()) return;
 
 	//if(app_pShowDlg && app_pShowDlg->CancelSelChange()) return;
 
 	CSelEditedDlg dlg(this);
-	if(dlg.DoModal()==IDCANCEL) return;
+	if (dlg.DoModal() == IDCANCEL) return;
 
-	if(!app_pShowDlg)
-		VERIFY(app_pShowDlg==new CShowShapeDlg(GetDocument()));
+	if (!app_pShowDlg)
+		VERIFY(app_pShowDlg == new CShowShapeDlg(GetDocument()));
 	else app_pShowDlg->ReInit(GetDocument());
 }
 
@@ -2665,60 +2665,60 @@ void CWallsMapView::OnUpdateSelectEdited(CCmdUI *pCmdUI)
 
 void CWallsMapView::OnAddShape(UINT id)
 {
-	if(!CheckShowDlg()) return; //calls app_pShowDlg->CancelSelChange()
+	if (!CheckShowDlg()) return; //calls app_pShowDlg->CancelSelChange()
 
-	ASSERT(app_pShowDlg || id<ID_APPENDLAYER_N);
+	ASSERT(app_pShowDlg || id < ID_APPENDLAYER_N);
 
-	CShpLayer *pLayer=(id<ID_APPENDLAYER_N)?(CShpLayer *)CLayerSet::vAppendLayers[id-ID_APPENDLAYER_0]:app_pShowDlg->SelectedLayer();
+	CShpLayer *pLayer = (id < ID_APPENDLAYER_N) ? (CShpLayer *)CLayerSet::vAppendLayers[id - ID_APPENDLAYER_0] : app_pShowDlg->SelectedLayer();
 	ASSERT(pLayer);
 
-	CWallsMapDoc *pDoc=GetDocument();
+	CWallsMapDoc *pDoc = GetDocument();
 	CFltPoint fpt;
 
-	if(bHaveGpsPos && id<ID_APPENDLAYER_N) {
-		fpt=fptGpsPos;
+	if (bHaveGpsPos && id < ID_APPENDLAYER_N) {
+		fpt = fptGpsPos;
 	}
 	else {
-		ClientPtToGeoPt(m_ptPopup,fpt);
+		ClientPtToGeoPt(m_ptPopup, fpt);
 	}
 
-	if(pLayer->m_iZoneOrg) {
-		int zone=pDoc->LayerSet().m_iZone;
-		int nad=pDoc->LayerSet().m_iNad;
-		if(zone) {
+	if (pLayer->m_iZoneOrg) {
+		int zone = pDoc->LayerSet().m_iZone;
+		int nad = pDoc->LayerSet().m_iNad;
+		if (zone) {
 			CFltPoint fgeo(fpt);
-			if(!GetConvertedPoint(fgeo,nad,0,nad,zone)) {
+			if (!GetConvertedPoint(fgeo, nad, 0, nad, zone)) {
 				AfxMessageBox("Point is outside the map's valid range.");
 				return;
 			}
-			zone=GetZone(fgeo);
+			zone = GetZone(fgeo);
 		}
-		else zone=GetZone(fpt);
-		if(abs(abs(zone)-abs(pLayer->m_iZoneOrg))>1) {
+		else zone = GetZone(fpt);
+		if (abs(abs(zone) - abs(pLayer->m_iZoneOrg)) > 1) {
 			pLayer->OutOfZoneMsg(zone);
 			return;
 		}
 	}
 
-	if(!(pLayer)->SaveAllowed(2)) return;
-	
-	if(id<ID_APPENDLAYER_N) {
+	if (!(pLayer)->SaveAllowed(2)) return;
+
+	if (id < ID_APPENDLAYER_N) {
 		//we've selected from the alternate submenu --
-		if(!app_pShowDlg)
-			VERIFY(app_pShowDlg==new CShowShapeDlg(pDoc));
+		if (!app_pShowDlg)
+			VERIFY(app_pShowDlg == new CShowShapeDlg(pDoc));
 		else {
-			if(pDoc==app_pShowDlg->m_pDoc) {
+			if (pDoc == app_pShowDlg->m_pDoc) {
 				pDoc->ClearVecShprec(); //definitely necessary
 			}
 			app_pShowDlg->ReInit(pDoc);
 		}
-		app_pShowDlg->AddShape(fpt,pLayer);
+		app_pShowDlg->AddShape(fpt, pLayer);
 	}
 	else {
 		//Add similar point --
-		ASSERT(app_pShowDlg->m_pDoc==pDoc);
+		ASSERT(app_pShowDlg->m_pDoc == pDoc);
 		ASSERT(pLayer->IsAppendable());
-		app_pShowDlg->AddShape(fpt,0);
+		app_pShowDlg->AddShape(fpt, 0);
 	}
 }
 
@@ -2766,7 +2766,7 @@ void CWallsMapView::OnDatumToggle()
 
 void CWallsMapView::OnUpdateScaleUnitsFeet(CCmdUI *pCmdUI)
 {
-	if(GetDocument()->IsTransformed()) {
+	if (GetDocument()->IsTransformed()) {
 		pCmdUI->Enable(1);
 		pCmdUI->SetCheck(GetDocument()->IsFeetUnits());
 	}
@@ -2775,7 +2775,7 @@ void CWallsMapView::OnUpdateScaleUnitsFeet(CCmdUI *pCmdUI)
 
 void CWallsMapView::OnUpdateScaleUnitsMeters(CCmdUI *pCmdUI)
 {
-	if(GetDocument()->IsTransformed()) {
+	if (GetDocument()->IsTransformed()) {
 		pCmdUI->Enable(1);
 		pCmdUI->SetCheck(!GetDocument()->IsFeetUnits());
 	}
@@ -2784,7 +2784,7 @@ void CWallsMapView::OnUpdateScaleUnitsMeters(CCmdUI *pCmdUI)
 
 void CWallsMapView::OnUpdateElevUnitsFeet(CCmdUI *pCmdUI)
 {
-	if(GetDocument()->HasNteLayers()) {
+	if (GetDocument()->HasNteLayers()) {
 		pCmdUI->Enable(1);
 		pCmdUI->SetCheck(GetDocument()->IsElevUnitsFeet());
 	}
@@ -2793,7 +2793,7 @@ void CWallsMapView::OnUpdateElevUnitsFeet(CCmdUI *pCmdUI)
 
 void CWallsMapView::OnUpdateElevUnitsMeters(CCmdUI *pCmdUI)
 {
-	if(GetDocument()->HasNteLayers()) {
+	if (GetDocument()->HasNteLayers()) {
 		pCmdUI->Enable(1);
 		pCmdUI->SetCheck(!GetDocument()->IsElevUnitsFeet());
 	}
@@ -2802,20 +2802,20 @@ void CWallsMapView::OnUpdateElevUnitsMeters(CCmdUI *pCmdUI)
 
 void CWallsMapView::OnUpdateDatumToggle1(CCmdUI *pCmdUI)
 {
-	if(GetDocument()->IsGeoRefSupported()) {
+	if (GetDocument()->IsGeoRefSupported()) {
 		pCmdUI->Enable(1);
-		int iNad=GetDocument()->LayerSet().m_iNad;
-		pCmdUI->SetCheck(GetDocument()->IsDatumToggled()?(iNad==2):(iNad==1));
+		int iNad = GetDocument()->LayerSet().m_iNad;
+		pCmdUI->SetCheck(GetDocument()->IsDatumToggled() ? (iNad == 2) : (iNad == 1));
 	}
 	else pCmdUI->Enable(0);
 }
 
 void CWallsMapView::OnUpdateDatumToggle2(CCmdUI *pCmdUI)
 {
-	if(GetDocument()->IsGeoRefSupported()) {
+	if (GetDocument()->IsGeoRefSupported()) {
 		pCmdUI->Enable(1);
-		int iNad=GetDocument()->LayerSet().m_iNad;
-		pCmdUI->SetCheck(GetDocument()->IsDatumToggled()?(iNad==1):(iNad==2));
+		int iNad = GetDocument()->LayerSet().m_iNad;
+		pCmdUI->SetCheck(GetDocument()->IsDatumToggled() ? (iNad == 1) : (iNad == 2));
 	}
 	else pCmdUI->Enable(0);
 }
@@ -2824,21 +2824,21 @@ void CWallsMapView::OnLaunchWebMap()
 {
 	ASSERT(GetDocument()->IsGeoRefSupported() && GetDocument()->IsTransformed());
 	CFltPoint fpt;
-	ClientPtToGeoPt(m_ptPopup,fpt);
+	ClientPtToGeoPt(m_ptPopup, fpt);
 	GetDocument()->LayerSet().PrepareLaunchPt(fpt);
-	GetMF()->Launch_WebMap(fpt,"WallsMap_Pt");
+	GetMF()->Launch_WebMap(fpt, "WallsMap_Pt");
 }
 
 void CWallsMapView::OnOptionsWebMap()
 {
 	CString s(CMainFrame::m_csWebMapFormat);
-	int idx=CMainFrame::m_idxWebMapFormat;
-	BOOL bRet=GetMF()->GetWebMapFormatURL(TRUE);
-	if(bRet) {
+	int idx = CMainFrame::m_idxWebMapFormat;
+	BOOL bRet = GetMF()->GetWebMapFormatURL(TRUE);
+	if (bRet) {
 		OnLaunchWebMap();
-		if(bRet>1) {
-			CMainFrame::m_csWebMapFormat=s;
-			CMainFrame::m_idxWebMapFormat=idx;
+		if (bRet > 1) {
+			CMainFrame::m_csWebMapFormat = s;
+			CMainFrame::m_idxWebMapFormat = idx;
 		}
 	}
 }
@@ -2847,45 +2847,45 @@ void CWallsMapView::OnLaunchGE()
 {
 	ASSERT(GetDocument()->IsGeoRefSupported() && GetDocument()->IsTransformed());
 	CString kmlPath;
-	if(!GetKmlPath(kmlPath,"WallsMap_Pt")) return;
+	if (!GetKmlPath(kmlPath, "WallsMap_Pt")) return;
 	CFltPoint fpt;
-	ClientPtToGeoPt(m_ptPopup,fpt);
+	ClientPtToGeoPt(m_ptPopup, fpt);
 	GetDocument()->LayerSet().PrepareLaunchPt(fpt);
-	GE_POINT pt("WallsMap_Pt",0,fpt.y,fpt.x);
-	GE_Launch(NULL,kmlPath,&pt,1,1); //fly direct
+	GE_POINT pt("WallsMap_Pt", 0, fpt.y, fpt.x);
+	GE_Launch(NULL, kmlPath, &pt, 1, 1); //fly direct
 }
 
-void CWallsMapView::CenterOnGeoPoint(const CFltPoint &fpt,double fZoom)
+void CWallsMapView::CenterOnGeoPoint(const CFltPoint &fpt, double fZoom)
 {
-	fZoom*=m_fScale;
-	double m=MetersPerPixel(fZoom); //fZoom too large == m too small
-	if(m<MIN_METERSPERPIXEL) {
-		fZoom*=m/MIN_METERSPERPIXEL;
+	fZoom *= m_fScale;
+	double m = MetersPerPixel(fZoom); //fZoom too large == m too small
+	if (m < MIN_METERSPERPIXEL) {
+		fZoom *= m / MIN_METERSPERPIXEL;
 	}
-	UpdateDIB(fpt,fZoom);
+	UpdateDIB(fpt, fZoom);
 }
 
 void CWallsMapView::FitShpExtent(CFltRect &geoExt)
 {
 	CRect client;
 	GetClientRect(&client);
-	ASSERT(client.right>0 && client.bottom>0);
+	ASSERT(client.right > 0 && client.bottom > 0);
 
-	CFltPoint geoSize=geoExt.Size();
+	CFltPoint geoSize = geoExt.Size();
 
-	if(geoSize.x==0 && geoSize.y==0) {
-		CenterOnGeoPoint(geoExt.Center(),4.0);
+	if (geoSize.x == 0 && geoSize.y == 0) {
+		CenterOnGeoPoint(geoExt.Center(), 4.0);
 	}
 	else {
 		double fScale;
-		if(geoSize.x*client.bottom>geoSize.y*client.right) {
+		if (geoSize.x*client.bottom > geoSize.y*client.right) {
 			//Fit width
-			fScale=client.right/geoSize.x;
+			fScale = client.right / geoSize.x;
 		}
 		else {
-			fScale=client.bottom/geoSize.y;
+			fScale = client.bottom / geoSize.y;
 		}
-		CenterOnGeoPoint(geoExt.Center(),(fScale*0.85)/m_fScale);
+		CenterOnGeoPoint(geoExt.Center(), (fScale*0.85) / m_fScale);
 	}
 }
 
@@ -2902,103 +2902,103 @@ LRESULT CWallsMapView::OnCommandHelp(WPARAM wNone, LPARAM lParam)
 void CWallsMapView::OnImageOpacity()
 {
 	CFltPoint ptGeo;
-	ClientPtToGeoPt(m_ptPopup,ptGeo);
-	CImageLayer *pImg=GetTopImageLayer(ptGeo);
+	ClientPtToGeoPt(m_ptPopup, ptGeo);
+	CImageLayer *pImg = GetTopImageLayer(ptGeo);
 	ASSERT(pImg);
-	if(!pImg) return;
-	CWallsMapDoc *pDoc=GetDocument();
-	CDlgSymbolsImg *pDlg=CImageLayer::m_pDlgSymbolsImg;
+	if (!pImg) return;
+	CWallsMapDoc *pDoc = GetDocument();
+	CDlgSymbolsImg *pDlg = CImageLayer::m_pDlgSymbolsImg;
 
 	//ignore layer window status -- code below fails if positioned at folder
 #if 0
-	ASSERT(!hPropHook || pDoc==pLayerSheet->GetDoc());
-	if(pDoc->SelectedLayerPtr()!=(CMapLayer *)pImg) {
-		int id=pDoc->LayerSet().LayerPos(pImg);
-		if(!id--) {
+	ASSERT(!hPropHook || pDoc == pLayerSheet->GetDoc());
+	if (pDoc->SelectedLayerPtr() != (CMapLayer *)pImg) {
+		int id = pDoc->LayerSet().LayerPos(pImg);
+		if (!id--) {
 			ASSERT(0);
 			return;
 		}
-		if(hPropHook && pDoc==pLayerSheet->GetDoc()) {
+		if (hPropHook && pDoc == pLayerSheet->GetDoc()) {
 			pLayerSheet->SetActivePage(0);
 			pLayerSheet->SelectLayer(id);
 		}
 		else pDoc->SetSelectedLayerPos(id);
 	}
-	if(hPropHook) {
-		pLayerSheet->PostMessage(WM_PROPVIEWDOC,(WPARAM)0,(LPARAM)LHINT_SYMBOLOGY);
+	if (hPropHook) {
+		pLayerSheet->PostMessage(WM_PROPVIEWDOC, (WPARAM)0, (LPARAM)LHINT_SYMBOLOGY);
 	}
 	else {
 #endif
-	if(pDlg) {
-		if(pDlg->m_pLayer!=pImg) pDlg->NewLayer(pImg);
-		pDlg->BringWindowToTop();
+		if (pDlg) {
+			if (pDlg->m_pLayer != pImg) pDlg->NewLayer(pImg);
+			pDlg->BringWindowToTop();
+		}
+		else pDlg = new CDlgSymbolsImg(pImg);
 	}
-	else pDlg=new CDlgSymbolsImg(pImg);
-}
 
-LRESULT CWallsMapView::OnTabletQuerySystemGestureStatus(WPARAM,LPARAM)
-{
-   return 0;
-}
+	LRESULT CWallsMapView::OnTabletQuerySystemGestureStatus(WPARAM, LPARAM)
+	{
+		return 0;
+	}
 
-LRESULT CWallsMapView::OnPropViewDoc(WPARAM wParam,LPARAM lParam)
-{
-	OnCtrOnGPSPoint();
-	return TRUE;
-}
+	LRESULT CWallsMapView::OnPropViewDoc(WPARAM wParam, LPARAM lParam)
+	{
+		OnCtrOnGPSPoint();
+		return TRUE;
+	}
 
-void CWallsMapView::OnGpsTracking()
-{
-	// toggle tracking ON/OFF
-	ASSERT(pGPSDlg);
-	m_bTrackingGPS=!m_bTrackingGPS;
-	Invalidate(FALSE); //UpdateAllViews(NULL,LHINT_REPAINT);
-}
+	void CWallsMapView::OnGpsTracking()
+	{
+		// toggle tracking ON/OFF
+		ASSERT(pGPSDlg);
+		m_bTrackingGPS = !m_bTrackingGPS;
+		Invalidate(FALSE); //UpdateAllViews(NULL,LHINT_REPAINT);
+	}
 
-void CWallsMapView::OnUpdateGpsTracking(CCmdUI *pCmdUI)
-{
-	BOOL bEnable=GetDocument()->IsGeoRefSupported() && pGPSDlg && pGPSDlg->HavePos();
-	pCmdUI->SetCheck(bEnable && m_bTrackingGPS);
-	pCmdUI->Enable(bEnable);
-}
+	void CWallsMapView::OnUpdateGpsTracking(CCmdUI *pCmdUI)
+	{
+		BOOL bEnable = GetDocument()->IsGeoRefSupported() && pGPSDlg && pGPSDlg->HavePos();
+		pCmdUI->SetCheck(bEnable && m_bTrackingGPS);
+		pCmdUI->Enable(bEnable);
+	}
 
-void CWallsMapView::OnUpdateCtrOnGPSPoint(CCmdUI *pCmdUI)
-{
-	pCmdUI->Enable(pGPSDlg && pGPSDlg->HavePos() && m_bTrackingGPS);
-}
+	void CWallsMapView::OnUpdateCtrOnGPSPoint(CCmdUI *pCmdUI)
+	{
+		pCmdUI->Enable(pGPSDlg && pGPSDlg->HavePos() && m_bTrackingGPS);
+	}
 
-void CWallsMapView::OnCtrOnGPSPoint()
-{
-   if(m_bTrackingGPS && !vptGPS.empty()) {
-	   CFltPoint fp(vptGPS.back());
-	   GetDocument()->GetConvertedGPSPoint(fp);
-	   CenterOnGeoPoint(fp,1.0);
-   }
-}
+	void CWallsMapView::OnCtrOnGPSPoint()
+	{
+		if (m_bTrackingGPS && !vptGPS.empty()) {
+			CFltPoint fp(vptGPS.back());
+			GetDocument()->GetConvertedGPSPoint(fp);
+			CenterOnGeoPoint(fp, 1.0);
+		}
+	}
 
 
-void CWallsMapView::OnGpsDisplaytrack()
-{
-	m_bDisplayTrack=!m_bDisplayTrack;
-	Invalidate(FALSE);
-}
+	void CWallsMapView::OnGpsDisplaytrack()
+	{
+		m_bDisplayTrack = !m_bDisplayTrack;
+		Invalidate(FALSE);
+	}
 
 
-void CWallsMapView::OnUpdateGpsDisplaytrack(CCmdUI *pCmdUI)
-{
-	pCmdUI->SetCheck(m_bDisplayTrack==true);
-	pCmdUI->Enable(pGPSDlg && m_bTrackingGPS && pGPSDlg->IsRecording());
-}
+	void CWallsMapView::OnUpdateGpsDisplaytrack(CCmdUI *pCmdUI)
+	{
+		pCmdUI->SetCheck(m_bDisplayTrack == true);
+		pCmdUI->Enable(pGPSDlg && m_bTrackingGPS && pGPSDlg->IsRecording());
+	}
 
 
-void CWallsMapView::OnGpsEnablecentering()
-{
-	m_bAutoCenterGPS=!m_bAutoCenterGPS;
-}
+	void CWallsMapView::OnGpsEnablecentering()
+	{
+		m_bAutoCenterGPS = !m_bAutoCenterGPS;
+	}
 
 
-void CWallsMapView::OnUpdateGpsEnablecentering(CCmdUI *pCmdUI)
-{
-	pCmdUI->SetCheck(m_bAutoCenterGPS==true);
-	pCmdUI->Enable(pGPSDlg && m_bTrackingGPS);
-}
+	void CWallsMapView::OnUpdateGpsEnablecentering(CCmdUI *pCmdUI)
+	{
+		pCmdUI->SetCheck(m_bAutoCenterGPS == true);
+		pCmdUI->Enable(pGPSDlg && m_bTrackingGPS);
+	}

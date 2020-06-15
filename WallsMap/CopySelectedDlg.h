@@ -9,14 +9,14 @@ class CCopySelectedDlg : public CDialog
 	DECLARE_DYNAMIC(CCopySelectedDlg)
 
 public:
-	CCopySelectedDlg(CShpLayer *pLayer,LPBYTE pSrcFld, BOOL bConfirm, UINT nSelCount, CWnd* pParent = NULL);   // standard constructor
+	CCopySelectedDlg(CShpLayer *pLayer, LPBYTE pSrcFld, BOOL bConfirm, UINT nSelCount, CWnd* pParent = NULL);   // standard constructor
 
 	virtual ~CCopySelectedDlg();
 	virtual BOOL OnInitDialog();
 	virtual void OnCancel();
 
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_COPYSELECTED };
 
 	BOOL ShowCopyProgress(UINT nCopied);

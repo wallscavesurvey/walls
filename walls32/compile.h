@@ -53,12 +53,12 @@ public:
 	CNETData(int nFiles);
 	~CNETData();
 };
-	
+
 typedef struct {
-  double sys_ss[2];
-  double inc_ss[2];
-  double cxyz[3];
-  DWORD	 sys_nc[2];
+	double sys_ss[2];
+	double inc_ss[2];
+	double cxyz[3];
+	DWORD	 sys_nc[2];
 } strstats;
 
 EXTERN strstats stSTR;
@@ -70,13 +70,13 @@ EXTERN strstats stSTR;
 #define GRAD_VAL_FIXED -1.0
 
 typedef struct {
-  UINT rec;
-  int next;
+	UINT rec;
+	int next;
 } pltseg;
 
 //Originally static in graphics.cpp --
 EXTERN BOOL bProfile;
-EXTERN double xscale,yscale,xoff,yoff;
+EXTERN double xscale, yscale, xoff, yoff;
 EXTERN UINT bClipped;
 EXTERN BOOL bLastRef;
 EXTERN MAPFORMAT *pMF;
@@ -91,15 +91,15 @@ extern HWND CreateTrackingToolTip(HWND hWnd);
 extern void DestroyTrackingTT();
 #endif
 
-EXTERN CPoint ptMeasureStart,ptMeasureEnd;
-EXTERN DPOINT dpCoordinate,dpCoordinateMeasure;
+EXTERN CPoint ptMeasureStart, ptMeasureEnd;
+EXTERN DPOINT dpCoordinate, dpCoordinateMeasure;
 EXTERN BOOL bMeasureDist;
-extern void GetDistanceFormat(CString &s,BOOL bProfile,bool bFeetUnits,bool bConvert);
+extern void GetDistanceFormat(CString &s, BOOL bProfile, bool bFeetUnits, bool bConvert);
 
 #define pNamTyp CCompView::m_pNamTyp
 
 typedef struct {
-	double az,x,y;
+	double az, x, y;
 } RAYPOINT;
 
 //#define MAX_RAYPOINTS 50
@@ -111,20 +111,20 @@ EXTERN UINT rayCnt;
 EXTERN VEC_RAYPOINT vRayPnt; //stores rays from a point
 EXTERN VEC_POINT vPnt; //workspace
 
-EXTERN DWORD numfiles,maxfiles;
+EXTERN DWORD numfiles, maxfiles;
 EXTERN DWORD numnames;
-EXTERN DWORD numvectors,numvectors0;
+EXTERN DWORD numvectors, numvectors0;
 EXTERN COLORREF clrGradient;
 
 EXTERN double ssISOL[2];
-EXTERN double fTotalLength,fTotalLength0;
+EXTERN double fTotalLength, fTotalLength0;
 EXTERN CPrjListNode *pBranch;
 EXTERN CDBFile dbNTN;
 EXTERN CDBFile dbNTS;
 EXTERN CDBFile dbNTP;
 EXTERN CNTVFile dbNTV;
 EXTERN CTRXFile ixSEG;
-EXTERN CTRXFile *pixNAM,*pixOSEG;
+EXTERN CTRXFile *pixNAM, *pixOSEG;
 EXTERN SEGHDR *pixSEGHDR;
 EXTERN NTVRec *pNTV;
 EXTERN strtyp *pSTR;
@@ -147,13 +147,13 @@ EXTERN CDC *pvDC;
 
 #define PLTSEG_INCREMENT 200
 #define SIZ_EDITNAMEBUF 48
- 
+
 //Initialized to 0 --
 EXTERN int nLen_piSYS;
 EXTERN int nLen_piPLTSEG;  //Current allocated lengths of piSYS[] and piPLTSEG[]
 
-EXTERN int nSTR,nSTR_1,nSTR_2,nSYS,nISOL,nNTV,nPLTSEGS;
-EXTERN int nLNKS,nFRGS,nLen_piLNK,nSYS_Offset,nSYS_LinkOffset;  //Added 11/4/04 to support link fragments
+EXTERN int nSTR, nSTR_1, nSTR_2, nSYS, nISOL, nNTV, nPLTSEGS;
+EXTERN int nLNKS, nFRGS, nLen_piLNK, nSYS_Offset, nSYS_LinkOffset;  //Added 11/4/04 to support link fragments
 EXTERN WORD nISOL_ni[2];
 EXTERN char errBuf[NET_SIZ_ERRBUF];
 
@@ -168,7 +168,7 @@ EXTERN double fView;
 EXTERN double FixXYZ[3];
 EXTERN int bFixed;
 
-int TrimPrefix(LPBYTE *argv,BOOL bMatchCase);
+int TrimPrefix(LPBYTE *argv, BOOL bMatchCase);
 
 BOOL LoadNTW();
 HPEN GetStylePen(styletyp *pStyle);
@@ -176,7 +176,7 @@ double TransAx(double *pENU);
 double TransAy(double *pENU);
 double TransAz(double *pENU);
 PXFORM getXform(PXFORM pf);
-UINT OutCode(double x,double y);
+UINT OutCode(double x, double y);
 void PlotLrudTicks(BOOL bTicksOnly);
 void PlotLrudPolys();
 BOOL PlotSVGMaskLayer();
@@ -184,5 +184,5 @@ apfcn_v PlotVector(int typ);
 COLORREF GetPltGradientColor(int idx);
 class CGradient;
 CGradient *GetGradient(int idx);
-	
+
 //EOF

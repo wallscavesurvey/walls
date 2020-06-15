@@ -1,8 +1,8 @@
 /*  WNETLIB.H --
- 	Network Adjustment Library (wallnet.dll)
+	Network Adjustment Library (wallnet.dll)
 
 	Copyright (c) 1994,1996,2001,2004 by David McKenzie, Austin Tx
- 
+
 	Source files:
 	WNETLIB.H    -- This file - included by all modules but WNETLNK.CPP.
 	WNETDBF.C	 -- Database structures, open/create, and misc. fcns.
@@ -17,9 +17,9 @@
 */
 
 #ifdef MAIN
-  #define EXTERN
+#define EXTERN
 #else
-  #define EXTERN extern
+#define EXTERN extern
 #endif
 
 #define _STACKNEAR 0
@@ -41,9 +41,9 @@
 #define net_dbstr_wflag (*(WORD *)&net_dbstrp->flag)
 
 /*Declarations for fcns and vars --*/
-EXTERN nptr net_pPathName,net_pPathExt;
-EXTERN int net_errno,net_errtyp,net_errline;
-EXTERN DBF_NO net_dbvec,net_dbstr,net_dbplt,net_dbnet;
+EXTERN nptr net_pPathName, net_pPathExt;
+EXTERN int net_errno, net_errtyp, net_errline;
+EXTERN DBF_NO net_dbvec, net_dbstr, net_dbplt, net_dbnet;
 EXTERN pltptr net_dbpltp;     /*points to coorinate data in NTP buffer*/
 EXTERN netptr net_dbnetp;     /*points to coorinate data in NTN buffer*/
 EXTERN strptr net_dbstrp;
@@ -59,9 +59,9 @@ EXTERN int net_nc;
 
 #ifdef _USE_DFSTACK
 typedef struct {
-  int n;
-  UINT p_adj;
-  int minlow;
+	int n;
+	UINT p_adj;
+	int minlow;
 } df_frame;
 
 EXTERN df_frame *df_stack;
@@ -106,7 +106,7 @@ EXTERN int df_ptr_max;
 #define NET_CB_RTN(n) net_chkfcn(net_pCB(n),NET_ErrCallBack,__LINE__)
 #define NET_CB(n) if(NET_CB_RTN(n)) return net_errno;
 
-//Preserve old allocation names for info purposes --
+   //Preserve old allocation names for info purposes --
 #define allocfar allochuge
 #define freefar freehuge
 #define CHK_MEM(p,len) if(CHK(allocfar((LPVOID *)&p,len),0)) return NET_ErrFarHeap
@@ -118,12 +118,12 @@ typedef double DIM_DPOINT[Dim];
 #define MAX_SYSTEMS  1000
 #define MAX_BW       400
 
-EXTERN int net_numnets,numpltendp;
+EXTERN int net_numnets, numpltendp;
 
-EXTERN BOOL	vecopen,stropen,pltopen,netopen;
+EXTERN BOOL	vecopen, stropen, pltopen, netopen;
 
 EXTERN DWORD  *sys;   /*System strings and types*/
-EXTERN int sysstr[MAX_SYSTEMS+1];   /*indices to sys[] */ 
+EXTERN int sysstr[MAX_SYSTEMS + 1];   /*indices to sys[] */
 #define QCOL_ARRAY sysstr
 
 /*Since we reuse sysstr[] for the Q-matrix column far pointers, we
@@ -166,9 +166,9 @@ EXTERN int    net_maxnumstr;
 #endif
 
 /*Globals calculated with each call to net_Adjust() --*/
-EXTERN int    net_maxsysid,net_maxsysnod,net_maxsysstr,net_maxstrsolve;
-EXTERN int    net_numsys,net_numstr;
-EXTERN int    net_closures,sys_nc,sys_ni;
+EXTERN int    net_maxsysid, net_maxsysnod, net_maxsysstr, net_maxstrsolve;
+EXTERN int    net_numsys, net_numstr;
+EXTERN int    net_closures, sys_nc, sys_ni;
 
 /*Globals referenced by vaious modules (graph representation) --*/
 EXTERN lnptr  jendp;	  /*contains edges as adjacent node indices*/
@@ -179,8 +179,8 @@ EXTERN lnptr  jdeg;       /*jdeg[net_maxsysnod] - degree counts*/
 EXTERN lnptr  jbord;      /*list of border nodes*/
 EXTERN WORD   *jtask;     /*pointer to string action flag array*/
 EXTERN int    sys_numinf[2];
-EXTERN int    sys_numendp,sys_recfirst,sys_closures;
-EXTERN int    sys_numstr,sys_numnod,sys_root,sys_bandw,sys_bandl;
+EXTERN int    sys_numendp, sys_recfirst, sys_closures;
+EXTERN int    sys_numstr, sys_numnod, sys_root, sys_bandw, sys_bandl;
 EXTERN int    sys_numzeroz; /*Count of Z<=0.0 situations in netlimd.c*/
 
 #ifdef _DEBUG
@@ -196,7 +196,7 @@ EXTERN lnptr row;	 /*set to jlst*/
 
 EXTERN double sys_ss[Dim];
 EXTERN double Z;
-EXTERN double ZZ,M;
+EXTERN double ZZ, M;
 EXTERN WORD   Infvar;		  /*Set to InfvarH or InfvarV as appropriate*/
 
 
@@ -204,21 +204,21 @@ EXTERN WORD   Infvar;		  /*Set to InfvarH or InfvarV as appropriate*/
    the network with a vector. They are fixed by sortnet(). */
 
 enum e_task {
-              Nod_inet = 1,
-              Move1    = 2,
-              Move2    = 4,
-              Delete1  = 8,
-              Delete2  = 16,
-              Addnode  = 32
-            };
+	Nod_inet = 1,
+	Move1 = 2,
+	Move2 = 4,
+	Delete1 = 8,
+	Delete2 = 16,
+	Addnode = 32
+};
 
 enum e_infvar {
-             InfvarH   = (1<<6),
-             InfvarV   = (1<<7),
-			 F_InfvarH = (1<<14),
-			 F_InfvarV = (1<<15)
+	InfvarH = (1 << 6),
+	InfvarV = (1 << 7),
+	F_InfvarH = (1 << 14),
+	F_InfvarV = (1 << 15)
 };
-    
+
 /*wnetinv.c routines --*/
 apfcn_i sys_invert(void);
 apfcn_i str_get_varsum(double *psum);
@@ -234,7 +234,7 @@ apfcn_i position_dbnet(UINT recNTS);
 apfcn_i df_search(int n);
 
 /*wnetnet.c routines --*/
-apfcn_i net_chkfcn(int e,int typ,int line);
+apfcn_i net_chkfcn(int e, int typ, int line);
 apfcn_v add_system(void);
 apfcn_i extend_str(UINT ep);
 apfcn_i net_analyze(void);
@@ -248,10 +248,10 @@ apfcn_i open_dbstr(void);
 apfcn_i create_dbplt(void);
 apfcn_i open_dbplt(void);
 apfcn_v zero_resources(void);
-apfcn_i allochuge(HPVOID *p,DWORD len);
+apfcn_i allochuge(HPVOID *p, DWORD len);
 apfcn_v freehuge(HPVOID *p);
 apfcn_v free_resources(void);
-apfcn_i net_chkfcn(int e,int typ,int line);
+apfcn_i net_chkfcn(int e, int typ, int line);
 apfcn_i next_id(int i);
 
 /*wnetlnk.c structures and routines --*/

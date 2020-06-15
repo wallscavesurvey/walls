@@ -12,22 +12,22 @@
 
 class CSvgProcDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
-	CSvgProcDlg(LPFN_SVG_EXPORT pfnExp,LPFN_ERRMSG pfnErr,LPFN_EXPORT_CB pfnCB, CWnd* pParent = NULL);   // standard constructor
-	void StatusMsg(LPCSTR msg) {GetDlgItem(IDC_ST_MESSAGE)->SetWindowText(msg);}
+	CSvgProcDlg(LPFN_SVG_EXPORT pfnExp, LPFN_ERRMSG pfnErr, LPFN_EXPORT_CB pfnCB, CWnd* pParent = NULL);   // standard constructor
+	void StatusMsg(LPCSTR msg) { GetDlgItem(IDC_ST_MESSAGE)->SetWindowText(msg); }
 
-// Dialog Data
-	//{{AFX_DATA(CSvgProcDlg)
+	// Dialog Data
+		//{{AFX_DATA(CSvgProcDlg)
 	enum { IDD = IDD_SVGPROCESS };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+	// NOTE: the ClassWizard will add data members here
+//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CSvgProcDlg)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

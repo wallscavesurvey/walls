@@ -16,7 +16,7 @@ protected: // create from serialization only
 	CWalls2DView();
 	DECLARE_DYNCREATE(CWalls2DView)
 
-// Attributes
+	// Attributes
 private:
 	static LPSTR m_pszTempHTM_Format;
 	static CString m_strLastSVG;
@@ -42,28 +42,28 @@ public:
 	CWalls2DDoc* GetDocument();
 	BOOL OpenSVG(LPCSTR svgpath);
 
-// Operations
+	// Operations
 public:
 	static void Initialize();
 	static void Terminate();
 	afx_msg void OnUpdateUTM(CCmdUI* pCmdUI);
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CWalls2DView)
-	public:
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CWalls2DView)
+public:
 	virtual void OnInitialUpdate();
 	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
 	virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
-	protected:
+protected:
 	//}}AFX_VIRTUAL
 
 
 	BOOL WriteTempHTM(LPCSTR svgpath);
 	BOOL EnableLayers();
-	int ShowLayer(LPCSTR szLayer,int iShow);
-	BOOL ShowStatus(int typ,BOOL *pbShow);
+	int ShowLayer(LPCSTR szLayer, int iShow);
+	BOOL ShowStatus(int typ, BOOL *pbShow);
 	void OnTitleChange(LPCTSTR lpszText);
 
 #ifdef _DEBUG
@@ -75,19 +75,19 @@ public:
 		LPCTSTR lpszTargetFrameName, CByteArray& baPostedData,
 		LPCTSTR lpszHeaders, BOOL* pbCancel);
 
-// Implementation
+	// Implementation
 public:
 	virtual ~CWalls2DView();
 
-	virtual BOOL CreateControlSite(COleControlContainer* pContainer, 
-	   COleControlSite** ppSite, UINT nID, REFCLSID clsid);
+	virtual BOOL CreateControlSite(COleControlContainer* pContainer,
+		COleControlSite** ppSite, UINT nID, REFCLSID clsid);
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-// Generated message map functions
+	// Generated message map functions
 protected:
 	//{{AFX_MSG(CWalls2DView)
 	afx_msg void OnGoBack();
@@ -120,7 +120,9 @@ protected:
 
 #ifndef _DEBUG  // debug version in walls2DView.cpp
 inline CWalls2DDoc* CWalls2DView::GetDocument()
-   { return (CWalls2DDoc*)m_pDocument; }
+{
+	return (CWalls2DDoc*)m_pDocument;
+}
 #endif
 
 /////////////////////////////////////////////////////////////////////////////

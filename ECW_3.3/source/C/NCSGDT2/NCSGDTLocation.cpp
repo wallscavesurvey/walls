@@ -2,15 +2,15 @@
 ** Copyright 2005 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
-** 
+**
 ** FILE:   	 NCSGDTLocation.cpp
 ** CREATED:  06 Jan 2005
 ** AUTHOR:   Tom Lynch
@@ -18,7 +18,7 @@
 **
 ** EDITS:    [xx] ddMmmyy NAME COMMENTS
 **			 [01] 06Jan05 tfl  File first committed
-** 
+**
 *******************************************************/
 
 #include "NCSDefs.h"
@@ -33,25 +33,25 @@
 #define MIN_ERMAPPER_MAJOR_VERSION 7
 #endif
 
-char CNCSGDTLocation::sm_szGDTPath[MAX_PATH] = {'\0'};
+char CNCSGDTLocation::sm_szGDTPath[MAX_PATH] = { '\0' };
 bool CNCSGDTLocation::sm_bGuessPath = true;
 CNCSMutex CNCSGDTLocation::sm_PathMutex;
 
 void CNCSGDTLocation::SetPath(const char *szPath)
 {
-	if(strlen(szPath) <= 1)	//JX
+	if (strlen(szPath) <= 1)	//JX
 		return;//JX
 	//Strip final '/' or '\' characters
-	char *szCopy = (char *)NCSMalloc(sizeof(char)*strlen(szPath)+1,true);
-	strcpy(szCopy,szPath);
-	char cLastChar = szCopy[strlen(szCopy)-1];
-	while(cLastChar == '\\' || cLastChar == '/') 
+	char *szCopy = (char *)NCSMalloc(sizeof(char)*strlen(szPath) + 1, true);
+	strcpy(szCopy, szPath);
+	char cLastChar = szCopy[strlen(szCopy) - 1];
+	while (cLastChar == '\\' || cLastChar == '/')
 	{
-		szCopy[strlen(szCopy)-1] = '\0';
-		cLastChar = szCopy[strlen(szCopy)-1];
-	}	
+		szCopy[strlen(szCopy) - 1] = '\0';
+		cLastChar = szCopy[strlen(szCopy) - 1];
+	}
 	sm_PathMutex.Lock();
-	strcpy(sm_szGDTPath,szCopy);
+	strcpy(sm_szGDTPath, szCopy);
 	sm_PathMutex.UnLock();
 	NCSFree(szCopy);
 }
@@ -66,7 +66,7 @@ char *CNCSGDTLocation::GetPath()
 
 void CNCSGDTLocation::DetectPath()
 {
-	if (sm_bGuessPath) 
+	if (sm_bGuessPath)
 	{
 		char *szPath = GuessPath();
 		CNCSGDTLocation::SetPath(szPath);
@@ -101,7 +101,7 @@ char *CNCSGDTLocation::GuessPath()
 	//get dll location
 	/////////////////////////////////////////////////////////////
 	char *szClientDllDir;
-	
+
 	//find client dir setup by cab install
 	NCSTChar FileName[1024] = { '\0' };
 	INT32 i = 0;
@@ -115,13 +115,13 @@ char *CNCSGDTLocation::GuessPath()
 #endif
 	// Check if the NCSGdtLib is in the same dir as the view manager module
 #ifdef NCS_BUILD_UNICODE
-	DWORD nResult = GetModuleFileNameW(hModule,  FileName, 1024);
+	DWORD nResult = GetModuleFileNameW(hModule, FileName, 1024);
 #else
-	DWORD nResult = GetModuleFileNameA(hModule,  FileName, 1024);
+	DWORD nResult = GetModuleFileNameA(hModule, FileName, 1024);
 #endif
 	if (nResult)
 	{
-		for (i=nResult; i>0; i--)
+		for (i = nResult; i > 0; i--)
 		{
 			if (FileName[i] == '\\')
 			{
@@ -130,10 +130,10 @@ char *CNCSGDTLocation::GuessPath()
 			}
 		}
 	}
-	if(i!=0)
+	if (i != 0)
 	{
-		FileName[i]='\0';
-		szClientDllDir=(char*)NCSMalloc(MAX_PATH * sizeof(char), false);
+		FileName[i] = '\0';
+		szClientDllDir = (char*)NCSMalloc(MAX_PATH * sizeof(char), false);
 
 		strcpy(szClientDllDir, CHAR_STRING(FileName));
 		strcat(szClientDllDir, "\\GDT_Data");
@@ -147,20 +147,20 @@ char *CNCSGDTLocation::GuessPath()
 
 	char *szClientBaseDir;
 	//3.  Location of Image Web Server client directory
-	if( NCS_SUCCEEDED( NCSPrefSetMachineKeyLock(NCSPREF_DEFAULT_BASE_KEY) ) ) {
+	if (NCS_SUCCEEDED(NCSPrefSetMachineKeyLock(NCSPREF_DEFAULT_BASE_KEY))) {
 		if (NCSPrefGetString("ClientBaseDir", &szFileLocation) != NCS_SUCCESS)
 			NCSPrefGetUserString("ClientBaseDir", &szFileLocation);
 		//the registry key ClientBaseDir under the current user contains the word "test"
 		//dont know why but its not a legitimate directory.
 		if (szFileLocation != NULL)
-			if(_stricmp(szFileLocation, "test")==0)
+			if (_stricmp(szFileLocation, "test") == 0)
 			{
 				NCSFree(szFileLocation);
 				szFileLocation = NULL;
 			}
 		if (szFileLocation != NULL)
 		{
-			szClientBaseDir=(char*)NCSMalloc(MAX_PATH * sizeof(char), false);
+			szClientBaseDir = (char*)NCSMalloc(MAX_PATH * sizeof(char), false);
 			strcpy(szClientBaseDir, szFileLocation);
 			strcat(szClientBaseDir, "\\GDT_Data");
 			NCSFree(szFileLocation);
@@ -170,27 +170,27 @@ char *CNCSGDTLocation::GuessPath()
 				NCSPrefMachineUnLock();
 				return szClientBaseDir;
 			}
-			else NCSFree (szClientBaseDir);
+			else NCSFree(szClientBaseDir);
 		}
 		NCSPrefMachineUnLock();
 	}
 	//4.  Location of ER Mapper GDT_Data (based on cycling through versions of ER Mapper)
-	char *szERMapperBaseDir=(char *)NULL;
-	char *szERMapperLibVersionKey=(char*)NCSMalloc(MAX_PATH * sizeof(char), false);
+	char *szERMapperBaseDir = (char *)NULL;
+	char *szERMapperLibVersionKey = (char*)NCSMalloc(MAX_PATH * sizeof(char), false);
 	int nMajorVersion, nMinorVersion;
 	for (nMajorVersion = MAX_ERMAPPER_MAJOR_VERSION; nMajorVersion >= MIN_ERMAPPER_MAJOR_VERSION; nMajorVersion--)
 	{
 		for (nMinorVersion = 9; nMinorVersion >= 0; nMinorVersion--)
 		{
-			sprintf(szERMapperLibVersionKey,"Software\\Earth Resource Mapping\\ERMAPPER(libversion%d.%d)",nMajorVersion,nMinorVersion);
-			if( NCS_SUCCEEDED( NCSPrefSetMachineKeyLock(szERMapperLibVersionKey) ) ) {
+			sprintf(szERMapperLibVersionKey, "Software\\Earth Resource Mapping\\ERMAPPER(libversion%d.%d)", nMajorVersion, nMinorVersion);
+			if (NCS_SUCCEEDED(NCSPrefSetMachineKeyLock(szERMapperLibVersionKey))) {
 				if (NCSPrefGetString("BASE_PATH", &szERMapperBaseDir) != NCS_SUCCESS)
 					NCSPrefGetUserString("ClientBaseDir", &szERMapperBaseDir);
 				if (szERMapperBaseDir != NULL)
 				{
-					char *szERMapperGDTDir=(char*)NCSMalloc(MAX_PATH * sizeof(char), false);
-					strcpy(szERMapperGDTDir,szERMapperBaseDir);
-					strcat(szERMapperGDTDir,"\\GDT_DATA");
+					char *szERMapperGDTDir = (char*)NCSMalloc(MAX_PATH * sizeof(char), false);
+					strcpy(szERMapperGDTDir, szERMapperBaseDir);
+					strcat(szERMapperGDTDir, "\\GDT_DATA");
 					NCSFree(szERMapperBaseDir);
 					if (IsValidPath(szERMapperGDTDir))
 					{
@@ -198,7 +198,7 @@ char *CNCSGDTLocation::GuessPath()
 						NCSPrefMachineUnLock();
 						return szERMapperGDTDir;
 					}
-					else 
+					else
 						NCSFree(szERMapperGDTDir);
 				}
 				NCSPrefMachineUnLock();
@@ -207,12 +207,12 @@ char *CNCSGDTLocation::GuessPath()
 	}
 	NCSFree(szERMapperLibVersionKey);
 
-	if( szFileLocation ) {
+	if (szFileLocation) {
 		NCSFree(szFileLocation);
 		szFileLocation = NULL;
 	}
 #endif //win32
-	return (NCSStrDup(""));	
+	return (NCSStrDup(""));
 }
 
 extern "C" void NCSSetGDTPath2(char *szPath)

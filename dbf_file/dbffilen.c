@@ -2,5 +2,5 @@
 
 NPSTR DBFAPI dbf_FileName(DBF_NO dbf)
 {
-  return _GETDBFP?dos_FileName(_DBFP->Cf.Handle):"";
+	return _GETDBFP ? dos_FileName(_DBFP->Cf.Handle) : "";
 }

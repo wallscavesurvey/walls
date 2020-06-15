@@ -27,7 +27,7 @@ protected:
 
 	// Call this from DoWork to report progress.
 	// Meaning of WPARAM/LPARAM is up to you.
-	LRESULT OnProgress(WPARAM wp=0, LPARAM lp=0);
+	LRESULT OnProgress(WPARAM wp = 0, LPARAM lp = 0);
 
 	// You must implement to do the work
 	virtual UINT DoWork() = 0;
@@ -35,19 +35,19 @@ protected:
 public:
 	CThreadJob();
 	~CThreadJob();
-	virtual BOOL Begin(CWnd* pWndOwner=NULL, UINT ucbMsg=0);
-	virtual void Abort(BOOL bAbort=TRUE);
-	BOOL IsAborted() {return m_bAbort;}
+	virtual BOOL Begin(CWnd* pWndOwner = NULL, UINT ucbMsg = 0);
+	virtual void Abort(BOOL bAbort = TRUE);
+	BOOL IsAborted() { return m_bAbort; }
 
 	void SetPriority(int nPriority) {
-		if(m_pThread) {
+		if (m_pThread) {
 			VERIFY(m_pThread->SetThreadPriority(nPriority));
 		}
 	}
-    
+
 	int GetPriority() {
-		return m_pThread?m_pThread->GetThreadPriority():0;
+		return m_pThread ? m_pThread->GetThreadPriority() : 0;
 	}
-    
+
 	DECLARE_DYNAMIC(CThreadJob)
 };

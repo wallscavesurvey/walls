@@ -2,13 +2,13 @@
 ** Copyright 2002 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:     $Archive: /NCS/Source/C/NCSEcw/NCSJP2/NCSJP2UUIDListBox.cpp $
@@ -20,9 +20,9 @@
 
 #include "NCSJP2File.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+ //////////////////////////////////////////////////////////////////////
+ // Construction/Destruction
+ //////////////////////////////////////////////////////////////////////
 
 UINT32 CNCSJP2File::CNCSJP2UUIDInfoBox::CNCSJP2UUIDListBox::sm_nTBox = 'ulst';
 
@@ -46,16 +46,16 @@ CNCSError CNCSJP2File::CNCSJP2UUIDInfoBox::CNCSJP2UUIDListBox::Parse(class CNCSJ
 	CNCSError Error;
 
 	NCSJP2_CHECKIO_BEGIN(Error, Stream);
-		// Get the fields in
-		NCSJP2_CHECKIO(ReadUINT16(m_nEntries));
-		for(int e = 0; e < m_nEntries; e++) {
-			NCSUUID uuid;
+	// Get the fields in
+	NCSJP2_CHECKIO(ReadUINT16(m_nEntries));
+	for (int e = 0; e < m_nEntries; e++) {
+		NCSUUID uuid;
 
-			NCSJP2_CHECKIO(Read(&uuid.m_UUID, sizeof(uuid.m_UUID)));
-			m_UUIDs.push_back(uuid);
-		}
+		NCSJP2_CHECKIO(Read(&uuid.m_UUID, sizeof(uuid.m_UUID)));
+		m_UUIDs.push_back(uuid);
+	}
 
-		m_bValid = true;
+	m_bValid = true;
 	NCSJP2_CHECKIO_END();
 	return(Error);
 }
@@ -68,14 +68,14 @@ CNCSError CNCSJP2File::CNCSJP2UUIDInfoBox::CNCSJP2UUIDListBox::UnParse(class CNC
 	// Setup the base box.
 	m_nTBox = sm_nTBox;
 	m_nXLBox = 8 + sizeof(UINT16) + m_nEntries * sizeof(m_UUIDs[0].m_UUID);
-	
-		// Write out the base box first
+
+	// Write out the base box first
 	Error = CNCSJP2Box::UnParse(JP2File, Stream);
 	NCSJP2_CHECKIO_BEGIN(Error, Stream);
-		NCSJP2_CHECKIO(WriteUINT16(m_nEntries));
-		for(int c = 0; c < m_nEntries; c++) {
-			NCSJP2_CHECKIO(Write(m_UUIDs[c].m_UUID, sizeof(m_UUIDs[0].m_UUID)));
-		}	
+	NCSJP2_CHECKIO(WriteUINT16(m_nEntries));
+	for (int c = 0; c < m_nEntries; c++) {
+		NCSJP2_CHECKIO(Write(m_UUIDs[c].m_UUID, sizeof(m_UUIDs[0].m_UUID)));
+	}
 	NCSJP2_CHECKIO_END();
 	return(Error);
 }

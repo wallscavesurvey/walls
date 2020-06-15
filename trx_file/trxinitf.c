@@ -2,5 +2,5 @@
 
 UINT TRXAPI trx_InitTreeFlags(TRX_NO trx)
 {
-  return _GETTRXT?_TRXT->InitFlags:0;
+	return _GETTRXT ? _TRXT->InitFlags : 0;
 }

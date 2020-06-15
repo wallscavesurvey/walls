@@ -11,18 +11,18 @@
 #define HIST_MAX_LOCALALLOC 256
 
 #ifdef _DEBUG
-	#define _GET_RANGE_CRC
+#define _GET_RANGE_CRC
 
-	#ifdef _GET_RANGE_CRC
-		#define GET_RANGE_CRC GetRangeCrc
-	#else
-		#define GET_RANGE_CRC GetRangeSize
-	#endif
-
-	#define RETURN_ goto return_
+#ifdef _GET_RANGE_CRC
+#define GET_RANGE_CRC GetRangeCrc
 #else
-	#undef _GET_RANGE_CRC
-	#define RETURN_ return bRet
+#define GET_RANGE_CRC GetRangeSize
+#endif
+
+#define RETURN_ goto return_
+#else
+#undef _GET_RANGE_CRC
+#define RETURN_ return bRet
 #endif
 
 /***********************************************************************/
@@ -31,17 +31,17 @@ struct CLineRange;
 
 //Action types --
 enum e_Action {
-	ACTION_AddChar,ACTION_DelChar,ACTION_AddEOL,
-	ACTION_DelTextRange,ACTION_AddTextRange,ACTION_DelAddTextRange,ACTION_RepShortStr,
-	ACTION_Undo,ACTION_Redo
+	ACTION_AddChar, ACTION_DelChar, ACTION_AddEOL,
+	ACTION_DelTextRange, ACTION_AddTextRange, ACTION_DelAddTextRange, ACTION_RepShortStr,
+	ACTION_Undo, ACTION_Redo
 };
 
 class IActionBase
 {
 public:
 	// virtual function declarations
-	virtual void Redo(CEditHistory *pHist,size_t dataOffset) = 0;
-	virtual void Undo(CEditHistory *pHist,size_t dataOffset) = 0;
+	virtual void Redo(CEditHistory *pHist, size_t dataOffset) = 0;
+	virtual void Undo(CEditHistory *pHist, size_t dataOffset) = 0;
 	virtual e_Action Action() = 0;
 };
 
@@ -51,11 +51,11 @@ public:
 	CHistItem()
 	{
 #ifdef _DEBUG
-		crc=0;
+		crc = 0;
 #endif
 	}
-	CHistItem(size_t dataOffset,IActionBase *pAction) :
-			m_dataOffset(dataOffset),m_pAction(pAction) {}
+	CHistItem(size_t dataOffset, IActionBase *pAction) :
+		m_dataOffset(dataOffset), m_pAction(pAction) {}
 	size_t m_dataOffset;
 	IActionBase *m_pAction;
 #ifdef _DEBUG
@@ -67,7 +67,7 @@ public:
 /***********************************************************************
 	Global Definitions:
 ***********************************************************************/
-typedef std::vector<CHistItem>::iterator VecHistItemIt;		
+typedef std::vector<CHistItem>::iterator VecHistItemIt;
 typedef	std::vector<char>::iterator VecDataIt;
 typedef std::vector<char>::reverse_iterator VecDataRevIt;
 
@@ -79,8 +79,8 @@ class CActionAddChar : public IActionBase
 	friend class CEditHistory;
 public:
 	// virtual overrides
-	virtual void Redo(CEditHistory *pHist,size_t dataOffset);
-	virtual void Undo(CEditHistory *pHist,size_t dataOffset);
+	virtual void Redo(CEditHistory *pHist, size_t dataOffset);
+	virtual void Undo(CEditHistory *pHist, size_t dataOffset);
 	virtual e_Action Action();
 };
 
@@ -89,8 +89,8 @@ class CActionDelChar : public IActionBase
 	friend class CEditHistory;
 public:
 	// virtual overrides
-	virtual void Redo(CEditHistory *pHist,size_t dataOffset);
-	virtual void Undo(CEditHistory *pHist,size_t dataOffset);
+	virtual void Redo(CEditHistory *pHist, size_t dataOffset);
+	virtual void Undo(CEditHistory *pHist, size_t dataOffset);
 	virtual e_Action Action();
 };
 
@@ -99,8 +99,8 @@ class CActionAddTextRange : public IActionBase
 	friend class CEditHistory;
 public:
 	// virtual overrides
-	virtual void Redo(CEditHistory *pHist,size_t dataOffset);
-	virtual void Undo(CEditHistory *pHist,size_t dataOffset);
+	virtual void Redo(CEditHistory *pHist, size_t dataOffset);
+	virtual void Undo(CEditHistory *pHist, size_t dataOffset);
 	virtual e_Action Action();
 };
 
@@ -109,11 +109,11 @@ class CActionDelTextRange : public IActionBase
 	friend class CEditHistory;
 public:
 	// virtual overrides
-	virtual void Redo(CEditHistory *pHist,size_t dataOffset);
-	virtual void Undo(CEditHistory *pHist,size_t dataOffset);
+	virtual void Redo(CEditHistory *pHist, size_t dataOffset);
+	virtual void Undo(CEditHistory *pHist, size_t dataOffset);
 	virtual e_Action Action();
-	static void UndoRedo(CEditHistory *pHist,UINT uUpd,size_t dataOffset);
-	static void RedoUndo(CEditHistory *pHist,UINT uUpd,size_t dataOffset);
+	static void UndoRedo(CEditHistory *pHist, UINT uUpd, size_t dataOffset);
+	static void RedoUndo(CEditHistory *pHist, UINT uUpd, size_t dataOffset);
 };
 
 class CActionDelAddTextRange : public IActionBase
@@ -121,8 +121,8 @@ class CActionDelAddTextRange : public IActionBase
 	friend class CEditHistory;
 public:
 	// virtual overrides
-	virtual void Redo(CEditHistory *pHist,size_t dataOffset);
-	virtual void Undo(CEditHistory *pHist,size_t dataOffset);
+	virtual void Redo(CEditHistory *pHist, size_t dataOffset);
+	virtual void Undo(CEditHistory *pHist, size_t dataOffset);
 	virtual e_Action Action();
 };
 
@@ -131,8 +131,8 @@ class CActionRepShortStr : public IActionBase
 	friend class CEditHistory;
 public:
 	// virtual overrides
-	virtual void Redo(CEditHistory *pHist,size_t dataOffset);
-	virtual void Undo(CEditHistory *pHist,size_t dataOffset);
+	virtual void Redo(CEditHistory *pHist, size_t dataOffset);
+	virtual void Undo(CEditHistory *pHist, size_t dataOffset);
 	virtual e_Action Action();
 };
 
@@ -141,8 +141,8 @@ class CActionAddEOL : public IActionBase
 	friend class CEditHistory;
 public:
 	// virtual overrides
-	virtual void Redo(CEditHistory *pHist,size_t dataOffset);
-	virtual void Undo(CEditHistory *pHist,size_t dataOffset);
+	virtual void Redo(CEditHistory *pHist, size_t dataOffset);
+	virtual void Undo(CEditHistory *pHist, size_t dataOffset);
 	virtual e_Action Action();
 };
 
@@ -190,35 +190,35 @@ class CEditHistory
 ***********************************************************************/
 
 
-class CEditHistory  
+class CEditHistory
 {
 	friend class CLineDoc;
 	friend class CActionAddTextRange; //Needs to access m_cDelTextRange
 public:
 	// classes constructor/deconstructor
-	CEditHistory() : m_pDoc(NULL),m_nPos(0),m_nPosSaved(0),m_LastAction(ACTION_Undo) {
+	CEditHistory() : m_pDoc(NULL), m_nPos(0), m_nPosSaved(0), m_LastAction(ACTION_Undo) {
 		m_vecData.reserve(128);
 	}
-	~CEditHistory() {ClearHistory();}
+	~CEditHistory() { ClearHistory(); }
 
 	// classes member functions
 	void AddAction(CHistItem &histItem);
 	void ClearEnd();
-	void ClearHistory() {m_nPos=0; ClearEnd();}
-	bool IsUndoable() {return m_nPos>0;}
-	bool IsRedoable() {return m_nPos<(int)m_vecHistItem.size();}
+	void ClearHistory() { m_nPos = 0; ClearEnd(); }
+	bool IsUndoable() { return m_nPos > 0; }
+	bool IsRedoable() { return m_nPos < (int)m_vecHistItem.size(); }
 	void Undo();
 	void Redo();
-	void ClearLastAction() {if(m_nPos>0) {--m_nPos; ClearEnd();}}
+	void ClearLastAction() { if (m_nPos > 0) { --m_nPos; ClearEnd(); } }
 	CHistItem * GetCurrentAction();
 	int GetPos() const { return m_nPos; }
 	int GetSize() const { return (int)m_vecHistItem.size(); }
-	bool AddChar(int lineno,int charno,char c);
-	bool DelChar(int lineno,int charno,char c);
+	bool AddChar(int lineno, int charno, char c);
+	bool DelChar(int lineno, int charno, char c);
 
 #ifdef _DEBUG
 	void SaveChecksum(size_t crc);
-	void CompareChecksum(UINT uUpd,size_t crc);
+	void CompareChecksum(UINT uUpd, size_t crc);
 	size_t crc0;
 #endif
 
@@ -227,11 +227,11 @@ public:
 	std::vector<char> m_vecData; //buffer for all saved data
 
 private:
-	bool AddTextRange(LPCSTR pText,int len,CLineRange &range,BOOL bDeleteAlso);
-	bool RepShortStr(LPCSTR pOldText,LPCSTR pNewText,int len,CLineRange &range);
-	bool DelTextRange(CLineRange &range,BOOL bDeleteOnly);
-	bool AddPasteRange(CLineRange &range,BOOL bDeleteAlso);
-	bool AddEOL(int line0,int chr0,int nLen);
+	bool AddTextRange(LPCSTR pText, int len, CLineRange &range, BOOL bDeleteAlso);
+	bool RepShortStr(LPCSTR pOldText, LPCSTR pNewText, int len, CLineRange &range);
+	bool DelTextRange(CLineRange &range, BOOL bDeleteOnly);
+	bool AddPasteRange(CLineRange &range, BOOL bDeleteAlso);
+	bool AddEOL(int line0, int chr0, int nLen);
 
 	//Private variables --
 	std::vector<CHistItem> m_vecHistItem; // actions array

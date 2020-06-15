@@ -7,7 +7,7 @@
 
 class CPrjFindDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
 	CPrjFindDlg(CWnd* pParent = NULL);	// standard constructor
 
@@ -24,10 +24,10 @@ public:
 	WORD m_wFlags;
 	CTabCombo m_tabEdit;
 
-// Implementation
+	// Implementation
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 
 	// Generated message map functions
 	//{{AFX_MSG(CPrjFindDlg)

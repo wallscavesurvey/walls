@@ -2,13 +2,13 @@
 ** Copyright 2003 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:     $Archive: /NCS/Source/C/NCSEcw/NCSJP2/NCSJPCMQCoder.cpp $
@@ -21,11 +21,11 @@
 #include "NCSJPCMQCoder.h"
 #include "NCSMisc.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+ //////////////////////////////////////////////////////////////////////
+ // Construction/Destruction
+ //////////////////////////////////////////////////////////////////////
 
-const CNCSJPCMQCoder::State CNCSJPCMQCoder::sm_States[47*2] = {
+const CNCSJPCMQCoder::State CNCSJPCMQCoder::sm_States[47 * 2] = {
 	{0x5601, 0, 2, 3},
 	{0x5601, 1, 3, 2},
 	{0x3401, 0, 4, 12},
@@ -140,25 +140,33 @@ CNCSJPCMQCoder::CNCSJPCMQCoder()
 {
 	ResetStates();
 
-	for(int c = 0; c <= 8; c++) {
-		for(UINT32 n = 0; n < 256; n++) {
-			if(n & 0x80) {
+	for (int c = 0; c <= 8; c++) {
+		for (UINT32 n = 0; n < 256; n++) {
+			if (n & 0x80) {
 				sm_ShiftLut[n | (c << 8)] = (UINT8)NCSMin(c, 0);
-			} else if(n & 0x40) {
+			}
+			else if (n & 0x40) {
 				sm_ShiftLut[n | (c << 8)] = (UINT8)NCSMin(c, 1);
-			} else if(n & 0x20) {
+			}
+			else if (n & 0x20) {
 				sm_ShiftLut[n | (c << 8)] = (UINT8)NCSMin(c, 2);
-			} else if(n & 0x10) {
+			}
+			else if (n & 0x10) {
 				sm_ShiftLut[n | (c << 8)] = (UINT8)NCSMin(c, 3);
-			} else if(n & 0x08) {
+			}
+			else if (n & 0x08) {
 				sm_ShiftLut[n | (c << 8)] = (UINT8)NCSMin(c, 4);
-			} else if(n & 0x04) {
+			}
+			else if (n & 0x04) {
 				sm_ShiftLut[n | (c << 8)] = (UINT8)NCSMin(c, 5);
-			} else if(n & 0x02) {
+			}
+			else if (n & 0x02) {
 				sm_ShiftLut[n | (c << 8)] = (UINT8)NCSMin(c, 6);
-			} else if(n & 0x01) {
+			}
+			else if (n & 0x01) {
 				sm_ShiftLut[n | (c << 8)] = (UINT8)NCSMin(c, 7);
-			} else if(n == 0x00) {
+			}
+			else if (n == 0x00) {
 				sm_ShiftLut[n | (c << 8)] = (UINT8)NCSMin(c, 8);
 			}
 		}
@@ -174,10 +182,11 @@ void CNCSJPCMQCoder::InitDec(UINT8 *pData, UINT32 nLen, bool bBypass)
 {
 	sm_nIndex = -(INT32)nLen;
 	sm_pB = pData + nLen;
-	if(bBypass) {
+	if (bBypass) {
 		sm_nCT = 8;
 		sm_C.m_CHiLo.m_CLow = sm_pB[sm_nIndex];
-	} else {
+	}
+	else {
 		sm_C.m_C24 = sm_pB[sm_nIndex] << 16;
 		ByteIn();
 		sm_C.m_C24 <<= 7;
@@ -193,15 +202,15 @@ void CNCSJPCMQCoder::InitDec(UINT8 *pData, UINT32 nLen, bool bBypass)
 
 void CNCSJPCMQCoder::InitEnc(UINT8 *pData, UINT32 nLen)
 {
-//	sm_nSymbolStream = 0;
+	//	sm_nSymbolStream = 0;
 	sm_A = 0x8000;
 	sm_C.m_C24 = 0;
 	sm_nIndex = -(INT32)nLen;
 	sm_pB = pData + nLen;
-sm_pB[sm_nIndex] = 0;
+	sm_pB[sm_nIndex] = 0;
 	sm_nCT = 12;
-	if (sm_pB[sm_nIndex]==0xff) {
-		sm_nCT=13;
+	if (sm_pB[sm_nIndex] == 0xff) {
+		sm_nCT = 13;
 	}
 }
 
@@ -211,13 +220,14 @@ sm_pB[sm_nIndex] = 0;
 void CNCSJPCMQCoder::Flush()
 {
 	SetBits();
-	sm_C.m_C24<<=sm_nCT;
+	sm_C.m_C24 <<= sm_nCT;
 	ByteOut();
-	sm_C.m_C24<<=sm_nCT;
+	sm_C.m_C24 <<= sm_nCT;
 	ByteOut();
-	if (sm_pB[sm_nIndex]!=0xff) {
+	if (sm_pB[sm_nIndex] != 0xff) {
 		sm_nIndex++;
-	} else {
+	}
+	else {
 		//Discard B
 		sm_pB[sm_nIndex] = 0;
 	}
@@ -225,15 +235,15 @@ void CNCSJPCMQCoder::Flush()
 
 void CNCSJPCMQCoder::SetBits()
 {
-	unsigned int tempc=sm_C.m_C24 + sm_A;
+	unsigned int tempc = sm_C.m_C24 + sm_A;
 	sm_C.m_C24 |= 0xffff;
 	if (sm_C.m_C24 >= tempc) {
 		sm_C.m_C24 -= 0x8000;
 	}
 }
-void CNCSJPCMQCoder::ResetStates() 
+void CNCSJPCMQCoder::ResetStates()
 {
-	for(int i = 0; i < NCSJPC_MQC_NUMCTXS; i++) {
+	for (int i = 0; i < NCSJPC_MQC_NUMCTXS; i++) {
 		sm_Contexts[i] = sm_States[0];
 	}
 }
@@ -257,12 +267,14 @@ void CNCSJPCMQCoder::ByteIn()
 		sm_nIndex++;
 		sm_C.m_CHiLo.m_CLow = (UINT8)c;
 		sm_nCT = 8;
-	} else {
+	}
+	else {
 		if (c <= 0x8f) {
 			sm_nIndex++;
 			sm_C.m_C24 += c << 9;
 			sm_nCT = 7;
-		} else {
+		}
+		else {
 			sm_C.m_CHiLo.m_CLow = 0xff;
 			sm_nCT = 8;
 		}
@@ -275,26 +287,29 @@ void CNCSJPCMQCoder::ByteIn()
 /// </summary>
 void CNCSJPCMQCoder::ByteOut()
 {
-	if (sm_pB[sm_nIndex]==0xff) {
+	if (sm_pB[sm_nIndex] == 0xff) {
 		sm_nIndex++;
 		sm_pB[sm_nIndex] = (UINT8)(sm_C.m_C24 >> 20);
 		sm_C.m_C24 &= 0xfffff;
 		sm_nCT = 7;
-	} else {
-		if ((sm_C.m_C24 & 0x8000000)==0) {
+	}
+	else {
+		if ((sm_C.m_C24 & 0x8000000) == 0) {
 			sm_nIndex++;
 			sm_pB[sm_nIndex] = (UINT8)(sm_C.m_C24 >> 19);
 			sm_C.m_C24 &= 0x7ffff;
 			sm_nCT = 8;
-		} else {
+		}
+		else {
 			sm_pB[sm_nIndex]++;
-			if (sm_pB[sm_nIndex]==0xff) {
+			if (sm_pB[sm_nIndex] == 0xff) {
 				sm_C.m_C24 &= 0x7ffffff;
 				sm_nIndex++;
 				sm_pB[sm_nIndex] = (UINT8)(sm_C.m_C24 >> 20);
 				sm_C.m_C24 &= 0xfffff;
 				sm_nCT = 7;
-			} else {
+			}
+			else {
 				sm_nIndex++;
 				sm_pB[sm_nIndex] = (UINT8)(sm_C.m_C24 >> 19);
 				sm_C.m_C24 &= 0x7ffff;
@@ -307,19 +322,21 @@ void CNCSJPCMQCoder::ByteOut()
 INT32 CNCSJPCMQCoder::GetBit()
 {
 	INT32 d;
-	if(sm_nCT == 0) {
+	if (sm_nCT == 0) {
 		UINT32 c = sm_pB[sm_nIndex + 1];
 
 		if (sm_pB[sm_nIndex] != 0xff) {
 			sm_nIndex++;
 			sm_C.m_CHiLo.m_CLow = (UINT8)c;
 			sm_nCT = 8;
-		} else {
-			if(sm_nIndex < 0) {
+		}
+		else {
+			if (sm_nIndex < 0) {
 				sm_nIndex++;
 				sm_C.m_C24 += c << 9;
 				sm_nCT = 7;
-			} else {
+			}
+			else {
 				sm_C.m_CHiLo.m_CLow = 0xff;
 				sm_nCT = 8;
 			}
@@ -339,22 +356,23 @@ INT32 CNCSJPCMQCoder::GetBit()
 void CNCSJPCMQCoder::RenormDec()
 {
 	do {
-		if(sm_nCT == 0) {
+		if (sm_nCT == 0) {
 			ByteIn();
 		}
-		if(sm_A & 0x4000) {
+		if (sm_A & 0x4000) {
 			// Single bit shift is most common case
 			sm_A <<= 1;
 			sm_C.m_C24 <<= 1;
 			sm_nCT -= 1;
 			break;
-		} else {
-			UINT32 n = sm_ShiftLut[(sm_A  >> 8) | (sm_nCT << 8)];
+		}
+		else {
+			UINT32 n = sm_ShiftLut[(sm_A >> 8) | (sm_nCT << 8)];
 			sm_A <<= n;
 			sm_C.m_C24 <<= n;
 			sm_nCT = sm_nCT - (UINT16)n;
 		}
-	} while(sm_A<0x8000);
+	} while (sm_A < 0x8000);
 }
 
 void CNCSJPCMQCoder::RenormEnc()
@@ -363,8 +381,8 @@ void CNCSJPCMQCoder::RenormEnc()
 		sm_A <<= 1;
 		sm_C.m_C24 <<= 1;
 		sm_nCT--;
-		if(sm_nCT == 0) {
+		if (sm_nCT == 0) {
 			ByteOut();
 		}
-	} while(sm_A<0x8000);
+	} while (sm_A < 0x8000);
 }

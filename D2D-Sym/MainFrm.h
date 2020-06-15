@@ -6,22 +6,22 @@
 
 class CMainFrame : public CFrameWnd
 {
-	
+
 protected: // create from serialization only
 	CMainFrame();
 	DECLARE_DYNCREATE(CMainFrame)
 
-// Attributes
+	// Attributes
 public:
 
-// Operations
+	// Operations
 public:
 
-// Overrides
+	// Overrides
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 
-// Implementation
+	// Implementation
 public:
 	virtual ~CMainFrame();
 #ifdef _DEBUG
@@ -29,16 +29,16 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-	bool IsCreated() {return m_bCreated;}
+	bool IsCreated() { return m_bCreated; }
 
 
-	void SetFPS(LPCSTR pMode,double fps)
+	void SetFPS(LPCSTR pMode, double fps)
 	{
 		ASSERT(m_bCreated);
 		CString s;
-		if(fps) s.Format("%.1f fps",fps);
-		m_wndStatusBar.SetPaneText(2,s);
-		m_wndStatusBar.SetPaneText(1,pMode);
+		if (fps) s.Format("%.1f fps", fps);
+		m_wndStatusBar.SetPaneText(2, s);
+		m_wndStatusBar.SetPaneText(1, pMode);
 	}
 
 protected:  // control bar embedded members
@@ -46,7 +46,7 @@ protected:  // control bar embedded members
 	CStatusBar        m_wndStatusBar;
 	bool m_bCreated;
 
-// Generated message map functions
+	// Generated message map functions
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnUpdateFPS(CCmdUI *pCmdUI);

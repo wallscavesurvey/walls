@@ -27,11 +27,11 @@ protected:
 	CPageView();           // protected constructor used by dynamic creation
 	DECLARE_DYNCREATE(CPageView)
 
-	CPrjDoc *GetDocument() {return (CPrjDoc *)CView::GetDocument();}
+	CPrjDoc *GetDocument() { return (CPrjDoc *)CView::GetDocument(); }
 	virtual void OnInitialUpdate();
-	virtual void OnUpdate(CView *pSender,LPARAM lHint,CObject *pHint);
+	virtual void OnUpdate(CView *pSender, LPARAM lHint, CObject *pHint);
 	virtual void OnDraw(CDC* pDC);
-// Form Data
+	// Form Data
 public:
 	//{{AFX_DATA(CPageView)
 	enum { IDD = IDD_PAGEGRID };
@@ -40,7 +40,7 @@ public:
 
 // Attributes
 public:
-    static CRect m_rectBmp;  // Bitmap's client-relative rectangle in view
+	static CRect m_rectBmp;  // Bitmap's client-relative rectangle in view
 	CSize m_sizeBmp;    // Size (width and height) of bitmap in pixels
 	CPoint m_ptBmp;     // Position for upper left corner of bitmap
 	static CDC m_dcBmp; // Compatible Memory DC, with m_cBmp already selected
@@ -49,17 +49,17 @@ public:
 	static int *m_selseq;
 	static UINT m_numsel;
 
-	CReView *GetReView() {return (CReView *)m_pTabView;}
+	CReView *GetReView() { return (CReView *)m_pTabView; }
 
 	CBitmap m_cBmpBkg;    // Bitmap containing map
-    double m_xscale; //xscale (pixels per meter) computed in CPrjDoc::PlotpageGrid()
-	double m_xoff,m_yoff,m_xpan,m_ypan;
-    double m_pvxscale;     //Specifies view in preview map
-	double m_pvxoff,m_pvyoff,m_pvsyoff,m_pvview;
-	double m_fViewWidth,m_fViewHeight; //Printer view size in meters
-	double m_fFrameWidth,m_fFrameHeight; //Used only for testing frame size changes in PlotPageGrid()
-    double m_fPanelWidth,m_fPanelHeight;	  //Panel width and height in meters
-	float m_fInchesX,m_fInchesY;
+	double m_xscale; //xscale (pixels per meter) computed in CPrjDoc::PlotpageGrid()
+	double m_xoff, m_yoff, m_xpan, m_ypan;
+	double m_pvxscale;     //Specifies view in preview map
+	double m_pvxoff, m_pvyoff, m_pvsyoff, m_pvview;
+	double m_fViewWidth, m_fViewHeight; //Printer view size in meters
+	double m_fFrameWidth, m_fFrameHeight; //Used only for testing frame size changes in PlotPageGrid()
+	double m_fPanelWidth, m_fPanelHeight;	  //Panel width and height in meters
+	float m_fInchesX, m_fInchesY;
 	int m_iCurSel;
 
 protected:
@@ -67,48 +67,48 @@ protected:
 	HBITMAP m_hBmpOld;    // Handle of old bitmap to save
 	HBRUSH m_hBrushOld;   // Handle of old brush to save
 	HPEN m_hPenOld;       // Handle of old pen to save
-	BOOL m_bCursorInBmp,m_bTracking;
+	BOOL m_bCursorInBmp, m_bTracking;
 
-// Operations
+	// Operations
 public:
 	void ResetContents();
-	int * SelectCell(int x,int y);
-	int * SelectCell(CPoint& point) {return SelectCell(point.x,point.y);}
-	void GetCell(CPoint *p,double x,double y);
-	void GetCell(CPoint *p,DPOINT *pt) {GetCell(p,pt->x,pt->y);}
-	void PageDimensionStr(char *buf,BOOL bInches);
+	int * SelectCell(int x, int y);
+	int * SelectCell(CPoint& point) { return SelectCell(point.x, point.y); }
+	void GetCell(CPoint *p, double x, double y);
+	void GetCell(CPoint *p, DPOINT *pt) { GetCell(p, pt->x, pt->y); }
+	void PageDimensionStr(char *buf, BOOL bInches);
 	void RefreshPageInfo();
 	void RefreshScale();
 	BOOL CheckSelected();
-	int  GetFrameID(char *buf,int len);
+	int  GetFrameID(char *buf, int len);
 	UINT GetNumPages();
-	void AdjustPageOffsets(double *pxoff,double *pyoff,UINT npage);
+	void AdjustPageOffsets(double *pxoff, double *pyoff, UINT npage);
 
 private:
-	void DrawFrame(CDC *pDC,CRect *pClip);
-	void GetLoc(DPOINT *pt,CPoint *p);
+	void DrawFrame(CDC *pDC, CRect *pClip);
+	void GetLoc(DPOINT *pt, CPoint *p);
 	void RefreshPages();
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CPageView)
-	protected:
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CPageView)
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
 // Implementation
 protected:
 	virtual ~CPageView();
-	virtual BOOL PreTranslateMessage(MSG* pMsg );
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
-    afx_msg void OnSysCommand(UINT nChar,LONG lParam);
+	afx_msg void OnSysCommand(UINT nChar, LONG lParam);
 	afx_msg void OnMapExport();
 	afx_msg void OnUpdateUTM(CCmdUI* pCmdUI);
-    afx_msg LRESULT OnMouseLeave(WPARAM wNone, LPARAM lParam);
+	afx_msg LRESULT OnMouseLeave(WPARAM wNone, LPARAM lParam);
 
 	// Generated message map functions
 	//{{AFX_MSG(CPageView)

@@ -9,7 +9,7 @@ typedef float WMM_ARRAY[13][13];
 
 typedef struct {
 	float epoch;
-	WMM_ARRAY c,cd;
+	WMM_ARRAY c, cd;
 } WMM_COFDATA;
 #pragma pack()
 
@@ -20,19 +20,19 @@ typedef struct {
 	float lon;
 	float altm;
 	float year;
-	float dec,decMinYr;
-	float dip,dipMinYr;
-	float ti,tiNtYr;
-	float hi,hiNtYr;
-	float x,xNtYr;
-	float y,yNtYr;
-	float z,zNtYr;
+	float dec, decMinYr;
+	float dip, dipMinYr;
+	float ti, tiNtYr;
+	float hi, hiNtYr;
+	float x, xNtYr;
+	float y, yNtYr;
+	float z, zNtYr;
 } WMM_MAG_DATA;
 
 extern WMM_MAG_DATA wmm;
 extern double mag_HorzIntensity;
 
-void wmm_Init(float epoch,WMM_ARRAY *pc,WMM_ARRAY *pcd);
+void wmm_Init(float epoch, WMM_ARRAY *pc, WMM_ARRAY *pcd);
 int wmm_Calc(WMM_MAG_DATA *wmm);
 
 //====================================================================
@@ -62,7 +62,7 @@ typedef struct {
 	double east;
 	double north2;
 	double east2;
-	DEGTYP lat,lon;
+	DEGTYP lat, lon;
 	float decl;
 	float conv;
 	char *modname;
@@ -70,7 +70,7 @@ typedef struct {
 	int zone;
 	int zone2;
 	int	datum;
-	int	m,d,y;
+	int	m, d, y;
 	int elev;
 	int format;
 	int fcn;
@@ -104,9 +104,9 @@ typedef int (FAR PASCAL *LPFN_MAG_GETDATA)(MAGDATA FAR *pD);
 //In wallmag.cpp --
 int mag_GetData(MAGDATA *pD);
 int mag_InitModel();
-double getDEG(DEGTYP *p,int format);
-void getDMS(DEGTYP *p,double val,int format);
-int ComputeDecl(MAGDATA *pD,double lat,double lon);
+double getDEG(DEGTYP *p, int format);
+void getDMS(DEGTYP *p, double val, int format);
+int ComputeDecl(MAGDATA *pD, double lat, double lon);
 
 //For convenience --
 extern MAGDATA app_MagData;

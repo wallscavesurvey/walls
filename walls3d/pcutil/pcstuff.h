@@ -7,13 +7,13 @@
 
 // PC stuff ...
 
-typedef struct  
-    {
-      HINSTANCE hInstance;
-      HWND hWnd;
-      PROCESS_INFORMATION pi;
-      DWORD retStat_;
-    } EXECAPPINFO, *LPEXECAPPINFO;
+typedef struct
+{
+	HINSTANCE hInstance;
+	HWND hWnd;
+	PROCESS_INFORMATION pi;
+	DWORD retStat_;
+} EXECAPPINFO, *LPEXECAPPINFO;
 
 
 extern BOOL AppExec(const char* cmdLine, LPEXECAPPINFO pInfo, int nCmdShow = SW_SHOW);
@@ -35,16 +35,16 @@ extern void ErrorMsg(const char *s1, const char *s2);
 extern void MyExit(int i);
 extern void MyExit(const char *s);
 
-extern char *getpass( const char *__prompt, unsigned int Count = 8);
+extern char *getpass(const char *__prompt, unsigned int Count = 8);
 
 extern void MyExit();
 
 extern int  DoNothing(BOOL sleep = TRUE);
 
-BOOL findFileType(  
-                    const char *magicFileName,          // magic file
-                    const char *testFileBuf, int bLen,  // first bLen bytes of file to examine
-                    char *outBuf, int outBufLen         // output buffer 
-                 );
+BOOL findFileType(
+	const char *magicFileName,          // magic file
+	const char *testFileBuf, int bLen,  // first bLen bytes of file to examine
+	char *outBuf, int outBufLen         // output buffer 
+);
 
 #endif

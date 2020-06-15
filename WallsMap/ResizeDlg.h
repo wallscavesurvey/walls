@@ -15,7 +15,7 @@
  *        are more than one controls need reposition/resize at the same direction.
  *
 **/
- 
+
 #ifndef __RESIZEDIALOG__H
 #define __RESIZEDIALOG__H
 #pragma once
@@ -48,13 +48,13 @@ class CItemCtrl
 {
 public:
 	UINT	m_nID;
-	UINT	m_stxLeft  	   : 4;			// when left resizing ...
-	UINT	m_stxRight     : 4;			// when right resizing ...
-	UINT	m_styTop   	   : 4;			// when top resizing ...
-	UINT	m_styBottom    : 4;			// when bottom resizing ...
+	UINT	m_stxLeft : 4;			// when left resizing ...
+	UINT	m_stxRight : 4;			// when right resizing ...
+	UINT	m_styTop : 4;			// when top resizing ...
+	UINT	m_styBottom : 4;			// when bottom resizing ...
 	UINT	m_bFlickerFree : 1;
-	UINT	m_bInvalidate  : 1;			// Invalidate ctrl's rect(eg. no-automatical update for static when resize+move)
-	UINT	m_r0		   : 14;
+	UINT	m_bInvalidate : 1;			// Invalidate ctrl's rect(eg. no-automatical update for static when resize+move)
+	UINT	m_r0 : 14;
 	CRect	m_wRect;
 	double	m_xRatio, m_cxRatio;
 	double	m_yRatio, m_cyRatio;
@@ -76,7 +76,7 @@ class CResizeDlg : public CDialog
 	DECLARE_DYNAMIC(CResizeDlg)
 
 public:
-	CResizeDlg(UINT nID,CWnd *pParentWnd = NULL);
+	CResizeDlg(UINT nID, CWnd *pParentWnd = NULL);
 	virtual ~CResizeDlg();
 
 protected:
@@ -86,15 +86,15 @@ public:
 	std::vector<CItemCtrl>	m_Items;           // array of controlled items
 	CRect					m_cltRect, m_cltR0;
 	int						m_xMin, m_yMin, m_xMax, m_yMax;
-	int						m_xSt,  m_ySt;
+	int						m_xSt, m_ySt;
 	UINT					m_nDelaySide;
 	CPoint					m_ptDragIcon;
 	bool					m_bDraggingIcon;
 
 protected:
-	void 					AddControl( UINT nID, int xl, int xr, int yt, int yb, int bFlickerFree = 0, 
-									    double xRatio = -1.0, double cxRatio = -1.0,
-									    double yRatio = -1.0, double cyRatio = -1.0 );
+	void 					AddControl(UINT nID, int xl, int xr, int yt, int yb, int bFlickerFree = 0,
+		double xRatio = -1.0, double cxRatio = -1.0,
+		double yRatio = -1.0, double cyRatio = -1.0);
 	void 					AllowSizing(int xst, int yst);
 	virtual BOOL			OnInitDialog();
 
@@ -108,7 +108,7 @@ protected:
 
 public:
 	int						UpdateControlRect(UINT nID, CRect *pnr);
-	void					Reposition(const CRect &rect,UINT uFlags=0);
+	void					Reposition(const CRect &rect, UINT uFlags = 0);
 };
 
 #endif //	__RESIZEDIALOG__H

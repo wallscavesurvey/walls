@@ -14,9 +14,9 @@
 /////////////////////////////////////////////////////////////////////////////
 // 
 
-Treapimplement(OidUStringTree,ObjectID,URString)
+Treapimplement(OidUStringTree, ObjectID, URString)
 
-Treapimplement(RStringUOidTree,RString,UObjectID)
+Treapimplement(RStringUOidTree, RString, UObjectID)
 
 
 /////////////////////////////////////////////////////////////////////////////

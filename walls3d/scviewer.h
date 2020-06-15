@@ -11,26 +11,26 @@
 #include <afxext.h>
 #endif
 
-class CSceneViewer 
+class CSceneViewer
 {
 
-// Attributes
+	// Attributes
 private:
-  //char m_szActDirBuffer[256];
+	//char m_szActDirBuffer[256];
 
-// Operations
+  // Operations
 public:
-  // Hand cursor for showing links
-  //HCURSOR linkCursor_;        
-  //CSize m_csMagSize;
-  int m_iUseTrueColor;
-// Implementation
+	// Hand cursor for showing links
+	//HCURSOR linkCursor_;        
+	//CSize m_csMagSize;
+	int m_iUseTrueColor;
+	// Implementation
 public:
-  CSceneViewer();
-  ~CSceneViewer();
-  BOOL InitInstance();
-  int  ExitInstance();
-  //const char* GetPathBuffer();
+	CSceneViewer();
+	~CSceneViewer();
+	BOOL InitInstance();
+	int  ExitInstance();
+	//const char* GetPathBuffer();
 };
 
 #endif

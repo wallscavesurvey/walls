@@ -12,24 +12,24 @@
 
 class CFontComboBox : public CComboBox
 {
-// Construction
+	// Construction
 public:
 	CFontComboBox();
 
-// Attributes
+	// Attributes
 public:
 
-// Operations
+	// Operations
 public:
 	void FillCombo();
-	void SetMaxWidth( int maxWidth );
+	void SetMaxWidth(int maxWidth);
 	int GetMaxWidth() const;
-	void SelectFontName( const CString& font );
+	void SelectFontName(const CString& font);
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CFontComboBox)
-	public:
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CFontComboBox)
+public:
 	//}}AFX_VIRTUAL
 
 // Implementation

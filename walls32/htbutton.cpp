@@ -10,24 +10,24 @@ END_MESSAGE_MAP()
 
 void CHTButton::OnLButtonDown(UINT nFlags, CPoint pt)
 {
-  // the CWnd* returned by CWnd::GetFocus may be temporary,
-  // so don't save it.  Save the HWND instead.
-  m_hwndPrevFocus = CWnd::GetFocus()->GetSafeHwnd();
+	// the CWnd* returned by CWnd::GetFocus may be temporary,
+	// so don't save it.  Save the HWND instead.
+	m_hwndPrevFocus = CWnd::GetFocus()->GetSafeHwnd();
 
-  CButton::OnLButtonDown(nFlags,pt);
+	CButton::OnLButtonDown(nFlags, pt);
 }
 
 void CHTButton::OnLButtonUp(UINT nFlags, CPoint pt)
 {
-  CButton::OnLButtonUp(nFlags,pt);
+	CButton::OnLButtonUp(nFlags, pt);
 
-  ::SetFocus(m_hwndPrevFocus);
+	::SetFocus(m_hwndPrevFocus);
 }
 
 WNDPROC  CHTButton::pfnSuper = NULL;
 
 WNDPROC* CHTButton::GetSuperWndProcAddr()
 {
-    return &pfnSuper;
+	return &pfnSuper;
 }
 

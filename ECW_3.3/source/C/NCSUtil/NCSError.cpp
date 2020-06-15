@@ -2,13 +2,13 @@
 ** Copyright 2001 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:     $Archive: /NCS/Source/C/NCSServerUtil/NCSError.cpp $
@@ -18,7 +18,7 @@
 ** EDITS:    [xx] ddMmmyy NAME COMMENTS
  *******************************************************/
 
-// Includes
+ // Includes
 #include <stdio.h>
 #include <stdarg.h>
 
@@ -38,7 +38,7 @@ CNCSError::CNCSError(const NCSError eType, char *pFile, int nLine, CNCSLog::NCSL
 	m_pFile = pFile;
 	m_nLine = nLine;
 
-	if(m_eError != NCS_SUCCESS) {
+	if (m_eError != NCS_SUCCESS) {
 		Log(eLevel);
 	}
 }
@@ -59,7 +59,7 @@ CNCSError::CNCSError(const CNCSError &Error)
 //
 CNCSError::~CNCSError()
 {
-	if(m_pText) {
+	if (m_pText) {
 		NCSFree(m_pText);
 	}
 }
@@ -67,13 +67,13 @@ CNCSError::~CNCSError()
 //
 // Return a formatted error message, possibly with additional formatted text as specified
 //
-char *CNCSError::GetErrorMessage(char *pFormat, ...) 
+char *CNCSError::GetErrorMessage(char *pFormat, ...)
 {
 	char buf[1024];
 
 	snprintf(buf, sizeof(buf), "An error has occurred: Error %ld \"%s\" %s file \"%s\" line %ld", m_eError, NCSGetErrorText(m_eError), m_pText ? m_pText : "", m_pFile, m_nLine);
-	
-	if(pFormat) {
+
+	if (pFormat) {
 		char buf2[1024];
 
 		va_list va;
@@ -101,7 +101,7 @@ void CNCSError::Log(CNCSLog::NCSLogLevel eLevel)
 CNCSError& CNCSError::operator =(const CNCSError &Error)
 {
 	m_eError = Error.m_eError;
-	if(m_pText) {
+	if (m_pText) {
 		NCSFree(m_pText);
 	}
 	m_pText = Error.m_pText ? NCSStrDup(Error.m_pText) : (char*)NULL;
@@ -114,7 +114,7 @@ CNCSError& CNCSError::operator =(const CNCSError &Error)
 //
 // Eq operator
 //
-bool CNCSError::operator ==( const CNCSError &Error )
+bool CNCSError::operator ==(const CNCSError &Error)
 {
 	return(m_eError == Error.m_eError);
 }
@@ -122,7 +122,7 @@ bool CNCSError::operator ==( const CNCSError &Error )
 //
 // Eq operator
 //
-bool CNCSError::operator ==( const NCSError eError )
+bool CNCSError::operator ==(const NCSError eError)
 {
 	return(m_eError == eError);
 }
@@ -130,7 +130,7 @@ bool CNCSError::operator ==( const NCSError eError )
 //
 // NEq operator
 //
-bool CNCSError::operator !=( const CNCSError &Error )
+bool CNCSError::operator !=(const CNCSError &Error)
 {
 	return(m_eError != Error.m_eError);
 }
@@ -138,7 +138,7 @@ bool CNCSError::operator !=( const CNCSError &Error )
 //
 // NEq operator
 //
-bool CNCSError::operator !=( const NCSError eError )
+bool CNCSError::operator !=(const NCSError eError)
 {
 	return(m_eError != eError);
 }

@@ -20,17 +20,17 @@
 extern "C" {
 #endif
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
-int VP8DecodeLayer(VP8Decoder* const dec) {
-  assert(dec);
-  assert(dec->layer_data_size_ > 0);
-  (void)dec;
+	int VP8DecodeLayer(VP8Decoder* const dec) {
+		assert(dec);
+		assert(dec->layer_data_size_ > 0);
+		(void)dec;
 
-  // TODO: handle enhancement layer here.
+		// TODO: handle enhancement layer here.
 
-  return 1;
-}
+		return 1;
+	}
 
 #if defined(__cplusplus) || defined(c_plusplus)
 }    // extern "C"

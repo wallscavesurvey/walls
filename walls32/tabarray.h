@@ -34,11 +34,11 @@ public:
 		m_tabLabel = NULL;
 		m_pView = NULL;
 		m_mnemonic = (char)0;
-		m_active=TRUE;
+		m_active = TRUE;
 	}
 	~CTabInfo()
 	{
-		if(m_tabLabel)
+		if (m_tabLabel)
 		{
 			delete m_tabLabel;
 		}
@@ -50,8 +50,8 @@ public:
 	BOOL		m_active;	// is this tab active?
 };
 
-enum eLookAndFeel { LAF_CHICAGO,LAF_MSWORD};
-enum eTabPosition { TABSONTOP, TABSONLEFT, TABSONLEFTBOT,TABSONRIGHT, TABSONRIGHTBOT, TABSONBOTTOM };
+enum eLookAndFeel { LAF_CHICAGO, LAF_MSWORD };
+enum eTabPosition { TABSONTOP, TABSONLEFT, TABSONLEFTBOT, TABSONRIGHT, TABSONRIGHTBOT, TABSONBOTTOM };
 
 #define BKPEN()pDC->SelectObject(&blackPen)
 #define LTPEN()pDC->SelectObject(&lightPen)
@@ -62,12 +62,12 @@ enum eTabPosition { TABSONTOP, TABSONLEFT, TABSONLEFTBOT,TABSONRIGHT, TABSONRIGH
 
 class CTabArray : public CObArray
 {
-// Construction/Destruction
+	// Construction/Destruction
 public:
 	CTabArray();
 	~CTabArray();
 
-// Attributes
+	// Attributes
 public:
 	int m_curTab;				// index of current tab
 	int m_margin;				// margin around tab "pages"
@@ -88,11 +88,11 @@ public:
 #ifdef W_TABS
 	void drawMSWordTabs(CWnd* pWnd, CDC *pDC);
 #ifdef T_TABS
-	void GetTabRect(RECT *pRect,int tabidx);
+	void GetTabRect(RECT *pRect, int tabidx);
 #endif
 #endif
 
-// Implementation
+	// Implementation
 protected:
 	CPen blackPen;
 	CPen darkPen;

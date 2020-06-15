@@ -53,15 +53,15 @@
 static
 LPBYTE UnrollAnyBytes(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       int nChan = T_CHANNELS(info -> InputFormat);
-       register int i;
+	int nChan = T_CHANNELS(info->InputFormat);
+	register int i;
 
-       for (i=0; i < nChan; i++) {
+	for (i = 0; i < nChan; i++) {
 
-              wIn[i] = RGB_8_TO_16(*accum); accum++;              
-       }
+		wIn[i] = RGB_8_TO_16(*accum); accum++;
+	}
 
-       return accum;
+	return accum;
 }
 
 
@@ -69,23 +69,23 @@ LPBYTE UnrollAnyBytes(register _LPcmsTRANSFORM info, register WORD wIn[], regist
 static
 LPBYTE Unroll4Bytes(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[0] = RGB_8_TO_16(*accum); accum++; // C
-       wIn[1] = RGB_8_TO_16(*accum); accum++; // M
-       wIn[2] = RGB_8_TO_16(*accum); accum++; // Y
-       wIn[3] = RGB_8_TO_16(*accum); accum++; // K
+	wIn[0] = RGB_8_TO_16(*accum); accum++; // C
+	wIn[1] = RGB_8_TO_16(*accum); accum++; // M
+	wIn[2] = RGB_8_TO_16(*accum); accum++; // Y
+	wIn[3] = RGB_8_TO_16(*accum); accum++; // K
 
-       return accum;
+	return accum;
 }
 
 static
 LPBYTE Unroll4BytesReverse(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[0] = RGB_8_TO_16(REVERSE_FLAVOR_8(*accum)); accum++; // C
-       wIn[1] = RGB_8_TO_16(REVERSE_FLAVOR_8(*accum)); accum++; // M
-       wIn[2] = RGB_8_TO_16(REVERSE_FLAVOR_8(*accum)); accum++; // Y
-       wIn[3] = RGB_8_TO_16(REVERSE_FLAVOR_8(*accum)); accum++; // K
+	wIn[0] = RGB_8_TO_16(REVERSE_FLAVOR_8(*accum)); accum++; // C
+	wIn[1] = RGB_8_TO_16(REVERSE_FLAVOR_8(*accum)); accum++; // M
+	wIn[2] = RGB_8_TO_16(REVERSE_FLAVOR_8(*accum)); accum++; // Y
+	wIn[3] = RGB_8_TO_16(REVERSE_FLAVOR_8(*accum)); accum++; // K
 
-       return accum;
+	return accum;
 }
 
 
@@ -93,13 +93,13 @@ static
 LPBYTE Unroll4BytesSwapFirst(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
 
-       wIn[3] = RGB_8_TO_16(*accum); accum++; // K
-       wIn[0] = RGB_8_TO_16(*accum); accum++; // C
-       wIn[1] = RGB_8_TO_16(*accum); accum++; // M
-       wIn[2] = RGB_8_TO_16(*accum); accum++; // Y
-       
+	wIn[3] = RGB_8_TO_16(*accum); accum++; // K
+	wIn[0] = RGB_8_TO_16(*accum); accum++; // C
+	wIn[1] = RGB_8_TO_16(*accum); accum++; // M
+	wIn[2] = RGB_8_TO_16(*accum); accum++; // Y
 
-       return accum;
+
+	return accum;
 }
 
 
@@ -108,74 +108,74 @@ LPBYTE Unroll4BytesSwapFirst(register _LPcmsTRANSFORM info, register WORD wIn[],
 static
 LPBYTE Unroll4BytesSwap(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[3] = RGB_8_TO_16(*accum); accum++;  // K
-       wIn[2] = RGB_8_TO_16(*accum); accum++;  // Y
-       wIn[1] = RGB_8_TO_16(*accum); accum++;  // M
-       wIn[0] = RGB_8_TO_16(*accum); accum++;  // C
+	wIn[3] = RGB_8_TO_16(*accum); accum++;  // K
+	wIn[2] = RGB_8_TO_16(*accum); accum++;  // Y
+	wIn[1] = RGB_8_TO_16(*accum); accum++;  // M
+	wIn[0] = RGB_8_TO_16(*accum); accum++;  // C
 
-       return accum;
+	return accum;
 }
 
 
 static
 LPBYTE Unroll4BytesSwapSwapFirst(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[2] = RGB_8_TO_16(*accum); accum++;  // K
-       wIn[1] = RGB_8_TO_16(*accum); accum++;  // Y
-       wIn[0] = RGB_8_TO_16(*accum); accum++;  // M
-       wIn[3] = RGB_8_TO_16(*accum); accum++;  // C
+	wIn[2] = RGB_8_TO_16(*accum); accum++;  // K
+	wIn[1] = RGB_8_TO_16(*accum); accum++;  // Y
+	wIn[0] = RGB_8_TO_16(*accum); accum++;  // M
+	wIn[3] = RGB_8_TO_16(*accum); accum++;  // C
 
-       return accum;
+	return accum;
 }
 
 
 static
 LPBYTE UnrollAnyWords(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-     int nChan = T_CHANNELS(info -> InputFormat);
-     register int i;
-     
-     for (i=0; i < nChan; i++) {
+	int nChan = T_CHANNELS(info->InputFormat);
+	register int i;
 
-              wIn[i] = *(LPWORD) accum; accum += 2;              
-     }
+	for (i = 0; i < nChan; i++) {
 
-     return accum;       
+		wIn[i] = *(LPWORD)accum; accum += 2;
+	}
+
+	return accum;
 }
 
 
 static
 LPBYTE Unroll4Words(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[0] = *(LPWORD) accum; accum+= 2; // C
-       wIn[1] = *(LPWORD) accum; accum+= 2; // M
-       wIn[2] = *(LPWORD) accum; accum+= 2; // Y
-       wIn[3] = *(LPWORD) accum; accum+= 2; // K
+	wIn[0] = *(LPWORD)accum; accum += 2; // C
+	wIn[1] = *(LPWORD)accum; accum += 2; // M
+	wIn[2] = *(LPWORD)accum; accum += 2; // Y
+	wIn[3] = *(LPWORD)accum; accum += 2; // K
 
-       return accum;
+	return accum;
 }
 
 static
 LPBYTE Unroll4WordsReverse(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[0] = REVERSE_FLAVOR_16(*(LPWORD) accum); accum+= 2; // C
-       wIn[1] = REVERSE_FLAVOR_16(*(LPWORD) accum); accum+= 2; // M
-       wIn[2] = REVERSE_FLAVOR_16(*(LPWORD) accum); accum+= 2; // Y
-       wIn[3] = REVERSE_FLAVOR_16(*(LPWORD) accum); accum+= 2; // K
+	wIn[0] = REVERSE_FLAVOR_16(*(LPWORD)accum); accum += 2; // C
+	wIn[1] = REVERSE_FLAVOR_16(*(LPWORD)accum); accum += 2; // M
+	wIn[2] = REVERSE_FLAVOR_16(*(LPWORD)accum); accum += 2; // Y
+	wIn[3] = REVERSE_FLAVOR_16(*(LPWORD)accum); accum += 2; // K
 
-       return accum;
+	return accum;
 }
 
 
 static
 LPBYTE Unroll4WordsSwapFirst(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[3] = *(LPWORD) accum; accum+= 2; // K
-       wIn[0] = *(LPWORD) accum; accum+= 2; // C
-       wIn[1] = *(LPWORD) accum; accum+= 2; // M
-       wIn[2] = *(LPWORD) accum; accum+= 2; // Y
-       
-       return accum;
+	wIn[3] = *(LPWORD)accum; accum += 2; // K
+	wIn[0] = *(LPWORD)accum; accum += 2; // C
+	wIn[1] = *(LPWORD)accum; accum += 2; // M
+	wIn[2] = *(LPWORD)accum; accum += 2; // Y
+
+	return accum;
 }
 
 
@@ -183,46 +183,46 @@ LPBYTE Unroll4WordsSwapFirst(register _LPcmsTRANSFORM info, register WORD wIn[],
 static
 LPBYTE Unroll4WordsSwap(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[3] = *(LPWORD) accum; accum+= 2; // K
-       wIn[2] = *(LPWORD) accum; accum+= 2; // Y
-       wIn[1] = *(LPWORD) accum; accum+= 2; // M
-       wIn[0] = *(LPWORD) accum; accum+= 2; // C
+	wIn[3] = *(LPWORD)accum; accum += 2; // K
+	wIn[2] = *(LPWORD)accum; accum += 2; // Y
+	wIn[1] = *(LPWORD)accum; accum += 2; // M
+	wIn[0] = *(LPWORD)accum; accum += 2; // C
 
-       return accum;
+	return accum;
 }
 
 static
 LPBYTE Unroll4WordsSwapSwapFirst(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[2] = *(LPWORD) accum; accum+= 2; // K
-       wIn[1] = *(LPWORD) accum; accum+= 2; // Y
-       wIn[0] = *(LPWORD) accum; accum+= 2; // M
-       wIn[3] = *(LPWORD) accum; accum+= 2; // C
+	wIn[2] = *(LPWORD)accum; accum += 2; // K
+	wIn[1] = *(LPWORD)accum; accum += 2; // Y
+	wIn[0] = *(LPWORD)accum; accum += 2; // M
+	wIn[3] = *(LPWORD)accum; accum += 2; // C
 
-       return accum;
+	return accum;
 }
 
 
 static
 LPBYTE Unroll4WordsBigEndian(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[0] = CHANGE_ENDIAN(*(LPWORD) accum); accum+= 2; //C
-       wIn[1] = CHANGE_ENDIAN(*(LPWORD) accum); accum+= 2; //M
-       wIn[2] = CHANGE_ENDIAN(*(LPWORD) accum); accum+= 2; //Y
-       wIn[3] = CHANGE_ENDIAN(*(LPWORD) accum); accum+= 2; //K
+	wIn[0] = CHANGE_ENDIAN(*(LPWORD)accum); accum += 2; //C
+	wIn[1] = CHANGE_ENDIAN(*(LPWORD)accum); accum += 2; //M
+	wIn[2] = CHANGE_ENDIAN(*(LPWORD)accum); accum += 2; //Y
+	wIn[3] = CHANGE_ENDIAN(*(LPWORD)accum); accum += 2; //K
 
-       return accum;
+	return accum;
 }
 
 static
 LPBYTE Unroll4WordsBigEndianReverse(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[0] = REVERSE_FLAVOR_16(CHANGE_ENDIAN(*(LPWORD) accum)); accum+= 2; //C
-       wIn[1] = REVERSE_FLAVOR_16(CHANGE_ENDIAN(*(LPWORD) accum)); accum+= 2; //M
-       wIn[2] = REVERSE_FLAVOR_16(CHANGE_ENDIAN(*(LPWORD) accum)); accum+= 2; //Y
-       wIn[3] = REVERSE_FLAVOR_16(CHANGE_ENDIAN(*(LPWORD) accum)); accum+= 2; //K
+	wIn[0] = REVERSE_FLAVOR_16(CHANGE_ENDIAN(*(LPWORD)accum)); accum += 2; //C
+	wIn[1] = REVERSE_FLAVOR_16(CHANGE_ENDIAN(*(LPWORD)accum)); accum += 2; //M
+	wIn[2] = REVERSE_FLAVOR_16(CHANGE_ENDIAN(*(LPWORD)accum)); accum += 2; //Y
+	wIn[3] = REVERSE_FLAVOR_16(CHANGE_ENDIAN(*(LPWORD)accum)); accum += 2; //K
 
-       return accum;
+	return accum;
 }
 
 
@@ -230,23 +230,23 @@ LPBYTE Unroll4WordsBigEndianReverse(register _LPcmsTRANSFORM info, register WORD
 static
 LPBYTE Unroll4WordsSwapBigEndian(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[3] = CHANGE_ENDIAN(*(LPWORD) accum); accum+= 2; //K
-       wIn[2] = CHANGE_ENDIAN(*(LPWORD) accum); accum+= 2; //Y
-       wIn[1] = CHANGE_ENDIAN(*(LPWORD) accum); accum+= 2; //M
-       wIn[0] = CHANGE_ENDIAN(*(LPWORD) accum); accum+= 2; //C
+	wIn[3] = CHANGE_ENDIAN(*(LPWORD)accum); accum += 2; //K
+	wIn[2] = CHANGE_ENDIAN(*(LPWORD)accum); accum += 2; //Y
+	wIn[1] = CHANGE_ENDIAN(*(LPWORD)accum); accum += 2; //M
+	wIn[0] = CHANGE_ENDIAN(*(LPWORD)accum); accum += 2; //C
 
-       return accum;
+	return accum;
 }
 
 static
 LPBYTE Unroll3Bytes(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
 
-       wIn[0] = RGB_8_TO_16(*accum); accum++;     // R
-       wIn[1] = RGB_8_TO_16(*accum); accum++;     // G
-       wIn[2] = RGB_8_TO_16(*accum); accum++;     // B
+	wIn[0] = RGB_8_TO_16(*accum); accum++;     // R
+	wIn[1] = RGB_8_TO_16(*accum); accum++;     // G
+	wIn[2] = RGB_8_TO_16(*accum); accum++;     // B
 
-       return accum;
+	return accum;
 }
 
 
@@ -256,11 +256,11 @@ static
 LPBYTE Unroll3BytesLab(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
 
-       wIn[0] = (WORD) ((*accum) << 8); accum++;     
-       wIn[1] = (WORD) ((*accum) << 8); accum++;     
-       wIn[2] = (WORD) ((*accum) << 8); accum++;     
+	wIn[0] = (WORD)((*accum) << 8); accum++;
+	wIn[1] = (WORD)((*accum) << 8); accum++;
+	wIn[2] = (WORD)((*accum) << 8); accum++;
 
-       return accum;
+	return accum;
 }
 
 
@@ -270,50 +270,50 @@ static
 LPBYTE Unroll3BytesSwap(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
 
-       wIn[2] = RGB_8_TO_16(*accum); accum++;     // B
-       wIn[1] = RGB_8_TO_16(*accum); accum++;     // G
-       wIn[0] = RGB_8_TO_16(*accum); accum++;     // R
+	wIn[2] = RGB_8_TO_16(*accum); accum++;     // B
+	wIn[1] = RGB_8_TO_16(*accum); accum++;     // G
+	wIn[0] = RGB_8_TO_16(*accum); accum++;     // R
 
-       return accum;
+	return accum;
 }
 
 static
 LPBYTE Unroll3Words(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[0] = *(LPWORD) accum; accum+= 2;  // C R
-       wIn[1] = *(LPWORD) accum; accum+= 2;  // M G
-       wIn[2] = *(LPWORD) accum; accum+= 2;  // Y B
-       return accum;
+	wIn[0] = *(LPWORD)accum; accum += 2;  // C R
+	wIn[1] = *(LPWORD)accum; accum += 2;  // M G
+	wIn[2] = *(LPWORD)accum; accum += 2;  // Y B
+	return accum;
 }
 
 
 static
 LPBYTE Unroll3WordsSwap(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[2] = *(LPWORD) accum; accum+= 2;  // C R
-       wIn[1] = *(LPWORD) accum; accum+= 2;  // M G
-       wIn[0] = *(LPWORD) accum; accum+= 2;  // Y B
-       return accum;
+	wIn[2] = *(LPWORD)accum; accum += 2;  // C R
+	wIn[1] = *(LPWORD)accum; accum += 2;  // M G
+	wIn[0] = *(LPWORD)accum; accum += 2;  // Y B
+	return accum;
 }
 
 
 static
 LPBYTE Unroll3WordsBigEndian(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[0] = CHANGE_ENDIAN(*(LPWORD) accum); accum+= 2;
-       wIn[1] = CHANGE_ENDIAN(*(LPWORD) accum); accum+= 2;
-       wIn[2] = CHANGE_ENDIAN(*(LPWORD) accum); accum+= 2;
-       return accum;
+	wIn[0] = CHANGE_ENDIAN(*(LPWORD)accum); accum += 2;
+	wIn[1] = CHANGE_ENDIAN(*(LPWORD)accum); accum += 2;
+	wIn[2] = CHANGE_ENDIAN(*(LPWORD)accum); accum += 2;
+	return accum;
 }
 
 
 static
 LPBYTE Unroll3WordsSwapBigEndian(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[2] = CHANGE_ENDIAN(*(LPWORD) accum); accum+= 2;
-       wIn[1] = CHANGE_ENDIAN(*(LPWORD) accum); accum+= 2;
-       wIn[0] = CHANGE_ENDIAN(*(LPWORD) accum); accum+= 2;
-       return accum;
+	wIn[2] = CHANGE_ENDIAN(*(LPWORD)accum); accum += 2;
+	wIn[1] = CHANGE_ENDIAN(*(LPWORD)accum); accum += 2;
+	wIn[0] = CHANGE_ENDIAN(*(LPWORD)accum); accum += 2;
+	return accum;
 }
 
 
@@ -323,56 +323,56 @@ LPBYTE Unroll3WordsSwapBigEndian(register _LPcmsTRANSFORM info, register WORD wI
 static
 LPBYTE Unroll1Byte(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[0] = wIn[1] = wIn[2] = RGB_8_TO_16(*accum); accum++;     // L
-       return accum;
+	wIn[0] = wIn[1] = wIn[2] = RGB_8_TO_16(*accum); accum++;     // L
+	return accum;
 }
 
 
 static
 LPBYTE Unroll1ByteSkip2(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[0] = wIn[1] = wIn[2] = RGB_8_TO_16(*accum); accum++;     // L
-       accum += 2;
-       return accum;
+	wIn[0] = wIn[1] = wIn[2] = RGB_8_TO_16(*accum); accum++;     // L
+	accum += 2;
+	return accum;
 }
 
 static
 LPBYTE Unroll1ByteReversed(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[0] = wIn[1] = wIn[2] = REVERSE_FLAVOR_16(RGB_8_TO_16(*accum)); accum++;     // L
-       return accum;
+	wIn[0] = wIn[1] = wIn[2] = REVERSE_FLAVOR_16(RGB_8_TO_16(*accum)); accum++;     // L
+	return accum;
 }
 
 
 static
 LPBYTE Unroll1Word(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[0] = wIn[1] = wIn[2] = *(LPWORD) accum; accum+= 2;   // L
-       return accum;
+	wIn[0] = wIn[1] = wIn[2] = *(LPWORD)accum; accum += 2;   // L
+	return accum;
 }
 
 static
 LPBYTE Unroll1WordReversed(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[0] = wIn[1] = wIn[2] = REVERSE_FLAVOR_16(*(LPWORD) accum); accum+= 2;
-       return accum;
+	wIn[0] = wIn[1] = wIn[2] = REVERSE_FLAVOR_16(*(LPWORD)accum); accum += 2;
+	return accum;
 }
 
 
 static
 LPBYTE Unroll1WordBigEndian(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[0] = wIn[1] = wIn[2] = CHANGE_ENDIAN(*(LPWORD) accum); accum+= 2;
-       return accum;
+	wIn[0] = wIn[1] = wIn[2] = CHANGE_ENDIAN(*(LPWORD)accum); accum += 2;
+	return accum;
 }
 
 static
 LPBYTE Unroll1WordSkip3(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[0] = wIn[1] = wIn[2] = *accum; 
-        
-       accum += 8;
-       return accum;
+	wIn[0] = wIn[1] = wIn[2] = *accum;
+
+	accum += 8;
+	return accum;
 }
 
 
@@ -381,46 +381,46 @@ LPBYTE Unroll1WordSkip3(register _LPcmsTRANSFORM info, register WORD wIn[], regi
 static
 LPBYTE Unroll2Byte(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[0] = wIn[1] = wIn[2] = RGB_8_TO_16(*accum); accum++;     // L
-       wIn[3] = RGB_8_TO_16(*accum); accum++;                       // alpha
-       return accum;
+	wIn[0] = wIn[1] = wIn[2] = RGB_8_TO_16(*accum); accum++;     // L
+	wIn[3] = RGB_8_TO_16(*accum); accum++;                       // alpha
+	return accum;
 }
 
 static
 LPBYTE Unroll2ByteSwapFirst(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[3] = RGB_8_TO_16(*accum); accum++;                       // alpha
-       wIn[0] = wIn[1] = wIn[2] = RGB_8_TO_16(*accum); accum++;     // L       
-       return accum;
+	wIn[3] = RGB_8_TO_16(*accum); accum++;                       // alpha
+	wIn[0] = wIn[1] = wIn[2] = RGB_8_TO_16(*accum); accum++;     // L       
+	return accum;
 }
 
 
 static
 LPBYTE Unroll2Word(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[0] = wIn[1] = wIn[2] = *(LPWORD) accum; accum+= 2;   // L
-       wIn[3] = *(LPWORD) accum; accum += 2;                    // alpha
+	wIn[0] = wIn[1] = wIn[2] = *(LPWORD)accum; accum += 2;   // L
+	wIn[3] = *(LPWORD)accum; accum += 2;                    // alpha
 
-       return accum;
+	return accum;
 }
 
 
 static
 LPBYTE Unroll2WordSwapFirst(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[3] = *(LPWORD) accum; accum += 2;                    // alpha
-       wIn[0] = wIn[1] = wIn[2] = *(LPWORD) accum; accum+= 2;   // L
-       
-       return accum;
+	wIn[3] = *(LPWORD)accum; accum += 2;                    // alpha
+	wIn[0] = wIn[1] = wIn[2] = *(LPWORD)accum; accum += 2;   // L
+
+	return accum;
 }
 
 static
 LPBYTE Unroll2WordBigEndian(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       wIn[0] = wIn[1] = wIn[2] = CHANGE_ENDIAN(*(LPWORD) accum); accum+= 2;
-       wIn[3] = CHANGE_ENDIAN(*(LPWORD) accum); accum+= 2;
+	wIn[0] = wIn[1] = wIn[2] = CHANGE_ENDIAN(*(LPWORD)accum); accum += 2;
+	wIn[3] = CHANGE_ENDIAN(*(LPWORD)accum); accum += 2;
 
-       return accum;
+	return accum;
 }
 
 
@@ -429,17 +429,17 @@ LPBYTE Unroll2WordBigEndian(register _LPcmsTRANSFORM info, register WORD wIn[], 
 static
 LPBYTE UnrollPlanarBytes(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       int nChan = T_CHANNELS(info -> InputFormat);
-       register int i;
-       LPBYTE Init = accum;
+	int nChan = T_CHANNELS(info->InputFormat);
+	register int i;
+	LPBYTE Init = accum;
 
-       for (i=0; i < nChan; i++) {
+	for (i = 0; i < nChan; i++) {
 
-              wIn[i] = RGB_8_TO_16(*accum);
-              accum += info -> StrideIn;
-       }
+		wIn[i] = RGB_8_TO_16(*accum);
+		accum += info->StrideIn;
+	}
 
-       return (Init + 1);
+	return (Init + 1);
 }
 
 
@@ -447,17 +447,17 @@ LPBYTE UnrollPlanarBytes(register _LPcmsTRANSFORM info, register WORD wIn[], reg
 static
 LPBYTE UnrollPlanarWords(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       int nChan = T_CHANNELS(info -> InputFormat);
-       register int i;
-       LPBYTE Init = accum;
+	int nChan = T_CHANNELS(info->InputFormat);
+	register int i;
+	LPBYTE Init = accum;
 
-       for (i=0; i < nChan; i++) {
+	for (i = 0; i < nChan; i++) {
 
-              wIn[i] = *(LPWORD) accum;
-              accum += (info -> StrideIn * 2);
-       }
+		wIn[i] = *(LPWORD)accum;
+		accum += (info->StrideIn * 2);
+	}
 
-       return (Init + 2);
+	return (Init + 2);
 }
 
 
@@ -465,62 +465,62 @@ LPBYTE UnrollPlanarWords(register _LPcmsTRANSFORM info, register WORD wIn[], reg
 static
 LPBYTE UnrollPlanarWordsBigEndian(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-       int nChan = T_CHANNELS(info -> InputFormat);
-       register int i;
-       LPBYTE Init = accum;
+	int nChan = T_CHANNELS(info->InputFormat);
+	register int i;
+	LPBYTE Init = accum;
 
-       for (i=0; i < nChan; i++) {
+	for (i = 0; i < nChan; i++) {
 
-              wIn[i] = CHANGE_ENDIAN(*(LPWORD) accum);
-              accum += (info -> StrideIn * 2);
-       }
+		wIn[i] = CHANGE_ENDIAN(*(LPWORD)accum);
+		accum += (info->StrideIn * 2);
+	}
 
-       return (Init + 2);
+	return (Init + 2);
 }
 
 
 // floating point
 static
 LPBYTE UnrollLabDouble(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
-{       
-        if (info ->lInputV4Lab)
-            cmsFloat2LabEncoded4(wIn, (LPcmsCIELab) accum);
-        else
-            cmsFloat2LabEncoded(wIn, (LPcmsCIELab) accum);
+{
+	if (info->lInputV4Lab)
+		cmsFloat2LabEncoded4(wIn, (LPcmsCIELab)accum);
+	else
+		cmsFloat2LabEncoded(wIn, (LPcmsCIELab)accum);
 
-        accum += sizeof(cmsCIELab);
+	accum += sizeof(cmsCIELab);
 
-        return accum;
+	return accum;
 }
 
 static
 LPBYTE UnrollXYZDouble(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
-{       
-        cmsFloat2XYZEncoded(wIn, (LPcmsCIEXYZ) accum);
-        accum += sizeof(cmsCIEXYZ);
+{
+	cmsFloat2XYZEncoded(wIn, (LPcmsCIEXYZ)accum);
+	accum += sizeof(cmsCIEXYZ);
 
-        return accum;
+	return accum;
 }
 
 // Inks does come in percentage
 static
 LPBYTE UnrollInkDouble(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-    double* Inks = (double*) accum;
-    int nChan = T_CHANNELS(info -> InputFormat);
-    int i;
+	double* Inks = (double*)accum;
+	int nChan = T_CHANNELS(info->InputFormat);
+	int i;
 
-    for (i=0; i <  nChan; i++) {
+	for (i = 0; i < nChan; i++) {
 
-        double v = floor(Inks[i] * 655.35 + 0.5);
+		double v = floor(Inks[i] * 655.35 + 0.5);
 
-        if (v > 65535.0) v = 65535.0;
-        if (v < 0) v = 0;
+		if (v > 65535.0) v = 65535.0;
+		if (v < 0) v = 0;
 
-        wIn[i] = (WORD) v;
-    }
+		wIn[i] = (WORD)v;
+	}
 
-    return accum + (nChan + T_EXTRA(info ->InputFormat)) * sizeof(double);
+	return accum + (nChan + T_EXTRA(info->InputFormat)) * sizeof(double);
 }
 
 
@@ -528,23 +528,23 @@ LPBYTE UnrollInkDouble(register _LPcmsTRANSFORM info, register WORD wIn[], regis
 static
 LPBYTE UnrollDouble(register _LPcmsTRANSFORM info, register WORD wIn[], register LPBYTE accum)
 {
-    double* Inks = (double*) accum;
-    int nChan = T_CHANNELS(info -> InputFormat);
-    int i;
+	double* Inks = (double*)accum;
+	int nChan = T_CHANNELS(info->InputFormat);
+	int i;
 
-    for (i=0; i <  nChan; i++) {
+	for (i = 0; i < nChan; i++) {
 
-        double v = floor(Inks[i] * 65535.0 + 0.5);
+		double v = floor(Inks[i] * 65535.0 + 0.5);
 
-        if (v > 65535.0) 
-            v = 65535.0;
-        if (v < 0) 
-            v = 0;
+		if (v > 65535.0)
+			v = 65535.0;
+		if (v < 0)
+			v = 0;
 
-        wIn[i] = (WORD) v;
-    }
+		wIn[i] = (WORD)v;
+	}
 
-    return accum + (nChan + T_EXTRA(info ->InputFormat)) * sizeof(double);
+	return accum + (nChan + T_EXTRA(info->InputFormat)) * sizeof(double);
 }
 
 
@@ -557,13 +557,13 @@ LPBYTE UnrollDouble(register _LPcmsTRANSFORM info, register WORD wIn[], register
 static
 LPBYTE PackNBytes(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       int nChan  = T_CHANNELS(info -> OutputFormat);
-       register int i;
+	int nChan = T_CHANNELS(info->OutputFormat);
+	register int i;
 
-       for (i=0; i < nChan;  i++)
-              *output++ = RGB_16_TO_8(wOut[i]);
+	for (i = 0; i < nChan; i++)
+		*output++ = RGB_16_TO_8(wOut[i]);
 
-       return output;
+	return output;
 }
 
 // Chunky reversed order bytes
@@ -571,13 +571,13 @@ LPBYTE PackNBytes(register _LPcmsTRANSFORM info, register WORD wOut[], register 
 static
 LPBYTE PackNBytesSwap(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       int nChan  = T_CHANNELS(info -> OutputFormat);
-       register int i;
+	int nChan = T_CHANNELS(info->OutputFormat);
+	register int i;
 
-       for (i=nChan-1; i >= 0;  --i)
-              *output++ = RGB_16_TO_8(wOut[i]);
+	for (i = nChan - 1; i >= 0; --i)
+		*output++ = RGB_16_TO_8(wOut[i]);
 
-       return output;
+	return output;
 
 }
 
@@ -585,29 +585,29 @@ LPBYTE PackNBytesSwap(register _LPcmsTRANSFORM info, register WORD wOut[], regis
 static
 LPBYTE PackNWords(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       int nChan  = T_CHANNELS(info -> OutputFormat);
-       register int i;
+	int nChan = T_CHANNELS(info->OutputFormat);
+	register int i;
 
-       for (i=0; i < nChan; i++) {
-              *(LPWORD) output = wOut[i];
-              output += sizeof(WORD);
-       }
+	for (i = 0; i < nChan; i++) {
+		*(LPWORD)output = wOut[i];
+		output += sizeof(WORD);
+	}
 
-       return output;
+	return output;
 }
 
 static
 LPBYTE PackNWordsSwap(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       int nChan  = T_CHANNELS(info -> OutputFormat);
-       register int i;
+	int nChan = T_CHANNELS(info->OutputFormat);
+	register int i;
 
-       for (i=nChan-1; i >= 0; --i) {
-              *(LPWORD) output = wOut[i];
-              output += sizeof(WORD);
-       }
+	for (i = nChan - 1; i >= 0; --i) {
+		*(LPWORD)output = wOut[i];
+		output += sizeof(WORD);
+	}
 
-       return output;
+	return output;
 }
 
 
@@ -615,64 +615,64 @@ LPBYTE PackNWordsSwap(register _LPcmsTRANSFORM info, register WORD wOut[], regis
 static
 LPBYTE PackNWordsBigEndian(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       int nChan  = T_CHANNELS(info -> OutputFormat);
-       register int i;
+	int nChan = T_CHANNELS(info->OutputFormat);
+	register int i;
 
-       for (i=0; i < nChan; i++) {
-              *(LPWORD) output = CHANGE_ENDIAN(wOut[i]);
-              output += sizeof(WORD);
-       }
+	for (i = 0; i < nChan; i++) {
+		*(LPWORD)output = CHANGE_ENDIAN(wOut[i]);
+		output += sizeof(WORD);
+	}
 
-       return output;
+	return output;
 }
 
 
 static
 LPBYTE PackNWordsSwapBigEndian(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       int nChan  = T_CHANNELS(info -> OutputFormat);
-       register int i;
+	int nChan = T_CHANNELS(info->OutputFormat);
+	register int i;
 
-       for (i=nChan-1; i >= 0; --i) {
-              *(LPWORD) output = CHANGE_ENDIAN(wOut[i]);
-              output += sizeof(WORD);
-       }
+	for (i = nChan - 1; i >= 0; --i) {
+		*(LPWORD)output = CHANGE_ENDIAN(wOut[i]);
+		output += sizeof(WORD);
+	}
 
-       return output;
+	return output;
 }
 
 
 static
 LPBYTE PackPlanarBytes(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       int nChan = T_CHANNELS(info -> OutputFormat);
-       register int i;
-       LPBYTE Init = output;
+	int nChan = T_CHANNELS(info->OutputFormat);
+	register int i;
+	LPBYTE Init = output;
 
-       for (i=0; i < nChan; i++) {
+	for (i = 0; i < nChan; i++) {
 
-              *(LPBYTE) output = RGB_16_TO_8(wOut[i]);
-              output += info -> StrideOut;
-       }
+		*(LPBYTE)output = RGB_16_TO_8(wOut[i]);
+		output += info->StrideOut;
+	}
 
-       return (Init + 1);
+	return (Init + 1);
 }
 
 
 static
 LPBYTE PackPlanarWords(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       int nChan = T_CHANNELS(info -> OutputFormat);
-       register int i;
-       LPBYTE Init = output;
+	int nChan = T_CHANNELS(info->OutputFormat);
+	register int i;
+	LPBYTE Init = output;
 
-       for (i=0; i < nChan; i++) {
+	for (i = 0; i < nChan; i++) {
 
-              *(LPWORD) output = wOut[i];
-              output += (info -> StrideOut * sizeof(WORD));
-       }
+		*(LPWORD)output = wOut[i];
+		output += (info->StrideOut * sizeof(WORD));
+	}
 
-       return (Init + 2);
+	return (Init + 2);
 }
 
 
@@ -681,14 +681,14 @@ LPBYTE PackPlanarWords(register _LPcmsTRANSFORM info, register WORD wOut[], regi
 static
 LPBYTE Pack6Bytes(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-         *output++ = RGB_16_TO_8(wOut[0]);
-         *output++ = RGB_16_TO_8(wOut[1]);
-         *output++ = RGB_16_TO_8(wOut[2]);
-         *output++ = RGB_16_TO_8(wOut[3]);
-         *output++ = RGB_16_TO_8(wOut[4]);
-         *output++ = RGB_16_TO_8(wOut[5]);
+	*output++ = RGB_16_TO_8(wOut[0]);
+	*output++ = RGB_16_TO_8(wOut[1]);
+	*output++ = RGB_16_TO_8(wOut[2]);
+	*output++ = RGB_16_TO_8(wOut[3]);
+	*output++ = RGB_16_TO_8(wOut[4]);
+	*output++ = RGB_16_TO_8(wOut[5]);
 
-         return output;
+	return output;
 }
 
 // KCMYcm
@@ -696,129 +696,129 @@ LPBYTE Pack6Bytes(register _LPcmsTRANSFORM info, register WORD wOut[], register 
 static
 LPBYTE Pack6BytesSwap(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       *output++ = RGB_16_TO_8(wOut[3]);
-       *output++ = RGB_16_TO_8(wOut[0]);
-       *output++ = RGB_16_TO_8(wOut[1]);
-       *output++ = RGB_16_TO_8(wOut[2]);
-       *output++ = RGB_16_TO_8(wOut[4]);
-       *output++ = RGB_16_TO_8(wOut[5]);
+	*output++ = RGB_16_TO_8(wOut[3]);
+	*output++ = RGB_16_TO_8(wOut[0]);
+	*output++ = RGB_16_TO_8(wOut[1]);
+	*output++ = RGB_16_TO_8(wOut[2]);
+	*output++ = RGB_16_TO_8(wOut[4]);
+	*output++ = RGB_16_TO_8(wOut[5]);
 
-       return output;
+	return output;
 }
 
 // CMYKcm
 static
 LPBYTE Pack6Words(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       *(LPWORD) output = wOut[0];
-       output+= 2;
-       *(LPWORD) output = wOut[1];
-       output+= 2;
-       *(LPWORD) output = wOut[2];
-       output+= 2;
-       *(LPWORD) output = wOut[3];
-       output+= 2;
-       *(LPWORD) output = wOut[4];
-       output+= 2;
-       *(LPWORD) output = wOut[5];
-       output+= 2;
+	*(LPWORD)output = wOut[0];
+	output += 2;
+	*(LPWORD)output = wOut[1];
+	output += 2;
+	*(LPWORD)output = wOut[2];
+	output += 2;
+	*(LPWORD)output = wOut[3];
+	output += 2;
+	*(LPWORD)output = wOut[4];
+	output += 2;
+	*(LPWORD)output = wOut[5];
+	output += 2;
 
-       return output;
+	return output;
 }
 
 // KCMYcm
 static
 LPBYTE Pack6WordsSwap(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       *(LPWORD) output = wOut[3];
-       output+= 2;
-       *(LPWORD) output = wOut[0];
-       output+= 2;
-       *(LPWORD) output = wOut[1];
-       output+= 2;
-       *(LPWORD) output = wOut[2];
-       output+= 2;
-       *(LPWORD) output = wOut[4];
-       output+= 2;
-       *(LPWORD) output = wOut[5];
-       output+= 2;
+	*(LPWORD)output = wOut[3];
+	output += 2;
+	*(LPWORD)output = wOut[0];
+	output += 2;
+	*(LPWORD)output = wOut[1];
+	output += 2;
+	*(LPWORD)output = wOut[2];
+	output += 2;
+	*(LPWORD)output = wOut[4];
+	output += 2;
+	*(LPWORD)output = wOut[5];
+	output += 2;
 
-       return output;
+	return output;
 }
 
 // CMYKcm
 static
 LPBYTE Pack6WordsBigEndian(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[0]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[1]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[2]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[3]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[4]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[5]);
-       output+= 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[0]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[1]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[2]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[3]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[4]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[5]);
+	output += 2;
 
-       return output;
+	return output;
 }
 
 // KCMYcm
 static
 LPBYTE Pack6WordsSwapBigEndian(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[3]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[0]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[1]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[2]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[4]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[5]);
-       output+= 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[3]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[0]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[1]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[2]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[4]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[5]);
+	output += 2;
 
-       return output;
+	return output;
 }
 
 
 static
 LPBYTE Pack4Bytes(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-         *output++ = RGB_16_TO_8(wOut[0]);
-         *output++ = RGB_16_TO_8(wOut[1]);
-         *output++ = RGB_16_TO_8(wOut[2]);
-         *output++ = RGB_16_TO_8(wOut[3]);
+	*output++ = RGB_16_TO_8(wOut[0]);
+	*output++ = RGB_16_TO_8(wOut[1]);
+	*output++ = RGB_16_TO_8(wOut[2]);
+	*output++ = RGB_16_TO_8(wOut[3]);
 
-         return output;
+	return output;
 }
 
 static
 LPBYTE Pack4BytesReverse(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-         *output++ = REVERSE_FLAVOR_8(RGB_16_TO_8(wOut[0]));
-         *output++ = REVERSE_FLAVOR_8(RGB_16_TO_8(wOut[1]));
-         *output++ = REVERSE_FLAVOR_8(RGB_16_TO_8(wOut[2]));
-         *output++ = REVERSE_FLAVOR_8(RGB_16_TO_8(wOut[3]));
+	*output++ = REVERSE_FLAVOR_8(RGB_16_TO_8(wOut[0]));
+	*output++ = REVERSE_FLAVOR_8(RGB_16_TO_8(wOut[1]));
+	*output++ = REVERSE_FLAVOR_8(RGB_16_TO_8(wOut[2]));
+	*output++ = REVERSE_FLAVOR_8(RGB_16_TO_8(wOut[3]));
 
-         return output;
+	return output;
 }
 
 
 static
 LPBYTE Pack4BytesSwapFirst(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-         *output++ = RGB_16_TO_8(wOut[3]);
-         *output++ = RGB_16_TO_8(wOut[0]);
-         *output++ = RGB_16_TO_8(wOut[1]);
-         *output++ = RGB_16_TO_8(wOut[2]);
-         
-         return output;
+	*output++ = RGB_16_TO_8(wOut[3]);
+	*output++ = RGB_16_TO_8(wOut[0]);
+	*output++ = RGB_16_TO_8(wOut[1]);
+	*output++ = RGB_16_TO_8(wOut[2]);
+
+	return output;
 }
 
 
@@ -827,56 +827,56 @@ LPBYTE Pack4BytesSwapFirst(register _LPcmsTRANSFORM info, register WORD wOut[], 
 static
 LPBYTE Pack4BytesSwap(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       *output++ = RGB_16_TO_8(wOut[3]);
-       *output++ = RGB_16_TO_8(wOut[2]);
-       *output++ = RGB_16_TO_8(wOut[1]);
-       *output++ = RGB_16_TO_8(wOut[0]);
+	*output++ = RGB_16_TO_8(wOut[3]);
+	*output++ = RGB_16_TO_8(wOut[2]);
+	*output++ = RGB_16_TO_8(wOut[1]);
+	*output++ = RGB_16_TO_8(wOut[0]);
 
-       return output;
+	return output;
 }
 
 
 static
 LPBYTE Pack4BytesSwapSwapFirst(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       *output++ = RGB_16_TO_8(wOut[2]);
-       *output++ = RGB_16_TO_8(wOut[1]);
-       *output++ = RGB_16_TO_8(wOut[0]);
-       *output++ = RGB_16_TO_8(wOut[3]);
+	*output++ = RGB_16_TO_8(wOut[2]);
+	*output++ = RGB_16_TO_8(wOut[1]);
+	*output++ = RGB_16_TO_8(wOut[0]);
+	*output++ = RGB_16_TO_8(wOut[3]);
 
-       return output;
+	return output;
 }
 
 
 static
 LPBYTE Pack4Words(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       *(LPWORD) output = wOut[0];
-       output+= 2;
-       *(LPWORD) output = wOut[1];
-       output+= 2;
-       *(LPWORD) output = wOut[2];
-       output+= 2;
-       *(LPWORD) output = wOut[3];
-       output+= 2;
+	*(LPWORD)output = wOut[0];
+	output += 2;
+	*(LPWORD)output = wOut[1];
+	output += 2;
+	*(LPWORD)output = wOut[2];
+	output += 2;
+	*(LPWORD)output = wOut[3];
+	output += 2;
 
-       return output;
+	return output;
 }
 
 
 static
 LPBYTE Pack4WordsReverse(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       *(LPWORD) output = REVERSE_FLAVOR_16(wOut[0]);
-       output+= 2;
-       *(LPWORD) output = REVERSE_FLAVOR_16(wOut[1]);
-       output+= 2;
-       *(LPWORD) output = REVERSE_FLAVOR_16(wOut[2]);
-       output+= 2;
-       *(LPWORD) output = REVERSE_FLAVOR_16(wOut[3]);
-       output+= 2;
+	*(LPWORD)output = REVERSE_FLAVOR_16(wOut[0]);
+	output += 2;
+	*(LPWORD)output = REVERSE_FLAVOR_16(wOut[1]);
+	output += 2;
+	*(LPWORD)output = REVERSE_FLAVOR_16(wOut[2]);
+	output += 2;
+	*(LPWORD)output = REVERSE_FLAVOR_16(wOut[3]);
+	output += 2;
 
-       return output;
+	return output;
 }
 
 // ABGR
@@ -884,48 +884,48 @@ LPBYTE Pack4WordsReverse(register _LPcmsTRANSFORM info, register WORD wOut[], re
 static
 LPBYTE Pack4WordsSwap(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       *(LPWORD) output = wOut[3];
-       output+= 2;
-       *(LPWORD) output = wOut[2];
-       output+= 2;
-       *(LPWORD) output = wOut[1];
-       output+= 2;
-       *(LPWORD) output = wOut[0];
-       output+= 2;
+	*(LPWORD)output = wOut[3];
+	output += 2;
+	*(LPWORD)output = wOut[2];
+	output += 2;
+	*(LPWORD)output = wOut[1];
+	output += 2;
+	*(LPWORD)output = wOut[0];
+	output += 2;
 
-       return output;
+	return output;
 }
 
 // CMYK
 static
 LPBYTE Pack4WordsBigEndian(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[0]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[1]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[2]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[3]);
-       output+= 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[0]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[1]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[2]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[3]);
+	output += 2;
 
-       return output;
+	return output;
 }
 
 
 static
 LPBYTE Pack4WordsBigEndianReverse(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       *(LPWORD) output = CHANGE_ENDIAN(REVERSE_FLAVOR_16(wOut[0]));
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(REVERSE_FLAVOR_16(wOut[1]));
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(REVERSE_FLAVOR_16(wOut[2]));
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(REVERSE_FLAVOR_16(wOut[3]));
-       output+= 2;
+	*(LPWORD)output = CHANGE_ENDIAN(REVERSE_FLAVOR_16(wOut[0]));
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(REVERSE_FLAVOR_16(wOut[1]));
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(REVERSE_FLAVOR_16(wOut[2]));
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(REVERSE_FLAVOR_16(wOut[3]));
+	output += 2;
 
-       return output;
+	return output;
 }
 
 // KYMC
@@ -933,225 +933,225 @@ LPBYTE Pack4WordsBigEndianReverse(register _LPcmsTRANSFORM info, register WORD w
 static
 LPBYTE Pack4WordsSwapBigEndian(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[3]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[2]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[1]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[0]);
-       output+= 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[3]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[2]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[1]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[0]);
+	output += 2;
 
-       return output;
+	return output;
 }
 
 static
 LPBYTE Pack3Bytes(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       *output++ = RGB_16_TO_8(wOut[0]);
-       *output++ = RGB_16_TO_8(wOut[1]);
-       *output++ = RGB_16_TO_8(wOut[2]);
+	*output++ = RGB_16_TO_8(wOut[0]);
+	*output++ = RGB_16_TO_8(wOut[1]);
+	*output++ = RGB_16_TO_8(wOut[2]);
 
-       return output;
+	return output;
 }
 
 static
 LPBYTE Pack3BytesLab(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       *output++ = (BYTE) (wOut[0] >> 8);
-       *output++ = (BYTE) (wOut[1] >> 8);
-       *output++ = (BYTE) (wOut[2] >> 8);
+	*output++ = (BYTE)(wOut[0] >> 8);
+	*output++ = (BYTE)(wOut[1] >> 8);
+	*output++ = (BYTE)(wOut[2] >> 8);
 
-       return output;
+	return output;
 }
 
 
 static
 LPBYTE Pack3BytesSwap(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       *output++ = RGB_16_TO_8(wOut[2]);
-       *output++ = RGB_16_TO_8(wOut[1]);
-       *output++ = RGB_16_TO_8(wOut[0]);
+	*output++ = RGB_16_TO_8(wOut[2]);
+	*output++ = RGB_16_TO_8(wOut[1]);
+	*output++ = RGB_16_TO_8(wOut[0]);
 
-       return output;
+	return output;
 }
 
 
 static
 LPBYTE Pack3Words(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       *(LPWORD) output = wOut[0];
-       output+= 2;
-       *(LPWORD) output = wOut[1];
-       output+= 2;
-       *(LPWORD) output = wOut[2];
-       output+= 2;
+	*(LPWORD)output = wOut[0];
+	output += 2;
+	*(LPWORD)output = wOut[1];
+	output += 2;
+	*(LPWORD)output = wOut[2];
+	output += 2;
 
-       return output;
+	return output;
 }
 
 static
 LPBYTE Pack3WordsSwap(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       *(LPWORD) output = wOut[2];
-       output+= 2;
-       *(LPWORD) output = wOut[1];
-       output+= 2;
-       *(LPWORD) output = wOut[0];
-       output+= 2;
+	*(LPWORD)output = wOut[2];
+	output += 2;
+	*(LPWORD)output = wOut[1];
+	output += 2;
+	*(LPWORD)output = wOut[0];
+	output += 2;
 
-       return output;
+	return output;
 }
 
 static
 LPBYTE Pack3WordsBigEndian(register _LPcmsTRANSFORM info, register WORD wOut[], register LPBYTE output)
 {
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[0]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[1]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[2]);
-       output+= 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[0]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[1]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[2]);
+	output += 2;
 
-       return output;
+	return output;
 }
 
 
 static
 LPBYTE Pack3WordsSwapBigEndian(register _LPcmsTRANSFORM Info, register WORD wOut[], register LPBYTE output)
 {
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[2]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[1]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[0]);
-       output+= 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[2]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[1]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[0]);
+	output += 2;
 
-       return output;
+	return output;
 }
 
 
 static
 LPBYTE Pack3BytesAndSkip1(register _LPcmsTRANSFORM Info, register WORD wOut[], register LPBYTE output)
 {
-       *output++ = RGB_16_TO_8(wOut[0]);
-       *output++ = RGB_16_TO_8(wOut[1]);
-       *output++ = RGB_16_TO_8(wOut[2]);
-       output++;
+	*output++ = RGB_16_TO_8(wOut[0]);
+	*output++ = RGB_16_TO_8(wOut[1]);
+	*output++ = RGB_16_TO_8(wOut[2]);
+	output++;
 
-       return output;
+	return output;
 }
 
 
 static
 LPBYTE Pack3BytesAndSkip1SwapFirst(register _LPcmsTRANSFORM Info, register WORD wOut[], register LPBYTE output)
 {
-        output++;
-       *output++ = RGB_16_TO_8(wOut[0]);
-       *output++ = RGB_16_TO_8(wOut[1]);
-       *output++ = RGB_16_TO_8(wOut[2]);
-       
-       return output;
+	output++;
+	*output++ = RGB_16_TO_8(wOut[0]);
+	*output++ = RGB_16_TO_8(wOut[1]);
+	*output++ = RGB_16_TO_8(wOut[2]);
+
+	return output;
 }
 
 static
 LPBYTE Pack3BytesAndSkip1Swap(register _LPcmsTRANSFORM Info, register WORD wOut[], register LPBYTE output)
 {
-        output++;
-       *output++ = RGB_16_TO_8(wOut[2]);
-       *output++ = RGB_16_TO_8(wOut[1]);
-       *output++ = RGB_16_TO_8(wOut[0]);
-    
-       return output;
+	output++;
+	*output++ = RGB_16_TO_8(wOut[2]);
+	*output++ = RGB_16_TO_8(wOut[1]);
+	*output++ = RGB_16_TO_8(wOut[0]);
+
+	return output;
 }
 
 
 static
 LPBYTE Pack3BytesAndSkip1SwapSwapFirst(register _LPcmsTRANSFORM Info, register WORD wOut[], register LPBYTE output)
-{       
-       *output++ = RGB_16_TO_8(wOut[2]);
-       *output++ = RGB_16_TO_8(wOut[1]);
-       *output++ = RGB_16_TO_8(wOut[0]);
-       output++;
-    
-       return output;
+{
+	*output++ = RGB_16_TO_8(wOut[2]);
+	*output++ = RGB_16_TO_8(wOut[1]);
+	*output++ = RGB_16_TO_8(wOut[0]);
+	output++;
+
+	return output;
 }
 
 
 static
 LPBYTE Pack3WordsAndSkip1(register _LPcmsTRANSFORM Info, register WORD wOut[], register LPBYTE output)
 {
-       *(LPWORD) output = wOut[0];
-       output+= 2;
-       *(LPWORD) output = wOut[1];
-       output+= 2;
-       *(LPWORD) output = wOut[2];
-       output+= 2;
-       output+= 2;
+	*(LPWORD)output = wOut[0];
+	output += 2;
+	*(LPWORD)output = wOut[1];
+	output += 2;
+	*(LPWORD)output = wOut[2];
+	output += 2;
+	output += 2;
 
-       return output;
+	return output;
 }
 
 static
 LPBYTE Pack3WordsAndSkip1Swap(register _LPcmsTRANSFORM Info, register WORD wOut[], register LPBYTE output)
 {
-       output+= 2;
-       *(LPWORD) output = wOut[2];
-       output+= 2;
-       *(LPWORD) output = wOut[1];
-       output+= 2;
-       *(LPWORD) output = wOut[0];
-       output+= 2;
-       
+	output += 2;
+	*(LPWORD)output = wOut[2];
+	output += 2;
+	*(LPWORD)output = wOut[1];
+	output += 2;
+	*(LPWORD)output = wOut[0];
+	output += 2;
 
-       return output;
+
+	return output;
 }
 
 
 static
 LPBYTE Pack3WordsAndSkip1SwapSwapFirst(register _LPcmsTRANSFORM Info, register WORD wOut[], register LPBYTE output)
-{      
-       *(LPWORD) output = wOut[2];
-       output+= 2;
-       *(LPWORD) output = wOut[1];
-       output+= 2;
-       *(LPWORD) output = wOut[0];
-       output+= 2;
-       output+= 2;
-       
+{
+	*(LPWORD)output = wOut[2];
+	output += 2;
+	*(LPWORD)output = wOut[1];
+	output += 2;
+	*(LPWORD)output = wOut[0];
+	output += 2;
+	output += 2;
 
-       return output;
+
+	return output;
 }
 
 
 static
 LPBYTE Pack3WordsAndSkip1BigEndian(register _LPcmsTRANSFORM Info, register WORD wOut[], register LPBYTE output)
 {
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[0]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[1]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[2]);
-       output+= 2;
-       output+= 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[0]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[1]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[2]);
+	output += 2;
+	output += 2;
 
-       return output;
+	return output;
 }
 
 
 static
 LPBYTE Pack3WordsAndSkip1SwapBigEndian(register _LPcmsTRANSFORM Info, register WORD wOut[], register LPBYTE output)
 {
-        output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[2]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[1]);
-       output+= 2;
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[0]);
-       output+= 2;
-    
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[2]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[1]);
+	output += 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[0]);
+	output += 2;
 
-       return output;
+
+	return output;
 }
 
 
@@ -1159,75 +1159,75 @@ LPBYTE Pack3WordsAndSkip1SwapBigEndian(register _LPcmsTRANSFORM Info, register W
 static
 LPBYTE Pack1Byte(register _LPcmsTRANSFORM Info, register WORD wOut[], register LPBYTE output)
 {
-       *output++ = RGB_16_TO_8(wOut[0]);
-       return output;
+	*output++ = RGB_16_TO_8(wOut[0]);
+	return output;
 }
 
 
 static
 LPBYTE Pack1ByteAndSkip1(register _LPcmsTRANSFORM Info, register WORD wOut[], register LPBYTE output)
 {
-       *output++ = RGB_16_TO_8(wOut[0]);
-       output++;
-       return output;
+	*output++ = RGB_16_TO_8(wOut[0]);
+	output++;
+	return output;
 }
 
 
 static
 LPBYTE Pack1ByteAndSkip1SwapFirst(register _LPcmsTRANSFORM Info, register WORD wOut[], register LPBYTE output)
 {
-       output++;
-       *output++ = RGB_16_TO_8(wOut[0]);
-       
-       return output;
+	output++;
+	*output++ = RGB_16_TO_8(wOut[0]);
+
+	return output;
 }
 
 static
 LPBYTE Pack1Word(register _LPcmsTRANSFORM Info, register WORD wOut[], register LPBYTE output)
 {
-       *(LPWORD) output = wOut[0];
-       output+= 2;
+	*(LPWORD)output = wOut[0];
+	output += 2;
 
-       return output;
+	return output;
 }
 
 static
 LPBYTE Pack1WordBigEndian(register _LPcmsTRANSFORM Info, register WORD wOut[], register LPBYTE output)
 {
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[0]);
-       output+= 2;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[0]);
+	output += 2;
 
-       return output;
+	return output;
 }
 
 
 static
 LPBYTE Pack1WordAndSkip1(register _LPcmsTRANSFORM Info, register WORD wOut[], register LPBYTE output)
 {
-       *(LPWORD) output = wOut[0];
-       output+= 4;
+	*(LPWORD)output = wOut[0];
+	output += 4;
 
-       return output;
+	return output;
 }
 
 static
 LPBYTE Pack1WordAndSkip1SwapFirst(register _LPcmsTRANSFORM Info, register WORD wOut[], register LPBYTE output)
 {
-       output += 2; 
-       *(LPWORD) output = wOut[0];
-       output+= 2;
+	output += 2;
+	*(LPWORD)output = wOut[0];
+	output += 2;
 
-       return output;
+	return output;
 }
 
 
 static
 LPBYTE Pack1WordAndSkip1BigEndian(register _LPcmsTRANSFORM Info, register WORD wOut[], register LPBYTE output)
 {
-       *(LPWORD) output = CHANGE_ENDIAN(wOut[0]);
-       output+= 4;
+	*(LPWORD)output = CHANGE_ENDIAN(wOut[0]);
+	output += 4;
 
-       return output;
+	return output;
 }
 
 
@@ -1236,38 +1236,38 @@ LPBYTE Pack1WordAndSkip1BigEndian(register _LPcmsTRANSFORM Info, register WORD w
 static
 LPBYTE PackLabDouble(register _LPcmsTRANSFORM Info, register WORD wOut[], register LPBYTE output)
 {
-    if (Info ->lOutputV4Lab)
-        cmsLabEncoded2Float4((LPcmsCIELab) output, wOut);
-    else
-        cmsLabEncoded2Float((LPcmsCIELab) output, wOut);
+	if (Info->lOutputV4Lab)
+		cmsLabEncoded2Float4((LPcmsCIELab)output, wOut);
+	else
+		cmsLabEncoded2Float((LPcmsCIELab)output, wOut);
 
-    output += sizeof(cmsCIELab);
+	output += sizeof(cmsCIELab);
 
-    return output;
+	return output;
 }
 
 static
 LPBYTE PackXYZDouble(register _LPcmsTRANSFORM Info, register WORD wOut[], register LPBYTE output)
 {
-    cmsXYZEncoded2Float((LPcmsCIEXYZ) output, wOut);
-    output += sizeof(cmsCIEXYZ);
+	cmsXYZEncoded2Float((LPcmsCIEXYZ)output, wOut);
+	output += sizeof(cmsCIEXYZ);
 
-    return output;
+	return output;
 }
 
 static
 LPBYTE PackInkDouble(register _LPcmsTRANSFORM Info, register WORD wOut[], register LPBYTE output)
 {
-    double* Inks = (double*) output;
-    int nChan = T_CHANNELS(Info -> OutputFormat);
-    int i;
+	double* Inks = (double*)output;
+	int nChan = T_CHANNELS(Info->OutputFormat);
+	int i;
 
-    for (i=0; i <  nChan; i++) {
+	for (i = 0; i < nChan; i++) {
 
-        Inks[i] = wOut[i] /  655.35;
-    }
+		Inks[i] = wOut[i] / 655.35;
+	}
 
-    return output + (nChan + T_EXTRA(Info ->OutputFormat)) * sizeof(double);
+	return output + (nChan + T_EXTRA(Info->OutputFormat)) * sizeof(double);
 
 }
 
@@ -1275,16 +1275,16 @@ LPBYTE PackInkDouble(register _LPcmsTRANSFORM Info, register WORD wOut[], regist
 static
 LPBYTE PackDouble(register _LPcmsTRANSFORM Info, register WORD wOut[], register LPBYTE output)
 {
-    double* Inks = (double*) output;
-    int nChan = T_CHANNELS(Info -> OutputFormat);
-    int i;
+	double* Inks = (double*)output;
+	int nChan = T_CHANNELS(Info->OutputFormat);
+	int i;
 
-    for (i=0; i <  nChan; i++) {
+	for (i = 0; i < nChan; i++) {
 
-        Inks[i] = wOut[i] /  65535.0;
-    }
+		Inks[i] = wOut[i] / 65535.0;
+	}
 
-    return output + (nChan + T_EXTRA(Info ->OutputFormat)) * sizeof(double);
+	return output + (nChan + T_EXTRA(Info->OutputFormat)) * sizeof(double);
 
 }
 
@@ -1293,605 +1293,605 @@ LPBYTE PackDouble(register _LPcmsTRANSFORM Info, register WORD wOut[], register 
 
 _cmsFIXFN _cmsIdentifyInputFormat(_LPcmsTRANSFORM xform, DWORD dwInput)
 {
-       _cmsFIXFN FromInput = NULL;
+	_cmsFIXFN FromInput = NULL;
 
 
-       // Check Named Color
+	// Check Named Color
 
-       if (xform) {
-           
-           if (xform ->InputProfile) {
+	if (xform) {
 
-           if (cmsGetDeviceClass(xform ->InputProfile) == icSigNamedColorClass) {
+		if (xform->InputProfile) {
 
-                if (dwInput != TYPE_NAMED_COLOR_INDEX) {
-                    cmsSignalError(LCMS_ERRC_ABORTED, "Named color needs TYPE_NAMED_COLOR_INDEX");
-                    return NULL;
-                }
-           }
-                
-        }
-       }
+			if (cmsGetDeviceClass(xform->InputProfile) == icSigNamedColorClass) {
 
-       // Unencoded modes
+				if (dwInput != TYPE_NAMED_COLOR_INDEX) {
+					cmsSignalError(LCMS_ERRC_ABORTED, "Named color needs TYPE_NAMED_COLOR_INDEX");
+					return NULL;
+				}
+			}
 
-       if (T_BYTES(dwInput) == 0) {
+		}
+	}
 
-           switch (T_COLORSPACE(dwInput)) {
-               
-           case PT_Lab: 
-                    FromInput = UnrollLabDouble;
-                    break;
-           case PT_XYZ: 
-                    FromInput = UnrollXYZDouble;
-                    break;
+	// Unencoded modes
 
-           // 0.0 .. 1.0 range
+	if (T_BYTES(dwInput) == 0) {
 
-           case PT_GRAY:
-           case PT_RGB:
-           case PT_YCbCr:
-           case PT_YUV:
-           case PT_YUVK:
-           case PT_HSV:
-           case PT_HLS:
-           case PT_Yxy: 
-                    FromInput = UnrollDouble;
-                    break;
+		switch (T_COLORSPACE(dwInput)) {
 
-            // Inks (%) 0.0 .. 100.0
+		case PT_Lab:
+			FromInput = UnrollLabDouble;
+			break;
+		case PT_XYZ:
+			FromInput = UnrollXYZDouble;
+			break;
 
-           default:
-                    FromInput = UnrollInkDouble;
-                    break;
-           }
-                    
-       }
-       else {    
-       
-           if (T_PLANAR(dwInput)) {
-               
-               switch (T_BYTES(dwInput)) {
-                   
-               case 1: 
-                   FromInput = UnrollPlanarBytes;
-                   break;
-                   
-               case 2:                   
-                   if (T_ENDIAN16(dwInput))
-                       FromInput = UnrollPlanarWordsBigEndian;
-                   else
-                       FromInput = UnrollPlanarWords;                
-                   break;
-                   
-               default:;
-               }
-       }
-       else {
+			// 0.0 .. 1.0 range
 
-       switch (T_BYTES(dwInput)) {
+		case PT_GRAY:
+		case PT_RGB:
+		case PT_YCbCr:
+		case PT_YUV:
+		case PT_YUVK:
+		case PT_HSV:
+		case PT_HLS:
+		case PT_Yxy:
+			FromInput = UnrollDouble;
+			break;
 
-       case 1: // 1 byte per channel
+			// Inks (%) 0.0 .. 100.0
 
-              switch (T_CHANNELS(dwInput) + T_EXTRA(dwInput)) {
+		default:
+			FromInput = UnrollInkDouble;
+			break;
+		}
 
-              case 1: if (T_FLAVOR(dwInput))
-                                FromInput = Unroll1ByteReversed;
-                            else
-                                  FromInput = Unroll1Byte;
-                      break;
+	}
+	else {
 
-              case 2: if (T_SWAPFIRST(dwInput))
-                        FromInput = Unroll2ByteSwapFirst;
-                      else
-                        FromInput = Unroll2Byte;
-                      break;
+		if (T_PLANAR(dwInput)) {
 
-              case 3: if (T_DOSWAP(dwInput))
-                            FromInput = Unroll3BytesSwap;
-                      else {
-                            if (T_EXTRA(dwInput) == 2)
-                                FromInput = Unroll1ByteSkip2;
-                            else
-                                if (T_COLORSPACE(dwInput) == PT_Lab)
-                                    FromInput = Unroll3BytesLab;
-                                else
-                                    FromInput = Unroll3Bytes;
-                      }
-                      break;
-              case 4:
-                      // TODO: ALab8 must be fixed to match v2 encoding
+			switch (T_BYTES(dwInput)) {
 
-                      if (T_DOSWAP(dwInput)) {
-                            if (T_SWAPFIRST(dwInput))
+			case 1:
+				FromInput = UnrollPlanarBytes;
+				break;
 
-                                FromInput = Unroll4BytesSwapSwapFirst;
-                            else 
-                                FromInput = Unroll4BytesSwap;
-                      }
-                      else {
-                            if (T_SWAPFIRST(dwInput))
-                                FromInput = Unroll4BytesSwapFirst;
-                            else {
-                                if (T_FLAVOR(dwInput))
-                                    FromInput = Unroll4BytesReverse;
-                                else
-                                    FromInput = Unroll4Bytes;
-                            }
-                      }
-                      break;
+			case 2:
+				if (T_ENDIAN16(dwInput))
+					FromInput = UnrollPlanarWordsBigEndian;
+				else
+					FromInput = UnrollPlanarWords;
+				break;
 
-              case 5:
-              case 6:
-              case 7:
-              case 8:
-                   if (!T_DOSWAP(dwInput) && !T_SWAPFIRST(dwInput))
-                       FromInput = UnrollAnyBytes;
-                   break;
+			default:;
+			}
+		}
+		else {
 
-                    
-              default:;
-              }
-              break;
+			switch (T_BYTES(dwInput)) {
+
+			case 1: // 1 byte per channel
+
+				switch (T_CHANNELS(dwInput) + T_EXTRA(dwInput)) {
+
+				case 1: if (T_FLAVOR(dwInput))
+					FromInput = Unroll1ByteReversed;
+						else
+					FromInput = Unroll1Byte;
+					break;
+
+				case 2: if (T_SWAPFIRST(dwInput))
+					FromInput = Unroll2ByteSwapFirst;
+						else
+					FromInput = Unroll2Byte;
+					break;
+
+				case 3: if (T_DOSWAP(dwInput))
+					FromInput = Unroll3BytesSwap;
+						else {
+					if (T_EXTRA(dwInput) == 2)
+						FromInput = Unroll1ByteSkip2;
+					else
+						if (T_COLORSPACE(dwInput) == PT_Lab)
+							FromInput = Unroll3BytesLab;
+						else
+							FromInput = Unroll3Bytes;
+				}
+						break;
+				case 4:
+					// TODO: ALab8 must be fixed to match v2 encoding
+
+					if (T_DOSWAP(dwInput)) {
+						if (T_SWAPFIRST(dwInput))
+
+							FromInput = Unroll4BytesSwapSwapFirst;
+						else
+							FromInput = Unroll4BytesSwap;
+					}
+					else {
+						if (T_SWAPFIRST(dwInput))
+							FromInput = Unroll4BytesSwapFirst;
+						else {
+							if (T_FLAVOR(dwInput))
+								FromInput = Unroll4BytesReverse;
+							else
+								FromInput = Unroll4Bytes;
+						}
+					}
+					break;
+
+				case 5:
+				case 6:
+				case 7:
+				case 8:
+					if (!T_DOSWAP(dwInput) && !T_SWAPFIRST(dwInput))
+						FromInput = UnrollAnyBytes;
+					break;
 
 
-       case 2: // 1 word per channel
-
-              switch (T_CHANNELS(dwInput) + T_EXTRA(dwInput))
-              {
-              case 1: if (T_ENDIAN16(dwInput))
-                            FromInput = Unroll1WordBigEndian;
-                      else
-                          if (T_FLAVOR(dwInput))
-                                FromInput = Unroll1WordReversed;
-                            else
-                                  FromInput = Unroll1Word;
-                      break;
-
-              case 2: if (T_ENDIAN16(dwInput))
-                            FromInput = Unroll2WordBigEndian;
-                        else {
-                          if (T_SWAPFIRST(dwInput))
-                              FromInput = Unroll2WordSwapFirst;
-                          else 
-                              FromInput = Unroll2Word;              
-                        }
-                        break;
-
-              case 3: if (T_DOSWAP(dwInput)) {
-                            if (T_ENDIAN16(dwInput))
-                                   FromInput = Unroll3WordsSwapBigEndian;
-                            else
-                                   FromInput = Unroll3WordsSwap;
-                      }
-                      else {
-                            if (T_ENDIAN16(dwInput))
-                                   FromInput = Unroll3WordsBigEndian;
-                            else
-                                   FromInput = Unroll3Words;
-                      }
-                      break;
-
-              case 4: if (T_DOSWAP(dwInput)) {
-
-                            if (T_ENDIAN16(dwInput))
-                                   FromInput = Unroll4WordsSwapBigEndian;
-                            else {
-                                   
-                                    if (T_SWAPFIRST(dwInput))
-                                        FromInput = Unroll4WordsSwapSwapFirst;
-                                    else 
-                                        FromInput = Unroll4WordsSwap;
-
-                            }
-                            
-                      }
-                      else {
-
-                            if (T_EXTRA(dwInput) == 3)
-                                    FromInput = Unroll1WordSkip3;
-                            else
-
-                                if (T_ENDIAN16(dwInput)) {
-
-                                    if (T_FLAVOR(dwInput))
-                                        FromInput = Unroll4WordsBigEndianReverse;
-                                    else
-                                        FromInput = Unroll4WordsBigEndian;
-                                }
-                            else {
-                                  if (T_SWAPFIRST(dwInput))
-                                    FromInput = Unroll4WordsSwapFirst;
-                                  else {
-                                      if (T_FLAVOR(dwInput))
-                                            FromInput = Unroll4WordsReverse;
-                                      else
-                                            FromInput = Unroll4Words;                                    
-                                  }
-                            }
-                      }
-                      break;
-
-              case 5:
-              case 6:
-              case 7:
-              case 8:
-                    if (!T_DOSWAP(dwInput) && !T_SWAPFIRST(dwInput))
-                       FromInput = UnrollAnyWords;
-                    break;
-
-              }
-              break;
-
-       default:;
-       }
-       }
-       }
+				default:;
+				}
+				break;
 
 
-       if (!FromInput)
-              cmsSignalError(LCMS_ERRC_ABORTED, "Unknown input format");
+			case 2: // 1 word per channel
 
-       return FromInput;
+				switch (T_CHANNELS(dwInput) + T_EXTRA(dwInput))
+				{
+				case 1: if (T_ENDIAN16(dwInput))
+					FromInput = Unroll1WordBigEndian;
+						else
+					if (T_FLAVOR(dwInput))
+						FromInput = Unroll1WordReversed;
+					else
+						FromInput = Unroll1Word;
+					break;
+
+				case 2: if (T_ENDIAN16(dwInput))
+					FromInput = Unroll2WordBigEndian;
+						else {
+					if (T_SWAPFIRST(dwInput))
+						FromInput = Unroll2WordSwapFirst;
+					else
+						FromInput = Unroll2Word;
+				}
+						break;
+
+				case 3: if (T_DOSWAP(dwInput)) {
+					if (T_ENDIAN16(dwInput))
+						FromInput = Unroll3WordsSwapBigEndian;
+					else
+						FromInput = Unroll3WordsSwap;
+				}
+						else {
+					if (T_ENDIAN16(dwInput))
+						FromInput = Unroll3WordsBigEndian;
+					else
+						FromInput = Unroll3Words;
+				}
+						break;
+
+				case 4: if (T_DOSWAP(dwInput)) {
+
+					if (T_ENDIAN16(dwInput))
+						FromInput = Unroll4WordsSwapBigEndian;
+					else {
+
+						if (T_SWAPFIRST(dwInput))
+							FromInput = Unroll4WordsSwapSwapFirst;
+						else
+							FromInput = Unroll4WordsSwap;
+
+					}
+
+				}
+						else {
+
+					if (T_EXTRA(dwInput) == 3)
+						FromInput = Unroll1WordSkip3;
+					else
+
+						if (T_ENDIAN16(dwInput)) {
+
+							if (T_FLAVOR(dwInput))
+								FromInput = Unroll4WordsBigEndianReverse;
+							else
+								FromInput = Unroll4WordsBigEndian;
+						}
+						else {
+							if (T_SWAPFIRST(dwInput))
+								FromInput = Unroll4WordsSwapFirst;
+							else {
+								if (T_FLAVOR(dwInput))
+									FromInput = Unroll4WordsReverse;
+								else
+									FromInput = Unroll4Words;
+							}
+						}
+				}
+						break;
+
+				case 5:
+				case 6:
+				case 7:
+				case 8:
+					if (!T_DOSWAP(dwInput) && !T_SWAPFIRST(dwInput))
+						FromInput = UnrollAnyWords;
+					break;
+
+				}
+				break;
+
+			default:;
+			}
+		}
+	}
+
+
+	if (!FromInput)
+		cmsSignalError(LCMS_ERRC_ABORTED, "Unknown input format");
+
+	return FromInput;
 }
 
 //  choose routine from Input identifier
 
 _cmsFIXFN _cmsIdentifyOutputFormat(_LPcmsTRANSFORM xform, DWORD dwOutput)
 {
-       _cmsFIXFN ToOutput = NULL;
+	_cmsFIXFN ToOutput = NULL;
 
 
-       if (T_BYTES(dwOutput) == 0) {
+	if (T_BYTES(dwOutput) == 0) {
 
-           switch (T_COLORSPACE(dwOutput)) {
-               
-           case PT_Lab: 
-                    ToOutput = PackLabDouble;
-                    break;
-           case PT_XYZ: 
-                    ToOutput = PackXYZDouble;
-                    break;
+		switch (T_COLORSPACE(dwOutput)) {
 
-           // 0.0 .. 1.0 range
-           case PT_GRAY:
-           case PT_RGB:
-           case PT_YCbCr:
-           case PT_YUV:
-           case PT_YUVK:
-           case PT_HSV:
-           case PT_HLS:
-           case PT_Yxy: 
-                    ToOutput = PackDouble;
-                    break;
+		case PT_Lab:
+			ToOutput = PackLabDouble;
+			break;
+		case PT_XYZ:
+			ToOutput = PackXYZDouble;
+			break;
 
-            // Inks (%) 0.0 .. 100.0
+			// 0.0 .. 1.0 range
+		case PT_GRAY:
+		case PT_RGB:
+		case PT_YCbCr:
+		case PT_YUV:
+		case PT_YUVK:
+		case PT_HSV:
+		case PT_HLS:
+		case PT_Yxy:
+			ToOutput = PackDouble;
+			break;
 
-           default:
-                    ToOutput = PackInkDouble;
-                    break;
-           }
-                    
-       }
-       else 
+			// Inks (%) 0.0 .. 100.0
 
-       if (T_PLANAR(dwOutput)) {
+		default:
+			ToOutput = PackInkDouble;
+			break;
+		}
 
-       switch (T_BYTES(dwOutput)) {
+	}
+	else
 
-              case 1: ToOutput = PackPlanarBytes;
-                      break;
+		if (T_PLANAR(dwOutput)) {
 
-              case 2:if (!T_ENDIAN16(dwOutput))
-                            ToOutput = PackPlanarWords;
-                      break;
+			switch (T_BYTES(dwOutput)) {
 
-              default:;
-       }
-       }
-       else {
+			case 1: ToOutput = PackPlanarBytes;
+				break;
 
-              switch (T_BYTES(dwOutput)) {
+			case 2:if (!T_ENDIAN16(dwOutput))
+				ToOutput = PackPlanarWords;
+				break;
 
-              case 1:
-                     switch (T_CHANNELS(dwOutput))
-                     {
-                     case 1:
-                            ToOutput = Pack1Byte;
-                            if (T_EXTRA(dwOutput) == 1) {
-                                if (T_SWAPFIRST(dwOutput))
-                                   ToOutput = Pack1ByteAndSkip1SwapFirst;
-                                else
-                                   ToOutput = Pack1ByteAndSkip1;
-                            }
-                            break;
+			default:;
+			}
+		}
+		else {
 
-                     case 3:
-                         switch (T_EXTRA(dwOutput)) {
+			switch (T_BYTES(dwOutput)) {
 
-                         case 0: if (T_DOSWAP(dwOutput))
-                                   ToOutput = Pack3BytesSwap;
-                                 else
-                                     if (T_COLORSPACE(dwOutput) == PT_Lab)
-                                        ToOutput = Pack3BytesLab;
-                                     else
-                                        ToOutput = Pack3Bytes;
-                             break;
+			case 1:
+				switch (T_CHANNELS(dwOutput))
+				{
+				case 1:
+					ToOutput = Pack1Byte;
+					if (T_EXTRA(dwOutput) == 1) {
+						if (T_SWAPFIRST(dwOutput))
+							ToOutput = Pack1ByteAndSkip1SwapFirst;
+						else
+							ToOutput = Pack1ByteAndSkip1;
+					}
+					break;
 
-                         case 1:    // TODO: ALab8 should be handled here
-                             
-                                    if (T_DOSWAP(dwOutput)) {
+				case 3:
+					switch (T_EXTRA(dwOutput)) {
 
-                                    if (T_SWAPFIRST(dwOutput))  
-                                        ToOutput = Pack3BytesAndSkip1SwapSwapFirst;
-                                    else
-                                        ToOutput = Pack3BytesAndSkip1Swap;
-                                 }
-                             else {
-                                   if (T_SWAPFIRST(dwOutput))
-                                    ToOutput = Pack3BytesAndSkip1SwapFirst;
-                                   else 
-                                    ToOutput = Pack3BytesAndSkip1;
-                             }
-                             break;
+					case 0: if (T_DOSWAP(dwOutput))
+						ToOutput = Pack3BytesSwap;
+							else
+						if (T_COLORSPACE(dwOutput) == PT_Lab)
+							ToOutput = Pack3BytesLab;
+						else
+							ToOutput = Pack3Bytes;
+						break;
 
-                         default:;
-                         }
-                         break;
+					case 1:    // TODO: ALab8 should be handled here
 
-                     case 4: if (T_EXTRA(dwOutput) == 0)
-                             {
-                             if (T_DOSWAP(dwOutput)) {
-                                 if (T_SWAPFIRST(dwOutput))
-                                        ToOutput = Pack4BytesSwapSwapFirst;
-                                 else
-                                        ToOutput = Pack4BytesSwap;
-                             }
-                             else {
-                                 if (T_SWAPFIRST(dwOutput))
-                                        ToOutput = Pack4BytesSwapFirst;
-                                 else {
+						if (T_DOSWAP(dwOutput)) {
 
-                                     if (T_FLAVOR(dwOutput))
-                                         ToOutput = Pack4BytesReverse;
-                                     else
-                                          ToOutput = Pack4Bytes;
-                                 }
-                             }
-                             }
-                             break;
+							if (T_SWAPFIRST(dwOutput))
+								ToOutput = Pack3BytesAndSkip1SwapSwapFirst;
+							else
+								ToOutput = Pack3BytesAndSkip1Swap;
+						}
+						else {
+							if (T_SWAPFIRST(dwOutput))
+								ToOutput = Pack3BytesAndSkip1SwapFirst;
+							else
+								ToOutput = Pack3BytesAndSkip1;
+						}
+						break;
 
-                     // Hexachrome separations.
-                     case 6: if (T_EXTRA(dwOutput) == 0)
-                            {
-                            if( T_DOSWAP(dwOutput))
-                                   ToOutput = Pack6BytesSwap;
-                            else
-                                   ToOutput = Pack6Bytes;
-                            }
-                            break;
+					default:;
+					}
+					break;
 
-                     case 5:
-                     case 7:
-                     case 8:
-                     case 9:
-                     case 10:
-                     case 11:
-                     case 12:
-                     case 13:
-                     case 14:
-                     case 15:
+				case 4: if (T_EXTRA(dwOutput) == 0)
+				{
+					if (T_DOSWAP(dwOutput)) {
+						if (T_SWAPFIRST(dwOutput))
+							ToOutput = Pack4BytesSwapSwapFirst;
+						else
+							ToOutput = Pack4BytesSwap;
+					}
+					else {
+						if (T_SWAPFIRST(dwOutput))
+							ToOutput = Pack4BytesSwapFirst;
+						else {
 
-                            if ((T_EXTRA(dwOutput) == 0) && (T_SWAPFIRST(dwOutput) == 0))
-                            {
-                                   if (T_DOSWAP(dwOutput))
-                                          ToOutput = PackNBytesSwap;
-                                   else
-                                          ToOutput = PackNBytes;
-                            }
-                            break;
+							if (T_FLAVOR(dwOutput))
+								ToOutput = Pack4BytesReverse;
+							else
+								ToOutput = Pack4Bytes;
+						}
+					}
+				}
+						break;
 
-                     default:;
-                     }
-                     break;
+						// Hexachrome separations.
+				case 6: if (T_EXTRA(dwOutput) == 0)
+				{
+					if (T_DOSWAP(dwOutput))
+						ToOutput = Pack6BytesSwap;
+					else
+						ToOutput = Pack6Bytes;
+				}
+						break;
 
+				case 5:
+				case 7:
+				case 8:
+				case 9:
+				case 10:
+				case 11:
+				case 12:
+				case 13:
+				case 14:
+				case 15:
 
-              case 2:
+					if ((T_EXTRA(dwOutput) == 0) && (T_SWAPFIRST(dwOutput) == 0))
+					{
+						if (T_DOSWAP(dwOutput))
+							ToOutput = PackNBytesSwap;
+						else
+							ToOutput = PackNBytes;
+					}
+					break;
 
-                     switch (T_CHANNELS(dwOutput)) {
-
-                     case 1:
-                            if (T_ENDIAN16(dwOutput))
-
-                                   ToOutput = Pack1WordBigEndian;
-                            else
-                                   ToOutput = Pack1Word;
-
-                            if (T_EXTRA(dwOutput) == 1) {
-
-                               if (T_ENDIAN16(dwOutput))
-
-                                   ToOutput = Pack1WordAndSkip1BigEndian;
-                               else {
-                                   if (T_SWAPFIRST(dwOutput))
-                                      ToOutput = Pack1WordAndSkip1SwapFirst;
-                                   else 
-                                      ToOutput = Pack1WordAndSkip1;
-                               }
-                            }
-                            break;
-
-                     case 3:
-
-                         switch (T_EXTRA(dwOutput)) {
-
-                         case 0:
-                               if (T_DOSWAP(dwOutput)) {
-
-                                   if (T_ENDIAN16(dwOutput))
-
-                                          ToOutput = Pack3WordsSwapBigEndian;
-                                   else
-                                          ToOutput = Pack3WordsSwap;
-                               }
-                               else {
-                                   if (T_ENDIAN16(dwOutput))
-
-                                      ToOutput = Pack3WordsBigEndian;
-                                   else
-                                      ToOutput = Pack3Words;
-                                   }
-                             break;
-
-                         case 1: if (T_DOSWAP(dwOutput)) {
-
-                                   if (T_ENDIAN16(dwOutput))
-
-                                          ToOutput = Pack3WordsAndSkip1SwapBigEndian;
-                                   else {
-                                       if (T_SWAPFIRST(dwOutput)) 
-                                          ToOutput = Pack3WordsAndSkip1SwapSwapFirst;
-                                       else 
-                                          ToOutput = Pack3WordsAndSkip1Swap;
-                                   }
-                             }
-                             else  {
-                                   if (T_ENDIAN16(dwOutput))
-                                          ToOutput = Pack3WordsAndSkip1BigEndian;
-                                   else
-                                          ToOutput = Pack3WordsAndSkip1;
-                                   }
-                         default:;
-                         }
-                         break;
-
-                     case 4: if (T_EXTRA(dwOutput) == 0) {
-
-                                   if (T_DOSWAP(dwOutput)) {
-
-                                           if (T_ENDIAN16(dwOutput))
-                                                 ToOutput = Pack4WordsSwapBigEndian;
-                                           else
-                                                 ToOutput = Pack4WordsSwap;
-                                   }
-                                   else {
-
-                                       if (T_ENDIAN16(dwOutput)) {
-                                              
-                                           if (T_FLAVOR(dwOutput))
-                                                ToOutput = Pack4WordsBigEndianReverse;
-                                           else
-                                                ToOutput = Pack4WordsBigEndian;
-                                       }
-                                       else {
-                                          if (T_FLAVOR(dwOutput))
-                                              ToOutput = Pack4WordsReverse;
-                                          else 
-                                               ToOutput = Pack4Words;
-                                        }
-                                   }
-                            }
-                            break;
-
-                     case 6: if (T_EXTRA(dwOutput) == 0) {
-
-                                   if (T_DOSWAP(dwOutput)) {
-
-                                          if (T_ENDIAN16(dwOutput))
-                                                 ToOutput = Pack6WordsSwapBigEndian;
-                                          else
-                                                 ToOutput = Pack6WordsSwap;
-                                   }
-                                   else {
-
-                                   if (T_ENDIAN16(dwOutput))
-                                          ToOutput = Pack6WordsBigEndian;
-                                   else
-                                          ToOutput = Pack6Words;
-                                   }
-                             }
-                             break;
+				default:;
+				}
+				break;
 
 
-                     case 5:
-                     case 7:
-                     case 8:
-                     case 9:
-                     case 10:
-                     case 11:
-                     case 12:
-                     case 13:
-                     case 14:
-                     case 15: if ((T_EXTRA(dwOutput) == 0) && (T_SWAPFIRST(dwOutput) == 0)) {
+			case 2:
 
-                                   if (T_DOSWAP(dwOutput)) {
+				switch (T_CHANNELS(dwOutput)) {
 
-                                          if (T_ENDIAN16(dwOutput))
-                                                 ToOutput = PackNWordsSwapBigEndian;
-                                          else
-                                                 ToOutput = PackNWordsSwap;
-                                   }
-                                   else {
+				case 1:
+					if (T_ENDIAN16(dwOutput))
 
-                                          if (T_ENDIAN16(dwOutput))
-                                                 ToOutput = PackNWordsBigEndian;
-                                          else
-                                                 ToOutput = PackNWords;
-                                          }
-                             }
-                             break;
+						ToOutput = Pack1WordBigEndian;
+					else
+						ToOutput = Pack1Word;
 
-                     default:;
-                     }
-                     break;
+					if (T_EXTRA(dwOutput) == 1) {
 
-              default:;
-              }
-              }
+						if (T_ENDIAN16(dwOutput))
 
-              if (!ToOutput)
-                     cmsSignalError(LCMS_ERRC_ABORTED, "Unknown output format");
+							ToOutput = Pack1WordAndSkip1BigEndian;
+						else {
+							if (T_SWAPFIRST(dwOutput))
+								ToOutput = Pack1WordAndSkip1SwapFirst;
+							else
+								ToOutput = Pack1WordAndSkip1;
+						}
+					}
+					break;
 
-              return ToOutput;
+				case 3:
+
+					switch (T_EXTRA(dwOutput)) {
+
+					case 0:
+						if (T_DOSWAP(dwOutput)) {
+
+							if (T_ENDIAN16(dwOutput))
+
+								ToOutput = Pack3WordsSwapBigEndian;
+							else
+								ToOutput = Pack3WordsSwap;
+						}
+						else {
+							if (T_ENDIAN16(dwOutput))
+
+								ToOutput = Pack3WordsBigEndian;
+							else
+								ToOutput = Pack3Words;
+						}
+						break;
+
+					case 1: if (T_DOSWAP(dwOutput)) {
+
+						if (T_ENDIAN16(dwOutput))
+
+							ToOutput = Pack3WordsAndSkip1SwapBigEndian;
+						else {
+							if (T_SWAPFIRST(dwOutput))
+								ToOutput = Pack3WordsAndSkip1SwapSwapFirst;
+							else
+								ToOutput = Pack3WordsAndSkip1Swap;
+						}
+					}
+							else {
+						if (T_ENDIAN16(dwOutput))
+							ToOutput = Pack3WordsAndSkip1BigEndian;
+						else
+							ToOutput = Pack3WordsAndSkip1;
+					}
+					default:;
+					}
+					break;
+
+				case 4: if (T_EXTRA(dwOutput) == 0) {
+
+					if (T_DOSWAP(dwOutput)) {
+
+						if (T_ENDIAN16(dwOutput))
+							ToOutput = Pack4WordsSwapBigEndian;
+						else
+							ToOutput = Pack4WordsSwap;
+					}
+					else {
+
+						if (T_ENDIAN16(dwOutput)) {
+
+							if (T_FLAVOR(dwOutput))
+								ToOutput = Pack4WordsBigEndianReverse;
+							else
+								ToOutput = Pack4WordsBigEndian;
+						}
+						else {
+							if (T_FLAVOR(dwOutput))
+								ToOutput = Pack4WordsReverse;
+							else
+								ToOutput = Pack4Words;
+						}
+					}
+				}
+						break;
+
+				case 6: if (T_EXTRA(dwOutput) == 0) {
+
+					if (T_DOSWAP(dwOutput)) {
+
+						if (T_ENDIAN16(dwOutput))
+							ToOutput = Pack6WordsSwapBigEndian;
+						else
+							ToOutput = Pack6WordsSwap;
+					}
+					else {
+
+						if (T_ENDIAN16(dwOutput))
+							ToOutput = Pack6WordsBigEndian;
+						else
+							ToOutput = Pack6Words;
+					}
+				}
+						break;
+
+
+				case 5:
+				case 7:
+				case 8:
+				case 9:
+				case 10:
+				case 11:
+				case 12:
+				case 13:
+				case 14:
+				case 15: if ((T_EXTRA(dwOutput) == 0) && (T_SWAPFIRST(dwOutput) == 0)) {
+
+					if (T_DOSWAP(dwOutput)) {
+
+						if (T_ENDIAN16(dwOutput))
+							ToOutput = PackNWordsSwapBigEndian;
+						else
+							ToOutput = PackNWordsSwap;
+					}
+					else {
+
+						if (T_ENDIAN16(dwOutput))
+							ToOutput = PackNWordsBigEndian;
+						else
+							ToOutput = PackNWords;
+					}
+				}
+						 break;
+
+				default:;
+				}
+				break;
+
+			default:;
+			}
+		}
+
+	if (!ToOutput)
+		cmsSignalError(LCMS_ERRC_ABORTED, "Unknown output format");
+
+	return ToOutput;
 }
 
 // User formatters for (weird) cases not already included
 
-void LCMSEXPORT cmsSetUserFormatters(cmsHTRANSFORM hTransform, DWORD dwInput,  cmsFORMATTER Input,
-                                                               DWORD dwOutput, cmsFORMATTER Output)
+void LCMSEXPORT cmsSetUserFormatters(cmsHTRANSFORM hTransform, DWORD dwInput, cmsFORMATTER Input,
+	DWORD dwOutput, cmsFORMATTER Output)
 {
-    _LPcmsTRANSFORM xform = (_LPcmsTRANSFORM) (LPSTR) hTransform;
-    
-    xform ->FromInput = (_cmsFIXFN) Input;
-    xform ->InputFormat = dwInput;
-    xform ->ToOutput  = (_cmsFIXFN) Output;
-    xform ->OutputFormat = dwOutput;
+	_LPcmsTRANSFORM xform = (_LPcmsTRANSFORM)(LPSTR)hTransform;
+
+	xform->FromInput = (_cmsFIXFN)Input;
+	xform->InputFormat = dwInput;
+	xform->ToOutput = (_cmsFIXFN)Output;
+	xform->OutputFormat = dwOutput;
 
 }
 
-void LCMSEXPORT cmsGetUserFormatters(cmsHTRANSFORM hTransform, 
-                                     LPDWORD InputFormat, cmsFORMATTER* Input, 
-                                     LPDWORD OutputFormat, cmsFORMATTER* Output)
+void LCMSEXPORT cmsGetUserFormatters(cmsHTRANSFORM hTransform,
+	LPDWORD InputFormat, cmsFORMATTER* Input,
+	LPDWORD OutputFormat, cmsFORMATTER* Output)
 {
-    _LPcmsTRANSFORM xform = (_LPcmsTRANSFORM) (LPSTR) hTransform;
-    
-    *Input =  (cmsFORMATTER) xform ->FromInput;
-    *InputFormat = xform -> InputFormat;
-    *Output = (cmsFORMATTER) xform ->ToOutput;
-    *OutputFormat = xform -> OutputFormat;
+	_LPcmsTRANSFORM xform = (_LPcmsTRANSFORM)(LPSTR)hTransform;
+
+	*Input = (cmsFORMATTER)xform->FromInput;
+	*InputFormat = xform->InputFormat;
+	*Output = (cmsFORMATTER)xform->ToOutput;
+	*OutputFormat = xform->OutputFormat;
 }
 
 
 // Change format of yet existing transform. No colorspace checking is performed
 
-void LCMSEXPORT cmsChangeBuffersFormat(cmsHTRANSFORM hTransform, 
-                                        DWORD dwInputFormat, 
-                                        DWORD dwOutputFormat)
+void LCMSEXPORT cmsChangeBuffersFormat(cmsHTRANSFORM hTransform,
+	DWORD dwInputFormat,
+	DWORD dwOutputFormat)
 {
 
-    cmsSetUserFormatters(hTransform, 
-                        dwInputFormat,
-                        (cmsFORMATTER) _cmsIdentifyInputFormat((_LPcmsTRANSFORM ) hTransform, dwInputFormat),
-                        dwOutputFormat,
-                        (cmsFORMATTER) _cmsIdentifyOutputFormat((_LPcmsTRANSFORM ) hTransform, dwOutputFormat));
+	cmsSetUserFormatters(hTransform,
+		dwInputFormat,
+		(cmsFORMATTER)_cmsIdentifyInputFormat((_LPcmsTRANSFORM)hTransform, dwInputFormat),
+		dwOutputFormat,
+		(cmsFORMATTER)_cmsIdentifyOutputFormat((_LPcmsTRANSFORM)hTransform, dwOutputFormat));
 }

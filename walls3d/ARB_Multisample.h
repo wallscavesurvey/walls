@@ -21,7 +21,7 @@ extern PFNWGLCHOOSEPIXELFORMATARBPROC wglChoosePixelFormatARB;
 #define CHECK_FOR_MULTISAMPLE 1
 
 //to check for our sampling
-bool InitMultisample(HINSTANCE hInstance,HWND hWnd);
+bool InitMultisample(HINSTANCE hInstance, HWND hWnd);
 bool WGLisExtensionSupported(const char *extension);
 
 #endif

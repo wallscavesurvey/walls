@@ -1,4 +1,4 @@
-/* global.h --- prototypes for functions and global variables 
+/* global.h --- prototypes for functions and global variables
  *
  * Initial code by Alex Jakulin,  Aug. 1995
  *
@@ -16,8 +16,8 @@
 void init_stats();
 
 /* lossless_d.c*/
-int lossless_undoscanline(	pixel *psl,			/* previous scanline */
-							pixel *sl,			/* current scanline */
-							int no);			/* number of values in it */
+int lossless_undoscanline(pixel *psl,			/* previous scanline */
+	pixel *sl,			/* current scanline */
+	int no);			/* number of values in it */
 
 #endif

@@ -13,19 +13,19 @@ class CShpLayer;
 class CShowShapeDlg;
 class CWallsMapDoc;
 
-extern UINT urm_DATACHANGED,urm_LINKCLICKED;
+extern UINT urm_DATACHANGED, urm_LINKCLICKED;
 
 class CDbtEditDlg : public CMemoEditDlg
 {
 	DECLARE_DYNAMIC(CDbtEditDlg)
 
 public:
-	CDbtEditDlg(CDialog *pParentDlg,CShpLayer *pShp,EDITED_MEMO &memo,CWnd* pParent = NULL);   // standard constructor
+	CDbtEditDlg(CDialog *pParentDlg, CShpLayer *pShp, EDITED_MEMO &memo, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CDbtEditDlg();
 
 	//virtual bool CanReInit(CShpLayer *pShp,DWORD nRec,UINT nFld);
-	virtual void ReInit(CShpLayer *pShp,EDITED_MEMO &memo);
-	virtual bool DenyClose(BOOL bForceClose=FALSE);
+	virtual void ReInit(CShpLayer *pShp, EDITED_MEMO &memo);
+	virtual bool DenyClose(BOOL bForceClose = FALSE);
 	virtual bool HasEditedText();
 	virtual void SetEditable(bool bEditable);
 
@@ -39,7 +39,7 @@ public:
 		DestroyWindow();
 	}
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_DBTEDITDLG };
 
 private:
@@ -53,7 +53,7 @@ private:
 	CStatic	m_placement;
 	CRulerRichEditCtrl	m_rtf;
 
-	void ChkToolbarButton(BOOL bVisible) {((CButton *)GetDlgItem(IDC_CHK_TOOLBAR))->SetCheck(bVisible);}
+	void ChkToolbarButton(BOOL bVisible) { ((CButton *)GetDlgItem(IDC_CHK_TOOLBAR))->SetCheck(bVisible); }
 
 	virtual BOOL OnInitDialog();
 	virtual void DoDataExchange(CDataExchange* pDX);

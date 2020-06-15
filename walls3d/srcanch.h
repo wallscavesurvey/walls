@@ -31,27 +31,33 @@
 
 class SourceAnchor
 {
-  public:
-    SourceAnchor (                      // constructor
-      long id,                          //   anchor id
-      const RString& aobject,           //   anchor object
-      const char* groupname             //   group name (if NULL, object anchor)
-    );
-    ~SourceAnchor ();
+public:
+	SourceAnchor(                      // constructor
+		long id,                          //   anchor id
+		const RString& aobject,           //   anchor object
+		const char* groupname             //   group name (if NULL, object anchor)
+	);
+	~SourceAnchor();
 
-    const char* groupName () const      // get group name
-    { return groupname_; }
+	const char* groupName() const      // get group name
+	{
+		return groupname_;
+	}
 
-    long id () const                    // get anchor id
-    { return anchorid_; }
+	long id() const                    // get anchor id
+	{
+		return anchorid_;
+	}
 
-    const RString& object () const      // get anchor object
-    { return anchorobj_; }
+	const RString& object() const      // get anchor object
+	{
+		return anchorobj_;
+	}
 
-  private:
-    char* groupname_;
-    long anchorid_;
-    RString anchorobj_;
+private:
+	char* groupname_;
+	long anchorid_;
+	RString anchorobj_;
 };  // SourceAnchor
 
 

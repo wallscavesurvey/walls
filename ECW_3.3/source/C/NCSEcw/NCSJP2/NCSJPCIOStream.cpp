@@ -2,13 +2,13 @@
 ** Copyright 2002 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:     $Archive: /NCS/Source/C/NCSEcw/NCSJP2/NCSJPCIOStream.cpp $
@@ -24,11 +24,11 @@
 #endif
 
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
- 
-// Constructor
+ //////////////////////////////////////////////////////////////////////
+ // Construction/Destruction
+ //////////////////////////////////////////////////////////////////////
+
+ // Constructor
 CNCSJPCIOStream::CNCSJPCIOStream()
 {
 	// Initialise the members
@@ -55,12 +55,12 @@ CNCSJPCIOStream::~CNCSJPCIOStream()
 // Open the stream on the specified full path name.
 CNCSError CNCSJPCIOStream::Open(wchar_t*pName, bool bWrite)
 {
-    m_pName = (wchar_t *) malloc((wcslen(pName)+1) * sizeof(wchar_t));
-    wcscpy(m_pName, pName);
+	m_pName = (wchar_t *)malloc((wcslen(pName) + 1) * sizeof(wchar_t));
+	wcscpy(m_pName, pName);
 
-//	m_pName = wcsdup(pName);
+	//	m_pName = wcsdup(pName);
 	m_bWrite = bWrite;
-	if(bWrite) {
+	if (bWrite) {
 		m_nBitsLeft = 8;
 	}
 	m_nOffset = 0;
@@ -73,12 +73,12 @@ CNCSError CNCSJPCIOStream::Open(char *pName, bool bWrite)
 #ifdef NCS_BUILD_UNICODE
 	m_pName = _wcsdup(OS_STRING(pName));
 #else
-    m_pName = (char *) malloc(strlen(pName)+1);
-    strcpy(m_pName, pName);
-//	m_pName = strdup(pName);
+	m_pName = (char *)malloc(strlen(pName) + 1);
+	strcpy(m_pName, pName);
+	//	m_pName = strdup(pName);
 #endif
 	m_bWrite = bWrite;
-	if(bWrite) {
+	if (bWrite) {
 		m_nBitsLeft = 8;
 	}
 	m_nOffset = 0;
@@ -125,12 +125,13 @@ INT64 CNCSJPCIOStream::Size()
 bool CNCSJPCIOStream::Mark()
 {
 	INT64 offset;
-	
+
 	offset = Tell();
-	if(offset != -1) {
+	if (offset != -1) {
 		// Keep a stack of marks
 		m_Marks.push_back(offset);
-	} else {
+	}
+	else {
 		*(CNCSError*)this = NCS_FILEIO_ERROR;
 	}
 	return(GetErrorNumber() == NCS_SUCCESS ? true : false);
@@ -139,12 +140,13 @@ bool CNCSJPCIOStream::Mark()
 // Rewind to the previous mark
 bool CNCSJPCIOStream::Rewind()
 {
-	if(m_Marks.size() != 0) {
+	if (m_Marks.size() != 0) {
 		INT64 offset;
 		offset = m_Marks[m_Marks.size() - 1];
 		UnMark();	// Pop this mark from the stack
 		return(Seek(offset, START));
-	} else {
+	}
+	else {
 		*(CNCSError*)this = NCS_FILEIO_ERROR;
 	}
 	return(GetErrorNumber() == NCS_SUCCESS ? true : false);
@@ -153,9 +155,10 @@ bool CNCSJPCIOStream::Rewind()
 // Unmark the stream, removes the previous mark from the stack
 bool CNCSJPCIOStream::UnMark()
 {
-	if(m_Marks.size() != 0) {
+	if (m_Marks.size() != 0) {
 		m_Marks.pop_back();
-	} else {
+	}
+	else {
 		*(CNCSError*)this = NCS_FILEIO_ERROR;
 	}
 	return(GetErrorNumber() == NCS_SUCCESS ? true : false);
@@ -182,7 +185,7 @@ bool CNCSJPCIOStream::Write(void* buffer, UINT32 count)
 // Miscellaneous read/write routines, these byteswap as necessary, JP2 files are always MSB byteorder.
 bool CNCSJPCIOStream::ReadUINT16(UINT16 &Buffer)
 {
-	if(Read(&Buffer, sizeof(Buffer))) {
+	if (Read(&Buffer, sizeof(Buffer))) {
 #ifdef NCSBO_LSBFIRST
 		Buffer = NCSByteSwap16(Buffer);
 #endif
@@ -193,7 +196,7 @@ bool CNCSJPCIOStream::ReadUINT16(UINT16 &Buffer)
 
 bool CNCSJPCIOStream::ReadUINT32(UINT32 &Buffer)
 {
-	if(Read(&Buffer, sizeof(Buffer))) {
+	if (Read(&Buffer, sizeof(Buffer))) {
 #ifdef NCSBO_LSBFIRST
 		Buffer = NCSByteSwap32(Buffer);
 #endif
@@ -204,7 +207,7 @@ bool CNCSJPCIOStream::ReadUINT32(UINT32 &Buffer)
 
 bool CNCSJPCIOStream::ReadUINT64(UINT64 &Buffer)
 {
-	if(Read(&Buffer, sizeof(Buffer))) {
+	if (Read(&Buffer, sizeof(Buffer))) {
 #ifdef NCSBO_LSBFIRST
 		Buffer = NCSByteSwap64(Buffer);
 #endif
@@ -215,7 +218,7 @@ bool CNCSJPCIOStream::ReadUINT64(UINT64 &Buffer)
 
 bool CNCSJPCIOStream::ReadINT16(INT16 &Buffer)
 {
-	if(Read(&Buffer, sizeof(Buffer))) {
+	if (Read(&Buffer, sizeof(Buffer))) {
 #ifdef NCSBO_LSBFIRST
 		Buffer = NCSByteSwap16(Buffer);
 #endif
@@ -226,7 +229,7 @@ bool CNCSJPCIOStream::ReadINT16(INT16 &Buffer)
 
 bool CNCSJPCIOStream::ReadINT32(INT32 &Buffer)
 {
-	if(Read(&Buffer, sizeof(Buffer))) {
+	if (Read(&Buffer, sizeof(Buffer))) {
 #ifdef NCSBO_LSBFIRST
 		Buffer = NCSByteSwap32(Buffer);
 #endif
@@ -237,7 +240,7 @@ bool CNCSJPCIOStream::ReadINT32(INT32 &Buffer)
 
 bool CNCSJPCIOStream::ReadINT64(INT64 &Buffer)
 {
-	if(Read(&Buffer, sizeof(Buffer))) {
+	if (Read(&Buffer, sizeof(Buffer))) {
 #ifdef NCSBO_LSBFIRST
 		Buffer = NCSByteSwap64(Buffer);
 #endif
@@ -248,7 +251,7 @@ bool CNCSJPCIOStream::ReadINT64(INT64 &Buffer)
 
 bool CNCSJPCIOStream::ReadIEEE4(IEEE4 &Buffer)
 {
-	if(Read(&Buffer, sizeof(Buffer))) {
+	if (Read(&Buffer, sizeof(Buffer))) {
 #ifdef NCSBO_LSBFIRST
 		NCSByteSwapRange32((UINT32*)&Buffer, (UINT32*)&Buffer, 1);
 #endif
@@ -259,7 +262,7 @@ bool CNCSJPCIOStream::ReadIEEE4(IEEE4 &Buffer)
 
 bool CNCSJPCIOStream::ReadIEEE8(IEEE8 &Buffer)
 {
-	if(Read(&Buffer, sizeof(Buffer))) {
+	if (Read(&Buffer, sizeof(Buffer))) {
 #ifdef NCSBO_LSBFIRST
 		NCSByteSwapRange64((UINT64*)&Buffer, (UINT64*)&Buffer, 1);
 #endif
@@ -270,7 +273,7 @@ bool CNCSJPCIOStream::ReadIEEE8(IEEE8 &Buffer)
 
 bool CNCSJPCIOStream::WriteUINT8(UINT8 nValue)
 {
-	if(Write(&nValue, sizeof(nValue))) {
+	if (Write(&nValue, sizeof(nValue))) {
 		return(true);
 	}
 	return(false);
@@ -281,7 +284,7 @@ bool CNCSJPCIOStream::WriteUINT16(UINT16 nValue)
 #ifdef NCSBO_LSBFIRST
 	nValue = NCSByteSwap16(nValue);
 #endif
-	if(Write(&nValue, sizeof(nValue))) {
+	if (Write(&nValue, sizeof(nValue))) {
 		return(true);
 	}
 	return(false);
@@ -292,7 +295,7 @@ bool CNCSJPCIOStream::WriteUINT32(UINT32 nValue)
 #ifdef NCSBO_LSBFIRST
 	nValue = NCSByteSwap32(nValue);
 #endif
-	if(Write(&nValue, sizeof(nValue))) {
+	if (Write(&nValue, sizeof(nValue))) {
 		return(true);
 	}
 	return(false);
@@ -303,7 +306,7 @@ bool CNCSJPCIOStream::WriteUINT64(UINT64 nValue)
 #ifdef NCSBO_LSBFIRST
 	nValue = NCSByteSwap64(nValue);
 #endif
-	if(Write(&nValue, sizeof(nValue))) {
+	if (Write(&nValue, sizeof(nValue))) {
 		return(true);
 	}
 	return(false);
@@ -311,7 +314,7 @@ bool CNCSJPCIOStream::WriteUINT64(UINT64 nValue)
 
 bool CNCSJPCIOStream::WriteINT8(INT8 nValue)
 {
-	if(Write(&nValue, sizeof(nValue))) {
+	if (Write(&nValue, sizeof(nValue))) {
 		return(true);
 	}
 	return(false);
@@ -322,7 +325,7 @@ bool CNCSJPCIOStream::WriteINT16(INT16 nValue)
 #ifdef NCSBO_LSBFIRST
 	nValue = NCSByteSwap16(nValue);
 #endif
-	if(Write(&nValue, sizeof(nValue))) {
+	if (Write(&nValue, sizeof(nValue))) {
 		return(true);
 	}
 	return(false);
@@ -333,7 +336,7 @@ bool CNCSJPCIOStream::WriteINT32(INT32 nValue)
 #ifdef NCSBO_LSBFIRST
 	nValue = NCSByteSwap32(nValue);
 #endif
-	if(Write(&nValue, sizeof(nValue))) {
+	if (Write(&nValue, sizeof(nValue))) {
 		return(true);
 	}
 	return(false);
@@ -344,7 +347,7 @@ bool CNCSJPCIOStream::WriteINT64(INT64 nValue)
 #ifdef NCSBO_LSBFIRST
 	nValue = NCSByteSwap64(nValue);
 #endif
-	if(Write(&nValue, sizeof(nValue))) {
+	if (Write(&nValue, sizeof(nValue))) {
 		return(true);
 	}
 	return(false);
@@ -355,7 +358,7 @@ bool CNCSJPCIOStream::WriteIEEE4(IEEE4 fValue)
 #ifdef NCSBO_LSBFIRST
 	NCSByteSwapRange32((UINT32*)&fValue, (UINT32*)&fValue, 1);
 #endif
-	if(Write(&fValue, sizeof(fValue))) {
+	if (Write(&fValue, sizeof(fValue))) {
 		return(true);
 	}
 	return(false);
@@ -366,7 +369,7 @@ bool CNCSJPCIOStream::WriteIEEE8(IEEE8 dValue)
 #ifdef NCSBO_LSBFIRST
 	NCSByteSwapRange64((UINT64*)&dValue, (UINT64*)&dValue, 1);
 #endif
-	if(Write(&dValue, sizeof(dValue))) {
+	if (Write(&dValue, sizeof(dValue))) {
 		return(true);
 	}
 	return(false);
@@ -376,9 +379,10 @@ bool CNCSJPCIOStream::WriteIEEE8(IEEE8 dValue)
 bool CNCSJPCIOStream::ResetBitStuff()
 {
 	m_nThisBytes = 0x0;
-	if(m_bWrite) {
+	if (m_bWrite) {
 		m_nBitsLeft = 8;
-	} else {
+	}
+	else {
 		m_nBitsLeft = 0;
 	}
 	return(true);
@@ -388,8 +392,8 @@ bool CNCSJPCIOStream::ResetBitStuff()
 bool CNCSJPCIOStream::FlushBitStuff()
 {
 	bool bRet = true;
-	if(m_bWrite) {
-		if(m_nBitsLeft != 8) {
+	if (m_bWrite) {
+		if (m_nBitsLeft != 8) {
 			m_nThisBytes = m_nThisBytes << m_nBitsLeft;
 			bRet &= WriteUINT8((UINT8)m_nThisBytes);
 		}
@@ -405,17 +409,19 @@ bool CNCSJPCIOStream::Stuff(bool bBit)
 	bool bRet = false;
 	m_nThisBytes = (m_nThisBytes << 1) | (UINT16)bBit;
 	m_nBitsLeft--;
-	if(m_nBitsLeft == 0) {
+	if (m_nBitsLeft == 0) {
 		bRet = WriteUINT8((UINT8)m_nThisBytes);
-		if(bRet) {
-			if(m_nThisBytes == 0xff) {
+		if (bRet) {
+			if (m_nThisBytes == 0xff) {
 				m_nBitsLeft = 7;
-			} else {
+			}
+			else {
 				m_nBitsLeft = 8;
 			}
 			m_nThisBytes = 0x0;
 		}
-	} else {
+	}
+	else {
 		bRet = true;
 	}
 	return(bRet);
@@ -425,25 +431,26 @@ bool CNCSJPCIOStream::Stuff(bool bBit)
 bool CNCSJPCIOStream::UnStuff(bool &bBit)
 {
 	bool bRet = false;
-	if(m_nBitsLeft) {
+	if (m_nBitsLeft) {
 		bBit = (m_nThisBytes & (0x1 << (m_nBitsLeft - 1))) ? true : false;
 		m_nBitsLeft--;
 		bRet = true;
-	} else {
+	}
+	else {
 		UINT8 t8;
 		bRet = ReadUINT8(t8);
-		if(bRet) {
+		if (bRet) {
 			m_nThisBytes = t8;
 			m_nBitsLeft = 8;
 
-			if(t8 == 0xff) {
+			if (t8 == 0xff) {
 				bRet = ReadUINT8(t8);
-				if(bRet) {
+				if (bRet) {
 					m_nThisBytes = (m_nThisBytes << 7) | (t8 & 0x7f);
 					m_nBitsLeft = 15;
 				}
 			}
-			if(bRet) {
+			if (bRet) {
 				return(UnStuff(bBit));
 			}
 		}

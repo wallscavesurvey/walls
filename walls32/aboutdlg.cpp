@@ -15,7 +15,7 @@ static char BASED_CODE THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CUpLnkDlg dialog
 
-CUpLnkDlg::CUpLnkDlg(LPCSTR pURL,CWnd* pParent /*=NULL*/)
+CUpLnkDlg::CUpLnkDlg(LPCSTR pURL, CWnd* pParent /*=NULL*/)
 	: CDialog(CUpLnkDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CUpLnkDlg)
@@ -46,8 +46,8 @@ BOOL CUpLnkDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	CenterWindow();
-	CEdit *ce=(CEdit *)GetDlgItem(IDC_NEWURL);
-	ce->SetSel(0,-1);
+	CEdit *ce = (CEdit *)GetDlgItem(IDC_NEWURL);
+	ce->SetSel(0, -1);
 	ce->SetFocus();
 	return FALSE;
 }
@@ -62,7 +62,7 @@ BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 	ON_WM_KEYDOWN()
 	ON_BN_CLICKED(IDC_HELPCONTENTS, &CAboutDlg::OnBnClickedHelp)
 	ON_BN_CLICKED(IDC_UPDATELINK, OnUpdateLink)
-	ON_MESSAGE(WM_COMMANDHELP,OnCommandHelp)
+	ON_MESSAGE(WM_COMMANDHELP, OnCommandHelp)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -79,11 +79,11 @@ CAboutDlg::CAboutDlg(CWnd* pParent /*=NULL*/)
 
 BOOL CAboutDlg::OnInitDialog()
 {
-	m_textLink.SubclassDlgItem(IDC_WALLSURL,this);
+	m_textLink.SubclassDlgItem(IDC_WALLSURL, this);
 	CDialog::OnInitDialog();
-	CString url=AfxGetApp()->GetProfileString("Tip","Url",NULL);
-	if(!url.IsEmpty()) {
-		if(!strstr(url,"davidmck") && !strstr(url,"www.utexas.edu/tmm/")) m_textLink.SetLink(url);
+	CString url = AfxGetApp()->GetProfileString("Tip", "Url", NULL);
+	if (!url.IsEmpty()) {
+		if (!strstr(url, "davidmck") && !strstr(url, "www.utexas.edu/tmm/")) m_textLink.SetLink(url);
 	}
 	CenterWindow();
 	GetDlgItem(IDOK)->SetFocus();
@@ -101,13 +101,13 @@ void CAboutDlg::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	EndDialog(IDOK);
 }
 
-void CAboutDlg::OnUpdateLink() 
+void CAboutDlg::OnUpdateLink()
 {
 	CUpLnkDlg dlg(m_textLink.GetLink());
 
-	if(IDOK==dlg.DoModal()) {
+	if (IDOK == dlg.DoModal()) {
 		m_textLink.SetLink(dlg.m_NewURL);
-		VERIFY(AfxGetApp()->WriteProfileString("Tip","Url",m_textLink.GetLink()));
+		VERIFY(AfxGetApp()->WriteProfileString("Tip", "Url", m_textLink.GetLink()));
 	}
 }
 

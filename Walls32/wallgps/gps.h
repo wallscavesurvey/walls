@@ -29,7 +29,7 @@ extern LPFN_GPS_CB Walls_CB;
 #define GPS_ERR_CUTOFF	-2
 
 enum e_errmsg {
-	GPS_ERR_NONE=0,
+	GPS_ERR_NONE = 0,
 	GPS_ERR_ALLOC,
 	GPS_ERR_SENDRECORD,
 	GPS_ERR_NOWPEOF,
@@ -77,7 +77,7 @@ typedef unsigned INTTYP word;
 #define DEGtoRAD  0.017453292519943296
 #define M_PI        3.14159265358979323846
 #define Pi (double)M_PI
-static const double Degree=Pi/180.0;
+static const double Degree = Pi / 180.0;
 
 int AsyncIn(void);
 void AsyncSend(byte * message, int length);
@@ -115,12 +115,12 @@ struct RECORD {
 	char datetime[25];	// date/time string as read
 	INTTYP dayofmonth;		// day of month 1-31
 	INTTYP year;			// 4 digit year of record
-	INTTYP ht,mt,st;		// time of record
+	INTTYP ht, mt, st;		// time of record
 	INTTYP dla, mla;		// Deg & Min for Lat
 	INTTYP dlo, mlo;		// Deg & Min for Long
 	INTTYP tnthsla, tnthslo;	// tenths of a minute*10000
-	double minla,minlo;	// Lat/Long minutes in decimal
-	double secla,seclo;	// Lat/Long seconds in decimal
+	double minla, minlo;	// Lat/Long minutes in decimal
+	double secla, seclo;	// Lat/Long seconds in decimal
 	float ProxDist;		// Proximity Distance
 	short icon_smbl; 	// Garmin smbl coverted to SA
 	short icon_dspl;	// Display style.  Consistant with
@@ -130,12 +130,12 @@ struct RECORD {
 						//  2 = Symbol with waypoint name
 						//  3 = Symbol with comment
 
-    byte color;         //  Waypoint symbol Color for Color units:
-                        //
-                        //   12CX : 0 - Default waypoint color
-                        //          1 - Red
-                        //          2 - Green
-                        //          3 - Blue
+	byte color;         //  Waypoint symbol Color for Color units:
+						//
+						//   12CX : 0 - Default waypoint color
+						//          1 - Red
+						//          2 - Green
+						//          3 - Blue
 //
 // garmin additions from beta.  They are used by various Pilot units
 //
@@ -312,7 +312,7 @@ typedef struct
 	Semicircle_Type posn;	// position
 	Symbol_Type smbl;		// symbol id
 	char wpt_ident[1]; 		// null-terminated string -- length isn't
-	                        //   really specified, I added 1 for a place
+							//   really specified, I added 1 for a place
 							//   holder for the decode of D105 waypoints
 } D105_Wpt_Type;
 
@@ -325,7 +325,7 @@ typedef struct
 	Semicircle_Type posn;	// position
 	Symbol_Type smbl;		// symbol id
 	char wpt_ident[1];  	// null-terminated string -- length isn't
-	                        //   really specified, I added 10 for a place
+							//   really specified, I added 10 for a place
 							//   holder for the decode of D106 waypoints
 /* char lnk_ident[]; null-terminated string */
 } D106_Wpt_Type;
@@ -463,27 +463,27 @@ typedef struct 														// size
 //D109 Waypoint Type (GPS V)
 
 typedef struct							/*                                 size */
-        {
-        byte            dtyp;           /* data packet type (0x01 for D109)1    */
-        byte            wpt_class;      /* class                           1    */
-        byte            dspl_color;     /* display & color (see below)     1    */
-        byte            attr;           /* attributes (0x70 for D109)      1    */
-        Symbol_Type     smbl;           /* waypoint symbol                 2    */
-        byte            subclass[18];   /* subclass                        18   */
-        Semicircle_Type posn;           /* 32 bit semicircle               8    */
-        float           alt;            /* altitude in meters              4    */
-        float           dpth;           /* depth in meters                 4    */
-        float           dist;           /* proximity distance in meters    4    */
-        char            state[2];       /* state                           2    */
-        char            cc[2];          /* country code                    2    */
-        longword        ete;            /* outbound link ete in seconds    4    */
-        char            ident[51];      /* variable length string          1-51 */
-    /*  char            comment[];         waypoint user comment           1-51 */
-    /*  char            facility[];        facility name                   1-31 */
-    /*  char            city[];            city name                       1-25 */
-    /*  char            addr[];            address number                  1-51 */
-    /*  char            cross_road[];      intersecting road label         1-51 */
- } D109_Wpt_Type;
+{
+	byte            dtyp;           /* data packet type (0x01 for D109)1    */
+	byte            wpt_class;      /* class                           1    */
+	byte            dspl_color;     /* display & color (see below)     1    */
+	byte            attr;           /* attributes (0x70 for D109)      1    */
+	Symbol_Type     smbl;           /* waypoint symbol                 2    */
+	byte            subclass[18];   /* subclass                        18   */
+	Semicircle_Type posn;           /* 32 bit semicircle               8    */
+	float           alt;            /* altitude in meters              4    */
+	float           dpth;           /* depth in meters                 4    */
+	float           dist;           /* proximity distance in meters    4    */
+	char            state[2];       /* state                           2    */
+	char            cc[2];          /* country code                    2    */
+	longword        ete;            /* outbound link ete in seconds    4    */
+	char            ident[51];      /* variable length string          1-51 */
+/*  char            comment[];         waypoint user comment           1-51 */
+/*  char            facility[];        facility name                   1-31 */
+/*  char            city[];            city name                       1-25 */
+/*  char            addr[];            address number                  1-51 */
+/*  char            cross_road[];      intersecting road label         1-51 */
+} D109_Wpt_Type;
 
 /*All fields are defined the same as D108 except as noted below.
 
@@ -717,7 +717,7 @@ typedef struct
 typedef struct
 {
 	char rte_ident[1];
-/* char rte_ident[]; null-terminated string */
+	/* char rte_ident[]; null-terminated string */
 } D202_Rte_Hdr_Type;
 
 //7.5.16. D300_Trk_Point_Type
@@ -734,11 +734,11 @@ typedef struct
 // point marks the beginning of a new track log segment.
 typedef struct
 {
-    Semicircle_Type posn;   // position
-    longword time;          // time */
-    float alt;              // altitude in meters
-    float dpth;             // depth in meters
-    byte new_trk;        // new track segment?
+	Semicircle_Type posn;   // position
+	longword time;          // time */
+	float alt;              // altitude in meters
+	float dpth;             // depth in meters
+	byte new_trk;        // new track segment?
 } D301_Trk_Point_Type;
 //
 // The "time" member provides a timestamp for the track log point.  This
@@ -765,10 +765,10 @@ typedef struct
 
 typedef struct
 {
-    byte dspl;           // display on the map?
-    byte color;             // color (same as D108)
-    char trk_ident[51];     // beginning of a string of *up to* 51 chars including the end NULL, but
-                            //  the structure length is sizeof(boolean)+sizeof(byte)+strlen(trk_ident)+1
+	byte dspl;           // display on the map?
+	byte color;             // color (same as D108)
+	char trk_ident[51];     // beginning of a string of *up to* 51 chars including the end NULL, but
+							//  the structure length is sizeof(boolean)+sizeof(byte)+strlen(trk_ident)+1
 /* char trk_ident[];        // null-terminated string */
 } D310_Trk_Hdr_Type;
 // The ` trk_ident' member has a maximum length of 51 characters
@@ -927,7 +927,7 @@ typedef struct
 //=========================================
 void	byebye(INTTYP rt);
 void	calc_sa_items(void);
-INTTYP	checksum(unsigned char *m,INTTYP l);
+INTTYP	checksum(unsigned char *m, INTTYP l);
 void	chk_cmdline(void);
 //void	set_sign(void);
 //void	set_ns(void);
@@ -947,7 +947,7 @@ void	decode_COM(char *b);
 INTTYP		decode_month(char *s);
 void	DegToUTM(double lat, double lon, char *zone, double *x, double *y);
 INTTYP		determine_input(char *fname_in);
-double	distance(double a,double b,double c,double d);
+double	distance(double a, double b, double c, double d);
 void	doD100(D100_Wpt_Type *a);
 void 	doD105(D105_Wpt_Type *a);
 void 	doD106(D106_Wpt_Type *a);
@@ -964,11 +964,11 @@ void	do_pushed_route(void);
 void	do_sa3_merge(void);
 void	doasystat(void);
 //long	dt2secs(short offset);
-void	fill_icon(int i,unsigned char * j, INTTYP convert);
-void	fill_record_from_text(unsigned char *ix,INTTYP convert);
-void	fill_track(int ele,INTTYP convert);
-void	fill_waypoint_from_push(int i,int j, int convert);
-void	fixname(INTTYP j,unsigned char *name);
+void	fill_icon(int i, unsigned char * j, INTTYP convert);
+void	fill_record_from_text(unsigned char *ix, INTTYP convert);
+void	fill_track(int ele, INTTYP convert);
+void	fill_waypoint_from_push(int i, int j, int convert);
+void	fixname(INTTYP j, unsigned char *name);
 double	fm_diskLL(unsigned long l);
 INTTYP 	from_sa3object(byte val);
 void	getGarminDisplay(void);
@@ -977,17 +977,17 @@ void	getGPSTime(void);
 void	getGPSrecords(void);
 void	getID(void);
 void	GetLowrDisplay(void);
-char	*getstrings(char *source, char *separators, int a );
+char	*getstrings(char *source, char *separators, int a);
 void	getTrack(void);
 void	getProtocolArray(void);
 void	getWaypoints(void);
 INTTYP		get_model(void);
 INTTYP		getopt(INTTYP argc, char **argv, char *opts);
 INTTYP		htoi(char *s);
-INTTYP		instr(char *src,char *pat);
+INTTYP		instr(char *src, char *pat);
 void	light_sleep(char onoff);
 char *  ltrim(char *s);
-void	make_bin(char *i,INTTYP r);
+void	make_bin(char *i, INTTYP r);
 double	mhr(char * tt);
 void	msdelay(unsigned INTTYP milliseconds);
 void	navSRouteS(void);
@@ -997,7 +997,7 @@ void	poweroff(void);
 void	printArray(void);
 void	light_on(void);
 void	light_off(void);
-void	prhex(unsigned char *message,INTTYP c);
+void	prhex(unsigned char *message, INTTYP c);
 void	print_csv_i(void);
 void	print_csv_w(void);
 void	print_csv_t(void);
@@ -1007,7 +1007,7 @@ void	print_g64_w(void);
 void	print_icons(void);
 void	print_routes(void);
 void	print_text_w(void);
-void 	print_waypoints(INTTYP i,INTTYP j);
+void 	print_waypoints(INTTYP i, INTTYP j);
 void 	print_tracks(void);
 void	process_g45_in(void);
 void	push_files(char *b);
@@ -1167,7 +1167,7 @@ extern short	LastGarminLen;
 // Global variables
 //
 extern char gps_errmsg[128];
-extern BOOL bLocalTime,bWptAlt,bTrkAlt;
+extern BOOL bLocalTime, bWptAlt, bTrkAlt;
 extern char gps_limitName[16];
 
 //===================================================================
@@ -1184,5 +1184,5 @@ typedef struct {
 	UINT  bNeg;
 } DEGTYP;
 
-void getDMS(DEGTYP *p,double val);
+void getDMS(DEGTYP *p, double val);
 

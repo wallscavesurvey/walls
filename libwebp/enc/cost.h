@@ -20,29 +20,29 @@
 extern "C" {
 #endif
 
-// approximate cost per level:
-extern const uint16_t VP8LevelFixedCosts[MAX_LEVEL + 1];
-extern const uint16_t VP8EntropyCost[256];        // 8bit fixed-point log(p)
+	// approximate cost per level:
+	extern const uint16_t VP8LevelFixedCosts[MAX_LEVEL + 1];
+	extern const uint16_t VP8EntropyCost[256];        // 8bit fixed-point log(p)
 
-// Cost of coding one event with probability 'proba'.
-static WEBP_INLINE int VP8BitCost(int bit, uint8_t proba) {
-  return !bit ? VP8EntropyCost[proba] : VP8EntropyCost[255 - proba];
-}
+	// Cost of coding one event with probability 'proba'.
+	static WEBP_INLINE int VP8BitCost(int bit, uint8_t proba) {
+		return !bit ? VP8EntropyCost[proba] : VP8EntropyCost[255 - proba];
+	}
 
-// Level cost calculations
-extern const uint16_t VP8LevelCodes[MAX_VARIABLE_LEVEL][2];
-void VP8CalculateLevelCosts(VP8Proba* const proba);
-static WEBP_INLINE int VP8LevelCost(const uint16_t* const table, int level) {
-  return VP8LevelFixedCosts[level]
-       + table[(level > MAX_VARIABLE_LEVEL) ? MAX_VARIABLE_LEVEL : level];
-}
+	// Level cost calculations
+	extern const uint16_t VP8LevelCodes[MAX_VARIABLE_LEVEL][2];
+	void VP8CalculateLevelCosts(VP8Proba* const proba);
+	static WEBP_INLINE int VP8LevelCost(const uint16_t* const table, int level) {
+		return VP8LevelFixedCosts[level]
+			+ table[(level > MAX_VARIABLE_LEVEL) ? MAX_VARIABLE_LEVEL : level];
+	}
 
-// Mode costs
-extern const uint16_t VP8FixedCostsUV[4];
-extern const uint16_t VP8FixedCostsI16[4];
-extern const uint16_t VP8FixedCostsI4[NUM_BMODES][NUM_BMODES][NUM_BMODES];
+	// Mode costs
+	extern const uint16_t VP8FixedCostsUV[4];
+	extern const uint16_t VP8FixedCostsI16[4];
+	extern const uint16_t VP8FixedCostsI4[NUM_BMODES][NUM_BMODES][NUM_BMODES];
 
-//------------------------------------------------------------------------------
+	//------------------------------------------------------------------------------
 
 #if defined(__cplusplus) || defined(c_plusplus)
 }    // extern "C"

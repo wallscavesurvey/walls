@@ -32,26 +32,26 @@
 
 
 class SDFCamera
-: public Object3D, public Camera
+	: public Object3D, public Camera
 {
-  public:
-    SDFCamera (int obj_n, int par = 0, const char* name = 0);
+public:
+	SDFCamera(int obj_n, int par = 0, const char* name = 0);
 
-    const char* type () const  { return "cam"; }
+	const char* type() const { return "cam"; }
 
-    void print ();
+	void print();
 
-    void computeParams ();
+	void computeParams();
 
-    int getdispstat () const  { return (dispstat_); }
+	int getdispstat() const { return (dispstat_); }
 
-  private:
-    int dispstat_;   // 0 OFF  1 ON (camera used)
+private:
+	int dispstat_;   // 0 OFF  1 ON (camera used)
 
-  friend int SDFScene::readActFile (FILE*, int&);
-  friend int SDFScene::readPosFile (FILE*, int);
-  friend int SDFScene::readCamFile (FILE*);
-  friend void SDFScene::writeCameras (ostream&);
+	friend int SDFScene::readActFile(FILE*, int&);
+	friend int SDFScene::readPosFile(FILE*, int);
+	friend int SDFScene::readCamFile(FILE*);
+	friend void SDFScene::writeCameras(ostream&);
 
 }; // SDFCamera
 

@@ -12,7 +12,7 @@
 
 class CLaunchFindDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
 	CLaunchFindDlg(CWnd* pParent = NULL);   // standard constructor
 	long m_hFile;
@@ -22,17 +22,17 @@ public:
 	char *m_pathname;
 	char *m_strTitle;
 
-// Dialog Data
-	//{{AFX_DATA(CLaunchFindDlg)
+	// Dialog Data
+		//{{AFX_DATA(CLaunchFindDlg)
 	enum { IDD = IDD_LAUNCHFIND };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+	// NOTE: the ClassWizard will add data members here
+//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CLaunchFindDlg)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

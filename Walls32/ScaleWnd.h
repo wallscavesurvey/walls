@@ -7,19 +7,19 @@ class CScaleWnd : public CStatic
 	DECLARE_DYNAMIC(CScaleWnd)
 
 public:
-	CScaleWnd(bool bFeet) : m_bFeet(bFeet),m_hFont(NULL),m_hbm(NULL),m_width(0),m_hdcAA(NULL),m_hbmAA(NULL),m_fView(-1) {};
+	CScaleWnd(bool bFeet) : m_bFeet(bFeet), m_hFont(NULL), m_hbm(NULL), m_width(0), m_hdcAA(NULL), m_hbmAA(NULL), m_fView(-1) {};
 	virtual ~CScaleWnd();
 
-	int m_bottom,m_width;
+	int m_bottom, m_width;
 
 	virtual BOOL Create(CWnd *pWnd);
-	void Draw(double mPerPx,double fView);
+	void Draw(double mPerPx, double fView);
 
-	void ToggleFeetUnits() {m_bFeet=!m_bFeet;}
-	bool IsFeetUnits() {return m_bFeet;}
+	void ToggleFeetUnits() { m_bFeet = !m_bFeet; }
+	bool IsFeetUnits() { return m_bFeet; }
 
 private:
-	HBITMAP m_hbm,m_hbmAA, m_hbmAAOld;
+	HBITMAP m_hbm, m_hbmAA, m_hbmAAOld;
 	HDC m_hdcAA;
 	HFONT m_hFont;
 	double m_fView;

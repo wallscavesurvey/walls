@@ -30,23 +30,23 @@ DBF_FLDDEF CNTVFile::m_FldDef[NTV_NUMFLDS] = //15*8 = 120 bytes
 
 int CNTVFile::alloc_cache()
 {
-   if(!Cache()) {
-     ASSERT(!DefaultCache());
-     return AllocCache(NTV_BUFRECS*SizRec(),NTV_NUMBUFS,TRUE);
-   }
-   return 0;
+	if (!Cache()) {
+		ASSERT(!DefaultCache());
+		return AllocCache(NTV_BUFRECS*SizRec(), NTV_NUMBUFS, TRUE);
+	}
+	return 0;
 }
 
 int CNTVFile::Open(const char* pszFileName)
 {
-    int e=CDBFile::Open(pszFileName,ReadWrite);
-    if(!e && (e=alloc_cache())!=0) CDBFile::Close();
-    return e;
+	int e = CDBFile::Open(pszFileName, ReadWrite);
+	if (!e && (e = alloc_cache()) != 0) CDBFile::Close();
+	return e;
 }
 
 int CNTVFile::Create(const char* pszFileName)
 {
-    int e=CDBFile::Create(pszFileName,NTV_NUMFLDS,m_FldDef,ReadWrite);
-    if(!e && (e=alloc_cache())!=0) CDBFile::CloseDel();
-    return e;
+	int e = CDBFile::Create(pszFileName, NTV_NUMFLDS, m_FldDef, ReadWrite);
+	if (!e && (e = alloc_cache()) != 0) CDBFile::CloseDel();
+	return e;
 }

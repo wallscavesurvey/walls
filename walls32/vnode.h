@@ -12,7 +12,7 @@ struct MAP_VECNODE { //8*4=32 bytes
 	int M_xy[2];
 	int pltrec;
 	int maxdist;
-	int rt,lf;
+	int rt, lf;
 };
 
 class CVNode {
@@ -21,15 +21,15 @@ public:
 	CVNode();
 	~CVNode();
 
-	BOOL Init(int xM,int yM,int maxvecs);
-	BOOL AddVnode(int xf,int yf,int xt,int yt,int pltrec);
-	MAP_VECNODE * GetVecNode(int x,int y);
-	BOOL IsInitialized() {return vnod!=NULL && vstk!=NULL;}
+	BOOL Init(int xM, int yM, int maxvecs);
+	BOOL AddVnode(int xf, int yf, int xt, int yt, int pltrec);
+	MAP_VECNODE * GetVecNode(int x, int y);
+	BOOL IsInitialized() { return vnod != NULL && vstk != NULL; }
 
 private:
 	MAP_VECNODE *vnod;
 	int *vstk;
-	int vnod_siz,vnod_len;
+	int vnod_siz, vnod_len;
 };
 
 

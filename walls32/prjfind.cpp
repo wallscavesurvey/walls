@@ -17,15 +17,15 @@ static char BASED_CODE THIS_FILE[] = __FILE__;
 CPrjFindDlg::CPrjFindDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CPrjFindDlg::IDD, pParent)
 {
-	m_wFlags=hist_prjfind.GetFirstFlags();
+	m_wFlags = hist_prjfind.GetFirstFlags();
 	//{{AFX_DATA_INIT(CPrjFindDlg)
-	m_FindString=hist_prjfind.GetFirstString();
-	m_bMatchCase=(m_wFlags&F_MATCHCASE)!=0;
-	m_bMatchWholeWord=(m_wFlags&F_MATCHWHOLEWORD)!=0;
-	m_bSearchDetached=(m_wFlags&F_SEARCHDETACHED)!=0;
-	m_bUseRegEx=(m_wFlags&F_USEREGEX)!=0;
+	m_FindString = hist_prjfind.GetFirstString();
+	m_bMatchCase = (m_wFlags&F_MATCHCASE) != 0;
+	m_bMatchWholeWord = (m_wFlags&F_MATCHWHOLEWORD) != 0;
+	m_bSearchDetached = (m_wFlags&F_SEARCHDETACHED) != 0;
+	m_bUseRegEx = (m_wFlags&F_USEREGEX) != 0;
 	//}}AFX_DATA_INIT
-	m_nNumChecked=0;
+	m_nNumChecked = 0;
 }
 
 void CPrjFindDlg::DoDataExchange(CDataExchange* pDX)
@@ -39,26 +39,26 @@ void CPrjFindDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Check(pDX, IDC_SEARCHDETACHED, m_bSearchDetached);
 	DDX_Check(pDX, IDC_USEREGEX, m_bUseRegEx);
 	//}}AFX_DATA_MAP
-	
-	if(pDX->m_bSaveAndValidate) {
-		if(!m_bUseRegEx && m_bMatchWholeWord)
+
+	if (pDX->m_bSaveAndValidate) {
+		if (!m_bUseRegEx && m_bMatchWholeWord)
 			m_FindString.Trim();
-		if(!m_FindString.IsEmpty()) {
-			m_wFlags=F_MATCHCASE * m_bMatchCase +
-	  			F_MATCHWHOLEWORD * m_bMatchWholeWord +
-	  			F_SEARCHDETACHED * m_bSearchDetached +
+		if (!m_FindString.IsEmpty()) {
+			m_wFlags = F_MATCHCASE * m_bMatchCase +
+				F_MATCHWHOLEWORD * m_bMatchWholeWord +
+				F_SEARCHDETACHED * m_bSearchDetached +
 				F_USEREGEX * m_bUseRegEx;
-			if(m_bUseRegEx) {
-				m_bMatchWholeWord=FALSE;
-				if(!CheckRegEx(m_FindString,m_wFlags)) {
-					pDX->m_idLastControl=IDC_FINDSTRING;
+			if (m_bUseRegEx) {
+				m_bMatchWholeWord = FALSE;
+				if (!CheckRegEx(m_FindString, m_wFlags)) {
+					pDX->m_idLastControl = IDC_FINDSTRING;
 					//***7.1 pDX->m_hWndLastControl=GetDlgItem(IDC_FINDSTRING)->m_hWnd;
-					pDX->m_bEditLastControl=TRUE;
+					pDX->m_bEditLastControl = TRUE;
 					pDX->Fail();
 					return;
 				}
 			}
-			hist_prjfind.InsertAsFirst(m_FindString,m_wFlags);
+			hist_prjfind.InsertAsFirst(m_FindString, m_wFlags);
 		}
 	}
 }
@@ -69,7 +69,7 @@ BEGIN_MESSAGE_MAP(CPrjFindDlg, CDialog)
 	ON_CBN_SELCHANGE(IDC_FINDSTRING, OnSelchangeFindstring)
 	ON_CBN_EDITCHANGE(IDC_FINDSTRING, OnEditchangeFindstring)
 	//}}AFX_MSG_MAP
-    ON_MESSAGE(WM_COMMANDHELP,OnCommandHelp)
+	ON_MESSAGE(WM_COMMANDHELP, OnCommandHelp)
 END_MESSAGE_MAP()
 
 
@@ -79,15 +79,15 @@ END_MESSAGE_MAP()
 BOOL CPrjFindDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	
-	m_tabEdit.SubclassDlgItem(IDC_FINDSTRING,this);
+
+	m_tabEdit.SubclassDlgItem(IDC_FINDSTRING, this);
 	m_tabEdit.LoadHistory(&hist_prjfind);
-	SetWndTitle(GetDlgItem(IDC_ST_NOTE),IDS_TAB_NOTE);
+	SetWndTitle(GetDlgItem(IDC_ST_NOTE), IDS_TAB_NOTE);
 	GetDlgItem(IDC_NUMCHECKED)->SetWindowText(GetIntStr(m_nNumChecked));
 	GetDlgItem(IDOK)->EnableWindow(!m_FindString.IsEmpty());
-	
+
 	CenterWindow();
-	
+
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -96,12 +96,12 @@ void CPrjFindDlg::OnClearChks()
 	EndDialog(IDC_CLEARCHKS);
 }
 
-void CPrjFindDlg::OnSelchangeFindstring() 
+void CPrjFindDlg::OnSelchangeFindstring()
 {
-	OnSelChangeFindStr(this,TRUE); //bGlobal=TRUE
+	OnSelChangeFindStr(this, TRUE); //bGlobal=TRUE
 }
 
-void CPrjFindDlg::OnEditchangeFindstring() 
+void CPrjFindDlg::OnEditchangeFindstring()
 {
 	// TODO: Add your control notification handler code here
 	CString s;
@@ -111,7 +111,7 @@ void CPrjFindDlg::OnEditchangeFindstring()
 
 LRESULT CPrjFindDlg::OnCommandHelp(WPARAM wNone, LPARAM lParam)
 {
-	AfxGetApp()->WinHelp(230,HELP_CONTEXT);
+	AfxGetApp()->WinHelp(230, HELP_CONTEXT);
 	return TRUE;
 }
 

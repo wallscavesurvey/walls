@@ -38,55 +38,55 @@
 #include "cairoint.h"
 
 static cairo_color_t const cairo_color_white = {
-    1.0,    1.0,    1.0,    1.0,
-    0xffff, 0xffff, 0xffff, 0xffff
+	1.0,    1.0,    1.0,    1.0,
+	0xffff, 0xffff, 0xffff, 0xffff
 };
 
 static cairo_color_t const cairo_color_black = {
-    0.0, 0.0, 0.0, 1.0,
-    0x0, 0x0, 0x0, 0xffff
+	0.0, 0.0, 0.0, 1.0,
+	0x0, 0x0, 0x0, 0xffff
 };
 
 static cairo_color_t const cairo_color_transparent = {
-    0.0, 0.0, 0.0, 0.0,
-    0x0, 0x0, 0x0, 0x0
+	0.0, 0.0, 0.0, 0.0,
+	0x0, 0x0, 0x0, 0x0
 };
 
 static cairo_color_t const cairo_color_magenta = {
-    1.0,    0.0, 1.0,    1.0,
-    0xffff, 0x0, 0xffff, 0xffff
+	1.0,    0.0, 1.0,    1.0,
+	0xffff, 0x0, 0xffff, 0xffff
 };
 
 const cairo_color_t *
-_cairo_stock_color (cairo_stock_t stock)
+_cairo_stock_color(cairo_stock_t stock)
 {
-    switch (stock) {
-    case CAIRO_STOCK_WHITE:
-	return &cairo_color_white;
-    case CAIRO_STOCK_BLACK:
-	return &cairo_color_black;
-    case CAIRO_STOCK_TRANSPARENT:
-	return &cairo_color_transparent;
-    }
+	switch (stock) {
+	case CAIRO_STOCK_WHITE:
+		return &cairo_color_white;
+	case CAIRO_STOCK_BLACK:
+		return &cairo_color_black;
+	case CAIRO_STOCK_TRANSPARENT:
+		return &cairo_color_transparent;
+	}
 
-    ASSERT_NOT_REACHED;
+	ASSERT_NOT_REACHED;
 
-    /* If the user can get here somehow, give a color that indicates a
-     * problem. */
-    return &cairo_color_magenta;
+	/* If the user can get here somehow, give a color that indicates a
+	 * problem. */
+	return &cairo_color_magenta;
 }
 
 void
-_cairo_color_init (cairo_color_t *color)
+_cairo_color_init(cairo_color_t *color)
 {
-    *color = cairo_color_white;
+	*color = cairo_color_white;
 }
 
 void
-_cairo_color_init_rgb (cairo_color_t *color,
-		       double red, double green, double blue)
+_cairo_color_init_rgb(cairo_color_t *color,
+	double red, double green, double blue)
 {
-    _cairo_color_init_rgba (color, red, green, blue, 1.0);
+	_cairo_color_init_rgba(color, red, green, blue, 1.0);
 }
 
 /* Convert a double in [0.0, 1.0] to an integer in [0, 65535]
@@ -96,80 +96,80 @@ _cairo_color_init_rgb (cairo_color_t *color,
  * maps to 65535 instead of 65536.
  */
 uint16_t
-_cairo_color_double_to_short (double d)
+_cairo_color_double_to_short(double d)
 {
-    uint32_t i;
-    i = (uint32_t) (d * 65536);
-    i -= (i >> 16);
-    return i;
+	uint32_t i;
+	i = (uint32_t)(d * 65536);
+	i -= (i >> 16);
+	return i;
 }
 
 static void
-_cairo_color_compute_shorts (cairo_color_t *color)
+_cairo_color_compute_shorts(cairo_color_t *color)
 {
-    color->red_short   = _cairo_color_double_to_short (color->red   * color->alpha);
-    color->green_short = _cairo_color_double_to_short (color->green * color->alpha);
-    color->blue_short  = _cairo_color_double_to_short (color->blue  * color->alpha);
-    color->alpha_short = _cairo_color_double_to_short (color->alpha);
+	color->red_short = _cairo_color_double_to_short(color->red   * color->alpha);
+	color->green_short = _cairo_color_double_to_short(color->green * color->alpha);
+	color->blue_short = _cairo_color_double_to_short(color->blue  * color->alpha);
+	color->alpha_short = _cairo_color_double_to_short(color->alpha);
 }
 
 void
-_cairo_color_init_rgba (cairo_color_t *color,
-			double red, double green, double blue,
-			double alpha)
+_cairo_color_init_rgba(cairo_color_t *color,
+	double red, double green, double blue,
+	double alpha)
 {
-    color->red   = red;
-    color->green = green;
-    color->blue  = blue;
-    color->alpha = alpha;
+	color->red = red;
+	color->green = green;
+	color->blue = blue;
+	color->alpha = alpha;
 
-    _cairo_color_compute_shorts (color);
+	_cairo_color_compute_shorts(color);
 }
 
 void
-_cairo_color_multiply_alpha (cairo_color_t *color,
-			     double	    alpha)
+_cairo_color_multiply_alpha(cairo_color_t *color,
+	double	    alpha)
 {
-    color->alpha *= alpha;
+	color->alpha *= alpha;
 
-    _cairo_color_compute_shorts (color);
+	_cairo_color_compute_shorts(color);
 }
 
 void
-_cairo_color_get_rgba (cairo_color_t *color,
-		       double	     *red,
-		       double	     *green,
-		       double	     *blue,
-		       double	     *alpha)
+_cairo_color_get_rgba(cairo_color_t *color,
+	double	     *red,
+	double	     *green,
+	double	     *blue,
+	double	     *alpha)
 {
-    *red   = color->red;
-    *green = color->green;
-    *blue  = color->blue;
-    *alpha = color->alpha;
+	*red = color->red;
+	*green = color->green;
+	*blue = color->blue;
+	*alpha = color->alpha;
 }
 
 void
-_cairo_color_get_rgba_premultiplied (cairo_color_t *color,
-				     double	   *red,
-				     double	   *green,
-				     double	   *blue,
-				     double	   *alpha)
+_cairo_color_get_rgba_premultiplied(cairo_color_t *color,
+	double	   *red,
+	double	   *green,
+	double	   *blue,
+	double	   *alpha)
 {
-    *red   = color->red   * color->alpha;
-    *green = color->green * color->alpha;
-    *blue  = color->blue  * color->alpha;
-    *alpha = color->alpha;
+	*red = color->red   * color->alpha;
+	*green = color->green * color->alpha;
+	*blue = color->blue  * color->alpha;
+	*alpha = color->alpha;
 }
 
 cairo_bool_t
-_cairo_color_equal (const cairo_color_t *color_a,
-	            const cairo_color_t *color_b)
+_cairo_color_equal(const cairo_color_t *color_a,
+	const cairo_color_t *color_b)
 {
-    if (color_a == color_b)
-	return TRUE;
+	if (color_a == color_b)
+		return TRUE;
 
-    return color_a->red_short   == color_b->red_short   &&
-           color_a->green_short == color_b->green_short &&
-           color_a->blue_short  == color_b->blue_short  &&
-           color_a->alpha_short == color_b->alpha_short;
+	return color_a->red_short == color_b->red_short   &&
+		color_a->green_short == color_b->green_short &&
+		color_a->blue_short == color_b->blue_short  &&
+		color_a->alpha_short == color_b->alpha_short;
 }

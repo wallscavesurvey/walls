@@ -17,9 +17,9 @@
 
 class CGradientDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
-	CGradientDlg(UINT id,COLORREF clr,CWnd* pParent = NULL);   // standard constructor
+	CGradientDlg(UINT id, COLORREF clr, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CGradientDlg)
@@ -47,15 +47,15 @@ private:
 	BOOL m_bSelValid;
 	CToolTipCtrl m_ToolTips;
 
-	void Enable(int id,BOOL bEnable)
+	void Enable(int id, BOOL bEnable)
 	{
-	   GetDlgItem(id)->EnableWindow(bEnable);
+		GetDlgItem(id)->EnableWindow(bEnable);
 	}
-	
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CGradientDlg)
-	protected:
+
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CGradientDlg)
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
@@ -64,19 +64,19 @@ private:
 
 protected:
 	void SelectPeg(int idx);
-	void AddAndSelectPeg(COLORREF color,double position);
+	void AddAndSelectPeg(COLORREF color, double position);
 	void UpdateSelPegText(int index);
-	void UpdateFloatBox(UINT id,double value,int iTyp=-1);
-	void UpdateValueBox(UINT id,double position);
+	void UpdateFloatBox(UINT id, double value, int iTyp = -1);
+	void UpdateValueBox(UINT id, double position);
 	void ShowRangeError();
 	void UpdateHistArray();
-	int UpdateRangeEnd(int index,double fVal);
+	int UpdateRangeEnd(int index, double fVal);
 
-	BOOL ChangePosition(UINT idPos,UINT idVal,double &fNewPos);
-	BOOL ChangeValue(UINT idVal,UINT idPos,double &fNewPos,int iIndex);
+	BOOL ChangePosition(UINT idPos, UINT idVal, double &fNewPos);
+	BOOL ChangeValue(UINT idVal, UINT idPos, double &fNewPos, int iIndex);
 
 	// Generated message map functions
-    afx_msg LONG OnSelEndOK(UINT lParam, LONG wParam);
+	afx_msg LONG OnSelEndOK(UINT lParam, LONG wParam);
 	//{{AFX_MSG(CGradientDlg)
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSelchangeMethodCombo();
@@ -95,7 +95,7 @@ protected:
 	afx_msg void OnOpen();
 	afx_msg void OnApply();
 	//}}AFX_MSG
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 	afx_msg void OnNotifyChangeSelPeg(NMHDR * pNotifyStruct, LRESULT *result);
 	afx_msg void OnNotifyPegMove(NMHDR * pNotifyStruct, LRESULT *result);
 	afx_msg void OnNotifyPegRemoved(NMHDR * pNotifyStruct, LRESULT *result);

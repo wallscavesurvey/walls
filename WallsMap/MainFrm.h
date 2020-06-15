@@ -15,10 +15,12 @@ extern const TCHAR szGPSMrkH[];
 extern const TCHAR szGPSMrkT[];
 
 //Global flags --
-enum {STAT_DATUM,STAT_XY,STAT_DEG,STAT_SIZE,STAT_ZOOM,STAT_SCALE};
+enum { STAT_DATUM, STAT_XY, STAT_DEG, STAT_SIZE, STAT_ZOOM, STAT_SCALE };
 
-enum {PRF_OPEN_EDITABLE=1,PRF_OPEN_LAST=2,PRF_OPEN_MAXIMIZED=4,PRF_ZOOM_FROMCURSOR=8,PRF_ZOOM_FORWARDOUT=16,
-		PRF_EDIT_TOOLBAR=32,PRF_EDIT_INITRTF=64};
+enum {
+	PRF_OPEN_EDITABLE = 1, PRF_OPEN_LAST = 2, PRF_OPEN_MAXIMIZED = 4, PRF_ZOOM_FROMCURSOR = 8, PRF_ZOOM_FORWARDOUT = 16,
+	PRF_EDIT_TOOLBAR = 32, PRF_EDIT_INITRTF = 64
+};
 
 #define PRF_DEFAULTS (PRF_OPEN_EDITABLE|PRF_OPEN_LAST|PRF_OPEN_MAXIMIZED)
 
@@ -35,10 +37,10 @@ class CSyncHint : public CObject
 {
 	DECLARE_DYNAMIC(CSyncHint)
 public:
-	CSyncHint() :fpt(NULL),fupx(0) {}
-	CSyncHint(const CFltPoint *pt,const double upx) : fpt(pt),fupx(upx) {}
-    const CFltPoint *fpt;
-    double fupx;
+	CSyncHint() :fpt(NULL), fupx(0) {}
+	CSyncHint(const CFltPoint *pt, const double upx) : fpt(pt), fupx(upx) {}
+	const CFltPoint *fpt;
+	double fupx;
 };
 
 #ifdef _USE_MYMDI
@@ -46,10 +48,10 @@ public:
 class CMyMdi : public CWnd
 {
 protected:
-    //{{AFX_MSG(CMyMdi)
-    afx_msg LRESULT OnMdiTile(WPARAM wParam, LPARAM lParam);
+	//{{AFX_MSG(CMyMdi)
+	afx_msg LRESULT OnMdiTile(WPARAM wParam, LPARAM lParam);
 	//}}AFX_MSG
-    DECLARE_MESSAGE_MAP()
+	DECLARE_MESSAGE_MAP()
 };
 #endif
 
@@ -64,26 +66,26 @@ class CMainFrame : public CMDIFrameWnd
 public:
 	CMainFrame() {}
 
-    void OnDrop();
+	void OnDrop();
 
-// Attributes
+	// Attributes
 
 #ifdef _USE_MYMDI
-    CMyMdi m_MyMdiClientWnd;	//MDI client window 
+	CMyMdi m_MyMdiClientWnd;	//MDI client window 
 #endif
 	static BOOL m_bSync;
 
 	static UINT m_uPref;
 
-	static bool   IsPref(UINT flg) {return (m_uPref&flg)!=0;}
-	static void	  SetPref(UINT flg) {m_uPref|=flg;}
-	static void	  ClearPref(UINT flg) {m_uPref&=~flg;}
-	static void   TogglePref(UINT flg) {m_uPref^=flg;}
+	static bool   IsPref(UINT flg) { return (m_uPref&flg) != 0; }
+	static void	  SetPref(UINT flg) { m_uPref |= flg; }
+	static void	  ClearPref(UINT flg) { m_uPref &= ~flg; }
+	static void   TogglePref(UINT flg) { m_uPref ^= flg; }
 
 	static COLORREF m_clrBkg;
 	static COLORREF m_clrTxt;
 	static CLogFont m_fEditFont;
-	static bool m_bChangedPref,m_bChangedEditPref,m_bWebMapFormatChg;
+	static bool m_bChangedPref, m_bChangedEditPref, m_bWebMapFormatChg;
 
 	static CSerialMFC *m_pSerial;
 	static int m_nPortDef;
@@ -95,23 +97,23 @@ public:
 	int ToolBarHt();
 
 	static CString m_csWebMapFormat; //modified user url
-	static int m_idxWebMapFormat,m_idxWebMapFormatOrg;  //index of unmodified version
-	
-	static LPSTR m_pComparePrg,m_pCompareArgs;
+	static int m_idxWebMapFormat, m_idxWebMapFormatOrg;  //index of unmodified version
+
+	static LPSTR m_pComparePrg, m_pCompareArgs;
 	bool TextCompOptions();
 	static void LaunchComparePrg(LPCSTR pLeft, LPCSTR pRight);
 
-// Operations
+	// Operations
 public:
 	CStatusBar&	GetStatusBar() { return m_wndStatusBar; }
-	void ClearStatusPanes(UINT first=1,UINT last=3);
+	void ClearStatusPanes(UINT first = 1, UINT last = 3);
 	//BOOL SetStatusPane(UINT id,LPCSTR format,...);
-	void ClearStatusPane(UINT i) {m_wndStatusBar.SetPaneText(i,"");}
+	void ClearStatusPane(UINT i) { m_wndStatusBar.SetPaneText(i, ""); }
 
 	int NumDocsOpen();
 	CWallsMapDoc * FindOpenDoc(LPCSTR pPath);
-	CWallsMapDoc * GetActiveDoc() {return (CWallsMapDoc *)GetActiveDocument();}
-	void UpdateViews(CWallsMapView *pSender,LPARAM lHint,CSyncHint *pHint=NULL);
+	CWallsMapDoc * GetActiveDoc() { return (CWallsMapDoc *)GetActiveDocument(); }
+	void UpdateViews(CWallsMapView *pSender, LPARAM lHint, CSyncHint *pHint = NULL);
 	void UpdateGPSTrack();
 	void UpdateGPSCenters();
 	CWallsMapDoc *FirstGeoRefSupportedDoc();
@@ -119,7 +121,7 @@ public:
 	void RestoreWindow(int nShow);
 	static void LoadPreferences();
 	static void SavePreferences();
-	void Launch_WebMap(CFltPoint &fpt,LPCSTR nam);
+	void Launch_WebMap(CFltPoint &fpt, LPCSTR nam);
 	bool GetWebMapName(CString &name); //for popup menu use
 	BOOL GetWebMapFormatURL(BOOL bFlyTo);
 	CFileDropTarget m_dropTarget;
@@ -127,18 +129,18 @@ public:
 
 private:
 	void OnWebMapFormat(); //initialize web mapping site URL
-	void OnUpdateStatusBar(CCmdUI* pCmdUI,int id);
+	void OnUpdateStatusBar(CCmdUI* pCmdUI, int id);
 	void DockControlBarLeftOf(CToolBar* Bar, CToolBar* LeftOf);
 
-// Overrides
+	// Overrides
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 #ifdef _USE_MYMDI
-	virtual BOOL CreateClient(LPCREATESTRUCT lpCreateStruct, CMenu* pWindowMenu); 
+	virtual BOOL CreateClient(LPCREATESTRUCT lpCreateStruct, CMenu* pWindowMenu);
 #endif
 	BOOL OnMDIWindowCmd(UINT nID);
 
-// Implementation
+	// Implementation
 public:
 	virtual ~CMainFrame();
 
@@ -155,9 +157,9 @@ protected:  // control bar embedded members
 protected:
 	DECLARE_MESSAGE_MAP()
 
-// Generated message map functions
+	// Generated message map functions
 public:
-	afx_msg LRESULT OnPropViewDoc(WPARAM wParam,LPARAM);
+	afx_msg LRESULT OnPropViewDoc(WPARAM wParam, LPARAM);
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnFileOpen();
 	afx_msg void OnDestroy();
@@ -192,7 +194,7 @@ public:
 	afx_msg void OnHelpOpenreadme();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnGPSPortSetting();
-	afx_msg LRESULT OnSerialMsg (WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT OnSerialMsg(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnGpsOptions();
 	afx_msg void OnGpsSymbol();
 	afx_msg void OnClose();

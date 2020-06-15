@@ -10,7 +10,7 @@ extern CTabComboHist hist_netfind;
 
 class CNetFindDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
 	CNetFindDlg(CWnd* pParent = NULL);	// standard constructor
 

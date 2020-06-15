@@ -15,7 +15,7 @@ public:
 	CRect *m_pr;
 
 protected:
-	virtual void AdjustRect(int nHandle,LPRECT pRect);
+	virtual void AdjustRect(int nHandle, LPRECT pRect);
 };
 #endif
 

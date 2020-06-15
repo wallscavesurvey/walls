@@ -58,106 +58,106 @@ in this file for 64-bit builds, although both this file and
 /*****************************************************************************/
 
 bool
-  simd_xfer_decoded_block(register kdu_int32 *src,
-                          register kdu_sample16 **dst_refs,
-                          register int dst_offset,
-                          int width,
-                          register int height,
-                          bool reversible, int K_max, float delta)
+simd_xfer_decoded_block(register kdu_int32 *src,
+	register kdu_sample16 **dst_refs,
+	register int dst_offset,
+	int width,
+	register int height,
+	bool reversible, int K_max, float delta)
 {
-  if (kdu_mmx_level < 2)
-    return false;
-  assert((width == 32) || (width == 64));
-  if (reversible)
-    {
-      register kdu_sample16 *dst;
+	if (kdu_mmx_level < 2)
+		return false;
+	assert((width == 32) || (width == 64));
+	if (reversible)
+	{
+		register kdu_sample16 *dst;
 
-      __m128i downshift = _mm_cvtsi32_si128(31-K_max);
-      __m128i comp = _mm_setzero_si128(); // Avoid compiler warnings
-      comp = _mm_cmpeq_epi32(comp,comp); // Fill with FF's
-      __m128i ones = _mm_srli_epi32(comp,31); // Set each DWORD equal to 1
-      __m128i kmax = _mm_cvtsi32_si128(K_max);
-      comp = _mm_sll_epi32(comp,kmax); // Leaves 1+downshift 1's in MSB's
-      comp = _mm_or_si128(comp,ones); // `comp' now holds the amount we have to
-             // add after inverting the bits of a downshifted sign-mag quantity
-             // which was negative, to restore the correct 2's complement value.
-      for (; height > 0; height--, dst_refs++)
-        {
-          dst = *dst_refs + dst_offset;
-          for (register int c=width; c > 0; c-=8, src+=8, dst+=8)
-            {
-              __m128i val1 = *((__m128i *) src);
-              __m128i ref = _mm_setzero_si128();
-              ref = _mm_cmpgt_epi32(ref,val1); // Fills DWORDS with 1's if val<0
-              val1 = _mm_xor_si128(val1,ref);
-              val1 = _mm_sra_epi32(val1,downshift);
-              ref = _mm_and_si128(ref,comp); // Leave the bits we need to add
-              val1 = _mm_add_epi32(val1,ref); // Finish conversion to 2's comp
+		__m128i downshift = _mm_cvtsi32_si128(31 - K_max);
+		__m128i comp = _mm_setzero_si128(); // Avoid compiler warnings
+		comp = _mm_cmpeq_epi32(comp, comp); // Fill with FF's
+		__m128i ones = _mm_srli_epi32(comp, 31); // Set each DWORD equal to 1
+		__m128i kmax = _mm_cvtsi32_si128(K_max);
+		comp = _mm_sll_epi32(comp, kmax); // Leaves 1+downshift 1's in MSB's
+		comp = _mm_or_si128(comp, ones); // `comp' now holds the amount we have to
+			   // add after inverting the bits of a downshifted sign-mag quantity
+			   // which was negative, to restore the correct 2's complement value.
+		for (; height > 0; height--, dst_refs++)
+		{
+			dst = *dst_refs + dst_offset;
+			for (register int c = width; c > 0; c -= 8, src += 8, dst += 8)
+			{
+				__m128i val1 = *((__m128i *) src);
+				__m128i ref = _mm_setzero_si128();
+				ref = _mm_cmpgt_epi32(ref, val1); // Fills DWORDS with 1's if val<0
+				val1 = _mm_xor_si128(val1, ref);
+				val1 = _mm_sra_epi32(val1, downshift);
+				ref = _mm_and_si128(ref, comp); // Leave the bits we need to add
+				val1 = _mm_add_epi32(val1, ref); // Finish conversion to 2's comp
 
-              __m128i val2 = *((__m128i *)(src+4));
-              ref = _mm_setzero_si128();
-              ref = _mm_cmpgt_epi32(ref,val2); // Fills DWORDS with 1's if val<0
-              val2 = _mm_xor_si128(val2,ref);
-              val2 = _mm_sra_epi32(val2,downshift);
-              ref = _mm_and_si128(ref,comp); // Leave the bits we need to add
-              val2 = _mm_add_epi32(val2,ref); // Finish conversion to 2's comp
+				__m128i val2 = *((__m128i *)(src + 4));
+				ref = _mm_setzero_si128();
+				ref = _mm_cmpgt_epi32(ref, val2); // Fills DWORDS with 1's if val<0
+				val2 = _mm_xor_si128(val2, ref);
+				val2 = _mm_sra_epi32(val2, downshift);
+				ref = _mm_and_si128(ref, comp); // Leave the bits we need to add
+				val2 = _mm_add_epi32(val2, ref); // Finish conversion to 2's comp
 
-              *((__m128i *) dst) = _mm_packs_epi32(val1,val2);
-            }
-        }
-    }
-  else
-    {
-      float fscale = delta * (float)(1<<KDU_FIX_POINT);
-      if (K_max <= 31)
-        fscale /= (float)(1<<(31-K_max));
-      else
-        fscale *= (float)(1<<(K_max-31));
+				*((__m128i *) dst) = _mm_packs_epi32(val1, val2);
+			}
+		}
+	}
+	else
+	{
+		float fscale = delta * (float)(1 << KDU_FIX_POINT);
+		if (K_max <= 31)
+			fscale /= (float)(1 << (31 - K_max));
+		else
+			fscale *= (float)(1 << (K_max - 31));
 
-      int mxcsr_orig = _mm_getcsr();
-      int mxcsr_cur = mxcsr_orig & ~(3<<13); // Reset rounding control bits
-      _mm_setcsr(mxcsr_cur);
+		int mxcsr_orig = _mm_getcsr();
+		int mxcsr_cur = mxcsr_orig & ~(3 << 13); // Reset rounding control bits
+		_mm_setcsr(mxcsr_cur);
 
-      register kdu_sample16 *dst;
-      __m128 vec_scale = _mm_load1_ps(&fscale);
-      __m128i comp = _mm_setzero_si128(); // Avoid compiler warnings
-      __m128i ones = _mm_cmpeq_epi32(comp,comp); // Fill with FF's
-      comp = _mm_slli_epi32(ones,31); // Each DWORD  now holds 0x80000000
-      ones = _mm_srli_epi32(ones,31); // Each DWORD now holds 1
-      comp = _mm_or_si128(comp,ones); // Each DWORD now holds 0x800000001
-      for (; height > 0; height--, dst_refs++)
-        {
-          dst = *dst_refs + dst_offset;
-          for (register int c=width; c > 0; c-=8, src+=8, dst+=8)
-            {
-              __m128i val1 = *((__m128i *) src);
-              __m128i ref = _mm_setzero_si128();
-              ref = _mm_cmpgt_epi32(ref,val1); // Fills DWORDS with 1's if val<0
-              val1 = _mm_xor_si128(val1,ref);
-              ref = _mm_and_si128(ref,comp); // Leave the bits we need to add
-              val1 = _mm_add_epi32(val1,ref); // Finish conversion to 2's comp
-              __m128 fval1 = _mm_cvtepi32_ps(val1);
-              fval1 = _mm_mul_ps(fval1,vec_scale);
-              val1 = _mm_cvtps_epi32(fval1);
+		register kdu_sample16 *dst;
+		__m128 vec_scale = _mm_load1_ps(&fscale);
+		__m128i comp = _mm_setzero_si128(); // Avoid compiler warnings
+		__m128i ones = _mm_cmpeq_epi32(comp, comp); // Fill with FF's
+		comp = _mm_slli_epi32(ones, 31); // Each DWORD  now holds 0x80000000
+		ones = _mm_srli_epi32(ones, 31); // Each DWORD now holds 1
+		comp = _mm_or_si128(comp, ones); // Each DWORD now holds 0x800000001
+		for (; height > 0; height--, dst_refs++)
+		{
+			dst = *dst_refs + dst_offset;
+			for (register int c = width; c > 0; c -= 8, src += 8, dst += 8)
+			{
+				__m128i val1 = *((__m128i *) src);
+				__m128i ref = _mm_setzero_si128();
+				ref = _mm_cmpgt_epi32(ref, val1); // Fills DWORDS with 1's if val<0
+				val1 = _mm_xor_si128(val1, ref);
+				ref = _mm_and_si128(ref, comp); // Leave the bits we need to add
+				val1 = _mm_add_epi32(val1, ref); // Finish conversion to 2's comp
+				__m128 fval1 = _mm_cvtepi32_ps(val1);
+				fval1 = _mm_mul_ps(fval1, vec_scale);
+				val1 = _mm_cvtps_epi32(fval1);
 
-              __m128i val2 = *((__m128i *)(src+4));
-              ref = _mm_setzero_si128();
-              ref = _mm_cmpgt_epi32(ref,val2); // Fills DWORDS with 1's if val<0
-              val2 = _mm_xor_si128(val2,ref);
-              ref = _mm_and_si128(ref,comp); // Leave the bits we need to add
-              val2 = _mm_add_epi32(val2,ref); // Finish conversion to 2's comp
-              __m128 fval2 = _mm_cvtepi32_ps(val2);
-              fval2 = _mm_mul_ps(fval2,vec_scale);
-              val2 = _mm_cvtps_epi32(fval2);
+				__m128i val2 = *((__m128i *)(src + 4));
+				ref = _mm_setzero_si128();
+				ref = _mm_cmpgt_epi32(ref, val2); // Fills DWORDS with 1's if val<0
+				val2 = _mm_xor_si128(val2, ref);
+				ref = _mm_and_si128(ref, comp); // Leave the bits we need to add
+				val2 = _mm_add_epi32(val2, ref); // Finish conversion to 2's comp
+				__m128 fval2 = _mm_cvtepi32_ps(val2);
+				fval2 = _mm_mul_ps(fval2, vec_scale);
+				val2 = _mm_cvtps_epi32(fval2);
 
-              *((__m128i *) dst) = _mm_packs_epi32(val1,val2);
-            }
-        }
+				*((__m128i *) dst) = _mm_packs_epi32(val1, val2);
+			}
+		}
 
 
-      _mm_setcsr(mxcsr_orig); // Restore rounding control bits
-    }
-  return true;
+		_mm_setcsr(mxcsr_orig); // Restore rounding control bits
+	}
+	return true;
 }
 
 #endif // X86_CODER_LOCAL_H

@@ -11,16 +11,16 @@
 
 class CMainFrame : public CFrameWnd
 {
-	
+
 public: // create from serialization only
 	CMainFrame();
 	DECLARE_DYNCREATE(CMainFrame)
 
 public:
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMainFrame)
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CMainFrame)
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	//}}AFX_VIRTUAL
 
@@ -35,7 +35,7 @@ public:
 	void StartAnimation(BOOL bTimer);
 	void StopAnimation();
 	void InitAddressBar();
-    void RestoreWindow(int nShow);
+	void RestoreWindow(int nShow);
 	afx_msg void OnGoTss();
 
 protected:  // control bar embedded members
@@ -48,7 +48,7 @@ private:
 	HRESULT ExecCmdTarget(const GUID *pguidCmdGroup, DWORD nCmdID);
 	BOOL CMainFrame::SelectionPresent(void);
 
-// Generated message map functions
+	// Generated message map functions
 protected:
 	BOOL m_bShowAddress;
 	CComboBoxEx m_wndAddress;

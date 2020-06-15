@@ -11,7 +11,7 @@ public:
 	CResizeFrmDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CResizeFrmDlg();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_RESIZEFRAME };
 
 protected:
@@ -20,7 +20,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	int m_iPx_per_in,m_iCurrentWidth;
+	int m_iPx_per_in, m_iCurrentWidth;
 	BOOL m_bSave;
 	double m_dfltWidthInches;
 

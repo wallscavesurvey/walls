@@ -10,18 +10,18 @@
 /////////////////////////////////////////////////////////////////////////////
 // CListDlg dialog
 
-enum {LFLG_VECTOR=1,LFLG_NOTEONLY=2,LFLG_GROUPBYFLAG=4,LFLG_GROUPBYLOC=8,LFLG_OPENEXISTING=16,LFLG_LATLONG=32,LFLG_LATLONGOK=64};
+enum { LFLG_VECTOR = 1, LFLG_NOTEONLY = 2, LFLG_GROUPBYFLAG = 4, LFLG_GROUPBYLOC = 8, LFLG_OPENEXISTING = 16, LFLG_LATLONG = 32, LFLG_LATLONGOK = 64 };
 
 class CListDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
-	CListDlg(LPCSTR pPath,int nVectors,CWnd* pParent = NULL);   // standard constructor
+	CListDlg(LPCSTR pPath, int nVectors, CWnd* pParent = NULL);   // standard constructor
 	static UINT m_uDecimals;
 	static UINT m_uFlags;
 
-// Dialog Data
-	//{{AFX_DATA(CListDlg)
+	// Dialog Data
+		//{{AFX_DATA(CListDlg)
 	enum { IDD = IDD_LISTDLG };
 	CString	m_Decimals;
 	//}}AFX_DATA
@@ -29,15 +29,15 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CListDlg)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 private:
 	int m_nVectors;
 
-// Implementation
+	// Implementation
 protected:
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 	// Generated message map functions
 	//{{AFX_MSG(CListDlg)
 	afx_msg void OnTypName();

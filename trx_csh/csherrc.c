@@ -5,31 +5,31 @@
 /*Basic error codes common to DBF and TRX file types --
 enum {
 	  TRX_OK,
-      TRX_ErrName,
-      TRX_ErrFind,
-      TRX_ErrArg,
-      TRX_ErrMem,
-      TRX_ErrRecsiz,
-      TRX_ErrNoCache,
-      TRX_ErrLocked,
-      TRX_ErrRead,
-      TRX_ErrWrite,
+	  TRX_ErrName,
+	  TRX_ErrFind,
+	  TRX_ErrArg,
+	  TRX_ErrMem,
+	  TRX_ErrRecsiz,
+	  TRX_ErrNoCache,
+	  TRX_ErrLocked,
+	  TRX_ErrRead,
+	  TRX_ErrWrite,
 	  TRX_ErrCreate,
-      TRX_ErrOpen,
-      TRX_ErrClose,
-      TRX_ErrDelete,
-      TRX_ErrLimit,
-      TRX_ErrShare,
-      TRX_ErrFormat,
-      TRX_ErrReadOnly,
-      TRX_ErrSpace,
-      TRX_ErrFileType,
-      TRX_ErrDiskIO,
-      TRX_ErrLock,
+	  TRX_ErrOpen,
+	  TRX_ErrClose,
+	  TRX_ErrDelete,
+	  TRX_ErrLimit,
+	  TRX_ErrShare,
+	  TRX_ErrFormat,
+	  TRX_ErrReadOnly,
+	  TRX_ErrSpace,
+	  TRX_ErrFileType,
+	  TRX_ErrDiskIO,
+	  TRX_ErrLock,
 	  TRX_ErrFileShared,
 	  TRX_ErrUsrAbort,
 	  TRX_ErrRename
-      };
+	  };
 */
 
 
@@ -65,6 +65,6 @@ static char * _csh_errstr[] = {
 
 LPSTR TRXAPI csh_Errstr(UINT e)
 {
-  return (LPSTR)_csh_errstr[e<CSH_ERR_LIMIT?e:DOS_ErrArg];
+	return (LPSTR)_csh_errstr[e < CSH_ERR_LIMIT ? e : DOS_ErrArg];
 }
 

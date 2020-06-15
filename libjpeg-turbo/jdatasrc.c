@@ -17,7 +17,7 @@
  * than 8 bits on your machine, you may need to do some tweaking.
  */
 
-/* this is not a core library module, so it doesn't define JPEG_INTERNALS */
+ /* this is not a core library module, so it doesn't define JPEG_INTERNALS */
 #include "jinclude.h"
 #include "jpeglib.h"
 #include "jerror.h"
@@ -26,11 +26,11 @@
 /* Expanded data source object for stdio input */
 
 typedef struct {
-  struct jpeg_source_mgr pub;   /* public fields */
+	struct jpeg_source_mgr pub;   /* public fields */
 
-  FILE * infile;                /* source stream */
-  JOCTET * buffer;              /* start of buffer */
-  boolean start_of_file;        /* have we gotten any data yet? */
+	FILE * infile;                /* source stream */
+	JOCTET * buffer;              /* start of buffer */
+	boolean start_of_file;        /* have we gotten any data yet? */
 } my_source_mgr;
 
 typedef my_source_mgr * my_src_ptr;
@@ -44,22 +44,22 @@ typedef my_source_mgr * my_src_ptr;
  */
 
 METHODDEF(void)
-init_source (j_decompress_ptr cinfo)
+init_source(j_decompress_ptr cinfo)
 {
-  my_src_ptr src = (my_src_ptr) cinfo->src;
+	my_src_ptr src = (my_src_ptr)cinfo->src;
 
-  /* We reset the empty-input-file flag for each image,
-   * but we don't clear the input buffer.
-   * This is correct behavior for reading a series of images from one source.
-   */
-  src->start_of_file = TRUE;
+	/* We reset the empty-input-file flag for each image,
+	 * but we don't clear the input buffer.
+	 * This is correct behavior for reading a series of images from one source.
+	 */
+	src->start_of_file = TRUE;
 }
 
 #if JPEG_LIB_VERSION >= 80 || defined(MEM_SRCDST_SUPPORTED)
 METHODDEF(void)
-init_mem_source (j_decompress_ptr cinfo)
+init_mem_source(j_decompress_ptr cinfo)
 {
-  /* no work necessary here */
+	/* no work necessary here */
 }
 #endif
 
@@ -98,50 +98,50 @@ init_mem_source (j_decompress_ptr cinfo)
  */
 
 METHODDEF(boolean)
-fill_input_buffer (j_decompress_ptr cinfo)
+fill_input_buffer(j_decompress_ptr cinfo)
 {
-  my_src_ptr src = (my_src_ptr) cinfo->src;
-  size_t nbytes;
+	my_src_ptr src = (my_src_ptr)cinfo->src;
+	size_t nbytes;
 
-  nbytes = JFREAD(src->infile, src->buffer, INPUT_BUF_SIZE);
+	nbytes = JFREAD(src->infile, src->buffer, INPUT_BUF_SIZE);
 
-  if (nbytes <= 0) {
-    if (src->start_of_file)     /* Treat empty input file as fatal error */
-      ERREXIT(cinfo, JERR_INPUT_EMPTY);
-    WARNMS(cinfo, JWRN_JPEG_EOF);
-    /* Insert a fake EOI marker */
-    src->buffer[0] = (JOCTET) 0xFF;
-    src->buffer[1] = (JOCTET) JPEG_EOI;
-    nbytes = 2;
-  }
+	if (nbytes <= 0) {
+		if (src->start_of_file)     /* Treat empty input file as fatal error */
+			ERREXIT(cinfo, JERR_INPUT_EMPTY);
+		WARNMS(cinfo, JWRN_JPEG_EOF);
+		/* Insert a fake EOI marker */
+		src->buffer[0] = (JOCTET)0xFF;
+		src->buffer[1] = (JOCTET)JPEG_EOI;
+		nbytes = 2;
+	}
 
-  src->pub.next_input_byte = src->buffer;
-  src->pub.bytes_in_buffer = nbytes;
-  src->start_of_file = FALSE;
+	src->pub.next_input_byte = src->buffer;
+	src->pub.bytes_in_buffer = nbytes;
+	src->start_of_file = FALSE;
 
-  return TRUE;
+	return TRUE;
 }
 
 #if JPEG_LIB_VERSION >= 80 || defined(MEM_SRCDST_SUPPORTED)
 METHODDEF(boolean)
-fill_mem_input_buffer (j_decompress_ptr cinfo)
+fill_mem_input_buffer(j_decompress_ptr cinfo)
 {
-  static const JOCTET mybuffer[4] = {
-    (JOCTET) 0xFF, (JOCTET) JPEG_EOI, 0, 0
-  };
+	static const JOCTET mybuffer[4] = {
+	  (JOCTET)0xFF, (JOCTET)JPEG_EOI, 0, 0
+	};
 
-  /* The whole JPEG data is expected to reside in the supplied memory
-   * buffer, so any request for more data beyond the given buffer size
-   * is treated as an error.
-   */
-  WARNMS(cinfo, JWRN_JPEG_EOF);
+	/* The whole JPEG data is expected to reside in the supplied memory
+	 * buffer, so any request for more data beyond the given buffer size
+	 * is treated as an error.
+	 */
+	WARNMS(cinfo, JWRN_JPEG_EOF);
 
-  /* Insert a fake EOI marker */
+	/* Insert a fake EOI marker */
 
-  cinfo->src->next_input_byte = mybuffer;
-  cinfo->src->bytes_in_buffer = 2;
+	cinfo->src->next_input_byte = mybuffer;
+	cinfo->src->bytes_in_buffer = 2;
 
-  return TRUE;
+	return TRUE;
 }
 #endif
 
@@ -159,25 +159,25 @@ fill_mem_input_buffer (j_decompress_ptr cinfo)
  */
 
 METHODDEF(void)
-skip_input_data (j_decompress_ptr cinfo, long num_bytes)
+skip_input_data(j_decompress_ptr cinfo, long num_bytes)
 {
-  struct jpeg_source_mgr * src = cinfo->src;
+	struct jpeg_source_mgr * src = cinfo->src;
 
-  /* Just a dumb implementation for now.  Could use fseek() except
-   * it doesn't work on pipes.  Not clear that being smart is worth
-   * any trouble anyway --- large skips are infrequent.
-   */
-  if (num_bytes > 0) {
-    while (num_bytes > (long) src->bytes_in_buffer) {
-      num_bytes -= (long) src->bytes_in_buffer;
-      (void) (*src->fill_input_buffer) (cinfo);
-      /* note we assume that fill_input_buffer will never return FALSE,
-       * so suspension need not be handled.
-       */
-    }
-    src->next_input_byte += (size_t) num_bytes;
-    src->bytes_in_buffer -= (size_t) num_bytes;
-  }
+	/* Just a dumb implementation for now.  Could use fseek() except
+	 * it doesn't work on pipes.  Not clear that being smart is worth
+	 * any trouble anyway --- large skips are infrequent.
+	 */
+	if (num_bytes > 0) {
+		while (num_bytes > (long)src->bytes_in_buffer) {
+			num_bytes -= (long)src->bytes_in_buffer;
+			(void)(*src->fill_input_buffer) (cinfo);
+			/* note we assume that fill_input_buffer will never return FALSE,
+			 * so suspension need not be handled.
+			 */
+		}
+		src->next_input_byte += (size_t)num_bytes;
+		src->bytes_in_buffer -= (size_t)num_bytes;
+	}
 }
 
 
@@ -190,19 +190,19 @@ skip_input_data (j_decompress_ptr cinfo, long num_bytes)
  */
 
 
-/*
- * Terminate source --- called by jpeg_finish_decompress
- * after all data has been read.  Often a no-op.
- *
- * NB: *not* called by jpeg_abort or jpeg_destroy; surrounding
- * application must deal with any cleanup that should happen even
- * for error exit.
- */
+ /*
+  * Terminate source --- called by jpeg_finish_decompress
+  * after all data has been read.  Often a no-op.
+  *
+  * NB: *not* called by jpeg_abort or jpeg_destroy; surrounding
+  * application must deal with any cleanup that should happen even
+  * for error exit.
+  */
 
 METHODDEF(void)
-term_source (j_decompress_ptr cinfo)
+term_source(j_decompress_ptr cinfo)
 {
-  /* no work necessary here */
+	/* no work necessary here */
 }
 
 
@@ -213,36 +213,36 @@ term_source (j_decompress_ptr cinfo)
  */
 
 GLOBAL(void)
-jpeg_stdio_src (j_decompress_ptr cinfo, FILE * infile)
+jpeg_stdio_src(j_decompress_ptr cinfo, FILE * infile)
 {
-  my_src_ptr src;
+	my_src_ptr src;
 
-  /* The source object and input buffer are made permanent so that a series
-   * of JPEG images can be read from the same file by calling jpeg_stdio_src
-   * only before the first one.  (If we discarded the buffer at the end of
-   * one image, we'd likely lose the start of the next one.)
-   * This makes it unsafe to use this manager and a different source
-   * manager serially with the same JPEG object.  Caveat programmer.
-   */
-  if (cinfo->src == NULL) {     /* first time for this JPEG object? */
-    cinfo->src = (struct jpeg_source_mgr *)
-      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
-                                  sizeof(my_source_mgr));
-    src = (my_src_ptr) cinfo->src;
-    src->buffer = (JOCTET *)
-      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
-                                  INPUT_BUF_SIZE * sizeof(JOCTET));
-  }
+	/* The source object and input buffer are made permanent so that a series
+	 * of JPEG images can be read from the same file by calling jpeg_stdio_src
+	 * only before the first one.  (If we discarded the buffer at the end of
+	 * one image, we'd likely lose the start of the next one.)
+	 * This makes it unsafe to use this manager and a different source
+	 * manager serially with the same JPEG object.  Caveat programmer.
+	 */
+	if (cinfo->src == NULL) {     /* first time for this JPEG object? */
+		cinfo->src = (struct jpeg_source_mgr *)
+			(*cinfo->mem->alloc_small) ((j_common_ptr)cinfo, JPOOL_PERMANENT,
+				sizeof(my_source_mgr));
+		src = (my_src_ptr)cinfo->src;
+		src->buffer = (JOCTET *)
+			(*cinfo->mem->alloc_small) ((j_common_ptr)cinfo, JPOOL_PERMANENT,
+				INPUT_BUF_SIZE * sizeof(JOCTET));
+	}
 
-  src = (my_src_ptr) cinfo->src;
-  src->pub.init_source = init_source;
-  src->pub.fill_input_buffer = fill_input_buffer;
-  src->pub.skip_input_data = skip_input_data;
-  src->pub.resync_to_restart = jpeg_resync_to_restart; /* use default method */
-  src->pub.term_source = term_source;
-  src->infile = infile;
-  src->pub.bytes_in_buffer = 0; /* forces fill_input_buffer on first read */
-  src->pub.next_input_byte = NULL; /* until buffer loaded */
+	src = (my_src_ptr)cinfo->src;
+	src->pub.init_source = init_source;
+	src->pub.fill_input_buffer = fill_input_buffer;
+	src->pub.skip_input_data = skip_input_data;
+	src->pub.resync_to_restart = jpeg_resync_to_restart; /* use default method */
+	src->pub.term_source = term_source;
+	src->infile = infile;
+	src->pub.bytes_in_buffer = 0; /* forces fill_input_buffer on first read */
+	src->pub.next_input_byte = NULL; /* until buffer loaded */
 }
 
 
@@ -253,31 +253,31 @@ jpeg_stdio_src (j_decompress_ptr cinfo, FILE * infile)
  */
 
 GLOBAL(void)
-jpeg_mem_src (j_decompress_ptr cinfo,
-              unsigned char * inbuffer, unsigned long insize)
+jpeg_mem_src(j_decompress_ptr cinfo,
+	unsigned char * inbuffer, unsigned long insize)
 {
-  struct jpeg_source_mgr * src;
+	struct jpeg_source_mgr * src;
 
-  if (inbuffer == NULL || insize == 0)  /* Treat empty input as fatal error */
-    ERREXIT(cinfo, JERR_INPUT_EMPTY);
+	if (inbuffer == NULL || insize == 0)  /* Treat empty input as fatal error */
+		ERREXIT(cinfo, JERR_INPUT_EMPTY);
 
-  /* The source object is made permanent so that a series of JPEG images
-   * can be read from the same buffer by calling jpeg_mem_src only before
-   * the first one.
-   */
-  if (cinfo->src == NULL) {     /* first time for this JPEG object? */
-    cinfo->src = (struct jpeg_source_mgr *)
-      (*cinfo->mem->alloc_small) ((j_common_ptr) cinfo, JPOOL_PERMANENT,
-                                  sizeof(struct jpeg_source_mgr));
-  }
+	/* The source object is made permanent so that a series of JPEG images
+	 * can be read from the same buffer by calling jpeg_mem_src only before
+	 * the first one.
+	 */
+	if (cinfo->src == NULL) {     /* first time for this JPEG object? */
+		cinfo->src = (struct jpeg_source_mgr *)
+			(*cinfo->mem->alloc_small) ((j_common_ptr)cinfo, JPOOL_PERMANENT,
+				sizeof(struct jpeg_source_mgr));
+	}
 
-  src = cinfo->src;
-  src->init_source = init_mem_source;
-  src->fill_input_buffer = fill_mem_input_buffer;
-  src->skip_input_data = skip_input_data;
-  src->resync_to_restart = jpeg_resync_to_restart; /* use default method */
-  src->term_source = term_source;
-  src->bytes_in_buffer = (size_t) insize;
-  src->next_input_byte = (JOCTET *) inbuffer;
+	src = cinfo->src;
+	src->init_source = init_mem_source;
+	src->fill_input_buffer = fill_mem_input_buffer;
+	src->skip_input_data = skip_input_data;
+	src->resync_to_restart = jpeg_resync_to_restart; /* use default method */
+	src->term_source = term_source;
+	src->bytes_in_buffer = (size_t)insize;
+	src->next_input_byte = (JOCTET *)inbuffer;
 }
 #endif

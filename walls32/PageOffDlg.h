@@ -14,9 +14,9 @@ struct VIEWFORMAT;
 
 class CPageOffDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
-	CPageOffDlg(VIEWFORMAT *pVF,double fPW,double fPH,CWnd* pParent = NULL);   // standard constructor
+	CPageOffDlg(VIEWFORMAT *pVF, double fPW, double fPH, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CPageOffDlg)
@@ -31,28 +31,28 @@ public:
 
 private:
 	VIEWFORMAT *m_pVF;
-	double m_fCenterLeft,m_fCenterTop;
+	double m_fCenterLeft, m_fCenterTop;
 
 	void GetCenterOffsets();
-	void Enable(UINT id,BOOL bEnable) {
+	void Enable(UINT id, BOOL bEnable) {
 		GetDlgItem(id)->EnableWindow(bEnable);
 	}
-	void SetText(UINT id,const char *pText)
+	void SetText(UINT id, const char *pText)
 	{
 		((CEdit *)GetDlgItem(id))->SetWindowText(pText);
 	}
 	UINT CheckData();
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CPageOffDlg)
-	protected:
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CPageOffDlg)
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
 // Implementation
 protected:
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 	// Generated message map functions
 	//{{AFX_MSG(CPageOffDlg)
 	virtual BOOL OnInitDialog();

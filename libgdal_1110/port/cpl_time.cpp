@@ -40,7 +40,7 @@
 static const int mon_lengths[2][MONSPERYEAR] = {
   {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},
   {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}
-} ;
+};
 
 
 static const int	year_lengths[2] = {
@@ -64,48 +64,48 @@ static const int	year_lengths[2] = {
 
 struct tm * CPLUnixTimeToYMDHMS(GIntBig unixTime, struct tm* pRet)
 {
-    GIntBig days = unixTime / SECSPERDAY;
-    GIntBig rem = unixTime % SECSPERDAY;
-    
-    while (rem < 0) {
-        rem += SECSPERDAY;
-        --days;
-    }
-    
-    pRet->tm_hour = (int) (rem / SECSPERHOUR);
-    rem = rem % SECSPERHOUR;
-    pRet->tm_min = (int) (rem / SECSPERMIN);
-    /*
-    ** A positive leap second requires a special
-    ** representation.  This uses "... ??:59:60" et seq.
-    */
-    pRet->tm_sec = (int) (rem % SECSPERMIN);
-    pRet->tm_wday = (int) ((EPOCH_WDAY + days) % DAYSPERWEEK);
-    if (pRet->tm_wday < 0)
-        pRet->tm_wday += DAYSPERWEEK;
-    GIntBig y = EPOCH_YEAR;
-    int yleap;
-    while (days < 0 || days >= (GIntBig) year_lengths[yleap = isleap(y)])
-    {
-        GIntBig	newy;
+	GIntBig days = unixTime / SECSPERDAY;
+	GIntBig rem = unixTime % SECSPERDAY;
 
-        newy = y + days / DAYSPERNYEAR;
-        if (days < 0)
-            --newy;
-        days -= (newy - y) * DAYSPERNYEAR +
-            LEAPS_THRU_END_OF(newy - 1) -
-            LEAPS_THRU_END_OF(y - 1);
-        y = newy;
-    }
-    pRet->tm_year = (int) (y - TM_YEAR_BASE);
-    pRet->tm_yday = (int) days;
-    const int* ip = mon_lengths[yleap];
-    for (pRet->tm_mon = 0; days >= (GIntBig) ip[pRet->tm_mon]; ++(pRet->tm_mon))
-        days = days - (GIntBig) ip[pRet->tm_mon];
-    pRet->tm_mday = (int) (days + 1);
-    pRet->tm_isdst = 0;
-    
-    return pRet;
+	while (rem < 0) {
+		rem += SECSPERDAY;
+		--days;
+	}
+
+	pRet->tm_hour = (int)(rem / SECSPERHOUR);
+	rem = rem % SECSPERHOUR;
+	pRet->tm_min = (int)(rem / SECSPERMIN);
+	/*
+	** A positive leap second requires a special
+	** representation.  This uses "... ??:59:60" et seq.
+	*/
+	pRet->tm_sec = (int)(rem % SECSPERMIN);
+	pRet->tm_wday = (int)((EPOCH_WDAY + days) % DAYSPERWEEK);
+	if (pRet->tm_wday < 0)
+		pRet->tm_wday += DAYSPERWEEK;
+	GIntBig y = EPOCH_YEAR;
+	int yleap;
+	while (days < 0 || days >= (GIntBig)year_lengths[yleap = isleap(y)])
+	{
+		GIntBig	newy;
+
+		newy = y + days / DAYSPERNYEAR;
+		if (days < 0)
+			--newy;
+		days -= (newy - y) * DAYSPERNYEAR +
+			LEAPS_THRU_END_OF(newy - 1) -
+			LEAPS_THRU_END_OF(y - 1);
+		y = newy;
+	}
+	pRet->tm_year = (int)(y - TM_YEAR_BASE);
+	pRet->tm_yday = (int)days;
+	const int* ip = mon_lengths[yleap];
+	for (pRet->tm_mon = 0; days >= (GIntBig)ip[pRet->tm_mon]; ++(pRet->tm_mon))
+		days = days - (GIntBig)ip[pRet->tm_mon];
+	pRet->tm_mday = (int)(days + 1);
+	pRet->tm_isdst = 0;
+
+	return pRet;
 }
 
 /************************************************************************/
@@ -126,28 +126,28 @@ struct tm * CPLUnixTimeToYMDHMS(GIntBig unixTime, struct tm* pRet)
 
 GIntBig CPLYMDHMSToUnixTime(const struct tm *brokendowntime)
 {
-  GIntBig days;
-  int mon;
-  
-  if (brokendowntime->tm_mon < 0 || brokendowntime->tm_mon >= 12)
-    return -1;
-    
-  /* Number of days of the current month */
-  days = brokendowntime->tm_mday - 1;
-  
-  /* Add the number of days of the current year */
-  const int* ip = mon_lengths[isleap(TM_YEAR_BASE + brokendowntime->tm_year)];
-  for(mon=0;mon<brokendowntime->tm_mon;mon++)
-      days += ip [mon];
+	GIntBig days;
+	int mon;
 
-  /* Add the number of days of the other years */
-  days += (TM_YEAR_BASE + (GIntBig)brokendowntime->tm_year - EPOCH_YEAR) * DAYSPERNYEAR +
-          LEAPS_THRU_END_OF(TM_YEAR_BASE + (GIntBig)brokendowntime->tm_year - 1) -
-          LEAPS_THRU_END_OF(EPOCH_YEAR - 1);
+	if (brokendowntime->tm_mon < 0 || brokendowntime->tm_mon >= 12)
+		return -1;
 
-  /* Now add the secondes, minutes and hours to the number of days since EPOCH */
-  return brokendowntime->tm_sec +
-         brokendowntime->tm_min * SECSPERMIN +
-         brokendowntime->tm_hour * SECSPERHOUR +
-         days * SECSPERDAY;
+	/* Number of days of the current month */
+	days = brokendowntime->tm_mday - 1;
+
+	/* Add the number of days of the current year */
+	const int* ip = mon_lengths[isleap(TM_YEAR_BASE + brokendowntime->tm_year)];
+	for (mon = 0; mon < brokendowntime->tm_mon; mon++)
+		days += ip[mon];
+
+	/* Add the number of days of the other years */
+	days += (TM_YEAR_BASE + (GIntBig)brokendowntime->tm_year - EPOCH_YEAR) * DAYSPERNYEAR +
+		LEAPS_THRU_END_OF(TM_YEAR_BASE + (GIntBig)brokendowntime->tm_year - 1) -
+		LEAPS_THRU_END_OF(EPOCH_YEAR - 1);
+
+	/* Now add the secondes, minutes and hours to the number of days since EPOCH */
+	return brokendowntime->tm_sec +
+		brokendowntime->tm_min * SECSPERMIN +
+		brokendowntime->tm_hour * SECSPERHOUR +
+		days * SECSPERDAY;
 }

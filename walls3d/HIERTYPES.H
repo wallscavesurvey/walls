@@ -18,8 +18,8 @@ class Object3D;
 
 struct objindexstruct
 {
-  Object3D* obj;  // pointer to object i
-  int flag;       // matrix for object i computed?
+	Object3D* obj;  // pointer to object i
+	int flag;       // matrix for object i computed?
 };
 
 

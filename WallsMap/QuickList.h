@@ -11,7 +11,7 @@ extern WORD wOSVersion;
 // CQuickList window
 
 /*
-	CQuickList is an owner draw virtual list. Useful to create 
+	CQuickList is an owner draw virtual list. Useful to create
 	a complex large list without using a lot of memory.
 
 	Version 1.01 - 22 Jan 2006
@@ -19,9 +19,9 @@ extern WORD wOSVersion;
 
 
 	Version 1.0 - 10 Sep 2004
-	Solved the "hot item" problem in Windows XP. Added support 
-	for themes. Added message when user right clicks on the 
-	column header. 
+	Solved the "hot item" problem in Windows XP. Added support
+	for themes. Added message when user right clicks on the
+	column header.
 
 
 	Version 0.9 - 28 Aug 2004
@@ -36,7 +36,7 @@ extern WORD wOSVersion;
 	Hans Dietrich, "XListCtrl - A custom-draw list control with subitem formatting"
 	http://www.codeproject.com/listctrl/xlistctrl.asp
 
-  	Michael Dunn, "Neat Stuff to do in List Controls Using Custom Draw"
+	Michael Dunn, "Neat Stuff to do in List Controls Using Custom Draw"
 	http://www.codeproject.com/listctrl/lvcustomdraw.asp
 
 	Allan Nielsen, "SuperGrid - Yet Another listview control"
@@ -49,21 +49,21 @@ extern WORD wOSVersion;
 	http://www.codeproject.com/miscctrl/progresstimetocomplete.asp (Deleted ***DMcK)
 
   */
-/*
-You could define one or several of the following, if
-you don't use the specific feature:
+  /*
+  You could define one or several of the following, if
+  you don't use the specific feature:
 
-#define	QUICKLIST_NOIMAGE			//No image support
-#define	QUICKLIST_NOBUTTON			//No button support
-#define	QUICKLIST_NOTEXTSTYLE		//No text style support (bold, italic, position)
-#define	QUICKLIST_NOEMPTYMESSAGE	//No support for empty message
-#define	QUICKLIST_NOPROGRESSBAR		//No progress bar support
-#define QUICKLIST_NOKEYFIND			//No support for LVN_ODFINDITEM message (but you might implement this by yourself)
-#define QUICKLIST_NONAVIGATION		//No support for column navigation
-#define QUICKLIST_NOEDIT			//No support for editing items
-#define	QUICKLIST_NOCOLORS			//Default colors will be used
-#define	QUICKLIST_NOTOOLTIP			//No support for tool tips.
-*/
+  #define	QUICKLIST_NOIMAGE			//No image support
+  #define	QUICKLIST_NOBUTTON			//No button support
+  #define	QUICKLIST_NOTEXTSTYLE		//No text style support (bold, italic, position)
+  #define	QUICKLIST_NOEMPTYMESSAGE	//No support for empty message
+  #define	QUICKLIST_NOPROGRESSBAR		//No progress bar support
+  #define QUICKLIST_NOKEYFIND			//No support for LVN_ODFINDITEM message (but you might implement this by yourself)
+  #define QUICKLIST_NONAVIGATION		//No support for column navigation
+  #define QUICKLIST_NOEDIT			//No support for editing items
+  #define	QUICKLIST_NOCOLORS			//Default colors will be used
+  #define	QUICKLIST_NOTOOLTIP			//No support for tool tips.
+  */
 
 #define	QUICKLIST_USE_MEMO_BUTTON
 
@@ -71,10 +71,10 @@ you don't use the specific feature:
 #define	QUICKLIST_NOEMPTYMESSAGE	//No support for empty message
 #define QUICKLIST_NOKEYFIND			//No support for LVN_ODFINDITEM message (but you might implement this by yourself)
 #define	QUICKLIST_NOIMAGE			//No image support
-//#define	QUICKLIST_NOTOOLTIP			//No support for tool tips.
+  //#define	QUICKLIST_NOTOOLTIP			//No support for tool tips.
 
-//This message is sent then the list needs data
-//WPARAM: Handle to list	LPARAM: Pointer to CListItemData
+  //This message is sent then the list needs data
+  //WPARAM: Handle to list	LPARAM: Pointer to CListItemData
 #define WM_QUICKLIST_GETLISTITEMDATA	(WM_USER + 1979)
 
 //This is sent when navigation column is changing
@@ -101,7 +101,7 @@ you don't use the specific feature:
 #ifndef QUICKLIST_NOTOOLTIP
 #define WM_QUICKLIST_GETTOOLTIP	(WM_USER + 1989)
 struct QUICKLIST_TTINFO {
-	QUICKLIST_TTINFO(int row,int col,BOOL bw,LPVOID pvText)
+	QUICKLIST_TTINFO(int row, int col, BOOL bw, LPVOID pvText)
 		: nRow(row)
 		, nCol(col)
 		, bW(bw)
@@ -127,11 +127,11 @@ typedef VEC_INT::iterator it_int;
 
 #include "QuickEdit.h"
 
-typedef void (*XC_ADJUST_CB)(CWnd *pWnd,int nFld);
+typedef void(*XC_ADJUST_CB)(CWnd *pWnd, int nFld);
 
 class CQuickList : public CListCtrl
 {
-// Construction
+	// Construction
 public:
 	CQuickList();
 	virtual ~CQuickList();
@@ -143,7 +143,7 @@ public:
 	class CListHitInfo
 	{
 	public:
-		CListHitInfo() :  m_item(-1),m_subitem(-1),m_onImage(false),m_onButton(false) {} 
+		CListHitInfo() : m_item(-1), m_subitem(-1), m_onImage(false), m_onButton(false) {}
 		int m_item;
 		int m_subitem;
 		bool m_onImage;
@@ -152,7 +152,7 @@ public:
 
 	class CHeaderRightClick;
 
-// Attributes
+	// Attributes
 public:
 	CQuickEdit *m_edit; //Make accessible from dialog
 
@@ -160,13 +160,13 @@ public:
 	bool m_bWrap;
 	int m_iLastColWidth;
 
-	int ExpandedMemoButtonWidth(int rectheight) {return rectheight+4;}
-	int MemoButtonWidth(int rectheight) {return 2*(rectheight-2);}
-	int MemoButtonOffset(int rectheight) {return rectheight-3;}
+	int ExpandedMemoButtonWidth(int rectheight) { return rectheight + 4; }
+	int MemoButtonWidth(int rectheight) { return 2 * (rectheight - 2); }
+	int MemoButtonOffset(int rectheight) { return rectheight - 3; }
 
 	void SetAdjustWidthCallback(XC_ADJUST_CB pcb)
 	{
-		m_pAdjustWidth=pcb;
+		m_pAdjustWidth = pcb;
 	}
 	bool m_bHdrToolTip;
 
@@ -180,27 +180,27 @@ private:
 	CToolTipCtrl m_hdrToolTip;
 	//BOOL PtInHeader(const CPoint &point) const;
 
-	int m_lastItem,m_lastCol;
+	int m_lastItem, m_lastCol;
 
 	XC_ADJUST_CB m_pAdjustWidth;
 
 public:
 	static void UseHeaderEx()
 	{
-		m_bUseHeaderEx=true; //static
+		m_bUseHeaderEx = true; //static
 	}
 	void SubclassHeader();
 	void InitHeaderStyle();
 	void EnableHeaderEx();
-	bool IsUsingHeaderEx() {return m_bUsingHeaderEx;} //Vaiable set in PreSubclassWindow()
-	void InitFonts(double margin=1.2);
-	void ClearLastKeyedItem() {m_lastItem=m_lastCol=-1;}
+	bool IsUsingHeaderEx() { return m_bUsingHeaderEx; } //Vaiable set in PreSubclassWindow()
+	void InitFonts(double margin = 1.2);
+	void ClearLastKeyedItem() { m_lastItem = m_lastCol = -1; }
 	void CellHitTest(const CPoint& pt, int& nRow, int& nCol) const;
-	
-// Overrides
+
+	// Overrides
 public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+protected:
 	virtual void PreSubclassWindow();
 	//virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	//}}AFX_VIRTUAL
@@ -212,53 +212,53 @@ public:
 
 	CFont* GetCellFont()
 	{
-		return m_pCellFont?m_pCellFont:GetFont();
+		return m_pCellFont ? m_pCellFont : GetFont();
 	}
 
 	//Get which column that is activated. -1 if none
 	int GetNavigationColumn() const
 	{
-	#ifndef QUICKLIST_NONAVIGATION
+#ifndef QUICKLIST_NONAVIGATION
 		return m_navigationColumn;
-	#else
+#else
 		return -1;
-	#endif
+#endif
 	}
 
 	//Enable/disable column navigation
 	void EnableColumnNavigation(const bool enable)
 	{
-	#ifndef QUICKLIST_NONAVIGATION
+#ifndef QUICKLIST_NONAVIGATION
 		m_enableNavigation = enable;
-	#else
+#else
 		UNREFERENCED_PARAMETER(enable);
-	#endif
+#endif
 	}
 
 
 	//Is column navigation on?
 	bool IsColumnNavigationOn() const
 	{
-	#ifndef QUICKLIST_NONAVIGATION
+#ifndef QUICKLIST_NONAVIGATION
 		return m_enableNavigation;
-	#else
+#else
 		return false;
-	#endif
+#endif
 	}
 
 	void RedrawFocusItem()
 	{
-		int ifocus=GetItemInFocus();
-		RedrawItems(ifocus,ifocus);
+		int ifocus = GetItemInFocus();
+		RedrawItems(ifocus, ifocus);
 	}
 
-	void DrawArrowBox(CQuickList::CListItemData& id,CDC *pDC);
-	void SelectComboItem(CListItemData &id,CRect &rect);
+	void DrawArrowBox(CQuickList::CListItemData& id, CDC *pDC);
+	void SelectComboItem(CListItemData &id, CRect &rect);
 	void InitSysColors();
 	void StopListBoxEdit(LPCSTR pText);
 	bool HasFocus()
 	{
-		return GetFocus()==this;
+		return GetFocus() == this;
 	}
 	bool IsActive()
 	{
@@ -273,7 +273,7 @@ public:
 	bool GetImageRect(const int item, const int subitem, CRect& rect, bool imageOnly);
 	bool GetImageRect(CQuickList::CListItemData& id, CRect& rect, bool imageOnly);
 	//Redraw images in a column
-	void RedrawImages(const int topitem, const int bottomitem, const int column, BOOL erase=FALSE);
+	void RedrawImages(const int topitem, const int bottomitem, const int column, BOOL erase = FALSE);
 #endif
 
 	bool GetTextRect(const int item, const int subitem, CRect& rect);
@@ -323,11 +323,11 @@ public:
 
 	int GetHeaderHeight()
 	{
-		if(m_bUsingHeaderEx) {
+		if (m_bUsingHeaderEx) {
 			HDITEM hdItem;
 			hdItem.mask = HDI_HEIGHT;
-			m_HeaderCtrl.GetItem(0,&hdItem);
-			return hdItem.cxy+2;
+			m_HeaderCtrl.GetItem(0, &hdItem);
+			return hdItem.cxy + 2;
 		}
 		else {
 			CRect rect;
@@ -338,44 +338,44 @@ public:
 
 	//Return true if point is on an item. "item" and "subitem" shows which item the point is on.
 	//If you want to now if the point is on a check box and/or image use the last two parameters.
-	bool HitTest(const POINT& point, int& item, int& subitem, bool* onCheck=NULL, bool* onImage=NULL);
+	bool HitTest(const POINT& point, int& item, int& subitem, bool* onCheck = NULL, bool* onImage = NULL);
 	bool HitTest(const POINT& point, CListHitInfo &info)
 	{
-		return HitTest(point, info.m_item, info.m_subitem,&info.m_onButton,&info.m_onImage);
+		return HitTest(point, info.m_item, info.m_subitem, &info.m_onButton, &info.m_onImage);
 	}
-	
+
 	//Set which column to search in when message LVN_ODFINDITEM is recieved
-	void SetKeyfindColumn(const int col=KEYFIND_DISABLED)
+	void SetKeyfindColumn(const int col = KEYFIND_DISABLED)
 	{
-		#ifndef QUICKLIST_NOKEYFIND
-			m_keyFindColumn = col;
-		#else
-			UNREFERENCED_PARAMETER(col);
-		#endif
+#ifndef QUICKLIST_NOKEYFIND
+		m_keyFindColumn = col;
+#else
+		UNREFERENCED_PARAMETER(col);
+#endif
 	}
 
 	//Redraw check boxes
-	void RedrawCheckBoxs(const int top, const int bottom, const int column, BOOL erase=FALSE)
+	void RedrawCheckBoxs(const int top, const int bottom, const int column, BOOL erase = FALSE)
 	{
 		RedrawSubitems(top, bottom, column, 1, erase);
 	}
 
 	//Redraw items in a column
-	void RedrawSubitems(const int top, const int bottom, const int column, BOOL erase=FALSE)
+	void RedrawSubitems(const int top, const int bottom, const int column, BOOL erase = FALSE)
 	{
 		RedrawSubitems(top, bottom, column, 0, erase);
 	}
 
 	//Redraw text in a column
-	void RedrawText(const int top, const int bottom, const int column, BOOL erase=FALSE)
+	void RedrawText(const int top, const int bottom, const int column, BOOL erase = FALSE)
 	{
 		RedrawSubitems(top, bottom, column, 3, erase);
 	}
 
 	//Start/stop editing
-	void EditSubItem (int Item, int Column,POINT *pt=NULL);
-	void StopEdit(bool cancel=false);
-	
+	void EditSubItem(int Item, int Column, POINT *pt = NULL);
+	void StopEdit(bool cancel = false);
+
 	//Edit box is closing when losing focus. You can change this.
 	//If the edit box should close when losing focus, the parent will
 	//recieve WM_QUICKLIST_EDITINGLOSTFOCUS when the box is losing focus.
@@ -383,16 +383,16 @@ public:
 	{
 		m_editEndOnLostFocus = autoend;
 
-		if(m_edit != NULL)
+		if (m_edit != NULL)
 			m_edit->SetEndOnLostFocus(m_editEndOnLostFocus);
 	}
 
 	void SetSelected(int i)
 	{
-		SetItemState(i,LVIS_SELECTED,LVIS_SELECTED);
-		SetItemState(i,LVIS_FOCUSED,LVIS_FOCUSED);
+		SetItemState(i, LVIS_SELECTED, LVIS_SELECTED);
+		SetItemState(i, LVIS_FOCUSED, LVIS_FOCUSED);
 	}
-	
+
 	//  This doesn't work (the returned image is instable/transparent): 
 	// CImageList* CreateDragImageEx(const int nItem, const int nSubItem);
 
@@ -425,9 +425,9 @@ public:
 
 	static bool m_bCtrl;
 
-	void SetTooltipDelays(int nTTInitial,int nTTAutopop,int nTTReshow)
+	void SetTooltipDelays(int nTTInitial, int nTTAutopop, int nTTReshow)
 	{
-		m_nTTInitial=nTTInitial; m_nTTAutopop=nTTAutopop; m_nTTReshow=nTTReshow;
+		m_nTTInitial = nTTInitial; m_nTTAutopop = nTTAutopop; m_nTTReshow = nTTReshow;
 	}
 
 	// Generated message map functions
@@ -437,7 +437,7 @@ protected:
 	afx_msg void OnLvnHotTrack(NMHDR *pNMHDR, LRESULT *pResult);
 
 	afx_msg void OnDestroy();
-	
+
 	afx_msg void OnPaint();
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
@@ -461,7 +461,7 @@ protected:
 	afx_msg void OnSysColorChange();
 	afx_msg LRESULT OnComboEscape(WPARAM, LPARAM);
 	afx_msg LRESULT OnComboLButtonUp(WPARAM, LPARAM);
-	afx_msg LRESULT OnTabletQuerySystemGestureStatus(WPARAM,LPARAM);
+	afx_msg LRESULT OnTabletQuerySystemGestureStatus(WPARAM, LPARAM);
 #ifndef QUICKLIST_NOKEYFIND
 	//Is called when user pressing on keys to find an item. 
 	afx_msg BOOL OnOdfinditem(NMHDR* pNMHDR, LRESULT* pResult);
@@ -469,7 +469,7 @@ protected:
 #endif
 
 #ifndef QUICKLIST_NOTOOLTIP
-	int m_nTTInitial,m_nTTAutopop,m_nTTReshow;
+	int m_nTTInitial, m_nTTAutopop, m_nTTReshow;
 	//bool m_bToolTipCtrlCustomizeDone;
 public:
 	afx_msg BOOL OnToolTipText(UINT id, NMHDR * pNMHDR, LRESULT * pResult);
@@ -478,7 +478,7 @@ protected:
 #endif
 
 	void OnEndEdit(const int item, const int subitem, LPCSTR text, UINT endkey);
-	
+
 	friend CQuickEdit;
 
 	bool m_editOnEnter;
@@ -487,13 +487,13 @@ protected:
 	bool m_editEndOnLostFocus;
 
 	// Maintaining margin
-	public:
+public:
 	CFont* m_pGridFont;
 	CFont* m_pCellFont;
 	double m_Margin;
 
-	protected:
-	
+protected:
+
 	UINT m_editLastEndKey;
 	DWORD m_editLastSel;
 
@@ -502,7 +502,7 @@ protected:
 	int m_navigationColumn;
 #endif
 
-//#ifndef QUICKLIST_NOXCOMBOLIST
+	//#ifndef QUICKLIST_NOXCOMBOLIST
 	COLORREF		m_cr3DFace;
 	COLORREF		m_cr3DHighLight;
 	COLORREF		m_cr3DShadow;
@@ -521,12 +521,12 @@ protected:
 	CRect			m_rectComboButton;
 	CXComboList *	m_pListBox;
 	int				m_nComboInitialIndex;
-//#endif
+	//#endif
 
-	//Fill a solid rect, unless transparent color
+		//Fill a solid rect, unless transparent color
 	static void FillSolidRect(CDC *pDC, const RECT& rect, const COLORREF color)
 	{
-		if(color != TRANSPARENTCOLOR)
+		if (color != TRANSPARENTCOLOR)
 			pDC->FillSolidRect(&rect, color);
 	}
 
@@ -537,17 +537,17 @@ protected:
 	void DrawItem(int item, int subitem, CDC* pDC);
 
 #ifndef QUICKLIST_NOIMAGE
-	void DrawImage(	CQuickList::CListItemData& id,
-					CDC* pDC );
+	void DrawImage(CQuickList::CListItemData& id,
+		CDC* pDC);
 #endif
 	void DrawButtonText(CQuickList::CListItemData& id,
-						CRect &rect,CDC* pDC);
+		CRect &rect, CDC* pDC);
 
-	void DrawText(		CQuickList::CListItemData& id,
-						CDC* pDC);
-	
-	void DrawButton(	CQuickList::CListItemData& id,
-						CDC* pDC);
+	void DrawText(CQuickList::CListItemData& id,
+		CDC* pDC);
+
+	void DrawButton(CQuickList::CListItemData& id,
+		CDC* pDC);
 
 
 	//Redraw some of a subitem
@@ -561,13 +561,13 @@ protected:
 
 
 	//Get the color to use to draw text or background.
-	COLORREF GetTextColor(const CQuickList::CListItemData& id, const bool forceNoSelection=false, const bool forceSelection=false);
-	COLORREF GetBackColor(const CQuickList::CListItemData& id, const bool forceNoSelection=false);
+	COLORREF GetTextColor(const CQuickList::CListItemData& id, const bool forceNoSelection = false, const bool forceSelection = false);
+	COLORREF GetBackColor(const CQuickList::CListItemData& id, const bool forceNoSelection = false);
 
 
 	//Get the rect where a specific item should be drawn 
 	BOOL GetSubItemRect(int iItem, int iSubItem, int nArea, CRect& rect);
-	
+
 
 #ifndef QUICKLIST_NOEMPTYMESSAGE	
 	//The message that is drawn if list is empty
@@ -576,7 +576,7 @@ protected:
 
 	//Returns information about a specific item (calling parent to get information)
 	virtual CQuickList::CListItemData& GetItemData(const int item, const int subitem);
-	
+
 	//Used by GetItemData. Don't use this directly
 	CListItemData* m_lastget;
 
@@ -585,7 +585,7 @@ protected:
 
 	//Make sure that top and bottom is inside visible area
 	//Return false in everything is outside visible area
-	bool MakeInside(int& top, int &bottom);	
+	bool MakeInside(int& top, int &bottom);
 
 	DECLARE_MESSAGE_MAP()
 };
@@ -596,7 +596,7 @@ class CQuickList::CListItemData
 {
 public:
 	CListItemData();
-	
+
 	//Get which item/row
 	int CListItemData::GetItem() const
 	{
@@ -629,13 +629,13 @@ public:
 	//even if this item is selected.
 	//Default value: false
 	bool m_noSelection;
-	
+
 	//Set this to true if the item is available for editing
 	//Default value: false
 	char m_cTyp;		//field type
 	bool m_allowEdit;
 	bool m_editBorder;
-	
+
 #ifndef QUICKLIST_NOTEXTSTYLE 
 	//Information about which text style that should be used.
 	struct CListTextStyle
@@ -654,10 +654,10 @@ public:
 		//Default value: 
 		// DT_LEFT | DT_VCENTER | DT_SINGLELINE | DT_END_ELLIPSIS 
 		//See CDC:DrawText in MSDN
-		UINT m_textPosition; 
+		UINT m_textPosition;
 	} m_textStyle;
 #endif
-	
+
 #ifndef QUICKLIST_NOIMAGE
 	//Information about the image
 	struct CListImage
@@ -688,7 +688,7 @@ public:
 
 	} m_image;
 #endif
-	
+
 #ifndef QUICKLIST_NOBUTTON
 	//Information about the button
 	struct CListButton
@@ -715,10 +715,10 @@ public:
 		//mark under the control.
 		//Default value: true
 		bool m_noSelection;
-		
+
 	} m_button;
 #endif
-	
+
 #ifndef QUICKLIST_NOCOLORS
 	//Information about the colors to use
 	struct CListColors
@@ -733,23 +733,23 @@ public:
 
 		//These colors are used to draw selected items 
 		//in the "navigation column"
-		#ifndef QUICKLIST_NONAVIGATION
+#ifndef QUICKLIST_NONAVIGATION
 		COLORREF m_navigatedTextColor;
 		COLORREF m_navigatedBackColor;
-		#endif
-	} m_colors;			
+#endif
+	} m_colors;
 #endif
 
 	PXCOMBODATA m_pXCMB;
 
-	private:
-		friend CQuickList;
-		
-		void Reset();
-		int m_item;
-		int m_subitem;
-		bool m_isSelected;	
-		bool m_isHot;
+private:
+	friend CQuickList;
+
+	void Reset();
+	int m_item;
+	int m_subitem;
+	bool m_isSelected;
+	bool m_isHot;
 };
 
 

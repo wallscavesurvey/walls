@@ -16,7 +16,7 @@ class CCompareDlg : public CDialog
 {
 	DECLARE_DYNAMIC(CCompareDlg)
 public:
-	CCompareDlg(CShpLayer *pShp,CString &path,CString &summary,VEC_COMPSHP &vCompShp,WORD **ppwFld, CWnd* pParent = NULL);   // standard constructor
+	CCompareDlg(CShpLayer *pShp, CString &path, CString &summary, VEC_COMPSHP &vCompShp, WORD **ppwFld, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CCompareDlg();
 
 	enum { IDD = IDD_COMPARESHP };
@@ -50,8 +50,8 @@ private:
 private:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 
-	void Enable(UINT id,BOOL bEnable) {GetDlgItem(id)->EnableWindow(bEnable);}
-	CHScrollListBox *pLB(UINT id) {return (CHScrollListBox *)GetDlgItem(id);}
+	void Enable(UINT id, BOOL bEnable) { GetDlgItem(id)->EnableWindow(bEnable); }
+	CHScrollListBox *pLB(UINT id) { return (CHScrollListBox *)GetDlgItem(id); }
 
 	DECLARE_MESSAGE_MAP()
 
@@ -61,8 +61,8 @@ private:
 	void ShowIgnored();
 	void UpdateSelFldChange();
 	void MoveAllLayers(BOOL bToRight);
-	void MoveOne(CListBox &list1,CListBox &list2,int iSel1,BOOL bToRight);
-	
+	void MoveOne(CListBox &list1, CListBox &list2, int iSel1, BOOL bToRight);
+
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	afx_msg void OnBnClickedMoveallLeft();
 	afx_msg void OnBnClickedMoveallRight();
@@ -71,6 +71,6 @@ private:
 	afx_msg void OnBnClickedBrowse();
 	afx_msg void OnBnClickedSelIgnored();
 	afx_msg void OnBnClickedIncludeAll();
-	afx_msg LRESULT OnCommandHelp(WPARAM,LPARAM);
+	afx_msg LRESULT OnCommandHelp(WPARAM, LPARAM);
 	afx_msg void OnBnClickedIncludeShp();
 };

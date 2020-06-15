@@ -1,10 +1,10 @@
 /******************************************************************************
  *
  * Component: OGR SQL Engine
- * Purpose: Implementation of the swq_op_registrar class used to 
+ * Purpose: Implementation of the swq_op_registrar class used to
  *          represent operations possible in an SQL expression.
  * Author: Frank Warmerdam <warmerdam@pobox.com>
- * 
+ *
  ******************************************************************************
  * Copyright (C) 2010 Frank Warmerdam <warmerdam@pobox.com>
  * Copyright (c) 2010-2013, Even Rouault <even dot rouault at mines-paris dot org>
@@ -31,38 +31,38 @@
 #include "cpl_conv.h"
 #include "swq.h"
 
-static swq_field_type SWQColumnFuncChecker( swq_expr_node *poNode );
+static swq_field_type SWQColumnFuncChecker(swq_expr_node *poNode);
 
 static const swq_operation swq_apsOperations[] =
 {
-    { "OR", SWQ_OR, SWQGeneralEvaluator, SWQGeneralChecker },
-    { "AND", SWQ_AND, SWQGeneralEvaluator, SWQGeneralChecker },
-    { "NOT", SWQ_NOT , SWQGeneralEvaluator, SWQGeneralChecker },
-    { "=", SWQ_EQ , SWQGeneralEvaluator, SWQGeneralChecker },
-    { "<>", SWQ_NE , SWQGeneralEvaluator, SWQGeneralChecker },
-    { ">=", SWQ_GE , SWQGeneralEvaluator, SWQGeneralChecker },
-    { "<=", SWQ_LE , SWQGeneralEvaluator, SWQGeneralChecker },
-    { "<", SWQ_LT , SWQGeneralEvaluator, SWQGeneralChecker },
-    { ">", SWQ_GT , SWQGeneralEvaluator, SWQGeneralChecker },
-    { "LIKE", SWQ_LIKE , SWQGeneralEvaluator, SWQGeneralChecker },
-    { "IS NULL", SWQ_ISNULL , SWQGeneralEvaluator, SWQGeneralChecker },
-    { "IN", SWQ_IN , SWQGeneralEvaluator, SWQGeneralChecker },
-    { "BETWEEN", SWQ_BETWEEN , SWQGeneralEvaluator, SWQGeneralChecker },
-    { "+", SWQ_ADD , SWQGeneralEvaluator, SWQGeneralChecker },
-    { "-", SWQ_SUBTRACT , SWQGeneralEvaluator, SWQGeneralChecker },
-    { "*", SWQ_MULTIPLY , SWQGeneralEvaluator, SWQGeneralChecker },
-    { "/", SWQ_DIVIDE , SWQGeneralEvaluator, SWQGeneralChecker },
-    { "%", SWQ_MODULUS , SWQGeneralEvaluator, SWQGeneralChecker },
-    { "CONCAT", SWQ_CONCAT , SWQGeneralEvaluator, SWQGeneralChecker },
-    { "SUBSTR", SWQ_SUBSTR , SWQGeneralEvaluator, SWQGeneralChecker },
+	{ "OR", SWQ_OR, SWQGeneralEvaluator, SWQGeneralChecker },
+	{ "AND", SWQ_AND, SWQGeneralEvaluator, SWQGeneralChecker },
+	{ "NOT", SWQ_NOT , SWQGeneralEvaluator, SWQGeneralChecker },
+	{ "=", SWQ_EQ , SWQGeneralEvaluator, SWQGeneralChecker },
+	{ "<>", SWQ_NE , SWQGeneralEvaluator, SWQGeneralChecker },
+	{ ">=", SWQ_GE , SWQGeneralEvaluator, SWQGeneralChecker },
+	{ "<=", SWQ_LE , SWQGeneralEvaluator, SWQGeneralChecker },
+	{ "<", SWQ_LT , SWQGeneralEvaluator, SWQGeneralChecker },
+	{ ">", SWQ_GT , SWQGeneralEvaluator, SWQGeneralChecker },
+	{ "LIKE", SWQ_LIKE , SWQGeneralEvaluator, SWQGeneralChecker },
+	{ "IS NULL", SWQ_ISNULL , SWQGeneralEvaluator, SWQGeneralChecker },
+	{ "IN", SWQ_IN , SWQGeneralEvaluator, SWQGeneralChecker },
+	{ "BETWEEN", SWQ_BETWEEN , SWQGeneralEvaluator, SWQGeneralChecker },
+	{ "+", SWQ_ADD , SWQGeneralEvaluator, SWQGeneralChecker },
+	{ "-", SWQ_SUBTRACT , SWQGeneralEvaluator, SWQGeneralChecker },
+	{ "*", SWQ_MULTIPLY , SWQGeneralEvaluator, SWQGeneralChecker },
+	{ "/", SWQ_DIVIDE , SWQGeneralEvaluator, SWQGeneralChecker },
+	{ "%", SWQ_MODULUS , SWQGeneralEvaluator, SWQGeneralChecker },
+	{ "CONCAT", SWQ_CONCAT , SWQGeneralEvaluator, SWQGeneralChecker },
+	{ "SUBSTR", SWQ_SUBSTR , SWQGeneralEvaluator, SWQGeneralChecker },
 
-    { "AVG", SWQ_AVG, SWQGeneralEvaluator, SWQColumnFuncChecker },
-    { "MIN", SWQ_MIN, SWQGeneralEvaluator, SWQColumnFuncChecker },
-    { "MAX", SWQ_MAX, SWQGeneralEvaluator, SWQColumnFuncChecker },
-    { "COUNT", SWQ_COUNT, SWQGeneralEvaluator, SWQColumnFuncChecker },
-    { "SUM", SWQ_SUM, SWQGeneralEvaluator, SWQColumnFuncChecker },
+	{ "AVG", SWQ_AVG, SWQGeneralEvaluator, SWQColumnFuncChecker },
+	{ "MIN", SWQ_MIN, SWQGeneralEvaluator, SWQColumnFuncChecker },
+	{ "MAX", SWQ_MAX, SWQGeneralEvaluator, SWQColumnFuncChecker },
+	{ "COUNT", SWQ_COUNT, SWQGeneralEvaluator, SWQColumnFuncChecker },
+	{ "SUM", SWQ_SUM, SWQGeneralEvaluator, SWQColumnFuncChecker },
 
-    { "CAST", SWQ_CAST, SWQCastEvaluator, SWQCastChecker }
+	{ "CAST", SWQ_CAST, SWQCastEvaluator, SWQCastChecker }
 };
 
 #define N_OPERATIONS (sizeof(swq_apsOperations) / sizeof(swq_apsOperations[0]))
@@ -71,35 +71,35 @@ static const swq_operation swq_apsOperations[] =
 /*                            GetOperator()                             */
 /************************************************************************/
 
-const swq_operation *swq_op_registrar::GetOperator( const char *pszName )
+const swq_operation *swq_op_registrar::GetOperator(const char *pszName)
 
 {
-    unsigned int i;
-    for( i = 0; i < N_OPERATIONS; i++ )
-    {
-        if( EQUAL(pszName,swq_apsOperations[i].pszName) )
-            return &(swq_apsOperations[i]);
-    }
+	unsigned int i;
+	for (i = 0; i < N_OPERATIONS; i++)
+	{
+		if (EQUAL(pszName, swq_apsOperations[i].pszName))
+			return &(swq_apsOperations[i]);
+	}
 
-    return NULL;
+	return NULL;
 }
 
 /************************************************************************/
 /*                            GetOperator()                             */
 /************************************************************************/
 
-const swq_operation *swq_op_registrar::GetOperator( swq_op eOperator )
+const swq_operation *swq_op_registrar::GetOperator(swq_op eOperator)
 
 {
-    unsigned int i;
+	unsigned int i;
 
-    for( i = 0; i < N_OPERATIONS; i++ )
-    {
-        if( eOperator == swq_apsOperations[i].eOperation )
-            return &(swq_apsOperations[i]);
-    }
+	for (i = 0; i < N_OPERATIONS; i++)
+	{
+		if (eOperator == swq_apsOperations[i].eOperation)
+			return &(swq_apsOperations[i]);
+	}
 
-    return NULL;
+	return NULL;
 }
 
 /************************************************************************/
@@ -111,12 +111,12 @@ const swq_operation *swq_op_registrar::GetOperator( swq_op eOperator )
 /*      error if they are used in any other context.                    */
 /************************************************************************/
 
-static swq_field_type SWQColumnFuncChecker( swq_expr_node *poNode )
+static swq_field_type SWQColumnFuncChecker(swq_expr_node *poNode)
 {
-    const swq_operation *poOp =
-            swq_op_registrar::GetOperator((swq_op)poNode->nOperation);
-    CPLError( CE_Failure, CPLE_AppDefined,
-              "Column Summary Function '%s' found in an inappropriate context.",
-              (poOp) ? poOp->pszName : "" );
-    return SWQ_ERROR;
+	const swq_operation *poOp =
+		swq_op_registrar::GetOperator((swq_op)poNode->nOperation);
+	CPLError(CE_Failure, CPLE_AppDefined,
+		"Column Summary Function '%s' found in an inappropriate context.",
+		(poOp) ? poOp->pszName : "");
+	return SWQ_ERROR;
 }

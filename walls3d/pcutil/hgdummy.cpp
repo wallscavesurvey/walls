@@ -12,42 +12,42 @@ ObjPtrUStringTree HGObject::cachedObjects_;    // list of already accessed objec
 
 HGObject::HGObject(const Object& o)
 {
-    objType_ = HGObjectType;
-    _id = o.ID();
-    _type = o.type();
-    origObject_ = o;    // store original object information at a safe place
+	objType_ = HGObjectType;
+	_id = o.ID();
+	_type = o.type();
+	origObject_ = o;    // store original object information at a safe place
 }
 
 RString HGObject::Info()
 {
-    return origObject_;
+	return origObject_;
 }
 
 /////////////////////////////////////////////////////////////////
 // Class Anchor:
 
-Anchor::Anchor(const Object& o) : HGObject(o) 
+Anchor::Anchor(const Object& o) : HGObject(o)
 {
-    objType_ = AnchorType;
-    _position = o.position();
-    _dest = o.field("Dest=");
-    _hint = o.field("Hint=");
-    _linktype = o.field("LinkType=");
-    _issrc = (o.field("TAnchor=") == "Src");
+	objType_ = AnchorType;
+	_position = o.position();
+	_dest = o.field("Dest=");
+	_hint = o.field("Hint=");
+	_linktype = o.field("LinkType=");
+	_issrc = (o.field("TAnchor=") == "Src");
 }
 
 
 /////////////////////////////////////////////////////////////////
 // Class Document; abstract:
 
-Document::Document(const Object& o) : HGObject(o) 
+Document::Document(const Object& o) : HGObject(o)
 {
-    objType_ = DocumentType;
-    _doctype = o.documenttype();
-    linkList_ = new LinkList();
+	objType_ = DocumentType;
+	_doctype = o.documenttype();
+	linkList_ = new LinkList();
 }
 
-Document::~Document() 
+Document::~Document()
 {
-   delete linkList_;
+	delete linkList_;
 }

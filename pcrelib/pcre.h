@@ -43,7 +43,7 @@ it is needed here for malloc. */
 extern "C" {
 #endif
 
-/* Options */
+	/* Options */
 
 #define PCRE_CASELESS           0x0001
 #define PCRE_MULTILINE          0x0002
@@ -106,86 +106,86 @@ extern "C" {
 
 /* Types */
 
-struct real_pcre;                 /* declaration; the definition is private  */
-typedef struct real_pcre pcre;
+	struct real_pcre;                 /* declaration; the definition is private  */
+	typedef struct real_pcre pcre;
 
-/* The structure for passing additional data to pcre_exec(). This is defined in
-such as way as to be extensible. */
+	/* The structure for passing additional data to pcre_exec(). This is defined in
+	such as way as to be extensible. */
 
-typedef struct pcre_extra {
-  unsigned long int flags;        /* Bits for which fields are set */
-  void *study_data;               /* Opaque data from pcre_study() */
-  unsigned long int match_limit;  /* Maximum number of calls to match() */
-  void *callout_data;             /* Data passed back in callouts */
-} pcre_extra;
+	typedef struct pcre_extra {
+		unsigned long int flags;        /* Bits for which fields are set */
+		void *study_data;               /* Opaque data from pcre_study() */
+		unsigned long int match_limit;  /* Maximum number of calls to match() */
+		void *callout_data;             /* Data passed back in callouts */
+	} pcre_extra;
 
-/* The structure for passing out data via the pcre_callout_function. We use a
-structure so that new fields can be added on the end in future versions,
-without changing the API of the function, thereby allowing old clients to work
-without modification. */
+	/* The structure for passing out data via the pcre_callout_function. We use a
+	structure so that new fields can be added on the end in future versions,
+	without changing the API of the function, thereby allowing old clients to work
+	without modification. */
 
-typedef struct pcre_callout_block {
-  int          version;           /* Identifies version of block */
-  /* ------------------------ Version 0 ------------------------------- */
-  int          callout_number;    /* Number compiled into pattern */
-  int         *offset_vector;     /* The offset vector */
-  const char  *subject;           /* The subject being matched */
-  int          subject_length;    /* The length of the subject */
-  int          start_match;       /* Offset to start of this match attempt */
-  int          current_position;  /* Where we currently are */
-  int          capture_top;       /* Max current capture */
-  int          capture_last;      /* Most recently closed capture */
-  void        *callout_data;      /* Data passed in with the call */
-  /* ------------------------------------------------------------------ */
-} pcre_callout_block;
+	typedef struct pcre_callout_block {
+		int          version;           /* Identifies version of block */
+		/* ------------------------ Version 0 ------------------------------- */
+		int          callout_number;    /* Number compiled into pattern */
+		int         *offset_vector;     /* The offset vector */
+		const char  *subject;           /* The subject being matched */
+		int          subject_length;    /* The length of the subject */
+		int          start_match;       /* Offset to start of this match attempt */
+		int          current_position;  /* Where we currently are */
+		int          capture_top;       /* Max current capture */
+		int          capture_last;      /* Most recently closed capture */
+		void        *callout_data;      /* Data passed in with the call */
+		/* ------------------------------------------------------------------ */
+	} pcre_callout_block;
 
-/* Indirection for store get and free functions. These can be set to
-alternative malloc/free functions if required. Special ones are used in the
-non-recursive case for "frames". There is also an optional callout function
-that is triggered by the (?) regex item. Some magic is required for Win32 DLL;
-it is null on other OS. For Virtual Pascal, these have to be different again.
-*/
+	/* Indirection for store get and free functions. These can be set to
+	alternative malloc/free functions if required. Special ones are used in the
+	non-recursive case for "frames". There is also an optional callout function
+	that is triggered by the (?) regex item. Some magic is required for Win32 DLL;
+	it is null on other OS. For Virtual Pascal, these have to be different again.
+	*/
 
 #ifndef VPCOMPAT
-PCRE_DATA_SCOPE void *(*pcre_malloc)(size_t);
-PCRE_DATA_SCOPE void  (*pcre_free)(void *);
-PCRE_DATA_SCOPE void *(*pcre_stack_malloc)(size_t);
-PCRE_DATA_SCOPE void  (*pcre_stack_free)(void *);
-PCRE_DATA_SCOPE int   (*pcre_callout)(pcre_callout_block *);
+	PCRE_DATA_SCOPE void *(*pcre_malloc)(size_t);
+	PCRE_DATA_SCOPE void(*pcre_free)(void *);
+	PCRE_DATA_SCOPE void *(*pcre_stack_malloc)(size_t);
+	PCRE_DATA_SCOPE void(*pcre_stack_free)(void *);
+	PCRE_DATA_SCOPE int(*pcre_callout)(pcre_callout_block *);
 #else   /* VPCOMPAT */
-extern void *pcre_malloc(size_t);
-extern void  pcre_free(void *);
-extern void *pcre_stack_malloc(size_t);
-extern void  pcre_stack_free(void *);
-extern int   pcre_callout(pcre_callout_block *);
+	extern void *pcre_malloc(size_t);
+	extern void  pcre_free(void *);
+	extern void *pcre_stack_malloc(size_t);
+	extern void  pcre_stack_free(void *);
+	extern int   pcre_callout(pcre_callout_block *);
 #endif  /* VPCOMPAT */
 
-/* Exported PCRE functions */
+	/* Exported PCRE functions */
 
-extern pcre *pcre_compile(const char *, int, const char **,
-              int *, const unsigned char *);
-extern int  pcre_config(int, void *);
-extern int  pcre_copy_named_substring(const pcre *, const char *,
-              int *, int, const char *, char *, int);
-extern int  pcre_copy_substring(const char *, int *, int, int,
-              char *, int);
-extern int  pcre_exec(const pcre *, const pcre_extra *,
-              const char *, int, int, int, int *, int);
-extern void pcre_free_substring(const char *);
-extern void pcre_free_substring_list(const char **);
-extern int  pcre_fullinfo(const pcre *, const pcre_extra *, int,
-              void *);
-extern int  pcre_get_named_substring(const pcre *, const char *,
-              int *, int,  const char *, const char **);
-extern int  pcre_get_stringnumber(const pcre *, const char *);
-extern int  pcre_get_substring(const char *, int *, int, int,
-              const char **);
-extern int  pcre_get_substring_list(const char *, int *, int,
-              const char ***);
-extern int  pcre_info(const pcre *, int *, int *);
-extern const unsigned char *pcre_maketables(void);
-extern pcre_extra *pcre_study(const pcre *, int, const char **);
-extern const char *pcre_version(void);
+	extern pcre *pcre_compile(const char *, int, const char **,
+		int *, const unsigned char *);
+	extern int  pcre_config(int, void *);
+	extern int  pcre_copy_named_substring(const pcre *, const char *,
+		int *, int, const char *, char *, int);
+	extern int  pcre_copy_substring(const char *, int *, int, int,
+		char *, int);
+	extern int  pcre_exec(const pcre *, const pcre_extra *,
+		const char *, int, int, int, int *, int);
+	extern void pcre_free_substring(const char *);
+	extern void pcre_free_substring_list(const char **);
+	extern int  pcre_fullinfo(const pcre *, const pcre_extra *, int,
+		void *);
+	extern int  pcre_get_named_substring(const pcre *, const char *,
+		int *, int, const char *, const char **);
+	extern int  pcre_get_stringnumber(const pcre *, const char *);
+	extern int  pcre_get_substring(const char *, int *, int, int,
+		const char **);
+	extern int  pcre_get_substring_list(const char *, int *, int,
+		const char ***);
+	extern int  pcre_info(const pcre *, int *, int *);
+	extern const unsigned char *pcre_maketables(void);
+	extern pcre_extra *pcre_study(const pcre *, int, const char **);
+	extern const char *pcre_version(void);
 
 #ifdef __cplusplus
 }  /* extern "C" */

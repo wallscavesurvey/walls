@@ -26,22 +26,22 @@ extern "C" {
 
 #ifdef FANCY_UPSAMPLING
 
-// We compute (9*a + 3*b + 3*c + d + 8) / 16 as follows
-// u = (9*a + 3*b + 3*c + d + 8) / 16
-//   = (a + (a + 3*b + 3*c + d) / 8 + 1) / 2
-//   = (a + m + 1) / 2
-// where m = (a + 3*b + 3*c + d) / 8
-//         = ((a + b + c + d) / 2 + b + c) / 4
-//
-// Let's say  k = (a + b + c + d) / 4.
-// We can compute k as
-// k = (s + t + 1) / 2 - ((a^d) | (b^c) | (s^t)) & 1
-// where s = (a + d + 1) / 2 and t = (b + c + 1) / 2
-//
-// Then m can be written as
-// m = (k + t + 1) / 2 - (((b^c) & (s^t)) | (k^t)) & 1
+	// We compute (9*a + 3*b + 3*c + d + 8) / 16 as follows
+	// u = (9*a + 3*b + 3*c + d + 8) / 16
+	//   = (a + (a + 3*b + 3*c + d) / 8 + 1) / 2
+	//   = (a + m + 1) / 2
+	// where m = (a + 3*b + 3*c + d) / 8
+	//         = ((a + b + c + d) / 2 + b + c) / 4
+	//
+	// Let's say  k = (a + b + c + d) / 4.
+	// We can compute k as
+	// k = (s + t + 1) / 2 - ((a^d) | (b^c) | (s^t)) & 1
+	// where s = (a + d + 1) / 2 and t = (b + c + 1) / 2
+	//
+	// Then m can be written as
+	// m = (k + t + 1) / 2 - (((b^c) & (s^t)) | (k^t)) & 1
 
-// Computes out = (k + in + 1) / 2 - ((ij & (s^t)) | (k^in)) & 1
+	// Computes out = (k + in + 1) / 2 - ((ij & (s^t)) | (k^in)) & 1
 #define GET_M(ij, in, out) do {                                                \
   const __m128i tmp0 = _mm_avg_epu8(k, (in));     /* (k + in + 1) / 2 */       \
   const __m128i tmp1 = _mm_and_si128((ij), st);   /* (ij) & (s^t) */           \
@@ -92,10 +92,10 @@ extern "C" {
 }
 
 // Turn the macro into a function for reducing code-size when non-critical
-static void Upsample32Pixels(const uint8_t r1[], const uint8_t r2[],
-                             uint8_t* const out) {
-  UPSAMPLE_32PIXELS(r1, r2, out);
-}
+	static void Upsample32Pixels(const uint8_t r1[], const uint8_t r2[],
+		uint8_t* const out) {
+		UPSAMPLE_32PIXELS(r1, r2, out);
+	}
 
 #define UPSAMPLE_LAST_BLOCK(tb, bb, num_pixels, out) {                         \
   uint8_t r1[17], r2[17];                                                      \
@@ -173,11 +173,11 @@ static void FUNC_NAME(const uint8_t* top_y, const uint8_t* bottom_y,           \
               last_pos, len - last_pos);                                       \
 }
 
-// SSE2 variants of the fancy upsampler.
-SSE2_UPSAMPLE_FUNC(UpsampleRgbLinePairSSE2,  VP8YuvToRgb,  3)
-SSE2_UPSAMPLE_FUNC(UpsampleBgrLinePairSSE2,  VP8YuvToBgr,  3)
-SSE2_UPSAMPLE_FUNC(UpsampleRgbaLinePairSSE2, VP8YuvToRgba, 4)
-SSE2_UPSAMPLE_FUNC(UpsampleBgraLinePairSSE2, VP8YuvToBgra, 4)
+	// SSE2 variants of the fancy upsampler.
+	SSE2_UPSAMPLE_FUNC(UpsampleRgbLinePairSSE2, VP8YuvToRgb, 3)
+		SSE2_UPSAMPLE_FUNC(UpsampleBgrLinePairSSE2, VP8YuvToBgr, 3)
+		SSE2_UPSAMPLE_FUNC(UpsampleRgbaLinePairSSE2, VP8YuvToRgba, 4)
+		SSE2_UPSAMPLE_FUNC(UpsampleBgraLinePairSSE2, VP8YuvToBgra, 4)
 
 #undef GET_M
 #undef PACK_AND_STORE
@@ -190,25 +190,25 @@ SSE2_UPSAMPLE_FUNC(UpsampleBgraLinePairSSE2, VP8YuvToBgra, 4)
 
 #endif   // WEBP_USE_SSE2
 
-//------------------------------------------------------------------------------
+		//------------------------------------------------------------------------------
 
-extern WebPUpsampleLinePairFunc WebPUpsamplers[/* MODE_LAST */];
+		extern WebPUpsampleLinePairFunc WebPUpsamplers[/* MODE_LAST */];
 
-void WebPInitUpsamplersSSE2(void) {
+	void WebPInitUpsamplersSSE2(void) {
 #if defined(WEBP_USE_SSE2)
-  WebPUpsamplers[MODE_RGB]  = UpsampleRgbLinePairSSE2;
-  WebPUpsamplers[MODE_RGBA] = UpsampleRgbaLinePairSSE2;
-  WebPUpsamplers[MODE_BGR]  = UpsampleBgrLinePairSSE2;
-  WebPUpsamplers[MODE_BGRA] = UpsampleBgraLinePairSSE2;
+		WebPUpsamplers[MODE_RGB] = UpsampleRgbLinePairSSE2;
+		WebPUpsamplers[MODE_RGBA] = UpsampleRgbaLinePairSSE2;
+		WebPUpsamplers[MODE_BGR] = UpsampleBgrLinePairSSE2;
+		WebPUpsamplers[MODE_BGRA] = UpsampleBgraLinePairSSE2;
 #endif   // WEBP_USE_SSE2
-}
+	}
 
-void WebPInitPremultiplySSE2(void) {
+	void WebPInitPremultiplySSE2(void) {
 #if defined(WEBP_USE_SSE2)
-  WebPUpsamplers[MODE_rgbA] = UpsampleRgbaLinePairSSE2;
-  WebPUpsamplers[MODE_bgrA] = UpsampleBgraLinePairSSE2;
+		WebPUpsamplers[MODE_rgbA] = UpsampleRgbaLinePairSSE2;
+		WebPUpsamplers[MODE_bgrA] = UpsampleBgraLinePairSSE2;
 #endif   // WEBP_USE_SSE2
-}
+	}
 
 #if defined(__cplusplus) || defined(c_plusplus)
 }    // extern "C"

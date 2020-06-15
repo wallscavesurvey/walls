@@ -11,24 +11,24 @@
 class CRulerRichEdit : public CRichEditCtrl
 {
 public:
-// Construction/creation/destruction
+	// Construction/creation/destruction
 	CRulerRichEdit();
 	virtual ~CRulerRichEdit();
 
-	BOOL Create( DWORD style, CRect rect, CWnd* parent );
+	BOOL Create(DWORD style, CRect rect, CWnd* parent);
 
 	CFileDropTarget m_dropTarget;
 
 protected:
-// Message handlers
-	//afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+	// Message handlers
+		//afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
 	afx_msg void OnChange();
 	afx_msg UINT OnGetDlgCode();
 
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-	afx_msg void OnLink(NMHDR *,LRESULT *);
+	afx_msg void OnLink(NMHDR *, LRESULT *);
 
 };
 

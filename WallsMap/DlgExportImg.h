@@ -10,13 +10,13 @@ class CDlgExportImg : public CDialog
 	DECLARE_DYNAMIC(CDlgExportImg)
 
 public:
-	CDlgExportImg(CWallsMapView *pView,CWnd* pParent = NULL);   // standard constructor
+	CDlgExportImg(CWallsMapView *pView, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CDlgExportImg();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_EXPORTIMG };
 
-	BOOL m_bOpenImage,m_bIncScale;
+	BOOL m_bOpenImage, m_bIncScale;
 
 private:
 	virtual BOOL OnInitDialog();
@@ -24,18 +24,18 @@ private:
 	CEditLabel m_cePathName;
 	//CString m_csWidth;
 	CWallsMapView *m_pView;
-	UINT m_uClientW,m_uClientH;
+	UINT m_uClientW, m_uClientH;
 	CProgressCtrl m_Progress;
 	CNiceSliderCtrl m_sliderRatio;
-	UINT m_nRatio,m_uWidth;
+	UINT m_nRatio, m_uWidth;
 
-	CWallsMapDoc *GetDocument() {return m_pView->GetDocument();}
-	void Show(UINT id) {GetDlgItem(id)->ShowWindow(SW_SHOW);}
-	void Hide(UINT id) {GetDlgItem(id)->ShowWindow(SW_HIDE);}
-	void Disable(UINT id) {GetDlgItem(id)->EnableWindow(FALSE);}
-	void Enable(UINT id) {GetDlgItem(id)->EnableWindow(TRUE);}
-	void SetText(UINT id,LPCSTR text) {GetDlgItem(id)->SetWindowText(text);}
-	void GetText(UINT id,CString &text) {GetDlgItem(id)->GetWindowText(text);}
+	CWallsMapDoc *GetDocument() { return m_pView->GetDocument(); }
+	void Show(UINT id) { GetDlgItem(id)->ShowWindow(SW_SHOW); }
+	void Hide(UINT id) { GetDlgItem(id)->ShowWindow(SW_HIDE); }
+	void Disable(UINT id) { GetDlgItem(id)->EnableWindow(FALSE); }
+	void Enable(UINT id) { GetDlgItem(id)->EnableWindow(TRUE); }
+	void SetText(UINT id, LPCSTR text) { GetDlgItem(id)->SetWindowText(text); }
+	void GetText(UINT id, CString &text) { GetDlgItem(id)->GetWindowText(text); }
 	void InitWidth();
 	void CreatePng(const CDIBWrapper &dib);
 	void UpdateRatioLabel();

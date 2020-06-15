@@ -115,10 +115,10 @@ typedef int (CALLBACK *TRXFCN_IF)(int);
 typedef int (TRXAPI * TRXAPI_CB)(int);
 #pragma pack(1)
 typedef struct {
-                BYTE Year;
-                BYTE Month;
-                BYTE Day;
-               } DBF_HDRDATE;
+	BYTE Year;
+	BYTE Month;
+	BYTE Day;
+} DBF_HDRDATE;
 #pragma pack()
 
 /*A_TYPES.H -- Types used by low-level A_*.h header files --*/
@@ -198,7 +198,7 @@ typedef double FAR *dlfptr;
 #define ARC_MINYEAR 50
 #endif
 
-/*For lack of a better place --*/
+  /*For lack of a better place --*/
 #ifdef _MSC_VER
 _CRTIMP int    	_cdecl _kbhit(void); /*nonzero if char avail - in conio.h*/
 _CRTIMP int    	_cdecl _getch(void); /*in conio.h*/

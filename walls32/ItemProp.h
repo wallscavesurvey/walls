@@ -23,29 +23,29 @@ extern CPrjView *pPropView;
 
 class CChangeEdit : public CEdit
 {
-// Construction
+	// Construction
 public:
-	void Init(CDialog *pDlg,UINT idEdit,UINT idText);
+	void Init(CDialog *pDlg, UINT idEdit, UINT idText);
 	CDialog *m_pDlg;
-	CChangeEdit() {m_pDlg=NULL;}
+	CChangeEdit() { m_pDlg = NULL; }
 
-// Attributes
+	// Attributes
 	BOOL m_bAbsolute;
 private:
 	int m_idText;
 	CString m_cBuf;
 
-// Operations
+	// Operations
 public:
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CChangeEdit)
-	//}}AFX_VIRTUAL
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CChangeEdit)
+		//}}AFX_VIRTUAL
 
-	// Generated message map functions
-//protected:
-	//{{AFX_MSG(CChangeEdit)
+		// Generated message map functions
+	//protected:
+		//{{AFX_MSG(CChangeEdit)
 	afx_msg void OnChange();
 	//}}AFX_MSG
 
@@ -57,21 +57,21 @@ public:
 
 class CItemPage : public CPropertyPage
 {
-//	DECLARE_DYNCREATE(CItemPage)
+	//	DECLARE_DYNCREATE(CItemPage)
 
 public:
 	CItemPage(UINT nIDTemplate) : CPropertyPage(nIDTemplate) {}
 	~CItemPage() {}
-	virtual BOOL ValidateData()=0;
-	virtual void Init(CItemProp *pSheet)=0;
-	virtual UINT * getids()=0;
+	virtual BOOL ValidateData() = 0;
+	virtual void Init(CItemProp *pSheet) = 0;
+	virtual UINT * getids() = 0;
 
 	CItemProp * Sheet();
 
-    void Show(UINT idc,BOOL bShow)
-    {
-    	GetDlgItem(idc)->ShowWindow(bShow?SW_SHOW:SW_HIDE);
-    }
+	void Show(UINT idc, BOOL bShow)
+	{
+		GetDlgItem(idc)->ShowWindow(bShow ? SW_SHOW : SW_HIDE);
+	}
 
 	//static BOOL m_bChanged;
 	//static BOOL m_bChangeAllow;
@@ -79,12 +79,12 @@ public:
 protected:
 	UINT m_idLastFocus;
 
-// Overrides
-	afx_msg LRESULT OnRetFocus(WPARAM,LPARAM);
+	// Overrides
+	afx_msg LRESULT OnRetFocus(WPARAM, LPARAM);
 
 	// ClassWizard generate virtual function overrides
 	//{{AFX_VIRTUAL(CItemPage)
-	public:
+public:
 	virtual BOOL OnSetActive();
 	virtual BOOL OnKillActive();
 	virtual void OnCancel();
@@ -107,8 +107,8 @@ public:
 	void UpdateGenCtrls(void);
 	void UpdateSurveyOther();
 
-// Dialog Data
-	//{{AFX_DATA(CItemGeneral)
+	// Dialog Data
+		//{{AFX_DATA(CItemGeneral)
 	enum { IDD = IDD_ITEM_GENERAL };
 	CString	m_szName;
 	CString	m_szTitle;
@@ -117,23 +117,23 @@ public:
 	//}}AFX_DATA
 	int m_iLaunch;
 
-// Construction
-    CItemGeneral() : CItemPage(CItemGeneral::IDD) {}
+	// Construction
+	CItemGeneral() : CItemPage(CItemGeneral::IDD) {}
 	~CItemGeneral() {}
 
 	BOOL m_bFeetUnits;
-	BOOL m_bSurvey,m_bBook,m_bOther,m_bReadOnly;
+	BOOL m_bSurvey, m_bBook, m_bOther, m_bReadOnly;
 	BOOL m_bFilesHaveMoved;
 	BOOL m_bClickedReadonly;
 
 private:
 	CPrjListNode *m_pParent;
 	CChangeEdit m_ePath;
-	void Enable(UINT id,BOOL bEnable) {GetDlgItem(id)->EnableWindow(bEnable);}
-	void Check(UINT id,BOOL bCheck) {((CButton *)GetDlgItem(id))->SetCheck(bCheck);}
+	void Enable(UINT id, BOOL bEnable) { GetDlgItem(id)->EnableWindow(bEnable); }
+	void Check(UINT id, BOOL bCheck) { ((CButton *)GetDlgItem(id))->SetCheck(bCheck); }
 	void UpdateSizeDate(char *pathbuf);
-	
-// Overrides
+
+	// Overrides
 
 public:
 	virtual BOOL ValidateData(void);
@@ -141,13 +141,13 @@ public:
 	virtual UINT * getids();
 	// ClassWizard generate virtual function overrides
 	//{{AFX_VIRTUAL(CItemGeneral)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
 // Implementation
 protected:
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 	// Generated message map functions
 	//{{AFX_MSG(CItemGeneral)
 	afx_msg void OnSurvey();
@@ -167,12 +167,12 @@ class CItemReference : public CItemPage
 {
 	DECLARE_DYNCREATE(CItemReference)
 
-// Construction
+	// Construction
 public:
 	CItemReference() : CItemPage(CItemReference::IDD) {}
 	~CItemReference() {}
 
-// Dialog Data
+	// Dialog Data
 	PRJREF m_Ref;
 
 	//{{AFX_DATA(CItemReference)
@@ -188,20 +188,20 @@ public:
 private:
 	CPrjListNode *m_pParent;
 	BOOL m_bConvUpdated;
-	void SetText(UINT id,char *pText)
+	void SetText(UINT id, char *pText)
 	{
 		((CEdit *)GetDlgItem(id))->SetWindowText(pText);
 	}
-	int GetText(UINT id,char *pText,int sizbuf)
+	int GetText(UINT id, char *pText, int sizbuf)
 	{
-		return ((CEdit *)GetDlgItem(id))->GetWindowText(pText,sizbuf);
+		return ((CEdit *)GetDlgItem(id))->GetWindowText(pText, sizbuf);
 	}
-	void Enable(UINT id,BOOL bEnable) {GetDlgItem(id)->EnableWindow(bEnable);}
-	void Check(UINT id,BOOL bCheck) {((CButton *)GetDlgItem(id))->SetCheck(bCheck);}
+	void Enable(UINT id, BOOL bEnable) { GetDlgItem(id)->EnableWindow(bEnable); }
+	void Check(UINT id, BOOL bCheck) { ((CButton *)GetDlgItem(id))->SetCheck(bCheck); }
 	void UpdateRefCtrls();
 
-	
-// Overrides
+
+	// Overrides
 public:
 	virtual BOOL ValidateData(void);
 	virtual void Init(CItemProp *pSheet);
@@ -209,13 +209,13 @@ public:
 
 	// ClassWizard generate virtual function overrides
 	//{{AFX_VIRTUAL(CItemReference)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
 // Implementation
 protected:
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 	// Generated message map functions
 	//{{AFX_MSG(CItemReference)
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
@@ -237,13 +237,13 @@ class CItemOptions : public CItemPage
 {
 	DECLARE_DYNCREATE(CItemOptions)
 
-// Construction
+	// Construction
 public:
 	CItemOptions();
 	~CItemOptions() {}
 
-// Dialog Data
-	//{{AFX_DATA(CItemOptions)
+	// Dialog Data
+		//{{AFX_DATA(CItemOptions)
 	enum { IDD = IDD_ITEM_OPTIONS };
 	CDisabledCombo	m_DisCombo;
 	CString	m_szOptions;
@@ -256,13 +256,13 @@ public:
 	BOOL	m_bSVG_process;
 	//}}AFX_DATA
 
-	void Enable(UINT id,BOOL bEnable) {GetDlgItem(id)->EnableWindow(bEnable);}
-	void Check(UINT id,BOOL bCheck) {((CButton *)GetDlgItem(id))->SetCheck(bCheck);}
+	void Enable(UINT id, BOOL bEnable) { GetDlgItem(id)->EnableWindow(bEnable); }
+	void Check(UINT id, BOOL bCheck) { ((CButton *)GetDlgItem(id))->SetCheck(bCheck); }
 	void EnableView(BOOL bEnable);
 private:
 	void InsertComboOption(CPrjListNode *pNode);
-	
-// Overrides
+
+	// Overrides
 public:
 	virtual BOOL ValidateData(void);
 	virtual void Init(CItemProp *pSheet);
@@ -270,13 +270,13 @@ public:
 
 	// ClassWizard generate virtual function overrides
 	//{{AFX_VIRTUAL(CItemOptions)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
 // Implementation
 protected:
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 	// Generated message map functions
 	//{{AFX_MSG(CItemOptions)
 	afx_msg void OnInheritLength();
@@ -296,11 +296,11 @@ class CItemProp : public CPropertySheet
 {
 	DECLARE_DYNAMIC(CItemProp)
 
-// Construction
+	// Construction
 public:
-	CItemProp(CPrjDoc *pDoc,CPrjListNode *pNode,BOOL bNew);
+	CItemProp(CPrjDoc *pDoc, CPrjListNode *pNode, BOOL bNew);
 
-// Attributes
+	// Attributes
 public:
 	CPrjDoc *m_pDoc;
 	CPrjListNode *m_pNode;
@@ -312,33 +312,33 @@ public:
 	CItemOptions m_optDlg;
 	CItemReference m_refDlg;
 
-// Operations
-	CItemPage * GetActivePage() {return (CItemPage *)CPropertySheet::GetActivePage();}
+	// Operations
+	CItemPage * GetActivePage() { return (CItemPage *)CPropertySheet::GetActivePage(); }
 
 public:
-	CItemGeneral * GetGenDlg() {return &m_genDlg;}
-	CItemOptions * GetOptDlg() {return &m_optDlg;}
-	CItemReference * GetRefDlg() {return &m_refDlg;}
+	CItemGeneral * GetGenDlg() { return &m_genDlg; }
+	CItemOptions * GetOptDlg() { return &m_optDlg; }
+	CItemReference * GetRefDlg() { return &m_refDlg; }
 	void SetPropTitle();
-	void SetLastIndex() {if(!m_bNew) m_pDoc->m_nActivePage=GetActiveIndex();}
+	void SetLastIndex() { if (!m_bNew) m_pDoc->m_nActivePage = GetActiveIndex(); }
 	void EndItemProp(int id);
 	void UpdateReadOnly(BOOL bReadOnly) {
-		m_genDlg.Enable(IDC_READONLY,TRUE);
-		m_genDlg.Check(IDC_READONLY,bReadOnly);
-		m_genDlg.m_bReadOnly=bReadOnly;
-		m_genDlg.m_bClickedReadonly=FALSE;
+		m_genDlg.Enable(IDC_READONLY, TRUE);
+		m_genDlg.Check(IDC_READONLY, bReadOnly);
+		m_genDlg.m_bReadOnly = bReadOnly;
+		m_genDlg.m_bClickedReadonly = FALSE;
 	}
 
-// Overrides
-	afx_msg LRESULT OnRetFocus(WPARAM,LPARAM);
-    //***7.1 afx_msg LRESULT OnPropViewLB(CPrjDoc *pDoc,LPARAM);
-    afx_msg LRESULT OnPropViewLB(WPARAM wParam,LPARAM);
+	// Overrides
+	afx_msg LRESULT OnRetFocus(WPARAM, LPARAM);
+	//***7.1 afx_msg LRESULT OnPropViewLB(CPrjDoc *pDoc,LPARAM);
+	afx_msg LRESULT OnPropViewLB(WPARAM wParam, LPARAM);
 
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CItemProp)
-	public:
+public:
 	virtual BOOL OnInitDialog();
-	protected:
+protected:
 	virtual void PostNcDestroy();
 	//}}AFX_VIRTUAL
 

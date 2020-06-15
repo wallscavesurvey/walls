@@ -6,14 +6,14 @@ class QvChildList;
 
 class QvGroup : public QvNode {
 
-    QV_NODE_HEADER(QvGroup);
+	QV_NODE_HEADER(QvGroup);
 
-  public:
-    QvNode *		getChild(int index) const;
-    int			getNumChildren() const;
-    virtual QvChildList *getChildren() const;
-    virtual QvBool	readInstance(QvInput *in);
-    virtual QvBool	readChildren(QvInput *in);
+public:
+	QvNode *		getChild(int index) const;
+	int			getNumChildren() const;
+	virtual QvChildList *getChildren() const;
+	virtual QvBool	readInstance(QvInput *in);
+	virtual QvBool	readChildren(QvInput *in);
 };
 
 #endif /* _QV_GROUP_ */

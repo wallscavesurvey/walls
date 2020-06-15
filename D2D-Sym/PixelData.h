@@ -16,7 +16,7 @@
 #define RGBAtoD2D(rgb,alpha) D2D1::ColorF(GetR_F(rgb),GetG_F(rgb),GetB_F(rgb),alpha)
 #define RGBtoD2D(rgb) D2D1::ColorF(GetR_F(rgb),GetG_F(rgb),GetB_F(rgb))
 
-enum {SYM_SQUARE,SYM_CIRCLE,SYM_TRIANGLE};
+enum { SYM_SQUARE, SYM_CIRCLE, SYM_TRIANGLE };
 
 class CPixelData {
 public:

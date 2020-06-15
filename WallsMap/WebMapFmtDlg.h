@@ -25,15 +25,15 @@ public:
 private:
 	void EnableSave();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_WEBMAP_FORMAT };
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBnClickedReset();
-	afx_msg void OnEditChange(); 
-	afx_msg void OnSelChange(); 
+	afx_msg void OnEditChange();
+	afx_msg void OnSelChange();
 	afx_msg void OnBnClickedUpdate();
 	afx_msg void OnBnClickedOk();
 

@@ -25,7 +25,7 @@ END_MESSAGE_MAP()
 
 CChildFrame::CChildFrame()
 {
-	m_bResizing=false;
+	m_bResizing = false;
 }
 
 CChildFrame::~CChildFrame()
@@ -59,16 +59,16 @@ void CChildFrame::Dump(CDumpContext& dc) const
 void CChildFrame::OnNcLButtonDown(UINT nHitTest, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
-	switch(nHitTest) {
-		case HTRIGHT :
-		case HTBOTTOM :
-		case HTBOTTOMRIGHT :
-		case HTBOTTOMLEFT :
-		case HTTOPRIGHT :
-		case HTTOP :
-		case HTLEFT :
-			m_bResizing=true;
-			break;
+	switch (nHitTest) {
+	case HTRIGHT:
+	case HTBOTTOM:
+	case HTBOTTOMRIGHT:
+	case HTBOTTOMLEFT:
+	case HTTOPRIGHT:
+	case HTTOP:
+	case HTLEFT:
+		m_bResizing = true;
+		break;
 	}
 
 	CMDIChildWnd::OnNcLButtonDown(nHitTest, point);
@@ -77,9 +77,9 @@ void CChildFrame::OnNcLButtonDown(UINT nHitTest, CPoint point)
 void CChildFrame::OnNcMouseMove(UINT nHitTest, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
-	if(m_bResizing) {
+	if (m_bResizing) {
 		GetActiveView()->SendMessage(WM_EXITSIZEMOVE);
-		m_bResizing=false;
+		m_bResizing = false;
 	}
 	CMDIChildWnd::OnNcMouseMove(nHitTest, point);
 }

@@ -65,11 +65,11 @@ public:
 	//***********************************************************************
 	//**                        Property Accessors                         **
 	//***********************************************************************	
-	__declspec(property(get=GetColor,put=SetColor))						COLORREF	Color;
-	__declspec(property(get=GetDefaultColor,put=SetDefaultColor))		COLORREF	DefaultColor;
-	__declspec(property(get=GetTrackSelection,put=SetTrackSelection))	BOOL		TrackSelection;
-	__declspec(property(put=SetCustomText))								LPCTSTR		CustomText;
-	__declspec(property(put=SetDefaultText))							LPCTSTR		DefaultText;
+	__declspec(property(get = GetColor, put = SetColor))						COLORREF	Color;
+	__declspec(property(get = GetDefaultColor, put = SetDefaultColor))		COLORREF	DefaultColor;
+	__declspec(property(get = GetTrackSelection, put = SetTrackSelection))	BOOL		TrackSelection;
+	__declspec(property(put = SetCustomText))								LPCTSTR		CustomText;
+	__declspec(property(put = SetDefaultText))							LPCTSTR		DefaultText;
 
 	//***********************************************************************
 	// Name:		GetColor
@@ -116,7 +116,7 @@ public:
 	// Return:		None. 
 	// Notes:		None.
 	//***********************************************************************
-	void SetCustomText(int nTextElems,LPCTSTR *pText=dflt_pText);
+	void SetCustomText(int nTextElems, LPCTSTR *pText = dflt_pText);
 
 	//***********************************************************************
 	// Name:		SetTrackSelection
@@ -142,23 +142,23 @@ public:
 	void AddToolTip(CToolTipCtrl *pTTCtrl);
 	char * GetColorName(char *buf);
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	afx_msg BOOL OnToolTipNotify(UINT id, NMHDR * pNMHDR, LRESULT * pResult );
+	afx_msg BOOL OnToolTipNotify(UINT id, NMHDR * pNMHDR, LRESULT * pResult);
 
 	//{{AFX_VIRTUAL(CColorCombo)
-    public:
-    virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
-    protected:
-    virtual void PreSubclassWindow();
-    //}}AFX_VIRTUAL
+public:
+	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
+protected:
+	virtual void PreSubclassWindow();
+	//}}AFX_VIRTUAL
 
 protected:
 	//{{AFX_MSG(CColorCombo)
-    afx_msg BOOL OnClicked();
-    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-    //}}AFX_MSG
+	afx_msg BOOL OnClicked();
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	//}}AFX_MSG
 	afx_msg LONG OnSelEndOK(UINT wParam, LONG lParam);
-    afx_msg LONG OnSelEndCancel(UINT wParam, LONG lParam);
-    afx_msg LONG OnSelChange(UINT wParam, LONG lParam);
+	afx_msg LONG OnSelEndCancel(UINT wParam, LONG lParam);
+	afx_msg LONG OnSelChange(UINT wParam, LONG lParam);
 
 	//***********************************************************************
 	// Name:		DrawArrow
@@ -173,10 +173,10 @@ protected:
 	// Return:		static None. 
 	// Notes:		None.
 	//***********************************************************************
-	static void DrawArrow(CDC* pDC, 
-						  RECT* pRect, 
-						  int iDirection = 0,
-						  COLORREF clrArrow = RGB(0,0,0));
+	static void DrawArrow(CDC* pDC,
+		RECT* pRect,
+		int iDirection = 0,
+		COLORREF clrArrow = RGB(0, 0, 0));
 
 
 	DECLARE_MESSAGE_MAP()

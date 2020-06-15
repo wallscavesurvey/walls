@@ -1,22 +1,22 @@
-/********************************************************** 
+/**********************************************************
 ** Copyright 1998 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
-** 
+**
 ** FILE:   	NCSRenderer.c
 ** CREATED:	12 Jan 2000
 ** AUTHOR: 	Mark Sheridan
 ** PURPOSE:	C++ class wrappers for the ECW library
 ** EDITS:
-** 
+**
 ** [01] 14Jan00 mjs DIB code ripped from NCSDisplayEngineRWin32.cpp
 ** [02] 13Jun00 sjc Fixed crash with <8 bit DCs
 ** [03] 05Jul00 sjc Fixed OpenGL preload hack
@@ -28,7 +28,7 @@
 ** [09] 07Dec00 jmp Added DrawingExtents function, used by NCSView in OnErasebackground function.
 ** [10] 12Feb01 jmp Check if need to recreate DIB	//will include for IWS V2.0
 ** [11] 13Feb01 jmp Returning an error from ReadImage and DrawImage, orig return was NCS_SUCCESS
-** [12] 13Feb01 jmp Replacing MessageBox's with NCS errors, MessageBox's only in _DEBUG build. 
+** [12] 13Feb01 jmp Replacing MessageBox's with NCS errors, MessageBox's only in _DEBUG build.
 ** [13] 16May01 jmp width and height passed to CNCSFile::SetView out by 1, as Dataset units calculated use inclusive points.
 ** [14] 05Jun01 jmp non-transparent case now working, exclude clip extents where previously wrong
 ** [15] 24Jan02 sjc Fixed UMR from uninitialised members
@@ -39,8 +39,8 @@
 
 
 #ifdef WIN32
-	//#define DIB_FIX		//only define for Release with IWS 2.0
-	//#define _WIN32_WINNT 0x0400	// For MB_SERVICE_NOTIFICATION
+//#define DIB_FIX		//only define for Release with IWS 2.0
+//#define _WIN32_WINNT 0x0400	// For MB_SERVICE_NOTIFICATION
 #elif defined(macintosh) // must be lower-case macintosh as this is defined by the compiler
 //	#include "CarbonPrefix.h"
 #endif //WIN32
@@ -54,10 +54,10 @@
 #include <stdio.h>
 
 #if defined(MACINTOSH)
-	#include <string.h>
-	#include <Quickdraw.h>
-	#include <MacMemory.h>
-	
+#include <string.h>
+#include <Quickdraw.h>
+#include <MacMemory.h>
+
 #if TARGET_API_MAC_CARBON
 #else
 #	define GetPortPixMap( _A ) ((CGrafPtr)_A)->portPixMap
@@ -91,9 +91,9 @@
 #define IS_BETWEEN(a, b, c) (((a>=b)&&(a<=c))||((a>=c)&&(a<=b)))
 
 #ifndef NCSDISPLAYENGINERWIN32_H
-/*
-** 4x4 Kernel Dither Macros & Defines
-*/
+ /*
+ ** 4x4 Kernel Dither Macros & Defines
+ */
 #define _MR  32
 #define _MG  32
 #define _MB  32
@@ -142,23 +142,23 @@ BOOLEAN IntersectRects(INT32 tlx1, INT32 tly1, INT32 brx1, INT32 bry1, INT32 tlx
 
 	return (BOOLEAN)IntersectRect(&DestRect, &Rect1, &Rect2);
 #elif defined(POSIX)
-	if( (tlx2 >= tlx1) && (tlx2 <= brx1) && (tly2 >= tly1) && (tly2 <= bry1) ) {
+	if ((tlx2 >= tlx1) && (tlx2 <= brx1) && (tly2 >= tly1) && (tly2 <= bry1)) {
 		return TRUE;
 	}
 
-	if( (brx2 >= tlx1) && (brx2 <= brx1) && (tly2 >= tly1) && (tly2 <= bry1) ) {
+	if ((brx2 >= tlx1) && (brx2 <= brx1) && (tly2 >= tly1) && (tly2 <= bry1)) {
 		return TRUE;
 	}
 
-	if( (brx2 >= tlx1) && (brx2 <= brx1) && (bry2 >= tly1) && (bry2 <= bry1) ) {
+	if ((brx2 >= tlx1) && (brx2 <= brx1) && (bry2 >= tly1) && (bry2 <= bry1)) {
 		return TRUE;
 	}
 
-	if( (tlx2 >= tlx1) && (tlx2 <= brx1) && (bry2 >= tly1) && (bry2 <= bry1) ) {
+	if ((tlx2 >= tlx1) && (tlx2 <= brx1) && (bry2 >= tly1) && (bry2 <= bry1)) {
 		return TRUE;
 	}
 
-	if( (tlx1 >= tlx2) && (brx1 <= brx2) && (bry1 <= bry2) && (tly1 >= tly2) ) {
+	if ((tlx1 >= tlx2) && (brx1 <= brx2) && (bry1 <= bry2) && (tly1 >= tly2)) {
 		return TRUE;
 	}
 
@@ -194,7 +194,7 @@ CNCSRenderer::CNCSRenderer()
 	m_pAlphaBlend = (NCS_FUNCADDR)NULL;
 #ifdef WIN32
 	m_hMSImg32DLL = NCSDlOpen("Msimg32.DLL");
-	if(m_hMSImg32DLL) {
+	if (m_hMSImg32DLL) {
 		m_pAlphaBlend = (NCS_FUNCADDR)NCSDlGetFuncAddress(m_hMSImg32DLL, "AlphaBlend");
 	}
 #endif
@@ -237,18 +237,18 @@ CNCSRenderer::CNCSRenderer()
 
 	//Under Win98 using IE 5.5 SetDIBBitsToDevice doesn't work properly
 	//instead need to use BitBlt. (Use wininet.dll to get the browser version).
-	char m_pPath[MAX_PATH + 1 + sizeof("\\wininet.dll")];														
-    UINT16 nMajor, nMinor, nRevision, nBuild;									
-	if(::GetSystemDirectoryA(m_pPath, MAX_PATH))
-	{								
-		strcat(m_pPath, "\\wininet.dll");										
-		NCSFileGetVersion(m_pPath, &nMajor, &nMinor, &nRevision, &nBuild);		
-		if ((nMajor >=5 && nMinor >= 50) && (NCSGetPlatform() == NCS_WINDOWS_9X))
+	char m_pPath[MAX_PATH + 1 + sizeof("\\wininet.dll")];
+	UINT16 nMajor, nMinor, nRevision, nBuild;
+	if (::GetSystemDirectoryA(m_pPath, MAX_PATH))
+	{
+		strcat(m_pPath, "\\wininet.dll");
+		NCSFileGetVersion(m_pPath, &nMajor, &nMinor, &nRevision, &nBuild);
+		if ((nMajor >= 5 && nMinor >= 50) && (NCSGetPlatform() == NCS_WINDOWS_9X))
 			m_bAlternateDraw = TRUE;
 
 		if ((nMajor >= 6) && (NCSGetPlatform() == NCS_WINDOWS_9X))
 			m_bAlternateDraw = TRUE;
-	}	
+	}
 #endif
 #endif //WIN32
 
@@ -260,7 +260,7 @@ CNCSRenderer::CNCSRenderer()
 	m_pHistograms = NULL;
 	m_bApplyLUTs = false;
 	m_bLutChanged = false;
-	for(int b = 0; b < 3; b++) {
+	for (int b = 0; b < 3; b++) {
 		m_LUTs[0][b] = b;
 		m_LUTs[1][b] = b;
 		m_LUTs[2][b] = b;
@@ -289,7 +289,7 @@ CNCSRenderer::~CNCSRenderer()
 #ifdef WIN32
 	DestroyDibAndPalette();
 
-	if(m_hOpenGLDLL) {				/**[03]**/
+	if (m_hOpenGLDLL) {				/**[03]**/
 		FreeLibrary(m_hOpenGLDLL);	/**[03]**/
 	}								/**[03]**/
 #elif defined(MACINTOSH) || defined(MACOSX)
@@ -302,7 +302,7 @@ CNCSRenderer::~CNCSRenderer()
 	NCSMutexFini(&m_HistogramMutex);
 
 #ifdef WIN32
-	if(m_hMSImg32DLL)
+	if (m_hMSImg32DLL)
 	{
 		NCSDlClose(m_hMSImg32DLL);
 		m_hMSImg32DLL = NULL;
@@ -312,8 +312,8 @@ CNCSRenderer::~CNCSRenderer()
 
 bool CNCSRenderer::UsingAlphaBand()
 {
-	if( m_pAlphaBlend && m_pnSetViewBandList && (m_nSetViewNrBands > 2) ) {
-		if( strcmp( NCS_BANDDESC_AllOpacity, m_Bands[ m_pnSetViewBandList[m_nSetViewNrBands-1] ].szDesc)==0 ) {
+	if (m_pAlphaBlend && m_pnSetViewBandList && (m_nSetViewNrBands > 2)) {
+		if (strcmp(NCS_BANDDESC_AllOpacity, m_Bands[m_pnSetViewBandList[m_nSetViewNrBands - 1]].szDesc) == 0) {
 			m_bUsingAlphaBand = true;
 			return true;
 		}
@@ -322,11 +322,11 @@ bool CNCSRenderer::UsingAlphaBand()
 	return false;
 }
 
-bool CNCSRenderer::HasAlpha( int &nAlphaBand ) {
-	if( (GetFileType() == NCS_FILE_JP2) ) {
+bool CNCSRenderer::HasAlpha(int &nAlphaBand) {
+	if ((GetFileType() == NCS_FILE_JP2)) {
 		int nNumBands = m_Bands.size();
-		for( int i=0; i < nNumBands; i++ ) {
-			if( strcmp( NCS_BANDDESC_AllOpacity, m_Bands[i].szDesc)==0 ) {
+		for (int i = 0; i < nNumBands; i++) {
+			if (strcmp(NCS_BANDDESC_AllOpacity, m_Bands[i].szDesc) == 0) {
 				nAlphaBand = i;
 				return true;
 			}
@@ -358,18 +358,18 @@ bool CNCSRenderer::HasAlpha( int &nAlphaBand ) {
  * @return NCS_SUCCESS if successfull, or an NCSError value.
  */
 NCSError CNCSRenderer::AdjustExtents(INT32 nWidth, INT32 nHeight,
-//NCSError inline CNCSRenderer::AdjustExtents(INT32 nWidth, INT32 nHeight,
-									INT32 nInputDatasetTLX, INT32 nInputDatasetTLY, INT32 nInputDatasetBRX, INT32 nInputDatasetBRY,
-									INT32 *pnAdjustedDatasetTLX, INT32 *pnAdjustedDatasetTLY, INT32 *pnAdjustedDatasetBRX, INT32 *pnAdjustedDatasetBRY,
-									INT32 *pnAdjustedDeviceTLX, INT32 *pnAdjustedDeviceTLY, INT32 *pnAdjustedDeviceBRX, INT32 *pnAdjustedDeviceBRY)
+	//NCSError inline CNCSRenderer::AdjustExtents(INT32 nWidth, INT32 nHeight,
+	INT32 nInputDatasetTLX, INT32 nInputDatasetTLY, INT32 nInputDatasetBRX, INT32 nInputDatasetBRY,
+	INT32 *pnAdjustedDatasetTLX, INT32 *pnAdjustedDatasetTLY, INT32 *pnAdjustedDatasetBRX, INT32 *pnAdjustedDatasetBRY,
+	INT32 *pnAdjustedDeviceTLX, INT32 *pnAdjustedDeviceTLY, INT32 *pnAdjustedDeviceBRX, INT32 *pnAdjustedDeviceBRY)
 {
 	INT32 nDatasetTLX, nDatasetTLY, nDatasetBRX, nDatasetBRY;
 	NCSError nError = NCS_SUCCESS;
-	
+
 	// The dataset extents and the required view extents don't intersect!
-	if (!IntersectRects(nInputDatasetTLX, nInputDatasetTLY, 
-						nInputDatasetBRX, nInputDatasetBRY, 
-						0, 0, m_nWidth, m_nHeight) ){
+	if (!IntersectRects(nInputDatasetTLX, nInputDatasetTLY,
+		nInputDatasetBRX, nInputDatasetBRY,
+		0, 0, m_nWidth, m_nHeight)) {
 		return NCS_FILE_INVALID_SETVIEW;
 	}
 
@@ -379,7 +379,7 @@ NCSError CNCSRenderer::AdjustExtents(INT32 nWidth, INT32 nHeight,
 	nDatasetBRY = nInputDatasetBRY;
 
 	if ((nDatasetTLX < 0) || (nDatasetTLY < 0) ||
-		(nDatasetBRX > m_nWidth-1) || (nDatasetBRY > m_nHeight-1)){
+		(nDatasetBRX > m_nWidth - 1) || (nDatasetBRY > m_nHeight - 1)) {
 
 		INT32 nAdjustedDeviceTLX = 0;
 		INT32 nAdjustedDeviceTLY = 0;
@@ -397,19 +397,19 @@ NCSError CNCSRenderer::AdjustExtents(INT32 nWidth, INT32 nHeight,
 		// 4 sets of data, nAdjustedDevice, nDevice, nAdjustedDataset, nDataset
 		if (nDatasetTLX < 0) {
 			nAdjustedDatasetTLX = 0;
-			nAdjustedDeviceTLX = (INT32)(((IEEE8)((nDeviceBRX - nDeviceTLX)*(nAdjustedDatasetTLX-nDatasetTLX))/(IEEE8)(nDatasetBRX - nDatasetTLX)) + (IEEE8)nDeviceTLX);
+			nAdjustedDeviceTLX = (INT32)(((IEEE8)((nDeviceBRX - nDeviceTLX)*(nAdjustedDatasetTLX - nDatasetTLX)) / (IEEE8)(nDatasetBRX - nDatasetTLX)) + (IEEE8)nDeviceTLX);
 		}
 		if (nDatasetTLY < 0) {
 			nAdjustedDatasetTLY = 0;
-			nAdjustedDeviceTLY = (INT32)(((IEEE8)((nDeviceBRY - nDeviceTLY)*(nAdjustedDatasetTLY-nDatasetTLY))/(IEEE8)(nDatasetBRY - nDatasetTLY)) + (IEEE8)nDeviceTLY);
+			nAdjustedDeviceTLY = (INT32)(((IEEE8)((nDeviceBRY - nDeviceTLY)*(nAdjustedDatasetTLY - nDatasetTLY)) / (IEEE8)(nDatasetBRY - nDatasetTLY)) + (IEEE8)nDeviceTLY);
 		}
 		if (nDatasetBRX > m_nWidth) {
 			nAdjustedDatasetBRX = m_nWidth;
-			nAdjustedDeviceBRX = nDeviceBRX - (INT32)((IEEE8)(nDeviceBRX - nDeviceTLX)*(IEEE8)(nDatasetBRX - nAdjustedDatasetBRX)/(IEEE8)(nDatasetBRX - nDatasetTLX));
+			nAdjustedDeviceBRX = nDeviceBRX - (INT32)((IEEE8)(nDeviceBRX - nDeviceTLX)*(IEEE8)(nDatasetBRX - nAdjustedDatasetBRX) / (IEEE8)(nDatasetBRX - nDatasetTLX));
 		}
 		if (nDatasetBRY > m_nHeight) {
 			nAdjustedDatasetBRY = m_nHeight;
-			nAdjustedDeviceBRY = nDeviceBRY - (INT32)((IEEE8)(nDeviceBRY - nDeviceTLY)*(IEEE8)(nDatasetBRY - nAdjustedDatasetBRY)/(IEEE8)(nDatasetBRY - nDatasetTLY));
+			nAdjustedDeviceBRY = nDeviceBRY - (INT32)((IEEE8)(nDeviceBRY - nDeviceTLY)*(IEEE8)(nDatasetBRY - nAdjustedDatasetBRY) / (IEEE8)(nDatasetBRY - nDatasetTLY));
 		}
 
 		*pnAdjustedDeviceTLX = nAdjustedDeviceTLX;
@@ -417,10 +417,10 @@ NCSError CNCSRenderer::AdjustExtents(INT32 nWidth, INT32 nHeight,
 		*pnAdjustedDeviceBRX = nAdjustedDeviceBRX;
 		*pnAdjustedDeviceBRY = nAdjustedDeviceBRY;
 
-		*pnAdjustedDatasetTLX= nAdjustedDatasetTLX;
-		*pnAdjustedDatasetTLY= nAdjustedDatasetTLY;
-		*pnAdjustedDatasetBRX= nAdjustedDatasetBRX;
-		*pnAdjustedDatasetBRY= nAdjustedDatasetBRY;
+		*pnAdjustedDatasetTLX = nAdjustedDatasetTLX;
+		*pnAdjustedDatasetTLY = nAdjustedDatasetTLY;
+		*pnAdjustedDatasetBRX = nAdjustedDatasetBRX;
+		*pnAdjustedDatasetBRY = nAdjustedDatasetBRY;
 	}
 	else {
 		*pnAdjustedDeviceTLX = 0;
@@ -428,10 +428,10 @@ NCSError CNCSRenderer::AdjustExtents(INT32 nWidth, INT32 nHeight,
 		*pnAdjustedDeviceBRX = nWidth;
 		*pnAdjustedDeviceBRY = nHeight;
 
-		*pnAdjustedDatasetTLX= nDatasetTLX;
-		*pnAdjustedDatasetTLY= nDatasetTLY;
-		*pnAdjustedDatasetBRX= nDatasetBRX;
-		*pnAdjustedDatasetBRY= nDatasetBRY;
+		*pnAdjustedDatasetTLX = nDatasetTLX;
+		*pnAdjustedDatasetTLY = nDatasetTLY;
+		*pnAdjustedDatasetBRX = nDatasetBRX;
+		*pnAdjustedDatasetBRY = nDatasetBRY;
 	}
 	return NCS_SUCCESS;
 }
@@ -457,22 +457,22 @@ NCSError CNCSRenderer::AdjustExtents(INT32 nWidth, INT32 nHeight,
  * @param *pnAdjustedDeviceBRY [OUT] The output adjusted bottom right Y device coordinate
  * @return NCS_SUCCESS if successfull, or an NCSError value.
  */
-//NCSError inline CNCSRenderer::AdjustExtents(INT32 nWidth, INT32 nHeight, 
-NCSError CNCSRenderer::AdjustExtents(INT32 nWidth, INT32 nHeight, 
-									IEEE8 dInputWorldTLX, IEEE8 dInputWorldTLY, IEEE8 dInputWorldBRX, IEEE8 dInputWorldBRY, 
-									IEEE8 *pdAdjustedWorldTLX, IEEE8 *pdAdjustedWorldTLY, IEEE8 *pdAdjustedWorldBRX, IEEE8 *pdAdjustedWorldBRY,
-									INT32 *pnAdjustedDeviceTLX, INT32 *pnAdjustedDeviceTLY, INT32 *pnAdjustedDeviceBRX, INT32 *pnAdjustedDeviceBRY)
+ //NCSError inline CNCSRenderer::AdjustExtents(INT32 nWidth, INT32 nHeight, 
+NCSError CNCSRenderer::AdjustExtents(INT32 nWidth, INT32 nHeight,
+	IEEE8 dInputWorldTLX, IEEE8 dInputWorldTLY, IEEE8 dInputWorldBRX, IEEE8 dInputWorldBRY,
+	IEEE8 *pdAdjustedWorldTLX, IEEE8 *pdAdjustedWorldTLY, IEEE8 *pdAdjustedWorldBRX, IEEE8 *pdAdjustedWorldBRY,
+	INT32 *pnAdjustedDeviceTLX, INT32 *pnAdjustedDeviceTLY, INT32 *pnAdjustedDeviceBRX, INT32 *pnAdjustedDeviceBRY)
 {
 	IEEE8 dWorldTLX, dWorldTLY, dWorldBRX, dWorldBRY;
 	NCSError nError = NCS_SUCCESS;
 
 #ifdef NOTDEF
 	// Need a double version of this!
-	if (!IntersectRects(dInputWorldTLX, dInputWorldTLY, 
-						dInputWorldBRX, dInputWorldBRY, 
-						m_fOriginX, m_fOriginY, 
-						m_fOriginX + (IEEE8)m_nWidth*m_fCellIncrementX, 
-						m_fOriginY + (IEEE8)m_nHeight*m_fCellIncrementY) ){
+	if (!IntersectRects(dInputWorldTLX, dInputWorldTLY,
+		dInputWorldBRX, dInputWorldBRY,
+		m_fOriginX, m_fOriginY,
+		m_fOriginX + (IEEE8)m_nWidth*m_fCellIncrementX,
+		m_fOriginY + (IEEE8)m_nHeight*m_fCellIncrementY)) {
 		return NCS_FILE_INVALID_SETVIEW;
 	}
 #endif
@@ -482,10 +482,10 @@ NCSError CNCSRenderer::AdjustExtents(INT32 nWidth, INT32 nHeight,
 	dWorldBRX = dInputWorldBRX;
 	dWorldBRY = dInputWorldBRY;
 
-	if (!IS_BETWEEN(dWorldTLX, m_dOriginX, m_dOriginX + ((IEEE8)m_nWidth)*m_dCellIncrementX)  ||
+	if (!IS_BETWEEN(dWorldTLX, m_dOriginX, m_dOriginX + ((IEEE8)m_nWidth)*m_dCellIncrementX) ||
 		!IS_BETWEEN(dWorldTLY, m_dOriginY, m_dOriginY + ((IEEE8)m_nHeight)*m_dCellIncrementY) ||
-		!IS_BETWEEN(dWorldBRX, m_dOriginX, m_dOriginX + ((IEEE8)m_nWidth)*m_dCellIncrementX)  ||
-		!IS_BETWEEN(dWorldBRY, m_dOriginY, m_dOriginY + ((IEEE8)m_nHeight)*m_dCellIncrementY) ) {
+		!IS_BETWEEN(dWorldBRX, m_dOriginX, m_dOriginX + ((IEEE8)m_nWidth)*m_dCellIncrementX) ||
+		!IS_BETWEEN(dWorldBRY, m_dOriginY, m_dOriginY + ((IEEE8)m_nHeight)*m_dCellIncrementY)) {
 
 		INT32 nAdjustedDeviceTLX = 0;
 		INT32 nAdjustedDeviceTLY = 0;
@@ -504,31 +504,32 @@ NCSError CNCSRenderer::AdjustExtents(INT32 nWidth, INT32 nHeight,
 		if (m_dCellIncrementY < 0.0) {
 			if (dWorldTLY > m_dOriginY) {
 				dAdjustedWorldTLY = m_dOriginY;
-				nAdjustedDeviceTLY = (INT32)(((IEEE8)((nDeviceBRY - nDeviceTLY)*(dAdjustedWorldTLY-dWorldTLY))/(IEEE8)(dWorldBRY - dWorldTLY)) + (IEEE8)nDeviceTLY);
+				nAdjustedDeviceTLY = (INT32)(((IEEE8)((nDeviceBRY - nDeviceTLY)*(dAdjustedWorldTLY - dWorldTLY)) / (IEEE8)(dWorldBRY - dWorldTLY)) + (IEEE8)nDeviceTLY);
 			}
 			if (dWorldBRY < (m_dOriginY + (m_nHeight)*m_dCellIncrementY)) {
 				dAdjustedWorldBRY = (m_dOriginY + (m_nHeight)*m_dCellIncrementY);
-				nAdjustedDeviceBRY = nDeviceBRY - (INT32)((IEEE8)(nDeviceBRY - nDeviceTLY)*(IEEE8)(dWorldBRY - dAdjustedWorldBRY)/(IEEE8)(dWorldBRY - dWorldTLY));
+				nAdjustedDeviceBRY = nDeviceBRY - (INT32)((IEEE8)(nDeviceBRY - nDeviceTLY)*(IEEE8)(dWorldBRY - dAdjustedWorldBRY) / (IEEE8)(dWorldBRY - dWorldTLY));
 			}
-		} else {
+		}
+		else {
 			if (dWorldTLY < m_dOriginY) {
 				dAdjustedWorldTLY = m_dOriginY;
-				nAdjustedDeviceTLY = (INT32)(((IEEE8)((nDeviceBRY - nDeviceTLY)*(dAdjustedWorldTLY-dWorldTLY))/(IEEE8)(dWorldBRY - dWorldTLY)) + (IEEE8)nDeviceTLY);
+				nAdjustedDeviceTLY = (INT32)(((IEEE8)((nDeviceBRY - nDeviceTLY)*(dAdjustedWorldTLY - dWorldTLY)) / (IEEE8)(dWorldBRY - dWorldTLY)) + (IEEE8)nDeviceTLY);
 			}
 			if (dWorldBRY > (m_dOriginY + (m_nHeight)*m_dCellIncrementY)) {
 				//dAdjustedWorldBRY = (m_dOriginX + (m_nWidth)*m_dCellIncrementX);
 				dAdjustedWorldBRY = (m_dOriginY + (m_nHeight)*m_dCellIncrementY);		/**[08]**/
-				nAdjustedDeviceBRY = nDeviceBRY - (INT32)((IEEE8)(nDeviceBRY - nDeviceTLY)*(IEEE8)(dWorldBRY - dAdjustedWorldBRY)/(IEEE8)(dWorldBRY - dWorldTLY));
+				nAdjustedDeviceBRY = nDeviceBRY - (INT32)((IEEE8)(nDeviceBRY - nDeviceTLY)*(IEEE8)(dWorldBRY - dAdjustedWorldBRY) / (IEEE8)(dWorldBRY - dWorldTLY));
 			}
 		}
 		// X is same for all coord systems
 		if (dWorldBRX > (m_dOriginX + (m_nWidth)*m_dCellIncrementX)) {
 			dAdjustedWorldBRX = (m_dOriginX + (m_nWidth)*m_dCellIncrementX);
-			nAdjustedDeviceBRX = nDeviceBRX - (INT32)((IEEE8)(nDeviceBRX - nDeviceTLX)*(IEEE8)(dWorldBRX - dAdjustedWorldBRX)/(IEEE8)(dWorldBRX - dWorldTLX));
+			nAdjustedDeviceBRX = nDeviceBRX - (INT32)((IEEE8)(nDeviceBRX - nDeviceTLX)*(IEEE8)(dWorldBRX - dAdjustedWorldBRX) / (IEEE8)(dWorldBRX - dWorldTLX));
 		}
 		if (dWorldTLX < m_dOriginX) {
 			dAdjustedWorldTLX = m_dOriginX;
-			nAdjustedDeviceTLX = (INT32)(((IEEE8)((nDeviceBRX - nDeviceTLX)*(dAdjustedWorldTLX-dWorldTLX))/(IEEE8)(dWorldBRX - dWorldTLX)) + (IEEE8)nDeviceTLX);
+			nAdjustedDeviceTLX = (INT32)(((IEEE8)((nDeviceBRX - nDeviceTLX)*(dAdjustedWorldTLX - dWorldTLX)) / (IEEE8)(dWorldBRX - dWorldTLX)) + (IEEE8)nDeviceTLX);
 		}
 
 		*pnAdjustedDeviceTLX = nAdjustedDeviceTLX;
@@ -536,10 +537,10 @@ NCSError CNCSRenderer::AdjustExtents(INT32 nWidth, INT32 nHeight,
 		*pnAdjustedDeviceBRX = nAdjustedDeviceBRX;
 		*pnAdjustedDeviceBRY = nAdjustedDeviceBRY;
 
-		*pdAdjustedWorldTLX= dAdjustedWorldTLX;
-		*pdAdjustedWorldTLY= dAdjustedWorldTLY;
-		*pdAdjustedWorldBRX= dAdjustedWorldBRX;
-		*pdAdjustedWorldBRY= dAdjustedWorldBRY;
+		*pdAdjustedWorldTLX = dAdjustedWorldTLX;
+		*pdAdjustedWorldTLY = dAdjustedWorldTLY;
+		*pdAdjustedWorldBRX = dAdjustedWorldBRX;
+		*pdAdjustedWorldBRY = dAdjustedWorldBRY;
 	}
 	else {
 		*pnAdjustedDeviceTLX = 0;
@@ -547,10 +548,10 @@ NCSError CNCSRenderer::AdjustExtents(INT32 nWidth, INT32 nHeight,
 		*pnAdjustedDeviceBRX = nWidth;
 		*pnAdjustedDeviceBRY = nHeight;
 
-		*pdAdjustedWorldTLX= dWorldTLX;
-		*pdAdjustedWorldTLY= dWorldTLY;
-		*pdAdjustedWorldBRX= dWorldBRX;
-		*pdAdjustedWorldBRY= dWorldBRY;
+		*pdAdjustedWorldTLX = dWorldTLX;
+		*pdAdjustedWorldTLY = dWorldTLY;
+		*pdAdjustedWorldBRX = dWorldBRX;
+		*pdAdjustedWorldBRY = dWorldBRY;
 	}
 
 	return NCS_SUCCESS;
@@ -572,14 +573,14 @@ NCSError CNCSRenderer::AdjustExtents(INT32 nWidth, INT32 nHeight,
  * @param dWorldBRY The world bottom right Y coordinate
  * @return NCS_SUCCESS if successfull, or an NCSError value.
  */
-NCSError CNCSRenderer::SetView ( INT32 nBands, INT32 *pBandList, 
-				   INT32 nWidth, INT32 nHeight,
-				   IEEE8 dWorldTLX, IEEE8 dWorldTLY,
-				   IEEE8 dWorldBRX, IEEE8 dWorldBRY )
+NCSError CNCSRenderer::SetView(INT32 nBands, INT32 *pBandList,
+	INT32 nWidth, INT32 nHeight,
+	IEEE8 dWorldTLX, IEEE8 dWorldTLY,
+	IEEE8 dWorldBRX, IEEE8 dWorldBRY)
 {
 	NCSError nError = NCS_SUCCESS;
 
-	if (m_bIsOpen) {	
+	if (m_bIsOpen) {
 		INT32 nAdjustedDeviceTLX, nAdjustedDeviceTLY, nAdjustedDeviceBRX, nAdjustedDeviceBRY;
 		IEEE8 dAdjustedWorldTLX, dAdjustedWorldTLY, dAdjustedWorldBRX, dAdjustedWorldBRY;
 
@@ -588,30 +589,30 @@ NCSError CNCSRenderer::SetView ( INT32 nBands, INT32 *pBandList,
 		if (nWidth <= 0 || nHeight <= 0) {
 			return NCS_FILE_INVALID_SETVIEW;
 		}
-		
+
 		// Need this because of rounding errors when stretching subsampled images.
 		IEEE8 dWTLX, dWTLY, dWBRX, dWBRY;
-		INT32 dTLX = (INT32)floor((dWorldTLX - m_dOriginX)/m_dCellIncrementX);
-		INT32 dTLY = (INT32)floor((dWorldTLY - m_dOriginY)/m_dCellIncrementY);
-		INT32 dBRX = (INT32)ceil((dWorldBRX - m_dOriginX)/m_dCellIncrementX);
-		INT32 dBRY = (INT32)ceil((dWorldBRY - m_dOriginY)/m_dCellIncrementY);
+		INT32 dTLX = (INT32)floor((dWorldTLX - m_dOriginX) / m_dCellIncrementX);
+		INT32 dTLY = (INT32)floor((dWorldTLY - m_dOriginY) / m_dCellIncrementY);
+		INT32 dBRX = (INT32)ceil((dWorldBRX - m_dOriginX) / m_dCellIncrementX);
+		INT32 dBRY = (INT32)ceil((dWorldBRY - m_dOriginY) / m_dCellIncrementY);
 		ConvertDatasetToWorld(dTLX, dTLY, &dWTLX, &dWTLY);
 		ConvertDatasetToWorld(dBRX, dBRY, &dWBRX, &dWBRY);
 
 		nError = AdjustExtents(nWidth, nHeight, dWTLX, dWTLY, dWBRX, dWBRY,
-					 &dAdjustedWorldTLX, &dAdjustedWorldTLY, &dAdjustedWorldBRX, &dAdjustedWorldBRY,
-					 &nAdjustedDeviceTLX, &nAdjustedDeviceTLY, &nAdjustedDeviceBRX, &nAdjustedDeviceBRY);
+			&dAdjustedWorldTLX, &dAdjustedWorldTLY, &dAdjustedWorldBRX, &dAdjustedWorldBRY,
+			&nAdjustedDeviceTLX, &nAdjustedDeviceTLY, &nAdjustedDeviceBRX, &nAdjustedDeviceBRY);
 
 		/*nError = AdjustExtents(nWidth, nHeight, dWorldTLX, dWorldTLY, dWorldBRX, dWorldBRY,
 					 &dAdjustedWorldTLX, &dAdjustedWorldTLY, &dAdjustedWorldBRX, &dAdjustedWorldBRY,
 					 &nAdjustedDeviceTLX, &nAdjustedDeviceTLY, &nAdjustedDeviceBRX, &nAdjustedDeviceBRY);
 		*/
 		if (nError == NCS_SUCCESS) {
-//			m_bHaveValidSetView = TRUE;
+			//			m_bHaveValidSetView = TRUE;
 			m_nAdjustedViewWidth = nAdjustedDeviceBRX - nAdjustedDeviceTLX;
 			m_nAdjustedViewHeight = nAdjustedDeviceBRY - nAdjustedDeviceTLY;
-//			m_nSetViewWidth = m_nAdjustedViewWidth;
-//			m_nSetViewHeight = m_nAdjustedViewHeight;
+			//			m_nSetViewWidth = m_nAdjustedViewWidth;
+			//			m_nSetViewHeight = m_nAdjustedViewHeight;
 			m_nAdjustedXOffset = nAdjustedDeviceTLX;
 			m_nAdjustedYOffset = nAdjustedDeviceTLY;
 
@@ -619,7 +620,7 @@ NCSError CNCSRenderer::SetView ( INT32 nBands, INT32 *pBandList,
 			INT32 nDatasetTLX, nDatasetTLY, nDatasetBRX, nDatasetBRY;
 			ConvertWorldToDataset(dAdjustedWorldTLX, dAdjustedWorldTLY, &nDatasetTLX, &nDatasetTLY);
 			ConvertWorldToDataset(dAdjustedWorldBRX, dAdjustedWorldBRY, &nDatasetBRX, &nDatasetBRY);
-			if ((nDatasetBRX - nDatasetTLX) < m_nAdjustedViewWidth ) {
+			if ((nDatasetBRX - nDatasetTLX) < m_nAdjustedViewWidth) {
 				m_nAdjustedViewWidth = nDatasetBRX - nDatasetTLX;	//[13][18]
 			}
 			if ((nDatasetBRY - nDatasetTLY) < m_nAdjustedViewHeight) {
@@ -632,8 +633,8 @@ NCSError CNCSRenderer::SetView ( INT32 nBands, INT32 *pBandList,
 			m_dAdjustedWorldBRX = dAdjustedWorldBRX;
 			m_dAdjustedWorldBRY = dAdjustedWorldBRY;
 
-			nError = CNCSFile::SetView(nBands, pBandList, m_nAdjustedViewWidth, m_nAdjustedViewHeight, 
-									   dAdjustedWorldTLX, dAdjustedWorldTLY, dAdjustedWorldBRX, dAdjustedWorldBRY);		
+			nError = CNCSFile::SetView(nBands, pBandList, m_nAdjustedViewWidth, m_nAdjustedViewHeight,
+				dAdjustedWorldTLX, dAdjustedWorldTLY, dAdjustedWorldBRX, dAdjustedWorldBRY);
 			UsingAlphaBand();
 
 			char *str = (char*)NCSGetLastErrorText(nError);
@@ -645,16 +646,17 @@ NCSError CNCSRenderer::SetView ( INT32 nBands, INT32 *pBandList,
 		}
 
 		if (nError != NCS_SUCCESS) {
-	//		m_bHaveValidSetView = FALSE;
-		} else {
+			//		m_bHaveValidSetView = FALSE;
+		}
+		else {
 #ifdef NOTDEF
 			//NCS_HIST_AND_LUT_SUPPORT
 			m_bHaveValidSetView = m_bCalcHistograms ? SetupHistograms() : TRUE;
-			if(!m_bHaveValidSetView) {
+			if (!m_bHaveValidSetView) {
 				nError = NCS_COULDNT_ALLOC_MEMORY;
 			}
 #else // NCS_HIST_AND_LUT_SUPPORT
-//			m_bHaveValidSetView = TRUE;
+			//			m_bHaveValidSetView = TRUE;
 #endif // NCS_HIST_AND_LUT_SUPPORT
 		}
 	}
@@ -681,10 +683,10 @@ NCSError CNCSRenderer::SetView ( INT32 nBands, INT32 *pBandList,
  * @param nDatasetBRY The dataset bottom right Y coordinate
  * @return NCS_SUCCESS if successfull, or an NCSError value.
  */
-NCSError CNCSRenderer::SetView ( INT32 nBands, INT32 *pBandList, 
-				   INT32 nWidth, INT32 nHeight,
-				   INT32 nDatasetTLX, INT32 nDatasetTLY,
-				   INT32 nDatasetBRX, INT32 nDatasetBRY )
+NCSError CNCSRenderer::SetView(INT32 nBands, INT32 *pBandList,
+	INT32 nWidth, INT32 nHeight,
+	INT32 nDatasetTLX, INT32 nDatasetTLY,
+	INT32 nDatasetBRX, INT32 nDatasetBRY)
 {
 	NCSError nError = NCS_SUCCESS;
 
@@ -697,16 +699,16 @@ NCSError CNCSRenderer::SetView ( INT32 nBands, INT32 *pBandList,
 		if (nWidth <= 0 || nHeight <= 0) {
 			return NCS_FILE_INVALID_SETVIEW;
 		}
-		
-		if (AdjustExtents(nWidth, nHeight, nDatasetTLX, nDatasetTLY, nDatasetBRX, nDatasetBRY,
-					 &nAdjustedDatasetTLX, &nAdjustedDatasetTLY, &nAdjustedDatasetBRX, &nAdjustedDatasetBRY,
-					 &nAdjustedDeviceTLX, &nAdjustedDeviceTLY, &nAdjustedDeviceBRX, &nAdjustedDeviceBRY) == NCS_SUCCESS) {
 
-//			m_bHaveValidSetView = TRUE;
+		if (AdjustExtents(nWidth, nHeight, nDatasetTLX, nDatasetTLY, nDatasetBRX, nDatasetBRY,
+			&nAdjustedDatasetTLX, &nAdjustedDatasetTLY, &nAdjustedDatasetBRX, &nAdjustedDatasetBRY,
+			&nAdjustedDeviceTLX, &nAdjustedDeviceTLY, &nAdjustedDeviceBRX, &nAdjustedDeviceBRY) == NCS_SUCCESS) {
+
+			//			m_bHaveValidSetView = TRUE;
 			m_nAdjustedViewWidth = nAdjustedDeviceBRX - nAdjustedDeviceTLX;
 			m_nAdjustedViewHeight = nAdjustedDeviceBRY - nAdjustedDeviceTLY;
-//			m_nSetViewWidth = m_nAdjustedViewWidth;
-//			m_nSetViewHeight = m_nAdjustedViewHeight;
+			//			m_nSetViewWidth = m_nAdjustedViewWidth;
+			//			m_nSetViewHeight = m_nAdjustedViewHeight;
 			m_nAdjustedXOffset = nAdjustedDeviceTLX;
 			m_nAdjustedYOffset = nAdjustedDeviceTLY;
 
@@ -718,8 +720,8 @@ NCSError CNCSRenderer::SetView ( INT32 nBands, INT32 *pBandList,
 				m_nAdjustedViewHeight = nAdjustedDatasetBRY - nAdjustedDatasetTLY;
 			}
 
-			nError = CNCSFile::SetView(nBands, pBandList, m_nAdjustedViewWidth, m_nAdjustedViewHeight, 
-									  nAdjustedDatasetTLX, nAdjustedDatasetTLY, nAdjustedDatasetBRX, nAdjustedDatasetBRY);
+			nError = CNCSFile::SetView(nBands, pBandList, m_nAdjustedViewWidth, m_nAdjustedViewHeight,
+				nAdjustedDatasetTLX, nAdjustedDatasetTLY, nAdjustedDatasetBRX, nAdjustedDatasetBRY);
 			m_bHaveReadImage = FALSE;
 			UsingAlphaBand();
 		}
@@ -731,8 +733,9 @@ NCSError CNCSRenderer::SetView ( INT32 nBands, INT32 *pBandList,
 			NCSFormatErrorText(nError, buf);									//[05]
 #ifdef NOTDEF
 			//NCS_HIST_AND_LUT_SUPPORT
-		} else if(m_bCalcHistograms) {
-			if(SetupHistograms() == FALSE) {
+		}
+		else if (m_bCalcHistograms) {
+			if (SetupHistograms() == FALSE) {
 				nError = NCS_COULDNT_ALLOC_MEMORY;
 			}
 #endif
@@ -756,32 +759,33 @@ NCSError CNCSRenderer::SetView ( INT32 nBands, INT32 *pBandList,
  * @see NCSEcwReadStatus
  * @return NCSEcwReadStatus
  */
-NCSEcwReadStatus CNCSRenderer::ReadLineBIL (UINT8 **ppOutputLine)
+NCSEcwReadStatus CNCSRenderer::ReadLineBIL(UINT8 **ppOutputLine)
 {
 	NCSEcwReadStatus eStatus = CNCSFile::ReadLineBIL(ppOutputLine);
 #ifdef NCS_HIST_AND_LUT_SUPPORT	
-	if(m_bCalcHistograms && NCSECW_READ_OK == eStatus) {
+	if (m_bCalcHistograms && NCSECW_READ_OK == eStatus) {
 		NCSFileViewSetInfo *pInfo = GetFileViewSetInfo();
 
 		INT32 nBands = pInfo->nBands;
 
 		NCSMutexBegin(&m_HistogramMutex);
-		if(m_nReadLine++ == 0) {
-			if(SetupHistograms() == FALSE) {
+		if (m_nReadLine++ == 0) {
+			if (SetupHistograms() == FALSE) {
 				m_nReadLine = 0;
 				return(NCSECW_READ_FAILED);
 			}
 		}
-		for(INT32 x = 0; x < m_nSetViewWidth; x++) {
-			for(int b = 0; b < nBands; b++) {
+		for (INT32 x = 0; x < m_nSetViewWidth; x++) {
+			for (int b = 0; b < nBands; b++) {
 				m_pHistograms[b][ppOutputLine[b][x]]++;
 			}
 		}
-		if(m_nReadLine >= m_nSetViewHeight) {
+		if (m_nReadLine >= m_nSetViewHeight) {
 			m_nReadLine = 0;
 		}
 		NCSMutexEnd(&m_HistogramMutex);
-	} else if(NCSECW_READ_OK != eStatus) {
+	}
+	else if (NCSECW_READ_OK != eStatus) {
 		m_nReadLine = 0;
 	}
 #endif // NCS_HIST_AND_LUT_SUPPORT
@@ -798,30 +802,31 @@ NCSEcwReadStatus CNCSRenderer::ReadLineBIL (UINT8 **ppOutputLine)
  * @see NCSEcwReadStatus
  * @return NCSEcwReadStatus
  */
-NCSEcwReadStatus CNCSRenderer::ReadLineRGB (UINT8 *pRGBTriplet)
+NCSEcwReadStatus CNCSRenderer::ReadLineRGB(UINT8 *pRGBTriplet)
 {
 	NCSEcwReadStatus eStatus = CNCSFile::ReadLineRGB(pRGBTriplet);
 #ifdef NCS_HIST_AND_LUT_SUPPORT
-	if(m_bCalcHistograms && NCSECW_READ_OK == eStatus) {
+	if (m_bCalcHistograms && NCSECW_READ_OK == eStatus) {
 		UINT8 *pRGB = pRGBTriplet;
 
 		NCSMutexBegin(&m_HistogramMutex);
-		if(m_nReadLine++ == 0) {
-			if(SetupHistograms() == FALSE) {
+		if (m_nReadLine++ == 0) {
+			if (SetupHistograms() == FALSE) {
 				m_nReadLine = 0;
 				return(NCSECW_READ_FAILED);
 			}
 		}
-		for(INT32 x = 0; x < m_nSetViewWidth; x++) {
+		for (INT32 x = 0; x < m_nSetViewWidth; x++) {
 			m_pHistograms[0][*(pRGB++)]++;
 			m_pHistograms[1][*(pRGB++)]++;
 			m_pHistograms[2][*(pRGB++)]++;
 		}
-		if(m_nReadLine >= m_nSetViewHeight) {
+		if (m_nReadLine >= m_nSetViewHeight) {
 			m_nReadLine = 0;
 		}
 		NCSMutexEnd(&m_HistogramMutex);
-	} else if(NCSECW_READ_OK != eStatus) {
+	}
+	else if (NCSECW_READ_OK != eStatus) {
 		m_nReadLine = 0;
 	}
 #endif // NCS_HIST_AND_LUT_SUPPORT
@@ -838,31 +843,32 @@ NCSEcwReadStatus CNCSRenderer::ReadLineRGB (UINT8 *pRGBTriplet)
  * @see NCSEcwReadStatus
  * @return NCSEcwReadStatus
  */
-NCSEcwReadStatus CNCSRenderer::ReadLineBGR (UINT8 *pRGBTriplet)
+NCSEcwReadStatus CNCSRenderer::ReadLineBGR(UINT8 *pRGBTriplet)
 {
 	NCSEcwReadStatus eStatus = CNCSFile::ReadLineBGR(pRGBTriplet);
 #ifdef NCS_HIST_AND_LUT_SUPPORT
-	if(m_bCalcHistograms && NCSECW_READ_OK == eStatus) {
+	if (m_bCalcHistograms && NCSECW_READ_OK == eStatus) {
 		UINT8 *pBGR = pRGBTriplet;
 
 		NCSMutexBegin(&m_HistogramMutex);
-		if(m_nReadLine++ == 0) {
-			if(SetupHistograms() == FALSE) {
+		if (m_nReadLine++ == 0) {
+			if (SetupHistograms() == FALSE) {
 				m_nReadLine = 0;
 				return(NCSECW_READ_FAILED);
 			}
 		}
 
-		for(INT32 x = 0; x < m_nSetViewWidth; x++) {
+		for (INT32 x = 0; x < m_nSetViewWidth; x++) {
 			m_pHistograms[2][*(pBGR++)]++;
 			m_pHistograms[1][*(pBGR++)]++;
 			m_pHistograms[0][*(pBGR++)]++;
 		}
-		if(m_nReadLine >= m_nSetViewHeight) {
+		if (m_nReadLine >= m_nSetViewHeight) {
 			m_nReadLine = 0;
 		}
 		NCSMutexEnd(&m_HistogramMutex);
-	} else if(NCSECW_READ_OK != eStatus) {
+	}
+	else if (NCSECW_READ_OK != eStatus) {
 		m_nReadLine = 0;
 	}
 #endif // NCS_HIST_AND_LUT_SUPPORT
@@ -887,11 +893,11 @@ NCSEcwReadStatus CNCSRenderer::ReadLineBGR (UINT8 *pRGBTriplet)
  */
 NCSError CNCSRenderer::ReadImage(NCSFileViewSetInfo *pViewSetInfo)
 {
-	return ReadImage(pViewSetInfo->fTopX, pViewSetInfo->fLeftY, 
-					 pViewSetInfo->fBottomX, pViewSetInfo->fRightY,
-					 pViewSetInfo->nTopX, pViewSetInfo->nLeftY, 
-					 pViewSetInfo->nBottomX, pViewSetInfo->nRightY, 
-					 pViewSetInfo->nSizeX, pViewSetInfo->nSizeY );
+	return ReadImage(pViewSetInfo->fTopX, pViewSetInfo->fLeftY,
+		pViewSetInfo->fBottomX, pViewSetInfo->fRightY,
+		pViewSetInfo->nTopX, pViewSetInfo->nLeftY,
+		pViewSetInfo->nBottomX, pViewSetInfo->nRightY,
+		pViewSetInfo->nSizeX, pViewSetInfo->nSizeY);
 }
 
 /**
@@ -936,57 +942,58 @@ NCSError CNCSRenderer::ReadImage(IEEE8 dWorldTLX, IEEE8 dWorldTLY, IEEE8 dWorldB
 	m_bHaveReadImage = FALSE;
 
 	if (!m_pRGBALocal) {
-		m_pRGBALocal = (UINT8 *)NCSMalloc(nWidth*nHeight*4, 1);
-	} else {
+		m_pRGBALocal = (UINT8 *)NCSMalloc(nWidth*nHeight * 4, 1);
+	}
+	else {
 		// Assume the best, that this will not get realloced if the size is the same
-		m_pRGBALocal = (UINT8 *)NCSRealloc(m_pRGBALocal, nWidth*nHeight*4, 1);
+		m_pRGBALocal = (UINT8 *)NCSRealloc(m_pRGBALocal, nWidth*nHeight * 4, 1);
 	}
 
 	NCSEcwReadStatus eStatus = NCSECW_READ_OK;
 	UINT8 *pCopyRGBA = m_pRGBALocal;
 
 #ifndef DIB_FIX
-	for (int i=0; i<nHeight; i++) {	
+	for (int i = 0; i < nHeight; i++) {
 		eStatus = ReadLineBGRA(pCopyRGBA);
 #if defined(MACINTOSH) || defined(MACOSX)
-		if (((i%10) == 0) && (i>=10)) {
-				NCSThreadYield(); // Yeild this thread every 30 scanlines to free up cpu time for drawing.
+		if (((i % 10) == 0) && (i >= 10)) {
+			NCSThreadYield(); // Yeild this thread every 30 scanlines to free up cpu time for drawing.
 		}
 #else
-		if (((i%10) == 0) && (i>10)) {
+		if (((i % 10) == 0) && (i > 10)) {
 			NCSThreadYield(); // Yeild this thread every 10 scanlines to free up cpu time for drawing.
 		}
 #endif
 		if (eStatus != NCSECW_READ_OK) {
 			break;
 		}
-		pCopyRGBA += nWidth*4;
+		pCopyRGBA += nWidth * 4;
 	}
 #else
 	//if (nHeight > 0)
 	{
-		pCopyRGBA += (nHeight-1)*(nWidth*4);
-		for (int i=0; i<nHeight; i++) {	
+		pCopyRGBA += (nHeight - 1)*(nWidth * 4);
+		for (int i = 0; i < nHeight; i++) {
 			eStatus = CNCSRenderer::ReadLineBGRA((UINT32*)pCopyRGBA);
-			if (((i%10) == 0) && (i>10)) {
+			if (((i % 10) == 0) && (i > 10)) {
 				NCSThreadYield(); // Yeild this thread every 10 scanlines to free up cpu time for drawing.
 			}
 			if (eStatus != NCSECW_READ_OK) {
 				break;
 			}
-			pCopyRGBA -= nWidth*4;
+			pCopyRGBA -= nWidth * 4;
 		}
 	}
 #endif
 
 	if (eStatus != NCSECW_READ_OK) {
 		if (eStatus == NCSECW_READ_CANCELLED) {
-//			m_bHaveValidSetView = FALSE;
+			//			m_bHaveValidSetView = FALSE;
 			_RPT0(_CRT_WARN, "READ WAS CANCELLED in ReadLineBGR()!\n");
 			return NCS_ECW_READ_CANCELLED;
 		}
 		else if (eStatus == NCSECW_READ_FAILED) {
-//			m_bHaveValidSetView = FALSE;
+			//			m_bHaveValidSetView = FALSE;
 			NCSFormatErrorText(NCS_ECW_ERROR, " ReadLineRGB() failed (returned NCSECW_READ_FAILED).");
 			return NCS_ECW_ERROR;
 		}
@@ -994,19 +1001,20 @@ NCSError CNCSRenderer::ReadImage(IEEE8 dWorldTLX, IEEE8 dWorldTLY, IEEE8 dWorldB
 
 	NCSMutexBegin(&m_DrawMutex);
 	// Copy the rgb data and size info into the renderer's members
-	
+
 	if (!m_pRGBA) {
-		m_pRGBA = (UINT8 *)NCSMalloc(nWidth*nHeight*4, 1);
-	} else {
-		m_pRGBA = (UINT8 *)NCSRealloc(m_pRGBA, nWidth*nHeight*4, 1);
+		m_pRGBA = (UINT8 *)NCSMalloc(nWidth*nHeight * 4, 1);
 	}
-	
+	else {
+		m_pRGBA = (UINT8 *)NCSRealloc(m_pRGBA, nWidth*nHeight * 4, 1);
+	}
+
 	if (m_pRGBA && m_pRGBALocal)
-		memcpy(m_pRGBA, m_pRGBALocal, nWidth*nHeight*4);
+		memcpy(m_pRGBA, m_pRGBALocal, nWidth*nHeight * 4);
 
 	m_nAdjustedViewWidth = nWidth;
 	m_nAdjustedViewHeight = nHeight;
-	
+
 	m_nRendererWidth = nWidth;
 	m_nRendererHeight = nHeight;
 
@@ -1030,8 +1038,8 @@ NCSError CNCSRenderer::ReadImage(IEEE8 dWorldTLX, IEEE8 dWorldTLY, IEEE8 dWorldB
 	NCSTimeStampMs tsElapsed = NCSGetTimeStampMs() - tsStart;
 	char szBuffer[256];
 	sprintf(szBuffer, "0ReadImage took %d ms", (int)tsElapsed);
-	szBuffer[0] = strlen( szBuffer );
-	DEBUGPRINT( (unsigned char *)szBuffer );
+	szBuffer[0] = strlen(szBuffer);
+	DEBUGPRINT((unsigned char *)szBuffer);
 #endif //MACINTOSH
 	return NCS_SUCCESS;
 }
@@ -1044,7 +1052,7 @@ NCSError CNCSRenderer::ReadImage(IEEE8 dWorldTLX, IEEE8 dWorldTLY, IEEE8 dWorldB
  * is done, the client can then call DrawImage() at any time to draw from
  * the internal buffer into the device. In non-progressive mode the
  * client should call ReadImage(), then immedeately call DrawImage()
- * to draw to the device. 
+ * to draw to the device.
  * This overloaded function is called in non-progressive mode only.
  * @param nWidth The view width (must match the set view width).
  * @param nHeight The view height (must match the set view height).
@@ -1076,16 +1084,17 @@ NCSError CNCSRenderer::ReadImage(INT32 nWidth, INT32 nHeight)
 	}
 
 	if (!m_pRGBALocal) {
-		m_pRGBALocal = (UINT8 *)NCSMalloc(nWidth*nHeight*4, 1);
-	} else {
+		m_pRGBALocal = (UINT8 *)NCSMalloc(nWidth*nHeight * 4, 1);
+	}
+	else {
 		// Assume the best, that this will not get realloced if the size is the same
 #ifdef WIN32
-		m_pRGBALocal = (UINT8 *)NCSRealloc(m_pRGBALocal, nWidth*nHeight*4, 1);
-		
+		m_pRGBALocal = (UINT8 *)NCSRealloc(m_pRGBALocal, nWidth*nHeight * 4, 1);
+
 #elif defined(MACINTOSH) || defined(MACOSX) // Check if realloc is successful.
 		UINT8 *pTemp;
-		pTemp = (UINT8 *)NCSRealloc(m_pRGBTripletsLocal, nWidth*nHeight*3, 1);
-		if( !pTemp ) {
+		pTemp = (UINT8 *)NCSRealloc(m_pRGBTripletsLocal, nWidth*nHeight * 3, 1);
+		if (!pTemp) {
 			return NCS_COULDNT_ALLOC_MEMORY;
 		}
 		else {
@@ -1099,29 +1108,29 @@ NCSError CNCSRenderer::ReadImage(INT32 nWidth, INT32 nHeight)
 	UINT8 *pCopyRGBA = m_pRGBALocal;
 
 #ifndef DIB_FIX
-	for (int i=0; i<nHeight; i++) {
+	for (int i = 0; i < nHeight; i++) {
 		eStatus = ReadLineBGRA(pCopyRGBA);
 
 		if (eStatus != NCSECW_READ_OK) {
 			break;
 		}
-		pCopyRGBA += nWidth*4;
+		pCopyRGBA += nWidth * 4;
 	}
 #else
-	pCopyRGBA += (nHeight-1)*(nWidth*4);
-	for (int i=0; i<nHeight; i++) {	
+	pCopyRGBA += (nHeight - 1)*(nWidth * 4);
+	for (int i = 0; i < nHeight; i++) {
 		eStatus = CNCSRenderer::ReadLineBGRA((UINT32*)pCopyRGBA);
 
 		if (eStatus != NCSECW_READ_OK) {
 			break;
 		}
-		pCopyRGBA -= nWidth*4;
+		pCopyRGBA -= nWidth * 4;
 	}
 #endif
 
 	if (eStatus != NCSECW_READ_OK) {
 		if (eStatus == NCSECW_READ_CANCELLED) {
-//			m_bHaveValidSetView = FALSE;
+			//			m_bHaveValidSetView = FALSE;
 			_RPT0(_CRT_WARN, "READ WAS CANCELLED in ReadLineBGR()!\n");
 		}
 		else if (eStatus == NCSECW_READ_FAILED) {
@@ -1137,16 +1146,17 @@ NCSError CNCSRenderer::ReadImage(INT32 nWidth, INT32 nHeight)
 
 #ifdef WIN32
 	if (!m_pRGBA) {
-		m_pRGBA = (UINT8 *)NCSMalloc(nWidth*nHeight*4, 1);
-	} else {
-		m_pRGBA = (UINT8 *)NCSRealloc(m_pRGBA, nWidth*nHeight*4, 1);
+		m_pRGBA = (UINT8 *)NCSMalloc(nWidth*nHeight * 4, 1);
+	}
+	else {
+		m_pRGBA = (UINT8 *)NCSRealloc(m_pRGBA, nWidth*nHeight * 4, 1);
 	}
 #endif
 	m_nRendererWidth = nWidth;
 	m_nRendererHeight = nHeight;
 
 #ifdef WIN32
-	memcpy(m_pRGBA, m_pRGBALocal, nWidth*nHeight*4);
+	memcpy(m_pRGBA, m_pRGBALocal, nWidth*nHeight * 4);
 #elif defined(MACINTOSH) || defined(MACOSX)
 	m_pRGBA = m_pRGBALocal;
 #endif
@@ -1158,30 +1168,30 @@ NCSError CNCSRenderer::ReadImage(INT32 nWidth, INT32 nHeight)
 }
 
 BOOLEAN CNCSRenderer::CalcStretchBltCoordinates(INT32 nViewWidth, INT32 nViewHeight,
-												IEEE8 dTLX, IEEE8 dTLY,
-												IEEE8 dBRX, IEEE8 dBRY,
-												IEEE8 outputDeviceCoords[4],
-												IEEE8 outputImageCoords[4])
+	IEEE8 dTLX, IEEE8 dTLY,
+	IEEE8 dBRX, IEEE8 dBRY,
+	IEEE8 outputDeviceCoords[4],
+	IEEE8 outputImageCoords[4])
 {
 	INT32 outputWidth, outputHeight;
 
 	outputWidth = int(outputDeviceCoords[2] - outputDeviceCoords[0]);
 	outputHeight = int(outputDeviceCoords[3] - outputDeviceCoords[1]);
-	if (outputWidth != (nViewWidth-1) && outputHeight != (nViewHeight-1))
+	if (outputWidth != (nViewWidth - 1) && outputHeight != (nViewHeight - 1))
 	{
-		if ((outputWidth > (nViewWidth-1)) && (outputHeight > (nViewHeight-1)))	//zooming in
+		if ((outputWidth > (nViewWidth - 1)) && (outputHeight > (nViewHeight - 1)))	//zooming in
 		{
 			// Calculate the image extents of the sub area to be stretched from the main image, and only stretch that subset to the screen.
 			IEEE8 outputScreenTLX = (outputDeviceCoords[0] < (IEEE8)0) ? (IEEE8)0 : outputDeviceCoords[0];
 			IEEE8 outputScreenTLY = (outputDeviceCoords[1] < (IEEE8)0) ? (IEEE8)0 : outputDeviceCoords[1];
-			IEEE8 outputScreenBRX = (outputDeviceCoords[2] > (IEEE8)(nViewWidth))  ? (IEEE8)(nViewWidth) : outputDeviceCoords[2];
+			IEEE8 outputScreenBRX = (outputDeviceCoords[2] > (IEEE8)(nViewWidth)) ? (IEEE8)(nViewWidth) : outputDeviceCoords[2];
 			IEEE8 outputScreenBRY = (outputDeviceCoords[3] > (IEEE8)(nViewHeight)) ? (IEEE8)(nViewHeight) : outputDeviceCoords[3];
 
 			IEEE8 outputImageWidth, outputImageHeight;
-			outputImageWidth  = ((outputScreenBRX-outputScreenTLX) * (m_nRendererWidth))/(outputDeviceCoords[2]-outputDeviceCoords[0])  ;
-		    outputImageHeight = ((outputScreenBRY-outputScreenTLY) * (m_nRendererHeight))/(outputDeviceCoords[3]-outputDeviceCoords[1])  ;
-		    outputImageCoords[0] = ((outputScreenTLX-outputDeviceCoords[0])  * (outputImageWidth))/(outputScreenBRX-outputScreenTLX) ;
-			outputImageCoords[1] = ((outputScreenTLY-outputDeviceCoords[1])  * (outputImageHeight))/(outputScreenBRY-outputScreenTLY) ;
+			outputImageWidth = ((outputScreenBRX - outputScreenTLX) * (m_nRendererWidth)) / (outputDeviceCoords[2] - outputDeviceCoords[0]);
+			outputImageHeight = ((outputScreenBRY - outputScreenTLY) * (m_nRendererHeight)) / (outputDeviceCoords[3] - outputDeviceCoords[1]);
+			outputImageCoords[0] = ((outputScreenTLX - outputDeviceCoords[0])  * (outputImageWidth)) / (outputScreenBRX - outputScreenTLX);
+			outputImageCoords[1] = ((outputScreenTLY - outputDeviceCoords[1])  * (outputImageHeight)) / (outputScreenBRY - outputScreenTLY);
 			outputImageCoords[2] = outputImageCoords[0] + outputImageWidth;
 			outputImageCoords[3] = outputImageCoords[1] + outputImageHeight;
 
@@ -1190,17 +1200,17 @@ BOOLEAN CNCSRenderer::CalcStretchBltCoordinates(INT32 nViewWidth, INT32 nViewHei
 			outputImageCoords[1] = floor(outputImageCoords[1]);
 			outputImageCoords[2] = ceil(outputImageCoords[2]);
 			outputImageCoords[3] = ceil(outputImageCoords[3]);
-			IEEE8 dNewOutputWorldTLX = m_dRendererWorldTLX + ((m_dRendererWorldBRX - m_dRendererWorldTLX)/((IEEE8)m_nRendererWidth)) * (outputImageCoords[0]);
-			IEEE8 dNewOutputWorldTLY = m_dRendererWorldTLY + ((m_dRendererWorldBRY - m_dRendererWorldTLY)/((IEEE8)m_nRendererHeight)) * (outputImageCoords[1]);
-			IEEE8 dNewOutputWorldBRX = m_dRendererWorldTLX + ((m_dRendererWorldBRX - m_dRendererWorldTLX)/((IEEE8)m_nRendererWidth)) * (outputImageCoords[2]);
-			IEEE8 dNewOutputWorldBRY = m_dRendererWorldTLY + ((m_dRendererWorldBRY - m_dRendererWorldTLY)/((IEEE8)m_nRendererHeight)) * (outputImageCoords[3]);
+			IEEE8 dNewOutputWorldTLX = m_dRendererWorldTLX + ((m_dRendererWorldBRX - m_dRendererWorldTLX) / ((IEEE8)m_nRendererWidth)) * (outputImageCoords[0]);
+			IEEE8 dNewOutputWorldTLY = m_dRendererWorldTLY + ((m_dRendererWorldBRY - m_dRendererWorldTLY) / ((IEEE8)m_nRendererHeight)) * (outputImageCoords[1]);
+			IEEE8 dNewOutputWorldBRX = m_dRendererWorldTLX + ((m_dRendererWorldBRX - m_dRendererWorldTLX) / ((IEEE8)m_nRendererWidth)) * (outputImageCoords[2]);
+			IEEE8 dNewOutputWorldBRY = m_dRendererWorldTLY + ((m_dRendererWorldBRY - m_dRendererWorldTLY) / ((IEEE8)m_nRendererHeight)) * (outputImageCoords[3]);
 
 			// Convert these new world coordinates into device coordinates.
 			IEEE8 deviceCoords[4];
-			deviceCoords[0] = (((outputDeviceCoords[2] - outputDeviceCoords[0]) * (dNewOutputWorldTLX-m_dRendererWorldTLX))/(m_dRendererWorldBRX - m_dRendererWorldTLX)) + outputDeviceCoords[0];
-			deviceCoords[1] = (((outputDeviceCoords[3] - outputDeviceCoords[1]) * (dNewOutputWorldTLY-m_dRendererWorldTLY))/(m_dRendererWorldBRY - m_dRendererWorldTLY)) + outputDeviceCoords[1];
-			deviceCoords[2] = (((outputDeviceCoords[2] - outputDeviceCoords[0]) * (dNewOutputWorldBRX-m_dRendererWorldTLX))/(m_dRendererWorldBRX - m_dRendererWorldTLX)) + outputDeviceCoords[0];
-			deviceCoords[3] = (((outputDeviceCoords[3] - outputDeviceCoords[1]) * (dNewOutputWorldBRY-m_dRendererWorldTLY))/(m_dRendererWorldBRY - m_dRendererWorldTLY)) + outputDeviceCoords[1];
+			deviceCoords[0] = (((outputDeviceCoords[2] - outputDeviceCoords[0]) * (dNewOutputWorldTLX - m_dRendererWorldTLX)) / (m_dRendererWorldBRX - m_dRendererWorldTLX)) + outputDeviceCoords[0];
+			deviceCoords[1] = (((outputDeviceCoords[3] - outputDeviceCoords[1]) * (dNewOutputWorldTLY - m_dRendererWorldTLY)) / (m_dRendererWorldBRY - m_dRendererWorldTLY)) + outputDeviceCoords[1];
+			deviceCoords[2] = (((outputDeviceCoords[2] - outputDeviceCoords[0]) * (dNewOutputWorldBRX - m_dRendererWorldTLX)) / (m_dRendererWorldBRX - m_dRendererWorldTLX)) + outputDeviceCoords[0];
+			deviceCoords[3] = (((outputDeviceCoords[3] - outputDeviceCoords[1]) * (dNewOutputWorldBRY - m_dRendererWorldTLY)) / (m_dRendererWorldBRY - m_dRendererWorldTLY)) + outputDeviceCoords[1];
 			outputDeviceCoords[0] = deviceCoords[0];
 			outputDeviceCoords[1] = deviceCoords[1];
 			outputDeviceCoords[2] = deviceCoords[2];
@@ -1231,46 +1241,46 @@ BOOLEAN CNCSRenderer::CalcStretchBltCoordinates(INT32 nViewWidth, INT32 nViewHei
  * @return void.
  */
 void inline CNCSRenderer::CalculateDeviceCoords(
-						INT32 nDeviceTLX, INT32 nDeviceTLY,INT32 nDeviceBRX, INT32 nDeviceBRY,
-						IEEE8 dWorldTLX, IEEE8 dWorldTLY, IEEE8 dWorldBRX, IEEE8 dWorldBRY,
-						IEEE8 dNewWorldTLX, IEEE8 dNewWorldTLY, IEEE8 dNewWorldBRX, IEEE8 dNewWorldBRY,
-						INT32 *pnDeviceTLX, INT32 *pnDeviceTLY,	INT32 *pnDeviceBRX, INT32 *pnDeviceBRY)
+	INT32 nDeviceTLX, INT32 nDeviceTLY, INT32 nDeviceBRX, INT32 nDeviceBRY,
+	IEEE8 dWorldTLX, IEEE8 dWorldTLY, IEEE8 dWorldBRX, IEEE8 dWorldBRY,
+	IEEE8 dNewWorldTLX, IEEE8 dNewWorldTLY, IEEE8 dNewWorldBRX, IEEE8 dNewWorldBRY,
+	INT32 *pnDeviceTLX, INT32 *pnDeviceTLY, INT32 *pnDeviceBRX, INT32 *pnDeviceBRY)
 {
-	*pnDeviceTLX = (INT32)(((dNewWorldTLX - dWorldTLX)/(dWorldBRX-dWorldTLX))*(IEEE8)(nDeviceBRX-nDeviceTLX)+0.5);
-	*pnDeviceTLY = (INT32)(((dNewWorldTLY - dWorldTLY)/(dWorldBRY-dWorldTLY))*(IEEE8)(nDeviceBRY-nDeviceTLY)+0.5);
-	*pnDeviceBRX = (INT32)(((dNewWorldBRX - dWorldTLX)/(dWorldBRX-dWorldTLX))*(IEEE8)(nDeviceBRX-nDeviceTLX)+0.5);
-	*pnDeviceBRY = (INT32)(((dNewWorldBRY - dWorldTLY)/(dWorldBRY-dWorldTLY))*(IEEE8)(nDeviceBRY-nDeviceTLY)+0.5);
+	*pnDeviceTLX = (INT32)(((dNewWorldTLX - dWorldTLX) / (dWorldBRX - dWorldTLX))*(IEEE8)(nDeviceBRX - nDeviceTLX) + 0.5);
+	*pnDeviceTLY = (INT32)(((dNewWorldTLY - dWorldTLY) / (dWorldBRY - dWorldTLY))*(IEEE8)(nDeviceBRY - nDeviceTLY) + 0.5);
+	*pnDeviceBRX = (INT32)(((dNewWorldBRX - dWorldTLX) / (dWorldBRX - dWorldTLX))*(IEEE8)(nDeviceBRX - nDeviceTLX) + 0.5);
+	*pnDeviceBRY = (INT32)(((dNewWorldBRY - dWorldTLY) / (dWorldBRY - dWorldTLY))*(IEEE8)(nDeviceBRY - nDeviceTLY) + 0.5);
 }
 
 void CNCSRenderer::calculateDeviceCoords(int nDeviceTLX, int nDeviceTLY,
-										 int nDeviceBRX, int nDeviceBRY,
-										 double dWorldTLX, double dWorldTLY,
-										 double dWorldBRX, double dWorldBRY,
-										 double outputDeviceCoords[4],
-										 double dRendererWorldTLX, double dRendererWorldTLY,
-										 double dRendererWorldBRX, double dRendererWorldBRY)
+	int nDeviceBRX, int nDeviceBRY,
+	double dWorldTLX, double dWorldTLY,
+	double dWorldBRX, double dWorldBRY,
+	double outputDeviceCoords[4],
+	double dRendererWorldTLX, double dRendererWorldTLY,
+	double dRendererWorldBRX, double dRendererWorldBRY)
 {
-	outputDeviceCoords[0] = ((dRendererWorldTLX - dWorldTLX)/(dWorldBRX-dWorldTLX))*(double)(nDeviceBRX-nDeviceTLX);
-    outputDeviceCoords[1] = ((dRendererWorldTLY - dWorldTLY)/(dWorldBRY-dWorldTLY))*(double)(nDeviceBRY-nDeviceTLY);
-    outputDeviceCoords[2] = ((dRendererWorldBRX - dWorldTLX)/(dWorldBRX-dWorldTLX))*(double)(nDeviceBRX-nDeviceTLX);
-    outputDeviceCoords[3] = ((dRendererWorldBRY - dWorldTLY)/(dWorldBRY-dWorldTLY))*(double)(nDeviceBRY-nDeviceTLY);
+	outputDeviceCoords[0] = ((dRendererWorldTLX - dWorldTLX) / (dWorldBRX - dWorldTLX))*(double)(nDeviceBRX - nDeviceTLX);
+	outputDeviceCoords[1] = ((dRendererWorldTLY - dWorldTLY) / (dWorldBRY - dWorldTLY))*(double)(nDeviceBRY - nDeviceTLY);
+	outputDeviceCoords[2] = ((dRendererWorldBRX - dWorldTLX) / (dWorldBRX - dWorldTLX))*(double)(nDeviceBRX - nDeviceTLX);
+	outputDeviceCoords[3] = ((dRendererWorldBRY - dWorldTLY) / (dWorldBRY - dWorldTLY))*(double)(nDeviceBRY - nDeviceTLY);
 }
 
 void CNCSRenderer::calculateImageCoords(double dDevice1TLX, double dDevice1TLY,
-										double dDevice1BRX, double dDevice1BRY,
-										double dImageWidth, double dImageHeight,
-										double dDevice2TLX, double dDevice2TLY,
-										double dDevice2BRX, double dDevice2BRY,
-										double outputImageCoords[4]) {
-    double outputImageWidth, outputImageHeight;
+	double dDevice1BRX, double dDevice1BRY,
+	double dImageWidth, double dImageHeight,
+	double dDevice2TLX, double dDevice2TLY,
+	double dDevice2BRX, double dDevice2BRY,
+	double outputImageCoords[4]) {
+	double outputImageWidth, outputImageHeight;
 
-    outputImageWidth  = ((dDevice2BRX-dDevice2TLX) * (dImageWidth))/(dDevice1BRX-dDevice1TLX)  ;
-    outputImageHeight = ((dDevice2BRY-dDevice2TLY) * (dImageHeight))/(dDevice1BRY-dDevice1TLY)  ;
+	outputImageWidth = ((dDevice2BRX - dDevice2TLX) * (dImageWidth)) / (dDevice1BRX - dDevice1TLX);
+	outputImageHeight = ((dDevice2BRY - dDevice2TLY) * (dImageHeight)) / (dDevice1BRY - dDevice1TLY);
 
-    outputImageCoords[0] = ((dDevice2TLX-dDevice1TLX)  * (outputImageWidth))/(dDevice2BRX-dDevice2TLX) ;
-    outputImageCoords[1] = ((dDevice2TLY-dDevice1TLY)  * (outputImageHeight))/(dDevice2BRY-dDevice2TLY) ;
-    outputImageCoords[2] = outputImageCoords[0] + outputImageWidth;
-    outputImageCoords[3] = outputImageCoords[1] + outputImageHeight;
+	outputImageCoords[0] = ((dDevice2TLX - dDevice1TLX)  * (outputImageWidth)) / (dDevice2BRX - dDevice2TLX);
+	outputImageCoords[1] = ((dDevice2TLY - dDevice1TLY)  * (outputImageHeight)) / (dDevice2BRY - dDevice2TLY);
+	outputImageCoords[2] = outputImageCoords[0] + outputImageWidth;
+	outputImageCoords[3] = outputImageCoords[1] + outputImageHeight;
 }
 
 /**
@@ -1282,8 +1292,8 @@ void CNCSRenderer::calculateImageCoords(double dDevice1TLX, double dDevice1TLY,
  * @return void.
  */
 void CNCSRenderer::DrawingExtents(LPRECT pClipRect,
-								   IEEE8 dWorldTLX, IEEE8 dWorldTLY, IEEE8 dWorldBRX, IEEE8 dWorldBRY,
-								   LPRECT pNewClipRect)		/**[09]**/
+	IEEE8 dWorldTLX, IEEE8 dWorldTLY, IEEE8 dWorldBRX, IEEE8 dWorldBRY,
+	LPRECT pNewClipRect)		/**[09]**/
 
 {
 	INT32 nDeviceTLX, nDeviceTLY, nDeviceBRX, nDeviceBRY;
@@ -1294,22 +1304,22 @@ void CNCSRenderer::DrawingExtents(LPRECT pClipRect,
 	INT32 dAdjustedDatasetTLX, dAdjustedDatasetTLY, dAdjustedDatasetBRX, dAdjustedDatasetBRY;
 	INT32 nAdjustedDeviceTLX, nAdjustedDeviceTLY, nAdjustedDeviceBRX, nAdjustedDeviceBRY;
 	AdjustExtents(pClipRect->right - pClipRect->left, pClipRect->bottom - pClipRect->top,
-				  nDatasetTLX, nDatasetTLY, nDatasetBRX, nDatasetBRY,
-				  &dAdjustedDatasetTLX, &dAdjustedDatasetTLY, &dAdjustedDatasetBRX, &dAdjustedDatasetBRY,
-				  &nAdjustedDeviceTLX, &nAdjustedDeviceTLY, &nAdjustedDeviceBRX, &nAdjustedDeviceBRY);
+		nDatasetTLX, nDatasetTLY, nDatasetBRX, nDatasetBRY,
+		&dAdjustedDatasetTLX, &dAdjustedDatasetTLY, &dAdjustedDatasetBRX, &dAdjustedDatasetBRY,
+		&nAdjustedDeviceTLX, &nAdjustedDeviceTLY, &nAdjustedDeviceBRX, &nAdjustedDeviceBRY);
 
 	// Check to see if the renderers current bitmap extents, match this draw, if so do a direct blit
-	if ((dAdjustedDatasetTLX == m_nRendererDatasetTLX) && 
+	if ((dAdjustedDatasetTLX == m_nRendererDatasetTLX) &&
 		(dAdjustedDatasetTLY == m_nRendererDatasetTLY) &&
-		(dAdjustedDatasetBRX == m_nRendererDatasetBRX) && 
+		(dAdjustedDatasetBRX == m_nRendererDatasetBRX) &&
 		(dAdjustedDatasetBRY == m_nRendererDatasetBRY) &&
 		(nAdjustedDeviceBRX - nAdjustedDeviceTLX == m_nRendererWidth) &&
 		(nAdjustedDeviceBRY - nAdjustedDeviceTLY == m_nRendererHeight)) {
-		
-		pNewClipRect->left	 = m_nAdjustedXOffset + pClipRect->left;
-		pNewClipRect->top    = m_nAdjustedYOffset + pClipRect->top;
-		pNewClipRect->right  = pNewClipRect->left + m_nAdjustedViewWidth;
-		pNewClipRect->bottom = pNewClipRect->top  + m_nAdjustedViewHeight;
+
+		pNewClipRect->left = m_nAdjustedXOffset + pClipRect->left;
+		pNewClipRect->top = m_nAdjustedYOffset + pClipRect->top;
+		pNewClipRect->right = pNewClipRect->left + m_nAdjustedViewWidth;
+		pNewClipRect->bottom = pNewClipRect->top + m_nAdjustedViewHeight;
 	}
 	else {
 		INT32 nRendererDatasetWidth = m_nRendererDatasetBRX - m_nRendererDatasetTLX;
@@ -1320,14 +1330,14 @@ void CNCSRenderer::DrawingExtents(LPRECT pClipRect,
 		// Calculate where the old world coordinates from the current rendered image, 
 		// fit to the new screen world coordinates.
 		CalculateDeviceCoords(pClipRect->left, pClipRect->top, pClipRect->right, pClipRect->bottom,
-							  dWorldTLX, dWorldTLY, dWorldBRX, dWorldBRY,
-							  m_dRendererWorldTLX, m_dRendererWorldTLY, m_dRendererWorldBRX, m_dRendererWorldBRY,
-							  &nDeviceTLX, &nDeviceTLY, &nDeviceBRX, &nDeviceBRY);
+			dWorldTLX, dWorldTLY, dWorldBRX, dWorldBRY,
+			m_dRendererWorldTLX, m_dRendererWorldTLY, m_dRendererWorldBRX, m_dRendererWorldBRY,
+			&nDeviceTLX, &nDeviceTLY, &nDeviceBRX, &nDeviceBRY);
 
-		pNewClipRect->left	 = nDeviceTLX + pClipRect->left;
-		pNewClipRect->top    = nDeviceTLY + pClipRect->top;
-		pNewClipRect->right  = pNewClipRect->left + abs(nDeviceBRX - nDeviceTLX);
-		pNewClipRect->bottom = pNewClipRect->top  + abs(nDeviceBRY - nDeviceTLY);
+		pNewClipRect->left = nDeviceTLX + pClipRect->left;
+		pNewClipRect->top = nDeviceTLY + pClipRect->top;
+		pNewClipRect->right = pNewClipRect->left + abs(nDeviceBRX - nDeviceTLX);
+		pNewClipRect->bottom = pNewClipRect->top + abs(nDeviceBRY - nDeviceTLY);
 	}
 }
 
@@ -1343,12 +1353,12 @@ void CNCSRenderer::DrawingExtents(LPRECT pClipRect,
  * @param dWorldTLY The top left Y world coordinate of the device
  * @param dWorldBRX The bottom right X world coordinate of the device
  * @param dWorldBRY The bottom right Y world coordinate of the device
- * @see ReadImage() 
+ * @see ReadImage()
  * @see SetView()
  * @return void.
  */
 NCSError CNCSRenderer::DrawImage(HDC hDeviceContext, LPRECT pClipRect,
-								IEEE8 dWorldTLX, IEEE8 dWorldTLY, IEEE8 dWorldBRX, IEEE8 dWorldBRY )
+	IEEE8 dWorldTLX, IEEE8 dWorldTLY, IEEE8 dWorldBRX, IEEE8 dWorldBRY)
 {
 	BOOLEAN bStretch = FALSE;
 	BOOLEAN bSpecialBlt = FALSE;	/**[16]**/
@@ -1371,32 +1381,32 @@ NCSError CNCSRenderer::DrawImage(HDC hDeviceContext, LPRECT pClipRect,
 	width = pClipRect->right - pClipRect->left;
 	height = pClipRect->bottom - pClipRect->top;
 
-	INT32 dAdjustedDatasetTLX=0, dAdjustedDatasetTLY=0, dAdjustedDatasetBRX=0, dAdjustedDatasetBRY=0;
-	INT32 nAdjustedDeviceTLX=0, nAdjustedDeviceTLY=0, nAdjustedDeviceBRX=0, nAdjustedDeviceBRY=0;
-	INT32 nDatasetTLX=0, nDatasetTLY=0, nDatasetBRX=0, nDatasetBRY=0;
-	
+	INT32 dAdjustedDatasetTLX = 0, dAdjustedDatasetTLY = 0, dAdjustedDatasetBRX = 0, dAdjustedDatasetBRY = 0;
+	INT32 nAdjustedDeviceTLX = 0, nAdjustedDeviceTLY = 0, nAdjustedDeviceBRX = 0, nAdjustedDeviceBRY = 0;
+	INT32 nDatasetTLX = 0, nDatasetTLY = 0, nDatasetBRX = 0, nDatasetBRY = 0;
+
 	if (m_bIsProgressive) {
 		ConvertWorldToDataset(dWorldTLX, dWorldTLY, &nDatasetTLX, &nDatasetTLY);
 		ConvertWorldToDataset(dWorldBRX, dWorldBRY, &nDatasetBRX, &nDatasetBRY);
 
 		AdjustExtents(pClipRect->right - pClipRect->left, pClipRect->bottom - pClipRect->top,
-					  nDatasetTLX, nDatasetTLY, nDatasetBRX, nDatasetBRY,
-					  &dAdjustedDatasetTLX, &dAdjustedDatasetTLY, &dAdjustedDatasetBRX, &dAdjustedDatasetBRY,
-					  &nAdjustedDeviceTLX, &nAdjustedDeviceTLY, &nAdjustedDeviceBRX, &nAdjustedDeviceBRY);
+			nDatasetTLX, nDatasetTLY, nDatasetBRX, nDatasetBRY,
+			&dAdjustedDatasetTLX, &dAdjustedDatasetTLY, &dAdjustedDatasetBRX, &dAdjustedDatasetBRY,
+			&nAdjustedDeviceTLX, &nAdjustedDeviceTLY, &nAdjustedDeviceBRX, &nAdjustedDeviceBRY);
 
 		// Check to see if the renderers current bitmap extents, match this draw, if so do a direct blit
 #if defined(MACINTOSH) || defined(MACOSX)
-		if(0) 	// For the mac always use the stretch case as it does not
+		if (0) 	// For the mac always use the stretch case as it does not
 				// have seperate draw function.
 #else
-		if ((dAdjustedDatasetTLX == m_nRendererDatasetTLX) && 
+		if ((dAdjustedDatasetTLX == m_nRendererDatasetTLX) &&
 			(dAdjustedDatasetTLY == m_nRendererDatasetTLY) &&
-			(dAdjustedDatasetBRX == m_nRendererDatasetBRX) && 
+			(dAdjustedDatasetBRX == m_nRendererDatasetBRX) &&
 			(dAdjustedDatasetBRY == m_nRendererDatasetBRY) &&
 			(nAdjustedDeviceBRX - nAdjustedDeviceTLX == m_nRendererWidth) &&
 			(nAdjustedDeviceBRY - nAdjustedDeviceTLY == m_nRendererHeight))
 #endif		
-			{
+		{
 			width = m_nAdjustedViewWidth;
 			height = m_nAdjustedViewHeight;
 			bStretch = FALSE;
@@ -1410,21 +1420,21 @@ NCSError CNCSRenderer::DrawImage(HDC hDeviceContext, LPRECT pClipRect,
 			// Calculate where the old world coordinates from the current rendered image, 
 			// fit to the new screen world coordinates.
 			CalculateDeviceCoords(pClipRect->left, pClipRect->top, pClipRect->right, pClipRect->bottom,
-								  dWorldTLX, dWorldTLY, dWorldBRX, dWorldBRY,
-								  m_dRendererWorldTLX, m_dRendererWorldTLY, m_dRendererWorldBRX, m_dRendererWorldBRY,
-								  &nDeviceTLX, &nDeviceTLY, &nDeviceBRX, &nDeviceBRY);
+				dWorldTLX, dWorldTLY, dWorldBRX, dWorldBRY,
+				m_dRendererWorldTLX, m_dRendererWorldTLY, m_dRendererWorldBRX, m_dRendererWorldBRY,
+				&nDeviceTLX, &nDeviceTLY, &nDeviceBRX, &nDeviceBRY);
 
 #ifdef WIN32
 			//if supersampling have to do a stretch
 			if (m_nRendererWidth == width && m_nRendererHeight == height)	/**[16]**/
 			{
-				INT32 dTLX = (INT32)floor((dWorldTLX - m_dOriginX)/m_dCellIncrementX);
-				INT32 dTLY = (INT32)floor((dWorldTLY - m_dOriginY)/m_dCellIncrementY);
-				INT32 dBRX = (INT32)ceil((dWorldBRX - m_dOriginX)/m_dCellIncrementX);
-				INT32 dBRY = (INT32)ceil((dWorldBRY - m_dOriginY)/m_dCellIncrementY);
+				INT32 dTLX = (INT32)floor((dWorldTLX - m_dOriginX) / m_dCellIncrementX);
+				INT32 dTLY = (INT32)floor((dWorldTLY - m_dOriginY) / m_dCellIncrementY);
+				INT32 dBRX = (INT32)ceil((dWorldBRX - m_dOriginX) / m_dCellIncrementX);
+				INT32 dBRY = (INT32)ceil((dWorldBRY - m_dOriginY) / m_dCellIncrementY);
 
-				if (m_nRendererDatasetBRX-m_nRendererDatasetTLX == dBRX-dTLX &&
-					m_nRendererDatasetBRY-m_nRendererDatasetTLY == dBRY-dTLY)
+				if (m_nRendererDatasetBRX - m_nRendererDatasetTLX == dBRX - dTLX &&
+					m_nRendererDatasetBRY - m_nRendererDatasetTLY == dBRY - dTLY)
 				{
 					bSpecialBlt = TRUE;
 					bStretch = FALSE;
@@ -1439,19 +1449,20 @@ NCSError CNCSRenderer::DrawImage(HDC hDeviceContext, LPRECT pClipRect,
 			width = m_nAdjustedViewWidth;
 			height = m_nAdjustedViewHeight;
 		}
-	} else {
+	}
+	else {
 		// The non progressive case, just find the actual dataset units,
 		//  calculate the actual device coords and do a stretch.
 
 		CalculateDeviceCoords(pClipRect->left, pClipRect->top, pClipRect->right, pClipRect->bottom,
-							  dWorldTLX, dWorldTLY, dWorldBRX, dWorldBRY,
-							  m_dAdjustedWorldTLX, m_dAdjustedWorldTLY, m_dAdjustedWorldBRX, m_dAdjustedWorldBRY,
-							  &nDeviceTLX, &nDeviceTLY, &nDeviceBRX, &nDeviceBRY);
+			dWorldTLX, dWorldTLY, dWorldBRX, dWorldBRY,
+			m_dAdjustedWorldTLX, m_dAdjustedWorldTLY, m_dAdjustedWorldBRX, m_dAdjustedWorldBRY,
+			&nDeviceTLX, &nDeviceTLY, &nDeviceBRX, &nDeviceBRY);
 
 		bStretch = TRUE;
 	}
 
-	m_nBytesPerLine = NCS_WIDTH_BYTES(width*3*sizeof(UINT8));
+	m_nBytesPerLine = NCS_WIDTH_BYTES(width * 3 * sizeof(UINT8));
 
 	if (!m_pRGBA) {
 		if (!m_bIsProgressive) {
@@ -1469,11 +1480,12 @@ NCSError CNCSRenderer::DrawImage(HDC hDeviceContext, LPRECT pClipRect,
 #ifdef WIN32
 	// Copy the rgb buffer into the bitmap and blit it to the dc
 	if (m_bIsProgressive) {
-		CreateDIBAndPallete( hDeviceContext, m_nRendererWidth, m_nRendererHeight);
-	} else {
+		CreateDIBAndPallete(hDeviceContext, m_nRendererWidth, m_nRendererHeight);
+	}
+	else {
 		CreateDIBAndPallete(hDeviceContext, m_nAdjustedViewWidth, m_nAdjustedViewHeight);
 	}
-	
+
 	int nSavedDC = SaveDC(hDeviceContext);
 
 #if !defined(_WIN32_WCE)
@@ -1483,128 +1495,83 @@ NCSError CNCSRenderer::DrawImage(HDC hDeviceContext, LPRECT pClipRect,
 
 	DWORD dwCaps = GetDeviceCaps(hDeviceContext, RASTERCAPS);
 	nRet = GDI_ERROR;
-//char buf[1024];
-//sprintf(buf, "DC: %ld,%ld %ldx%ld\r\n", nDeviceTLX, nDeviceTLY, nDeviceBRX, nDeviceBRY);
-//OutputDebugStringA(buf);
-	if(!bStretch) { 
+	//char buf[1024];
+	//sprintf(buf, "DC: %ld,%ld %ldx%ld\r\n", nDeviceTLX, nDeviceTLY, nDeviceBRX, nDeviceBRY);
+	//OutputDebugStringA(buf);
+	if (!bStretch) {
 #if !defined(_WIN32_WCE)
-		if(dwCaps & RC_DIBTODEV && !m_bAlternateDraw) {
+		if (dwCaps & RC_DIBTODEV && !m_bAlternateDraw) {
 			if (bSpecialBlt) {														/**[16]**/
 				nRet = SetDIBitsToDevice(hDeviceContext,							/**[16]**/
-										 nDeviceTLX + pClipRect->left,
-										 nDeviceTLY + pClipRect->top,
-										 abs(nDeviceBRX - nDeviceTLX),
-										 abs(nDeviceBRY - nDeviceTLY),
-										 0,
-										 0,
-										 0,
-										 abs(m_pbmInfo->bmiHeader.biHeight),
-										 m_pBitmapImage,
-										 m_pbmInfo,
-										 DIB_RGB_COLORS);
+					nDeviceTLX + pClipRect->left,
+					nDeviceTLY + pClipRect->top,
+					abs(nDeviceBRX - nDeviceTLX),
+					abs(nDeviceBRY - nDeviceTLY),
+					0,
+					0,
+					0,
+					abs(m_pbmInfo->bmiHeader.biHeight),
+					m_pBitmapImage,
+					m_pbmInfo,
+					DIB_RGB_COLORS);
 			}
 			else
 			{
 				nRet = SetDIBitsToDevice(hDeviceContext,
-										 m_nAdjustedXOffset + pClipRect->left,
-										 m_nAdjustedYOffset + pClipRect->top,
-										 m_nAdjustedViewWidth,
-										 m_nAdjustedViewHeight,
-										 0,
-										 0,
-										 0,
-										 abs(m_pbmInfo->bmiHeader.biHeight),
-										 m_pBitmapImage,
-										 m_pbmInfo,
-										 DIB_RGB_COLORS);
+					m_nAdjustedXOffset + pClipRect->left,
+					m_nAdjustedYOffset + pClipRect->top,
+					m_nAdjustedViewWidth,
+					m_nAdjustedViewHeight,
+					0,
+					0,
+					0,
+					abs(m_pbmInfo->bmiHeader.biHeight),
+					m_pBitmapImage,
+					m_pbmInfo,
+					DIB_RGB_COLORS);
 			}
 		}
-		if(nRet == GDI_ERROR) {
-			_RPT0(_CRT_WARN,"SetDIBitsToDevice Failed or not available\n");
+		if (nRet == GDI_ERROR) {
+			_RPT0(_CRT_WARN, "SetDIBitsToDevice Failed or not available\n");
 #endif
 			HDC hMemDC = CreateCompatibleDC(hDeviceContext);
-		
-			if(hMemDC) {
+
+			if (hMemDC) {
 				HBITMAP hOldBitmap = (HBITMAP)SelectObject(hMemDC, (HGDIOBJ)m_hBitmap);
 
 				if (bSpecialBlt) {													/**[16]**/
-					if(BitBlt(hDeviceContext,										/**[16]**/	
-							  nDeviceTLX + pClipRect->left,
-							  nDeviceTLY + pClipRect->top, 
-							  abs(nDeviceBRX - nDeviceTLX),
-							  abs(nDeviceBRY - nDeviceTLY),
-							  hMemDC,
-							  0, 
-							  abs(m_pbmInfo->bmiHeader.biHeight) - abs(nDeviceBRY - nDeviceTLY) - 0,
-							  SRCCOPY)) {
+					if (BitBlt(hDeviceContext,										/**[16]**/
+						nDeviceTLX + pClipRect->left,
+						nDeviceTLY + pClipRect->top,
+						abs(nDeviceBRX - nDeviceTLX),
+						abs(nDeviceBRY - nDeviceTLY),
+						hMemDC,
+						0,
+						abs(m_pbmInfo->bmiHeader.biHeight) - abs(nDeviceBRY - nDeviceTLY) - 0,
+						SRCCOPY)) {
 						nRet = m_nAdjustedViewHeight;
-					} else {
+					}
+					else {
 						nRet = GDI_ERROR;
 					}
 				}
 				else {
-					if(BitBlt(hDeviceContext, 
-							  m_nAdjustedXOffset + pClipRect->left,
-							  m_nAdjustedYOffset + pClipRect->top, 
-							  m_nAdjustedViewWidth,
-							  m_nAdjustedViewHeight,
-							  hMemDC,
-							  0, 
-							  abs(m_pbmInfo->bmiHeader.biHeight) - m_nAdjustedViewHeight - 0,
-							  SRCCOPY)) {
+					if (BitBlt(hDeviceContext,
+						m_nAdjustedXOffset + pClipRect->left,
+						m_nAdjustedYOffset + pClipRect->top,
+						m_nAdjustedViewWidth,
+						m_nAdjustedViewHeight,
+						hMemDC,
+						0,
+						abs(m_pbmInfo->bmiHeader.biHeight) - m_nAdjustedViewHeight - 0,
+						SRCCOPY)) {
 						nRet = m_nAdjustedViewHeight;
-					} else {
+					}
+					else {
 						nRet = GDI_ERROR;
 					}
 				}
-				if(hOldBitmap) {
-					SelectObject(hMemDC, (HGDIOBJ)hOldBitmap);
-				}
-				DeleteDC(hMemDC);
-			}
-#if !defined(_WIN32_WCE)
-		}
-#endif
-	} else {
-#if !defined(_WIN32_WCE)
-		if(!m_bUsingAlphaBand && dwCaps & RC_STRETCHDIB && !m_bAlternateDraw) {
-			nRet = StretchDIBits(hDeviceContext,
-								nDeviceTLX + pClipRect->left,
-								nDeviceTLY + pClipRect->top,
-								abs(nDeviceBRX - nDeviceTLX),
-								abs(nDeviceBRY - nDeviceTLY),
-								0,
-								0,
-								m_nRendererWidth,
-								m_nRendererHeight,
-								m_pBitmapImage,
-								m_pbmInfo,
-								DIB_RGB_COLORS,
-								SRCCOPY);
-		}
-		if(nRet == GDI_ERROR) {
-			_RPT0(_CRT_WARN,"StretchDIBits Failed or not available\n");
-#endif
-			HDC hMemDC = CreateCompatibleDC(hDeviceContext);
-			if(hMemDC) {
-				HBITMAP hOldBitmap = (HBITMAP)SelectObject(hMemDC, (HGDIOBJ)m_hBitmap);
-
-				if(CNCSRenderer::StretchBlt(hDeviceContext,
-							  nDeviceTLX + pClipRect->left,
-							  nDeviceTLY + pClipRect->top,
-							  abs(nDeviceBRX - nDeviceTLX),
-							  abs(nDeviceBRY - nDeviceTLY),
-							  hMemDC,
-							  0,
-							  abs(m_pbmInfo->bmiHeader.biHeight) - m_nRendererHeight - 0,
-							  m_nRendererWidth,
-							  m_nRendererHeight))
-				{
-					nRet = m_nRendererHeight;
-				} else {
-					nRet = GDI_ERROR;
-				}
-				if(hOldBitmap) {
+				if (hOldBitmap) {
 					SelectObject(hMemDC, (HGDIOBJ)hOldBitmap);
 				}
 				DeleteDC(hMemDC);
@@ -1613,26 +1580,75 @@ NCSError CNCSRenderer::DrawImage(HDC hDeviceContext, LPRECT pClipRect,
 		}
 #endif
 	}
-	if(nRet == GDI_ERROR) {
-		LPVOID lpMsgBuf;
-		FormatMessage( FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-				NULL, 
-				GetLastError(),
-				MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-				(LPTSTR) &lpMsgBuf,
+	else {
+#if !defined(_WIN32_WCE)
+		if (!m_bUsingAlphaBand && dwCaps & RC_STRETCHDIB && !m_bAlternateDraw) {
+			nRet = StretchDIBits(hDeviceContext,
+				nDeviceTLX + pClipRect->left,
+				nDeviceTLY + pClipRect->top,
+				abs(nDeviceBRX - nDeviceTLX),
+				abs(nDeviceBRY - nDeviceTLY),
 				0,
-				NULL);
-		_RPT1(_CRT_WARN,"Stretch/SetDIBits Failed : %s", lpMsgBuf);
+				0,
+				m_nRendererWidth,
+				m_nRendererHeight,
+				m_pBitmapImage,
+				m_pbmInfo,
+				DIB_RGB_COLORS,
+				SRCCOPY);
+		}
+		if (nRet == GDI_ERROR) {
+			_RPT0(_CRT_WARN, "StretchDIBits Failed or not available\n");
+#endif
+			HDC hMemDC = CreateCompatibleDC(hDeviceContext);
+			if (hMemDC) {
+				HBITMAP hOldBitmap = (HBITMAP)SelectObject(hMemDC, (HGDIOBJ)m_hBitmap);
+
+				if (CNCSRenderer::StretchBlt(hDeviceContext,
+					nDeviceTLX + pClipRect->left,
+					nDeviceTLY + pClipRect->top,
+					abs(nDeviceBRX - nDeviceTLX),
+					abs(nDeviceBRY - nDeviceTLY),
+					hMemDC,
+					0,
+					abs(m_pbmInfo->bmiHeader.biHeight) - m_nRendererHeight - 0,
+					m_nRendererWidth,
+					m_nRendererHeight))
+				{
+					nRet = m_nRendererHeight;
+				}
+				else {
+					nRet = GDI_ERROR;
+				}
+				if (hOldBitmap) {
+					SelectObject(hMemDC, (HGDIOBJ)hOldBitmap);
+				}
+				DeleteDC(hMemDC);
+			}
+#if !defined(_WIN32_WCE)
+		}
+#endif
+	}
+	if (nRet == GDI_ERROR) {
+		LPVOID lpMsgBuf;
+		FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+			NULL,
+			GetLastError(),
+			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
+			(LPTSTR)&lpMsgBuf,
+			0,
+			NULL);
+		_RPT1(_CRT_WARN, "Stretch/SetDIBits Failed : %s", lpMsgBuf);
 	}
 
 	// Fill in the background area.
-	if (!m_bIsTransparent) {													/**[14]**/											
-		if ((m_nAdjustedXOffset != 0) || (m_nAdjustedYOffset !=0) || 
-			(m_nAdjustedViewWidth != pClipRect->right - pClipRect->left) || 
+	if (!m_bIsTransparent) {													/**[14]**/
+		if ((m_nAdjustedXOffset != 0) || (m_nAdjustedYOffset != 0) ||
+			(m_nAdjustedViewWidth != pClipRect->right - pClipRect->left) ||
 			(m_nAdjustedViewHeight != pClipRect->bottom - pClipRect->top)) {
 
 			// Create a pen and solid brush to fill in the background
-			HPEN hPen = CreatePen(PS_SOLID, 0, m_nBackgroundColor );
+			HPEN hPen = CreatePen(PS_SOLID, 0, m_nBackgroundColor);
 			HPEN hPenOld = (HPEN)SelectObject(hDeviceContext, hPen);
 			HBRUSH hBrush = CreateSolidBrush(m_nBackgroundColor);
 			HBRUSH hBrOld = (HBRUSH)SelectObject(hDeviceContext, hBrush);
@@ -1664,28 +1680,28 @@ NCSError CNCSRenderer::DrawImage(HDC hDeviceContext, LPRECT pClipRect,
 	}
 
 #ifdef _DEBUG
-			// Draw a RED rectangle around the plugin
+	// Draw a RED rectangle around the plugin
 #if !defined(_WIN32_WCE)
-			LOGBRUSH brush;
-			brush.lbStyle = BS_HOLLOW;
-			HBRUSH hBrush = CreateBrushIndirect(&brush);
+	LOGBRUSH brush;
+	brush.lbStyle = BS_HOLLOW;
+	HBRUSH hBrush = CreateBrushIndirect(&brush);
 #else
-			HBRUSH hBrush = CreateSolidBrush(RGB(255, 0, 0));
+	HBRUSH hBrush = CreateSolidBrush(RGB(255, 0, 0));
 #endif
-			HPEN hPen = CreatePen( PS_SOLID, 1, RGB(255,0,0));
-			HPEN hOldPen = (HPEN)SelectObject(hDeviceContext, hPen);
-			HBRUSH hOldBrush = (HBRUSH)SelectObject(hDeviceContext, hBrush);
+	HPEN hPen = CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
+	HPEN hOldPen = (HPEN)SelectObject(hDeviceContext, hPen);
+	HBRUSH hOldBrush = (HBRUSH)SelectObject(hDeviceContext, hBrush);
 
-			Rectangle(hDeviceContext, pClipRect->left, pClipRect->top, pClipRect->right, pClipRect->bottom);
+	Rectangle(hDeviceContext, pClipRect->left, pClipRect->top, pClipRect->right, pClipRect->bottom);
 
-			SelectObject(hDeviceContext, hOldBrush);
-			SelectObject(hDeviceContext, hOldPen);
-			DeleteObject(hOldBrush);
-			DeleteObject(hPen);
+	SelectObject(hDeviceContext, hOldBrush);
+	SelectObject(hDeviceContext, hOldPen);
+	DeleteObject(hOldBrush);
+	DeleteObject(hPen);
 #endif
 
 	RestoreDC(hDeviceContext, nSavedDC);
-			
+
 #endif //WIN32
 
 #if defined(MACINTOSH) || defined(MACOSX)
@@ -1693,48 +1709,50 @@ NCSError CNCSRenderer::DrawImage(HDC hDeviceContext, LPRECT pClipRect,
 	Rect rectSource; //= ((GrafPtr)gpWindow)->portRect;
 	long time;
 	short i;
-	BOOLEAN bResult=TRUE;
+	BOOLEAN bResult = TRUE;
 
 	// Copy the rgb buffer into the bitmap and blit it to the dc
 	if (m_bIsProgressive) {
 		//CreateDIBAndPallete( hDeviceContext, m_nRendererWidth, m_nRendererHeight);
-		bResult = CreatePixMapAndPallete( (GrafPtr)hDeviceContext, m_nRendererWidth, m_nRendererHeight );
-	} else {
-		bResult = CreatePixMapAndPallete( (GrafPtr)hDeviceContext, m_nAdjustedViewWidth, m_nAdjustedViewHeight );
+		bResult = CreatePixMapAndPallete((GrafPtr)hDeviceContext, m_nRendererWidth, m_nRendererHeight);
 	}
-	
-	if( !bResult )
+	else {
+		bResult = CreatePixMapAndPallete((GrafPtr)hDeviceContext, m_nAdjustedViewWidth, m_nAdjustedViewHeight);
+	}
+
+	if (!bResult)
 		return NCS_COULDNT_ALLOC_MEMORY;
-	
+
 	/*if( !bStretch ) {
 		rectDest.left = m_nAdjustedXOffset + pClipRect->left;
 		rectDest.top = m_nAdjustedYOffset + pClipRect->top;
 		rectDest.right = m_nAdjustedViewWidth;
 		rectDest.bottom = m_nAdjustedViewHeight;
 	} else {*/
-	
-		GetPortBounds(m_hLocalMemDC, &rectSource);
-		
-		rectDest.left = nDeviceTLX;// + pClipRect->left;
-		rectDest.top = nDeviceTLY;// + pClipRect->top;
-		rectDest.right = nDeviceBRX;
-		rectDest.bottom = nDeviceBRY;
-				
+
+	GetPortBounds(m_hLocalMemDC, &rectSource);
+
+	rectDest.left = nDeviceTLX;// + pClipRect->left;
+	rectDest.top = nDeviceTLY;// + pClipRect->top;
+	rectDest.right = nDeviceBRX;
+	rectDest.bottom = nDeviceBRY;
+
 	//}
 
-    RGBColor	cblack = { 0x0000, 0x0000, 0x0000 };
-    RGBColor	cwhite = { 0xFFFF, 0xFFFF, 0xFFFF };
-    RGBForeColor( &cblack );
-    RGBBackColor( &cwhite );
+	RGBColor	cblack = { 0x0000, 0x0000, 0x0000 };
+	RGBColor	cwhite = { 0xFFFF, 0xFFFF, 0xFFFF };
+	RGBForeColor(&cblack);
+	RGBBackColor(&cwhite);
 
-	CopyBits( GetPortBitMapForCopyBits( m_hLocalMemDC ), GetPortBitMapForCopyBits( hDeviceContext ),
+	CopyBits(GetPortBitMapForCopyBits(m_hLocalMemDC), GetPortBitMapForCopyBits(hDeviceContext),
 		&rectSource, &rectDest, srcCopy, 0L);
-	
-	SInt16 qdError = QDError ();
-	
-	if( qdError == noErr ) {
+
+	SInt16 qdError = QDError();
+
+	if (qdError == noErr) {
 		nError = NCS_SUCCESS;
-	} else {
+	}
+	else {
 		nError = NCS_COULDNT_ALLOC_MEMORY;
 	}
 
@@ -1745,29 +1763,29 @@ NCSError CNCSRenderer::DrawImage(HDC hDeviceContext, LPRECT pClipRect,
 }
 
 #ifdef WIN32
-	bool CNCSRenderer::StretchBlt(
-		HDC hdcDest,      // handle to destination DC
-		int nXOriginDest, // x-coord of destination upper-left corner
-		int nYOriginDest, // y-coord of destination upper-left corner
-		int nWidthDest,   // width of destination rectangle
-		int nHeightDest,  // height of destination rectangle
-		HDC hdcSrc,       // handle to source DC
-		int nXOriginSrc,  // x-coord of source upper-left corner
-		int nYOriginSrc,  // y-coord of source upper-left corner
-		int nWidthSrc,    // width of source rectangle
-		int nHeightSrc   // height of source rectangle
-		)
-	{
-		if( m_pAlphaBlend && m_bUsingAlphaBand ) {
-			BLENDFUNCTION bf;
-			bf.BlendOp = AC_SRC_OVER;
-			bf.BlendFlags = 0;
-			bf.SourceConstantAlpha = 0xFF;  // 0x00 (transparent) through 0xFF (opaque)
-											// want bitmap alpha, so no constant.
-			bf.AlphaFormat = AC_SRC_ALPHA;  // Use bitmap alpha
+bool CNCSRenderer::StretchBlt(
+	HDC hdcDest,      // handle to destination DC
+	int nXOriginDest, // x-coord of destination upper-left corner
+	int nYOriginDest, // y-coord of destination upper-left corner
+	int nWidthDest,   // width of destination rectangle
+	int nHeightDest,  // height of destination rectangle
+	HDC hdcSrc,       // handle to source DC
+	int nXOriginSrc,  // x-coord of source upper-left corner
+	int nYOriginSrc,  // y-coord of source upper-left corner
+	int nWidthSrc,    // width of source rectangle
+	int nHeightSrc   // height of source rectangle
+)
+{
+	if (m_pAlphaBlend && m_bUsingAlphaBand) {
+		BLENDFUNCTION bf;
+		bf.BlendOp = AC_SRC_OVER;
+		bf.BlendFlags = 0;
+		bf.SourceConstantAlpha = 0xFF;  // 0x00 (transparent) through 0xFF (opaque)
+										// want bitmap alpha, so no constant.
+		bf.AlphaFormat = AC_SRC_ALPHA;  // Use bitmap alpha
 
-			return (*(BOOL(__stdcall *)(HDC, int, int, int, int, HDC, int, int, int, int, BLENDFUNCTION))m_pAlphaBlend)
-				(hdcDest,
+		return (*(BOOL(__stdcall *)(HDC, int, int, int, int, HDC, int, int, int, int, BLENDFUNCTION))m_pAlphaBlend)
+			(hdcDest,
 				nXOriginDest,
 				nYOriginDest,
 				nWidthDest,
@@ -1777,21 +1795,22 @@ NCSError CNCSRenderer::DrawImage(HDC hDeviceContext, LPRECT pClipRect,
 				nYOriginSrc,
 				nWidthSrc,
 				nHeightSrc,
-				bf)?true:false;
-		} else {
-			return ::StretchBlt(hdcDest,
-				nXOriginDest,
-				nYOriginDest,
-				nWidthDest,
-				nHeightDest,
-				hdcSrc,
-				nXOriginSrc,
-				nYOriginSrc,
-				nWidthSrc,
-				nHeightSrc,
-				SRCCOPY)?true:false;
-		}
+				bf) ? true : false;
 	}
+	else {
+		return ::StretchBlt(hdcDest,
+			nXOriginDest,
+			nYOriginDest,
+			nWidthDest,
+			nHeightDest,
+			hdcSrc,
+			nXOriginSrc,
+			nYOriginSrc,
+			nWidthSrc,
+			nHeightSrc,
+			SRCCOPY) ? true : false;
+	}
+}
 
 BOOLEAN CNCSRenderer::CreateDIBAndPallete(HDC hDeviceContext, INT32 nWidth, INT32 nHeight)
 {
@@ -1804,7 +1823,7 @@ BOOLEAN CNCSRenderer::CreateDIBAndPallete(HDC hDeviceContext, INT32 nWidth, INT3
 	INT32 nPrevDCBitDepth = m_nDCBitDepth;	//save previous depth for comparison	/**[10]**/
 #endif
 
-	if ((m_nDCWidth!= nWidth) ||(m_nDCHeight != nHeight) || (m_pbmInfo == NULL)
+	if ((m_nDCWidth != nWidth) || (m_nDCHeight != nHeight) || (m_pbmInfo == NULL)
 #ifdef NCS_HIST_AND_LUT_SUPPORT
 		|| (m_bLutChanged && m_bApplyLUTs)
 #endif // NCS_HIST_AND_LUT_SUPPORT
@@ -1815,12 +1834,13 @@ BOOLEAN CNCSRenderer::CreateDIBAndPallete(HDC hDeviceContext, INT32 nWidth, INT3
 	m_nDCWidth = nWidth;
 	m_nDCHeight = nHeight;
 
-	if(GetDeviceCaps(hDeviceContext, TECHNOLOGY) == DT_RASPRINTER) {
+	if (GetDeviceCaps(hDeviceContext, TECHNOLOGY) == DT_RASPRINTER) {
 		// Printing
 		m_nDCBitDepth = 24;
-	} else {
+	}
+	else {
 		m_nDCBitDepth = GetDeviceCaps(hDeviceContext, PLANES) * GetDeviceCaps(hDeviceContext, BITSPIXEL);
-		if(m_nDCBitDepth <= 8) {
+		if (m_nDCBitDepth <= 8) {
 			nColors = 256;
 			m_nDCBitDepth = 8;	/**[01]**/
 		}
@@ -1830,33 +1850,33 @@ BOOLEAN CNCSRenderer::CreateDIBAndPallete(HDC hDeviceContext, INT32 nWidth, INT3
 		bChangeInSize = TRUE;
 
 	if (bChangeInSize) {
-		if(m_hBitmap) {
+		if (m_hBitmap) {
 			DeleteObject(m_hBitmap);
 			m_hBitmap = NULL;
 		}
-		if(m_pbmInfo) {
+		if (m_pbmInfo) {
 			NCSFree(m_pbmInfo);
 			m_pbmInfo = (BITMAPINFO*)NULL;
 		}
-	}	
+	}
 
 #ifdef DIB_FIX
 	//If the bit depth hasn't changed and no new image data has arrived
 	//we don't have to do anything further in this function.
 	if (bChangeInSize == FALSE && nPrevDCBitDepth == m_nDCBitDepth && m_bCreateNewDIB == FALSE)		/**[10]**/
-		return TRUE;														/**[10]**/	
+		return TRUE;														/**[10]**/
 #endif
 
 	if (bChangeInSize) {
 		nHeaderSize = sizeof(BITMAPINFOHEADER) + nColors * sizeof(RGBQUAD);
 		m_pbmInfo = (BITMAPINFO*)NCSMalloc(nHeaderSize + 3 * sizeof(DWORD), TRUE);
 	}
-	if(!m_pbmInfo) {
+	if (!m_pbmInfo) {
 		DestroyDibAndPalette();
 		return(FALSE);
 	}
-		// Note: Extra because of BITFIELDS for 16bit format
-		// dib_header_size gets reset below if this format.
+	// Note: Extra because of BITFIELDS for 16bit format
+	// dib_header_size gets reset below if this format.
 	m_pbmInfo->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
 	m_pbmInfo->bmiHeader.biWidth = nWidth;
 #ifndef DIB_FIX
@@ -1868,9 +1888,9 @@ BOOLEAN CNCSRenderer::CreateDIBAndPallete(HDC hDeviceContext, INT32 nWidth, INT3
 	m_pbmInfo->bmiHeader.biBitCount = (WORD)m_nDCBitDepth;
 	m_pbmInfo->bmiHeader.biSizeImage = NCS_WIDTH_BYTES((DWORD)nWidth * m_nDCBitDepth) * nHeight;
 	m_pbmInfo->bmiHeader.biCompression = BI_RGB;
-	
+
 #if !defined(_WIN32_WCE)
-	if(m_nDCBitDepth == 16) {
+	if (m_nDCBitDepth == 16) {
 		PIXELFORMATDESCRIPTOR pfd;
 		HDC hPFDHDC = hDeviceContext;
 		int i = 1;
@@ -1881,19 +1901,19 @@ BOOLEAN CNCSRenderer::CreateDIBAndPallete(HDC hDeviceContext, INT32 nWidth, INT3
 		** so we put this hacky check in to see if it's really 15bit (RGB555).
 		** There doesn't seem to be any other way to find this out.
 		*/
-		if(!m_hOpenGLDLL) {
+		if (!m_hOpenGLDLL) {
 			/*
 			** This may seem pretty pointless as we don't use the instance handle at all.
 			** In fact, this is an optimisation to prevent GDI doing it itself every time
-			** DescribePixelFormat() is called.  Otherwise opengl32.dll is loaded/unloaded 
+			** DescribePixelFormat() is called.  Otherwise opengl32.dll is loaded/unloaded
 			** every time we call DescribePixelFormat() - very sloooow.
 			*/
 			m_hOpenGLDLL = LoadLibraryA("opengl32.dll");
 		}
-		if(DescribePixelFormat(hPFDHDC,
-							   i,
-							   sizeof(PIXELFORMATDESCRIPTOR),
-							   &pfd) == 0) {
+		if (DescribePixelFormat(hPFDHDC,
+			i,
+			sizeof(PIXELFORMATDESCRIPTOR),
+			&pfd) == 0) {
 			COLORREF cOrig;
 			COLORREF cDst;
 			RECT rect;
@@ -1902,25 +1922,27 @@ BOOLEAN CNCSRenderer::CreateDIBAndPallete(HDC hDeviceContext, INT32 nWidth, INT3
 
 			cOrig = GetPixel(hDeviceContext, rect.left, rect.top);
 			cDst = SetPixel(hDeviceContext, rect.left, rect.top, RGB(0x00, 0x04, 0x00));
-			if(cDst != 0x04) {
+			if (cDst != 0x04) {
 				m_nDCBitDepth = 15;
 			}
 			SetPixel(hDeviceContext, rect.left, rect.top, cOrig);
-		} else {
-			while(DescribePixelFormat(hPFDHDC,
-									  i,
-									  sizeof(PIXELFORMATDESCRIPTOR),
-									  &pfd)) {
-				if(pfd.iPixelType == PFD_TYPE_RGBA) {
+		}
+		else {
+			while (DescribePixelFormat(hPFDHDC,
+				i,
+				sizeof(PIXELFORMATDESCRIPTOR),
+				&pfd)) {
+				if (pfd.iPixelType == PFD_TYPE_RGBA) {
 					INT32 bits = pfd.cRedBits + pfd.cGreenBits + pfd.cBlueBits;
 
-					if(bits == 15) {
+					if (bits == 15) {
 						/*
 						** 5/5/5 RGB
 						*/
 						m_nDCBitDepth = 15;
 						break;
-					} else if(bits == 16) {
+					}
+					else if (bits == 16) {
 						/*
 						** 5/6/5 RGB
 						*/
@@ -1930,16 +1952,16 @@ BOOLEAN CNCSRenderer::CreateDIBAndPallete(HDC hDeviceContext, INT32 nWidth, INT3
 				i++;
 			}
 		}
-		if(hPFDHDC != hDeviceContext) {
+		if (hPFDHDC != hDeviceContext) {
 			ReleaseDC(NULL, hPFDHDC);
 			hPFDHDC = hDeviceContext;
 		}
 	}
 #endif
 
-	if(m_nDCBitDepth == 16) {
+	if (m_nDCBitDepth == 16) {
 		DWORD *pColors = (DWORD*)m_pbmInfo->bmiColors;
-			
+
 		m_pbmInfo->bmiHeader.biCompression = BI_BITFIELDS;
 
 		/*
@@ -1948,7 +1970,8 @@ BOOLEAN CNCSRenderer::CreateDIBAndPallete(HDC hDeviceContext, INT32 nWidth, INT3
 		pColors[0] = 0xf800;	/* 5 Red */
 		pColors[1] = 0x07e0;	/* 6 Green */
 		pColors[2] = 0x001f;	/* 5 Blue */
-	} else if(m_nDCBitDepth <= 8) {
+	}
+	else if (m_nDCBitDepth <= 8) {
 		LOGPALETTE lPalette;
 		HPALETTE hOldPalette = NULL;
 		HPALETTE hPalette = NULL;
@@ -1961,7 +1984,7 @@ BOOLEAN CNCSRenderer::CreateDIBAndPallete(HDC hDeviceContext, INT32 nWidth, INT3
 		lPalette.palPalEntry[0].peBlue = 0;
 		lPalette.palPalEntry[0].peFlags = NULL;
 
-		if((hPalette = CreatePalette(&lPalette)) != NULL) {
+		if ((hPalette = CreatePalette(&lPalette)) != NULL) {
 			PALETTEENTRY peEntries[256];
 
 			hOldPalette = SelectPalette(hDeviceContext, hPalette, TRUE);
@@ -1969,28 +1992,28 @@ BOOLEAN CNCSRenderer::CreateDIBAndPallete(HDC hDeviceContext, INT32 nWidth, INT3
 			memset(peEntries, 0, sizeof(peEntries));
 			GetPaletteEntries(hOldPalette, 0, 256, peEntries);
 
-			for(i = 0; i < 256; i++) {
+			for (i = 0; i < 256; i++) {
 				m_pbmInfo->bmiColors[i].rgbRed = peEntries[i].peRed;
 				m_pbmInfo->bmiColors[i].rgbGreen = peEntries[i].peGreen;
 				m_pbmInfo->bmiColors[i].rgbBlue = peEntries[i].peBlue;
 				m_pbmInfo->bmiColors[i].rgbReserved = 0;
 
-				if(m_pPaletteEntries && ((peEntries[i].peRed != m_pPaletteEntries[i].peRed) ||
-										 (peEntries[i].peGreen != m_pPaletteEntries[i].peGreen) ||
-										 (peEntries[i].peBlue != m_pPaletteEntries[i].peBlue) || 
-										 (peEntries[i].peFlags != m_pPaletteEntries[i].peFlags))) {
-					if(m_pColorTable) {
+				if (m_pPaletteEntries && ((peEntries[i].peRed != m_pPaletteEntries[i].peRed) ||
+					(peEntries[i].peGreen != m_pPaletteEntries[i].peGreen) ||
+					(peEntries[i].peBlue != m_pPaletteEntries[i].peBlue) ||
+					(peEntries[i].peFlags != m_pPaletteEntries[i].peFlags))) {
+					if (m_pColorTable) {
 						NCSFree(m_pColorTable);
 						m_pColorTable = NULL;
 					}
 				}
 			}
-			
-			if(!m_pPaletteEntries) {
+
+			if (!m_pPaletteEntries) {
 				m_pPaletteEntries = (PALETTEENTRY*)NCSMalloc(sizeof(peEntries), TRUE);
 			}
-			if(!m_pColorTable) {
-				if((m_pColorTable = (UINT8*)NCSMalloc(65536, FALSE)) != NULL) {
+			if (!m_pColorTable) {
+				if ((m_pColorTable = (UINT8*)NCSMalloc(65536, FALSE)) != NULL) {
 					int r, g, b;
 
 					/* initialize color_table[], red_table[], etc */
@@ -2002,14 +2025,15 @@ BOOLEAN CNCSRenderer::CreateDIBAndPallete(HDC hDeviceContext, INT32 nWidth, INT3
 
 							for (b = 0; b < _MB; b++) {
 								UINT32 blue = (INT32)(((double)b / (double)(_MB - 1)) * 255.0);
-													
-								m_pColorTable[_MIX( r, g, b )] = GetNearestPaletteIndex(hOldPalette, 
-																					  RGB(red, green, blue));
+
+								m_pColorTable[_MIX(r, g, b)] = GetNearestPaletteIndex(hOldPalette,
+									RGB(red, green, blue));
 							}
 						}
 					}
 					memcpy(m_pPaletteEntries, peEntries, sizeof(peEntries));
-				} else {
+				}
+				else {
 					DestroyDibAndPalette();
 					return(FALSE);
 				}
@@ -2023,86 +2047,89 @@ BOOLEAN CNCSRenderer::CreateDIBAndPallete(HDC hDeviceContext, INT32 nWidth, INT3
 	}
 	if (bChangeInSize) {
 		m_hBitmap = CreateDIBSection(hDeviceContext,
-									 m_pbmInfo,
-									 m_nDCBitDepth <= 8 ? DIB_PAL_COLORS : DIB_RGB_COLORS,
-									 (void **)&m_pBitmapImage,
-									 NULL, NULL);
+			m_pbmInfo,
+			m_nDCBitDepth <= 8 ? DIB_PAL_COLORS : DIB_RGB_COLORS,
+			(void **)&m_pBitmapImage,
+			NULL, NULL);
 	}
 
-	if( !m_hBitmap || !m_pBitmapImage ) {
+	if (!m_hBitmap || !m_pBitmapImage) {
 		return(FALSE);
 	}
 
 #ifdef DIB_FIX
-//Only copy triplets to bitmap if bit depth changed from last call to this function
-//or new image data has arrived
-if (bChangeInSize == TRUE || nPrevDCBitDepth != m_nDCBitDepth || m_bCreateNewDIB == TRUE)		/**[10]**/
-{
+	//Only copy triplets to bitmap if bit depth changed from last call to this function
+	//or new image data has arrived
+	if (bChangeInSize == TRUE || nPrevDCBitDepth != m_nDCBitDepth || m_bCreateNewDIB == TRUE)		/**[10]**/
+	{
 #endif
-	switch(m_nDCBitDepth) {
+		switch (m_nDCBitDepth) {
 		case 32:
 #ifndef NCS_HIST_AND_LUT_SUPPORT
-				for(nLine = 0; nLine < nHeight; nLine++) {
-					UINT8	*pRGBTriplets = (UINT8*)&(m_pRGBTriplets[nWidth * 3 * nLine]);
-					UINT32	*pImagePtr32 = (UINT32*)&(m_pBitmapImage[WIDTHBYTES(nWidth * 32) * nLine]);
+			for (nLine = 0; nLine < nHeight; nLine++) {
+				UINT8	*pRGBTriplets = (UINT8*)&(m_pRGBTriplets[nWidth * 3 * nLine]);
+				UINT32	*pImagePtr32 = (UINT32*)&(m_pBitmapImage[WIDTHBYTES(nWidth * 32) * nLine]);
 
-					for(nCell = 0; nCell < nWidth; nCell++) {
-						*(pImagePtr32++) = (UINT32)(*pRGBTriplets |
-												    (*(pRGBTriplets + 1) << 8) |
-												    (*(pRGBTriplets + 2) << 16));
-						pRGBTriplets += 3;
-					}
+				for (nCell = 0; nCell < nWidth; nCell++) {
+					*(pImagePtr32++) = (UINT32)(*pRGBTriplets |
+						(*(pRGBTriplets + 1) << 8) |
+						(*(pRGBTriplets + 2) << 16));
+					pRGBTriplets += 3;
 				}
+			}
 #else // NCS_HIST_AND_LUT_SUPPORT
 			{
-				if(!m_bApplyLUTs && !m_bUsingAlphaBand) {
+				if (!m_bApplyLUTs && !m_bUsingAlphaBand) {
 					// Just do a mem copy
-					for(nLine = 0; nLine < nHeight; nLine++) {
+					for (nLine = 0; nLine < nHeight; nLine++) {
 						UINT8	*pRGBA = (UINT8*)&(m_pRGBA[nWidth * 4 * nLine]);
 						UINT32	*pImagePtr32 = (UINT32*)&(m_pBitmapImage[WIDTHBYTES(nWidth * 32) * nLine]);
 
-						memcpy( pImagePtr32, pRGBA, nWidth*4 );
+						memcpy(pImagePtr32, pRGBA, nWidth * 4);
 					}
-				} else {
+				}
+				else {
 					int i;
 					UINT8 rLut[256];
 					UINT8 gLut[256];
 					UINT8 bLut[256];
 
-					if(m_bApplyLUTs) {
-						for(i = 0; i < 256; i++) {
+					if (m_bApplyLUTs) {
+						for (i = 0; i < 256; i++) {
 							rLut[i] = (m_LUTs[2][i]);
 							gLut[i] = (m_LUTs[1][i]);
-							bLut[i] = (m_LUTs[0][i]);			
-						}
-					} else {
-						for(i = 0; i < 256; i++) {
-							rLut[i] = i;
-							gLut[i] = i;
-							bLut[i] = i;			
+							bLut[i] = (m_LUTs[0][i]);
 						}
 					}
-					for(nLine = 0; nLine < nHeight; nLine++) {
+					else {
+						for (i = 0; i < 256; i++) {
+							rLut[i] = i;
+							gLut[i] = i;
+							bLut[i] = i;
+						}
+					}
+					for (nLine = 0; nLine < nHeight; nLine++) {
 						UINT8	*pRGBA = (UINT8*)&(m_pRGBA[nWidth * 4 * nLine]);
 						UINT32	*pImagePtr32 = (UINT32*)&(m_pBitmapImage[WIDTHBYTES(nWidth * 32) * nLine]);
 
-						for(nCell = 0; nCell < nWidth; nCell++) {
+						for (nCell = 0; nCell < nWidth; nCell++) {
 							UINT32 r = 0;
 							UINT32 g = 0;
 							UINT32 b = 0;
 							UINT32 a = 0xFF;
-							if( m_bUsingAlphaBand ) {
+							if (m_bUsingAlphaBand) {
 								a = *(pRGBA + 3);
-								r = (rLut[(*pRGBA)]*a)/0xff;
-								g = (gLut[(*(pRGBA + 1))]*a)/0xff;
-								b = (bLut[(*(pRGBA + 2))]*a)/0xff;
-							} else {
+								r = (rLut[(*pRGBA)] * a) / 0xff;
+								g = (gLut[(*(pRGBA + 1))] * a) / 0xff;
+								b = (bLut[(*(pRGBA + 2))] * a) / 0xff;
+							}
+							else {
 								r = rLut[(*pRGBA)];
 								g = gLut[(*(pRGBA + 1))];
 								b = bLut[(*(pRGBA + 2))];
 							}
 
-							*(pImagePtr32++) = (UINT32)( r | (g << 8) | (b << 16) | (a << 24) );
+							*(pImagePtr32++) = (UINT32)(r | (g << 8) | (b << 16) | (a << 24));
 
 							pRGBA += 4;
 						}
@@ -2111,90 +2138,92 @@ if (bChangeInSize == TRUE || nPrevDCBitDepth != m_nDCBitDepth || m_bCreateNewDIB
 			}
 #endif // NCS_HIST_AND_LUT_SUPPORT
 			break;
-			
+
 		case 24:
 		default:
 #ifndef NCS_HIST_AND_LUT_SUPPORT
-				for(nLine = 0; nLine < nHeight; nLine++) {
-					UINT8 *pRGBTriplets = (UINT8*)&(m_pRGBTriplets[nWidth * 3 * nLine]);
-					UINT8 *pImagePtr8 = (UINT8*)&(m_pBitmapImage[WIDTHBYTES(nWidth * 24) * nLine]);
+			for (nLine = 0; nLine < nHeight; nLine++) {
+				UINT8 *pRGBTriplets = (UINT8*)&(m_pRGBTriplets[nWidth * 3 * nLine]);
+				UINT8 *pImagePtr8 = (UINT8*)&(m_pBitmapImage[WIDTHBYTES(nWidth * 24) * nLine]);
 
-					memcpy(pImagePtr8, pRGBTriplets, nWidth * 3);
-				}
+				memcpy(pImagePtr8, pRGBTriplets, nWidth * 3);
+			}
 #else // NCS_HIST_AND_LUT_SUPPORT
-				int i;
-				UINT16 rLut[256];
-				UINT16 gLut[256];
-				UINT16 bLut[256];	
+			int i;
+			UINT16 rLut[256];
+			UINT16 gLut[256];
+			UINT16 bLut[256];
 
-				if(m_bApplyLUTs) {				
-					for(i = 0; i < 256; i++) {
-						rLut[i] = ((UINT16)(m_LUTs[2][i])) >> 3;
-						gLut[i] = (((UINT16)(m_LUTs[1][i])) & 0xf8) << 3;
-						bLut[i] = (((UINT16)(m_LUTs[0][i])) & 0xf8) << 8;			
-					}
-				} else {
-					for(int i = 0; i < 256; i++) {
-						rLut[i] = (UINT16)i >> 3;
-						gLut[i] = ((UINT16)i & 0xf8) << 3;
-						bLut[i] = ((UINT16)i & 0xf8) << 8;			
-					}
+			if (m_bApplyLUTs) {
+				for (i = 0; i < 256; i++) {
+					rLut[i] = ((UINT16)(m_LUTs[2][i])) >> 3;
+					gLut[i] = (((UINT16)(m_LUTs[1][i])) & 0xf8) << 3;
+					bLut[i] = (((UINT16)(m_LUTs[0][i])) & 0xf8) << 8;
 				}
-
-				for(nLine = 0; nLine < nHeight; nLine++) {
-					UINT8 *pRGBA = (UINT8*)&(m_pRGBA[nWidth * 4 * nLine]);
-					UINT8 *pImagePtr8 = (UINT8*)&(m_pBitmapImage[WIDTHBYTES(nWidth * 24) * nLine]);
-
-					for(nCell = 0; nCell < nWidth; nCell++) {
-						*(pImagePtr8) = rLut[*(pRGBA)];
-						*(pImagePtr8 + 1) = gLut[*(pRGBA + 1)];
-						*(pImagePtr8 + 2) = bLut[*(pRGBA + 2)];
-						pImagePtr8 += 3;
-						pRGBA+=4;
-					}
+			}
+			else {
+				for (int i = 0; i < 256; i++) {
+					rLut[i] = (UINT16)i >> 3;
+					gLut[i] = ((UINT16)i & 0xf8) << 3;
+					bLut[i] = ((UINT16)i & 0xf8) << 8;
 				}
+			}
+
+			for (nLine = 0; nLine < nHeight; nLine++) {
+				UINT8 *pRGBA = (UINT8*)&(m_pRGBA[nWidth * 4 * nLine]);
+				UINT8 *pImagePtr8 = (UINT8*)&(m_pBitmapImage[WIDTHBYTES(nWidth * 24) * nLine]);
+
+				for (nCell = 0; nCell < nWidth; nCell++) {
+					*(pImagePtr8) = rLut[*(pRGBA)];
+					*(pImagePtr8 + 1) = gLut[*(pRGBA + 1)];
+					*(pImagePtr8 + 2) = bLut[*(pRGBA + 2)];
+					pImagePtr8 += 3;
+					pRGBA += 4;
+				}
+			}
 #endif // NCS_HIST_AND_LUT_SUPPORT
 			break;
 
 		case 16:
 #ifndef NCS_HIST_AND_LUT_SUPPORT
-					for(nLine = 0; nLine < nHeight; nLine++) {
-						UINT8 *pRGBTriplets = (UINT8*)&(m_pRGBTriplets[nWidth * 3 * nLine]);
-						UINT16 *pImagePtr16 = (UINT16*)&(m_pBitmapImage[WIDTHBYTES(nWidth * 16) * nLine]);
+			for (nLine = 0; nLine < nHeight; nLine++) {
+				UINT8 *pRGBTriplets = (UINT8*)&(m_pRGBTriplets[nWidth * 3 * nLine]);
+				UINT16 *pImagePtr16 = (UINT16*)&(m_pBitmapImage[WIDTHBYTES(nWidth * 16) * nLine]);
 
-						for(nCell = 0; nCell < nWidth; nCell++) {
-							*(pImagePtr16++) = (UINT16)((*pRGBTriplets >> 3) |
-														((*(pRGBTriplets + 1) & 0xf8) << 3) |
-														((*(pRGBTriplets + 2) & 0xf8) << 8));
-							pRGBTriplets += 3;
-						}
-					}
+				for (nCell = 0; nCell < nWidth; nCell++) {
+					*(pImagePtr16++) = (UINT16)((*pRGBTriplets >> 3) |
+						((*(pRGBTriplets + 1) & 0xf8) << 3) |
+						((*(pRGBTriplets + 2) & 0xf8) << 8));
+					pRGBTriplets += 3;
+				}
+			}
 #else // NCS_HIST_AND_LUT_SUPPORT
 			{
 				int i;
 				UINT16 rLut[256];
 				UINT16 gLut[256];
-				UINT16 bLut[256];	
+				UINT16 bLut[256];
 
-				if(m_bApplyLUTs) {				
-					for(i = 0; i < 256; i++) {
+				if (m_bApplyLUTs) {
+					for (i = 0; i < 256; i++) {
 						rLut[i] = ((UINT16)(m_LUTs[2][i])) >> 3;
 						gLut[i] = (((UINT16)(m_LUTs[1][i])) & 0xf8) << 3;
-						bLut[i] = (((UINT16)(m_LUTs[0][i])) & 0xf8) << 8;			
+						bLut[i] = (((UINT16)(m_LUTs[0][i])) & 0xf8) << 8;
 					}
-				} else {
-					for(int i = 0; i < 256; i++) {
+				}
+				else {
+					for (int i = 0; i < 256; i++) {
 						rLut[i] = (UINT16)i >> 3;
 						gLut[i] = ((UINT16)i & 0xf8) << 3;
-						bLut[i] = ((UINT16)i & 0xf8) << 8;			
+						bLut[i] = ((UINT16)i & 0xf8) << 8;
 					}
 				}
 
-				for(nLine = 0; nLine < nHeight; nLine++) {
+				for (nLine = 0; nLine < nHeight; nLine++) {
 					UINT8 *pRGBA = (UINT8*)&(m_pRGBA[nWidth * 4 * nLine]);
 					UINT16 *pImagePtr16 = (UINT16*)&(m_pBitmapImage[WIDTHBYTES(nWidth * 16) * nLine]);
 
-					for(nCell = 0; nCell < nWidth; nCell++) {
+					for (nCell = 0; nCell < nWidth; nCell++) {
 						INT32 r = *pRGBA;
 						INT32 g = *(pRGBA + 1);
 						INT32 b = *(pRGBA + 2);
@@ -2209,43 +2238,44 @@ if (bChangeInSize == TRUE || nPrevDCBitDepth != m_nDCBitDepth || m_bCreateNewDIB
 
 		case 15:
 #ifndef NCS_HIST_AND_LUT_SUPPORT
-				for(nLine = 0; nLine < nHeight; nLine++) {
-					UINT8 *pRGBA = (UINT8*)&(m_pRGBA[nWidth * 3 * nLine]);
-					UINT16 *pImagePtr16 = (UINT16*)&(m_pBitmapImage[WIDTHBYTES(nWidth * 16) * nLine]);
+			for (nLine = 0; nLine < nHeight; nLine++) {
+				UINT8 *pRGBA = (UINT8*)&(m_pRGBA[nWidth * 3 * nLine]);
+				UINT16 *pImagePtr16 = (UINT16*)&(m_pBitmapImage[WIDTHBYTES(nWidth * 16) * nLine]);
 
-					for(nCell = 0; nCell < nWidth; nCell++) {
-						*(pImagePtr16++) = (UINT16)((*pRGBA >> 3) |
-												    ((*(pRGBA + 1) & 0xf8) << 2) |
-												    ((*(pRGBA + 2) & 0xf8) << 7));
-						pRGBA += 4;
-					}
+				for (nCell = 0; nCell < nWidth; nCell++) {
+					*(pImagePtr16++) = (UINT16)((*pRGBA >> 3) |
+						((*(pRGBA + 1) & 0xf8) << 2) |
+						((*(pRGBA + 2) & 0xf8) << 7));
+					pRGBA += 4;
 				}
+			}
 #else // NCS_HIST_AND_LUT_SUPPORT
 			{
 				int i;
 				UINT16 rLut[256];
 				UINT16 gLut[256];
-				UINT16 bLut[256];	
+				UINT16 bLut[256];
 
-				if(m_bApplyLUTs) {				
-					for(i = 0; i < 256; i++) {
+				if (m_bApplyLUTs) {
+					for (i = 0; i < 256; i++) {
 						rLut[i] = ((UINT16)(m_LUTs[2][i])) >> 3;
 						gLut[i] = (((UINT16)(m_LUTs[1][i])) & 0xf8) << 2;
-						bLut[i] = (((UINT16)(m_LUTs[0][i])) & 0xf8) << 7;			
+						bLut[i] = (((UINT16)(m_LUTs[0][i])) & 0xf8) << 7;
 					}
-				} else {
-					for(int i = 0; i < 256; i++) {
+				}
+				else {
+					for (int i = 0; i < 256; i++) {
 						rLut[i] = (UINT16)i >> 3;
 						gLut[i] = ((UINT16)i & 0xf8) << 2;
-						bLut[i] = ((UINT16)i & 0xf8) << 7;			
+						bLut[i] = ((UINT16)i & 0xf8) << 7;
 					}
 				}
 
-				for(nLine = 0; nLine < nHeight; nLine++) {
+				for (nLine = 0; nLine < nHeight; nLine++) {
 					UINT8 *pRGBA = (UINT8*)&(m_pRGBA[nWidth * 4 * nLine]);
 					UINT16 *pImagePtr16 = (UINT16*)&(m_pBitmapImage[WIDTHBYTES(nWidth * 16) * nLine]);
 
-					for(nCell = 0; nCell < nWidth; nCell++) {
+					for (nCell = 0; nCell < nWidth; nCell++) {
 						INT32 r = *pRGBA;
 						INT32 g = *(pRGBA + 1);
 						INT32 b = *(pRGBA + 2);
@@ -2260,44 +2290,45 @@ if (bChangeInSize == TRUE || nPrevDCBitDepth != m_nDCBitDepth || m_bCreateNewDIB
 
 		case 8:
 #ifdef NCS_HIST_AND_LUT_SUPPORT
-				if(m_bApplyLUTs) {
-					for(nLine = 0; nLine < nHeight; nLine++) {
-						UINT8	*pRGBA = (UINT8*)&(m_pRGBA[nWidth * 4 * nLine]);
-						UINT8	*pImagePtr8 = (UINT8*)&(m_pBitmapImage[WIDTHBYTES(nWidth * 8) * nLine]);
+			if (m_bApplyLUTs) {
+				for (nLine = 0; nLine < nHeight; nLine++) {
+					UINT8	*pRGBA = (UINT8*)&(m_pRGBA[nWidth * 4 * nLine]);
+					UINT8	*pImagePtr8 = (UINT8*)&(m_pBitmapImage[WIDTHBYTES(nWidth * 8) * nLine]);
 
-						for(nCell = 0; nCell < nWidth; nCell++) {
-							UINT8 b = *pRGBA;
-							UINT8 g = *(pRGBA + 1);
-							UINT8 r = *(pRGBA + 2);
+					for (nCell = 0; nCell < nWidth; nCell++) {
+						UINT8 b = *pRGBA;
+						UINT8 g = *(pRGBA + 1);
+						UINT8 r = *(pRGBA + 2);
 
-							pRGBA += 4;
+						pRGBA += 4;
 
-							*(pImagePtr8++) = KERNEL_DITHER(nCell, nLine, m_LUTs[2][r], m_LUTs[1][g], m_LUTs[0][b]);
-						}
+						*(pImagePtr8++) = KERNEL_DITHER(nCell, nLine, m_LUTs[2][r], m_LUTs[1][g], m_LUTs[0][b]);
 					}
-				} else {
-#endif // NCS_HIST_AND_LUT_SUPPORT
-					for(nLine = 0; nLine < nHeight; nLine++) {
-						UINT8	*pRGBA = (UINT8*)&(m_pRGBA[nWidth * 4 * nLine]);
-						UINT8	*pImagePtr8 = (UINT8*)&(m_pBitmapImage[WIDTHBYTES(nWidth * 8) * nLine]);
-
-						for(nCell = 0; nCell < nWidth; nCell++) {
-							UINT8 b = *pRGBA;
-							UINT8 g = *(pRGBA + 1);
-							UINT8 r = *(pRGBA + 2);
-
-							pRGBA += 4;
-
-							*(pImagePtr8++) = KERNEL_DITHER(nCell, nLine, r, g, b);
-						}
-					}	
-#ifdef NCS_HIST_AND_LUT_SUPPORT
 				}
+			}
+			else {
 #endif // NCS_HIST_AND_LUT_SUPPORT
-				break;
-	}
+				for (nLine = 0; nLine < nHeight; nLine++) {
+					UINT8	*pRGBA = (UINT8*)&(m_pRGBA[nWidth * 4 * nLine]);
+					UINT8	*pImagePtr8 = (UINT8*)&(m_pBitmapImage[WIDTHBYTES(nWidth * 8) * nLine]);
+
+					for (nCell = 0; nCell < nWidth; nCell++) {
+						UINT8 b = *pRGBA;
+						UINT8 g = *(pRGBA + 1);
+						UINT8 r = *(pRGBA + 2);
+
+						pRGBA += 4;
+
+						*(pImagePtr8++) = KERNEL_DITHER(nCell, nLine, r, g, b);
+					}
+				}
+#ifdef NCS_HIST_AND_LUT_SUPPORT
+			}
+#endif // NCS_HIST_AND_LUT_SUPPORT
+			break;
+		}
 #ifdef DIB_FIX
-}
+	}
 #endif
 
 #ifdef DIB_FIX
@@ -2311,19 +2342,19 @@ if (bChangeInSize == TRUE || nPrevDCBitDepth != m_nDCBitDepth || m_bCreateNewDIB
 
 BOOLEAN CNCSRenderer::DestroyDibAndPalette(void)
 {
-	if(m_hBitmap) {
+	if (m_hBitmap) {
 		DeleteObject(m_hBitmap);
 		m_hBitmap = NULL;
 	}
-	if(m_pbmInfo) {
+	if (m_pbmInfo) {
 		NCSFree(m_pbmInfo);
 		m_pbmInfo = NULL;
 	}
-	if(m_pColorTable) {
+	if (m_pColorTable) {
 		NCSFree(m_pColorTable);
 		m_pColorTable = NULL;
 	}
-	if(m_pPaletteEntries) {
+	if (m_pPaletteEntries) {
 		NCSFree(m_pPaletteEntries);
 		m_pPaletteEntries = NULL;
 	}
@@ -2333,31 +2364,31 @@ BOOLEAN CNCSRenderer::DestroyDibAndPalette(void)
 #elif defined(MACINTOSH) || defined(MACOSX)
 
 // returns GDHandle that window resides on (most of it anyway)
-GDHandle CNCSRenderer::GetWindowDevice (WindowPtr pWindow)
+GDHandle CNCSRenderer::GetWindowDevice(WindowPtr pWindow)
 {
 	GrafPtr pgpSave;
 	Rect rectWind, rectSect;
 	long greatestArea, sectArea;
 	GDHandle hgdNthDevice, hgdZoomOnThisDevice;
-	
-	GetPort (&pgpSave);
+
+	GetPort(&pgpSave);
 #if TARGET_API_MAC_CARBON
-	SetPortWindowPort (pWindow);
+	SetPortWindowPort(pWindow);
 	GetPortBounds(GetWindowPort(pWindow), &rectWind);
 #else
-	SetPort (pWindow);
+	SetPort(pWindow);
 	rectWind = pWindow->portRect;
 #endif
-	LocalToGlobal ((Point*)& rectWind.top);	// convert to global coordinates
-	LocalToGlobal ((Point*)& rectWind.bottom);
-	hgdNthDevice = GetDeviceList ();
+	LocalToGlobal((Point*)& rectWind.top);	// convert to global coordinates
+	LocalToGlobal((Point*)& rectWind.bottom);
+	hgdNthDevice = GetDeviceList();
 	greatestArea = 0;	 // initialize to 0
 	// check window against all gdRects in gDevice list and remember 
 	//  which gdRect contains largest area of window}
 	while (hgdNthDevice)
 	{
-		if (TestDeviceAttribute (hgdNthDevice, screenDevice))
-			if (TestDeviceAttribute (hgdNthDevice, screenActive))
+		if (TestDeviceAttribute(hgdNthDevice, screenDevice))
+			if (TestDeviceAttribute(hgdNthDevice, screenActive))
 			{
 				// The SectRect routine calculates the intersection 
 				//  of the window rectangle and this gDevice 
@@ -2367,7 +2398,7 @@ GDHandle CNCSRenderer::GetWindowDevice (WindowPtr pWindow)
 				// determine which screen holds greatest window area
 				//  first, calculate area of rectangle on current device
 				sectArea = (long)(rectSect.right - rectSect.left) * (rectSect.bottom - rectSect.top);
-				if ( sectArea > greatestArea )
+				if (sectArea > greatestArea)
 				{
 					greatestArea = sectArea;	// set greatest area so far
 					hgdZoomOnThisDevice = hgdNthDevice;	// set zoom device
@@ -2375,29 +2406,29 @@ GDHandle CNCSRenderer::GetWindowDevice (WindowPtr pWindow)
 				hgdNthDevice = GetNextDevice(hgdNthDevice);
 			}
 	} 	// of WHILE
-	SetPort (pgpSave);
+	SetPort(pgpSave);
 	return hgdZoomOnThisDevice;
 }
 
-BOOLEAN CNCSRenderer::CreatePixMapAndPallete( GrafPtr pGPtr, INT32 nWidth, INT32 nHeight ) {
+BOOLEAN CNCSRenderer::CreatePixMapAndPallete(GrafPtr pGPtr, INT32 nWidth, INT32 nHeight) {
 
 	BOOLEAN bChangeInSize = FALSE;
 
-	if( (m_nDCWidth!= nWidth) || ( m_nDCHeight != nHeight) ){
+	if ((m_nDCWidth != nWidth) || (m_nDCHeight != nHeight)) {
 		bChangeInSize = TRUE;
 	}
 
-	if( bChangeInSize ) {
+	if (bChangeInSize) {
 		short wPixDepth = 32;//(**(GetPortPixMap(hDC))).pixelSize;
 		Rect	tempRect1 = { 0,0,nHeight,nWidth };
-		GDHandle hgdWindow = GetWindowDevice( (WindowPtr)pGPtr );  // may not work
+		GDHandle hgdWindow = GetWindowDevice((WindowPtr)pGPtr);  // may not work
 		m_nDCWidth = nWidth;
 		m_nDCHeight = nHeight;
-		
+
 		DestroyPixMapAndPallete();
-		if (noErr != NewGWorld (&m_hLocalMemDC, wPixDepth, &tempRect1, NULL, hgdWindow, noNewDevice | keepLocal))
+		if (noErr != NewGWorld(&m_hLocalMemDC, wPixDepth, &tempRect1, NULL, hgdWindow, noNewDevice | keepLocal))
 		{
-			if (noErr != NewGWorld (&m_hLocalMemDC, wPixDepth, &tempRect1, NULL, hgdWindow, noNewDevice | useTempMem))
+			if (noErr != NewGWorld(&m_hLocalMemDC, wPixDepth, &tempRect1, NULL, hgdWindow, noNewDevice | useTempMem))
 			{
 				//SysBeep( 30 );
 				m_hLocalMemDC = NULL;
@@ -2407,97 +2438,97 @@ BOOLEAN CNCSRenderer::CreatePixMapAndPallete( GrafPtr pGPtr, INT32 nWidth, INT32
 		}
 	}
 
-	if ( bChangeInSize || m_bCreateNewDIB
+	if (bChangeInSize || m_bCreateNewDIB
 #ifdef NCS_HIST_AND_LUT_SUPPORT
 		|| (m_bLutChanged && m_bApplyLUTs)
 #endif // NCS_HIST_AND_LUT_SUPPORT
-		){
+		) {
 		INT32 nBytesPerRow;
 		Ptr offBaseAddr = NULL;	/* Pointer to the off-screen pixel image */
-		INT32 i,j,index;
+		INT32 i, j, index;
 		INT32 nLine;
 
 		PixMapHandle hPixMap = GetGWorldPixMap(m_hLocalMemDC);
-		offBaseAddr = GetPixBaseAddr( hPixMap );
+		offBaseAddr = GetPixBaseAddr(hPixMap);
 		m_nDCBitDepth = 32;
 		nBytesPerRow = ((*hPixMap)->rowBytes & 0x7FFF);//(nWidth * m_nDCBitDepth) / 8;
-		
+
 		m_bCreateNewDIB = FALSE;
 #ifdef NCS_HIST_AND_LUT_SUPPORT
 		m_bLutChanged = FALSE;
 #endif // NCS_HIST_AND_LUT_SUPPORT
-	
+
 		// Fill PixMap with RGB data
-		switch(m_nDCBitDepth) {
+		switch (m_nDCBitDepth) {
 		case 32:
-				for(nLine = 0; nLine < nHeight; nLine++) {
-					UINT8	*pRGBTriplets = (UINT8*)&(m_pRGBTriplets[nWidth * 3 * nLine]);
-					index = nLine*nBytesPerRow;
-					for(j=0, i=0; (j < nBytesPerRow) && (i < (nWidth * 3)); j+=4, i+=3) {
-						offBaseAddr[index+j] = 0;
-						offBaseAddr[index+j+1] = pRGBTriplets[i+2];
-						offBaseAddr[index+j+2] = pRGBTriplets[i+1];
-						offBaseAddr[index+j+3] = pRGBTriplets[i+0];
-					}
+			for (nLine = 0; nLine < nHeight; nLine++) {
+				UINT8	*pRGBTriplets = (UINT8*)&(m_pRGBTriplets[nWidth * 3 * nLine]);
+				index = nLine * nBytesPerRow;
+				for (j = 0, i = 0; (j < nBytesPerRow) && (i < (nWidth * 3)); j += 4, i += 3) {
+					offBaseAddr[index + j] = 0;
+					offBaseAddr[index + j + 1] = pRGBTriplets[i + 2];
+					offBaseAddr[index + j + 2] = pRGBTriplets[i + 1];
+					offBaseAddr[index + j + 3] = pRGBTriplets[i + 0];
 				}
-			break;
-			
-/*		case 24:	// other bit depths not tested and probably don't work
-		default:
-				for(nLine = 0; nLine < nHeight; nLine++) {
-					UINT8 *pRGBTriplets = (UINT8*)&(m_pRGBTriplets[nWidth * 3 * nLine]);
-					UINT8 *pImagePtr8 = (UINT8*)&(offBaseAddr[WIDTHBYTES(nWidth * 24) * nLine]);
-
-					memcpy(pImagePtr8, pRGBTriplets, nWidth * 3);
-				}
+			}
 			break;
 
-		case 16:
-				for(nLine = 0; nLine < nHeight; nLine++) {
-					UINT8 *pRGBTriplets = (UINT8*)&(m_pRGBTriplets[nWidth * 3 * nLine]);
-					UINT16 *pImagePtr16 = (UINT16*)&(offBaseAddr[WIDTHBYTES(nWidth * 16) * nLine]);
+			/*		case 24:	// other bit depths not tested and probably don't work
+					default:
+							for(nLine = 0; nLine < nHeight; nLine++) {
+								UINT8 *pRGBTriplets = (UINT8*)&(m_pRGBTriplets[nWidth * 3 * nLine]);
+								UINT8 *pImagePtr8 = (UINT8*)&(offBaseAddr[WIDTHBYTES(nWidth * 24) * nLine]);
 
-					for(nCell = 0; nCell < nWidth; nCell++) {
-						*(pImagePtr16++) = (UINT16)((*pRGBTriplets >> 3) |
-												    ((*(pRGBTriplets + 1) & 0xf8) << 3) |
-												    ((*(pRGBTriplets + 2) & 0xf8) << 8));
-						pRGBTriplets += 3;
-					}
-				}
-			break;
+								memcpy(pImagePtr8, pRGBTriplets, nWidth * 3);
+							}
+						break;
 
-		case 15:
-				for(nLine = 0; nLine < nHeight; nLine++) {
-					UINT8 *pRGBTriplets = (UINT8*)&(m_pRGBTriplets[nWidth * 3 * nLine]);
-					UINT16 *pImagePtr16 = (UINT16*)&(offBaseAddr[WIDTHBYTES(nWidth * 16) * nLine]);
+					case 16:
+							for(nLine = 0; nLine < nHeight; nLine++) {
+								UINT8 *pRGBTriplets = (UINT8*)&(m_pRGBTriplets[nWidth * 3 * nLine]);
+								UINT16 *pImagePtr16 = (UINT16*)&(offBaseAddr[WIDTHBYTES(nWidth * 16) * nLine]);
 
-					for(nCell = 0; nCell < nWidth; nCell++) {
-						*(pImagePtr16++) = (UINT16)((*pRGBTriplets >> 3) |
-												    ((*(pRGBTriplets + 1) & 0xf8) << 2) |
-												    ((*(pRGBTriplets + 2) & 0xf8) << 7));
-						pRGBTriplets += 3;
-					}
-				}
-			break;
+								for(nCell = 0; nCell < nWidth; nCell++) {
+									*(pImagePtr16++) = (UINT16)((*pRGBTriplets >> 3) |
+																((*(pRGBTriplets + 1) & 0xf8) << 3) |
+																((*(pRGBTriplets + 2) & 0xf8) << 8));
+									pRGBTriplets += 3;
+								}
+							}
+						break;
 
-		case 8:
-				for(nLine = 0; nLine < nHeight; nLine++) {
-					UINT8	*pRGBTriplets = (UINT8*)&(m_pRGBTriplets[nWidth * 3 * nLine]);
-					UINT8	*pImagePtr8 = (UINT8*)&(offBaseAddr[WIDTHBYTES(nWidth * 8) * nLine]);
+					case 15:
+							for(nLine = 0; nLine < nHeight; nLine++) {
+								UINT8 *pRGBTriplets = (UINT8*)&(m_pRGBTriplets[nWidth * 3 * nLine]);
+								UINT16 *pImagePtr16 = (UINT16*)&(offBaseAddr[WIDTHBYTES(nWidth * 16) * nLine]);
 
-					for(nCell = 0; nCell < nWidth; nCell++) {
-						UINT8 b = *pRGBTriplets;
-						UINT8 g = *(pRGBTriplets + 1);
-						UINT8 r = *(pRGBTriplets + 2);
+								for(nCell = 0; nCell < nWidth; nCell++) {
+									*(pImagePtr16++) = (UINT16)((*pRGBTriplets >> 3) |
+																((*(pRGBTriplets + 1) & 0xf8) << 2) |
+																((*(pRGBTriplets + 2) & 0xf8) << 7));
+									pRGBTriplets += 3;
+								}
+							}
+						break;
 
-						pRGBTriplets += 3;
-						
-						//*(pImagePtr8++) = (b & ) & (g & ) & (r & );
+					case 8:
+							for(nLine = 0; nLine < nHeight; nLine++) {
+								UINT8	*pRGBTriplets = (UINT8*)&(m_pRGBTriplets[nWidth * 3 * nLine]);
+								UINT8	*pImagePtr8 = (UINT8*)&(offBaseAddr[WIDTHBYTES(nWidth * 8) * nLine]);
 
-						//*(pImagePtr8++) = KERNEL_DITHER(nCell, nLine, r, g, b);
-					}
-				}	
-			break;*/
+								for(nCell = 0; nCell < nWidth; nCell++) {
+									UINT8 b = *pRGBTriplets;
+									UINT8 g = *(pRGBTriplets + 1);
+									UINT8 r = *(pRGBTriplets + 2);
+
+									pRGBTriplets += 3;
+
+									//*(pImagePtr8++) = (b & ) & (g & ) & (r & );
+
+									//*(pImagePtr8++) = KERNEL_DITHER(nCell, nLine, r, g, b);
+								}
+							}
+						break;*/
 		default:
 			return FALSE;
 			break;
@@ -2506,9 +2537,9 @@ BOOLEAN CNCSRenderer::CreatePixMapAndPallete( GrafPtr pGPtr, INT32 nWidth, INT32
 
 	return TRUE;
 }
-	
 
-BOOLEAN CNCSRenderer::DestroyPixMapAndPallete( void ) {
+
+BOOLEAN CNCSRenderer::DestroyPixMapAndPallete(void) {
 
 	//if( m_hCTable ) DisposeHandle( (Handle)m_hCTable );
 	/*if(m_hPixMap) {
@@ -2517,9 +2548,9 @@ BOOLEAN CNCSRenderer::DestroyPixMapAndPallete( void ) {
 		DisposePixMap( m_hPixMap );//DeleteObject(m_hBitmap);
 		m_hPixMap = NULL;
 	}*/
-	if( m_hLocalMemDC ) DisposeGWorld( m_hLocalMemDC );
+	if (m_hLocalMemDC) DisposeGWorld(m_hLocalMemDC);
 	m_hLocalMemDC = NULL;
-	
+
 	return TRUE;
 }
 
@@ -2527,10 +2558,10 @@ BOOLEAN CNCSRenderer::DestroyPixMapAndPallete( void ) {
 
 /**
  * Set the background color.
- * In non-transparent mode, specifies the color of the device background, 
+ * In non-transparent mode, specifies the color of the device background,
  * which will get filled before drawing occurs.
  * @param nBackgroundColor A 32bit color reference
- * @see SetTransparent() 
+ * @see SetTransparent()
  * @see GetTransparent()
  * @return void.
  */
@@ -2550,13 +2581,13 @@ void CNCSRenderer::SetBackgroundColor(COLORREF nBackgroundColor)
  * its own, setting the transparency to TRUE allows the renderer to erase/paint
  * the client area before drawing, thus minimising the work the container must do.
  * @param bTransparent A boolean specifying the transparency value.
- * @see SetBackgroundColor() 
+ * @see SetBackgroundColor()
  * @see GetTransparent()
  * @return void.
  */
 void CNCSRenderer::SetTransparent(BOOLEAN bTransparent)
 {
-	m_bIsTransparent=bTransparent;
+	m_bIsTransparent = bTransparent;
 }
 
 /**
@@ -2585,12 +2616,12 @@ void CNCSRenderer::GetTransparent(BOOLEAN *pbTransparent)
  */
 BOOLEAN CNCSRenderer::SetupHistograms(void)
 {
-	if(m_bCalcHistograms) {
+	if (m_bCalcHistograms) {
 		NCSMutexBegin(&m_HistogramMutex);
 		NCSFree(m_pHistograms);
 		m_pHistograms = (Histogram*)NCSMalloc(NCSMax(3, m_nNumberOfBands) * sizeof(Histogram), TRUE);
 
-		if(!m_pHistograms) {
+		if (!m_pHistograms) {
 			NCSMutexEnd(&m_HistogramMutex);
 			return(FALSE);
 		}
@@ -2624,7 +2655,7 @@ BOOLEAN CNCSRenderer::CalcHistograms(BOOLEAN bEnable)
 BOOLEAN	CNCSRenderer::GetHistogram(INT32 nBand, UINT32 Histogram[256])
 {
 	NCSMutexBegin(&m_HistogramMutex);
-	if(m_pHistograms && nBand < NCSMax(3, m_nNumberOfBands)) {
+	if (m_pHistograms && nBand < NCSMax(3, m_nNumberOfBands)) {
 		memcpy(Histogram, m_pHistograms[nBand], sizeof(UINT32) * 256);
 		NCSMutexEnd(&m_HistogramMutex);
 		return(TRUE);
@@ -2642,15 +2673,16 @@ BOOLEAN CNCSRenderer::ApplyLUTs(BOOLEAN bEnable)
 BOOLEAN	CNCSRenderer::SetLUT(INT32 nBand, UINT8 Lut[256])
 {
 	bool bChanged = false;
-	if(nBand >= 0 && nBand < 3) {
-		for(int i = 0; i < 256; i++) {
-			if(m_LUTs[nBand][i] != Lut[i]) {
+	if (nBand >= 0 && nBand < 3) {
+		for (int i = 0; i < 256; i++) {
+			if (m_LUTs[nBand][i] != Lut[i]) {
 				bChanged = true;
 				m_LUTs[nBand][i] = Lut[i];
 			}
 		}
-//		memcpy(m_LUTs[nBand], Lut, sizeof(Lut));
-	} else {
+		//		memcpy(m_LUTs[nBand], Lut, sizeof(Lut));
+	}
+	else {
 		return(FALSE);
 	}
 	m_bLutChanged = bChanged;

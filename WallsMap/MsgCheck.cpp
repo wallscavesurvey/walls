@@ -10,7 +10,7 @@
 
 IMPLEMENT_DYNAMIC(CMsgCheck, CDialog)
 
-CMsgCheck::CMsgCheck(UINT idd,LPCSTR pMsg,LPCSTR pTitle /*=NULL*/,LPCSTR pPromptMsg /*=NULL*/, CWnd* pParent /*=NULL*/)
+CMsgCheck::CMsgCheck(UINT idd, LPCSTR pMsg, LPCSTR pTitle /*=NULL*/, LPCSTR pPromptMsg /*=NULL*/, CWnd* pParent /*=NULL*/)
 	: CDialog(idd, pParent)
 	, m_bNotAgain(FALSE)
 	, m_pTitle(pTitle)
@@ -40,12 +40,12 @@ END_MESSAGE_MAP()
 BOOL CMsgCheck::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	if(m_pTitle) SetWindowText(m_pTitle);
+	if (m_pTitle) SetWindowText(m_pTitle);
 
 	GetDlgItem(IDC_ST_MESSAGE)->SetWindowText(m_pMsg);
 
-	if(m_pPromptMsg) {
-		if(*m_pPromptMsg==0) GetDlgItem(IDC_CHK_NOTAGAIN)->ShowWindow(SW_HIDE);
+	if (m_pPromptMsg) {
+		if (*m_pPromptMsg == 0) GetDlgItem(IDC_CHK_NOTAGAIN)->ShowWindow(SW_HIDE);
 		else GetDlgItem(IDC_CHK_NOTAGAIN)->SetWindowText(m_pPromptMsg);
 	}
 

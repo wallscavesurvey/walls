@@ -25,32 +25,32 @@
 /****************************************************************************/
 char *toDMS(double a)
 {
-  short        neg = 0;
-  double       d, m, s;
-  static char  dms[20];
+	short        neg = 0;
+	double       d, m, s;
+	static char  dms[20];
 
-  if (a < 0.0) {
-    a   = -a;
-    neg = 1;
-  }
-  d = (double) ((int) a); 
-  a = (a - d) * 60.0;
-  m = (double) ((int) a);
-  s = (a - m) * 60.0;
-  
-  if (s > 59.5) {
-    s  = 0.0;
-    m += 1.0;
-  }
-  if (m > 59.5) {
-    m  = 0.0;
-    d += 1.0;
-  }
-  if (neg)
-    d = -d;
-  
-  sprintf(dms, "%.0f°%02.0f'%04.1f\"", d, m, s);
-  return dms;
+	if (a < 0.0) {
+		a = -a;
+		neg = 1;
+	}
+	d = (double)((int)a);
+	a = (a - d) * 60.0;
+	m = (double)((int)a);
+	s = (a - m) * 60.0;
+
+	if (s > 59.5) {
+		s = 0.0;
+		m += 1.0;
+	}
+	if (m > 59.5) {
+		m = 0.0;
+		d += 1.0;
+	}
+	if (neg)
+		d = -d;
+
+	sprintf(dms, "%.0f°%02.0f'%04.1f\"", d, m, s);
+	return dms;
 }
 
 
@@ -59,17 +59,17 @@ char *toDMS(double a)
 /****************************************************************************/
 double DMStoDegrees(char *dms)
 {
-  int     neg = 0;
-  int     d, m;
-  double  s;
+	int     neg = 0;
+	int     d, m;
+	double  s;
 
-  sscanf(dms, "%d%d%lf", &d, &m, &s); 
-  s = (double) (abs(d)) + ((double)m + s / 60.0) / 60.0;
-  
-  if (d >= 0) 
-    return s;
-  else
-    return -s;
+	sscanf(dms, "%d%d%lf", &d, &m, &s);
+	s = (double)(abs(d)) + ((double)m + s / 60.0) / 60.0;
+
+	if (d >= 0)
+		return s;
+	else
+		return -s;
 }
 
 
@@ -78,26 +78,26 @@ double DMStoDegrees(char *dms)
 /****************************************************************************/
 char *toDM(double a)
 {
-  short        neg = 0;
-  double       d, m;
-  static char  dm[13];
-  
-  if (a < 0.0) {
-    a = -a;
-    neg = 1;
-  }
+	short        neg = 0;
+	double       d, m;
+	static char  dm[13];
 
-  d = (double) ( (int) a);
-  m = (a - d) * 60.0;
-  
-  if (m > 59.5) {
-    m  = 0.0;
-    d += 1.0;
-  }
-  if (neg) d = -d;
-  
-  sprintf(dm, "%.0f°%06.3f'", d, m);
-  return dm;
+	if (a < 0.0) {
+		a = -a;
+		neg = 1;
+	}
+
+	d = (double)((int)a);
+	m = (a - d) * 60.0;
+
+	if (m > 59.5) {
+		m = 0.0;
+		d += 1.0;
+	}
+	if (neg) d = -d;
+
+	sprintf(dm, "%.0f°%06.3f'", d, m);
+	return dm;
 }
 
 
@@ -106,16 +106,16 @@ char *toDM(double a)
 /****************************************************************************/
 double DMtoDegrees(char *dms)
 {
-  //short   neg = 0;
-  //short   d;
+	//short   neg = 0;
+	//short   d;
 	int   d;
 	double  m;
-  
-  sscanf(dms, "%d%lf", &d, &m);
-  m = (double) (abs(d)) + m / 60.0;
-  
-  if (d >= 0)
-    return m;
-  else
-    return -m;
+
+	sscanf(dms, "%d%lf", &d, &m);
+	m = (double)(abs(d)) + m / 60.0;
+
+	if (d >= 0)
+		return m;
+	else
+		return -m;
 }

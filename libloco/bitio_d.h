@@ -21,7 +21,7 @@
 #define myungetc(x) (--_nti_buffer_pos,*_nti_buffer_pos=(x))
 
 #ifdef FILL_MACRO
-/* loads more data in the input buffer (inline code )*/
+ /* loads more data in the input buffer (inline code )*/
 #define FILLBUFFER(no) \
  {                        \
 		assert(no+lco_bits <= 24);				\

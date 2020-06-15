@@ -15,12 +15,12 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-static char *nwbb_htm="nwbb.htm";
-static char *texbib_htm="texbib.htm";
+static char *nwbb_htm = "nwbb.htm";
+static char *texbib_htm = "texbib.htm";
 
-char *CReselectVw::m_pDatabase=NULL;
-BOOL CReselectVw::m_bEnableNwbb=FALSE;
-BOOL CReselectVw::m_bEnableTexbib=FALSE;
+char *CReselectVw::m_pDatabase = NULL;
+BOOL CReselectVw::m_bEnableNwbb = FALSE;
+BOOL CReselectVw::m_bEnableTexbib = FALSE;
 
 static char argvbuf[SIZ_ARGVBUF];
 
@@ -69,10 +69,10 @@ void CReselectVw::DoDataExchange(CDataExchange* pDX)
 	//}}AFX_DATA_MAP
 }
 
-BOOL CReselectVw::PreCreateWindow(CREATESTRUCT& cs) 
+BOOL CReselectVw::PreCreateWindow(CREATESTRUCT& cs)
 {
 	// TODO: Add your specialized code here and/or call the base class
-	
+
 	cs.lpszClass = AfxRegisterWndClass(0);
 	return CHtmlView::PreCreateWindow(cs);
 }
@@ -80,7 +80,7 @@ BOOL CReselectVw::PreCreateWindow(CREATESTRUCT& cs)
 /////////////////////////////////////////////////////////////////////////////
 // CReselectVw drawing
 
-void CReselectVw::OnDraw(CDC* pDC) 
+void CReselectVw::OnDraw(CDC* pDC)
 {
 	CReselectDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
@@ -119,15 +119,15 @@ CString CReselectVw::ResourceToURL(LPCTSTR lpszURL)
 	CString m_strURL;
 	HINSTANCE hInstance = AfxGetResourceHandle();
 	ASSERT(hInstance != NULL);
-	
+
 	LPTSTR lpszModule = new TCHAR[_MAX_PATH];
-	
+
 	if (GetModuleFileName(hInstance, lpszModule, _MAX_PATH))
 	{
 		m_strURL.Format(_T("res://%s/%s"), lpszModule, lpszURL);
 	}
-	
-	delete []lpszModule;
+
+	delete[]lpszModule;
 
 	return m_strURL;
 }
@@ -138,15 +138,15 @@ static SYSTEMTIME *GetLocalFileTime(const char *pszPathName)
 	memset(&stLocal, 0, sizeof(SYSTEMTIME));
 
 	WIN32_FILE_ATTRIBUTE_DATA fdata;
-	if(!GetFileAttributesEx(pszPathName, GetFileExInfoStandard, &fdata)) {
+	if (!GetFileAttributesEx(pszPathName, GetFileExInfoStandard, &fdata)) {
 		return NULL;
 	}
 
 	// Convert the last-write time to local time.
 	SYSTEMTIME stUTC;
-	if(!FileTimeToSystemTime(&fdata.ftLastWriteTime, &stUTC))
+	if (!FileTimeToSystemTime(&fdata.ftLastWriteTime, &stUTC))
 		goto _eret;
-	if(!SystemTimeToTzSpecificLocalTime(NULL, &stUTC, &stLocal))
+	if (!SystemTimeToTzSpecificLocalTime(NULL, &stUTC, &stLocal))
 		goto _eret;
 	return &stLocal;
 
@@ -157,189 +157,189 @@ _eret:
 
 
 
-static BOOL GetFileTimeStr(char *time,const char *pName)
+static BOOL GetFileTimeStr(char *time, const char *pName)
 {
-/*
-    struct _stat status;
-	struct tm *ptm;
+	/*
+		struct _stat status;
+		struct tm *ptm;
 
-	strcpy(argvbuf,theApp.m_szDBFilePath);
-	strcpy(trx_Stpnam(argvbuf),pName);
-	argvbuf[strlen(argvbuf)-1]='x';
-	if(_stat(argvbuf,&status)) {
-		*time=0;
-		return FALSE;
-	}
-	ptm=localtime(&status.st_mtime);
-	_snprintf(time,31,"Version\n%2u/%02u/%02u",ptm->tm_mon+1,ptm->tm_mday,(ptm->tm_year%100));
-	return TRUE;
-*/
+		strcpy(argvbuf,theApp.m_szDBFilePath);
+		strcpy(trx_Stpnam(argvbuf),pName);
+		argvbuf[strlen(argvbuf)-1]='x';
+		if(_stat(argvbuf,&status)) {
+			*time=0;
+			return FALSE;
+		}
+		ptm=localtime(&status.st_mtime);
+		_snprintf(time,31,"Version\n%2u/%02u/%02u",ptm->tm_mon+1,ptm->tm_mday,(ptm->tm_year%100));
+		return TRUE;
+	*/
 	strcpy(argvbuf, theApp.m_szDBFilePath);
 	strcpy(trx_Stpnam(argvbuf), pName);
-	argvbuf[strlen(argvbuf)-1]='x';
+	argvbuf[strlen(argvbuf) - 1] = 'x';
 
-	SYSTEMTIME *ptm=GetLocalFileTime(argvbuf);
-	if(!ptm) {
-		*time=0;
+	SYSTEMTIME *ptm = GetLocalFileTime(argvbuf);
+	if (!ptm) {
+		*time = 0;
 		return FALSE;
 	}
-	_snprintf(time, 31, "Version\n%2u/%02u/%02u", ptm->wMonth, ptm->wDay, (ptm->wYear%100));
+	_snprintf(time, 31, "Version\n%2u/%02u/%02u", ptm->wMonth, ptm->wDay, (ptm->wYear % 100));
 	return TRUE;
 }
 
-static char *section="Startup";
+static char *section = "Startup";
 
 void CReselectVw::Initialize()
 {
-	m_bEnableTexbib=GetFileTimeStr(theApp.m_texbib_date,texbib_htm);
-	m_bEnableNwbb=GetFileTimeStr(theApp.m_nwbb_date,nwbb_htm);
-	m_pDatabase=texbib_htm;
-	*theApp.m_texbib_keybuf=*theApp.m_nwbb_keybuf=0;
-	*theApp.m_texbib_nambuf=*theApp.m_nwbb_nambuf=0;
+	m_bEnableTexbib = GetFileTimeStr(theApp.m_texbib_date, texbib_htm);
+	m_bEnableNwbb = GetFileTimeStr(theApp.m_nwbb_date, nwbb_htm);
+	m_pDatabase = texbib_htm;
+	*theApp.m_texbib_keybuf = *theApp.m_nwbb_keybuf = 0;
+	*theApp.m_texbib_nambuf = *theApp.m_nwbb_nambuf = 0;
 
-	theApp.m_texbib_bFlags=theApp.m_nwbb_bFlags=0; //Must be <=7
+	theApp.m_texbib_bFlags = theApp.m_nwbb_bFlags = 0; //Must be <=7
 	{
 		int i;
-		if(m_bEnableTexbib) {
-			i=theApp.GetProfileInt(section,"TXkey",RESEL_SHOWNO_MASK);
-			if((UINT)i<=RESEL_MASK) theApp.m_texbib_bFlags=i;
+		if (m_bEnableTexbib) {
+			i = theApp.GetProfileInt(section, "TXkey", RESEL_SHOWNO_MASK);
+			if ((UINT)i <= RESEL_MASK) theApp.m_texbib_bFlags = i;
 		}
-		if(m_bEnableNwbb) {
-			i=theApp.GetProfileInt(section,"NWkey",RESEL_SHOWNO_MASK);
-			if((UINT)i<=RESEL_MASK) theApp.m_nwbb_bFlags=i;
+		if (m_bEnableNwbb) {
+			i = theApp.GetProfileInt(section, "NWkey", RESEL_SHOWNO_MASK);
+			if ((UINT)i <= RESEL_MASK) theApp.m_nwbb_bFlags = i;
 		}
 	}
-	if(m_bEnableTexbib && m_bEnableNwbb) {
+	if (m_bEnableTexbib && m_bEnableNwbb) {
 		CString str;
-		str=theApp.GetProfileString(section,"Database");
-		if(!str.IsEmpty() && str[0]=='n') m_pDatabase=nwbb_htm;
+		str = theApp.GetProfileString(section, "Database");
+		if (!str.IsEmpty() && str[0] == 'n') m_pDatabase = nwbb_htm;
 	}
-	else if(!m_bEnableTexbib && m_bEnableNwbb) m_pDatabase=nwbb_htm;
+	else if (!m_bEnableTexbib && m_bEnableNwbb) m_pDatabase = nwbb_htm;
 }
 
 void CReselectVw::Terminate()
 {
-	theApp.WriteProfileString(section,"Database",m_pDatabase);
-	if(m_bEnableTexbib) theApp.WriteProfileInt(section,"TXkey",RESEL_MASK&theApp.m_texbib_bFlags);
-	if(m_bEnableNwbb) theApp.WriteProfileInt(section,"NWkey",RESEL_MASK&theApp.m_nwbb_bFlags);
+	theApp.WriteProfileString(section, "Database", m_pDatabase);
+	if (m_bEnableTexbib) theApp.WriteProfileInt(section, "TXkey", RESEL_MASK&theApp.m_texbib_bFlags);
+	if (m_bEnableNwbb) theApp.WriteProfileInt(section, "NWkey", RESEL_MASK&theApp.m_nwbb_bFlags);
 }
 
-void CReselectVw::OnInitialUpdate() 
+void CReselectVw::OnInitialUpdate()
 {
 	m_strNwbb = ResourceToURL(nwbb_htm);
 	m_strTexbib = ResourceToURL(texbib_htm);
-	Navigate2((m_pDatabase==nwbb_htm)?m_strNwbb:m_strTexbib, NULL, NULL);
+	Navigate2((m_pDatabase == nwbb_htm) ? m_strNwbb : m_strTexbib, NULL, NULL);
 }
 
-static char *get_argv(char *pbuf,char *p)
+static char *get_argv(char *pbuf, char *p)
 {
 	int c;
 	char hexbuf[4];
 
-	while(*p && *p!='&') {
-		switch(*p) {
-		  case '%' : hexbuf[0]=*++p;
-					 if(*p) {
-						 hexbuf[1]=*++p;
-						 hexbuf[2]=0;
-						 if(*p) p++;
-						 sscanf(hexbuf,"%x",&c);
-						 *pbuf++=c;
-					 }
-					 break;
+	while (*p && *p != '&') {
+		switch (*p) {
+		case '%': hexbuf[0] = *++p;
+			if (*p) {
+				hexbuf[1] = *++p;
+				hexbuf[2] = 0;
+				if (*p) p++;
+				sscanf(hexbuf, "%x", &c);
+				*pbuf++ = c;
+			}
+			break;
 
-		  case '+' : while(*++p=='+');
-					 *pbuf++=' ';
-					 break;
+		case '+': while (*++p == '+');
+			*pbuf++ = ' ';
+			break;
 
-		  default:   *pbuf++=*p++;
+		default:   *pbuf++ = *p++;
 		}
 	}
-	*pbuf++=0;
+	*pbuf++ = 0;
 	return pbuf;
 }
 
-static int GetPostedArgv(char **argv,const char *strBytes,LPCTSTR lpszURL)
+static int GetPostedArgv(char **argv, const char *strBytes, LPCTSTR lpszURL)
 {
 	LPCSTR p;
 	LPSTR pargv;
-	BOOL bQuoting=FALSE;
+	BOOL bQuoting = FALSE;
 	BOOL bTexbib;
 
 
-	strcpy(argvbuf,theApp.m_szDBFilePath);
-    
-	if((p=strrchr(lpszURL,'/'))) p++;
-	else p=texbib_htm;
+	strcpy(argvbuf, theApp.m_szDBFilePath);
 
-	bTexbib=(*p!='n');
+	if ((p = strrchr(lpszURL, '/'))) p++;
+	else p = texbib_htm;
 
-	strcpy(trx_Stpnam(argvbuf),p);
-	   
-	argv[0]=argvbuf;
-	argv[3]=0;
+	bTexbib = (*p != 'n');
 
-	pargv=argvbuf+strlen(argvbuf)+1;
+	strcpy(trx_Stpnam(argvbuf), p);
 
-	argv[1]=pargv;
-	if((p=strstr(strBytes,"T1="))) pargv=get_argv(pargv,(LPSTR)p+3);
-	else *pargv++=0;
+	argv[0] = argvbuf;
+	argv[3] = 0;
 
-	argv[2]=pargv;
-	if((p=strstr(strBytes,"T2="))) pargv=get_argv(pargv,(LPSTR)p+3);
-	else *pargv++=0;
+	pargv = argvbuf + strlen(argvbuf) + 1;
 
-	int flags=0;
+	argv[1] = pargv;
+	if ((p = strstr(strBytes, "T1="))) pargv = get_argv(pargv, (LPSTR)p + 3);
+	else *pargv++ = 0;
 
-	if((p=strstr(strBytes,"RK="))) {
-		if(p[3]=='1') flags=1;
-		else if(p[3]=='2') flags=2;
+	argv[2] = pargv;
+	if ((p = strstr(strBytes, "T2="))) pargv = get_argv(pargv, (LPSTR)p + 3);
+	else *pargv++ = 0;
+
+	int flags = 0;
+
+	if ((p = strstr(strBytes, "RK="))) {
+		if (p[3] == '1') flags = 1;
+		else if (p[3] == '2') flags = 2;
 	}
 
-	if((p=strstr(strBytes,"RA="))) {
-		if(p[3]=='1') flags|=RESEL_OR_AUTHOR_MASK;
+	if ((p = strstr(strBytes, "RA="))) {
+		if (p[3] == '1') flags |= RESEL_OR_AUTHOR_MASK;
 	}
 
-	if((p=strstr(strBytes,"C1="))) {
-		flags|=RESEL_SHOWNO_MASK;
+	if ((p = strstr(strBytes, "C1="))) {
+		flags |= RESEL_SHOWNO_MASK;
 	}
 
-	if((p=strstr(strBytes,"C2="))) {
-		flags|=RESEL_SORT_MASK;
+	if ((p = strstr(strBytes, "C2="))) {
+		flags |= RESEL_SORT_MASK;
 	}
 
-	if(!bTexbib) {
-		theApp.m_nwbb_bFlags=flags;
-		strcpy(theApp.m_nwbb_keybuf,argv[1]);
-		strcpy(theApp.m_nwbb_nambuf,argv[2]);
-		flags|=RESEL_BLUE_MASK;
+	if (!bTexbib) {
+		theApp.m_nwbb_bFlags = flags;
+		strcpy(theApp.m_nwbb_keybuf, argv[1]);
+		strcpy(theApp.m_nwbb_nambuf, argv[2]);
+		flags |= RESEL_BLUE_MASK;
 	}
 	else {
-		theApp.m_texbib_bFlags=flags;
-		strcpy(theApp.m_texbib_keybuf,argv[1]);
-		strcpy(theApp.m_texbib_nambuf,argv[2]);
+		theApp.m_texbib_bFlags = flags;
+		strcpy(theApp.m_texbib_keybuf, argv[1]);
+		strcpy(theApp.m_texbib_nambuf, argv[2]);
 	}
 	return flags;
 }
 
 void CReselectVw::OnBeforeNavigate2(LPCTSTR lpszURL, DWORD nFlags,
-	 LPCTSTR lpszTargetFrameName, CByteArray& baPostedData,
-	 LPCTSTR lpszHeaders, BOOL* pbCancel) 
+	LPCTSTR lpszTargetFrameName, CByteArray& baPostedData,
+	LPCTSTR lpszHeaders, BOOL* pbCancel)
 {
 	// Are we on the initial navigation thrown by the 
 	// OnInitialUpdate?  If not, process the POST.
 
-	BOOL bTimer=FALSE;
-	static BOOL bLastError=FALSE;
+	BOOL bTimer = FALSE;
+	static BOOL bLastError = FALSE;
 
-	if(!memcmp(lpszURL,"res:",4)) {
+	if (!memcmp(lpszURL, "res:", 4)) {
 
-		ASSERT(!bLastError || (*lpszHeaders==NULL));
+		ASSERT(!bLastError || (*lpszHeaders == NULL));
 
-		if(!*lpszHeaders || bLastError) {
-			bTimer=TRUE;
-			m_pDatabase=(*trx_Stpnam(lpszURL)=='n')?nwbb_htm:texbib_htm;
-			bLastError=FALSE;
+		if (!*lpszHeaders || bLastError) {
+			bTimer = TRUE;
+			m_pDatabase = (*trx_Stpnam(lpszURL) == 'n') ? nwbb_htm : texbib_htm;
+			bLastError = FALSE;
 		}
 		else {
 			// Build a message box from the submitted data
@@ -356,11 +356,11 @@ void CReselectVw::OnBeforeNavigate2(LPCTSTR lpszURL, DWORD nFlags,
 
 			// Get the POST data --
 			CString strBytes;
-			int len=baPostedData.GetSize();
+			int len = baPostedData.GetSize();
 
-			if(len) {
+			if (len) {
 				strBytes = _T("");
-				for(int i = 0;i< len;i++) {
+				for (int i = 0; i < len; i++) {
 					strBytes += (char)baPostedData[i];
 				}
 
@@ -369,25 +369,25 @@ void CReselectVw::OnBeforeNavigate2(LPCTSTR lpszURL, DWORD nFlags,
 
 				//re_Errstr();
 
-				re_SetFlags(GetPostedArgv(m_Argv,strBytes,lpszURL));
+				re_SetFlags(GetPostedArgv(m_Argv, strBytes, lpszURL));
 
-				if(re_Select(3,m_Argv)) {
+				if (re_Select(3, m_Argv)) {
 					AfxMessageBox(re_Errstr());
 					//PostMessage((*m_pDatabase=='n')?ID_GO_SEARCH_NWBB:ID_GO_SEARCH_TEXBIB);
-					Navigate2((*m_pDatabase=='n')?m_strNwbb:m_strTexbib,NULL,NULL);
-					bLastError=TRUE;
+					Navigate2((*m_pDatabase == 'n') ? m_strNwbb : m_strTexbib, NULL, NULL);
+					bLastError = TRUE;
 				}
 				else {
-					Navigate2(m_Argv[0],0,0);
+					Navigate2(m_Argv[0], 0, 0);
 				}
-				*pbCancel=TRUE;
+				*pbCancel = TRUE;
 			}
 		}
 	}
 	else {
-		bLastError=FALSE;
-		if(!memicmp(lpszURL,"http",4)) {
-			*pbCancel=TRUE;
+		bLastError = FALSE;
+		if (!memicmp(lpszURL, "http", 4)) {
+			*pbCancel = TRUE;
 			theApp.ExecuteUrl(lpszURL);
 			return;
 		}
@@ -395,7 +395,7 @@ void CReselectVw::OnBeforeNavigate2(LPCTSTR lpszURL, DWORD nFlags,
 
 	//CHtmlView::OnBeforeNavigate2(lpszURL, nFlags,	lpszTargetFrameName, baPostedData, lpszHeaders, pbCancel);
 	// start the animation so that is plays while the new page is being loaded
-    if(memcmp(lpszURL,"mailto:",7))
+	if (memcmp(lpszURL, "mailto:", 7))
 		((CMainFrame*)GetParentFrame())->StartAnimation(bTimer);
 }
 
@@ -412,68 +412,68 @@ void CReselectVw::OnDocumentComplete(LPCTSTR lpszUrl)
 	((CMainFrame*)GetParentFrame())->SetAddress(lpszUrl);
 }
 
-void CReselectVw::OnGoBack() 
+void CReselectVw::OnGoBack()
 {
 	GoBack();
 }
 
-void CReselectVw::OnGoForward() 
+void CReselectVw::OnGoForward()
 {
 	GoForward();
 }
 
-void CReselectVw::OnViewStop() 
+void CReselectVw::OnViewStop()
 {
 	Stop();
 	((CMainFrame*)GetParentFrame())->StopAnimation();
 }
 
-void CReselectVw::OnViewRefresh() 
+void CReselectVw::OnViewRefresh()
 {
 	Refresh();
 }
 
-void CReselectVw::OnViewFontsLarge() 
+void CReselectVw::OnViewFontsLarge()
 {
 	COleVariant vaZoomFactor(3l);
 
 	ExecWB(OLECMDID_ZOOM, OLECMDEXECOPT_DONTPROMPTUSER,
-		   &vaZoomFactor, NULL);
+		&vaZoomFactor, NULL);
 }
 
-void CReselectVw::OnViewFontsLargest() 
+void CReselectVw::OnViewFontsLargest()
 {
 	COleVariant vaZoomFactor(4l);
 
 	ExecWB(OLECMDID_ZOOM, OLECMDEXECOPT_DONTPROMPTUSER,
-		   &vaZoomFactor, NULL);
+		&vaZoomFactor, NULL);
 }
 
-void CReselectVw::OnViewFontsMedium() 
+void CReselectVw::OnViewFontsMedium()
 {
 	COleVariant vaZoomFactor(2l);
 
 	ExecWB(OLECMDID_ZOOM, OLECMDEXECOPT_DONTPROMPTUSER,
-		   &vaZoomFactor, NULL);
+		&vaZoomFactor, NULL);
 }
 
-void CReselectVw::OnViewFontsSmall() 
+void CReselectVw::OnViewFontsSmall()
 {
 	COleVariant vaZoomFactor(1l);
 
 	ExecWB(OLECMDID_ZOOM, OLECMDEXECOPT_DONTPROMPTUSER,
-		   &vaZoomFactor, NULL);
+		&vaZoomFactor, NULL);
 }
 
-void CReselectVw::OnViewFontsSmallest() 
+void CReselectVw::OnViewFontsSmallest()
 {
 	COleVariant vaZoomFactor(0l);
 
 	ExecWB(OLECMDID_ZOOM, OLECMDEXECOPT_DONTPROMPTUSER,
-		   &vaZoomFactor, NULL);
+		&vaZoomFactor, NULL);
 }
 
-void CReselectVw::OnFileOpen() 
+void CReselectVw::OnFileOpen()
 {
 	CString str;
 
@@ -481,38 +481,38 @@ void CReselectVw::OnFileOpen()
 
 	CFileDialog fileDlg(TRUE, NULL, NULL, OFN_HIDEREADONLY, str);
 
-	if(fileDlg.DoModal() == IDOK)
+	if (fileDlg.DoModal() == IDOK)
 		Navigate2(fileDlg.GetPathName(), 0, NULL);
 }
 
 
-void CReselectVw::OnGoSearchNwbb() 
+void CReselectVw::OnGoSearchNwbb()
 {
-	Navigate2(m_strNwbb,NULL,NULL);
+	Navigate2(m_strNwbb, NULL, NULL);
 }
 
-void CReselectVw::OnGoSearchTexbib() 
+void CReselectVw::OnGoSearchTexbib()
 {
-	Navigate2(m_strTexbib,NULL,NULL);
+	Navigate2(m_strTexbib, NULL, NULL);
 }
 
-void CReselectVw::OnUpdateGoSearchNwbb(CCmdUI* pCmdUI) 
+void CReselectVw::OnUpdateGoSearchNwbb(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(m_bEnableNwbb);
-	
+
 }
 
-void CReselectVw::OnUpdateGoSearchTexbib(CCmdUI* pCmdUI) 
+void CReselectVw::OnUpdateGoSearchTexbib(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(m_bEnableTexbib);
 }
 
-BOOL CReselectVw::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) 
+BOOL CReselectVw::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext)
 {
-// create the view window itself
+	// create the view window itself
 	m_pCreateContext = pContext;
 	if (!CView::Create(lpszClassName, lpszWindowName,
-				dwStyle, rect, pParentWnd,  nID, pContext))
+		dwStyle, rect, pParentWnd, nID, pContext))
 	{
 		return FALSE;
 	}
@@ -523,14 +523,14 @@ BOOL CReselectVw::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dw
 	// create the control window
 	// AFX_IDW_PANE_FIRST is a safe but arbitrary ID
 	if (!m_wndBrowser.CreateControl(CLSID_WebBrowser, lpszWindowName,
-				WS_VISIBLE | WS_CHILD, rectClient, this, AFX_IDW_PANE_FIRST))
+		WS_VISIBLE | WS_CHILD, rectClient, this, AFX_IDW_PANE_FIRST))
 	{
 		DestroyWindow();
 		return FALSE;
 	}
 
 	LPUNKNOWN lpUnk = m_wndBrowser.GetControlUnknown();
-	HRESULT hr = lpUnk->QueryInterface(IID_IWebBrowser2, (void**) &m_pBrowserApp);
+	HRESULT hr = lpUnk->QueryInterface(IID_IWebBrowser2, (void**)&m_pBrowserApp);
 	if (!SUCCEEDED(hr))
 	{
 		m_pBrowserApp = NULL;
@@ -540,12 +540,12 @@ BOOL CReselectVw::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dw
 	}
 
 	return TRUE;
-} 
+}
 
-BOOL CReselectVw::CreateControlSite(COleControlContainer*, 
-   COleControlSite** ppSite, UINT /* nID */, REFCLSID /* clsid */)
+BOOL CReselectVw::CreateControlSite(COleControlContainer*,
+	COleControlSite** ppSite, UINT /* nID */, REFCLSID /* clsid */)
 {
-   ASSERT( ppSite != NULL );
-   *ppSite = NULL;  // Use the default site
-   return TRUE;
+	ASSERT(ppSite != NULL);
+	*ppSite = NULL;  // Use the default site
+	return TRUE;
 }

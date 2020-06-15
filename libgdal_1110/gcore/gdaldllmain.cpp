@@ -39,7 +39,7 @@ extern "C" int CPL_DLL GDALIsInGlobalDestructor(void);
 
 int GDALIsInGlobalDestructor(void)
 {
-    return bInGDALGlobalDestructor;
+	return bInGDALGlobalDestructor;
 }
 
 /************************************************************************/
@@ -49,8 +49,8 @@ int GDALIsInGlobalDestructor(void)
 /************************************************************************/
 #ifdef __GNUC__
 
-static void GDALInitialize(void) __attribute__ ((constructor)) ;
-static void GDALDestroy(void)    __attribute__ ((destructor)) ;
+static void GDALInitialize(void) __attribute__((constructor));
+static void GDALDestroy(void)    __attribute__((destructor));
 
 /************************************************************************/
 /* Called when GDAL is loaded by loader or by dlopen(),                 */
@@ -59,8 +59,8 @@ static void GDALDestroy(void)    __attribute__ ((destructor)) ;
 
 static void GDALInitialize(void)
 {
-    // nothing to do
-    //CPLDebug("GDAL", "Library loaded");
+	// nothing to do
+	//CPLDebug("GDAL", "Library loaded");
 }
 
 /************************************************************************/
@@ -70,20 +70,20 @@ static void GDALInitialize(void)
 
 static void GDALDestroy(void)
 {
-    // TODO: Confirm if calling CPLCleanupTLS here is safe
-    //CPLCleanupTLS();
-    
-    if( !CSLTestBoolean(CPLGetConfigOption("GDAL_DESTROY", "YES")) )
-        return;
+	// TODO: Confirm if calling CPLCleanupTLS here is safe
+	//CPLCleanupTLS();
 
-    CPLDebug("GDAL", "In GDALDestroy - unloading GDAL shared library.");
-    bInGDALGlobalDestructor = TRUE;
-    GDALDestroyDriverManager();
+	if (!CSLTestBoolean(CPLGetConfigOption("GDAL_DESTROY", "YES")))
+		return;
+
+	CPLDebug("GDAL", "In GDALDestroy - unloading GDAL shared library.");
+	bInGDALGlobalDestructor = TRUE;
+	GDALDestroyDriverManager();
 
 #ifdef OGR_ENABLED
-    OGRCleanupAll();
+	OGRCleanupAll();
 #endif
-    bInGDALGlobalDestructor = FALSE;
+	bInGDALGlobalDestructor = FALSE;
 }
 
 #endif // __GNUC__
@@ -99,31 +99,31 @@ static void GDALDestroy(void)
 
 extern "C" int WINAPI DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
-    UNREFERENCED_PARAMETER(hInstance);
-    UNREFERENCED_PARAMETER(lpReserved);
+	UNREFERENCED_PARAMETER(hInstance);
+	UNREFERENCED_PARAMETER(lpReserved);
 
-    if (dwReason == DLL_PROCESS_ATTACH)
-    {
-        // nothing to do
-    }
-    else if (dwReason == DLL_THREAD_ATTACH)
-    {
-        // nothing to do
-    }
-    else if (dwReason == DLL_THREAD_DETACH)
-    {
-        ::CPLCleanupTLS();
-    }
-    else if (dwReason == DLL_PROCESS_DETACH)
-    {
-        bInGDALGlobalDestructor = TRUE;
-        ::GDALDestroyDriverManager();
+	if (dwReason == DLL_PROCESS_ATTACH)
+	{
+		// nothing to do
+	}
+	else if (dwReason == DLL_THREAD_ATTACH)
+	{
+		// nothing to do
+	}
+	else if (dwReason == DLL_THREAD_DETACH)
+	{
+		::CPLCleanupTLS();
+	}
+	else if (dwReason == DLL_PROCESS_DETACH)
+	{
+		bInGDALGlobalDestructor = TRUE;
+		::GDALDestroyDriverManager();
 
 #ifdef OGR_ENABLED
-        ::OGRCleanupAll();
+		::OGRCleanupAll();
 #endif
-        bInGDALGlobalDestructor = FALSE;
-    }
+		bInGDALGlobalDestructor = FALSE;
+	}
 
 	return 1; // ignroed for all reasons but DLL_PROCESS_ATTACH
 }

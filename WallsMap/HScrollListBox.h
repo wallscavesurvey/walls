@@ -23,20 +23,20 @@
 /////////////////////////////////////////////////////////////////////////////
 class CHScrollListBox : public CListBox
 {
-// Construction
+	// Construction
 public:
 	CHScrollListBox();
 
-// Attributes
+	// Attributes
 public:
 
-// Operations
+	// Operations
 public:
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CHScrollListBox)
-	protected:
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CHScrollListBox)
+protected:
 	virtual void PreSubclassWindow();
 	//}}AFX_VIRTUAL
 

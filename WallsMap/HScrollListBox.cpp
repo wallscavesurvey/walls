@@ -46,7 +46,7 @@ CHScrollListBox::~CHScrollListBox()
 }
 
 /////////////////////////////////////////////////////////////////////////////
-void CHScrollListBox::PreSubclassWindow() 
+void CHScrollListBox::PreSubclassWindow()
 {
 	CListBox::PreSubclassWindow();
 
@@ -74,13 +74,13 @@ int CHScrollListBox::GetTextLen(LPCTSTR lpszText)
 	CFont* pOldFont = pDC->SelectObject(GetFont());
 	if ((GetStyle() & LBS_USETABSTOPS) == 0)
 	{
-		size = pDC->GetTextExtent(lpszText, (int) _tcslen(lpszText));
+		size = pDC->GetTextExtent(lpszText, (int)_tcslen(lpszText));
 		size.cx += 3;
 	}
 	else
 	{
 		// Expand tabs as well
-		size = pDC->GetTabbedTextExtent(lpszText, (int) _tcslen(lpszText), 0, NULL);
+		size = pDC->GetTabbedTextExtent(lpszText, (int)_tcslen(lpszText), 0, NULL);
 		size.cx += 2;
 	}
 	pDC->SelectObject(pOldFont);
@@ -126,7 +126,7 @@ LRESULT CHScrollListBox::OnAddString(WPARAM wParam, LPARAM lParam)
 {
 	LRESULT lResult = Default();
 	if (!((lResult == LB_ERR) || (lResult == LB_ERRSPACE)))
-		SetNewHExtent((LPCTSTR) lParam);
+		SetNewHExtent((LPCTSTR)lParam);
 	return lResult;
 }
 
@@ -137,7 +137,7 @@ LRESULT CHScrollListBox::OnInsertString(WPARAM wParam, LPARAM lParam)
 {
 	LRESULT lResult = Default();
 	if (!((lResult == LB_ERR) || (lResult == LB_ERRSPACE)))
-		SetNewHExtent((LPCTSTR) lParam);
+		SetNewHExtent((LPCTSTR)lParam);
 	return lResult;
 }
 

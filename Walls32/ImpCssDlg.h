@@ -7,7 +7,7 @@
 #include "afxwin.h"
 class CImpCssDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
 	enum { IDD = IDD_IMPCSSDLG };
 
@@ -15,7 +15,7 @@ public:
 	CString	m_WpjPath;
 	CString	m_CssPath;
 
-// Implementation
+	// Implementation
 private:
 	CString m_csChrs_repl;
 	BOOL m_bCombine;
@@ -26,9 +26,9 @@ private:
 	BOOL Check_Chrs_repl();
 
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
-    virtual BOOL OnInitDialog();
+	virtual BOOL OnInitDialog();
 	virtual void OnCancel();
- 
+
 	// Generated message map functions
 	afx_msg void OnChangeChrsRepl();
 	afx_msg void OnBnClickedReplDflt();

@@ -22,41 +22,41 @@ struct SEGSTATS {
 	UINT   numflags;
 	UINT   idlow;
 	UINT   idhigh;
-	char   lowstation[NET_SIZNAME+2];
-	char   highstation[NET_SIZNAME+2];
-	char   refstation[NET_SIZNAME+8];
+	char   lowstation[NET_SIZNAME + 2];
+	char   highstation[NET_SIZNAME + 2];
+	char   refstation[NET_SIZNAME + 8];
 	char   component[30];
-    char   title[128+6]; //Any title + "/..."
-};	
-	
+	char   title[128 + 6]; //Any title + "/..."
+};
+
 
 class CStatDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
-	CStatDlg(SEGSTATS *st,BOOL bIsOpen,CWnd* pParent = NULL);	// standard constructor
+	CStatDlg(SEGSTATS *st, BOOL bIsOpen, CWnd* pParent = NULL);	// standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CStatDlg)
 	enum { IDD = IDD_STATDLG };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+	// NOTE: the ClassWizard will add data members here
+//}}AFX_DATA
 
 // Implementation
 protected:
-    SEGSTATS *m_st;
+	SEGSTATS *m_st;
 	BOOL m_bIsOpen;
-    
-    void SetText(UINT id,char *text)
-    {
-    	GetDlgItem(id)->SetWindowText(text);
-    }
-    void SetFloat(UINT id,double f);
-    void SetUint(UINT id,UINT u);
-    
+
+	void SetText(UINT id, char *text)
+	{
+		GetDlgItem(id)->SetWindowText(text);
+	}
+	void SetFloat(UINT id, double f);
+	void SetUint(UINT id, UINT u);
+
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
-    
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+
+	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 
 	// Generated message map functions
 	//{{AFX_MSG(CStatDlg)
@@ -72,7 +72,7 @@ protected:
 
 class CExpDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
 	CExpDlg(CWnd* pParent = NULL);	// standard constructor
 
@@ -90,12 +90,12 @@ public:
 	BOOL m_bLRUD;
 	BOOL m_bLRUDPT;
 
-// Implementation
+	// Implementation
 private:
-	static BOOL m_bLRUD_init,m_bLRUDPT_init;
-	afx_msg void OnBrowse(); 
+	static BOOL m_bLRUD_init, m_bLRUDPT_init;
+	afx_msg void OnBrowse();
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 	// Generated message map functions
 	//{{AFX_MSG(CExpDlg)
 	virtual BOOL OnInitDialog();

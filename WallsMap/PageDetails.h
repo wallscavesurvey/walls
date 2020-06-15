@@ -23,9 +23,9 @@ public:
 	CPageDetails();
 	virtual ~CPageDetails();
 	virtual void UpdateLayerData(CWallsMapDoc *pDoc);
-	void SetNewLayer() {m_bNewLayer=true;}
+	void SetNewLayer() { m_bNewLayer = true; }
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_PAGE_DETAILS };
 
 protected:
@@ -35,7 +35,7 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
-	afx_msg LRESULT OnRetFocus(WPARAM,LPARAM);
+	afx_msg LRESULT OnRetFocus(WPARAM, LPARAM);
 	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 
 private:

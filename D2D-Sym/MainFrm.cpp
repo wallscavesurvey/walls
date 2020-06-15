@@ -17,8 +17,8 @@ IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_CREATE()
-	ON_UPDATE_COMMAND_UI(ID_INDICATOR_FPS,OnUpdateFPS)
-	ON_UPDATE_COMMAND_UI(ID_INDICATOR_FPS,OnUpdateMode)
+	ON_UPDATE_COMMAND_UI(ID_INDICATOR_FPS, OnUpdateFPS)
+	ON_UPDATE_COMMAND_UI(ID_INDICATOR_FPS, OnUpdateMode)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -31,21 +31,21 @@ static UINT indicators[] =
 	ID_INDICATOR_SCRL,
 };
 
-void CMainFrame::OnUpdateFPS(CCmdUI *pCmdUI) 
+void CMainFrame::OnUpdateFPS(CCmdUI *pCmdUI)
 {
-    pCmdUI->Enable(); 
+	pCmdUI->Enable();
 }
 
-void CMainFrame::OnUpdateMode(CCmdUI *pCmdUI) 
+void CMainFrame::OnUpdateMode(CCmdUI *pCmdUI)
 {
-    pCmdUI->Enable(); 
+	pCmdUI->Enable();
 }
 
 // CMainFrame construction/destruction
 
 CMainFrame::CMainFrame()
 {
-	m_bCreated=false;
+	m_bCreated = false;
 }
 
 CMainFrame::~CMainFrame()
@@ -69,21 +69,21 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TRACE0("Failed to create status bar\n");
 		return -1;      // fail to create
 	}
-	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
+	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators) / sizeof(UINT));
 
 	// TODO: Delete these three lines if you don't want the toolbar to be dockable
 	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
 	EnableDocking(CBRS_ALIGN_ANY);
 	DockControlBar(&m_wndToolBar);
 
-	m_bCreated=true;
+	m_bCreated = true;
 
 	return 0;
 }
 
 BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
-	if( !CFrameWnd::PreCreateWindow(cs) )
+	if (!CFrameWnd::PreCreateWindow(cs))
 		return FALSE;
 	// TODO: Modify the Window class or styles here by modifying
 	//  the CREATESTRUCT cs

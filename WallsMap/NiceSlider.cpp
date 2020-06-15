@@ -13,7 +13,7 @@ BEGIN_MESSAGE_MAP(CNiceSliderCtrl, CSliderCtrl)
 END_MESSAGE_MAP()
 
 
-void CNiceSliderCtrl::OnLButtonDown(UINT nFlags, CPoint point) 
+void CNiceSliderCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	m_bDragging = true;
 	m_bDragChanged = false;
@@ -27,7 +27,7 @@ void CNiceSliderCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 }
 
 
-void CNiceSliderCtrl::OnMouseMove(UINT nFlags, CPoint point) 
+void CNiceSliderCtrl::OnMouseMove(UINT nFlags, CPoint point)
 {
 	if (m_bDragging)
 	{
@@ -43,9 +43,9 @@ void CNiceSliderCtrl::OnMouseMove(UINT nFlags, CPoint point)
 	}
 }
 
-void CNiceSliderCtrl::OnLButtonUp(UINT nFlags, CPoint point) 
+void CNiceSliderCtrl::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	if(m_bDragging)
+	if (m_bDragging)
 	{
 		m_bDragging = false;
 		::ReleaseCapture();
@@ -70,26 +70,26 @@ void CNiceSliderCtrl::OnLButtonUp(UINT nFlags, CPoint point)
 bool CNiceSliderCtrl::SetThumb(const CPoint& point)
 {
 	const int nMin = GetRangeMin();
-	const int nMax = GetRangeMax()+1;
+	const int nMax = GetRangeMax() + 1;
 	CRect rc;
 	GetChannelRect(rc);
 	double dPos;
 	double dCorrectionFactor = 0.0;
-	if (GetStyle() & TBS_VERT) 
+	if (GetStyle() & TBS_VERT)
 	{
 		// note: there is a bug in GetChannelRect, it gets the orientation of the rectangle mixed up
-		dPos = (double)(point.y - rc.left)/(rc.right - rc.left);
+		dPos = (double)(point.y - rc.left) / (rc.right - rc.left);
 	}
 	else
 	{
-		dPos = (double)(point.x - rc.left)/(rc.right - rc.left);
+		dPos = (double)(point.x - rc.left) / (rc.right - rc.left);
 	}
 	// This correction factor is needed when you click inbetween tick marks
 	// so that the thumb will move to the nearest one
-	dCorrectionFactor = 0.5 *(1-dPos) - 0.5 *dPos;
-	int nNewPos = (int)(nMin + (nMax-nMin)*dPos + dCorrectionFactor);
+	dCorrectionFactor = 0.5 *(1 - dPos) - 0.5 *dPos;
+	int nNewPos = (int)(nMin + (nMax - nMin)*dPos + dCorrectionFactor);
 	const bool bChanged = (nNewPos != GetPos());
-	if(bChanged)
+	if (bChanged)
 	{
 		SetPos(nNewPos);
 	}

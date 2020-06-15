@@ -2,13 +2,13 @@
 ** Copyright 2004 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:     $Archive: /NCS/Source/C/NCSEcw/NCSEcw/NCSAffineTransform.cpp$
@@ -20,7 +20,7 @@
 
 #include "NCSAffineTransform.h"
 
-CNCSAffineTransform::CNCSAffineTransform() 
+CNCSAffineTransform::CNCSAffineTransform()
 {
 	//Just set some defaults
 	fScaleX = 1.0;
@@ -107,25 +107,25 @@ bool CNCSAffineTransform::PopulateFileInfoEx(NCSFileViewFileInfoEx &FileInfo, bo
 		IEEE8 fFactorX = 1.0, fFactorY = 1.0;
 
 		//Boundary cases
-		if (fRotY == 0 && fScaleX > 0) 
+		if (fRotY == 0 && fScaleX > 0)
 		{
 			fCWRotation = 0.0;	//CHECKED
 			fFactorX = fScaleX;
 			fFactorY = fScaleY;
 		}
-		else if (fRotY == 0 && fScaleX < 0) 
+		else if (fRotY == 0 && fScaleX < 0)
 		{
 			fCWRotation = 180.0;	//CHECKED
 			fFactorX = -fScaleX;
 			fFactorY = -fScaleY;
 		}
-		else if (fRotY < 0 && fScaleX == 0) 
+		else if (fRotY < 0 && fScaleX == 0)
 		{
 			fCWRotation = 90.0;	//CHECKED
 			fFactorX = fRotY;
 			fFactorY = -fRotX;
 		}
-		else if (fRotY > 0 && fScaleX == 0) 
+		else if (fRotY > 0 && fScaleX == 0)
 		{
 			fCWRotation = -90.0;	//CHECKED
 			fFactorX = -fRotY;
@@ -137,7 +137,7 @@ bool CNCSAffineTransform::PopulateFileInfoEx(NCSFileViewFileInfoEx &FileInfo, bo
 			//fScaleX == cosCWrot * fFactorX
 			//--> tanCWrot = fRotY/fScaleX
 			//--> ACrot = atan(fRotY/fScaleX)
-			fCWRotation = -NCS_RADIANS_TO_DEGREES * atan(fRotY/fScaleX);
+			fCWRotation = -NCS_RADIANS_TO_DEGREES * atan(fRotY / fScaleX);
 			//This is ambiguous (returns an answer in (-PI/2,PI/2) i.e. QI/IV,
 			//but desired answer could be in (-PI,-PI/2) or (PI/2,PI) i.e. QII/III).
 			//Use signs of fRotY and fScaleX to disambiguate
@@ -148,8 +148,8 @@ bool CNCSAffineTransform::PopulateFileInfoEx(NCSFileViewFileInfoEx &FileInfo, bo
 			if (fRotY < 0 && fScaleX < 0)
 				fCWRotation -= 180;
 
-			fFactorX = fScaleX/cos(NCS_DEGREES_TO_RADIANS*fCWRotation);
-			fFactorY = fScaleY/cos(NCS_DEGREES_TO_RADIANS*fCWRotation);
+			fFactorX = fScaleX / cos(NCS_DEGREES_TO_RADIANS*fCWRotation);
+			fFactorY = fScaleY / cos(NCS_DEGREES_TO_RADIANS*fCWRotation);
 		}
 
 		FileInfo.fCellIncrementX = fFactorX;
@@ -170,16 +170,16 @@ bool CNCSAffineTransform::PopulateFileInfoEx(NCSFileViewFileInfoEx &FileInfo, bo
 	else return false;
 }
 
-bool CNCSAffineTransform::GetFromFileInfo(NCSFileViewFileInfo &FileInfo,bool bRasterPixelIsArea)
+bool CNCSAffineTransform::GetFromFileInfo(NCSFileViewFileInfo &FileInfo, bool bRasterPixelIsArea)
 {
-		//Calculate matrix values from file info
+	//Calculate matrix values from file info
 	fScaleX = FileInfo.fCellIncrementX;
 	fScaleY = FileInfo.fCellIncrementY;
 	fRotX = 0.0;
 	fRotY = 0.0;
 	fTransX = FileInfo.fOriginX;
 	fTransY = FileInfo.fOriginY;
-	
+
 	if (!bRasterPixelIsArea)
 	{
 		fTransX += 0.5*fScaleX;
@@ -207,18 +207,18 @@ bool CNCSAffineTransform::IsValid()
 	bool bValid = true;
 
 	//Check validity of transform values - we don't handle shearing
-	if ((fScaleX == 0 && fRotX == 0) || 
+	if ((fScaleX == 0 && fRotX == 0) ||
 		(fScaleY == 0 && fRotY == 0))
 		bValid = false; //invalid
-	if ((fScaleX == 0 && fScaleY != 0) || 
-		(fScaleX != 0 && fScaleY == 0) || 
-		(fRotX == 0 && fRotY != 0) || 
+	if ((fScaleX == 0 && fScaleY != 0) ||
+		(fScaleX != 0 && fScaleY == 0) ||
+		(fRotX == 0 && fRotY != 0) ||
 		(fRotX != 0 && fRotY == 0))
 		bValid = false; //sheared
-	if (!(fScaleX == 0 || fScaleY == 0 || 
+	if (!(fScaleX == 0 || fScaleY == 0 ||
 		fRotX == 0 || fRotY == 0))
 	{
-		if (fabs(fScaleX/fScaleY) - fabs(fRotY/fRotX) > SHEAR_CHECK_EPSILON)
+		if (fabs(fScaleX / fScaleY) - fabs(fRotY / fRotX) > SHEAR_CHECK_EPSILON)
 			bValid = false; //sheared
 	}
 

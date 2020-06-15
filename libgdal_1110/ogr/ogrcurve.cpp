@@ -2,7 +2,7 @@
  * $Id: ogrcurve.cpp 16574 2009-03-14 13:09:10Z rouault $
  *
  * Project:  OpenGIS Simple Features Reference Implementation
- * Purpose:  The OGRCurve geometry class. 
+ * Purpose:  The OGRCurve geometry class.
  * Author:   Frank Warmerdam, warmerda@home.com
  *
  ******************************************************************************
@@ -58,20 +58,20 @@ OGRCurve::~OGRCurve()
 int OGRCurve::get_IsClosed() const
 
 {
-    OGRPoint            oStartPoint, oEndPoint;
+	OGRPoint            oStartPoint, oEndPoint;
 
-    StartPoint( &oStartPoint );
-    EndPoint( &oEndPoint );
+	StartPoint(&oStartPoint);
+	EndPoint(&oEndPoint);
 
-    if( oStartPoint.getX() == oEndPoint.getX()
-        && oStartPoint.getY() == oEndPoint.getY() )
-    {
-        return TRUE;
-    }
-    else
-    {
-        return FALSE;
-    }
+	if (oStartPoint.getX() == oEndPoint.getX()
+		&& oStartPoint.getY() == oEndPoint.getY())
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
 }
 
 /**
@@ -85,36 +85,36 @@ int OGRCurve::get_IsClosed() const
  * initialized.
  */
 
-/**
- * \fn void OGRCurve::StartPoint( OGRPoint * poPoint ) const;
- *
- * \brief Return the curve start point.
- *
- * This method relates to the SF COM ICurve::get_StartPoint() method.
- *
- * @param poPoint the point to be assigned the start location.
- */
+ /**
+  * \fn void OGRCurve::StartPoint( OGRPoint * poPoint ) const;
+  *
+  * \brief Return the curve start point.
+  *
+  * This method relates to the SF COM ICurve::get_StartPoint() method.
+  *
+  * @param poPoint the point to be assigned the start location.
+  */
 
-/**
- * \fn void OGRCurve::EndPoint( OGRPoint * poPoint ) const;
- *
- * \brief Return the curve end point.
- *
- * This method relates to the SF COM ICurve::get_EndPoint() method.
- *
- * @param poPoint the point to be assigned the end location.
- */
+  /**
+   * \fn void OGRCurve::EndPoint( OGRPoint * poPoint ) const;
+   *
+   * \brief Return the curve end point.
+   *
+   * This method relates to the SF COM ICurve::get_EndPoint() method.
+   *
+   * @param poPoint the point to be assigned the end location.
+   */
 
-/**
- * \fn void OGRCurve::Value( double dfDistance, OGRPoint * poPoint ) const;
- *
- * \brief Fetch point at given distance along curve.
- *
- * This method relates to the SF COM ICurve::get_Value() method.
- *
- * @param dfDistance distance along the curve at which to sample position.
- *                   This distance should be between zero and get_Length()
- *                   for this curve.
- * @param poPoint the point to be assigned the curve position.
- */
+   /**
+	* \fn void OGRCurve::Value( double dfDistance, OGRPoint * poPoint ) const;
+	*
+	* \brief Fetch point at given distance along curve.
+	*
+	* This method relates to the SF COM ICurve::get_Value() method.
+	*
+	* @param dfDistance distance along the curve at which to sample position.
+	*                   This distance should be between zero and get_Length()
+	*                   for this curve.
+	* @param poPoint the point to be assigned the curve position.
+	*/
 

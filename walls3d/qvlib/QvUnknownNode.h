@@ -5,13 +5,13 @@
 
 class QvUnknownNode : public QvGroup {
 
-    QV_NODE_HEADER(QvUnknownNode);
+	QV_NODE_HEADER(QvUnknownNode);
 
-  public:
-    const char	*className;
-    QvFieldData *instanceFieldData;
-  
-    void setClassName(const char *name);
+public:
+	const char	*className;
+	QvFieldData *instanceFieldData;
+
+	void setClassName(const char *name);
 };
 
 #endif /* _QV_UNKNOWN_NODE_ */

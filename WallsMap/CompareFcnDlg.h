@@ -13,7 +13,7 @@ public:
 	CString m_PathName;
 	CString m_Arguments;
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_COMPARE_FCN };
 
 protected:

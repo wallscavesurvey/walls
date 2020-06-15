@@ -43,7 +43,7 @@
    */
 #undef LT_OBJDIR
 
-/* Name of package */
+   /* Name of package */
 #define PACKAGE WM_1
 
 /* Define to the address where bug reports for this package should be sent. */
@@ -103,8 +103,8 @@
 # endif
 #endif
 
-/* Define to `__inline__' or `__inline' if that's what the C compiler
-   calls it, or to nothing if 'inline' is not supported under any name.  */
+   /* Define to `__inline__' or `__inline' if that's what the C compiler
+	  calls it, or to nothing if 'inline' is not supported under any name.  */
 #ifndef __cplusplus
 #undef inline
 #endif

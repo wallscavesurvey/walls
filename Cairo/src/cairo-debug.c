@@ -35,41 +35,41 @@
 
 #include "cairoint.h"
 
-/**
- * cairo_debug_reset_static_data:
- *
- * Resets all static data within cairo to its original state,
- * (ie. identical to the state at the time of program invocation). For
- * example, all caches within cairo will be flushed empty.
- *
- * This function is intended to be useful when using memory-checking
- * tools such as valgrind. When valgrind's memcheck analyzes a
- * cairo-using program without a call to cairo_debug_reset_static_data(),
- * it will report all data reachable via cairo's static objects as
- * "still reachable". Calling cairo_debug_reset_static_data() just prior
- * to program termination will make it easier to get squeaky clean
- * reports from valgrind.
- *
- * WARNING: It is only safe to call this function when there are no
- * active cairo objects remaining, (ie. the appropriate destroy
- * functions have been called as necessary). If there are active cairo
- * objects, this call is likely to cause a crash, (eg. an assertion
- * failure due to a hash table being destroyed when non-empty).
- **/
+ /**
+  * cairo_debug_reset_static_data:
+  *
+  * Resets all static data within cairo to its original state,
+  * (ie. identical to the state at the time of program invocation). For
+  * example, all caches within cairo will be flushed empty.
+  *
+  * This function is intended to be useful when using memory-checking
+  * tools such as valgrind. When valgrind's memcheck analyzes a
+  * cairo-using program without a call to cairo_debug_reset_static_data(),
+  * it will report all data reachable via cairo's static objects as
+  * "still reachable". Calling cairo_debug_reset_static_data() just prior
+  * to program termination will make it easier to get squeaky clean
+  * reports from valgrind.
+  *
+  * WARNING: It is only safe to call this function when there are no
+  * active cairo objects remaining, (ie. the appropriate destroy
+  * functions have been called as necessary). If there are active cairo
+  * objects, this call is likely to cause a crash, (eg. an assertion
+  * failure due to a hash table being destroyed when non-empty).
+  **/
 void
-cairo_debug_reset_static_data (void)
+cairo_debug_reset_static_data(void)
 {
-    CAIRO_MUTEX_INITIALIZE ();
+	CAIRO_MUTEX_INITIALIZE();
 
-    _cairo_font_face_reset_static_data ();
+	_cairo_font_face_reset_static_data();
 
 #if CAIRO_HAS_FT_FONT
-    _cairo_ft_font_reset_static_data ();
+	_cairo_ft_font_reset_static_data();
 #endif
 
-    _cairo_scaled_font_reset_static_data ();
+	_cairo_scaled_font_reset_static_data();
 
-    _cairo_pattern_reset_static_data ();
+	_cairo_pattern_reset_static_data();
 
-    CAIRO_MUTEX_FINALIZE ();
+	CAIRO_MUTEX_FINALIZE();
 }

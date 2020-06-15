@@ -6,11 +6,11 @@
 class CHTButton : public CButton
 {
 private:
-    HWND m_hwndPrevFocus;
-    static WNDPROC pfnSuper;
-    
+	HWND m_hwndPrevFocus;
+	static WNDPROC pfnSuper;
+
 protected:
-    virtual WNDPROC *GetSuperWndProcAddr();
+	virtual WNDPROC *GetSuperWndProcAddr();
 	// Generated message map functions
 	//{{AFX_MSG(CHTButton)
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);

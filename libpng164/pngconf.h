@@ -13,16 +13,16 @@
  *
  */
 
-/* Any machine specific code is near the front of this file, so if you
- * are configuring libpng for a machine, you may want to read the section
- * starting here down to where it starts to typedef png_color, png_text,
- * and png_info.
- */
+ /* Any machine specific code is near the front of this file, so if you
+  * are configuring libpng for a machine, you may want to read the section
+  * starting here down to where it starts to typedef png_color, png_text,
+  * and png_info.
+  */
 
 #ifndef PNGCONF_H
 #define PNGCONF_H
 
-/* To do: Do all of this in scripts/pnglibconf.dfa */
+  /* To do: Do all of this in scripts/pnglibconf.dfa */
 #ifdef PNG_SAFE_LIMITS_SUPPORTED
 #  ifdef PNG_USER_WIDTH_MAX
 #    undef PNG_USER_WIDTH_MAX
@@ -52,18 +52,18 @@
 #include <limits.h>
 #include <stddef.h>
 
-/* Library header files.  These header files are all defined by ISOC90; libpng
- * expects conformant implementations, however, an ISOC90 conformant system need
- * not provide these header files if the functionality cannot be implemented.
- * In this case it will be necessary to disable the relevant parts of libpng in
- * the build of pnglibconf.h.
- *
- * Prior to 1.6.0 string.h was included here; the API changes in 1.6.0 to not
- * include this unnecessary header file.
- */
+ /* Library header files.  These header files are all defined by ISOC90; libpng
+  * expects conformant implementations, however, an ISOC90 conformant system need
+  * not provide these header files if the functionality cannot be implemented.
+  * In this case it will be necessary to disable the relevant parts of libpng in
+  * the build of pnglibconf.h.
+  *
+  * Prior to 1.6.0 string.h was included here; the API changes in 1.6.0 to not
+  * include this unnecessary header file.
+  */
 
 #ifdef PNG_STDIO_SUPPORTED
-   /* Required for the definition of FILE: */
+  /* Required for the definition of FILE: */
 #  include <stdio.h>
 #endif
 
@@ -85,12 +85,12 @@
  */
 #define PNG_CONST const /* backward compatibility only */
 
-/* This controls optimization of the reading of 16 and 32 bit values
- * from PNG files.  It can be set on a per-app-file basis - it
- * just changes whether a macro is used when the function is called.
- * The library builder sets the default; if read functions are not
- * built into the library the macro implementation is forced on.
- */
+ /* This controls optimization of the reading of 16 and 32 bit values
+  * from PNG files.  It can be set on a per-app-file basis - it
+  * just changes whether a macro is used when the function is called.
+  * The library builder sets the default; if read functions are not
+  * built into the library the macro implementation is forced on.
+  */
 #ifndef PNG_READ_INT_FUNCTIONS_SUPPORTED
 #  define PNG_USE_READ_MACROS
 #endif
@@ -100,137 +100,137 @@
 #  endif
 #endif
 
-/* COMPILER SPECIFIC OPTIONS.
- *
- * These options are provided so that a variety of difficult compilers
- * can be used.  Some are fixed at build time (e.g. PNG_API_RULE
- * below) but still have compiler specific implementations, others
- * may be changed on a per-file basis when compiling against libpng.
- */
+  /* COMPILER SPECIFIC OPTIONS.
+   *
+   * These options are provided so that a variety of difficult compilers
+   * can be used.  Some are fixed at build time (e.g. PNG_API_RULE
+   * below) but still have compiler specific implementations, others
+   * may be changed on a per-file basis when compiling against libpng.
+   */
 
-/* The PNGARG macro was used in versions of libpng prior to 1.6.0 to protect
- * against legacy (pre ISOC90) compilers that did not understand function
- * prototypes.  It is not required for modern C compilers.
- */
+   /* The PNGARG macro was used in versions of libpng prior to 1.6.0 to protect
+	* against legacy (pre ISOC90) compilers that did not understand function
+	* prototypes.  It is not required for modern C compilers.
+	*/
 #ifndef PNGARG
 #  define PNGARG(arglist) arglist
 #endif
 
-/* Function calling conventions.
- * =============================
- * Normally it is not necessary to specify to the compiler how to call
- * a function - it just does it - however on x86 systems derived from
- * Microsoft and Borland C compilers ('IBM PC', 'DOS', 'Windows' systems
- * and some others) there are multiple ways to call a function and the
- * default can be changed on the compiler command line.  For this reason
- * libpng specifies the calling convention of every exported function and
- * every function called via a user supplied function pointer.  This is
- * done in this file by defining the following macros:
- *
- * PNGAPI    Calling convention for exported functions.
- * PNGCBAPI  Calling convention for user provided (callback) functions.
- * PNGCAPI   Calling convention used by the ANSI-C library (required
- *           for longjmp callbacks and sometimes used internally to
- *           specify the calling convention for zlib).
- *
- * These macros should never be overridden.  If it is necessary to
- * change calling convention in a private build this can be done
- * by setting PNG_API_RULE (which defaults to 0) to one of the values
- * below to select the correct 'API' variants.
- *
- * PNG_API_RULE=0 Use PNGCAPI - the 'C' calling convention - throughout.
- *                This is correct in every known environment.
- * PNG_API_RULE=1 Use the operating system convention for PNGAPI and
- *                the 'C' calling convention (from PNGCAPI) for
- *                callbacks (PNGCBAPI).  This is no longer required
- *                in any known environment - if it has to be used
- *                please post an explanation of the problem to the
- *                libpng mailing list.
- *
- * These cases only differ if the operating system does not use the C
- * calling convention, at present this just means the above cases
- * (x86 DOS/Windows sytems) and, even then, this does not apply to
- * Cygwin running on those systems.
- *
- * Note that the value must be defined in pnglibconf.h so that what
- * the application uses to call the library matches the conventions
- * set when building the library.
- */
+	/* Function calling conventions.
+	 * =============================
+	 * Normally it is not necessary to specify to the compiler how to call
+	 * a function - it just does it - however on x86 systems derived from
+	 * Microsoft and Borland C compilers ('IBM PC', 'DOS', 'Windows' systems
+	 * and some others) there are multiple ways to call a function and the
+	 * default can be changed on the compiler command line.  For this reason
+	 * libpng specifies the calling convention of every exported function and
+	 * every function called via a user supplied function pointer.  This is
+	 * done in this file by defining the following macros:
+	 *
+	 * PNGAPI    Calling convention for exported functions.
+	 * PNGCBAPI  Calling convention for user provided (callback) functions.
+	 * PNGCAPI   Calling convention used by the ANSI-C library (required
+	 *           for longjmp callbacks and sometimes used internally to
+	 *           specify the calling convention for zlib).
+	 *
+	 * These macros should never be overridden.  If it is necessary to
+	 * change calling convention in a private build this can be done
+	 * by setting PNG_API_RULE (which defaults to 0) to one of the values
+	 * below to select the correct 'API' variants.
+	 *
+	 * PNG_API_RULE=0 Use PNGCAPI - the 'C' calling convention - throughout.
+	 *                This is correct in every known environment.
+	 * PNG_API_RULE=1 Use the operating system convention for PNGAPI and
+	 *                the 'C' calling convention (from PNGCAPI) for
+	 *                callbacks (PNGCBAPI).  This is no longer required
+	 *                in any known environment - if it has to be used
+	 *                please post an explanation of the problem to the
+	 *                libpng mailing list.
+	 *
+	 * These cases only differ if the operating system does not use the C
+	 * calling convention, at present this just means the above cases
+	 * (x86 DOS/Windows sytems) and, even then, this does not apply to
+	 * Cygwin running on those systems.
+	 *
+	 * Note that the value must be defined in pnglibconf.h so that what
+	 * the application uses to call the library matches the conventions
+	 * set when building the library.
+	 */
 
-/* Symbol export
- * =============
- * When building a shared library it is almost always necessary to tell
- * the compiler which symbols to export.  The png.h macro 'PNG_EXPORT'
- * is used to mark the symbols.  On some systems these symbols can be
- * extracted at link time and need no special processing by the compiler,
- * on other systems the symbols are flagged by the compiler and just
- * the declaration requires a special tag applied (unfortunately) in a
- * compiler dependent way.  Some systems can do either.
- *
- * A small number of older systems also require a symbol from a DLL to
- * be flagged to the program that calls it.  This is a problem because
- * we do not know in the header file included by application code that
- * the symbol will come from a shared library, as opposed to a statically
- * linked one.  For this reason the application must tell us by setting
- * the magic flag PNG_USE_DLL to turn on the special processing before
- * it includes png.h.
- *
- * Four additional macros are used to make this happen:
- *
- * PNG_IMPEXP The magic (if any) to cause a symbol to be exported from
- *            the build or imported if PNG_USE_DLL is set - compiler
- *            and system specific.
- *
- * PNG_EXPORT_TYPE(type) A macro that pre or appends PNG_IMPEXP to
- *                       'type', compiler specific.
- *
- * PNG_DLL_EXPORT Set to the magic to use during a libpng build to
- *                make a symbol exported from the DLL.  Not used in the
- *                public header files; see pngpriv.h for how it is used
- *                in the libpng build.
- *
- * PNG_DLL_IMPORT Set to the magic to force the libpng symbols to come
- *                from a DLL - used to define PNG_IMPEXP when
- *                PNG_USE_DLL is set.
- */
+	 /* Symbol export
+	  * =============
+	  * When building a shared library it is almost always necessary to tell
+	  * the compiler which symbols to export.  The png.h macro 'PNG_EXPORT'
+	  * is used to mark the symbols.  On some systems these symbols can be
+	  * extracted at link time and need no special processing by the compiler,
+	  * on other systems the symbols are flagged by the compiler and just
+	  * the declaration requires a special tag applied (unfortunately) in a
+	  * compiler dependent way.  Some systems can do either.
+	  *
+	  * A small number of older systems also require a symbol from a DLL to
+	  * be flagged to the program that calls it.  This is a problem because
+	  * we do not know in the header file included by application code that
+	  * the symbol will come from a shared library, as opposed to a statically
+	  * linked one.  For this reason the application must tell us by setting
+	  * the magic flag PNG_USE_DLL to turn on the special processing before
+	  * it includes png.h.
+	  *
+	  * Four additional macros are used to make this happen:
+	  *
+	  * PNG_IMPEXP The magic (if any) to cause a symbol to be exported from
+	  *            the build or imported if PNG_USE_DLL is set - compiler
+	  *            and system specific.
+	  *
+	  * PNG_EXPORT_TYPE(type) A macro that pre or appends PNG_IMPEXP to
+	  *                       'type', compiler specific.
+	  *
+	  * PNG_DLL_EXPORT Set to the magic to use during a libpng build to
+	  *                make a symbol exported from the DLL.  Not used in the
+	  *                public header files; see pngpriv.h for how it is used
+	  *                in the libpng build.
+	  *
+	  * PNG_DLL_IMPORT Set to the magic to force the libpng symbols to come
+	  *                from a DLL - used to define PNG_IMPEXP when
+	  *                PNG_USE_DLL is set.
+	  */
 
-/* System specific discovery.
- * ==========================
- * This code is used at build time to find PNG_IMPEXP, the API settings
- * and PNG_EXPORT_TYPE(), it may also set a macro to indicate the DLL
- * import processing is possible.  On Windows systems it also sets
- * compiler-specific macros to the values required to change the calling
- * conventions of the various functions.
- */
+	  /* System specific discovery.
+	   * ==========================
+	   * This code is used at build time to find PNG_IMPEXP, the API settings
+	   * and PNG_EXPORT_TYPE(), it may also set a macro to indicate the DLL
+	   * import processing is possible.  On Windows systems it also sets
+	   * compiler-specific macros to the values required to change the calling
+	   * conventions of the various functions.
+	   */
 #if defined(_Windows) || defined(_WINDOWS) || defined(WIN32) ||\
     defined(_WIN32) || defined(__WIN32__) || defined(__CYGWIN__)
-  /* Windows system (DOS doesn't support DLLs).  Includes builds under Cygwin or
-   * MinGW on any architecture currently supported by Windows.  Also includes
-   * Watcom builds but these need special treatment because they are not
-   * compatible with GCC or Visual C because of different calling conventions.
-   */
+	   /* Windows system (DOS doesn't support DLLs).  Includes builds under Cygwin or
+		* MinGW on any architecture currently supported by Windows.  Also includes
+		* Watcom builds but these need special treatment because they are not
+		* compatible with GCC or Visual C because of different calling conventions.
+		*/
 #  if PNG_API_RULE == 2
-    /* If this line results in an error, either because __watcall is not
-     * understood or because of a redefine just below you cannot use *this*
-     * build of the library with the compiler you are using.  *This* build was
-     * build using Watcom and applications must also be built using Watcom!
-     */
+		/* If this line results in an error, either because __watcall is not
+		 * understood or because of a redefine just below you cannot use *this*
+		 * build of the library with the compiler you are using.  *This* build was
+		 * build using Watcom and applications must also be built using Watcom!
+		 */
 #    define PNGCAPI __watcall
 #  endif
 
 #  if defined(__GNUC__) || (defined(_MSC_VER) && (_MSC_VER >= 800))
 #    define PNGCAPI __cdecl
 #    if PNG_API_RULE == 1
-       /* If this line results in an error __stdcall is not understood and
-        * PNG_API_RULE should not have been set to '1'.
-        */
+		 /* If this line results in an error __stdcall is not understood and
+		  * PNG_API_RULE should not have been set to '1'.
+		  */
 #      define PNGAPI __stdcall
 #    endif
 #  else
-    /* An older compiler, or one not detected (erroneously) above,
-     * if necessary override on the command line to get the correct
-     * variants for the compiler.
-     */
+		 /* An older compiler, or one not detected (erroneously) above,
+		  * if necessary override on the command line to get the correct
+		  * variants for the compiler.
+		  */
 #    ifndef PNGCAPI
 #      define PNGCAPI _cdecl
 #    endif
@@ -239,7 +239,7 @@
 #    endif
 #  endif /* compiler/api */
 
-  /* NOTE: PNGCBAPI always defaults to PNGCAPI. */
+		  /* NOTE: PNGCBAPI always defaults to PNGCAPI. */
 
 #  if defined(PNGAPI) && !defined(PNG_USER_PRIVATEBUILD)
 #     error "PNG_USER_PRIVATEBUILD must be defined if PNGAPI is changed"
@@ -247,10 +247,10 @@
 
 #  if (defined(_MSC_VER) && _MSC_VER < 800) ||\
       (defined(__BORLANDC__) && __BORLANDC__ < 0x500)
-    /* older Borland and MSC
-     * compilers used '__export' and required this to be after
-     * the type.
-     */
+	/* older Borland and MSC
+	 * compilers used '__export' and required this to be after
+	 * the type.
+	 */
 #    ifndef PNG_EXPORT_TYPE
 #      define PNG_EXPORT_TYPE(type) type PNG_IMPEXP
 #    endif
@@ -266,13 +266,13 @@
 #  if (defined(__IBMC__) || defined(__IBMCPP__)) && defined(__OS2__)
 #    define PNGAPI _System
 #  else /* !Windows/x86 && !OS/2 */
-    /* Use the defaults, or define PNG*API on the command line (but
-     * this will have to be done for every compile!)
-     */
+	   /* Use the defaults, or define PNG*API on the command line (but
+		* this will have to be done for every compile!)
+		*/
 #  endif /* other system, !OS/2 */
 #endif /* !Windows/x86 */
 
-/* Now do all the defaulting . */
+		/* Now do all the defaulting . */
 #ifndef PNGCAPI
 #  define PNGCAPI
 #endif
@@ -289,7 +289,7 @@
  */
 #ifndef PNG_IMPEXP
 #  if defined(PNG_USE_DLL) && defined(PNG_DLL_IMPORT)
-     /* This forces use of a DLL, disallowing static linking */
+ /* This forces use of a DLL, disallowing static linking */
 #    define PNG_IMPEXP PNG_DLL_IMPORT
 #  endif
 
@@ -313,10 +313,10 @@
 #  define PNG_EXPORT_TYPE(type) PNG_IMPEXP type
 #endif
 
-   /* The ordinal value is only relevant when preprocessing png.h for symbol
-    * table entries, so we discard it here.  See the .dfn files in the
-    * scripts directory.
-    */
+ /* The ordinal value is only relevant when preprocessing png.h for symbol
+  * table entries, so we discard it here.  See the .dfn files in the
+  * scripts directory.
+  */
 #ifndef PNG_EXPORTA
 
 #  define PNG_EXPORTA(ordinal, type, name, args, attributes)\
@@ -324,15 +324,15 @@
         extern attributes)
 #endif
 
-/* ANSI-C (C90) does not permit a macro to be invoked with an empty argument,
- * so make something non-empty to satisfy the requirement:
- */
+  /* ANSI-C (C90) does not permit a macro to be invoked with an empty argument,
+   * so make something non-empty to satisfy the requirement:
+   */
 #define PNG_EMPTY /*empty list*/
 
 #define PNG_EXPORT(ordinal, type, name, args)\
    PNG_EXPORTA(ordinal, type, name, args, PNG_EMPTY)
 
-/* Use PNG_REMOVED to comment out a removed interface. */
+   /* Use PNG_REMOVED to comment out a removed interface. */
 #ifndef PNG_REMOVED
 #  define PNG_REMOVED(ordinal, type, name, args, attributes)
 #endif
@@ -355,12 +355,12 @@
 #endif
 
 #ifdef PNG_PEDANTIC_WARNINGS_SUPPORTED
-  /* Support for compiler specific function attributes.  These are used
-   * so that where compiler support is available, incorrect use of API
-   * functions in png.h will generate compiler warnings.  Added at libpng
-   * version 1.2.41.  Disabling these removes the warnings but may also produce
-   * less efficient code.
-   */
+ /* Support for compiler specific function attributes.  These are used
+  * so that where compiler support is available, incorrect use of API
+  * functions in png.h will generate compiler warnings.  Added at libpng
+  * version 1.2.41.  Disabling these removes the warnings but may also produce
+  * less efficient code.
+  */
 #  if defined(__GNUC__)
 #    ifndef PNG_USE_RESULT
 #      define PNG_USE_RESULT __attribute__((__warn_unused_result__))
@@ -458,61 +458,61 @@
 #endif
 
 #ifndef PNG_BUILDING_SYMBOL_TABLE
-/* Some typedefs to get us started.  These should be safe on most of the common
- * platforms.
- *
- * png_uint_32 and png_int_32 may, currently, be larger than required to hold a
- * 32-bit value however this is not normally advisable.
- *
- * png_uint_16 and png_int_16 should always be two bytes in size - this is
- * verified at library build time.
- *
- * png_byte must always be one byte in size.
- *
- * The checks below use constants from limits.h, as defined by the ISOC90
- * standard.
- */
+  /* Some typedefs to get us started.  These should be safe on most of the common
+   * platforms.
+   *
+   * png_uint_32 and png_int_32 may, currently, be larger than required to hold a
+   * 32-bit value however this is not normally advisable.
+   *
+   * png_uint_16 and png_int_16 should always be two bytes in size - this is
+   * verified at library build time.
+   *
+   * png_byte must always be one byte in size.
+   *
+   * The checks below use constants from limits.h, as defined by the ISOC90
+   * standard.
+   */
 #if CHAR_BIT == 8 && UCHAR_MAX == 255
-   typedef unsigned char png_byte;
+typedef unsigned char png_byte;
 #else
 #  error "libpng requires 8 bit bytes"
 #endif
 
 #if INT_MIN == -32768 && INT_MAX == 32767
-   typedef int png_int_16;
+typedef int png_int_16;
 #elif SHRT_MIN == -32768 && SHRT_MAX == 32767
-   typedef short png_int_16;
+typedef short png_int_16;
 #else
 #  error "libpng requires a signed 16 bit type"
 #endif
 
 #if UINT_MAX == 65535
-   typedef unsigned int png_uint_16;
+typedef unsigned int png_uint_16;
 #elif USHRT_MAX == 65535
-   typedef unsigned short png_uint_16;
+typedef unsigned short png_uint_16;
 #else
 #  error "libpng requires an unsigned 16 bit type"
 #endif
 
 #if INT_MIN < -2147483646 && INT_MAX > 2147483646
-   typedef int png_int_32;
+typedef int png_int_32;
 #elif LONG_MIN < -2147483646 && LONG_MAX > 2147483646
-   typedef long int png_int_32;
+typedef long int png_int_32;
 #else
 #  error "libpng requires a signed 32 bit (or more) type"
 #endif
 
 #if UINT_MAX > 4294967294
-   typedef unsigned int png_uint_32;
+typedef unsigned int png_uint_32;
 #elif ULONG_MAX > 4294967294
-   typedef unsigned long int png_uint_32;
+typedef unsigned long int png_uint_32;
 #else
 #  error "libpng requires an unsigned 32 bit (or more) type"
 #endif
 
-/* Prior to 1.6.0 it was possible to disable the use of size_t, 1.6.0, however,
- * requires an ISOC90 compiler and relies on consistent behavior of sizeof.
- */
+   /* Prior to 1.6.0 it was possible to disable the use of size_t, 1.6.0, however,
+	* requires an ISOC90 compiler and relies on consistent behavior of sizeof.
+	*/
 typedef size_t png_size_t;
 typedef ptrdiff_t png_ptrdiff_t;
 
@@ -522,33 +522,33 @@ typedef ptrdiff_t png_ptrdiff_t;
  * direct application control of this through png_set_user_limits().
  */
 #ifndef PNG_SMALL_SIZE_T
-   /* Compiler specific tests for systems where size_t is known to be less than
-    * 32 bits (some of these systems may no longer work because of the lack of
-    * 'far' support; see above.)
-    */
+ /* Compiler specific tests for systems where size_t is known to be less than
+  * 32 bits (some of these systems may no longer work because of the lack of
+  * 'far' support; see above.)
+  */
 #  if (defined(__TURBOC__) && !defined(__FLAT__)) ||\
    (defined(_MSC_VER) && defined(MAXSEG_64K))
 #     define PNG_SMALL_SIZE_T
 #  endif
 #endif
 
-/* png_alloc_size_t is guaranteed to be no smaller than png_size_t, and no
- * smaller than png_uint_32.  Casts from png_size_t or png_uint_32 to
- * png_alloc_size_t are not necessary; in fact, it is recommended not to use
- * them at all so that the compiler can complain when something turns out to be
- * problematic.
- *
- * Casts in the other direction (from png_alloc_size_t to png_size_t or
- * png_uint_32) should be explicitly applied; however, we do not expect to
- * encounter practical situations that require such conversions.
- *
- * PNG_SMALL_SIZE_T must be defined if the maximum value of size_t is less than
- * 4294967295 - i.e. less than the maximum value of png_uint_32.
- */
+  /* png_alloc_size_t is guaranteed to be no smaller than png_size_t, and no
+   * smaller than png_uint_32.  Casts from png_size_t or png_uint_32 to
+   * png_alloc_size_t are not necessary; in fact, it is recommended not to use
+   * them at all so that the compiler can complain when something turns out to be
+   * problematic.
+   *
+   * Casts in the other direction (from png_alloc_size_t to png_size_t or
+   * png_uint_32) should be explicitly applied; however, we do not expect to
+   * encounter practical situations that require such conversions.
+   *
+   * PNG_SMALL_SIZE_T must be defined if the maximum value of size_t is less than
+   * 4294967295 - i.e. less than the maximum value of png_uint_32.
+   */
 #ifdef PNG_SMALL_SIZE_T
-   typedef png_uint_32 png_alloc_size_t;
+typedef png_uint_32 png_alloc_size_t;
 #else
-   typedef png_size_t png_alloc_size_t;
+typedef png_size_t png_alloc_size_t;
 #endif
 
 /* Prior to 1.6.0 libpng offered limited support for Microsoft C compiler
@@ -562,9 +562,9 @@ typedef ptrdiff_t png_ptrdiff_t;
  * not been verified recently.
  */
 
-/* Typedef for floating-point numbers that are converted to fixed-point with a
- * multiple of 100,000, e.g., gamma
- */
+ /* Typedef for floating-point numbers that are converted to fixed-point with a
+  * multiple of 100,000, e.g., gamma
+  */
 typedef png_int_32 png_fixed_point;
 
 /* Add typedefs for pointers */

@@ -14,7 +14,7 @@ class CPrjListNode;
 
 class CVecInfoDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
 	CVecInfoDlg(CWnd* pParent = NULL);   // standard constructor
 
@@ -27,11 +27,11 @@ public:
 
 private:
 	HANDLE m_hMagDlg;
-	double m_enu_fr[3],m_enu_to[3];
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CVecInfoDlg)
-	protected:
+	double m_enu_fr[3], m_enu_to[3];
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CVecInfoDlg)
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
@@ -40,19 +40,19 @@ private:
 
 // Implementation
 protected:
-	void Enable(UINT id,BOOL bEnable) {GetDlgItem(id)->EnableWindow(bEnable);}
-	void SetText(UINT id,LPCSTR text) {GetDlgItem(id)->SetWindowText(text);}
-	void SetCoordinate(UINT id,int i);
+	void Enable(UINT id, BOOL bEnable) { GetDlgItem(id)->EnableWindow(bEnable); }
+	void SetText(UINT id, LPCSTR text) { GetDlgItem(id)->SetWindowText(text); }
+	void SetCoordinate(UINT id, int i);
 	void SetNote(UINT id);
-	void SetFlagnames(UINT idf,UINT idm);
+	void SetFlagnames(UINT idf, UINT idm);
 	void SetButtonImage(UINT id);
 
-    void Show(UINT idc,BOOL bShow)
-    {
-    	GetDlgItem(idc)->ShowWindow(bShow?SW_SHOW:SW_HIDE);
-    }
+	void Show(UINT idc, BOOL bShow)
+	{
+		GetDlgItem(idc)->ShowWindow(bShow ? SW_SHOW : SW_HIDE);
+	}
 
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 
 	// Generated message map functions
 	//{{AFX_MSG(CVecInfoDlg)

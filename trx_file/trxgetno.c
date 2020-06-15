@@ -33,49 +33,49 @@ CSH_HDRP _trx_hdrp;
 apfcn_hdrp _trx_GetNode(HNode nodeno)
 {
 	__asm {
-        mov     esi,_trx_pFile
-		mov		eax,nodeno
-		or		eax,eax
-        mov     ecx,TRX_ErrEOF
-        jz      _err0
-        dec     eax
-        mov     ecx,TRX_ErrFormat
-		cmp		eax,[esi]TRX_FILE.NumNodes
-        jb      _recOK
+		mov     esi, _trx_pFile
+		mov		eax, nodeno
+		or eax, eax
+		mov     ecx, TRX_ErrEOF
+		jz      _err0
+		dec     eax
+		mov     ecx, TRX_ErrFormat
+		cmp		eax, [esi]TRX_FILE.NumNodes
+		jb      _recOK
 
-// Fatal errors: TRX_ErrFormat, TRX_ErrLocked, TRX_ErrRead, TRX_ErrWrite
-// Non-fatal errors: TRX_ErrEOF, TRX_ErrNoCache
+		// Fatal errors: TRX_ErrFormat, TRX_ErrLocked, TRX_ErrRead, TRX_ErrWrite
+		// Non-fatal errors: TRX_ErrEOF, TRX_ErrNoCache
 
-_error: mov     [esi]TRX_FILE.Cf.Errno,ecx
-_err0:  mov     trx_errno,ecx
-        xor     eax,eax
-        jmp     short _ex
+		_error : mov[esi]TRX_FILE.Cf.Errno, ecx
+				 _err0 : mov     trx_errno, ecx
+						 xor     eax, eax
+						 jmp     short _ex
 
-_recOK: push    0
-        push    eax
-		push	esi
-        call    _csf_GetRecord
-        or      eax,eax
-        jnz     _rdOK
-        mov     ecx,[esi]TRX_FILE.Cf.Errno
-        cmp     ecx,TRX_ErrNoCache
-        jnz     _err0
-        mov     [esi]TRX_FILE.Cf.Errno,eax  ;make it non-fatal
-        jmp     short _err0
+						 _recOK : push    0
+								  push    eax
+								  push	esi
+								  call    _csf_GetRecord
+								  or eax, eax
+								  jnz     _rdOK
+								  mov     ecx, [esi]TRX_FILE.Cf.Errno
+								  cmp     ecx, TRX_ErrNoCache
+								  jnz     _err0
+								  mov[esi]TRX_FILE.Cf.Errno, eax; make it non - fatal
+								  jmp     short _err0
 
-_rdOK:  cmp     _csh_newRead,0
-        jz      _ex
-        cmp     _trx_noErrNodRec,0
-        jnz     _ex
+								  _rdOK : cmp     _csh_newRead, 0
+										  jz      _ex
+										  cmp     _trx_noErrNodRec, 0
+										  jnz     _ex
 
-//       Optionally check node's N_This value if it was read from disk --
-        mov     ecx,TRX_ErrFormat
-        mov     esi,eax
-		mov		esi,[esi]
-		mov		edx,nodeno
-        cmp     edx,[esi+N_THIS]
-        jne     _error
-_ex:
-        mov     _trx_hdrp,eax
+										  //       Optionally check node's N_This value if it was read from disk --
+										  mov     ecx, TRX_ErrFormat
+										  mov     esi, eax
+										  mov		esi, [esi]
+										  mov		edx, nodeno
+										  cmp     edx, [esi + N_THIS]
+										  jne     _error
+										  _ex :
+		mov     _trx_hdrp, eax
 	}
 }

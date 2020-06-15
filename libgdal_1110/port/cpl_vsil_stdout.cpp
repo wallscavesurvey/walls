@@ -14,16 +14,16 @@
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
  * THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
  * DEALINGS IN THE SOFTWARE.
  ****************************************************************************/
 
@@ -48,9 +48,9 @@ CPL_CVSID("$Id: cpl_vsil_stdout.cpp 27044 2014-03-16 23:41:27Z rouault $");
 class VSIStdoutFilesystemHandler : public VSIFilesystemHandler
 {
 public:
-    virtual VSIVirtualHandle *Open( const char *pszFilename, 
-                                    const char *pszAccess);
-    virtual int      Stat( const char *pszFilename, VSIStatBufL *pStatBuf, int nFlags );
+	virtual VSIVirtualHandle *Open(const char *pszFilename,
+		const char *pszAccess);
+	virtual int      Stat(const char *pszFilename, VSIStatBufL *pStatBuf, int nFlags);
 };
 
 /************************************************************************/
@@ -61,30 +61,30 @@ public:
 
 class VSIStdoutHandle : public VSIVirtualHandle
 {
-  public:
+public:
 
-    virtual int       Seek( vsi_l_offset nOffset, int nWhence );
-    virtual vsi_l_offset Tell();
-    virtual size_t    Read( void *pBuffer, size_t nSize, size_t nMemb );
-    virtual size_t    Write( const void *pBuffer, size_t nSize, size_t nMemb );
-    virtual int       Eof();
-    virtual int       Flush();
-    virtual int       Close();
+	virtual int       Seek(vsi_l_offset nOffset, int nWhence);
+	virtual vsi_l_offset Tell();
+	virtual size_t    Read(void *pBuffer, size_t nSize, size_t nMemb);
+	virtual size_t    Write(const void *pBuffer, size_t nSize, size_t nMemb);
+	virtual int       Eof();
+	virtual int       Flush();
+	virtual int       Close();
 };
 
 /************************************************************************/
 /*                                Seek()                                */
 /************************************************************************/
 
-int VSIStdoutHandle::Seek( vsi_l_offset nOffset, int nWhence )
+int VSIStdoutHandle::Seek(vsi_l_offset nOffset, int nWhence)
 
 {
-    if( nOffset == 0 && (nWhence == SEEK_END || nWhence == SEEK_CUR) )
-        return 0;
-    if( nWhence == SEEK_SET && nOffset == Tell() )
-        return 0;
-    CPLError(CE_Failure, CPLE_NotSupported, "Seek() unsupported on /vsistdout");
-    return -1;
+	if (nOffset == 0 && (nWhence == SEEK_END || nWhence == SEEK_CUR))
+		return 0;
+	if (nWhence == SEEK_SET && nOffset == Tell())
+		return 0;
+	CPLError(CE_Failure, CPLE_NotSupported, "Seek() unsupported on /vsistdout");
+	return -1;
 }
 
 /************************************************************************/
@@ -93,7 +93,7 @@ int VSIStdoutHandle::Seek( vsi_l_offset nOffset, int nWhence )
 
 vsi_l_offset VSIStdoutHandle::Tell()
 {
-    return ftell(stdout);
+	return ftell(stdout);
 }
 
 /************************************************************************/
@@ -103,29 +103,29 @@ vsi_l_offset VSIStdoutHandle::Tell()
 int VSIStdoutHandle::Flush()
 
 {
-    return fflush( stdout );
+	return fflush(stdout);
 }
 
 /************************************************************************/
 /*                                Read()                                */
 /************************************************************************/
 
-size_t VSIStdoutHandle::Read( void * pBuffer, size_t nSize, size_t nCount )
+size_t VSIStdoutHandle::Read(void * pBuffer, size_t nSize, size_t nCount)
 
 {
-    CPLError(CE_Failure, CPLE_NotSupported, "Read() unsupported on /vsistdout");
-    return 0;
+	CPLError(CE_Failure, CPLE_NotSupported, "Read() unsupported on /vsistdout");
+	return 0;
 }
 
 /************************************************************************/
 /*                               Write()                                */
 /************************************************************************/
 
-size_t VSIStdoutHandle::Write( const void * pBuffer, size_t nSize, 
-                                  size_t nCount )
+size_t VSIStdoutHandle::Write(const void * pBuffer, size_t nSize,
+	size_t nCount)
 
 {
-    return fwrite(pBuffer, nSize, nCount, stdout);
+	return fwrite(pBuffer, nSize, nCount, stdout);
 }
 
 /************************************************************************/
@@ -135,7 +135,7 @@ size_t VSIStdoutHandle::Write( const void * pBuffer, size_t nSize,
 int VSIStdoutHandle::Eof()
 
 {
-    return feof(stdout);
+	return feof(stdout);
 }
 
 /************************************************************************/
@@ -145,7 +145,7 @@ int VSIStdoutHandle::Eof()
 int VSIStdoutHandle::Close()
 
 {
-    return 0;
+	return 0;
 }
 
 /************************************************************************/
@@ -159,38 +159,38 @@ int VSIStdoutHandle::Close()
 /************************************************************************/
 
 VSIVirtualHandle *
-VSIStdoutFilesystemHandler::Open( const char *pszFilename, 
-                                  const char *pszAccess )
+VSIStdoutFilesystemHandler::Open(const char *pszFilename,
+	const char *pszAccess)
 
 {
-    if ( strchr(pszAccess, 'r') != NULL ||
-         strchr(pszAccess, '+') != NULL )
-    {
-        CPLError(CE_Failure, CPLE_NotSupported,
-                 "Read or update mode not supported on /vsistdout");
-        return NULL;
-    }
+	if (strchr(pszAccess, 'r') != NULL ||
+		strchr(pszAccess, '+') != NULL)
+	{
+		CPLError(CE_Failure, CPLE_NotSupported,
+			"Read or update mode not supported on /vsistdout");
+		return NULL;
+	}
 
 #ifdef WIN32
-    if ( strchr(pszAccess, 'b') != NULL )
-        setmode( fileno( stdout ), O_BINARY );
+	if (strchr(pszAccess, 'b') != NULL)
+		setmode(fileno(stdout), O_BINARY);
 #endif
 
-    return new VSIStdoutHandle;
+	return new VSIStdoutHandle;
 }
 
 /************************************************************************/
 /*                                Stat()                                */
 /************************************************************************/
 
-int VSIStdoutFilesystemHandler::Stat( const char * pszFilename,
-                                      VSIStatBufL * pStatBuf,
-                                      int nFlags )
+int VSIStdoutFilesystemHandler::Stat(const char * pszFilename,
+	VSIStatBufL * pStatBuf,
+	int nFlags)
 
 {
-    memset( pStatBuf, 0, sizeof(VSIStatBufL) );
+	memset(pStatBuf, 0, sizeof(VSIStatBufL));
 
-    return -1;
+	return -1;
 }
 
 
@@ -204,9 +204,9 @@ int VSIStdoutFilesystemHandler::Stat( const char * pszFilename,
 class VSIStdoutRedirectFilesystemHandler : public VSIFilesystemHandler
 {
 public:
-    virtual VSIVirtualHandle *Open( const char *pszFilename,
-                                    const char *pszAccess);
-    virtual int      Stat( const char *pszFilename, VSIStatBufL *pStatBuf, int nFlags );
+	virtual VSIVirtualHandle *Open(const char *pszFilename,
+		const char *pszAccess);
+	virtual int      Stat(const char *pszFilename, VSIStatBufL *pStatBuf, int nFlags);
 };
 
 /************************************************************************/
@@ -217,18 +217,18 @@ public:
 
 class VSIStdoutRedirectHandle : public VSIVirtualHandle
 {
-    VSIVirtualHandle* poHandle;
-  public:
-                      VSIStdoutRedirectHandle(VSIVirtualHandle* poHandle);
-                     ~VSIStdoutRedirectHandle();
+	VSIVirtualHandle* poHandle;
+public:
+	VSIStdoutRedirectHandle(VSIVirtualHandle* poHandle);
+	~VSIStdoutRedirectHandle();
 
-    virtual int       Seek( vsi_l_offset nOffset, int nWhence );
-    virtual vsi_l_offset Tell();
-    virtual size_t    Read( void *pBuffer, size_t nSize, size_t nMemb );
-    virtual size_t    Write( const void *pBuffer, size_t nSize, size_t nMemb );
-    virtual int       Eof();
-    virtual int       Flush();
-    virtual int       Close();
+	virtual int       Seek(vsi_l_offset nOffset, int nWhence);
+	virtual vsi_l_offset Tell();
+	virtual size_t    Read(void *pBuffer, size_t nSize, size_t nMemb);
+	virtual size_t    Write(const void *pBuffer, size_t nSize, size_t nMemb);
+	virtual int       Eof();
+	virtual int       Flush();
+	virtual int       Close();
 };
 
 /************************************************************************/
@@ -237,7 +237,7 @@ class VSIStdoutRedirectHandle : public VSIVirtualHandle
 
 VSIStdoutRedirectHandle::VSIStdoutRedirectHandle(VSIVirtualHandle* poHandle)
 {
-    this->poHandle = poHandle;
+	this->poHandle = poHandle;
 }
 
 /************************************************************************/
@@ -246,18 +246,18 @@ VSIStdoutRedirectHandle::VSIStdoutRedirectHandle(VSIVirtualHandle* poHandle)
 
 VSIStdoutRedirectHandle::~VSIStdoutRedirectHandle()
 {
-    delete poHandle;
+	delete poHandle;
 }
 
 /************************************************************************/
 /*                                Seek()                                */
 /************************************************************************/
 
-int VSIStdoutRedirectHandle::Seek( vsi_l_offset nOffset, int nWhence )
+int VSIStdoutRedirectHandle::Seek(vsi_l_offset nOffset, int nWhence)
 
 {
-    CPLError(CE_Failure, CPLE_NotSupported, "Seek() unsupported on /vsistdout_redirect");
-    return -1;
+	CPLError(CE_Failure, CPLE_NotSupported, "Seek() unsupported on /vsistdout_redirect");
+	return -1;
 }
 
 /************************************************************************/
@@ -266,7 +266,7 @@ int VSIStdoutRedirectHandle::Seek( vsi_l_offset nOffset, int nWhence )
 
 vsi_l_offset VSIStdoutRedirectHandle::Tell()
 {
-    return poHandle->Tell();
+	return poHandle->Tell();
 }
 
 /************************************************************************/
@@ -276,29 +276,29 @@ vsi_l_offset VSIStdoutRedirectHandle::Tell()
 int VSIStdoutRedirectHandle::Flush()
 
 {
-    return poHandle->Flush();
+	return poHandle->Flush();
 }
 
 /************************************************************************/
 /*                                Read()                                */
 /************************************************************************/
 
-size_t VSIStdoutRedirectHandle::Read( void * pBuffer, size_t nSize, size_t nCount )
+size_t VSIStdoutRedirectHandle::Read(void * pBuffer, size_t nSize, size_t nCount)
 
 {
-    CPLError(CE_Failure, CPLE_NotSupported, "Read() unsupported on /vsistdout_redirect");
-    return 0;
+	CPLError(CE_Failure, CPLE_NotSupported, "Read() unsupported on /vsistdout_redirect");
+	return 0;
 }
 
 /************************************************************************/
 /*                               Write()                                */
 /************************************************************************/
 
-size_t VSIStdoutRedirectHandle::Write( const void * pBuffer, size_t nSize,
-                                  size_t nCount )
+size_t VSIStdoutRedirectHandle::Write(const void * pBuffer, size_t nSize,
+	size_t nCount)
 
 {
-    return poHandle->Write(pBuffer, nSize, nCount);
+	return poHandle->Write(pBuffer, nSize, nCount);
 }
 
 /************************************************************************/
@@ -308,7 +308,7 @@ size_t VSIStdoutRedirectHandle::Write( const void * pBuffer, size_t nSize,
 int VSIStdoutRedirectHandle::Eof()
 
 {
-    return poHandle->Eof();
+	return poHandle->Eof();
 }
 
 /************************************************************************/
@@ -318,7 +318,7 @@ int VSIStdoutRedirectHandle::Eof()
 int VSIStdoutRedirectHandle::Close()
 
 {
-    return poHandle->Close();
+	return poHandle->Close();
 }
 
 /************************************************************************/
@@ -332,38 +332,38 @@ int VSIStdoutRedirectHandle::Close()
 /************************************************************************/
 
 VSIVirtualHandle *
-VSIStdoutRedirectFilesystemHandler::Open( const char *pszFilename,
-                                          const char *pszAccess )
+VSIStdoutRedirectFilesystemHandler::Open(const char *pszFilename,
+	const char *pszAccess)
 
 {
-    if ( strchr(pszAccess, 'r') != NULL ||
-         strchr(pszAccess, '+') != NULL )
-    {
-        CPLError(CE_Failure, CPLE_NotSupported,
-                 "Read or update mode not supported on /vsistdout_redirect");
-        return NULL;
-    }
+	if (strchr(pszAccess, 'r') != NULL ||
+		strchr(pszAccess, '+') != NULL)
+	{
+		CPLError(CE_Failure, CPLE_NotSupported,
+			"Read or update mode not supported on /vsistdout_redirect");
+		return NULL;
+	}
 
-    VSIVirtualHandle* poHandle = (VSIVirtualHandle* )VSIFOpenL(
-            pszFilename + strlen("/vsistdout_redirect/"), pszAccess);
-    if (poHandle == NULL)
-        return NULL;
+	VSIVirtualHandle* poHandle = (VSIVirtualHandle*)VSIFOpenL(
+		pszFilename + strlen("/vsistdout_redirect/"), pszAccess);
+	if (poHandle == NULL)
+		return NULL;
 
-    return new VSIStdoutRedirectHandle(poHandle);
+	return new VSIStdoutRedirectHandle(poHandle);
 }
 
 /************************************************************************/
 /*                                Stat()                                */
 /************************************************************************/
 
-int VSIStdoutRedirectFilesystemHandler::Stat( const char * pszFilename,
-                                      VSIStatBufL * pStatBuf,
-                                      int nFlags )
+int VSIStdoutRedirectFilesystemHandler::Stat(const char * pszFilename,
+	VSIStatBufL * pStatBuf,
+	int nFlags)
 
 {
-    memset( pStatBuf, 0, sizeof(VSIStatBufL) );
+	memset(pStatBuf, 0, sizeof(VSIStatBufL));
 
-    return -1;
+	return -1;
 }
 
 /************************************************************************/
@@ -384,6 +384,6 @@ int VSIStdoutRedirectFilesystemHandler::Stat( const char * pszFilename,
 void VSIInstallStdoutHandler()
 
 {
-    VSIFileManager::InstallHandler( "/vsistdout/", new VSIStdoutFilesystemHandler );
-    VSIFileManager::InstallHandler( "/vsistdout_redirect/", new VSIStdoutRedirectFilesystemHandler );
+	VSIFileManager::InstallHandler("/vsistdout/", new VSIStdoutFilesystemHandler);
+	VSIFileManager::InstallHandler("/vsistdout_redirect/", new VSIStdoutRedirectFilesystemHandler);
 }

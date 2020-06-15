@@ -2,13 +2,13 @@
 ** Copyright 2002 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:     $Archive: /NCS/Source/C/NCSEcw/NCSJP2/NCSJP2Box.cpp $
@@ -20,11 +20,11 @@
 
 #include "NCSJP2File.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+ //////////////////////////////////////////////////////////////////////
+ // Construction/Destruction
+ //////////////////////////////////////////////////////////////////////
 
-// Constructor
+ // Constructor
 CNCSJP2Box::CNCSJP2Box()
 {
 	// Initialise the base box class members
@@ -58,12 +58,12 @@ CNCSJP2Box::~CNCSJP2Box()
 CNCSError CNCSJP2Box::SetPrevBoxes(CNCSJP2Box *pFirst, ...)
 {
 	va_list va;
-	
+
 	va_start(va, pFirst);
 
 	CNCSJP2Box *pBox = pFirst;
 
-	while(pBox) {	// NULL terminated varargs list
+	while (pBox) {	// NULL terminated varargs list
 		m_Prev.push_back(pBox);
 		pBox = va_arg(va, CNCSJP2Box*);
 	}
@@ -75,12 +75,12 @@ CNCSError CNCSJP2Box::SetPrevBoxes(CNCSJP2Box *pFirst, ...)
 CNCSError CNCSJP2Box::SetNextBoxes(CNCSJP2Box *pFirst, ...)
 {
 	va_list va;
-	
+
 	va_start(va, pFirst);
 
 	CNCSJP2Box *pBox = pFirst;
 
-	while(pBox) {	// NULL terminated varargs list
+	while (pBox) {	// NULL terminated varargs list
 		m_Next.push_back(pBox);
 		pBox = va_arg(va, CNCSJP2Box*);
 	}
@@ -100,56 +100,58 @@ CNCSError CNCSJP2Box::Parse(class CNCSJP2File &JP2File, CNCSJPCIOStream &Stream)
 
 	CNCSJP2BoxList::iterator pCur = m_Prev.begin();
 
-	while(pCur != m_Prev.end()) {  // Make sure box follows the correct box(es)
-		if((*pCur)->m_bHaveBox == false) {
+	while (pCur != m_Prev.end()) {  // Make sure box follows the correct box(es)
+		if ((*pCur)->m_bHaveBox == false) {
 			Error = NCS_FILE_INVALID;
 			break;
 		}
 		pCur++;
 	}
-	if(Error == NCS_SUCCESS) {	// Make sure box proceeds the correct box(es)
+	if (Error == NCS_SUCCESS) {	// Make sure box proceeds the correct box(es)
 		pCur = m_Next.begin();
 
-		while(pCur != m_Next.end()) {
-			if((*pCur)->m_bHaveBox == true) {
+		while (pCur != m_Next.end()) {
+			if ((*pCur)->m_bHaveBox == true) {
 				Error = NCS_FILE_INVALID;
 				break;
 			}
 			pCur++;
 		}
 
-		if(Error == NCS_SUCCESS) {
-			if(Stream.Mark()) { // Mark the stream, so we can rewind on an error.
+		if (Error == NCS_SUCCESS) {
+			if (Stream.Mark()) { // Mark the stream, so we can rewind on an error.
 				UINT32 nLen;
 
-					// Store absolute offset of box in stream
+				// Store absolute offset of box in stream
 				m_nBoxOffset = Stream.Tell();
 
-					// Box length.
-				if(Stream.ReadUINT32(nLen)) {
-			
-						// Box type
-					if(Stream.ReadUINT32(m_nTBox)) {
+				// Box length.
+				if (Stream.ReadUINT32(nLen)) {
+
+					// Box type
+					if (Stream.ReadUINT32(m_nTBox)) {
 						//
 						// If the 32 bit nLen is equal to 1, then there is a 64bit length field present.
 						//
-						if(nLen == 1) {
+						if (nLen == 1) {
 							// Read in the 64bit length
-							if(Stream.ReadUINT64(m_nXLBox)) {
+							if (Stream.ReadUINT64(m_nXLBox)) {
 								// Calculate the Data length within the box.
 								m_nLDBox = m_nXLBox - 16;
 							}
-						} else {
-							if(nLen == 0) {
+						}
+						else {
+							if (nLen == 0) {
 								// Box consists of the rest of the stream
 								m_nXLBox = 8 + Stream.Size() - Stream.Tell();
-							} else {
+							}
+							else {
 								// No 64bit length present
 								m_nXLBox = nLen;
 							}
 							m_nLDBox = m_nXLBox - 8;
 						}
-						if(Stream.GetError() == NCS_SUCCESS) {
+						if (Stream.GetError() == NCS_SUCCESS) {
 							m_nDBoxOffset = Stream.Tell();
 							// The type matches, or we don't care.  Unmark the stream.
 							Stream.UnMark();
@@ -171,15 +173,16 @@ CNCSError CNCSJP2Box::UnParse(class CNCSJP2File &JP2File, CNCSJPCIOStream &Strea
 	CNCSError Error;
 
 	// If length is > 2^32, need to write out the 64bit XLBox field.
-	if(m_nXLBox > 0xffffffff) {
+	if (m_nXLBox > 0xffffffff) {
 		// Will be writing XLBox, so write out 1 for the LBox field.
 		Stream.WriteUINT32(1);
-	} else {
+	}
+	else {
 		Stream.WriteUINT32((UINT32)m_nXLBox);
 	}
-	if(Stream.GetError() == NCS_SUCCESS) {
+	if (Stream.GetError() == NCS_SUCCESS) {
 		// Write out the box type;
-		if(Stream.WriteUINT32(m_nTBox) && m_nXLBox > 0xffffffff) {
+		if (Stream.WriteUINT32(m_nTBox) && m_nXLBox > 0xffffffff) {
 			// Write out the XLBox field.
 			Stream.WriteUINT64(m_nXLBox);
 		}

@@ -46,10 +46,10 @@ public:
 	CFileDropTarget();
 
 	virtual ~CFileDropTarget();
-	virtual BOOL Register(CWnd *pWnd,DROPEFFECT dwEffect=DROPEFFECT_NONE);
+	virtual BOOL Register(CWnd *pWnd, DROPEFFECT dwEffect = DROPEFFECT_NONE);
 	CMainFrame *m_pMainFrame;
 	static V_FILELIST m_vFiles;
-    BOOL ReadHdropData(COleDataObject* pDataObject);
+	BOOL ReadHdropData(COleDataObject* pDataObject);
 
 	bool m_bAddingLayers;
 
@@ -59,24 +59,24 @@ public:
 
 	static void FileTypeErrorMsg();
 
-// Attributes
+	// Attributes
 private:
-    CWnd *m_pWndRegistered;
-    IDropTargetHelper* m_piDropHelper;
-    bool m_bUseDnDHelper;
+	CWnd *m_pWndRegistered;
+	IDropTargetHelper* m_piDropHelper;
+	bool m_bUseDnDHelper;
 	DROPEFFECT m_dwEffect;
 	static UINT m_nOutside;
 	static bool m_bLinking;
 
-// Operations
+	// Operations
 public:
-// Overrides
-    virtual void Revoke();
+	// Overrides
+	virtual void Revoke();
 
-    virtual BOOL        OnDrop(CWnd* pWnd, COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point);
-    virtual DROPEFFECT  OnDragEnter(CWnd* pWnd, COleDataObject* pDataObject, DWORD dwKeyState, CPoint point);
-    virtual void        OnDragLeave(CWnd* pWnd);
-    virtual DROPEFFECT  OnDragOver(CWnd* pWnd, COleDataObject* pDataObject, DWORD dwKeyState, CPoint point);
+	virtual BOOL        OnDrop(CWnd* pWnd, COleDataObject* pDataObject, DROPEFFECT dropEffect, CPoint point);
+	virtual DROPEFFECT  OnDragEnter(CWnd* pWnd, COleDataObject* pDataObject, DWORD dwKeyState, CPoint point);
+	virtual void        OnDragLeave(CWnd* pWnd);
+	virtual DROPEFFECT  OnDragOver(CWnd* pWnd, COleDataObject* pDataObject, DWORD dwKeyState, CPoint point);
 };
 
 /////////////////////////////////////////////////////////////////////////////

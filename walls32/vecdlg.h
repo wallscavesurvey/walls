@@ -6,7 +6,7 @@
 
 class CVecDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
 	CVecDlg(CWnd* pParent = NULL);	// standard constructor
 

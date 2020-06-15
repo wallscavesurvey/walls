@@ -43,19 +43,19 @@ void CCheckHeadCtrl::OnItemClicked(NMHDR* pNMHDR, LRESULT* pResult)
 
 	HDITEM hdItem;
 	hdItem.mask = HDI_IMAGE;
-	VERIFY( GetItem(nItem, &hdItem) );
+	VERIFY(GetItem(nItem, &hdItem));
 
 	if (hdItem.iImage == 1)
 		hdItem.iImage = 2;
 	else
 		hdItem.iImage = 1;
 
-	VERIFY( SetItem(nItem, &hdItem) );
-	
+	VERIFY(SetItem(nItem, &hdItem));
+
 	BOOL bl = hdItem.iImage == 2 ? TRUE : FALSE;
 	CListCtrl* pListCtrl = (CListCtrl*)GetParent();
-	int nCount = pListCtrl->GetItemCount();	
-	for(nItem = 0; nItem < nCount; nItem++)
+	int nCount = pListCtrl->GetItemCount();
+	for (nItem = 0; nItem < nCount; nItem++)
 	{
 		ListView_SetCheckState(pListCtrl->GetSafeHwnd(), nItem, bl);
 	}
@@ -64,12 +64,12 @@ void CCheckHeadCtrl::OnItemClicked(NMHDR* pNMHDR, LRESULT* pResult)
 BOOL CCheckHeadCtrl::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message)
 {
 	return TRUE;
-//	return CHeaderCtrl::OnSetCursor(pWnd, nHitTest, message);
+	//	return CHeaderCtrl::OnSetCursor(pWnd, nHitTest, message);
 }
 
 void CCheckHeadCtrl::OnLButtonDblClk(UINT nFlags, CPoint point)
 {
-//	CHeaderCtrl::OnLButtonDblClk(nFlags, point);
+	//	CHeaderCtrl::OnLButtonDblClk(nFlags, point);
 }
 
 void CCheckHeadCtrl::OnLButtonDown(UINT nFlags, CPoint point)
@@ -77,15 +77,15 @@ void CCheckHeadCtrl::OnLButtonDown(UINT nFlags, CPoint point)
 	HD_ITEM hi;
 	hi.mask = HDI_WIDTH;	// We want the column width.
 	GetItem(0, &hi);
-	if(point.x<hi.cxy)
+	if (point.x < hi.cxy)
 		CHeaderCtrl::OnLButtonDblClk(nFlags, point);
 }
 
 #if 0
-BOOL CCheckHeadCtrl::OnItemchanging(NMHDR* pNMHDR, LRESULT* pResult) 
+BOOL CCheckHeadCtrl::OnItemchanging(NMHDR* pNMHDR, LRESULT* pResult)
 {
-	HD_NOTIFY *phdn = (HD_NOTIFY*) pNMHDR;
-	*pResult=1;
+	HD_NOTIFY *phdn = (HD_NOTIFY*)pNMHDR;
+	*pResult = 1;
 	return TRUE;
 
 	/*

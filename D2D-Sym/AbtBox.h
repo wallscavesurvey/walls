@@ -11,7 +11,7 @@ public:
 	CAbtBox(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CAbtBox();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_ABTBOX };
 
 protected:

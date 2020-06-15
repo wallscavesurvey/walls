@@ -48,10 +48,10 @@ OGRMultiPolygon::OGRMultiPolygon()
 OGRwkbGeometryType OGRMultiPolygon::getGeometryType() const
 
 {
-    if( getCoordinateDimension() == 3 )
-        return wkbMultiPolygon25D;
-    else
-        return wkbMultiPolygon;
+	if (getCoordinateDimension() == 3)
+		return wkbMultiPolygon25D;
+	else
+		return wkbMultiPolygon;
 }
 
 /************************************************************************/
@@ -61,7 +61,7 @@ OGRwkbGeometryType OGRMultiPolygon::getGeometryType() const
 int OGRMultiPolygon::getDimension() const
 
 {
-    return 2;
+	return 2;
 }
 
 /************************************************************************/
@@ -71,21 +71,21 @@ int OGRMultiPolygon::getDimension() const
 const char * OGRMultiPolygon::getGeometryName() const
 
 {
-    return "MULTIPOLYGON";
+	return "MULTIPOLYGON";
 }
 
 /************************************************************************/
 /*                        addGeometryDirectly()                         */
 /************************************************************************/
 
-OGRErr OGRMultiPolygon::addGeometryDirectly( OGRGeometry * poNewGeom )
+OGRErr OGRMultiPolygon::addGeometryDirectly(OGRGeometry * poNewGeom)
 
 {
-    if( poNewGeom->getGeometryType() != wkbPolygon 
-        && poNewGeom->getGeometryType() != wkbPolygon25D )
-        return OGRERR_UNSUPPORTED_GEOMETRY_TYPE;
+	if (poNewGeom->getGeometryType() != wkbPolygon
+		&& poNewGeom->getGeometryType() != wkbPolygon25D)
+		return OGRERR_UNSUPPORTED_GEOMETRY_TYPE;
 
-    return OGRGeometryCollection::addGeometryDirectly( poNewGeom );
+	return OGRGeometryCollection::addGeometryDirectly(poNewGeom);
 }
 
 /************************************************************************/
@@ -95,17 +95,17 @@ OGRErr OGRMultiPolygon::addGeometryDirectly( OGRGeometry * poNewGeom )
 OGRGeometry *OGRMultiPolygon::clone() const
 
 {
-    OGRMultiPolygon     *poNewGC;
+	OGRMultiPolygon     *poNewGC;
 
-    poNewGC = new OGRMultiPolygon;
-    poNewGC->assignSpatialReference( getSpatialReference() );
+	poNewGC = new OGRMultiPolygon;
+	poNewGC->assignSpatialReference(getSpatialReference());
 
-    for( int i = 0; i < getNumGeometries(); i++ )
-    {
-        poNewGC->addGeometry( getGeometryRef(i) );
-    }
+	for (int i = 0; i < getNumGeometries(); i++)
+	{
+		poNewGC->addGeometry(getGeometryRef(i));
+	}
 
-    return poNewGC;
+	return poNewGC;
 }
 
 /************************************************************************/
@@ -115,224 +115,224 @@ OGRGeometry *OGRMultiPolygon::clone() const
 /*      `MULTIPOLYGON ((x y, x y, ...),(x y, ...),...)'.                */
 /************************************************************************/
 
-OGRErr OGRMultiPolygon::importFromWkt( char ** ppszInput )
+OGRErr OGRMultiPolygon::importFromWkt(char ** ppszInput)
 
 {
-    char        szToken[OGR_WKT_TOKEN_MAX];
-    const char  *pszInput = *ppszInput;
-    OGRErr      eErr = OGRERR_NONE;
+	char        szToken[OGR_WKT_TOKEN_MAX];
+	const char  *pszInput = *ppszInput;
+	OGRErr      eErr = OGRERR_NONE;
 
-/* -------------------------------------------------------------------- */
-/*      Clear existing rings.                                           */
-/* -------------------------------------------------------------------- */
-    empty();
+	/* -------------------------------------------------------------------- */
+	/*      Clear existing rings.                                           */
+	/* -------------------------------------------------------------------- */
+	empty();
 
-/* -------------------------------------------------------------------- */
-/*      Read and verify the MULTIPOLYGON keyword token.                 */
-/* -------------------------------------------------------------------- */
-    pszInput = OGRWktReadToken( pszInput, szToken );
+	/* -------------------------------------------------------------------- */
+	/*      Read and verify the MULTIPOLYGON keyword token.                 */
+	/* -------------------------------------------------------------------- */
+	pszInput = OGRWktReadToken(pszInput, szToken);
 
-    if( !EQUAL(szToken,getGeometryName()) )
-        return OGRERR_CORRUPT_DATA;
+	if (!EQUAL(szToken, getGeometryName()))
+		return OGRERR_CORRUPT_DATA;
 
-/* -------------------------------------------------------------------- */
-/*      Check for EMPTY ...                                             */
-/* -------------------------------------------------------------------- */
-    const char *pszPreScan;
-    int bHasZ = FALSE, bHasM = FALSE;
+	/* -------------------------------------------------------------------- */
+	/*      Check for EMPTY ...                                             */
+	/* -------------------------------------------------------------------- */
+	const char *pszPreScan;
+	int bHasZ = FALSE, bHasM = FALSE;
 
-    pszPreScan = OGRWktReadToken( pszInput, szToken );
-    if( EQUAL(szToken,"EMPTY") )
-    {
-        *ppszInput = (char *) pszPreScan;
-        empty();
-        return OGRERR_NONE;
-    }
+	pszPreScan = OGRWktReadToken(pszInput, szToken);
+	if (EQUAL(szToken, "EMPTY"))
+	{
+		*ppszInput = (char *)pszPreScan;
+		empty();
+		return OGRERR_NONE;
+	}
 
-/* -------------------------------------------------------------------- */
-/*      Check for Z, M or ZM. Will ignore the Measure                   */
-/* -------------------------------------------------------------------- */
-    else if( EQUAL(szToken,"Z") )
-    {
-        bHasZ = TRUE;
-    }
-    else if( EQUAL(szToken,"M") )
-    {
-        bHasM = TRUE;
-    }
-    else if( EQUAL(szToken,"ZM") )
-    {
-        bHasZ = TRUE;
-        bHasM = TRUE;
-    }
+	/* -------------------------------------------------------------------- */
+	/*      Check for Z, M or ZM. Will ignore the Measure                   */
+	/* -------------------------------------------------------------------- */
+	else if (EQUAL(szToken, "Z"))
+	{
+		bHasZ = TRUE;
+	}
+	else if (EQUAL(szToken, "M"))
+	{
+		bHasM = TRUE;
+	}
+	else if (EQUAL(szToken, "ZM"))
+	{
+		bHasZ = TRUE;
+		bHasM = TRUE;
+	}
 
-    if (bHasZ || bHasM)
-    {
-        pszInput = pszPreScan;
-        pszPreScan = OGRWktReadToken( pszInput, szToken );
-        if( EQUAL(szToken,"EMPTY") )
-        {
-            *ppszInput = (char *) pszPreScan;
-            empty();
-            /* FIXME?: In theory we should store the dimension and M presence */
-            /* if we want to allow round-trip with ExportToWKT v1.2 */
-            return OGRERR_NONE;
-        }
-    }
+	if (bHasZ || bHasM)
+	{
+		pszInput = pszPreScan;
+		pszPreScan = OGRWktReadToken(pszInput, szToken);
+		if (EQUAL(szToken, "EMPTY"))
+		{
+			*ppszInput = (char *)pszPreScan;
+			empty();
+			/* FIXME?: In theory we should store the dimension and M presence */
+			/* if we want to allow round-trip with ExportToWKT v1.2 */
+			return OGRERR_NONE;
+		}
+	}
 
-    if( !EQUAL(szToken,"(") )
-        return OGRERR_CORRUPT_DATA;
+	if (!EQUAL(szToken, "("))
+		return OGRERR_CORRUPT_DATA;
 
-    if ( !bHasZ && !bHasM )
-    {
-        /* Test for old-style MULTIPOLYGON(EMPTY) */
-        pszPreScan = OGRWktReadToken( pszPreScan, szToken );
-        if( EQUAL(szToken,"EMPTY") )
-        {
-            pszPreScan = OGRWktReadToken( pszPreScan, szToken );
+	if (!bHasZ && !bHasM)
+	{
+		/* Test for old-style MULTIPOLYGON(EMPTY) */
+		pszPreScan = OGRWktReadToken(pszPreScan, szToken);
+		if (EQUAL(szToken, "EMPTY"))
+		{
+			pszPreScan = OGRWktReadToken(pszPreScan, szToken);
 
-            if( EQUAL(szToken,",") )
-            {
-                /* This is OK according to SFSQL SPEC. */
-            }
-            else if( !EQUAL(szToken,")") )
-                return OGRERR_CORRUPT_DATA;
-            else
-            {
-                *ppszInput = (char *) pszPreScan;
-                empty();
-                return OGRERR_NONE;
-            }
-        }
-    }
+			if (EQUAL(szToken, ","))
+			{
+				/* This is OK according to SFSQL SPEC. */
+			}
+			else if (!EQUAL(szToken, ")"))
+				return OGRERR_CORRUPT_DATA;
+			else
+			{
+				*ppszInput = (char *)pszPreScan;
+				empty();
+				return OGRERR_NONE;
+			}
+		}
+	}
 
-    /* Skip first '(' */
-    pszInput = OGRWktReadToken( pszInput, szToken );
+	/* Skip first '(' */
+	pszInput = OGRWktReadToken(pszInput, szToken);
 
-/* ==================================================================== */
-/*      Read each polygon in turn.  Note that we try to reuse the same  */
-/*      point list buffer from ring to ring to cut down on              */
-/*      allocate/deallocate overhead.                                   */
-/* ==================================================================== */
-    OGRRawPoint *paoPoints = NULL;
-    int         nMaxPoints = 0;
-    double      *padfZ = NULL;
-    
-    do
-    {
-        OGRPolygon      *poPolygon = new OGRPolygon();
+	/* ==================================================================== */
+	/*      Read each polygon in turn.  Note that we try to reuse the same  */
+	/*      point list buffer from ring to ring to cut down on              */
+	/*      allocate/deallocate overhead.                                   */
+	/* ==================================================================== */
+	OGRRawPoint *paoPoints = NULL;
+	int         nMaxPoints = 0;
+	double      *padfZ = NULL;
 
-/* -------------------------------------------------------------------- */
-/*      The next character should be a ( indicating the start of the    */
-/*      list of polygons.                                               */
-/* -------------------------------------------------------------------- */
-        pszInput = OGRWktReadToken( pszInput, szToken );
-        if( EQUAL(szToken, "EMPTY") )
-        {
-            eErr = addGeometryDirectly( poPolygon );
-            if( eErr != OGRERR_NONE )
-                return eErr;
+	do
+	{
+		OGRPolygon      *poPolygon = new OGRPolygon();
 
-            pszInput = OGRWktReadToken( pszInput, szToken );
-            if ( !EQUAL(szToken, ",") )
-                break;
+		/* -------------------------------------------------------------------- */
+		/*      The next character should be a ( indicating the start of the    */
+		/*      list of polygons.                                               */
+		/* -------------------------------------------------------------------- */
+		pszInput = OGRWktReadToken(pszInput, szToken);
+		if (EQUAL(szToken, "EMPTY"))
+		{
+			eErr = addGeometryDirectly(poPolygon);
+			if (eErr != OGRERR_NONE)
+				return eErr;
 
-            continue;
-        }
-        else if( szToken[0] != '(' )
-        {
-            eErr = OGRERR_CORRUPT_DATA;
-            delete poPolygon;
-            break;
-        }
+			pszInput = OGRWktReadToken(pszInput, szToken);
+			if (!EQUAL(szToken, ","))
+				break;
 
-/* -------------------------------------------------------------------- */
-/*      Loop over each ring in this polygon.                            */
-/* -------------------------------------------------------------------- */
-        do
-        {
-            int     nPoints = 0;
+			continue;
+		}
+		else if (szToken[0] != '(')
+		{
+			eErr = OGRERR_CORRUPT_DATA;
+			delete poPolygon;
+			break;
+		}
 
-            const char* pszNext = OGRWktReadToken( pszInput, szToken );
-            if (EQUAL(szToken,"EMPTY"))
-            {
-                poPolygon->addRingDirectly( new OGRLinearRing() );
+		/* -------------------------------------------------------------------- */
+		/*      Loop over each ring in this polygon.                            */
+		/* -------------------------------------------------------------------- */
+		do
+		{
+			int     nPoints = 0;
 
-                pszInput = OGRWktReadToken( pszNext, szToken );
-                if ( !EQUAL(szToken, ",") )
-                    break;
+			const char* pszNext = OGRWktReadToken(pszInput, szToken);
+			if (EQUAL(szToken, "EMPTY"))
+			{
+				poPolygon->addRingDirectly(new OGRLinearRing());
 
-                continue;
-            }
+				pszInput = OGRWktReadToken(pszNext, szToken);
+				if (!EQUAL(szToken, ","))
+					break;
 
-/* -------------------------------------------------------------------- */
-/*      Read points for one line from input.                            */
-/* -------------------------------------------------------------------- */
-            pszInput = OGRWktReadPoints( pszInput, &paoPoints, &padfZ, &nMaxPoints,
-                                         &nPoints );
+				continue;
+			}
 
-            if( pszInput == NULL || nPoints == 0 )
-            {
-                eErr = OGRERR_CORRUPT_DATA;
-                break;
-            }
-        
-/* -------------------------------------------------------------------- */
-/*      Create the new line, and add to collection.                     */
-/* -------------------------------------------------------------------- */
-            OGRLinearRing       *poLine;
+			/* -------------------------------------------------------------------- */
+			/*      Read points for one line from input.                            */
+			/* -------------------------------------------------------------------- */
+			pszInput = OGRWktReadPoints(pszInput, &paoPoints, &padfZ, &nMaxPoints,
+				&nPoints);
 
-            poLine = new OGRLinearRing();
-            /* Ignore Z array when we have a MULTIPOLYGON M */
-            if (bHasM && !bHasZ)
-                poLine->setPoints( nPoints, paoPoints, NULL );
-            else
-                poLine->setPoints( nPoints, paoPoints, padfZ );
+			if (pszInput == NULL || nPoints == 0)
+			{
+				eErr = OGRERR_CORRUPT_DATA;
+				break;
+			}
 
-            poPolygon->addRingDirectly( poLine ); 
+			/* -------------------------------------------------------------------- */
+			/*      Create the new line, and add to collection.                     */
+			/* -------------------------------------------------------------------- */
+			OGRLinearRing       *poLine;
 
-/* -------------------------------------------------------------------- */
-/*      Read the delimeter following the ring.                          */
-/* -------------------------------------------------------------------- */
-        
-            pszInput = OGRWktReadToken( pszInput, szToken );
-        } while( szToken[0] == ',' && eErr == OGRERR_NONE );
+			poLine = new OGRLinearRing();
+			/* Ignore Z array when we have a MULTIPOLYGON M */
+			if (bHasM && !bHasZ)
+				poLine->setPoints(nPoints, paoPoints, NULL);
+			else
+				poLine->setPoints(nPoints, paoPoints, padfZ);
 
-/* -------------------------------------------------------------------- */
-/*      Verify that we have a closing bracket.                          */
-/* -------------------------------------------------------------------- */
-        if( eErr == OGRERR_NONE )
-        {
-            if( szToken[0] != ')' )
-                eErr = OGRERR_CORRUPT_DATA;
-            else
-                pszInput = OGRWktReadToken( pszInput, szToken );
-        }
-        
-/* -------------------------------------------------------------------- */
-/*      Add the polygon to the MULTIPOLYGON.                            */
-/* -------------------------------------------------------------------- */
-        if( eErr == OGRERR_NONE )
-            eErr = addGeometryDirectly( poPolygon );
-        else
-            delete poPolygon;
+			poPolygon->addRingDirectly(poLine);
 
-    } while( szToken[0] == ',' && eErr == OGRERR_NONE );
+			/* -------------------------------------------------------------------- */
+			/*      Read the delimeter following the ring.                          */
+			/* -------------------------------------------------------------------- */
 
-/* -------------------------------------------------------------------- */
-/*      freak if we don't get a closing bracket.                        */
-/* -------------------------------------------------------------------- */
-    CPLFree( paoPoints );
-    CPLFree( padfZ );
-   
-    if( eErr != OGRERR_NONE )
-        return eErr;
+			pszInput = OGRWktReadToken(pszInput, szToken);
+		} while (szToken[0] == ',' && eErr == OGRERR_NONE);
 
-    if( szToken[0] != ')' )
-        return OGRERR_CORRUPT_DATA;
-    
-    *ppszInput = (char *) pszInput;
-    return OGRERR_NONE;
+		/* -------------------------------------------------------------------- */
+		/*      Verify that we have a closing bracket.                          */
+		/* -------------------------------------------------------------------- */
+		if (eErr == OGRERR_NONE)
+		{
+			if (szToken[0] != ')')
+				eErr = OGRERR_CORRUPT_DATA;
+			else
+				pszInput = OGRWktReadToken(pszInput, szToken);
+		}
+
+		/* -------------------------------------------------------------------- */
+		/*      Add the polygon to the MULTIPOLYGON.                            */
+		/* -------------------------------------------------------------------- */
+		if (eErr == OGRERR_NONE)
+			eErr = addGeometryDirectly(poPolygon);
+		else
+			delete poPolygon;
+
+	} while (szToken[0] == ',' && eErr == OGRERR_NONE);
+
+	/* -------------------------------------------------------------------- */
+	/*      freak if we don't get a closing bracket.                        */
+	/* -------------------------------------------------------------------- */
+	CPLFree(paoPoints);
+	CPLFree(padfZ);
+
+	if (eErr != OGRERR_NONE)
+		return eErr;
+
+	if (szToken[0] != ')')
+		return OGRERR_CORRUPT_DATA;
+
+	*ppszInput = (char *)pszInput;
+	return OGRERR_NONE;
 }
 
 /************************************************************************/
@@ -342,93 +342,93 @@ OGRErr OGRMultiPolygon::importFromWkt( char ** ppszInput )
 /*      equivelent.  This could be made alot more CPU efficient!        */
 /************************************************************************/
 
-OGRErr OGRMultiPolygon::exportToWkt( char ** ppszDstText ) const
+OGRErr OGRMultiPolygon::exportToWkt(char ** ppszDstText) const
 
 {
-    char        **papszPolygons;
-    int         iPoly, nCumulativeLength = 0, nValidPolys=0;
-    OGRErr      eErr;
-    int         bMustWriteComma = FALSE;
+	char        **papszPolygons;
+	int         iPoly, nCumulativeLength = 0, nValidPolys = 0;
+	OGRErr      eErr;
+	int         bMustWriteComma = FALSE;
 
-/* -------------------------------------------------------------------- */
-/*      Build a list of strings containing the stuff for each ring.     */
-/* -------------------------------------------------------------------- */
-    papszPolygons = (char **) CPLCalloc(sizeof(char *),getNumGeometries());
+	/* -------------------------------------------------------------------- */
+	/*      Build a list of strings containing the stuff for each ring.     */
+	/* -------------------------------------------------------------------- */
+	papszPolygons = (char **)CPLCalloc(sizeof(char *), getNumGeometries());
 
-    for( iPoly = 0; iPoly < getNumGeometries(); iPoly++ )
-    {
-        eErr = getGeometryRef(iPoly)->exportToWkt( &(papszPolygons[iPoly]) );
-        if( eErr != OGRERR_NONE )
-            goto error;
+	for (iPoly = 0; iPoly < getNumGeometries(); iPoly++)
+	{
+		eErr = getGeometryRef(iPoly)->exportToWkt(&(papszPolygons[iPoly]));
+		if (eErr != OGRERR_NONE)
+			goto error;
 
-        if( !EQUALN(papszPolygons[iPoly],"POLYGON (", 9) )
-        {
-            CPLDebug( "OGR", "OGRMultiPolygon::exportToWkt() - skipping %s.",
-                      papszPolygons[iPoly] );
-            CPLFree( papszPolygons[iPoly] );
-            papszPolygons[iPoly] = NULL;
-            continue;
-        }
-        
-        nCumulativeLength += strlen(papszPolygons[iPoly] + 8);
-        nValidPolys++;
-    }
-    
-/* -------------------------------------------------------------------- */
-/*      Return MULTIPOLYGON EMPTY if we get no valid polygons.          */
-/* -------------------------------------------------------------------- */
-    if( nValidPolys == 0 )
-    {
-        CPLFree( papszPolygons );
-        *ppszDstText = CPLStrdup("MULTIPOLYGON EMPTY");
-        return OGRERR_NONE;
-    }
+		if (!EQUALN(papszPolygons[iPoly], "POLYGON (", 9))
+		{
+			CPLDebug("OGR", "OGRMultiPolygon::exportToWkt() - skipping %s.",
+				papszPolygons[iPoly]);
+			CPLFree(papszPolygons[iPoly]);
+			papszPolygons[iPoly] = NULL;
+			continue;
+		}
 
-/* -------------------------------------------------------------------- */
-/*      Allocate exactly the right amount of space for the              */
-/*      aggregated string.                                              */
-/* -------------------------------------------------------------------- */
-    *ppszDstText = (char *) VSIMalloc(nCumulativeLength+getNumGeometries()+20);
+		nCumulativeLength += strlen(papszPolygons[iPoly] + 8);
+		nValidPolys++;
+	}
 
-    if( *ppszDstText == NULL )
-    {
-        eErr = OGRERR_NOT_ENOUGH_MEMORY;
-        goto error;
-    }
+	/* -------------------------------------------------------------------- */
+	/*      Return MULTIPOLYGON EMPTY if we get no valid polygons.          */
+	/* -------------------------------------------------------------------- */
+	if (nValidPolys == 0)
+	{
+		CPLFree(papszPolygons);
+		*ppszDstText = CPLStrdup("MULTIPOLYGON EMPTY");
+		return OGRERR_NONE;
+	}
 
-/* -------------------------------------------------------------------- */
-/*      Build up the string, freeing temporary strings as we go.        */
-/* -------------------------------------------------------------------- */
-    strcpy( *ppszDstText, "MULTIPOLYGON (" );
-    nCumulativeLength = strlen(*ppszDstText);
+	/* -------------------------------------------------------------------- */
+	/*      Allocate exactly the right amount of space for the              */
+	/*      aggregated string.                                              */
+	/* -------------------------------------------------------------------- */
+	*ppszDstText = (char *)VSIMalloc(nCumulativeLength + getNumGeometries() + 20);
 
-    for( iPoly = 0; iPoly < getNumGeometries(); iPoly++ )
-    {                                                           
-        if( papszPolygons[iPoly] == NULL )
-            continue;
+	if (*ppszDstText == NULL)
+	{
+		eErr = OGRERR_NOT_ENOUGH_MEMORY;
+		goto error;
+	}
 
-        if( bMustWriteComma )
-            (*ppszDstText)[nCumulativeLength++] = ',';
-        bMustWriteComma = TRUE;
-        
-        int nPolyLength = strlen(papszPolygons[iPoly] + 8);
-        memcpy( *ppszDstText + nCumulativeLength, papszPolygons[iPoly] + 8, nPolyLength );
-        nCumulativeLength += nPolyLength;
-        VSIFree( papszPolygons[iPoly] );
-    }
+	/* -------------------------------------------------------------------- */
+	/*      Build up the string, freeing temporary strings as we go.        */
+	/* -------------------------------------------------------------------- */
+	strcpy(*ppszDstText, "MULTIPOLYGON (");
+	nCumulativeLength = strlen(*ppszDstText);
 
-    (*ppszDstText)[nCumulativeLength++] = ')';
-    (*ppszDstText)[nCumulativeLength] = '\0';
+	for (iPoly = 0; iPoly < getNumGeometries(); iPoly++)
+	{
+		if (papszPolygons[iPoly] == NULL)
+			continue;
 
-    CPLFree( papszPolygons );
+		if (bMustWriteComma)
+			(*ppszDstText)[nCumulativeLength++] = ',';
+		bMustWriteComma = TRUE;
 
-    return OGRERR_NONE;
+		int nPolyLength = strlen(papszPolygons[iPoly] + 8);
+		memcpy(*ppszDstText + nCumulativeLength, papszPolygons[iPoly] + 8, nPolyLength);
+		nCumulativeLength += nPolyLength;
+		VSIFree(papszPolygons[iPoly]);
+	}
+
+	(*ppszDstText)[nCumulativeLength++] = ')';
+	(*ppszDstText)[nCumulativeLength] = '\0';
+
+	CPLFree(papszPolygons);
+
+	return OGRERR_NONE;
 
 error:
-    for( iPoly = 0; iPoly < getNumGeometries(); iPoly++ )
-        CPLFree( papszPolygons[iPoly] );
-    CPLFree( papszPolygons );
-    return eErr;
+	for (iPoly = 0; iPoly < getNumGeometries(); iPoly++)
+		CPLFree(papszPolygons[iPoly]);
+	CPLFree(papszPolygons);
+	return eErr;
 }
 
 /************************************************************************/
@@ -447,16 +447,16 @@ error:
 double OGRMultiPolygon::get_Area() const
 
 {
-    double dfArea = 0.0;
-    int iPoly;
+	double dfArea = 0.0;
+	int iPoly;
 
-    for( iPoly = 0; iPoly < getNumGeometries(); iPoly++ )
-    {
-        OGRPolygon *poPoly = (OGRPolygon *) getGeometryRef( iPoly );
+	for (iPoly = 0; iPoly < getNumGeometries(); iPoly++)
+	{
+		OGRPolygon *poPoly = (OGRPolygon *)getGeometryRef(iPoly);
 
-        dfArea += poPoly->get_Area();
-    }
+		dfArea += poPoly->get_Area();
+	}
 
-    return dfArea;
+	return dfArea;
 }
 

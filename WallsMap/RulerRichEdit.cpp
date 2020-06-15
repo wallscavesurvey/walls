@@ -8,16 +8,16 @@
 
 	Date :			2004-04-17
 
-	Purpose :		"CRulerRichEdit" is derived from "CWnd". 
+	Purpose :		"CRulerRichEdit" is derived from "CWnd".
 
-	Description :	The class, in addition to the normal "CWnd", 
-					handles horizontal scrollbar messages - forcing an 
-					update of the parent (to synchronize the ruler). The 
-					change notification is called for the same reason. 
-					"WM_GETDLGCODE" is handled, we want all keys in a 
+	Description :	The class, in addition to the normal "CWnd",
+					handles horizontal scrollbar messages - forcing an
+					update of the parent (to synchronize the ruler). The
+					change notification is called for the same reason.
+					"WM_GETDLGCODE" is handled, we want all keys in a
 					dialog box instantiation.
 
-	Usage :			This class is only useful as a child of the 
+	Usage :			This class is only useful as a child of the
 					"CRulerRichEditCtrl".
 
    ========================================================================*/
@@ -33,9 +33,9 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #ifdef _UNICODE
-	#define RTF_CLASS RICHEDIT_CLASSW
+#define RTF_CLASS RICHEDIT_CLASSW
 #else
-	#define RTF_CLASS RICHEDIT_CLASSA
+#define RTF_CLASS RICHEDIT_CLASSA
 #endif
 
 extern UINT urm_DATACHANGED;
@@ -48,11 +48,11 @@ CRulerRichEdit::CRulerRichEdit()
 	Function :		CRulerRichEdit::CRulerRichEdit
 	Description :	constructor
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	none
 
-	Usage :			
+	Usage :
 
    ============================================================*/
 {
@@ -63,11 +63,11 @@ CRulerRichEdit::~CRulerRichEdit()
 	Function :		CRulerRichEdit::~CRulerRichEdit
 	Description :	destructor
 	Access :		Public
-					
+
 	Return :		void
 	Parameters :	none
 
-	Usage :			
+	Usage :
 
    ============================================================*/
 {
@@ -81,12 +81,12 @@ BEGIN_MESSAGE_MAP(CRulerRichEdit, CRichEditCtrl)
 	ON_WM_KEYDOWN()
 END_MESSAGE_MAP()
 
-BOOL CRulerRichEdit::Create( DWORD style, CRect rect, CWnd* parent )
+BOOL CRulerRichEdit::Create(DWORD style, CRect rect, CWnd* parent)
 /* ============================================================
 	Function :		CRulerRichEdit::~CRulerRichEdit
 	Description :	Creates the control
 	Access :		Public
-					
+
 	Return :		BOOL			-	"TRUE" if created ok
 	Parameters :	DWORD			-	Style for the control
 					CRect rect		-	Position of the control
@@ -97,8 +97,8 @@ BOOL CRulerRichEdit::Create( DWORD style, CRect rect, CWnd* parent )
    ============================================================*/
 {
 
-	if(CWnd::Create(RTF_CLASS, NULL, style, rect, parent, RTF_CONTROL)) {
-		VERIFY(S_OK==RevokeDragDrop(*this));
+	if (CWnd::Create(RTF_CLASS, NULL, style, rect, parent, RTF_CONTROL)) {
+		VERIFY(S_OK == RevokeDragDrop(*this));
 		VERIFY(m_dropTarget.Register(this, DROPEFFECT_LINK));
 		return TRUE;
 	}
@@ -108,34 +108,34 @@ BOOL CRulerRichEdit::Create( DWORD style, CRect rect, CWnd* parent )
 /////////////////////////////////////////////////////////////////////////////
 // CRulerRichEdit message handlers
 #if 0
-void CRulerRichEdit::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CRulerRichEdit::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 /* ============================================================
 	Function :		CRulerRichEdit::OnHScroll
 	Description :	Handles the "WM_HSCROLL" message.
 	Access :		Protected
-					
+
 	Return :		void
 	Parameters :	UINT nSBCode			-	Type of operation
 					UINT nPos				-	New position
 					CScrollBar* pScrollBar	-	Pointer to scrollbar
-					
+
 	Usage :			Called from MFC. Updates the ruler.
 
    ============================================================*/
 {
 
-	CWnd::OnHScroll( nSBCode, nPos, pScrollBar );
+	CWnd::OnHScroll(nSBCode, nPos, pScrollBar);
 
 	SCROLLINFO	si;
-	ZeroMemory( &si, sizeof( SCROLLINFO ) );
-	si.cbSize = sizeof( SCROLLINFO );
-	GetScrollInfo( SB_HORZ, &si );
+	ZeroMemory(&si, sizeof(SCROLLINFO));
+	si.cbSize = sizeof(SCROLLINFO);
+	GetScrollInfo(SB_HORZ, &si);
 
-	if ( nSBCode == SB_THUMBTRACK )
+	if (nSBCode == SB_THUMBTRACK)
 	{
 
 		si.nPos = nPos;
-		SetScrollInfo( SB_HORZ, &si );
+		SetScrollInfo(SB_HORZ, &si);
 
 	}
 
@@ -144,16 +144,16 @@ void CRulerRichEdit::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 }
 #endif
 
-void CRulerRichEdit::OnChange() 
+void CRulerRichEdit::OnChange()
 /* ============================================================
 	Function :		CRulerRichEdit::OnChange
 	Description :	Handles change-notifications.
 	Access :		Protected
-					
+
 	Return :		void
 	Parameters :	none
 
-	Usage :			Called from MFC. Updates the ruler if text 
+	Usage :			Called from MFC. Updates the ruler if text
 					is deleted, for example.
 
    ============================================================*/
@@ -162,23 +162,23 @@ void CRulerRichEdit::OnChange()
 	GetParent()->SendMessage(urm_DATACHANGED);
 }
 
-UINT CRulerRichEdit::OnGetDlgCode() 
+UINT CRulerRichEdit::OnGetDlgCode()
 /* ============================================================
 	Function :		CRulerRichEdit::OnGetDlgCode
 	Description :	Handles the "WM_GETDLGCODE" message.
 	Access :		Protected
-					
+
 	Return :		UINT	-	The keys we are interested in.
 	Parameters :	none
 
-	Usage :			Called from MFC. Handled to make sure 
+	Usage :			Called from MFC. Handled to make sure
 					keypresses stays with us.
 
    ============================================================*/
 {
 
 	return DLGC_WANTALLKEYS;
-	
+
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -189,7 +189,7 @@ void CRulerRichEdit::UpdateRuler()
 	Function :		CRulerRichEdit::UpdateRuler
 	Description :	Updates the ruler.
 	Access :		Private
-					
+
 	Return :		void
 	Parameters :	none
 
@@ -199,38 +199,38 @@ void CRulerRichEdit::UpdateRuler()
 {
 
 	CRect rect;
-	GetClientRect( rect );
+	GetClientRect(rect);
 	rect.top = TOOLBAR_HEIGHT;
 	rect.bottom = rect.top + TOP_HEIGHT;
-	GetParent()->RedrawWindow( rect );
+	GetParent()->RedrawWindow(rect);
 
 }
 #endif
 
 void CRulerRichEdit::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	if(nChar=='F') {
-		if(GetKeyState(VK_CONTROL)<0 ) {
-			GetParent()->SendMessage(WM_COMMAND,ID_EDIT_FIND);
+	if (nChar == 'F') {
+		if (GetKeyState(VK_CONTROL) < 0) {
+			GetParent()->SendMessage(WM_COMMAND, ID_EDIT_FIND);
 			return;
 		}
 	}
 	CRichEditCtrl::OnKeyDown(nChar, nRepCnt, nFlags);
 }
 
-void CRulerRichEdit::OnLink(NMHDR *nmh,LRESULT *ret)
+void CRulerRichEdit::OnLink(NMHDR *nmh, LRESULT *ret)
 {
-	ENLINK *p_enlink=(ENLINK *)nmh;
+	ENLINK *p_enlink = (ENLINK *)nmh;
 
-	if(p_enlink && p_enlink->msg == WM_LBUTTONUP) {
+	if (p_enlink && p_enlink->msg == WM_LBUTTONUP) {
 		CHARRANGE crSel;
 		GetSel(crSel);
-		if(crSel.cpMax==crSel.cpMin) {
-			GetParent()->GetParent()->SendMessage(urm_LINKCLICKED,0,(LPARAM)nmh);
-			*ret=TRUE; //we've handled message, no further processing
+		if (crSel.cpMax == crSel.cpMin) {
+			GetParent()->GetParent()->SendMessage(urm_LINKCLICKED, 0, (LPARAM)nmh);
+			*ret = TRUE; //we've handled message, no further processing
 			return;
 		}
 	}
-	*ret=FALSE;
+	*ret = FALSE;
 
 }

@@ -2,5 +2,5 @@
 
 int TRXAPI trx_FileMode(TRX_NO trx)
 {
-  return _GETTRXM?_TRXM->UsrMode:0;
+	return _GETTRXM ? _TRXM->UsrMode : 0;
 }

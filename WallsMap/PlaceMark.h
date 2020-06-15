@@ -6,21 +6,21 @@ enum e_flagsymbols {
 	FST_PLUSES, FST_TRUETYPE, M_NUMSHAPES
 };
 enum e_flagshades { FST_SOLID, FST_CLEAR, FST_FILLED, M_NUMSHADES };
-enum e_flagfills { FSF_HOLLOW=0, FSF_FILLED=1, FSF_ANTIALIAS=2, FSF_USED2D=4, FSF_DOTCENTER=8 };
+enum e_flagfills { FSF_HOLLOW = 0, FSF_FILLED = 1, FSF_ANTIALIAS = 2, FSF_USED2D = 4, FSF_DOTCENTER = 8 };
 
 struct SHP_MRK_STYLE {
 	SHP_MRK_STYLE() :
-	crMrk(RGB(0, 0, 0)),
-	crBkg(RGB(255, 0, 0)),
-	wFilled(FSF_FILLED),
-	wShape(FST_SQUARES),
-	wSize(9),
-	fLineWidth(1),
-	iOpacitySym(100),
-	iOpacityVec(100)
+		crMrk(RGB(0, 0, 0)),
+		crBkg(RGB(255, 0, 0)),
+		wFilled(FSF_FILLED),
+		wShape(FST_SQUARES),
+		wSize(9),
+		fLineWidth(1),
+		iOpacitySym(100),
+		iOpacityVec(100)
 	{}
 
-	bool MarkerVisible() { return wSize>0 && iOpacitySym>0 && ((wFilled & FSF_FILLED) || fLineWidth>0.0); }
+	bool MarkerVisible() { return wSize > 0 && iOpacitySym > 0 && ((wFilled & FSF_FILLED) || fLineWidth > 0.0); }
 
 	SHP_MRK_STYLE(COLORREF crMk, COLORREF crBk, WORD wFill, WORD wShp, WORD wSiz, float fLineW, int fOpacity = 100) :
 		crMrk(crMk), crBkg(crBk), wFilled(wFill), wShape(wShp), wSize(wSiz), fLineWidth(fLineW),
@@ -68,7 +68,7 @@ public:
 	void Plot(ID2D1RenderTarget *rt, const CPoint &pt)
 	{
 		ASSERT(m_pbm);
-		rt->SetTransform(D2D1::Matrix3x2F::Translation(pt.x - m_sz*0.5f + 0.5f, pt.y - m_sz*m_ctrRatioY + 0.5f));
+		rt->SetTransform(D2D1::Matrix3x2F::Translation(pt.x - m_sz * 0.5f + 0.5f, pt.y - m_sz * m_ctrRatioY + 0.5f));
 		rt->DrawBitmap(m_pbm, D2D1::RectF(0.f, 0.f, m_sz, m_sz), m_opacity);
 	}
 

@@ -21,7 +21,7 @@ protected:
 	CReselectVw();           // protected constructor used by dynamic creation
 	DECLARE_DYNCREATE(CReselectVw)
 
-// html Data
+	// html Data
 public:
 	CReselectDoc* GetDocument();
 	//{{AFX_DATA(CReselectVw)
@@ -34,22 +34,22 @@ private:
 	CString m_strTexbib;
 	CString m_strNwbb;
 	char *m_Argv[MAX_ARGV];
-	static BOOL m_bEnableTexbib,m_bEnableNwbb;
+	static BOOL m_bEnableTexbib, m_bEnableNwbb;
 	static char *m_pDatabase;
 
-// Operations
+	// Operations
 public:
 	CString ResourceToURL(LPCTSTR lpszURL);
 	static void Initialize();
 	static void Terminate();
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CReselectVw)
-	public:
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CReselectVw)
+public:
 	virtual void OnInitialUpdate();
 	virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual void OnDraw(CDC* pDC);
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
@@ -62,11 +62,11 @@ public:
 		LPCTSTR lpszHeaders, BOOL* pbCancel);
 
 
-// Implementation
+	// Implementation
 protected:
 	virtual ~CReselectVw();
-	virtual BOOL CreateControlSite(COleControlContainer* pContainer, 
-	   COleControlSite** ppSite, UINT nID, REFCLSID clsid);
+	virtual BOOL CreateControlSite(COleControlContainer* pContainer,
+		COleControlSite** ppSite, UINT nID, REFCLSID clsid);
 
 #ifdef _DEBUG
 	virtual void AssertValid() const;
@@ -95,7 +95,9 @@ protected:
 
 #ifndef _DEBUG  // debug version in mfcieView.cpp
 inline CReselectDoc* CReselectVw::GetDocument()
-   { return (CReselectDoc*)m_pDocument; }
+{
+	return (CReselectDoc*)m_pDocument;
+}
 #endif
 
 /////////////////////////////////////////////////////////////////////////////

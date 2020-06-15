@@ -2,11 +2,11 @@
 
 #include "a__dbf.h"
 
-UINT DBFAPI dbf_FldLen(DBF_NO dbf,UINT nFld)
+UINT DBFAPI dbf_FldLen(DBF_NO dbf, UINT nFld)
 {
-  DBF_pFLDDEF fp;
+	DBF_pFLDDEF fp;
 
-  if(!_dbf_GetDbfP(dbf)) return 0;
-  if(!nFld) return 1;
-  return (fp=_dbf_GetFldDef(nFld))!=0?fp->F_Len:0;
+	if (!_dbf_GetDbfP(dbf)) return 0;
+	if (!nFld) return 1;
+	return (fp = _dbf_GetFldDef(nFld)) != 0 ? fp->F_Len : 0;
 }

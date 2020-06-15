@@ -1,16 +1,16 @@
-/********************************************************** 
+/**********************************************************
 ** Copyright 1998 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
-** 
+**
 ** FILE:   	ncscbmopen.c
 ** CREATED:	8 May 1999
 ** AUTHOR: 	SNS
@@ -53,17 +53,17 @@ UINT8 *NCScbmConstructZeroBlock(QmfLevelStruct *p_qmf, UINT32 *pLength);
 **		will instead revert to the blocking timer when blocks are
 **		requested.
 **
-**	Returns:	NCSError (cast to int).	FIXME: change return type to NCSError, along 
+**	Returns:	NCSError (cast to int).	FIXME: change return type to NCSError, along
 **				with return types for all SDK public funcs, and ship NCSError.h in SDK
 **
 ********************************************************/
 
 #ifdef NCSJPC_ECW_SUPPORT
 NCSError NCScbmOpenFileView_ECW(char *szUrlPath, NCSFileView **ppNCSFileView, /**[11]**/
-					   NCSEcwReadStatus (*pRefreshCallback)(NCSFileView *pNCSFileView))
+	NCSEcwReadStatus(*pRefreshCallback)(NCSFileView *pNCSFileView))
 #else
 NCSError NCScbmOpenFileView(char *szUrlPath, NCSFileView **ppNCSFileView, /**[11]**/
-					   NCSEcwReadStatus (*pRefreshCallback)(NCSFileView *pNCSFileView))
+	NCSEcwReadStatus(*pRefreshCallback)(NCSFileView *pNCSFileView))
 #endif
 {
 	NCSFile	*pNCSFile;
@@ -75,23 +75,23 @@ NCSError NCScbmOpenFileView(char *szUrlPath, NCSFileView **ppNCSFileView, /**[11
 	}
 
 #ifdef MACINTOSH_NJ
-    OSErr myErr;
-    long myAttr;
+	OSErr myErr;
+	long myAttr;
 	long	cLang = -1;
- 
-    myErr = Gestalt(gestaltKeyboardType, &myAttr);
- 	cLang = GetScriptVariable(smSystemScript,smScriptLang);
-       
-	if ( /*myAttr == 198  || TEST ONLY*/ 
-		 /*cLang == langEnglish ||TEST ONLY*/ 
-	 	    myAttr == gestaltJapanAdjustADBKbd 
-		 || myAttr == gestaltPwrBkEKJISKbd 
-		 || myAttr == gestaltUSBCosmoJISKbd
-		 || cLang == langJapanese)
+
+	myErr = Gestalt(gestaltKeyboardType, &myAttr);
+	cLang = GetScriptVariable(smSystemScript, smScriptLang);
+
+	if ( /*myAttr == 198  || TEST ONLY*/
+		 /*cLang == langEnglish ||TEST ONLY*/
+		myAttr == gestaltJapanAdjustADBKbd
+		|| myAttr == gestaltPwrBkEKJISKbd
+		|| myAttr == gestaltUSBCosmoJISKbd
+		|| cLang == langJapanese)
 	{
 		return NCS_UNSUPPORTEDLANGUAGE;
 	}
-	
+
 #endif
 
 	// Lock to add File View list
@@ -100,26 +100,26 @@ NCSError NCScbmOpenFileView(char *szUrlPath, NCSFileView **ppNCSFileView, /**[11
 
 	nError = NCSecwOpenFile(&pNCSFile, szUrlPath, TRUE, TRUE);
 
-	if( nError == NCS_SUCCESS ) {
+	if (nError == NCS_SUCCESS) {
 
-		pNCSFileView = (NCSFileView *) NCSMalloc( sizeof(NCSFileView), FALSE);
-		if( pNCSFileView ) {
+		pNCSFileView = (NCSFileView *)NCSMalloc(sizeof(NCSFileView), FALSE);
+		if (pNCSFileView) {
 			// If no client block caching memory pool allocated yet, allocate it, and the zero blocks
 
-			if( !pNCSFile->pBlockCachePool ) {
+			if (!pNCSFile->pBlockCachePool) {
 				// create the memory block pool
 				pNCSFile->pBlockCachePool = NCSPoolCreate(sizeof(NCSFileCachedBlock), NCSECW_CACHED_BLOCK_POOL_SIZE);
-			} 
-			if(!pNCSFile->pLevel0ZeroBlock) {
+			}
+			if (!pNCSFile->pLevel0ZeroBlock) {
 				// create the fake 0zero blocks
 				pNCSFile->pLevel0ZeroBlock = NCScbmConstructZeroBlock(pNCSFile->pTopQmf, NULL);
 			}
-			if(!pNCSFile->pLevelnZeroBlock) {
+			if (!pNCSFile->pLevelnZeroBlock) {
 				// create the fake nzero blocks
 				pNCSFile->pLevelnZeroBlock = NCScbmConstructZeroBlock(pNCSFile->pTopQmf->p_larger_qmf, NULL);
 			}
-			
-			if( pNCSFile->pBlockCachePool && pNCSFile->pLevel0ZeroBlock && pNCSFile->pLevelnZeroBlock) {
+
+			if (pNCSFile->pBlockCachePool && pNCSFile->pLevel0ZeroBlock && pNCSFile->pLevelnZeroBlock) {
 
 				NCSEcwStatsLock();
 				NCSEcwStatsIncrement(&pNCSEcwInfo->pStatistics->nFileViewsOpen, 1);
@@ -144,19 +144,19 @@ NCSError NCScbmOpenFileView(char *szUrlPath, NCSFileView **ppNCSFileView, /**[11
 				pNCSFileView->bTriggerRefreshCallback = FALSE;
 
 				pNCSFileView->info.pClientData = NULL;
-				pNCSFileView->info.nTopX	= pNCSFileView->info.nLeftY = 0;
+				pNCSFileView->info.nTopX = pNCSFileView->info.nLeftY = 0;
 				pNCSFileView->info.nBottomX = pNCSFileView->info.nRightY = 0;
-				pNCSFileView->info.nSizeX	= pNCSFileView->info.nSizeY = 0;
-				pNCSFileView->info.fTopX	= pNCSFileView->info.fLeftY = 0.0;
-				pNCSFileView->info.fBottomX	= pNCSFileView->info.fRightY = 0.0;
-				pNCSFileView->info.nBands	= 0;					// [02]
+				pNCSFileView->info.nSizeX = pNCSFileView->info.nSizeY = 0;
+				pNCSFileView->info.fTopX = pNCSFileView->info.fLeftY = 0.0;
+				pNCSFileView->info.fBottomX = pNCSFileView->info.fRightY = 0.0;
+				pNCSFileView->info.nBands = 0;					// [02]
 				// [02] we keep our own master BandList array, and copy into that list from,
 				//		the SetView calls. This way we don't have to track the client bandlist
-				pNCSFileView->info.pBandList = NCSMalloc( sizeof(UINT32) * pNCSFile->pTopQmf->p_file_qmf->nr_bands, FALSE);
-				if(pNCSFileView->info.pBandList) {
+				pNCSFileView->info.pBandList = NCSMalloc(sizeof(UINT32) * pNCSFile->pTopQmf->p_file_qmf->nr_bands, FALSE);
+				if (pNCSFileView->info.pBandList) {
 
-					pNCSFileView->pending.pBandList = NCSMalloc( sizeof(UINT32) * pNCSFile->pTopQmf->p_file_qmf->nr_bands, FALSE);
-					if(pNCSFileView->pending.pBandList) {
+					pNCSFileView->pending.pBandList = NCSMalloc(sizeof(UINT32) * pNCSFile->pTopQmf->p_file_qmf->nr_bands, FALSE);
+					if (pNCSFileView->pending.pBandList) {
 
 						pNCSFileView->nPending = 0;
 						pNCSFileView->nCancelled = 0;
@@ -165,31 +165,35 @@ NCSError NCScbmOpenFileView(char *szUrlPath, NCSFileView **ppNCSFileView, /**[11
 						pNCSFileView->nNextDecodeMissID = 0;	/**[09]**/
 
 						pNCSFileView->pNextNCSFileView = pNCSFile->pNCSFileViewList;
-						if( pNCSFile->pNCSFileViewList )
+						if (pNCSFile->pNCSFileViewList)
 							pNCSFile->pNCSFileViewList->pPrevNCSFileView = pNCSFileView;
 						pNCSFile->pNCSFileViewList = pNCSFileView;
 
 						*ppNCSFileView = pNCSFileView;
 
 						NCSMutexEnd(&pNCSEcwInfo->mutex);
-						return NCS_SUCCESS;		
-					} else {
+						return NCS_SUCCESS;
+					}
+					else {
 						nError = NCS_COULDNT_ALLOC_MEMORY;
 					}
 					NCSFree(pNCSFileView->info.pBandList);
-				} else {
+				}
+				else {
 					nError = NCS_COULDNT_ALLOC_MEMORY;
 				}
-			} else {
+			}
+			else {
 				nError = NCS_FILE_NO_MEMORY;
 			}
 			NCSFree(pNCSFileView);
-		} else {
+		}
+		else {
 			nError = NCS_FILE_NO_MEMORY;
 		}
 		NCSecwCloseFile(pNCSFile);
-	} 
-	
+	}
+
 	NCSMutexEnd(&pNCSEcwInfo->mutex);
 	return nError;
 }
@@ -200,33 +204,33 @@ NCSError NCScbmOpenFileView(char *szUrlPath, NCSFileView **ppNCSFileView, /**[11
 **
 **	Notes:
 ********************************************************/
- 
-UINT8 *NCScbmConstructZeroBlock(QmfLevelStruct *p_qmf,UINT32 *pLength)
+
+UINT8 *NCScbmConstructZeroBlock(QmfLevelStruct *p_qmf, UINT32 *pLength)
 {
 	UINT32	nSidebands;
 	UINT8	*pZeroBlock, *pZeroBlockSideband;
 	UINT8	*pZeroBlock32;
 	UINT32 nLength = 0;
 
-	if( p_qmf->level )
+	if (p_qmf->level)
 		nSidebands = p_qmf->nr_sidebands - 1;
 	else
 		nSidebands = p_qmf->nr_sidebands;
 	nSidebands = nSidebands * p_qmf->nr_bands;
 	// we need room for N-1 UINT32's of sidebands, and N bytes of compression (zero block flags)
-	nLength = (sizeof(UINT32) * (nSidebands-1)) + nSidebands  * sizeof(EncodeFormat);
-	pZeroBlock = NCSMalloc(nLength , FALSE);/**[13]**/
-	if(pLength) {
+	nLength = (sizeof(UINT32) * (nSidebands - 1)) + nSidebands * sizeof(EncodeFormat);
+	pZeroBlock = NCSMalloc(nLength, FALSE);/**[13]**/
+	if (pLength) {
 		*pLength = nLength;
 	}
-	if( !pZeroBlock )
-		return( NULL );
+	if (!pZeroBlock)
+		return(NULL);
 	pZeroBlock32 = pZeroBlock;
 	pZeroBlockSideband = pZeroBlock + (sizeof(UINT32) * (nSidebands - 1));
 	*((EncodeFormat*)pZeroBlockSideband) = ENCODE_ZEROS;	// one more entry than offsets [13]
 	pZeroBlockSideband += sizeof(EncodeFormat); /**[13]**/
 
-	while(--nSidebands) {
+	while (--nSidebands) {
 		*pZeroBlock32++ = 0;	// 0xFF000000
 		*pZeroBlock32++ = 0;	// 0x00FF0000
 		*pZeroBlock32++ = 0;	// 0x0000FF00
@@ -250,10 +254,10 @@ UINT8 *NCScbmConstructZeroBlock(QmfLevelStruct *p_qmf,UINT32 *pLength)
 
 #ifdef NCSJPC_ECW_SUPPORT
 NCSError	NCScbmCloseFileViewEx_ECW(NCSFileView *pNCSFileView,			/**[07]**/ /**[11]**/
-						  BOOLEAN bFreeCachedFile)				/**[07]**/
+	BOOLEAN bFreeCachedFile)				/**[07]**/
 #else
 NCSError	NCScbmCloseFileViewEx(NCSFileView *pNCSFileView,			/**[07]**/ /**[11]**/
-						  BOOLEAN bFreeCachedFile)				/**[07]**/
+	BOOLEAN bFreeCachedFile)				/**[07]**/
 #endif
 {
 	NCSFile *pNCSFile;
@@ -261,26 +265,26 @@ NCSError	NCScbmCloseFileViewEx(NCSFileView *pNCSFileView,			/**[07]**/ /**[11]**
 	if (!pNCSEcwInfo) {
 		NCSecwInitInternal();
 	}
- 
-	if( pNCSFileView ) {					//[14] Check if files are already closed
+
+	if (pNCSFileView) {					//[14] Check if files are already closed
 		BOOLEAN bFound = FALSE;
 #ifndef NCSJPC_ECW_SUPPORT
 		NCSMutexBegin(&pNCSEcwInfo->mutex);
 #endif
-		
+
 		pNCSFile = pNCSEcwInfo->pNCSFileList;
-		while(pNCSFile) {
+		while (pNCSFile) {
 			NCSFileView *pTmp = pNCSFile->pNCSFileViewList;
-			while(pTmp) {
-				if(pTmp == pNCSFileView) {
+			while (pTmp) {
+				if (pTmp == pNCSFileView) {
 					bFound = TRUE;
 					break;
 				}
 				pTmp = pTmp->pNextNCSFileView;
-			}	
+			}
 			pNCSFile = pNCSFile->pNextNCSFile;
 		}
-		if(bFound) {
+		if (bFound) {
 			pNCSFile = pNCSFileView->pNCSFile;
 
 
@@ -290,7 +294,7 @@ NCSError	NCScbmCloseFileViewEx(NCSFileView *pNCSFileView,			/**[07]**/ /**[11]**
 
 			NCScbmCloseFileViewCompletely(&(pNCSFile->pNCSFileViewList), pNCSFileView);
 
-			if((pNCSFile->nUsageCount == 1) && bFreeCachedFile) {	/**[07]**/
+			if ((pNCSFile->nUsageCount == 1) && bFreeCachedFile) {	/**[07]**/
 				pNCSFile->bValid = FALSE;							/**[07]**/
 			}														/**[07]**/
 			NCSecwCloseFile(pNCSFile);
@@ -319,37 +323,37 @@ NCSError	NCScbmCloseFileView(NCSFileView *pNCSFileView) /**[11]**/
 int	NCScbmCloseFileViewCompletely(NCSFileView **ppNCSFileViewList, NCSFileView *pNCSFileView)
 {
 
-	if( pNCSFileView->pRefreshCallback )
+	if (pNCSFileView->pRefreshCallback)
 		NCScbmFileViewGoToQuietState(pNCSFileView);
 
-	if( pNCSFileView->pQmfRegion ) {
+	if (pNCSFileView->pQmfRegion) {
 		// Mark blocks as no longer in use
-		if( pNCSFileView->nCacheMethod == NCS_CACHE_VIEW )
+		if (pNCSFileView->nCacheMethod == NCS_CACHE_VIEW)
 			NCScbmFileViewRequestBlocks(pNCSFileView, pNCSFileView->pQmfRegion, NCSECW_BLOCK_CANCEL);
 		// shut down the view
 		erw_decompress_end_region(pNCSFileView->pQmfRegion);
 		pNCSFileView->pQmfRegion = NULL;
 	}
-	if(pNCSFileView->info.pBandList) {	/**[06]**/
+	if (pNCSFileView->info.pBandList) {	/**[06]**/
 		NCSFree(pNCSFileView->info.pBandList);			// [02] we keep a local band list for the view
 		pNCSFileView->info.pBandList = NULL;
 	}
-	if(pNCSFileView->pending.pBandList) {	/**[06]**/
+	if (pNCSFileView->pending.pBandList) {	/**[06]**/
 		NCSFree(pNCSFileView->pending.pBandList);		// [02] and for the pending view
 		pNCSFileView->pending.pBandList = NULL;
 	}
-		
-	if(!pNCSFileView->pNCSFile->bLocalFile /**[12]**/ && !pNCSFileView->pNCSFile->bSendInProgress && 
-	   (pNCSFileView->pNCSFile->nRequestsXmitPending || pNCSFileView->pNCSFile->nCancelsXmitPending)) {
-		NCScbmNetFileXmitRequests(NCS_SUCCESS, NULL, pNCSFileView->pNCSFile );
+
+	if (!pNCSFileView->pNCSFile->bLocalFile /**[12]**/ && !pNCSFileView->pNCSFile->bSendInProgress &&
+		(pNCSFileView->pNCSFile->nRequestsXmitPending || pNCSFileView->pNCSFile->nCancelsXmitPending)) {
+		NCScbmNetFileXmitRequests(NCS_SUCCESS, NULL, pNCSFileView->pNCSFile);
 	}
 
 	// Remove this file view from the view List
-	if( *ppNCSFileViewList == pNCSFileView )
+	if (*ppNCSFileViewList == pNCSFileView)
 		*ppNCSFileViewList = pNCSFileView->pNextNCSFileView;
-	if( pNCSFileView->pNextNCSFileView )
+	if (pNCSFileView->pNextNCSFileView)
 		pNCSFileView->pNextNCSFileView->pPrevNCSFileView = pNCSFileView->pPrevNCSFileView;
-	if( pNCSFileView->pPrevNCSFileView )
+	if (pNCSFileView->pPrevNCSFileView)
 		pNCSFileView->pPrevNCSFileView->pNextNCSFileView = pNCSFileView->pNextNCSFileView;
 	NCSFree(pNCSFileView);
 	return(0);
@@ -370,26 +374,26 @@ int	NCScbmCloseFileViewCompletely(NCSFileView **ppNCSFileViewList, NCSFileView *
 static void NCScbmFileViewGoToQuietState(NCSFileView *pNCSFileView)
 {
 	INT32	nWait = NCSECW_QUIET_WAIT_TIME_MS;
-//MessageBox(NULL, "Goto Quiet", "DEBUG", MB_OK);
-	if( pNCSFileView->eCallbackState == NCSECW_VIEW_SET ) {		// OK to shut it down straight away
+	//MessageBox(NULL, "Goto Quiet", "DEBUG", MB_OK);
+	if (pNCSFileView->eCallbackState == NCSECW_VIEW_SET) {		// OK to shut it down straight away
 		pNCSFileView->eCallbackState = NCSECW_VIEW_QUIET;
 		pNCSFileView->bGoToQuietState = FALSE;
 		return;
 	}
 
-	while( pNCSFileView->eCallbackState != NCSECW_VIEW_QUIET && nWait > 0
-		   && !pNCSEcwInfo->bShutdown
-		   && NCSThreadIsRunning(&(pNCSEcwInfo->pIDWT->tIDWT)) ) {// if in shutdown, threads have died so don't wait for them
+	while (pNCSFileView->eCallbackState != NCSECW_VIEW_QUIET && nWait > 0
+		&& !pNCSEcwInfo->bShutdown
+		&& NCSThreadIsRunning(&(pNCSEcwInfo->pIDWT->tIDWT))) {// if in shutdown, threads have died so don't wait for them
 
-NCSMutexEnd(&(pNCSEcwInfo->mutex));		/**[10]**/
+		NCSMutexEnd(&(pNCSEcwInfo->mutex));		/**[10]**/
 		pNCSFileView->bGoToQuietState = TRUE;
 		NCSSleep(QUIET_SLEEP_WAIT);		// wait a short time - should not take long to go to quiet state
 		nWait -= QUIET_SLEEP_WAIT;
-NCSMutexBegin(&(pNCSEcwInfo->mutex));	/**[10]**/
+		NCSMutexBegin(&(pNCSEcwInfo->mutex));	/**[10]**/
 	}
-	if(nWait <= 0) {
+	if (nWait <= 0) {
 		// Timed out - kill thread, since it's most likely locked up on the global mutex
-		if(NCSThreadIsRunning(&(pNCSEcwInfo->pIDWT->tIDWT))) {
+		if (NCSThreadIsRunning(&(pNCSEcwInfo->pIDWT->tIDWT))) {
 			NCSThreadTerminate(&(pNCSEcwInfo->pIDWT->tIDWT));
 		}
 		pNCSEcwInfo->pIDWT->eIDWTState = NCSECW_THREAD_DEAD;
@@ -408,11 +412,11 @@ NCSError NCScbmGetViewFileInfo_ECW(NCSFileView *pNCSFileView, NCSFileViewFileInf
 NCSError NCScbmGetViewFileInfo(NCSFileView *pNCSFileView, NCSFileViewFileInfo **ppNCSFileViewFileInfo) /**[11]**/
 #endif
 {
-	if( !pNCSFileView || !pNCSFileView->pNCSFile || !pNCSFileView->pNCSFile->pTopQmf ) {
+	if (!pNCSFileView || !pNCSFileView->pNCSFile || !pNCSFileView->pNCSFile->pTopQmf) {
 		*ppNCSFileViewFileInfo = NULL;
 		return(NCS_INVALID_PARAMETER); /*[15]*/
 	}
-	*ppNCSFileViewFileInfo = (NCSFileViewFileInfo *) pNCSFileView->pNCSFile->pTopQmf->pFileInfo;
+	*ppNCSFileViewFileInfo = (NCSFileViewFileInfo *)pNCSFileView->pNCSFile->pTopQmf->pFileInfo;
 	return(0);
 }
 
@@ -428,11 +432,11 @@ NCSError NCScbmGetViewFileInfoEx_ECW(NCSFileView *pNCSFileView, NCSFileViewFileI
 NCSError NCScbmGetViewFileInfoEx(NCSFileView *pNCSFileView, NCSFileViewFileInfoEx **ppNCSFileViewFileInfo) /**[11]**/
 #endif
 {
-	if( !pNCSFileView || !pNCSFileView->pNCSFile || !pNCSFileView->pNCSFile->pTopQmf ) {
+	if (!pNCSFileView || !pNCSFileView->pNCSFile || !pNCSFileView->pNCSFile->pTopQmf) {
 		*ppNCSFileViewFileInfo = NULL;
 		return(NCS_INVALID_PARAMETER); /*[15]*/
 	}
-	*ppNCSFileViewFileInfo = (NCSFileViewFileInfoEx *) pNCSFileView->pNCSFile->pTopQmf->pFileInfo;
+	*ppNCSFileViewFileInfo = (NCSFileViewFileInfoEx *)pNCSFileView->pNCSFile->pTopQmf->pFileInfo;
 	return(0);
 }
 

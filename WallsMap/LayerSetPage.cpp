@@ -13,10 +13,10 @@ BEGIN_MESSAGE_MAP(CLayerSetPage, CPropertyPage)
 	ON_WM_SIZE()
 	ON_WM_GETMINMAXINFO()
 	ON_WM_ERASEBKGND()
-    ON_MESSAGE(WM_COMMANDHELP,OnCommandHelp)
+	ON_MESSAGE(WM_COMMANDHELP, OnCommandHelp)
 END_MESSAGE_MAP()
 
-BOOL CLayerSetPage::OnInitDialog() 
+BOOL CLayerSetPage::OnInitDialog()
 {
 	BOOL bret = CPropertyPage::OnInitDialog();
 
@@ -32,33 +32,33 @@ BOOL CLayerSetPage::OnInitDialog()
 	return bret;
 }
 
-void CLayerSetPage::OnSize(UINT nType,int cx,int cy)
+void CLayerSetPage::OnSize(UINT nType, int cx, int cy)
 {
-   CPropertyPage::OnSize(nType,cx,cy);
+	CPropertyPage::OnSize(nType, cx, cy);
 
-   if (m_bNeedInit)
-      return;
+	if (m_bNeedInit)
+		return;
 
 	std::vector<CItemCtrl>::iterator it;
 	int	 nCount;
 
-	if((nCount = m_Items.size()) > 0) {
+	if ((nCount = m_Items.size()) > 0) {
 		CRect  cltRect;
 		GetClientRect(&cltRect);
 		ClientToScreen(cltRect);
 
 		HDWP   hDWP;
-		int    sizeType = WST_NONE;		
+		int    sizeType = WST_NONE;
 
 		switch (Sheet()->m_nDelaySide) {
 		case WMSZ_BOTTOM:
 			sizeType = WST_BOTTOM;
 			break;
 		case WMSZ_BOTTOMLEFT:
-			sizeType = WST_BOTTOM|WST_LEFT;
+			sizeType = WST_BOTTOM | WST_LEFT;
 			break;
 		case WMSZ_BOTTOMRIGHT:
-			sizeType = WST_BOTTOM|WST_RIGHT;
+			sizeType = WST_BOTTOM | WST_RIGHT;
 			break;
 		case WMSZ_LEFT:
 			sizeType = WST_LEFT;
@@ -70,10 +70,10 @@ void CLayerSetPage::OnSize(UINT nType,int cx,int cy)
 			sizeType = WST_TOP;
 			break;
 		case WMSZ_TOPLEFT:
-			sizeType = WST_TOP|WST_LEFT;
+			sizeType = WST_TOP | WST_LEFT;
 			break;
 		case WMSZ_TOPRIGHT:
-			sizeType = WST_TOP|WST_RIGHT;
+			sizeType = WST_TOP | WST_RIGHT;
 			break;
 		default:
 			break;
@@ -97,7 +97,7 @@ void CLayerSetPage::OnGetMinMaxInfo(MINMAXINFO *pmmi)
 	//if ((HWND)m_wndSizeIcon == NULL)
 		//return;
 
-	pmmi->ptMinTrackSize.x = m_xMin-250;
+	pmmi->ptMinTrackSize.x = m_xMin - 250;
 	pmmi->ptMinTrackSize.y = m_yMin;
 
 	if (m_xSt == CST_NONE)
@@ -111,12 +111,12 @@ BOOL CLayerSetPage::OnEraseBkgnd(CDC *pDC)
 	if (!(GetStyle() & WS_CLIPCHILDREN)) {
 		std::vector<CItemCtrl>::const_iterator it;
 
-		for(it = m_Items.begin();it != m_Items.end(); it++) {
+		for (it = m_Items.begin(); it != m_Items.end(); it++) {
 			// skip over the size icon if it's been hidden
 			//if(it->m_nID == m_idSizeIcon && !m_wndSizeIcon.IsWindowVisible())
 				//continue;
 
-			if(it->m_bFlickerFree && ::IsWindowVisible(GetDlgItem(it->m_nID)->GetSafeHwnd())) {
+			if (it->m_bFlickerFree && ::IsWindowVisible(GetDlgItem(it->m_nID)->GetSafeHwnd())) {
 				pDC->ExcludeClipRect(&it->m_wRect);
 			}
 		}
@@ -126,8 +126,8 @@ BOOL CLayerSetPage::OnEraseBkgnd(CDC *pDC)
 	return FALSE;
 }
 
-void CLayerSetPage::AddControl( UINT nID,int xl, int xr, int yt, int yb, int bFlickerFree,
-								double xRatio, double cxRatio, double yRatio, double cyRatio )
+void CLayerSetPage::AddControl(UINT nID, int xl, int xr, int yt, int yb, int bFlickerFree,
+	double xRatio, double cxRatio, double yRatio, double cyRatio)
 {
 	CItemCtrl	item;
 	CRect		cltRect;
@@ -152,12 +152,12 @@ void CLayerSetPage::AddControl( UINT nID,int xl, int xr, int yt, int yb, int bFl
 		item.m_xRatio = (item.m_wRect.left + item.m_wRect.right) / 2.0 / cltRect.Width();
 
 	if (yt == CST_RELATIVE || yt == CST_ZOOM || yb == CST_RELATIVE || yb == CST_ZOOM)
-		item.m_yRatio = (item.m_wRect.bottom + item.m_wRect.top ) / 2.0 / cltRect.Height();
+		item.m_yRatio = (item.m_wRect.bottom + item.m_wRect.top) / 2.0 / cltRect.Height();
 
 	std::vector<CItemCtrl>::iterator it;
 	int  nCount;
 
-	if((nCount = m_Items.size()) > 0) {
+	if ((nCount = m_Items.size()) > 0) {
 		for (it = m_Items.begin(); it != m_Items.end(); it++) {
 			if (it->m_nID == item.m_nID) {
 				*it = item;
@@ -171,7 +171,7 @@ void CLayerSetPage::AddControl( UINT nID,int xl, int xr, int yt, int yb, int bFl
 }
 
 #if 0
-BOOL CLayerSetPage::OnKillActive() 
+BOOL CLayerSetPage::OnKillActive()
 {
 	//m_idLastFocus=checkid(GetFocus()->GetDlgCtrlID(),getids());
 	//return UpdateData(TRUE) && (!hPropHook || ValidateData());
@@ -181,8 +181,8 @@ BOOL CLayerSetPage::OnKillActive()
 
 BOOL CLayerSetPage::OnSetActive()
 {
-	BOOL bRet=CPropertyPage::OnSetActive();
-	if(bRet) {
+	BOOL bRet = CPropertyPage::OnSetActive();
+	if (bRet) {
 		PostMessage(WM_RETFOCUS);
 	}
 	return bRet;

@@ -8,7 +8,7 @@ enum {
 		NTI_ErrVersion=NTI_ERR_BASE,
 		NTI_ErrOpenFile,
 		NTI_ErrSizeImage,
-	    NTI_ErrCompressTyp,
+		NTI_ErrCompressTyp,
 		NTI_ErrCompress,
 		NTI_ErrCompressInit,
 		NTI_ErrDecompress,
@@ -18,10 +18,10 @@ enum {
 		NTI_ErrCacheResize,
 		NTI_ErrNoOverviews,
 		NTI_ErrTruncate
-     };
+	 };
 */
 
-LPSTR _nti_errstr[]={
+LPSTR _nti_errstr[] = {
  "Unsupported NTI file version",
  "File missing or unavailable",
  "Image size too large for NTI format",
@@ -43,12 +43,12 @@ LPSTR _nti_errstr[]={
 
 apfcn_s nti_Errstr(UINT e)
 {
-  nti_errno=0;
-  static char msg[64];  //32+28 currently used
-  if(e<NTI_ERR_BASE||e>=NTI_ERR_LIMIT) return csh_Errstr(e);
-  if(e>=NTI_ErrCompress && e<=NTI_ErrDecompressInit) {
-	  _snprintf(msg,sizeof(msg)-1,"%s - %s",_nti_errstr[e-NTI_ERR_BASE],nti_xfr_errmsg());
-	  return msg;
-  }
-  return _nti_errstr[e-NTI_ERR_BASE];
+	nti_errno = 0;
+	static char msg[64];  //32+28 currently used
+	if (e < NTI_ERR_BASE || e >= NTI_ERR_LIMIT) return csh_Errstr(e);
+	if (e >= NTI_ErrCompress && e <= NTI_ErrDecompressInit) {
+		_snprintf(msg, sizeof(msg) - 1, "%s - %s", _nti_errstr[e - NTI_ERR_BASE], nti_xfr_errmsg());
+		return msg;
+	}
+	return _nti_errstr[e - NTI_ERR_BASE];
 }

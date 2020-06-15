@@ -4,9 +4,9 @@
 #include "QvSubField.h"
 
 class QvSFLong : public QvSField {
-  public:
-    long value;
-    QV_SFIELD_HEADER(QvSFLong);
+public:
+	long value;
+	QV_SFIELD_HEADER(QvSFLong);
 };
 
 #endif /* _QV_SF_LONG_ */

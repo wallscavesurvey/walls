@@ -37,138 +37,140 @@
 #include "cairoint.h"
 
 typedef struct cairo_path_bounder {
-    cairo_point_t move_to_point;
-    cairo_bool_t has_move_to_point;
-    cairo_bool_t has_point;
+	cairo_point_t move_to_point;
+	cairo_bool_t has_move_to_point;
+	cairo_bool_t has_point;
 
-    cairo_fixed_t min_x;
-    cairo_fixed_t min_y;
-    cairo_fixed_t max_x;
-    cairo_fixed_t max_y;
+	cairo_fixed_t min_x;
+	cairo_fixed_t min_y;
+	cairo_fixed_t max_x;
+	cairo_fixed_t max_y;
 } cairo_path_bounder_t;
 
 static void
-_cairo_path_bounder_init (cairo_path_bounder_t *bounder);
+_cairo_path_bounder_init(cairo_path_bounder_t *bounder);
 
 static void
-_cairo_path_bounder_fini (cairo_path_bounder_t *bounder);
+_cairo_path_bounder_fini(cairo_path_bounder_t *bounder);
 
 static void
-_cairo_path_bounder_add_point (cairo_path_bounder_t *bounder, cairo_point_t *point);
+_cairo_path_bounder_add_point(cairo_path_bounder_t *bounder, cairo_point_t *point);
 
 static cairo_status_t
-_cairo_path_bounder_move_to (void *closure, cairo_point_t *point);
+_cairo_path_bounder_move_to(void *closure, cairo_point_t *point);
 
 static cairo_status_t
-_cairo_path_bounder_line_to (void *closure, cairo_point_t *point);
+_cairo_path_bounder_line_to(void *closure, cairo_point_t *point);
 
 static cairo_status_t
-_cairo_path_bounder_close_path (void *closure);
+_cairo_path_bounder_close_path(void *closure);
 
 static void
-_cairo_path_bounder_init (cairo_path_bounder_t *bounder)
+_cairo_path_bounder_init(cairo_path_bounder_t *bounder)
 {
-    bounder->has_move_to_point = FALSE;
-    bounder->has_point = FALSE;
-}
-
-static void
-_cairo_path_bounder_fini (cairo_path_bounder_t *bounder)
-{
-    bounder->has_move_to_point = FALSE;
-    bounder->has_point = FALSE;
-}
-
-static void
-_cairo_path_bounder_add_point (cairo_path_bounder_t *bounder, cairo_point_t *point)
-{
-    if (bounder->has_point) {
-	if (point->x < bounder->min_x)
-	    bounder->min_x = point->x;
-
-	if (point->y < bounder->min_y)
-	    bounder->min_y = point->y;
-
-	if (point->x > bounder->max_x)
-	    bounder->max_x = point->x;
-
-	if (point->y > bounder->max_y)
-	    bounder->max_y = point->y;
-    } else {
-	bounder->min_x = point->x;
-	bounder->min_y = point->y;
-	bounder->max_x = point->x;
-	bounder->max_y = point->y;
-
-	bounder->has_point = TRUE;
-    }
-}
-
-static cairo_status_t
-_cairo_path_bounder_move_to (void *closure, cairo_point_t *point)
-{
-    cairo_path_bounder_t *bounder = closure;
-
-    bounder->move_to_point = *point;
-    bounder->has_move_to_point = TRUE;
-
-    return CAIRO_STATUS_SUCCESS;
-}
-
-static cairo_status_t
-_cairo_path_bounder_line_to (void *closure, cairo_point_t *point)
-{
-    cairo_path_bounder_t *bounder = closure;
-
-    if (bounder->has_move_to_point) {
-	_cairo_path_bounder_add_point (bounder,
-				       &bounder->move_to_point);
 	bounder->has_move_to_point = FALSE;
-    }
+	bounder->has_point = FALSE;
+}
 
-    _cairo_path_bounder_add_point (bounder, point);
+static void
+_cairo_path_bounder_fini(cairo_path_bounder_t *bounder)
+{
+	bounder->has_move_to_point = FALSE;
+	bounder->has_point = FALSE;
+}
 
-    return CAIRO_STATUS_SUCCESS;
+static void
+_cairo_path_bounder_add_point(cairo_path_bounder_t *bounder, cairo_point_t *point)
+{
+	if (bounder->has_point) {
+		if (point->x < bounder->min_x)
+			bounder->min_x = point->x;
+
+		if (point->y < bounder->min_y)
+			bounder->min_y = point->y;
+
+		if (point->x > bounder->max_x)
+			bounder->max_x = point->x;
+
+		if (point->y > bounder->max_y)
+			bounder->max_y = point->y;
+	}
+	else {
+		bounder->min_x = point->x;
+		bounder->min_y = point->y;
+		bounder->max_x = point->x;
+		bounder->max_y = point->y;
+
+		bounder->has_point = TRUE;
+	}
 }
 
 static cairo_status_t
-_cairo_path_bounder_close_path (void *closure)
+_cairo_path_bounder_move_to(void *closure, cairo_point_t *point)
 {
-    return CAIRO_STATUS_SUCCESS;
+	cairo_path_bounder_t *bounder = closure;
+
+	bounder->move_to_point = *point;
+	bounder->has_move_to_point = TRUE;
+
+	return CAIRO_STATUS_SUCCESS;
+}
+
+static cairo_status_t
+_cairo_path_bounder_line_to(void *closure, cairo_point_t *point)
+{
+	cairo_path_bounder_t *bounder = closure;
+
+	if (bounder->has_move_to_point) {
+		_cairo_path_bounder_add_point(bounder,
+			&bounder->move_to_point);
+		bounder->has_move_to_point = FALSE;
+	}
+
+	_cairo_path_bounder_add_point(bounder, point);
+
+	return CAIRO_STATUS_SUCCESS;
+}
+
+static cairo_status_t
+_cairo_path_bounder_close_path(void *closure)
+{
+	return CAIRO_STATUS_SUCCESS;
 }
 
 /* XXX: Perhaps this should compute a PixRegion rather than 4 doubles */
 cairo_status_t
-_cairo_path_fixed_bounds (cairo_path_fixed_t *path,
-			  double *x1, double *y1,
-			  double *x2, double *y2,
-			  double tolerance)
+_cairo_path_fixed_bounds(cairo_path_fixed_t *path,
+	double *x1, double *y1,
+	double *x2, double *y2,
+	double tolerance)
 {
-    cairo_path_bounder_t bounder;
-    cairo_status_t status;
+	cairo_path_bounder_t bounder;
+	cairo_status_t status;
 
-    _cairo_path_bounder_init (&bounder);
+	_cairo_path_bounder_init(&bounder);
 
-    status = _cairo_path_fixed_interpret_flat (path, CAIRO_DIRECTION_FORWARD,
-					       _cairo_path_bounder_move_to,
-					       _cairo_path_bounder_line_to,
-					       _cairo_path_bounder_close_path,
-					       &bounder,
-					       tolerance);
+	status = _cairo_path_fixed_interpret_flat(path, CAIRO_DIRECTION_FORWARD,
+		_cairo_path_bounder_move_to,
+		_cairo_path_bounder_line_to,
+		_cairo_path_bounder_close_path,
+		&bounder,
+		tolerance);
 
-    if (status == CAIRO_STATUS_SUCCESS && bounder.has_point) {
-	*x1 = _cairo_fixed_to_double (bounder.min_x);
-	*y1 = _cairo_fixed_to_double (bounder.min_y);
-	*x2 = _cairo_fixed_to_double (bounder.max_x);
-	*y2 = _cairo_fixed_to_double (bounder.max_y);
-    } else {
-	*x1 = 0.0;
-	*y1 = 0.0;
-	*x2 = 0.0;
-	*y2 = 0.0;
-    }
+	if (status == CAIRO_STATUS_SUCCESS && bounder.has_point) {
+		*x1 = _cairo_fixed_to_double(bounder.min_x);
+		*y1 = _cairo_fixed_to_double(bounder.min_y);
+		*x2 = _cairo_fixed_to_double(bounder.max_x);
+		*y2 = _cairo_fixed_to_double(bounder.max_y);
+	}
+	else {
+		*x1 = 0.0;
+		*y1 = 0.0;
+		*x2 = 0.0;
+		*y2 = 0.0;
+	}
 
-    _cairo_path_bounder_fini (&bounder);
+	_cairo_path_bounder_fini(&bounder);
 
-    return status;
+	return status;
 }

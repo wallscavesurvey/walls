@@ -25,27 +25,27 @@
 
 #include "tiffiop.h"
 #ifdef LZMA_SUPPORT
-/*
- * TIFF Library.
- *
- * LZMA2 Compression Support
- *
- * You need an LZMA2 SDK to link with. See http://tukaani.org/xz/ for details.
- *
- * The codec is derived from ZLIB codec (tif_zip.c).
- */
+ /*
+  * TIFF Library.
+  *
+  * LZMA2 Compression Support
+  *
+  * You need an LZMA2 SDK to link with. See http://tukaani.org/xz/ for details.
+  *
+  * The codec is derived from ZLIB codec (tif_zip.c).
+  */
 
 #include "tif_predict.h"
 #include "lzma.h"
 
 #include <stdio.h>
 
-/*
- * State block for each open TIFF file using LZMA2 compression/decompression.
- */
+  /*
+   * State block for each open TIFF file using LZMA2 compression/decompression.
+   */
 typedef struct {
 	TIFFPredictorState predict;
-        lzma_stream	stream;
+	lzma_stream	stream;
 	lzma_filter	filters[LZMA_FILTERS_MAX + 1];
 	lzma_options_delta opt_delta;		/* delta filter options */
 	lzma_options_lzma opt_lzma;		/* LZMA2 filter options */
@@ -70,39 +70,39 @@ static const char *
 LZMAStrerror(lzma_ret ret)
 {
 	switch (ret) {
-		case LZMA_OK:
-		    return "operation completed successfully";
-		case LZMA_STREAM_END:
-		    return "end of stream was reached";
-		case LZMA_NO_CHECK:
-		    return "input stream has no integrity check";
-		case LZMA_UNSUPPORTED_CHECK:
-		    return "cannot calculate the integrity check";
-		case LZMA_GET_CHECK:
-		    return "integrity check type is now available";
-		case LZMA_MEM_ERROR:
-		    return "cannot allocate memory";
-		case LZMA_MEMLIMIT_ERROR:
-		    return "memory usage limit was reached";
-		case LZMA_FORMAT_ERROR:
-		    return "file format not recognized";
-		case LZMA_OPTIONS_ERROR:
-		    return "invalid or unsupported options";
-		case LZMA_DATA_ERROR:
-		    return "data is corrupt";
-		case LZMA_BUF_ERROR:
-		    return "no progress is possible (stream is truncated or corrupt)";
-		case LZMA_PROG_ERROR:
-		    return "programming error";
-		default:
-		    return "unindentified liblzma error";
+	case LZMA_OK:
+		return "operation completed successfully";
+	case LZMA_STREAM_END:
+		return "end of stream was reached";
+	case LZMA_NO_CHECK:
+		return "input stream has no integrity check";
+	case LZMA_UNSUPPORTED_CHECK:
+		return "cannot calculate the integrity check";
+	case LZMA_GET_CHECK:
+		return "integrity check type is now available";
+	case LZMA_MEM_ERROR:
+		return "cannot allocate memory";
+	case LZMA_MEMLIMIT_ERROR:
+		return "memory usage limit was reached";
+	case LZMA_FORMAT_ERROR:
+		return "file format not recognized";
+	case LZMA_OPTIONS_ERROR:
+		return "invalid or unsupported options";
+	case LZMA_DATA_ERROR:
+		return "data is corrupt";
+	case LZMA_BUF_ERROR:
+		return "no progress is possible (stream is truncated or corrupt)";
+	case LZMA_PROG_ERROR:
+		return "programming error";
+	default:
+		return "unindentified liblzma error";
 	}
 }
 
 static int
 LZMAFixupTags(TIFF* tif)
 {
-	(void) tif;
+	(void)tif;
 	return 1;
 }
 
@@ -112,11 +112,11 @@ LZMASetupDecode(TIFF* tif)
 	LZMAState* sp = DecoderState(tif);
 
 	assert(sp != NULL);
-        
-        /* if we were last encoding, terminate this mode */
+
+	/* if we were last encoding, terminate this mode */
 	if (sp->state & LSTATE_INIT_ENCODE) {
-	    lzma_end(&sp->stream);
-	    sp->state = 0;
+		lzma_end(&sp->stream);
+		sp->state = 0;
 	}
 
 	sp->state |= LSTATE_INIT_DECODE;
@@ -133,17 +133,17 @@ LZMAPreDecode(TIFF* tif, uint16 s)
 	LZMAState* sp = DecoderState(tif);
 	lzma_ret ret;
 
-	(void) s;
+	(void)s;
 	assert(sp != NULL);
 
-	if( (sp->state & LSTATE_INIT_DECODE) == 0 )
-            tif->tif_setupdecode(tif);
+	if ((sp->state & LSTATE_INIT_DECODE) == 0)
+		tif->tif_setupdecode(tif);
 
 	sp->stream.next_in = tif->tif_rawdata;
-	sp->stream.avail_in = (size_t) tif->tif_rawcc;
+	sp->stream.avail_in = (size_t)tif->tif_rawcc;
 	if ((tmsize_t)sp->stream.avail_in != tif->tif_rawcc) {
 		TIFFErrorExt(tif->tif_clientdata, module,
-			     "Liblzma cannot deal with buffers this size");
+			"Liblzma cannot deal with buffers this size");
 		return 0;
 	}
 
@@ -154,8 +154,8 @@ LZMAPreDecode(TIFF* tif, uint16 s)
 	ret = lzma_stream_decoder(&sp->stream, (uint64_t)-1, 0);
 	if (ret != LZMA_OK) {
 		TIFFErrorExt(tif->tif_clientdata, module,
-			     "Error initializing the stream decoder, %s",
-			     LZMAStrerror(ret));
+			"Error initializing the stream decoder, %s",
+			LZMAStrerror(ret));
 		return 0;
 	}
 	return 1;
@@ -167,18 +167,18 @@ LZMADecode(TIFF* tif, uint8* op, tmsize_t occ, uint16 s)
 	static const char module[] = "LZMADecode";
 	LZMAState* sp = DecoderState(tif);
 
-	(void) s;
+	(void)s;
 	assert(sp != NULL);
 	assert(sp->state == LSTATE_INIT_DECODE);
 
-        sp->stream.next_in = tif->tif_rawcp;
-        sp->stream.avail_in = (size_t) tif->tif_rawcc;
+	sp->stream.next_in = tif->tif_rawcp;
+	sp->stream.avail_in = (size_t)tif->tif_rawcc;
 
 	sp->stream.next_out = op;
-	sp->stream.avail_out = (size_t) occ;
+	sp->stream.avail_out = (size_t)occ;
 	if ((tmsize_t)sp->stream.avail_out != occ) {
 		TIFFErrorExt(tif->tif_clientdata, module,
-			     "Liblzma cannot deal with buffers this size");
+			"Liblzma cannot deal with buffers this size");
 		return 0;
 	}
 
@@ -195,11 +195,11 @@ LZMADecode(TIFF* tif, uint8* op, tmsize_t occ, uint16 s)
 			break;
 		if (ret == LZMA_MEMLIMIT_ERROR) {
 			lzma_ret r = lzma_stream_decoder(&sp->stream,
-							 lzma_memusage(&sp->stream), 0);
+				lzma_memusage(&sp->stream), 0);
 			if (r != LZMA_OK) {
 				TIFFErrorExt(tif->tif_clientdata, module,
-					     "Error initializing the stream decoder, %s",
-					     LZMAStrerror(r));
+					"Error initializing the stream decoder, %s",
+					LZMAStrerror(r));
 				break;
 			}
 			sp->stream.next_in = next_in;
@@ -208,21 +208,21 @@ LZMADecode(TIFF* tif, uint8* op, tmsize_t occ, uint16 s)
 		}
 		if (ret != LZMA_OK) {
 			TIFFErrorExt(tif->tif_clientdata, module,
-			    "Decoding error at scanline %lu, %s",
-			    (unsigned long) tif->tif_row, LZMAStrerror(ret));
+				"Decoding error at scanline %lu, %s",
+				(unsigned long)tif->tif_row, LZMAStrerror(ret));
 			break;
 		}
 	} while (sp->stream.avail_out > 0);
 	if (sp->stream.avail_out != 0) {
 		TIFFErrorExt(tif->tif_clientdata, module,
-		    "Not enough data at scanline %lu (short %lu bytes)",
-		    (unsigned long) tif->tif_row, (unsigned long) sp->stream.avail_out);
+			"Not enough data at scanline %lu (short %lu bytes)",
+			(unsigned long)tif->tif_row, (unsigned long)sp->stream.avail_out);
 		return 0;
 	}
 
-        tif->tif_rawcp = (uint8 *)sp->stream.next_in; /* cast away const */
-        tif->tif_rawcc = sp->stream.avail_in;
-        
+	tif->tif_rawcp = (uint8 *)sp->stream.next_in; /* cast away const */
+	tif->tif_rawcc = sp->stream.avail_in;
+
 	return 1;
 }
 
@@ -250,16 +250,16 @@ LZMAPreEncode(TIFF* tif, uint16 s)
 	static const char module[] = "LZMAPreEncode";
 	LZMAState *sp = EncoderState(tif);
 
-	(void) s;
+	(void)s;
 	assert(sp != NULL);
-	if( sp->state != LSTATE_INIT_ENCODE )
-            tif->tif_setupencode(tif);
+	if (sp->state != LSTATE_INIT_ENCODE)
+		tif->tif_setupencode(tif);
 
 	sp->stream.next_out = tif->tif_rawdata;
 	sp->stream.avail_out = (size_t)tif->tif_rawdatasize;
 	if ((tmsize_t)sp->stream.avail_out != tif->tif_rawdatasize) {
 		TIFFErrorExt(tif->tif_clientdata, module,
-			     "Liblzma cannot deal with buffers this size");
+			"Liblzma cannot deal with buffers this size");
 		return 0;
 	}
 	return (lzma_stream_encoder(&sp->stream, sp->filters, sp->check) == LZMA_OK);
@@ -277,12 +277,12 @@ LZMAEncode(TIFF* tif, uint8* bp, tmsize_t cc, uint16 s)
 	assert(sp != NULL);
 	assert(sp->state == LSTATE_INIT_ENCODE);
 
-	(void) s;
+	(void)s;
 	sp->stream.next_in = bp;
-	sp->stream.avail_in = (size_t) cc;
+	sp->stream.avail_in = (size_t)cc;
 	if ((tmsize_t)sp->stream.avail_in != cc) {
 		TIFFErrorExt(tif->tif_clientdata, module,
-			     "Liblzma cannot deal with buffers this size");
+			"Liblzma cannot deal with buffers this size");
 		return 0;
 	}
 	do {
@@ -290,7 +290,7 @@ LZMAEncode(TIFF* tif, uint8* bp, tmsize_t cc, uint16 s)
 		if (ret != LZMA_OK) {
 			TIFFErrorExt(tif->tif_clientdata, module,
 				"Encoding error at scanline %lu, %s",
-				(unsigned long) tif->tif_row, LZMAStrerror(ret));
+				(unsigned long)tif->tif_row, LZMAStrerror(ret));
 			return 0;
 		}
 		if (sp->stream.avail_out == 0) {
@@ -330,7 +330,7 @@ LZMAPostEncode(TIFF* tif)
 			break;
 		default:
 			TIFFErrorExt(tif->tif_clientdata, module, "Liblzma error: %s",
-				     LZMAStrerror(ret));
+				LZMAStrerror(ret));
 			return 0;
 		}
 	} while (ret != LZMA_STREAM_END);
@@ -367,16 +367,16 @@ LZMAVSetField(TIFF* tif, uint32 tag, va_list ap)
 
 	switch (tag) {
 	case TIFFTAG_LZMAPRESET:
-		sp->preset = (int) va_arg(ap, int);
+		sp->preset = (int)va_arg(ap, int);
 		lzma_lzma_preset(&sp->opt_lzma, sp->preset);
 		if (sp->state & LSTATE_INIT_ENCODE) {
 			lzma_ret ret = lzma_stream_encoder(&sp->stream,
-							   sp->filters,
-							   sp->check);
+				sp->filters,
+				sp->check);
 			if (ret != LZMA_OK) {
 				TIFFErrorExt(tif->tif_clientdata, module,
-					     "Liblzma error: %s",
-					     LZMAStrerror(ret));
+					"Liblzma error: %s",
+					LZMAStrerror(ret));
 			}
 		}
 		return 1;
@@ -413,21 +413,21 @@ TIFFInitLZMA(TIFF* tif, int scheme)
 	LZMAState* sp;
 	lzma_stream tmp_stream = LZMA_STREAM_INIT;
 
-	assert( scheme == COMPRESSION_LZMA );
+	assert(scheme == COMPRESSION_LZMA);
 
 	/*
 	 * Merge codec-specific tag information.
 	 */
 	if (!_TIFFMergeFields(tif, lzmaFields, TIFFArrayCount(lzmaFields))) {
 		TIFFErrorExt(tif->tif_clientdata, module,
-			     "Merging LZMA2 codec-specific tags failed");
+			"Merging LZMA2 codec-specific tags failed");
 		return 0;
 	}
 
 	/*
 	 * Allocate state block so tag methods have storage to record values.
 	 */
-	tif->tif_data = (uint8*) _TIFFmalloc(sizeof(LZMAState));
+	tif->tif_data = (uint8*)_TIFFmalloc(sizeof(LZMAState));
 	if (tif->tif_data == NULL)
 		goto bad;
 	sp = LState(tif);
@@ -483,11 +483,11 @@ TIFFInitLZMA(TIFF* tif, int scheme)
 	/*
 	 * Setup predictor setup.
 	 */
-	(void) TIFFPredictorInit(tif);
+	(void)TIFFPredictorInit(tif);
 	return 1;
 bad:
 	TIFFErrorExt(tif->tif_clientdata, module,
-		     "No space for LZMA2 state block");
+		"No space for LZMA2 state block");
 	return 0;
 }
 #endif /* LZMA_SUPORT */

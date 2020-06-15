@@ -17,7 +17,7 @@
 
 // make sure afxole.h is included first
 #ifndef __AFXOLE_H__
-	#include <afxole.h>
+#include <afxole.h>
 #endif
 
 class CPicture
@@ -39,7 +39,7 @@ public:
 	virtual ~CPicture();
 
 	LPPICTURE m_IPicture; // Same As LPPICTURE (typedef IPicture __RPC_FAR *LPPICTURE)
-	BOOL IsValid() {return m_IPicture!=NULL;}
+	BOOL IsValid() { return m_IPicture != NULL; }
 
 	LONG      m_Height; // Height (In Pixels Ignor What Current Device Context Uses)
 	LONG      m_Weight; // Size Of The Image Object In Bytes (File OR Resource)

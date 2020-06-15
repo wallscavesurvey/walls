@@ -11,7 +11,7 @@ public:
 	CMemUsageDlg(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CMemUsageDlg();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_MEMUSAGEDLG };
 
 protected:

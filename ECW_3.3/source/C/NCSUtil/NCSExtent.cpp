@@ -2,13 +2,13 @@
 ** Copyright 1999 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:    NCSExtent.cpp
@@ -74,7 +74,7 @@ CNCSExtent &CNCSExtent::operator=(CNCSExtent &pExt)
 	m_dScaleY = pExt.m_dScaleY;
 	m_dTransX = pExt.m_dTransX;
 	m_dTransY = pExt.m_dTransY;
-	
+
 	m_dwUnits = pExt.m_dwUnits;
 	m_dwFlags = pExt.m_dwFlags;
 
@@ -87,16 +87,16 @@ CNCSExtent::~CNCSExtent()
 
 NCSError CNCSExtent::ConvertAllFromScreen(void)
 {
-	ScreenToDataset(m_dScreenTLX,m_dScreenTLY,&m_dDatasetTLX,&m_dDatasetTLY);
-	ScreenToDataset(m_dScreenBRX,m_dScreenBRY,&m_dDatasetBRX,&m_dDatasetBRY);
+	ScreenToDataset(m_dScreenTLX, m_dScreenTLY, &m_dDatasetTLX, &m_dDatasetTLY);
+	ScreenToDataset(m_dScreenBRX, m_dScreenBRY, &m_dDatasetBRX, &m_dDatasetBRY);
 
-	ScreenToWorld(m_dScreenTLX,m_dScreenTLY,&m_dWorldTLX,&m_dWorldTLY);
-	ScreenToWorld(m_dScreenBRX,m_dScreenBRY,&m_dWorldBRX,&m_dWorldBRY);
-	
+	ScreenToWorld(m_dScreenTLX, m_dScreenTLY, &m_dWorldTLX, &m_dWorldTLY);
+	ScreenToWorld(m_dScreenBRX, m_dScreenBRY, &m_dWorldBRX, &m_dWorldBRY);
+
 	return(NCS_SUCCESS);
 }
 
-NCSError CNCSExtent::SetScreenExtents(double dSTLX, double dSTLY, double dSBRX,double dSBRY)
+NCSError CNCSExtent::SetScreenExtents(double dSTLX, double dSTLY, double dSBRX, double dSBRY)
 {
 	m_dScreenTLX = dSTLX;
 	m_dScreenTLY = dSTLY;
@@ -106,7 +106,7 @@ NCSError CNCSExtent::SetScreenExtents(double dSTLX, double dSTLY, double dSBRX,d
 	return(NCS_SUCCESS);
 }
 
-NCSError CNCSExtent::SetDatasetExtents(double dDTLX,double dDTLY, double dDBRX,double dDBRY)
+NCSError CNCSExtent::SetDatasetExtents(double dDTLX, double dDTLY, double dDBRX, double dDBRY)
 {
 	m_dDatasetTLX = dDTLX;
 	m_dDatasetTLY = dDTLY;
@@ -115,7 +115,7 @@ NCSError CNCSExtent::SetDatasetExtents(double dDTLX,double dDTLY, double dDBRX,d
 	return(NCS_SUCCESS);
 }
 
-NCSError CNCSExtent::SetWorldExtents(double dWTLX,double dWTLY, double dWBRX,double dWBRY)
+NCSError CNCSExtent::SetWorldExtents(double dWTLX, double dWTLY, double dWBRX, double dWBRY)
 {
 	m_dWorldTLX = dWTLX;
 	m_dWorldTLY = dWTLY;
@@ -125,31 +125,31 @@ NCSError CNCSExtent::SetWorldExtents(double dWTLX,double dWTLY, double dWBRX,dou
 	return(NCS_SUCCESS);
 }
 
-NCSError CNCSExtent::SetAllExtents(double dSTLX,double dSTLY,
-								  double dSBRX,double dSBRY,
-								  double dDTLX,double dDTLY,
-								  double dDBRX,double dDBRY,
-								  double dWTLX,double dWTLY,
-								  double dWBRX,double dWBRY)
+NCSError CNCSExtent::SetAllExtents(double dSTLX, double dSTLY,
+	double dSBRX, double dSBRY,
+	double dDTLX, double dDTLY,
+	double dDBRX, double dDBRY,
+	double dWTLX, double dWTLY,
+	double dWBRX, double dWBRY)
 {
-	SetScreenExtents(dSTLX,dSTLY,dSBRX,dSBRY);
-	SetDatasetExtents(dDTLX,dDTLY,dDBRX,dDBRY);
-	SetWorldExtents(dWTLX,dWTLY,dWBRX,dWBRY);
+	SetScreenExtents(dSTLX, dSTLY, dSBRX, dSBRY);
+	SetDatasetExtents(dDTLX, dDTLY, dDBRX, dDBRY);
+	SetWorldExtents(dWTLX, dWTLY, dWBRX, dWBRY);
 	return(NCS_SUCCESS);
 }
 
 NCSError CNCSExtent::WorldToDataset(double dWX, double dWY, double *dDX, double *dDY)
 {
 	//check divisor for zero case
-	if((m_dWorldBRX - m_dWorldTLX) == 0.0)
+	if ((m_dWorldBRX - m_dWorldTLX) == 0.0)
 		return NCS_EXTENT_ERROR;
 
 	dWX -= m_dWorldTLX;
 	dWY -= m_dWorldTLY;
 
 	//perform conversion
-	*dDX = m_dDatasetTLX + ((m_dDatasetBRX - m_dDatasetTLX)/(m_dWorldBRX - m_dWorldTLX) * dWX);
-	*dDY = m_dDatasetTLY + ((m_dDatasetBRY - m_dDatasetTLY)/(m_dWorldBRY - m_dWorldTLY) * dWY);
+	*dDX = m_dDatasetTLX + ((m_dDatasetBRX - m_dDatasetTLX) / (m_dWorldBRX - m_dWorldTLX) * dWX);
+	*dDY = m_dDatasetTLY + ((m_dDatasetBRY - m_dDatasetTLY) / (m_dWorldBRY - m_dWorldTLY) * dWY);
 
 	return(NCS_SUCCESS);
 }
@@ -157,15 +157,15 @@ NCSError CNCSExtent::WorldToDataset(double dWX, double dWY, double *dDX, double 
 NCSError CNCSExtent::DatasetToWorld(double dDX, double dDY, double *dWX, double *dWY)
 {
 	//check divisor for zero case
-	if((m_dDatasetBRX - m_dDatasetTLX) == 0.0)
+	if ((m_dDatasetBRX - m_dDatasetTLX) == 0.0)
 		return NCS_EXTENT_ERROR;
 
 	dDX -= m_dDatasetTLX;
 	dDY -= m_dDatasetTLY;
 
 	//perform conversion
-	*dWX = m_dWorldTLX + ((m_dWorldBRX - m_dWorldTLX)/(m_dDatasetBRX - m_dDatasetTLX) * dDX);
-	*dWY = m_dWorldTLY + ((m_dWorldBRY - m_dWorldTLY)/(m_dDatasetBRY - m_dDatasetTLY) * dDY);
+	*dWX = m_dWorldTLX + ((m_dWorldBRX - m_dWorldTLX) / (m_dDatasetBRX - m_dDatasetTLX) * dDX);
+	*dWY = m_dWorldTLY + ((m_dWorldBRY - m_dWorldTLY) / (m_dDatasetBRY - m_dDatasetTLY) * dDY);
 
 	return(NCS_SUCCESS);
 }
@@ -173,30 +173,30 @@ NCSError CNCSExtent::DatasetToWorld(double dDX, double dDY, double *dWX, double 
 NCSError CNCSExtent::DatasetToScreen(double dX, double dY, double *sX, double *sY)
 {
 	//check divisor for zero case
-	if((m_dDatasetBRX - m_dDatasetTLX) == 0.0)
+	if ((m_dDatasetBRX - m_dDatasetTLX) == 0.0)
 		return NCS_EXTENT_ERROR;
 
 	dX -= m_dDatasetTLX;
 	dY -= m_dDatasetTLY;
 
 	//perform conversion
-	*sX = m_dScreenTLX + (((double)(m_dScreenBRX - m_dScreenTLX)/(m_dDatasetBRX - m_dDatasetTLX)) * dX);
-	*sY = m_dScreenTLY + (((double)(m_dScreenBRY - m_dScreenTLY)/(m_dDatasetBRY - m_dDatasetTLY)) * dY);
+	*sX = m_dScreenTLX + (((double)(m_dScreenBRX - m_dScreenTLX) / (m_dDatasetBRX - m_dDatasetTLX)) * dX);
+	*sY = m_dScreenTLY + (((double)(m_dScreenBRY - m_dScreenTLY) / (m_dDatasetBRY - m_dDatasetTLY)) * dY);
 
 	return(NCS_SUCCESS);
 }
 
-NCSError CNCSExtent::ScreenToDataset( double dX, double dY, double *pdX, double *pdY)
+NCSError CNCSExtent::ScreenToDataset(double dX, double dY, double *pdX, double *pdY)
 {
 	//check divisor for zero case
-	if((m_dScreenBRX - m_dScreenTLX) == 0.0)
+	if ((m_dScreenBRX - m_dScreenTLX) == 0.0)
 		return NCS_EXTENT_ERROR;
 
 	dX -= m_dScreenTLX;
 	dY -= m_dScreenTLY;
 
-	*pdX = m_dDatasetTLX + ((m_dDatasetBRX - m_dDatasetTLX)/(m_dScreenBRX - m_dScreenTLX)) * dX;
-	*pdY = m_dDatasetTLY + ((m_dDatasetBRY - m_dDatasetTLY)/(m_dScreenBRY - m_dScreenTLY)) * dY;
+	*pdX = m_dDatasetTLX + ((m_dDatasetBRX - m_dDatasetTLX) / (m_dScreenBRX - m_dScreenTLX)) * dX;
+	*pdY = m_dDatasetTLY + ((m_dDatasetBRY - m_dDatasetTLY) / (m_dScreenBRY - m_dScreenTLY)) * dY;
 
 	return(NCS_SUCCESS);
 }
@@ -204,31 +204,31 @@ NCSError CNCSExtent::ScreenToDataset( double dX, double dY, double *pdX, double 
 NCSError CNCSExtent::ScreenToWorld(double dX, double dY, double *pdX, double *pdY)
 {
 	//check divisor for zero case.
-	if((m_dScreenBRX - m_dScreenTLX) == 0.0)
+	if ((m_dScreenBRX - m_dScreenTLX) == 0.0)
 		return NCS_EXTENT_ERROR;
 
 	dX -= m_dScreenTLX;
 	dY -= m_dScreenTLY;
 
 	//perform conversion
-	*pdX = m_dWorldTLX + ((m_dWorldBRX - m_dWorldTLX)/(m_dScreenBRX - m_dScreenTLX)) * dX;
-	*pdY = m_dWorldTLY + ((m_dWorldBRY - m_dWorldTLY)/(m_dScreenBRY - m_dScreenTLY)) * dY;
+	*pdX = m_dWorldTLX + ((m_dWorldBRX - m_dWorldTLX) / (m_dScreenBRX - m_dScreenTLX)) * dX;
+	*pdY = m_dWorldTLY + ((m_dWorldBRY - m_dWorldTLY) / (m_dScreenBRY - m_dScreenTLY)) * dY;
 
 	return(NCS_SUCCESS);
 }
 
-NCSError CNCSExtent::WorldToScreen( double dX, double dY, double *pdX, double *pdY)
+NCSError CNCSExtent::WorldToScreen(double dX, double dY, double *pdX, double *pdY)
 {
 	//check divisor for zero case
-	if((m_dWorldBRX - m_dWorldTLX) == 0.0)
+	if ((m_dWorldBRX - m_dWorldTLX) == 0.0)
 		return NCS_EXTENT_ERROR;
 
 	dX -= m_dWorldTLX;
 	dY -= m_dWorldTLY;
 
 	//perform conversion
-	*pdX = m_dScreenTLX + ((m_dScreenBRX - m_dScreenTLX)/(m_dWorldBRX - m_dWorldTLX)) * dX;
-	*pdY = m_dScreenTLY + ((m_dScreenBRY - m_dScreenTLY)/(m_dWorldBRY - m_dWorldTLY)) * dY;
+	*pdX = m_dScreenTLX + ((m_dScreenBRX - m_dScreenTLX) / (m_dWorldBRX - m_dWorldTLX)) * dX;
+	*pdY = m_dScreenTLY + ((m_dScreenBRY - m_dScreenTLY) / (m_dWorldBRY - m_dWorldTLY)) * dY;
 
 	return(NCS_SUCCESS);
 }

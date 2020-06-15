@@ -18,10 +18,10 @@ public:
 
 	enum { IDD = IDD_SYMBOLS_IMG };
 
-    void NewLayer(CImageLayer *pLayer=NULL);
+	void NewLayer(CImageLayer *pLayer = NULL);
 
 	CImageLayer *m_pLayer;
-   
+
 	DECLARE_MESSAGE_MAP()
 
 private:
@@ -30,12 +30,12 @@ private:
 	virtual BOOL OnInitDialog();
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	void UpdateOpacityLabel();
-	LRESULT OnChgColor(WPARAM clr,LPARAM id);
+	LRESULT OnChgColor(WPARAM clr, LPARAM id);
 
 
 	BYTE m_bAlphaSav;
 	bool m_bUseTransColorSav;
-	bool m_bPreview,m_bHiddenChg;
+	bool m_bPreview, m_bHiddenChg;
 	COLORREF m_crTransColorSav;
 	int m_iLastToleranceSav;
 
@@ -49,8 +49,8 @@ private:
 
 	void SetHiddenChg()
 	{
-		if(!m_bHiddenChg) {
-			m_bHiddenChg=true;
+		if (!m_bHiddenChg) {
+			m_bHiddenChg = true;
 			GetDlgItem(IDOK)->EnableWindow(1);
 		}
 	}
@@ -77,4 +77,4 @@ private:
 	CButton m_Preview;
 public:
 	afx_msg void OnBnClickedPreview();
-};	
+};

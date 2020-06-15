@@ -11,10 +11,10 @@
 #include <afxcmn.h>
 #endif
 
-typedef int (* LINKEDIT_CB)(int fcn);
+typedef int(*LINKEDIT_CB)(int fcn);
 
 //controls context menu options --
-enum {BTYP_INT,BTYP_FSEC,BTYP_FMIN,BTYP_FDEG,BTYP_FUTM};
+enum { BTYP_INT, BTYP_FSEC, BTYP_FMIN, BTYP_FDEG, BTYP_FUTM };
 #define ME_COPYCOORDS	(WM_USER+0x7000)
 #define ME_PASTECOORDS	(WM_USER+0x7001)
 
@@ -33,7 +33,7 @@ class CLinkEditI;
 
 class CLinkEdit : public CEdit
 {
-// Construction
+	// Construction
 public:
 	static CLinkEdit *m_pFocus;
 	static int m_bSetting;
@@ -57,20 +57,20 @@ protected:
 	CString m_csSaved;
 	DWORD m_dwSavedPos;
 
-// Overrides
+	// Overrides
 	BOOL PreTranslateMessage(MSG* pMsg);
 
-// Operations
-	virtual LPCSTR GetRangeErrMsg(char *buf)=0;
+	// Operations
+	virtual LPCSTR GetRangeErrMsg(char *buf) = 0;
 	void ShowRangeErrMsg();
 
 public:
-	virtual BOOL InRange()=0;
-	virtual void UpdateText(BOOL bValid)=0;
-	virtual BOOL RetrieveText()=0;
-	virtual void SetMin()=0;
-	
-// Overrides
+	virtual BOOL InRange() = 0;
+	virtual void UpdateText(BOOL bValid) = 0;
+	virtual BOOL RetrieveText() = 0;
+	virtual void SetMin() = 0;
+
+	// Overrides
 
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
@@ -82,7 +82,7 @@ private:
 	afx_msg LRESULT OnPaste(WPARAM, LPARAM);
 
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
-	afx_msg LRESULT OnRetFocus(WPARAM,LPARAM);
+	afx_msg LRESULT OnRetFocus(WPARAM, LPARAM);
 
 	//{{AFX_MSG(CLinkEdit)
 	afx_msg void OnChange();
@@ -97,16 +97,16 @@ private:
 
 class CLinkEditI : public CLinkEdit
 {
-// Construction
+	// Construction
 public:
 	CLinkEditI() : m_bZoneType(false) {}
-	void Init(CDialog *pdlg,int id,int min,int max,int len,
-		int *pI,CLinkEditI *pLinkL,CLinkEdit *pLinkR,LINKEDIT_CB pCB,CMagDlg *pDlg=NULL);
+	void Init(CDialog *pdlg, int id, int min, int max, int len,
+		int *pI, CLinkEditI *pLinkL, CLinkEdit *pLinkR, LINKEDIT_CB pCB, CMagDlg *pDlg = NULL);
 
-// Attributes
+	// Attributes
 protected:
 	int *m_pI;
-	int m_max,m_min;
+	int m_max, m_min;
 	bool m_bZoneType; //check control key in IncSpin
 
 // Operations
@@ -119,7 +119,7 @@ public:
 	virtual BOOL RetrieveText();
 	virtual void SetMin();
 	void IncVal(int dir);
-	void SetZoneType() {m_bZoneType=true;}
+	void SetZoneType() { m_bZoneType = true; }
 
 protected:
 
@@ -132,18 +132,18 @@ protected:
 /////////////////////////////////////////////////////////////////////////////
 class CLinkEditF : public CLinkEdit
 {
-// Construction
+	// Construction
 public:
-	void Init(CDialog *pdlg,int id,double min,double max,int len,
-		double *pI,BYTE bType,CLinkEditI *plinkL,LINKEDIT_CB pCB,CMagDlg *pDlg=NULL);
+	void Init(CDialog *pdlg, int id, double min, double max, int len,
+		double *pI, BYTE bType, CLinkEditI *plinkL, LINKEDIT_CB pCB, CMagDlg *pDlg = NULL);
 
-// Attributes
+	// Attributes
 
 	double *m_pF;
-	double m_fmin,m_fmax;
+	double m_fmin, m_fmax;
 	int m_len;
 
-/// Implementation
+	/// Implementation
 	virtual BOOL InRange();
 	virtual void UpdateText(BOOL bValid);
 	virtual BOOL RetrieveText();
@@ -165,23 +165,23 @@ class CSpinEdit : public CSpinButtonCtrl
 {
 public:
 
-// Attributes
+	// Attributes
 public:
 
-// Operations
+	// Operations
 public:
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CSpinEdit)
-	//}}AFX_VIRTUAL
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CSpinEdit)
+		//}}AFX_VIRTUAL
 
-// Implementation
+	// Implementation
 public:
-	void Init(CDialog *pDlg,int id,CLinkEditI *pEdit)
+	void Init(CDialog *pDlg, int id, CLinkEditI *pEdit)
 	{
-		SubclassDlgItem(id,pDlg);
-		m_pEdit=pEdit;
+		SubclassDlgItem(id, pDlg);
+		m_pEdit = pEdit;
 	}
 
 	// Generated message map functions

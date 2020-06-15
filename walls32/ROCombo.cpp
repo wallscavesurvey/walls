@@ -31,10 +31,10 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CReadOnlyComboBox message handlers
 
-void CReadOnlyComboBox::OnEnable(BOOL bEnable) 
+void CReadOnlyComboBox::OnEnable(BOOL bEnable)
 {
 	CComboBox::OnEnable(bEnable);
-	
+
 	CEdit*	pEdit = (CEdit*)GetWindow(GW_CHILD);
 	pEdit->EnableWindow(TRUE);
 	pEdit->SetReadOnly(!bEnable);

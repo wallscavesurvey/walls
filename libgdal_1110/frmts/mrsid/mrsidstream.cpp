@@ -42,7 +42,7 @@ LT_USE_NAMESPACE(LizardTech)
 /* ==================================================================== */
 /************************************************************************/
 
-LTIVSIStream::LTIVSIStream() : poFileHandle(NULL), nError(0), pnRefCount(NULL), 
+LTIVSIStream::LTIVSIStream() : poFileHandle(NULL), nError(0), pnRefCount(NULL),
 bIsOpen(FALSE)
 {
 }
@@ -53,55 +53,55 @@ bIsOpen(FALSE)
 
 LTIVSIStream::~LTIVSIStream()
 {
-    if ( poFileHandle)
-    {
-        (*pnRefCount)--;
-        if (*pnRefCount == 0)
-        {
-            VSIFCloseL( (VSILFILE *)poFileHandle );
-            nError = errno;
-            delete pnRefCount;
-        }
-    }
+	if (poFileHandle)
+	{
+		(*pnRefCount)--;
+		if (*pnRefCount == 0)
+		{
+			VSIFCloseL((VSILFILE *)poFileHandle);
+			nError = errno;
+			delete pnRefCount;
+		}
+	}
 }
 
 /************************************************************************/
 /*                              initialize()                            */
 /************************************************************************/
 
-LT_STATUS LTIVSIStream::initialize( const char *pszFilename,
-                                    const char *pszAccess )
+LT_STATUS LTIVSIStream::initialize(const char *pszFilename,
+	const char *pszAccess)
 {
-    CPLAssert(poFileHandle == NULL);
+	CPLAssert(poFileHandle == NULL);
 
-    errno = 0;
-    poFileHandle = (VSIVirtualHandle *)VSIFOpenL( pszFilename, pszAccess );
-    if (poFileHandle)
-    {
-        pnRefCount = new int;
-        *pnRefCount = 1;
-    }
-    nError = errno;
+	errno = 0;
+	poFileHandle = (VSIVirtualHandle *)VSIFOpenL(pszFilename, pszAccess);
+	if (poFileHandle)
+	{
+		pnRefCount = new int;
+		*pnRefCount = 1;
+	}
+	nError = errno;
 
-    return poFileHandle ? LT_STS_Success : LT_STS_Failure;
+	return poFileHandle ? LT_STS_Success : LT_STS_Failure;
 }
 
 /************************************************************************/
 /*                              initialize()                            */
 /************************************************************************/
 
-LT_STATUS LTIVSIStream::initialize( LTIVSIStream* ltiVSIStream )
+LT_STATUS LTIVSIStream::initialize(LTIVSIStream* ltiVSIStream)
 {
-    CPLAssert(poFileHandle == NULL);
+	CPLAssert(poFileHandle == NULL);
 
-    poFileHandle = ltiVSIStream->poFileHandle;
-    if (poFileHandle)
-    {
-        pnRefCount = ltiVSIStream->pnRefCount;
-        (*pnRefCount) ++;
-    }
+	poFileHandle = ltiVSIStream->poFileHandle;
+	if (poFileHandle)
+	{
+		pnRefCount = ltiVSIStream->pnRefCount;
+		(*pnRefCount)++;
+	}
 
-    return poFileHandle ? LT_STS_Success : LT_STS_Failure;
+	return poFileHandle ? LT_STS_Success : LT_STS_Failure;
 }
 
 /************************************************************************/
@@ -110,13 +110,13 @@ LT_STATUS LTIVSIStream::initialize( LTIVSIStream* ltiVSIStream )
 
 bool LTIVSIStream::isEOF()
 {
-    CPLAssert(poFileHandle);
+	CPLAssert(poFileHandle);
 
-    errno = 0;
-    bool    bIsEOF = (0 != poFileHandle->Eof());
-    nError = errno;
+	errno = 0;
+	bool    bIsEOF = (0 != poFileHandle->Eof());
+	nError = errno;
 
-    return bIsEOF;
+	return bIsEOF;
 }
 
 /************************************************************************/
@@ -125,7 +125,7 @@ bool LTIVSIStream::isEOF()
 
 bool LTIVSIStream::isOpen()
 {
-    return  poFileHandle != NULL && bIsOpen;
+	return  poFileHandle != NULL && bIsOpen;
 }
 
 /************************************************************************/
@@ -134,8 +134,8 @@ bool LTIVSIStream::isOpen()
 
 LT_STATUS LTIVSIStream::open()
 {
-    bIsOpen = poFileHandle != NULL;
-    return poFileHandle ? LT_STS_Success : LT_STS_Failure;
+	bIsOpen = poFileHandle != NULL;
+	return poFileHandle ? LT_STS_Success : LT_STS_Failure;
 }
 
 /************************************************************************/
@@ -144,92 +144,92 @@ LT_STATUS LTIVSIStream::open()
 
 LT_STATUS LTIVSIStream::close()
 {
-    CPLAssert(poFileHandle);
+	CPLAssert(poFileHandle);
 
-    bIsOpen = FALSE;
-    errno = 0;
-    if ( poFileHandle->Seek( 0, SEEK_SET ) == 0 )
-        return LT_STS_Success;
-    else
-    {
-        nError = errno;
-        return LT_STS_Failure;
-    }
+	bIsOpen = FALSE;
+	errno = 0;
+	if (poFileHandle->Seek(0, SEEK_SET) == 0)
+		return LT_STS_Success;
+	else
+	{
+		nError = errno;
+		return LT_STS_Failure;
+	}
 }
 
 /************************************************************************/
 /*                                   read()                             */
 /************************************************************************/
 
-lt_uint32 LTIVSIStream::read( lt_uint8 *pDest, lt_uint32 nBytes )
+lt_uint32 LTIVSIStream::read(lt_uint8 *pDest, lt_uint32 nBytes)
 {
-    CPLAssert(poFileHandle);
+	CPLAssert(poFileHandle);
 
-    errno = 0;
-    lt_uint32   nBytesRead =
-        (lt_uint32)poFileHandle->Read( pDest, 1, nBytes );
-    nError = errno;
+	errno = 0;
+	lt_uint32   nBytesRead =
+		(lt_uint32)poFileHandle->Read(pDest, 1, nBytes);
+	nError = errno;
 
-    return nBytesRead;
+	return nBytesRead;
 }
 
 /************************************************************************/
 /*                                  write()                             */
 /************************************************************************/
 
-lt_uint32 LTIVSIStream::write( const lt_uint8 *pSrc, lt_uint32 nBytes )
+lt_uint32 LTIVSIStream::write(const lt_uint8 *pSrc, lt_uint32 nBytes)
 {
-    CPLAssert(poFileHandle);
+	CPLAssert(poFileHandle);
 
-    errno = 0;
-    lt_uint32   nBytesWritten =
-        (lt_uint32)poFileHandle->Write( pSrc, 1, nBytes );
-    nError = errno;
+	errno = 0;
+	lt_uint32   nBytesWritten =
+		(lt_uint32)poFileHandle->Write(pSrc, 1, nBytes);
+	nError = errno;
 
-    return nBytesWritten;
+	return nBytesWritten;
 }
 
 /************************************************************************/
 /*                                   seek()                             */
 /************************************************************************/
 
-LT_STATUS LTIVSIStream::seek( lt_int64 nOffset, LTIOSeekDir nOrigin )
+LT_STATUS LTIVSIStream::seek(lt_int64 nOffset, LTIOSeekDir nOrigin)
 {
-    CPLAssert(poFileHandle);
+	CPLAssert(poFileHandle);
 
-    int nWhence;
-    switch (nOrigin)
-    {
-        case (LTIO_SEEK_DIR_BEG):
-            nWhence = SEEK_SET;
-            break;
-      
-        case (LTIO_SEEK_DIR_CUR):
-        {
-            nWhence =  SEEK_CUR;
-            if( nOffset < 0 )
-            {
-                nWhence = SEEK_SET;
-                nOffset += (lt_int64)poFileHandle->Tell();
-            }
-            break;
-        }
-      
-        case (LTIO_SEEK_DIR_END):
-            nWhence = SEEK_END;
-            break;
-      
-        default:
-            return LT_STS_Failure;
-    }
+	int nWhence;
+	switch (nOrigin)
+	{
+	case (LTIO_SEEK_DIR_BEG):
+		nWhence = SEEK_SET;
+		break;
 
-    if ( poFileHandle->Seek( (vsi_l_offset)nOffset, nWhence ) == 0 )
-        return LT_STS_Success;
-    else
-    {
-        nError = errno;
-        return LT_STS_Failure;
-    }
+	case (LTIO_SEEK_DIR_CUR):
+	{
+		nWhence = SEEK_CUR;
+		if (nOffset < 0)
+		{
+			nWhence = SEEK_SET;
+			nOffset += (lt_int64)poFileHandle->Tell();
+		}
+		break;
+	}
+
+	case (LTIO_SEEK_DIR_END):
+		nWhence = SEEK_END;
+		break;
+
+	default:
+		return LT_STS_Failure;
+	}
+
+	if (poFileHandle->Seek((vsi_l_offset)nOffset, nWhence) == 0)
+		return LT_STS_Success;
+	else
+	{
+		nError = errno;
+		return LT_STS_Failure;
+	}
 }
 
 /************************************************************************/
@@ -238,13 +238,13 @@ LT_STATUS LTIVSIStream::seek( lt_int64 nOffset, LTIOSeekDir nOrigin )
 
 lt_int64 LTIVSIStream::tell()
 {
-    CPLAssert(poFileHandle);
+	CPLAssert(poFileHandle);
 
-    errno = 0;
-    lt_int64    nPos = (lt_int64)poFileHandle->Tell();
-    nError = errno;
+	errno = 0;
+	lt_int64    nPos = (lt_int64)poFileHandle->Tell();
+	nError = errno;
 
-    return nPos;
+	return nPos;
 }
 
 /************************************************************************/
@@ -253,10 +253,10 @@ lt_int64 LTIVSIStream::tell()
 
 LTIOStreamInf* LTIVSIStream::duplicate()
 {
-    LTIVSIStream *poNew = new LTIVSIStream;
-    poNew->initialize( this );
+	LTIVSIStream *poNew = new LTIVSIStream;
+	poNew->initialize(this);
 
-    return poNew;
+	return poNew;
 }
 
 /************************************************************************/
@@ -265,7 +265,7 @@ LTIOStreamInf* LTIVSIStream::duplicate()
 
 LT_STATUS LTIVSIStream::getLastError() const
 {
-    return nError;
+	return nError;
 }
 
 /************************************************************************/
@@ -274,6 +274,6 @@ LT_STATUS LTIVSIStream::getLastError() const
 
 const char *LTIVSIStream::getID() const
 {
-    return "LTIVSIStream:";
+	return "LTIVSIStream:";
 }
 

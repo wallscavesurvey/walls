@@ -15,7 +15,7 @@
 #include "NMEAParser.h"
 #include <trx_str.h>
 
-LPCSTR CNMEAParser::m_pCommandName[NUM_PROCESSES+1]={"GPGGA","GPGSA","GPGSV","GPRMB","GPRMC","GPZDA","PGRMM",NULL};
+LPCSTR CNMEAParser::m_pCommandName[NUM_PROCESSES + 1] = { "GPGGA","GPGSA","GPGSV","GPRMB","GPRMC","GPZDA","PGRMM",NULL };
 
 #if 0
 static LPCSTR pCmdTarget;
@@ -23,7 +23,7 @@ static VEC_CMD_NAME *pvec_cmd_seen;
 
 static int FAR PASCAL cmd_compare(int i)
 {
-	return strcmp(pCmdTarget,((*pvec_cmd_seen)[i]).name);
+	return strcmp(pCmdTarget, ((*pvec_cmd_seen)[i]).name);
 }
 #endif
 
@@ -34,13 +34,13 @@ CNMEAParser::CNMEAParser()
 {
 	m_nState = NP_STATE_SOM;
 	m_dwCommandCount = m_dwProcessedCount = 0;
-	m_pProcess[0]=&CNMEAParser::ProcessGPGGA;
-	m_pProcess[1]=&CNMEAParser::ProcessGPGSA;
-	m_pProcess[2]=&CNMEAParser::ProcessGPGSV;
-	m_pProcess[3]=&CNMEAParser::ProcessGPRMB;
-	m_pProcess[4]=&CNMEAParser::ProcessGPRMC;
-	m_pProcess[5]=&CNMEAParser::ProcessGPZDA;
-	m_pProcess[6]=&CNMEAParser::ProcessPGRMM;
+	m_pProcess[0] = &CNMEAParser::ProcessGPGGA;
+	m_pProcess[1] = &CNMEAParser::ProcessGPGSA;
+	m_pProcess[2] = &CNMEAParser::ProcessGPGSV;
+	m_pProcess[3] = &CNMEAParser::ProcessGPRMB;
+	m_pProcess[4] = &CNMEAParser::ProcessGPRMC;
+	m_pProcess[5] = &CNMEAParser::ProcessGPZDA;
+	m_pProcess[6] = &CNMEAParser::ProcessPGRMM;
 	Reset();
 }
 
@@ -60,7 +60,7 @@ CNMEAParser::~CNMEAParser()
 ///////////////////////////////////////////////////////////////////////////////
 BOOL CNMEAParser::ParseBuffer(BYTE *pBuff, DWORD dwLen)
 {
-	for(DWORD i = 0; i < dwLen; i++)
+	for (DWORD i = 0; i < dwLen; i++)
 	{
 		ProcessNMEA(pBuff[i]);
 	}
@@ -90,111 +90,111 @@ BOOL CNMEAParser::ParseBuffer(BYTE *pBuff, DWORD dwLen)
 ///////////////////////////////////////////////////////////////////////////////
 void CNMEAParser::ProcessNMEA(BYTE btData)
 {
-	switch(m_nState)
+	switch (m_nState)
 	{
 		///////////////////////////////////////////////////////////////////////
 		// Search for start of message '$'
-		case NP_STATE_SOM :
-			if(btData == '$')
-			{
-				m_btChecksum = 0;			// reset checksum
-				m_wIndex = 0;				// reset index
-				m_nState = NP_STATE_CMD;
-			}
+	case NP_STATE_SOM:
+		if (btData == '$')
+		{
+			m_btChecksum = 0;			// reset checksum
+			m_wIndex = 0;				// reset index
+			m_nState = NP_STATE_CMD;
+		}
 		break;
 
 		///////////////////////////////////////////////////////////////////////
 		// Retrieve command (NMEA Address)
-		case NP_STATE_CMD :
-			if(btData != ',' && btData != '*')
-			{
-				m_pCommand[m_wIndex++] = btData;
-				m_btChecksum ^= btData;
+	case NP_STATE_CMD:
+		if (btData != ',' && btData != '*')
+		{
+			m_pCommand[m_wIndex++] = btData;
+			m_btChecksum ^= btData;
 
-				// Check for command overflow
-				if(m_wIndex >= NP_MAX_CMD_LEN)
-				{
-					m_nState = NP_STATE_SOM;
-				}
-			}
-			else
+			// Check for command overflow
+			if (m_wIndex >= NP_MAX_CMD_LEN)
 			{
-				m_pCommand[m_wIndex] = '\0';	// terminate command
-				m_btChecksum ^= btData;
-				m_wIndex = 0;
-				m_nState = NP_STATE_DATA;		// goto get data state
+				m_nState = NP_STATE_SOM;
 			}
+		}
+		else
+		{
+			m_pCommand[m_wIndex] = '\0';	// terminate command
+			m_btChecksum ^= btData;
+			m_wIndex = 0;
+			m_nState = NP_STATE_DATA;		// goto get data state
+		}
 		break;
 
 		///////////////////////////////////////////////////////////////////////
 		// Store data and check for end of sentence or checksum flag
-		case NP_STATE_DATA :
-			if(btData == '*') // checksum flag?
+	case NP_STATE_DATA:
+		if (btData == '*') // checksum flag?
+		{
+			m_pData[m_wIndex] = '\0';
+			m_nState = NP_STATE_CHECKSUM_1;
+		}
+		else // no checksum flag, store data
+		{
+			//
+			// Check for end of sentence with no checksum
+			//
+			if (btData == '\r')
 			{
 				m_pData[m_wIndex] = '\0';
-				m_nState = NP_STATE_CHECKSUM_1;
-			}
-			else // no checksum flag, store data
-			{
-				//
-				// Check for end of sentence with no checksum
-				//
-				if(btData == '\r')
-				{
-					m_pData[m_wIndex] = '\0';
-					ProcessCommand(m_pCommand, m_pData);
-					m_nState = NP_STATE_SOM;
-					return;
-				}
-
-				//
-				// Store data and calculate checksum
-				//
-				m_btChecksum ^= btData;
-				m_pData[m_wIndex] = btData;
-				if(++m_wIndex >= NP_MAX_DATA_LEN) // Check for buffer overflow
-				{
-					m_nState = NP_STATE_SOM;
-				}
-			}
-		break;
-
-		///////////////////////////////////////////////////////////////////////
-		case NP_STATE_CHECKSUM_1 :
-			if( (btData - '0') <= 9)
-			{
-				m_btReceivedChecksum = (btData - '0') << 4;
-			}
-			else
-			{
-				m_btReceivedChecksum = (btData - 'A' + 10) << 4;
-			}
-
-			m_nState = NP_STATE_CHECKSUM_2;
-
-		break;
-
-		///////////////////////////////////////////////////////////////////////
-		case NP_STATE_CHECKSUM_2 :
-			if( (btData - '0') <= 9)
-			{
-				m_btReceivedChecksum |= (btData - '0');
-			}
-			else
-			{
-				m_btReceivedChecksum |= (btData - 'A' + 10);
-			}
-
-			if(m_btChecksum == m_btReceivedChecksum)
-			{
 				ProcessCommand(m_pCommand, m_pData);
+				m_nState = NP_STATE_SOM;
+				return;
 			}
 
-			m_nState = NP_STATE_SOM;
+			//
+			// Store data and calculate checksum
+			//
+			m_btChecksum ^= btData;
+			m_pData[m_wIndex] = btData;
+			if (++m_wIndex >= NP_MAX_DATA_LEN) // Check for buffer overflow
+			{
+				m_nState = NP_STATE_SOM;
+			}
+		}
 		break;
 
 		///////////////////////////////////////////////////////////////////////
-		default : m_nState = NP_STATE_SOM;
+	case NP_STATE_CHECKSUM_1:
+		if ((btData - '0') <= 9)
+		{
+			m_btReceivedChecksum = (btData - '0') << 4;
+		}
+		else
+		{
+			m_btReceivedChecksum = (btData - 'A' + 10) << 4;
+		}
+
+		m_nState = NP_STATE_CHECKSUM_2;
+
+		break;
+
+		///////////////////////////////////////////////////////////////////////
+	case NP_STATE_CHECKSUM_2:
+		if ((btData - '0') <= 9)
+		{
+			m_btReceivedChecksum |= (btData - '0');
+		}
+		else
+		{
+			m_btReceivedChecksum |= (btData - 'A' + 10);
+		}
+
+		if (m_btChecksum == m_btReceivedChecksum)
+		{
+			ProcessCommand(m_pCommand, m_pData);
+		}
+
+		m_nState = NP_STATE_SOM;
+		break;
+
+		///////////////////////////////////////////////////////////////////////
+	default: m_nState = NP_STATE_SOM;
 	}
 }
 
@@ -205,22 +205,22 @@ void CNMEAParser::ProcessNMEA(BYTE btData)
 BOOL CNMEAParser::ProcessCommand(BYTE *pCommand, BYTE *pData)
 {
 	m_dwCommandCount++;
-	for(LPCSTR *ppCommandName=m_pCommandName;*ppCommandName;ppCommandName++) {
-		if(!strcmp((LPCSTR)pCommand,*ppCommandName)) {
-			(this->*m_pProcess[ppCommandName-m_pCommandName])(pData);
+	for (LPCSTR *ppCommandName = m_pCommandName; *ppCommandName; ppCommandName++) {
+		if (!strcmp((LPCSTR)pCommand, *ppCommandName)) {
+			(this->*m_pProcess[ppCommandName - m_pCommandName])(pData);
 			m_dwProcessedCount++;
 			return TRUE;
 		}
 	}
 #if 0
-	if(m_num_cmd_seen<MAX_PROCESSES && strlen((LPCSTR)pCommand)<6) {
-		pvec_cmd_seen=&m_vec_cmd_seen;
-		pCmdTarget=(LPCSTR)pCommand;
-		trx_Bininit(m_seq_cmd_seen,&m_num_cmd_seen,(TRXFCN_IF)cmd_compare);
-		trx_Binsert(m_num_cmd_seen,TRX_DUP_NONE);
-		if(!trx_binMatch) {
+	if (m_num_cmd_seen < MAX_PROCESSES && strlen((LPCSTR)pCommand) < 6) {
+		pvec_cmd_seen = &m_vec_cmd_seen;
+		pCmdTarget = (LPCSTR)pCommand;
+		trx_Bininit(m_seq_cmd_seen, &m_num_cmd_seen, (TRXFCN_IF)cmd_compare);
+		trx_Binsert(m_num_cmd_seen, TRX_DUP_NONE);
+		if (!trx_binMatch) {
 			m_vec_cmd_seen.push_back(CMD_NAME(pCmdTarget));
-			ASSERT(m_num_cmd_seen==m_vec_cmd_seen.size());
+			ASSERT(m_num_cmd_seen == m_vec_cmd_seen.size());
 		}
 	}
 #endif
@@ -242,7 +242,7 @@ BOOL CNMEAParser::GetField(BYTE *pData, BYTE *pField, int nFieldNum, int nMaxFie
 	//
 	// Validate params
 	//
-	if(pData == NULL || pField == NULL || nMaxFieldLen <= 0)
+	if (pData == NULL || pField == NULL || nMaxFieldLen <= 0)
 	{
 		return FALSE;
 	}
@@ -252,23 +252,23 @@ BOOL CNMEAParser::GetField(BYTE *pData, BYTE *pField, int nFieldNum, int nMaxFie
 	//
 	int i = 0;
 	int nField = 0;
-	while(nField != nFieldNum && pData[i])
+	while (nField != nFieldNum && pData[i])
 	{
-		if(pData[i] == ',')
+		if (pData[i] == ',')
 		{
 			nField++;
 		}
 
 		i++;
 
-		if(pData[i] == NULL)
+		if (pData[i] == NULL)
 		{
 			pField[0] = '\0';
 			return FALSE;
 		}
 	}
 
-	if(pData[i] == ',' || pData[i] == '*')
+	if (pData[i] == ',' || pData[i] == '*')
 	{
 		pField[0] = '\0';
 		return FALSE;
@@ -278,7 +278,7 @@ BOOL CNMEAParser::GetField(BYTE *pData, BYTE *pField, int nFieldNum, int nMaxFie
 	// copy field from pData to Field
 	//
 	int i2 = 0;
-	while(pData[i] != ',' && pData[i] != '*' && pData[i])
+	while (pData[i] != ',' && pData[i] != '*' && pData[i])
 	{
 		pField[i2] = pData[i];
 		i2++; i++;
@@ -287,9 +287,9 @@ BOOL CNMEAParser::GetField(BYTE *pData, BYTE *pField, int nFieldNum, int nMaxFie
 		// check if field is too big to fit on passed parameter. If it is,
 		// crop returned field to its max length.
 		//
-		if(i2 >= nMaxFieldLen)
+		if (i2 >= nMaxFieldLen)
 		{
-			i2 = nMaxFieldLen-1;
+			i2 = nMaxFieldLen - 1;
 			break;
 		}
 	}
@@ -304,11 +304,11 @@ BOOL CNMEAParser::GetField(BYTE *pData, BYTE *pField, int nFieldNum, int nMaxFie
 void CNMEAParser::Reset()
 {
 	m_dwCommandCount = m_dwProcessedCount = 0;
-	m_Pos=GPS_POSITION();
+	m_Pos = GPS_POSITION();
 
 	{
-		TIME_ZONE_INFORMATION tz = {0};
-		m_LocalTimeOffsetMin = (GetTimeZoneInformation(&tz)==2)?-tz.DaylightBias:0;
+		TIME_ZONE_INFORMATION tz = { 0 };
+		m_LocalTimeOffsetMin = (GetTimeZoneInformation(&tz) == 2) ? -tz.DaylightBias : 0;
 		m_LocalTimeOffsetMin -= tz.Bias;
 	}
 
@@ -329,7 +329,7 @@ void CNMEAParser::Reset()
 
 #if 0
 	m_vec_cmd_seen.clear();
-	m_num_cmd_seen=0;
+	m_num_cmd_seen = 0;
 #endif
 	//
 	// GPGGA Data
@@ -350,7 +350,7 @@ void CNMEAParser::Reset()
 #if 0
 	m_btGSAMode = 'M';					// M = manual, A = automatic 2D/3D
 	m_btGSAFixMode = 1;					// 1 = fix not available, 2 = 2D, 3 = 3D
-	for(i = 0; i < NP_MAX_CHAN; i++)
+	for (i = 0; i < NP_MAX_CHAN; i++)
 	{
 		m_wGSASatsInSolution[i] = 0;	// ID of sats in solution
 	}
@@ -366,7 +366,7 @@ void CNMEAParser::Reset()
 #if 0
 	m_btGSVTotalNumOfMsg = 0;			//
 	m_wGSVTotalNumSatsInView = 0;		//
-	for(i = 0; i < NP_MAX_CHAN; i++)
+	for (i = 0; i < NP_MAX_CHAN; i++)
 	{
 		m_GSVSatInfo[i].m_wAzimuth = 0;
 		m_GSVSatInfo[i].m_wElevation = 0;
@@ -433,7 +433,7 @@ void CNMEAParser::Reset()
 	//PGRMM
 	//
 #if 0
-	m_strDatum[0]=0;
+	m_strDatum[0] = 0;
 #endif
 }
 
@@ -445,10 +445,10 @@ void CNMEAParser::Reset()
 ///////////////////////////////////////////////////////////////////////////////
 BOOL CNMEAParser::IsSatUsedInSolution(WORD wSatID)
 {
-	if(wSatID == 0) return FALSE;
-	for(int i = 0; i < 12; i++)
+	if (wSatID == 0) return FALSE;
+	for (int i = 0; i < 12; i++)
 	{
-		if(wSatID == m_wGSASatsInSolution[i])
+		if (wSatID == m_wGSASatsInSolution[i])
 		{
 			return TRUE;
 		}
@@ -464,19 +464,19 @@ void CNMEAParser::ProcessGPGGA(BYTE *pData)
 {
 	BYTE pField[MAXFIELD];
 	CHAR pBuff[10];
-	BYTE flags=0;
+	BYTE flags = 0;
 
-	memset(&m_Pos.gpf,0,sizeof(CGPSFix));
+	memset(&m_Pos.gpf, 0, sizeof(CGPSFix));
 
-	m_Pos.wFlags&=~(GPS_FPOS|GPS_FTIME|GPS_FALT|GPS_FHDOP|GPS_FQUAL|GPS_FSATU);
+	m_Pos.wFlags &= ~(GPS_FPOS | GPS_FTIME | GPS_FALT | GPS_FHDOP | GPS_FQUAL | GPS_FSATU);
 
 	//
 	// Time
 	//
-	if(GetField(pData, pField, 0, MAXFIELD))
+	if (GetField(pData, pField, 0, MAXFIELD))
 	{
 		// Hour
-		int m,h;
+		int m, h;
 		pBuff[0] = pField[0];
 		pBuff[1] = pField[1];
 		pBuff[2] = '\0';
@@ -486,14 +486,14 @@ void CNMEAParser::ProcessGPGGA(BYTE *pData)
 		pBuff[0] = pField[2];
 		pBuff[1] = pField[3];
 		pBuff[2] = '\0';
-		m=atoi(pBuff);
+		m = atoi(pBuff);
 
-		if(m_LocalTimeOffsetMin) {
-			h+=m_LocalTimeOffsetMin/60;
-			if(h<0) h+=24;
-			else if(h>=24) h-=24;
-			m+=(m_LocalTimeOffsetMin%60);
-			if(m<0) m+=60;
+		if (m_LocalTimeOffsetMin) {
+			h += m_LocalTimeOffsetMin / 60;
+			if (h < 0) h += 24;
+			else if (h >= 24) h -= 24;
+			m += (m_LocalTimeOffsetMin % 60);
+			if (m < 0) m += 60;
 		}
 		m_Pos.gpf.m = (BYTE)m;
 		m_Pos.gpf.h = (BYTE)h;
@@ -503,93 +503,93 @@ void CNMEAParser::ProcessGPGGA(BYTE *pData)
 		pBuff[1] = pField[5];
 		pBuff[2] = '\0';
 		m_Pos.gpf.s = (BYTE)atoi(pBuff);
-		flags|=GPS_FTIME;
+		flags |= GPS_FTIME;
 	}
 
 	//
 	// Latitude
 	//
-	double d=0.0;
+	double d = 0.0;
 
-	if(GetField(pData, pField, 1, MAXFIELD))
+	if (GetField(pData, pField, 1, MAXFIELD))
 	{
-		d = atof((CHAR *)pField+2) / 60.0;
+		d = atof((CHAR *)pField + 2) / 60.0;
 		pField[2] = '\0';
 		d += atof((CHAR *)pField);
-		flags|=GPS_FLAT;
+		flags |= GPS_FLAT;
 	}
-	if(GetField(pData, pField, 2, MAXFIELD))
+	if (GetField(pData, pField, 2, MAXFIELD))
 	{
-		if(pField[0] == 'S')
+		if (pField[0] == 'S')
 		{
 			d = -d;
 		}
 	}
 
-	m_Pos.gpf.y=(LONG)(d*1000000);
+	m_Pos.gpf.y = (LONG)(d * 1000000);
 
 	//
 	// Longitude
 	//
-	d=0.0;
-	if(GetField(pData, pField, 3, MAXFIELD))
+	d = 0.0;
+	if (GetField(pData, pField, 3, MAXFIELD))
 	{
-		d = atof((CHAR *)pField+3) / 60.0;
+		d = atof((CHAR *)pField + 3) / 60.0;
 		pField[3] = '\0';
 		d += atof((CHAR *)pField);
-		flags|=GPS_FLON;
+		flags |= GPS_FLON;
 	}
-	if(GetField(pData, pField, 4, MAXFIELD))
+	if (GetField(pData, pField, 4, MAXFIELD))
 	{
-		if(pField[0] == 'W')
+		if (pField[0] == 'W')
 		{
 			d = -d;
 		}
 	}
 
-	m_Pos.gpf.x=(LONG)(d*1000000);
+	m_Pos.gpf.x = (LONG)(d * 1000000);
 
 	//
 	// GPS quality
 	//
-	if(GetField(pData, pField, 5, MAXFIELD))
+	if (GetField(pData, pField, 5, MAXFIELD))
 	{
 		m_Pos.bQual = pField[0] - '0';
-		flags|=GPS_FQUAL;
+		flags |= GPS_FQUAL;
 	}
 
 	//
 	// Satellites in use
 	//
-	if(GetField(pData, pField, 6, MAXFIELD))
+	if (GetField(pData, pField, 6, MAXFIELD))
 	{
 		pBuff[0] = pField[0];
 		pBuff[1] = pField[1];
 		pBuff[2] = '\0';
 		m_Pos.bSatsUsed = atoi(pBuff);
-		flags|=GPS_FSATU;
+		flags |= GPS_FSATU;
 	}
 
 	//
 	// HDOP
 	//
-	if(GetField(pData, pField, 7, MAXFIELD))
+	if (GetField(pData, pField, 7, MAXFIELD))
 	{
 		m_Pos.fHdop = (float)atof((CHAR *)pField);
-		flags|=GPS_FHDOP;
+		flags |= GPS_FHDOP;
 	}
-	
+
 	//
 	// Altitude
 	//
-	if(GetField(pData, pField, 8, MAXFIELD))
+	if (GetField(pData, pField, 8, MAXFIELD))
 	{
 		m_Pos.gpf.elev = (float)atof((CHAR *)pField);
-		flags|=GPS_FALT;
+		flags |= GPS_FALT;
 	}
 
 	m_dwGGACount++;
-	m_Pos.wFlags|=flags;
+	m_Pos.wFlags |= flags;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -603,7 +603,7 @@ void CNMEAParser::ProcessGPGSA(BYTE *pData)
 	//
 	// Mode
 	//
-	if(GetField(pData, pField, 0, MAXFIELD))
+	if (GetField(pData, pField, 0, MAXFIELD))
 	{
 		m_btGSAMode = pField[0];
 	}
@@ -611,7 +611,7 @@ void CNMEAParser::ProcessGPGSA(BYTE *pData)
 	//
 	// Fix Mode
 	//
-	if(GetField(pData, pField, 1, MAXFIELD))
+	if (GetField(pData, pField, 1, MAXFIELD))
 	{
 		m_btGSAFixMode = pField[0] - '0';
 	}
@@ -619,9 +619,9 @@ void CNMEAParser::ProcessGPGSA(BYTE *pData)
 	//
 	// Active satellites
 	//
-	for(int i = 0; i < 12; i++)
+	for (int i = 0; i < 12; i++)
 	{
-		if(GetField(pData, pField, 2 + i, MAXFIELD))
+		if (GetField(pData, pField, 2 + i, MAXFIELD))
 		{
 			pBuff[0] = pField[0];
 			pBuff[1] = pField[1];
@@ -637,7 +637,7 @@ void CNMEAParser::ProcessGPGSA(BYTE *pData)
 	//
 	// PDOP
 	//
-	if(GetField(pData, pField, 14, MAXFIELD))
+	if (GetField(pData, pField, 14, MAXFIELD))
 	{
 		m_dGSAPDOP = atof((CHAR *)pField);
 	}
@@ -649,7 +649,7 @@ void CNMEAParser::ProcessGPGSA(BYTE *pData)
 	//
 	// HDOP
 	//
-	if(GetField(pData, pField, 15, MAXFIELD))
+	if (GetField(pData, pField, 15, MAXFIELD))
 	{
 		m_dGSAHDOP = atof((CHAR *)pField);
 	}
@@ -661,7 +661,7 @@ void CNMEAParser::ProcessGPGSA(BYTE *pData)
 	//
 	// VDOP
 	//
-	if(GetField(pData, pField, 16, MAXFIELD))
+	if (GetField(pData, pField, 16, MAXFIELD))
 	{
 		m_dGSAVDOP = atof((CHAR *)pField);
 	}
@@ -679,12 +679,12 @@ void CNMEAParser::ProcessGPGSV(BYTE *pData)
 {
 	INT nTotalNumOfMsg, nMsgNum;
 	BYTE pField[MAXFIELD];
-	m_Pos.wFlags&=~(GPS_FSATV);
+	m_Pos.wFlags &= ~(GPS_FSATV);
 
 	//
 	// Total number of messages
 	//
-	if(GetField(pData, pField, 0, MAXFIELD))
+	if (GetField(pData, pField, 0, MAXFIELD))
 	{
 		nTotalNumOfMsg = atoi((CHAR *)pField);
 
@@ -693,9 +693,9 @@ void CNMEAParser::ProcessGPGSV(BYTE *pData)
 		// calculate indexes into an array. I've seen corrept NMEA strings
 		// with no checksum set this to large values.
 		//
-		if(nTotalNumOfMsg > 9 || nTotalNumOfMsg < 0) return; 
+		if (nTotalNumOfMsg > 9 || nTotalNumOfMsg < 0) return;
 	}
-	if(nTotalNumOfMsg < 1 || nTotalNumOfMsg*4 >= NP_MAX_CHAN)
+	if (nTotalNumOfMsg < 1 || nTotalNumOfMsg * 4 >= NP_MAX_CHAN)
 	{
 		return;
 	}
@@ -703,7 +703,7 @@ void CNMEAParser::ProcessGPGSV(BYTE *pData)
 	//
 	// message number
 	//
-	if(GetField(pData, pField, 1, MAXFIELD))
+	if (GetField(pData, pField, 1, MAXFIELD))
 	{
 		nMsgNum = atoi((CHAR *)pField);
 
@@ -711,69 +711,69 @@ void CNMEAParser::ProcessGPGSV(BYTE *pData)
 		// Make sure that the message number is valid. This is used to
 		// calculate indexes into an array
 		//
-		if(nMsgNum > 9 || nMsgNum < 0) return; 
+		if (nMsgNum > 9 || nMsgNum < 0) return;
 	}
 
 	//
 	// Total satellites in view
 	//
-	if(GetField(pData, pField, 2, MAXFIELD))
+	if (GetField(pData, pField, 2, MAXFIELD))
 	{
 		m_Pos.bSatsInView = atoi((CHAR *)pField);
-		m_Pos.wFlags|=GPS_FSATV;
+		m_Pos.wFlags |= GPS_FSATV;
 	}
 
 #if 0
 	//
 	// Satelite data
 	//
-	for(int i = 0; i < 4; i++)
+	for (int i = 0; i < 4; i++)
 	{
 		// Satellite ID
-		if(GetField(pData, pField, 3 + 4*i, MAXFIELD))
+		if (GetField(pData, pField, 3 + 4 * i, MAXFIELD))
 		{
-			m_GSVSatInfo[i+(nMsgNum-1)*4].m_wPRN = atoi((CHAR *)pField);
+			m_GSVSatInfo[i + (nMsgNum - 1) * 4].m_wPRN = atoi((CHAR *)pField);
 		}
 		else
 		{
-			m_GSVSatInfo[i+(nMsgNum-1)*4].m_wPRN = 0;
+			m_GSVSatInfo[i + (nMsgNum - 1) * 4].m_wPRN = 0;
 		}
 
 		// Elevarion
-		if(GetField(pData, pField, 4 + 4*i, MAXFIELD))
+		if (GetField(pData, pField, 4 + 4 * i, MAXFIELD))
 		{
-			m_GSVSatInfo[i+(nMsgNum-1)*4].m_wElevation = atoi((CHAR *)pField);
+			m_GSVSatInfo[i + (nMsgNum - 1) * 4].m_wElevation = atoi((CHAR *)pField);
 		}
 		else
 		{
-			m_GSVSatInfo[i+(nMsgNum-1)*4].m_wElevation = 0;
+			m_GSVSatInfo[i + (nMsgNum - 1) * 4].m_wElevation = 0;
 		}
 
 		// Azimuth
-		if(GetField(pData, pField, 5 + 4*i, MAXFIELD))
+		if (GetField(pData, pField, 5 + 4 * i, MAXFIELD))
 		{
-			m_GSVSatInfo[i+(nMsgNum-1)*4].m_wAzimuth = atoi((CHAR *)pField);
+			m_GSVSatInfo[i + (nMsgNum - 1) * 4].m_wAzimuth = atoi((CHAR *)pField);
 		}
 		else
 		{
-			m_GSVSatInfo[i+(nMsgNum-1)*4].m_wAzimuth = 0;
+			m_GSVSatInfo[i + (nMsgNum - 1) * 4].m_wAzimuth = 0;
 		}
 
 		// SNR
-		if(GetField(pData, pField, 6 + 4*i, MAXFIELD))
+		if (GetField(pData, pField, 6 + 4 * i, MAXFIELD))
 		{
-			m_GSVSatInfo[i+(nMsgNum-1)*4].m_wSignalQuality = atoi((CHAR *)pField);
+			m_GSVSatInfo[i + (nMsgNum - 1) * 4].m_wSignalQuality = atoi((CHAR *)pField);
 		}
 		else
 		{
-			m_GSVSatInfo[i+(nMsgNum-1)*4].m_wSignalQuality = 0;
+			m_GSVSatInfo[i + (nMsgNum - 1) * 4].m_wSignalQuality = 0;
 		}
 
 		//
 		// Update "used in solution" (m_bUsedInSolution) flag. This is base
 		// on the GSA message and is an added convenience for post processing
 		//
-		m_GSVSatInfo[i+(nMsgNum-1)*4].m_bUsedInSolution = IsSatUsedInSolution(m_GSVSatInfo[i+(nMsgNum-1)*4].m_wPRN);
+		m_GSVSatInfo[i + (nMsgNum - 1) * 4].m_bUsedInSolution = IsSatUsedInSolution(m_GSVSatInfo[i + (nMsgNum - 1) * 4].m_wPRN);
 	}
 #endif
 	m_dwGSVCount++;
@@ -790,7 +790,7 @@ void CNMEAParser::ProcessGPRMB(BYTE *pData)
 	//
 	// Data status
 	//
-	if(GetField(pData, pField, 0, MAXFIELD))
+	if (GetField(pData, pField, 0, MAXFIELD))
 	{
 		m_btRMBDataStatus = pField[0];
 	}
@@ -802,7 +802,7 @@ void CNMEAParser::ProcessGPRMB(BYTE *pData)
 	//
 	// Cross track error
 	//
-	if(GetField(pData, pField, 1, MAXFIELD))
+	if (GetField(pData, pField, 1, MAXFIELD))
 	{
 		m_dRMBCrosstrackError = atof((CHAR *)pField);
 	}
@@ -814,7 +814,7 @@ void CNMEAParser::ProcessGPRMB(BYTE *pData)
 	//
 	// Direction to steer
 	//
-	if(GetField(pData, pField, 2, MAXFIELD))
+	if (GetField(pData, pField, 2, MAXFIELD))
 	{
 		m_btRMBDirectionToSteer = pField[0];
 	}
@@ -826,7 +826,7 @@ void CNMEAParser::ProcessGPRMB(BYTE *pData)
 	//
 	// Orgin waypoint ID
 	//
-	if(GetField(pData, pField, 3, MAXFIELD))
+	if (GetField(pData, pField, 3, MAXFIELD))
 	{
 		strcpy(m_lpszRMBOriginWaypoint, (CHAR *)pField);
 	}
@@ -838,7 +838,7 @@ void CNMEAParser::ProcessGPRMB(BYTE *pData)
 	//
 	// Destination waypoint ID
 	//
-	if(GetField(pData, pField, 4, MAXFIELD))
+	if (GetField(pData, pField, 4, MAXFIELD))
 	{
 		strcpy(m_lpszRMBDestWaypoint, (CHAR *)pField);
 	}
@@ -850,16 +850,16 @@ void CNMEAParser::ProcessGPRMB(BYTE *pData)
 	//
 	// Destination latitude
 	//
-	if(GetField(pData, pField, 5, MAXFIELD))
+	if (GetField(pData, pField, 5, MAXFIELD))
 	{
-		m_dRMBDestLatitude = atof((CHAR *)pField+2) / 60.0;
+		m_dRMBDestLatitude = atof((CHAR *)pField + 2) / 60.0;
 		pField[2] = '\0';
 		m_dRMBDestLatitude += atof((CHAR *)pField);
 
 	}
-	if(GetField(pData, pField, 6, MAXFIELD))
+	if (GetField(pData, pField, 6, MAXFIELD))
 	{
-		if(pField[0] == 'S')
+		if (pField[0] == 'S')
 		{
 			m_dRMBDestLatitude = -m_dRMBDestLatitude;
 		}
@@ -868,15 +868,15 @@ void CNMEAParser::ProcessGPRMB(BYTE *pData)
 	//
 	// Destination Longitude
 	//
-	if(GetField(pData, pField, 7, MAXFIELD))
+	if (GetField(pData, pField, 7, MAXFIELD))
 	{
-		m_dRMBDestLongitude = atof((CHAR *)pField+3) / 60.0;
+		m_dRMBDestLongitude = atof((CHAR *)pField + 3) / 60.0;
 		pField[3] = '\0';
 		m_dRMBDestLongitude += atof((CHAR *)pField);
 	}
-	if(GetField(pData, pField, 8, MAXFIELD))
+	if (GetField(pData, pField, 8, MAXFIELD))
 	{
-		if(pField[0] == 'W')
+		if (pField[0] == 'W')
 		{
 			m_dRMBDestLongitude = -m_dRMBDestLongitude;
 		}
@@ -885,7 +885,7 @@ void CNMEAParser::ProcessGPRMB(BYTE *pData)
 	//
 	// Range to destination nautical mi
 	//
-	if(GetField(pData, pField, 9, MAXFIELD))
+	if (GetField(pData, pField, 9, MAXFIELD))
 	{
 		m_dRMBRangeToDest = atof((CHAR *)pField);
 	}
@@ -897,7 +897,7 @@ void CNMEAParser::ProcessGPRMB(BYTE *pData)
 	//
 	// Bearing to destination degrees true
 	//
-	if(GetField(pData, pField, 10, MAXFIELD))
+	if (GetField(pData, pField, 10, MAXFIELD))
 	{
 		m_dRMBBearingToDest = atof((CHAR *)pField);
 	}
@@ -909,7 +909,7 @@ void CNMEAParser::ProcessGPRMB(BYTE *pData)
 	//
 	// Closing velocity
 	//
-	if(GetField(pData, pField, 11, MAXFIELD))
+	if (GetField(pData, pField, 11, MAXFIELD))
 	{
 		m_dRMBDestClosingVelocity = atof((CHAR *)pField);
 	}
@@ -921,7 +921,7 @@ void CNMEAParser::ProcessGPRMB(BYTE *pData)
 	//
 	// Arrival status
 	//
-	if(GetField(pData, pField, 12, MAXFIELD))
+	if (GetField(pData, pField, 12, MAXFIELD))
 	{
 		m_btRMBArrivalStatus = pField[0];
 	}
@@ -936,22 +936,22 @@ void CNMEAParser::ProcessGPRMB(BYTE *pData)
 ///////////////////////////////////////////////////////////////////////////////
 void CNMEAParser::ProcessGPRMC(BYTE *pData)
 {
-	#if 0
+#if 0
 	CHAR pBuff[10];
 	BYTE pField[MAXFIELD];
 
-	m_Pos.wFlags&=~(GPS_FTIME | GPS_FDATE);
+	m_Pos.wFlags &= ~(GPS_FTIME | GPS_FDATE);
 
 	//
 	// Time
 	//
-	if(GetField(pData, pField, 0, MAXFIELD))
+	if (GetField(pData, pField, 0, MAXFIELD))
 	{
 		// Hour
 		pBuff[0] = pField[0];
 		pBuff[1] = pField[1];
 		pBuff[2] = '\0';
-		m_Pos.bHour=atoi(pBuff);
+		m_Pos.bHour = atoi(pBuff);
 
 		// minute
 		pBuff[0] = pField[2];
@@ -964,13 +964,13 @@ void CNMEAParser::ProcessGPRMC(BYTE *pData)
 		pBuff[1] = pField[5];
 		pBuff[2] = '\0';
 		m_Pos.bSec = atoi(pBuff);
-		m_Pos.wFlags|=(GPS_FTIME);
+		m_Pos.wFlags |= (GPS_FTIME);
 	}
 
 	//
 	// Data valid
 	//
-	if(GetField(pData, pField, 1, MAXFIELD))
+	if (GetField(pData, pField, 1, MAXFIELD))
 	{
 		m_btRMCDataValid = pField[0];
 	}
@@ -982,16 +982,16 @@ void CNMEAParser::ProcessGPRMC(BYTE *pData)
 	//
 	// latitude
 	//
-	if(GetField(pData, pField, 2, MAXFIELD))
+	if (GetField(pData, pField, 2, MAXFIELD))
 	{
-		m_dRMCLatitude = atof((CHAR *)pField+2) / 60.0;
+		m_dRMCLatitude = atof((CHAR *)pField + 2) / 60.0;
 		pField[2] = '\0';
 		m_dRMCLatitude += atof((CHAR *)pField);
 
 	}
-	if(GetField(pData, pField, 3, MAXFIELD))
+	if (GetField(pData, pField, 3, MAXFIELD))
 	{
-		if(pField[0] == 'S')
+		if (pField[0] == 'S')
 		{
 			m_dRMCLatitude = -m_dRMCLatitude;
 		}
@@ -1000,15 +1000,15 @@ void CNMEAParser::ProcessGPRMC(BYTE *pData)
 	//
 	// Longitude
 	//
-	if(GetField(pData, pField, 4, MAXFIELD))
+	if (GetField(pData, pField, 4, MAXFIELD))
 	{
-		m_dRMCLongitude = atof((CHAR *)pField+3) / 60.0;
+		m_dRMCLongitude = atof((CHAR *)pField + 3) / 60.0;
 		pField[3] = '\0';
 		m_dRMCLongitude += atof((CHAR *)pField);
 	}
-	if(GetField(pData, pField, 5, MAXFIELD))
+	if (GetField(pData, pField, 5, MAXFIELD))
 	{
-		if(pField[0] == 'W')
+		if (pField[0] == 'W')
 		{
 			m_dRMCLongitude = -m_dRMCLongitude;
 		}
@@ -1017,7 +1017,7 @@ void CNMEAParser::ProcessGPRMC(BYTE *pData)
 	//
 	// Ground speed
 	//
-	if(GetField(pData, pField, 6, MAXFIELD))
+	if (GetField(pData, pField, 6, MAXFIELD))
 	{
 		m_dRMCGroundSpeed = atof((CHAR *)pField);
 	}
@@ -1029,7 +1029,7 @@ void CNMEAParser::ProcessGPRMC(BYTE *pData)
 	//
 	// course over ground, degrees true
 	//
-	if(GetField(pData, pField, 7, MAXFIELD))
+	if (GetField(pData, pField, 7, MAXFIELD))
 	{
 		m_dRMCCourse = atof((CHAR *)pField);
 	}
@@ -1040,7 +1040,7 @@ void CNMEAParser::ProcessGPRMC(BYTE *pData)
 	//
 	// Date
 	//
-	if(GetField(pData, pField, 8, MAXFIELD))
+	if (GetField(pData, pField, 8, MAXFIELD))
 	{
 		// Day
 		pBuff[0] = pField[0];
@@ -1060,13 +1060,13 @@ void CNMEAParser::ProcessGPRMC(BYTE *pData)
 		pBuff[2] = '\0';
 		m_Pos.bYear = atoi(pBuff);
 
-		m_Pos.wFlags|=GPS_FDATE;
+		m_Pos.wFlags |= GPS_FDATE;
 	}
 
 	//
 	// course over ground, degrees true
 	//
-	if(GetField(pData, pField, 9, MAXFIELD))
+	if (GetField(pData, pField, 9, MAXFIELD))
 	{
 		m_dRMCMagVar = atof((CHAR *)pField);
 	}
@@ -1074,9 +1074,9 @@ void CNMEAParser::ProcessGPRMC(BYTE *pData)
 	{
 		m_dRMCMagVar = 0.0;
 	}
-	if(GetField(pData, pField, 10, MAXFIELD))
+	if (GetField(pData, pField, 10, MAXFIELD))
 	{
-		if(pField[0] == 'W')
+		if (pField[0] == 'W')
 		{
 			m_dRMCMagVar = -m_dRMCMagVar;
 		}
@@ -1096,7 +1096,7 @@ void CNMEAParser::ProcessGPZDA(BYTE *pData)
 	//
 	// Time
 	//
-	if(GetField(pData, pField, 0, MAXFIELD))
+	if (GetField(pData, pField, 0, MAXFIELD))
 	{
 		// Hour
 		pBuff[0] = pField[0];
@@ -1120,7 +1120,7 @@ void CNMEAParser::ProcessGPZDA(BYTE *pData)
 	//
 	// Day
 	//
-	if(GetField(pData, pField, 1, MAXFIELD))
+	if (GetField(pData, pField, 1, MAXFIELD))
 	{
 		m_btZDADay = atoi((CHAR *)pField);
 	}
@@ -1132,7 +1132,7 @@ void CNMEAParser::ProcessGPZDA(BYTE *pData)
 	//
 	// Month
 	//
-	if(GetField(pData, pField, 2, MAXFIELD))
+	if (GetField(pData, pField, 2, MAXFIELD))
 	{
 		m_btZDAMonth = atoi((CHAR *)pField);
 	}
@@ -1144,7 +1144,7 @@ void CNMEAParser::ProcessGPZDA(BYTE *pData)
 	//
 	// Year
 	//
-	if(GetField(pData, pField, 3, MAXFIELD))
+	if (GetField(pData, pField, 3, MAXFIELD))
 	{
 		m_wZDAYear = atoi((CHAR *)pField);
 	}
@@ -1156,7 +1156,7 @@ void CNMEAParser::ProcessGPZDA(BYTE *pData)
 	//
 	// Local zone hour
 	//
-	if(GetField(pData, pField, 4, MAXFIELD))
+	if (GetField(pData, pField, 4, MAXFIELD))
 	{
 		m_btZDALocalZoneHour = atoi((CHAR *)pField);
 	}
@@ -1168,7 +1168,7 @@ void CNMEAParser::ProcessGPZDA(BYTE *pData)
 	//
 	// Local zone hour
 	//
-	if(GetField(pData, pField, 5, MAXFIELD))
+	if (GetField(pData, pField, 5, MAXFIELD))
 	{
 		m_btZDALocalZoneMinute = atoi((CHAR *)pField);
 	}
@@ -1185,6 +1185,6 @@ void CNMEAParser::ProcessGPZDA(BYTE *pData)
 void CNMEAParser::ProcessPGRMM(BYTE *pData)
 {
 #if 0
-	GetField(pData,(LPBYTE)m_strDatum,0,MAXFIELD);
+	GetField(pData, (LPBYTE)m_strDatum, 0, MAXFIELD);
 #endif
 }

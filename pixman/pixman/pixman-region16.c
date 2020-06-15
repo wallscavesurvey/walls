@@ -37,7 +37,7 @@ typedef pixman_region16_data_t	region_data_type_t;
 typedef pixman_region16_t	region_type_t;
 
 typedef struct {
-    int x, y;
+	int x, y;
 } point_type_t;
 
 #define PREFIX(x) pixman_region##x
@@ -53,11 +53,11 @@ typedef struct {
  * work.
  */
 PIXMAN_EXPORT void
-pixman_region_set_static_pointers (pixman_box16_t *empty_box,
-				   pixman_region16_data_t *empty_data,
-				   pixman_region16_data_t *broken_data)
+pixman_region_set_static_pointers(pixman_box16_t *empty_box,
+	pixman_region16_data_t *empty_data,
+	pixman_region16_data_t *broken_data)
 {
-    pixman_region_empty_box = empty_box;
-    pixman_region_empty_data = empty_data;
-    pixman_broken_data = broken_data;
+	pixman_region_empty_box = empty_box;
+	pixman_region_empty_data = empty_data;
+	pixman_broken_data = broken_data;
 }

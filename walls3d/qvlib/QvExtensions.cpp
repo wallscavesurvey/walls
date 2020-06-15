@@ -31,13 +31,13 @@ int QvLabel::newinstance_ = 0;
 
 QvLabel::QvLabel()
 {
-    QV_NODE_CONSTRUCTOR(QvLabel);
-    isBuiltIn = TRUE;
-    newinstance_ = 1;  // to avoid repetitive warnings
+	QV_NODE_CONSTRUCTOR(QvLabel);
+	isBuiltIn = TRUE;
+	newinstance_ = 1;  // to avoid repetitive warnings
 
-    QV_NODE_ADD_FIELD(label);
+	QV_NODE_ADD_FIELD(label);
 
-    label.value = "<Undefined label>";
+	label.value = "<Undefined label>";
 }
 
 QvLabel::~QvLabel()
@@ -50,20 +50,20 @@ QvLabel::~QvLabel()
 QV_NODE_SOURCE(QvLightModel);
 int QvLightModel::newinstance_ = 0;
 
-QvLightModel::QvLightModel ()
+QvLightModel::QvLightModel()
 {
-    QV_NODE_CONSTRUCTOR(QvLightModel);
-    isBuiltIn = TRUE;
-    newinstance_ = 1;  // to avoid repetitive warnings
+	QV_NODE_CONSTRUCTOR(QvLightModel);
+	isBuiltIn = TRUE;
+	newinstance_ = 1;  // to avoid repetitive warnings
 
-    QV_NODE_ADD_FIELD(model);
+	QV_NODE_ADD_FIELD(model);
 
-    model.value = PHONG;
+	model.value = PHONG;
 
-    QV_NODE_DEFINE_ENUM_VALUE(Model, BASE_COLOR);
-    QV_NODE_DEFINE_ENUM_VALUE(Model, PHONG);
+	QV_NODE_DEFINE_ENUM_VALUE(Model, BASE_COLOR);
+	QV_NODE_DEFINE_ENUM_VALUE(Model, PHONG);
 
-    QV_NODE_SET_SF_ENUM_TYPE(model, Model);
+	QV_NODE_SET_SF_ENUM_TYPE(model, Model);
 }
 
 QvLightModel::~QvLightModel()

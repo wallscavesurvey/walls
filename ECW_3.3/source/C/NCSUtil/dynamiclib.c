@@ -2,13 +2,13 @@
 ** Copyright 1999 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:   	NCSUtil\dynamiclib.c
@@ -30,14 +30,14 @@
 #endif
 #include "NCSDynamicLib.h"
 
-NCS_DLHANDLE NCSDlOpen( char* pLibraryName )
+NCS_DLHANDLE NCSDlOpen(char* pLibraryName)
 {
 	NCS_DLHANDLE hLibHandle;
-	
+
 #if defined WIN32																/**[01]**/
-	hLibHandle = LoadLibrary( OS_STRING(pLibraryName) );
+	hLibHandle = LoadLibrary(OS_STRING(pLibraryName));
 #elif defined PALM															/**[01]**/
-	if(SysLibLoad(0, NCS_PALM_CREATOR_ID, &hLibHandle) == sysErrLibNotFound) {	/**[01]**/
+	if (SysLibLoad(0, NCS_PALM_CREATOR_ID, &hLibHandle) == sysErrLibNotFound) {	/**[01]**/
 		hLibHandle = 0;															/**[01]**/
 	}																			/**[01]**/
 #elif defined MACINTOSH		
@@ -45,28 +45,28 @@ NCS_DLHANDLE NCSDlOpen( char* pLibraryName )
 #elif defined POSIX
 	return(dlopen(pLibraryName, RTLD_NOW));
 #else
-	ERROR: Platform not supported.
+ERROR: Platform not supported.
 #endif
 
 	return hLibHandle;
 }
 
-void NCSDlClose( NCS_DLHANDLE hLibaryHandle )
+void NCSDlClose(NCS_DLHANDLE hLibaryHandle)
 {
 
 #if defined WIN32						/**[01]**/
 	FreeLibrary(hLibaryHandle);
 #elif defined PALM					/**[01]**/
-	if(hLibraryHandle) {				/**[01]**/
+	if (hLibraryHandle) {				/**[01]**/
 		SysLibRemove(hLibraryHandle);	/**[01]**/
 	}									/**[01]**/
 #elif defined MACINTOSH
 #elif defined POSIX
-	if(hLibaryHandle) {
+	if (hLibaryHandle) {
 		dlclose(hLibaryHandle);
-	}	
+	}
 #else
-	ERROR: Platform not supported.
+ERROR: Platform not supported.
 #endif
 
 	return;
@@ -82,8 +82,8 @@ NCS_FUNCADDR NCSDlGetFuncAddress(NCS_DLHANDLE hLibaryHandle, char *pFunctionName
 
 #if defined WIN32												/**[01]**/
 	hFuncAddress =												/**[01]**/
-		(NCS_FUNCADDR)GetProcAddress((HMODULE) hLibaryHandle,	/**[01]**/
-									 (LPCSTR) pFunctionName );	/**[01]**/
+		(NCS_FUNCADDR)GetProcAddress((HMODULE)hLibaryHandle,	/**[01]**/
+		(LPCSTR)pFunctionName);	/**[01]**/
 #elif defined PALM											/**[01]**/
 	hFuncAddress = 0;											/**[01]**/
 #elif defined MACINTOSH
@@ -91,7 +91,7 @@ NCS_FUNCADDR NCSDlGetFuncAddress(NCS_DLHANDLE hLibaryHandle, char *pFunctionName
 #elif defined POSIX
 	return((NCS_FUNCADDR)dlsym(hLibaryHandle, pFunctionName));
 #else
-	ERROR: Platform not supported.
+ERROR: Platform not supported.
 #endif
 
 	return hFuncAddress;										/**[01]**/
@@ -101,16 +101,16 @@ BOOLEAN NCSDlFuncExists(char *pLibraryName, char *pFunctionName)
 {
 	BOOLEAN bSymExists = FALSE;
 
-    NCS_DLHANDLE hLibHandle = NCSDlOpen( pLibraryName );
+	NCS_DLHANDLE hLibHandle = NCSDlOpen(pLibraryName);
 
-    if(hLibHandle) {
-        if(NCSDlGetFuncAddress(hLibHandle, pFunctionName)) {
-            bSymExists = TRUE;
-        }
-        NCSDlClose(hLibHandle);
-    }
+	if (hLibHandle) {
+		if (NCSDlGetFuncAddress(hLibHandle, pFunctionName)) {
+			bSymExists = TRUE;
+		}
+		NCSDlClose(hLibHandle);
+	}
 
-    return(bSymExists);
+	return(bSymExists);
 }
 
 char *NCSDlError(void)
@@ -120,13 +120,13 @@ char *NCSDlError(void)
 #if defined WIN32				/**[01]**/
 
 	LPVOID lpMsgBuf;
-	FormatMessage( FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-				NULL, 
-				GetLastError(),
-				MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
-				(LPTSTR) &lpMsgBuf,
-				0,
-				NULL);
+	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+		NULL,
+		GetLastError(),
+		MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
+		(LPTSTR)&lpMsgBuf,
+		0,
+		NULL);
 	pErrorMessage = (char *)lpMsgBuf;
 #elif defined PALM			/**[01]**/
 	pErrorMessage = "NCSDlError()";		/**[01]**/
@@ -135,7 +135,7 @@ char *NCSDlError(void)
 #elif defined POSIX
 	pErrorMessage = dlerror();
 #else
-	ERROR: Platform not supported.
+ERROR: Platform not supported.
 #endif
 
 	return pErrorMessage;

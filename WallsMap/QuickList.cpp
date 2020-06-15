@@ -18,10 +18,10 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-bool CQuickList::m_bUseHeaderEx=false;
-bool CQuickList::m_bCtrl=false;
+bool CQuickList::m_bUseHeaderEx = false;
+bool CQuickList::m_bCtrl = false;
 
-static int iHitTest=0;
+static int iHitTest = 0;
 
 /////////////////////////////////////////////////////////////////////////////
 // CQuickList
@@ -40,19 +40,19 @@ void CQuickList::CListItemData::Reset()
 	m_isSelected = false;
 	m_isHot = false;
 	m_noSelection = false;
-	m_cTyp=0;
+	m_cTyp = 0;
 
 	m_allowEdit = m_editBorder = false;
 
-	m_pXCMB=NULL;
+	m_pXCMB = NULL;
 
 #ifndef QUICKLIST_NOTEXTSTYLE 
 	m_textStyle.m_textPosition = DT_VCENTER | DT_SINGLELINE | DT_LEFT | DT_END_ELLIPSIS;
 	m_textStyle.m_bold = false;
 	m_textStyle.m_italic = false;
 	m_textStyle.m_hFont = NULL;
-	m_textStyle.m_uFldWidth=0;
-	m_textStyle.m_wCharWidth=0;
+	m_textStyle.m_uFldWidth = 0;
+	m_textStyle.m_wCharWidth = 0;
 #endif
 
 #ifndef QUICKLIST_NOIMAGE
@@ -64,35 +64,35 @@ void CQuickList::CListItemData::Reset()
 #endif
 
 #ifndef QUICKLIST_NOBUTTON
-	m_button.m_pText=NULL;
+	m_button.m_pText = NULL;
 	m_button.m_draw = false;
 	m_button.m_style = DFCS_BUTTONCHECK;
-	m_button.m_noSelection=true;
-	m_button.m_center=true;
-	m_button.m_width=1;
+	m_button.m_noSelection = true;
+	m_button.m_center = true;
+	m_button.m_width = 1;
 #endif
 
 #ifndef QUICKLIST_NOCOLORS
 	m_colors.m_backColor =
-	m_colors.m_selectedBackColor =
-	m_colors.m_selectedTextColor =
-	m_colors.m_selectedBackColorNoFocus = 
-	m_colors.m_hotTextColor = 
-	m_colors.m_textColor = DEFAULTCOLOR;
+		m_colors.m_selectedBackColor =
+		m_colors.m_selectedTextColor =
+		m_colors.m_selectedBackColorNoFocus =
+		m_colors.m_hotTextColor =
+		m_colors.m_textColor = DEFAULTCOLOR;
 
-	#ifndef QUICKLIST_NONAVIGATION
-		m_colors.m_navigatedTextColor =
+#ifndef QUICKLIST_NONAVIGATION
+	m_colors.m_navigatedTextColor =
 		m_colors.m_navigatedBackColor = DEFAULTCOLOR;
-	#endif
+#endif
 #endif
 }
 
 //Constructor
 CQuickList::CQuickList() :
-	  m_edit(NULL)
+	m_edit(NULL)
 	, m_pAdjustWidth(NULL)
 	, m_bHdrToolTip(false)
-	, m_hdrToolTipRect(0,0,0,0)
+	, m_hdrToolTipRect(0, 0, 0, 0)
 	, m_Margin(1.0)
 	, m_pGridFont(NULL)
 	, m_pCellFont(NULL)
@@ -113,24 +113,24 @@ CQuickList::CQuickList() :
 	, m_nComboInitialIndex(-1)
 {
 #ifndef QUICKLIST_NOKEYFIND
-	#ifndef QUICKLIST_NONAVIGATION
-		m_keyFindColumn = KEYFIND_CURRENTCOLUMN;
-	#else
-		m_keyFindColumn = 0;
-	#endif
+#ifndef QUICKLIST_NONAVIGATION
+	m_keyFindColumn = KEYFIND_CURRENTCOLUMN;
+#else
+	m_keyFindColumn = 0;
+#endif
 #endif
 
 #ifndef QUICKLIST_NONAVIGATION
-	m_enableNavigation=true;
-	m_navigationColumn=0;
+	m_enableNavigation = true;
+	m_navigationColumn = 0;
 #endif
 
 
 #ifndef QUICKLIST_NOTOOLTIP
 	//m_bToolTipCtrlCustomizeDone=false;
-	m_nTTInitial=64;
-	m_nTTAutopop=3200;
-	m_nTTReshow=32; //for thumblist
+	m_nTTInitial = 64;
+	m_nTTAutopop = 3200;
+	m_nTTReshow = 32; //for thumblist
 #endif
 
 	m_lastget = new CListItemData;
@@ -142,11 +142,11 @@ CQuickList::CQuickList() :
 CQuickList::~CQuickList()
 {
 	delete m_lastget;
-	if(m_pCellFont) {
+	if (m_pCellFont) {
 		VERIFY(m_pCellFont->DeleteObject());
 		delete m_pCellFont; //OK!
 	}
-	if(m_pGridFont) {
+	if (m_pGridFont) {
 		VERIFY(m_pGridFont->DeleteObject());
 		delete m_pGridFont; //dmck - not OK! illegal mem access in destructor!
 	}
@@ -169,7 +169,7 @@ BEGIN_MESSAGE_MAP(CQuickList, CListCtrl)
 	ON_WM_CHAR()
 
 	//ON_NOTIFY_REFLECT(LVN_ITEMCHANGING, OnLvnItemChanging) 
-	ON_NOTIFY_REFLECT(LVN_HOTTRACK, OnLvnHotTrack) 
+	ON_NOTIFY_REFLECT(LVN_HOTTRACK, OnLvnHotTrack)
 	ON_NOTIFY_REFLECT_EX(NM_CLICK, OnClickEx)
 	ON_NOTIFY_REFLECT_EX(NM_DBLCLK, OnDblClickEx)
 
@@ -180,9 +180,9 @@ BEGIN_MESSAGE_MAP(CQuickList, CListCtrl)
 	ON_NOTIFY_EX(HDN_BEGINDRAG, 0, OnHeaderBeginDrag)
 	ON_NOTIFY_EX(HDN_ENDDRAG, 0, OnHeaderEndDrag)
 
-	#ifndef QUICKLIST_NOKEYFIND
-		ON_NOTIFY_REFLECT_EX(LVN_ODFINDITEM, OnOdfinditem)
-	#endif
+#ifndef QUICKLIST_NOKEYFIND
+	ON_NOTIFY_REFLECT_EX(LVN_ODFINDITEM, OnOdfinditem)
+#endif
 
 #ifndef QUICKLIST_NOTOOLTIP
 	ON_NOTIFY_EX_RANGE(TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipText)
@@ -199,31 +199,31 @@ END_MESSAGE_MAP()
 
 //Custom draw
 void CQuickList::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
-{	
-	NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW*>( pNMHDR );
-	
-  //  *pResult = 0;	return;
+{
+	NMLVCUSTOMDRAW* pLVCD = reinterpret_cast<NMLVCUSTOMDRAW*>(pNMHDR);
 
-    // If this is the beginning of the control's paint cycle, request
-    // notifications for each item.
-	
-    if ( CDDS_PREPAINT == pLVCD->nmcd.dwDrawStage )
+	//  *pResult = 0;	return;
+
+	  // If this is the beginning of the control's paint cycle, request
+	  // notifications for each item.
+
+	if (CDDS_PREPAINT == pLVCD->nmcd.dwDrawStage)
 	{
-        *pResult = CDRF_NOTIFYITEMDRAW;
+		*pResult = CDRF_NOTIFYITEMDRAW;
 	}
-    else if ( CDDS_ITEMPREPAINT == pLVCD->nmcd.dwDrawStage )
+	else if (CDDS_ITEMPREPAINT == pLVCD->nmcd.dwDrawStage)
 	{
-        // This is the pre-paint stage for an item.  We need to make another
-        // request to be notified during the post-paint stage.
-        *pResult = CDRF_NOTIFYSUBITEMDRAW;;
+		// This is the pre-paint stage for an item.  We need to make another
+		// request to be notified during the post-paint stage.
+		*pResult = CDRF_NOTIFYSUBITEMDRAW;;
 	}
-	
-    else if ( (CDDS_ITEMPREPAINT| CDDS_SUBITEM) == pLVCD->nmcd.dwDrawStage )
+
+	else if ((CDDS_ITEMPREPAINT | CDDS_SUBITEM) == pLVCD->nmcd.dwDrawStage)
 	{
 		CDC* pDC = CDC::FromHandle(pLVCD->nmcd.hdc);
 
 		DrawItem(static_cast<int> (pLVCD->nmcd.dwItemSpec),
-			 pLVCD->iSubItem, pDC);
+			pLVCD->iSubItem, pDC);
 		*pResult = CDRF_SKIPDEFAULT;	// We've painted everything.
 	}
 }
@@ -234,69 +234,69 @@ void CQuickList::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
   */
 
 #ifndef COLOR_HOTLIGHT
-	#define COLOR_HOTLIGHT 26
+#define COLOR_HOTLIGHT 26
 #endif
 
-//Get which text color to use
+  //Get which text color to use
 COLORREF CQuickList::GetTextColor(const CQuickList::CListItemData& id, const bool forceNoSelection, const bool forceSelection)
 {
 	bool navigated = false;
 #ifndef QUICKLIST_NONAVIGATION
-	if(id.GetSubItem() == m_navigationColumn && m_enableNavigation)
+	if (id.GetSubItem() == m_navigationColumn && m_enableNavigation)
 		navigated = true;
 #endif
 
-	if(	(!forceNoSelection && id.IsSelected()) //IsSelected(id.m_item, id.m_subitem)) 
+	if ((!forceNoSelection && id.IsSelected()) //IsSelected(id.m_item, id.m_subitem)) 
 		|| forceSelection)
 	{
-		#ifndef QUICKLIST_NOCOLORS
-			#ifndef QUICKLIST_NONAVIGATION
-				if(navigated && GetFocus() == this) 
-				{
-					if(id.m_colors.m_navigatedTextColor!= DEFAULTCOLOR)
-						return id.m_colors.m_navigatedTextColor;
-					else
-						return ::GetSysColor(COLOR_HIGHLIGHTTEXT);
-				}
-			#endif
-
-			if(id.m_colors.m_selectedTextColor != DEFAULTCOLOR)
-				return id.m_colors.m_selectedTextColor;
+#ifndef QUICKLIST_NOCOLORS
+#ifndef QUICKLIST_NONAVIGATION
+		if (navigated && GetFocus() == this)
+		{
+			if (id.m_colors.m_navigatedTextColor != DEFAULTCOLOR)
+				return id.m_colors.m_navigatedTextColor;
 			else
-			{
-				if(GetFocus() == this)
-					return ::GetSysColor(COLOR_HIGHLIGHTTEXT);
-				else
-					return ::GetSysColor(COLOR_WINDOWTEXT);
-			}
-		#else
+				return ::GetSysColor(COLOR_HIGHLIGHTTEXT);
+		}
+#endif
 
-				if(GetFocus() == this)
-					return ::GetSysColor(COLOR_HIGHLIGHTTEXT);
-				else
-					return ::GetSysColor(COLOR_WINDOWTEXT);
-		
-		#endif
+		if (id.m_colors.m_selectedTextColor != DEFAULTCOLOR)
+			return id.m_colors.m_selectedTextColor;
+		else
+		{
+			if (GetFocus() == this)
+				return ::GetSysColor(COLOR_HIGHLIGHTTEXT);
+			else
+				return ::GetSysColor(COLOR_WINDOWTEXT);
+		}
+#else
+
+		if (GetFocus() == this)
+			return ::GetSysColor(COLOR_HIGHLIGHTTEXT);
+		else
+			return ::GetSysColor(COLOR_WINDOWTEXT);
+
+#endif
 	}
 
 	//Is item hot?
-	if( GetHotItem() == id.GetItem() )
+	if (GetHotItem() == id.GetItem())
 	{
-		#ifndef QUICKLIST_NOCOLORS
-			if(id.m_colors.m_hotTextColor != DEFAULTCOLOR)
-				return id.m_colors.m_hotTextColor;
-			else
-		#endif
+#ifndef QUICKLIST_NOCOLORS
+		if (id.m_colors.m_hotTextColor != DEFAULTCOLOR)
+			return id.m_colors.m_hotTextColor;
+		else
+#endif
 			return ::GetSysColor(COLOR_HOTLIGHT);
 	}
 	else
 	{
-		#ifndef QUICKLIST_NOCOLORS
-			if(id.m_colors.m_textColor != DEFAULTCOLOR)
-				return id.m_colors.m_textColor;
-			else
-		#endif
-				return ::GetSysColor(COLOR_WINDOWTEXT);
+#ifndef QUICKLIST_NOCOLORS
+		if (id.m_colors.m_textColor != DEFAULTCOLOR)
+			return id.m_colors.m_textColor;
+		else
+#endif
+			return ::GetSysColor(COLOR_WINDOWTEXT);
 	}
 
 
@@ -304,71 +304,71 @@ COLORREF CQuickList::GetTextColor(const CQuickList::CListItemData& id, const boo
 
 //Get which background color to use
 COLORREF CQuickList::GetBackColor(const CQuickList::CListItemData& id, const bool forceNoSelection)
-{	
+{
 	bool navigated = false;
 #ifndef QUICKLIST_NONAVIGATION
-	if(id.GetSubItem() == m_navigationColumn && m_enableNavigation)
+	if (id.GetSubItem() == m_navigationColumn && m_enableNavigation)
 		navigated = true;
 #endif
 
 	bool hasFocus = (GetFocus() == this);
 
 	//Is selected
-	if(!forceNoSelection && id.IsSelected()) //IsSelected(id.m_item, id.m_subitem))
+	if (!forceNoSelection && id.IsSelected()) //IsSelected(id.m_item, id.m_subitem))
 	{
 		//Return selected color
-		#ifndef QUICKLIST_NOCOLORS
-			#ifndef QUICKLIST_NONAVIGATION
-				if(navigated && GetFocus() == this)  
-				{
-					if(id.m_colors.m_navigatedBackColor!= DEFAULTCOLOR)
-						return id.m_colors.m_navigatedBackColor;
-					else
-						return ::GetSysColor(COLOR_HOTLIGHT);
-				}
-			#endif
-
-			if(	(hasFocus && id.m_colors.m_selectedBackColor != DEFAULTCOLOR) ||
-				(!hasFocus && id.m_colors.m_selectedBackColorNoFocus != DEFAULTCOLOR) )
-			{
-				if(hasFocus)
-					return id.m_colors.m_selectedBackColor;
-				else
-					return id.m_colors.m_selectedBackColorNoFocus;
-			}
+#ifndef QUICKLIST_NOCOLORS
+#ifndef QUICKLIST_NONAVIGATION
+		if (navigated && GetFocus() == this)
+		{
+			if (id.m_colors.m_navigatedBackColor != DEFAULTCOLOR)
+				return id.m_colors.m_navigatedBackColor;
 			else
-			{
-				if(!IsColumnNavigationOn() && id.IsHot())
-					return ::GetSysColor(COLOR_HOTLIGHT);
+				return ::GetSysColor(COLOR_HOTLIGHT);
+		}
+#endif
 
-				if(hasFocus)
-					return ::GetSysColor(COLOR_HIGHLIGHT);
-				else
-					return ::GetSysColor(COLOR_BTNFACE);
-			}
-		#else
-			//Simple window colors
-			if(navigated && GetFocus() == this)
-				return ::GetSysColor(COLOR_HOTLIGHT);
-			else if(!IsColumnNavigationOn() && id.IsHot())
-				return ::GetSysColor(COLOR_HOTLIGHT);
+		if ((hasFocus && id.m_colors.m_selectedBackColor != DEFAULTCOLOR) ||
+			(!hasFocus && id.m_colors.m_selectedBackColorNoFocus != DEFAULTCOLOR))
+		{
+			if (hasFocus)
+				return id.m_colors.m_selectedBackColor;
 			else
-			{
-				if(GetFocus() == this)
-					return ::GetSysColor(COLOR_HIGHLIGHT);
-				else
-					return ::GetSysColor(COLOR_BTNFACE);
-			}
-		#endif
-				
+				return id.m_colors.m_selectedBackColorNoFocus;
+		}
+		else
+		{
+			if (!IsColumnNavigationOn() && id.IsHot())
+				return ::GetSysColor(COLOR_HOTLIGHT);
+
+			if (hasFocus)
+				return ::GetSysColor(COLOR_HIGHLIGHT);
+			else
+				return ::GetSysColor(COLOR_BTNFACE);
+		}
+#else
+	//Simple window colors
+		if (navigated && GetFocus() == this)
+			return ::GetSysColor(COLOR_HOTLIGHT);
+		else if (!IsColumnNavigationOn() && id.IsHot())
+			return ::GetSysColor(COLOR_HOTLIGHT);
+		else
+		{
+			if (GetFocus() == this)
+				return ::GetSysColor(COLOR_HIGHLIGHT);
+			else
+				return ::GetSysColor(COLOR_BTNFACE);
+		}
+#endif
+
 	}
 
-	#ifndef QUICKLIST_NOCOLORS
-		if(id.m_colors.m_backColor != DEFAULTCOLOR)
-			return id.m_colors.m_backColor;
-		else
-	#endif
-			return ::GetSysColor(COLOR_WINDOW);
+#ifndef QUICKLIST_NOCOLORS
+	if (id.m_colors.m_backColor != DEFAULTCOLOR)
+		return id.m_colors.m_backColor;
+	else
+#endif
+		return ::GetSysColor(COLOR_WINDOW);
 }
 
 //Is item selected?
@@ -376,9 +376,9 @@ bool CQuickList::IsSelected(const int item, const int subitem)
 {
 	if (GetItemState(item, LVIS_SELECTED))
 	{
-		if ( subitem == 0 ||	//First column or...	 
-			 FullRowSelect()	//full row select?
-		   )			
+		if (subitem == 0 ||	//First column or...	 
+			FullRowSelect()	//full row select?
+			)
 		{
 			// has focus?
 			if (m_hWnd != ::GetFocus())
@@ -401,7 +401,7 @@ bool CQuickList::IsSelected(const int item, const int subitem)
 }
 
 //On painting
-void CQuickList::OnPaint() 
+void CQuickList::OnPaint()
 {
 	Default();
 
@@ -424,11 +424,11 @@ void CQuickList::OnPaint()
 		}
 		rc.top += 10;
 
-		COLORREF crText =  CListCtrl::GetTextColor();
+		COLORREF crText = CListCtrl::GetTextColor();
 
 		pDC->SetTextColor(crText);
 		int oldMode = pDC->SetBkMode(TRANSPARENT);
-		
+
 		pDC->SelectStockObject(ANSI_VAR_FONT);
 		pDC->DrawText(m_emptyMessage, -1, rc, DT_CENTER | DT_WORDBREAK | DT_NOPREFIX | DT_NOCLIP);
 		pDC->SetBkMode(oldMode);
@@ -442,9 +442,9 @@ void CQuickList::OnPaint()
 
 //Get rect of subitem.
 BOOL CQuickList::GetSubItemRect(int nItem,
-								int nSubItem,
-								int nArea,
-								CRect& rect) 
+	int nSubItem,
+	int nArea,
+	CRect& rect)
 {
 	ASSERT(nItem >= 0);
 	ASSERT(nItem < GetItemCount());
@@ -487,32 +487,32 @@ bool CQuickList::GetTextRect(const int item, const int subitem, CRect& rect)
 //Return false if none
 bool CQuickList::GetTextRect(CQuickList::CListItemData& id, CRect& rect)
 {
-	if(!id.m_textStyle.m_uFldWidth && id.m_button.m_draw) {
+	if (!id.m_textStyle.m_uFldWidth && id.m_button.m_draw) {
 		//Table memo button or checkbox --
-		if(!id.m_button.m_pText) return false;
+		if (!id.m_button.m_pText) return false;
 		//prefix shown in table --
 	}
 
 	GetSubItemRect(id.GetItem(), id.GetSubItem(), LVIR_BOUNDS, rect);
 
-	if(id.m_button.m_draw) return true;
+	if (id.m_button.m_draw) return true;
 
-	if(!id.m_editBorder && id.m_textStyle.m_uFldWidth) {
-		int width=id.m_textStyle.m_uFldWidth*id.m_textStyle.m_wCharWidth+2*m_iGridMargin;
-		if(rect.Width()>width) rect.right=rect.left+width;
+	if (!id.m_editBorder && id.m_textStyle.m_uFldWidth) {
+		int width = id.m_textStyle.m_uFldWidth*id.m_textStyle.m_wCharWidth + 2 * m_iGridMargin;
+		if (rect.Width() > width) rect.right = rect.left + width;
 	}
 
 #ifndef QUICKLIST_NOIMAGE
 	{
 		//Move if image
 		CRect temp;
-		if( GetImageRect(id, temp, false) )
+		if (GetImageRect(id, temp, false))
 			rect.left = temp.right;
-		}
 	}
+}
 
 #endif
-	return true;
+return true;
 }
 
 //Get check box rect
@@ -542,57 +542,57 @@ bool CQuickList::GetCheckboxRect(CQuickList::CListItemData& id, CRect& rect, boo
 
 	int height = rect.Height();
 
-	if(id.m_button.m_style&DFCS_BUTTONPUSH) {
-		if(!checkOnly) return true;
+	if (id.m_button.m_style&DFCS_BUTTONPUSH) {
+		if (!checkOnly) return true;
 
-		ASSERT(id.m_button.m_width>1);
+		ASSERT(id.m_button.m_width > 1);
 
 		int width = MemoButtonWidth(height);
 
-		if(!id.m_button.m_center)
+		if (!id.m_button.m_center)
 		{
-			if(id.m_button.m_noSelection) {
+			if (id.m_button.m_noSelection) {
 				//form view --
-				rect.left+=MemoButtonOffset(height); //(height-3)
-				rect.right=rect.left+width;
+				rect.left += MemoButtonOffset(height); //(height-3)
+				rect.right = rect.left + width;
 			}
 			else {
 				//table view -- buttons on left
 				width = ExpandedMemoButtonWidth(height);
-				if(rect.Width()<=width+6) return false;
-				rect.left+=6;
-				rect.right=rect.left+width;
-				rect.InflateRect(-1,-1);
+				if (rect.Width() <= width + 6) return false;
+				rect.left += 6;
+				rect.right = rect.left + width;
+				rect.InflateRect(-1, -1);
 			}
 		}
 		else {
 			// table view -- buttons in center
-			int x=rect.CenterPoint().x-width/2;
-			if(x<rect.left) {
+			int x = rect.CenterPoint().x - width / 2;
+			if (x < rect.left) {
 				return false;
 			}
-			rect.left =  x;
+			rect.left = x;
 			rect.right = x + width;
-			rect.InflateRect(-1,-1);
+			rect.InflateRect(-1, -1);
 		}
 	}
 	else {
 		//checkbox --
-		if(id.m_button.m_center)
+		if (id.m_button.m_center)
 		{
-			if(!checkOnly) return true;
+			if (!checkOnly) return true;
 			//Table view --
 			CRect full(rect);
-			rect.left = full.CenterPoint().x - (height)/2;
-			rect.right = full.CenterPoint().x + (height+1)/2;
-			rect.InflateRect(-1,-1);
+			rect.left = full.CenterPoint().x - (height) / 2;
+			rect.right = full.CenterPoint().x + (height + 1) / 2;
+			rect.InflateRect(-1, -1);
 		}
 		else {
-			if(!checkOnly) {
-				rect.right=rect.left+MemoButtonOffset(height)+height;
+			if (!checkOnly) {
+				rect.right = rect.left + MemoButtonOffset(height) + height;
 				return true;
 			}
-			rect.left+=MemoButtonOffset(height);
+			rect.left += MemoButtonOffset(height);
 			rect.right = rect.left + height;	// width = height
 		}
 
@@ -615,7 +615,7 @@ bool CQuickList::GetImageRect(const int item, const int subitem, CRect& rect, bo
 //Return false if none
 bool CQuickList::GetImageRect(CQuickList::CListItemData& id, CRect& rect, bool imageOnly)
 {
-	if(id.m_image.m_imageID == -1)
+	if (id.m_image.m_imageID == -1)
 		return false;
 
 	GetSubItemRect(id.GetItem(), id.GetSubItem(), LVIR_BOUNDS, rect);
@@ -624,7 +624,7 @@ bool CQuickList::GetImageRect(CQuickList::CListItemData& id, CRect& rect, bool i
 	int leftMarging = 1;
 	{
 		CRect chk;
-		if(GetCheckboxRect(id, chk, false))
+		if (GetCheckboxRect(id, chk, false))
 		{
 			leftMarging = 0;
 			rect.left = chk.right;
@@ -653,26 +653,26 @@ bool CQuickList::GetImageRect(CQuickList::CListItemData& id, CRect& rect, bool i
 			//Real size
 			SIZE size;
 			size.cx = rect.Width() < sizeImage.cx ? rect.Width() : sizeImage.cx;
-			size.cy = 1+rect.Height() < sizeImage.cy ? rect.Height() : sizeImage.cy;
+			size.cy = 1 + rect.Height() < sizeImage.cy ? rect.Height() : sizeImage.cy;
 
 			POINT point;
-			point.y = rect.CenterPoint().y - (sizeImage.cy/2);
+			point.y = rect.CenterPoint().y - (sizeImage.cy / 2);
 			//Center image?
-			if(id.m_image.m_center)
-				point.x = rect.CenterPoint().x - (sizeImage.cx/2);
+			if (id.m_image.m_center)
+				point.x = rect.CenterPoint().x - (sizeImage.cx / 2);
 			else
 				point.x = rect.left;
 
 			point.x += leftMarging;
 
 			//Out of area?
-			if(point.y<rect.top)
+			if (point.y < rect.top)
 				point.y = rect.top;
 
 			//
-			if( !imageOnly )
+			if (!imageOnly)
 			{
-				rect.right = point.x+sizeImage.cx;				
+				rect.right = point.x + sizeImage.cx;
 			}
 			else
 				//Make rect of point and size, and return this
@@ -689,40 +689,40 @@ bool CQuickList::GetImageRect(CQuickList::CListItemData& id, CRect& rect, bool i
 //Draw an item in pDC
 void CQuickList::DrawItem(int item, int subitem, CDC* pDC)
 {
-		if(iHitTest>0) return;
-		CListItemData id = GetItemData(	item, subitem );
+	if (iHitTest > 0) return;
+	CListItemData id = GetItemData(item, subitem);
 
-		//Draw button?
+	//Draw button?
 #ifndef QUICKLIST_NOBUTTON
-		if(id.m_button.m_draw) {
-			ASSERT(!id.m_pXCMB);
-			DrawButton(id, pDC);
-		}
+	if (id.m_button.m_draw) {
+		ASSERT(!id.m_pXCMB);
+		DrawButton(id, pDC);
+	}
 #endif
 
-		//Draw image?
+	//Draw image?
 #ifndef QUICKLIST_NOIMAGE
-		if(id.m_image.m_imageID != -1)
-			DrawImage(id, pDC);
+	if (id.m_image.m_imageID != -1)
+		DrawImage(id, pDC);
 #endif
 
-		//if(id.m_textStyle.m_uFldWidth)
-		DrawText(id, pDC);
+	//if(id.m_textStyle.m_uFldWidth)
+	DrawText(id, pDC);
 
-		if(id.m_pXCMB && (bIgnoreEditTS || !(id.m_pXCMB->wFlgs&XC_LISTNOEDIT)))
-		{
-			DrawArrowBox(id,pDC);
-		}
+	if (id.m_pXCMB && (bIgnoreEditTS || !(id.m_pXCMB->wFlgs&XC_LISTNOEDIT)))
+	{
+		DrawArrowBox(id, pDC);
+	}
 }
 
 #ifndef QUICKLIST_NOIMAGE
 //Draw image
-void CQuickList::DrawImage(	CQuickList::CListItemData& id,
-							CDC* pDC)
+void CQuickList::DrawImage(CQuickList::CListItemData& id,
+	CDC* pDC)
 {
 	CRect imgRect;
 
-	if(GetImageRect(id, imgRect, false))
+	if (GetImageRect(id, imgRect, false))
 	{
 		CImageList* pImageList = id.m_image.m_imageList;
 
@@ -732,38 +732,38 @@ void CQuickList::DrawImage(	CQuickList::CListItemData& id,
 		COLORREF rgb = pImageList->GetBkColor();
 
 		// set image list background color
-		pImageList->SetBkColor( GetBackColor(id, id.m_image.m_noSelection || id.m_noSelection));
+		pImageList->SetBkColor(GetBackColor(id, id.m_image.m_noSelection || id.m_noSelection));
 
 		//Fill background
-		FillSolidRect(	pDC,
-						imgRect,
-						GetBackColor(id, id.m_image.m_noSelection || id.m_noSelection)
-						);
+		FillSolidRect(pDC,
+			imgRect,
+			GetBackColor(id, id.m_image.m_noSelection || id.m_noSelection)
+		);
 
 		GetImageRect(id, imgRect, true);
 
-		if(	id.m_noSelection || 
+		if (id.m_noSelection ||
 			!id.IsSelected() ||
 			id.m_image.m_blend == 0 ||
 			blendColor == TRANSPARENTCOLOR)
 		{
-			pImageList->DrawIndirect(	pDC, 
-										id.m_image.m_imageID, 
-										imgRect.TopLeft(), 
-										imgRect.Size(), 
-										CPoint(0, 0));
+			pImageList->DrawIndirect(pDC,
+				id.m_image.m_imageID,
+				imgRect.TopLeft(),
+				imgRect.Size(),
+				CPoint(0, 0));
 		}
 		else
 		{
-			pImageList->DrawIndirect(	pDC, 
-										id.m_image.m_imageID, 
-										imgRect.TopLeft(), 
-										imgRect.Size(), 
-										CPoint(0, 0),
-										ILD_NORMAL|id.m_image.m_blend,
-										SRCCOPY,
-										CLR_DEFAULT,
-										blendColor);
+			pImageList->DrawIndirect(pDC,
+				id.m_image.m_imageID,
+				imgRect.TopLeft(),
+				imgRect.Size(),
+				CPoint(0, 0),
+				ILD_NORMAL | id.m_image.m_blend,
+				SRCCOPY,
+				CLR_DEFAULT,
+				blendColor);
 		}
 		pImageList->SetBkColor(rgb);
 	}
@@ -773,54 +773,54 @@ void CQuickList::DrawImage(	CQuickList::CListItemData& id,
 }
 #endif
 
-void CQuickList::DrawButtonText(CQuickList::CListItemData& id,CRect &rect,CDC* pDC)
+void CQuickList::DrawButtonText(CQuickList::CListItemData& id, CRect &rect, CDC* pDC)
 {
-	CFont *pOldFont = pDC->SelectObject(GetCellFont()); 
-	rect.left+=ExpandedMemoButtonWidth(rect.Height())+m_iGridMargin+4;
-	if(rect.right-rect.left<=10) return;
-	pDC->SetTextColor(RGB(128,128,128));
+	CFont *pOldFont = pDC->SelectObject(GetCellFont());
+	rect.left += ExpandedMemoButtonWidth(rect.Height()) + m_iGridMargin + 4;
+	if (rect.right - rect.left <= 10) return;
+	pDC->SetTextColor(RGB(128, 128, 128));
 	pDC->SetBkMode(TRANSPARENT);
-	pDC->DrawText(id.m_button.m_pText,&rect,DT_VCENTER | DT_SINGLELINE | DT_LEFT | DT_END_ELLIPSIS);
+	pDC->DrawText(id.m_button.m_pText, &rect, DT_VCENTER | DT_SINGLELINE | DT_LEFT | DT_END_ELLIPSIS);
 	pDC->SelectObject(pOldFont);
 }
 
 //Draw text
-void CQuickList::DrawText(CQuickList::CListItemData& id,CDC* pDC)
+void CQuickList::DrawText(CQuickList::CListItemData& id, CDC* pDC)
 {
 	ASSERT(pDC);
-	
+
 	CRect rect;
-	if(!GetTextRect(id, rect)) return;
+	if (!GetTextRect(id, rect)) return;
 
-	int fullRight=rect.right;
+	int fullRight = rect.right;
 
-	if(id.m_button.m_draw && (id.m_button.m_style&DFCS_BUTTONPUSH)) {
-		if(!id.m_button.m_pText) {
-			if(id.m_textStyle.m_uFldWidth==1) {
-				rect.left+=(MemoButtonOffset(rect.Height())+MemoButtonWidth(rect.Height()));
-				FillSolidRect(pDC,rect,::GetSysColor(COLOR_BTNFACE));
+	if (id.m_button.m_draw && (id.m_button.m_style&DFCS_BUTTONPUSH)) {
+		if (!id.m_button.m_pText) {
+			if (id.m_textStyle.m_uFldWidth == 1) {
+				rect.left += (MemoButtonOffset(rect.Height()) + MemoButtonWidth(rect.Height()));
+				FillSolidRect(pDC, rect, ::GetSysColor(COLOR_BTNFACE));
 			}
 			return;
 		}
 
-		if(!id.m_textStyle.m_uFldWidth) {
+		if (!id.m_textStyle.m_uFldWidth) {
 			//table button, text on right --
-			DrawButtonText(id,rect,pDC);
+			DrawButtonText(id, rect, pDC);
 			return;
 		}
 
-		rect.right=rect.left+MemoButtonOffset(rect.Height());
+		rect.right = rect.left + MemoButtonOffset(rect.Height());
 	}
 
-	if(id.m_text.IsEmpty())
+	if (id.m_text.IsEmpty())
 	{
 		//Just clean --
-			FillSolidRect(	pDC,
-					rect,
-					GetBackColor(id, !FullRowSelect() || id.m_noSelection));
+		FillSolidRect(pDC,
+			rect,
+			GetBackColor(id, !FullRowSelect() || id.m_noSelection));
 	}
 	else
-	{		
+	{
 		UINT textFormat;
 
 #ifdef QUICKLIST_NOTEXTSTYLE 
@@ -837,51 +837,51 @@ void CQuickList::DrawText(CQuickList::CListItemData& id,CDC* pDC)
 		}
 		// check if bold specified for subitem
 		else {
-			pOldFont = pDC->SelectObject(font); 
+			pOldFont = pDC->SelectObject(font);
 		}
 #endif
 		{
-			
-			pDC->SetTextColor( GetTextColor(id, id.m_noSelection) );
+
+			pDC->SetTextColor(GetTextColor(id, id.m_noSelection));
 
 			COLORREF backColor = GetBackColor(id, id.m_noSelection);
 
-			FillSolidRect(	pDC,
-							rect,
-							GetBackColor(id, !FullRowSelect() || id.m_noSelection)
-					 );
-			
-			if( backColor == TRANSPARENTCOLOR)
+			FillSolidRect(pDC,
+				rect,
+				GetBackColor(id, !FullRowSelect() || id.m_noSelection)
+			);
+
+			if (backColor == TRANSPARENTCOLOR)
 				pDC->SetBkMode(TRANSPARENT);
 			else
 			{
 				pDC->SetBkMode(OPAQUE);
-				pDC->SetBkColor( backColor );
-			}			
-			
+				pDC->SetBkColor(backColor);
+			}
+
 			CString text = id.m_text;
 			//If we don't do this, character after & will be underlined.
 			text.Replace(_T("&"), _T("&&"));
 
-			if(textFormat&DT_RIGHT) {
+			if (textFormat&DT_RIGHT) {
 				ASSERT(!id.m_button.m_draw);
 				rect.right -= m_iGridMargin;
 			}
-			else if(!(textFormat&DT_CENTER)) {
+			else if (!(textFormat&DT_CENTER)) {
 				rect.left += m_iGridMargin;
 			}
 
 			pDC->DrawText(text, &rect, textFormat);
 
 #ifdef QUICKLIST_USE_MEMO_BUTTON
-			if(id.m_button.m_draw && id.m_button.m_pText && id.m_textStyle.m_uFldWidth==1) {
+			if (id.m_button.m_draw && id.m_button.m_pText && id.m_textStyle.m_uFldWidth == 1) {
 				text = id.m_button.m_pText;
 				text.Replace(_T("&"), _T("&&"));
-				rect.left=rect.right+MemoButtonWidth(rect.Height());
-				rect.right=fullRight;
-				FillSolidRect(pDC,rect,::GetSysColor(COLOR_BTNFACE));
-				rect.right=rect.left+pDC->GetTextExtent("A").cx*LEN_MEMO_HDR;
-				pDC->SetTextColor(RGB(128,128,128));
+				rect.left = rect.right + MemoButtonWidth(rect.Height());
+				rect.right = fullRight;
+				FillSolidRect(pDC, rect, ::GetSysColor(COLOR_BTNFACE));
+				rect.right = rect.left + pDC->GetTextExtent("A").cx*LEN_MEMO_HDR;
+				pDC->SetTextColor(RGB(128, 128, 128));
 				pDC->SetBkMode(TRANSPARENT);
 				rect.left += m_iGridMargin;
 				pDC->DrawText(text, &rect, textFormat);
@@ -899,30 +899,30 @@ void CQuickList::DrawText(CQuickList::CListItemData& id,CDC* pDC)
 
 #ifndef QUICKLIST_NOBUTTON
 //Draw button (check box/radio button)
-void CQuickList::DrawButton(	CQuickList::CListItemData& id,
-								CDC* pDC)
+void CQuickList::DrawButton(CQuickList::CListItemData& id,
+	CDC* pDC)
 {
 	ASSERT(pDC);
 
 	CRect chkboxrect;
-	
+
 	GetCheckboxRect(id, chkboxrect, false);
 
 	//Clear background
-	FillSolidRect(	pDC,
-					chkboxrect,
-					GetBackColor(id, id.m_button.m_noSelection || id.m_noSelection)
-				 );
+	FillSolidRect(pDC,
+		chkboxrect,
+		GetBackColor(id, id.m_button.m_noSelection || id.m_noSelection)
+	);
 
-	if(!GetCheckboxRect(id, chkboxrect, true)) return;
+	if (!GetCheckboxRect(id, chkboxrect, true)) return;
 
 	pDC->DrawFrameControl(&chkboxrect, DFC_BUTTON, id.m_button.m_style);
 
-	if((id.m_button.m_style&(DFCS_INACTIVE|DFCS_BUTTONPUSH))==DFCS_BUTTONPUSH) {
-		UINT uAlign=pDC->SetTextAlign(TA_CENTER|TA_BASELINE);
-		int iMode=pDC->SetBkMode(TRANSPARENT);
+	if ((id.m_button.m_style&(DFCS_INACTIVE | DFCS_BUTTONPUSH)) == DFCS_BUTTONPUSH) {
+		UINT uAlign = pDC->SetTextAlign(TA_CENTER | TA_BASELINE);
+		int iMode = pDC->SetBkMode(TRANSPARENT);
 		pDC->SetTextColor(::GetSysColor(COLOR_BTNSHADOW));
-		pDC->TextOut(chkboxrect.CenterPoint().x,chkboxrect.CenterPoint().y+1, "...", 3);
+		pDC->TextOut(chkboxrect.CenterPoint().x, chkboxrect.CenterPoint().y + 1, "...", 3);
 		pDC->SetBkMode(iMode);
 		pDC->SetTextAlign(uAlign);
 	}
@@ -932,22 +932,22 @@ void CQuickList::DrawButton(	CQuickList::CListItemData& id,
 //Called when the list needs information about items to draw them
 //The reason this function is implemented is that it help the list a little
 //bit to calculate item width more correctly
-void CQuickList::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult) 
+void CQuickList::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	LV_DISPINFO* pDispInfo = (LV_DISPINFO*)pNMHDR;
-	
+
 	//Create a pointer to the item
-	LV_ITEM* pItem= &(pDispInfo)->item;
+	LV_ITEM* pItem = &(pDispInfo)->item;
 
 	//Which item number?
 	int itemid = pItem->iItem;
 
 	//Do the list need text information?
-	if( (pItem->mask & LVIF_IMAGE) || (pItem->mask & LVIF_TEXT) ) 
+	if ((pItem->mask & LVIF_IMAGE) || (pItem->mask & LVIF_TEXT))
 	{
 		CQuickList::CListItemData &id = GetItemData(itemid, pItem->iSubItem);
 
-		if( (pItem->mask & LVIF_TEXT) )
+		if ((pItem->mask & LVIF_TEXT))
 		{
 			//Copy the text to the LV_ITEM structure
 			//Maximum number of characters is in pItem->cchTextMax
@@ -955,22 +955,22 @@ void CQuickList::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
 		}
 
 		//Do the list need image information?	
-		if( pItem->mask & LVIF_IMAGE) 
+		if (pItem->mask & LVIF_IMAGE)
 		{
-			#ifndef QUICKLIST_NOIMAGE
-				//Set which image to use
-				pItem->iImage=id.m_image.m_imageID;
-			#endif
-			
+#ifndef QUICKLIST_NOIMAGE
+			//Set which image to use
+			pItem->iImage = id.m_image.m_imageID;
+#endif
+
 			//Show check box?
-			#ifndef QUICKLIST_NOBUTTON
-			if(id.m_button.m_draw)
+#ifndef QUICKLIST_NOBUTTON
+			if (id.m_button.m_draw)
 			{
 				//To enable check box, we have to enable state mask...
 				pItem->mask |= LVIF_STATE;
 				pItem->stateMask = LVIS_STATEIMAGEMASK;
 
-				if( (id.m_button.m_style & DFCS_CHECKED) != 0)
+				if ((id.m_button.m_style & DFCS_CHECKED) != 0)
 				{
 					//Turn check box on..
 					pItem->state = INDEXTOSTATEIMAGEMASK(2);
@@ -981,7 +981,7 @@ void CQuickList::OnGetdispinfo(NMHDR* pNMHDR, LRESULT* pResult)
 					pItem->state = INDEXTOSTATEIMAGEMASK(1);
 				}
 			}
-			#endif
+#endif
 		}
 	}
 
@@ -1008,7 +1008,7 @@ CQuickList::CListItemData& CQuickList::GetItemData(const int item, const int sub
 #ifndef QUICKLIST_NOIMAGE
 	id.m_image.m_imageList = GetImageList(LVSIL_SMALL);
 
-	if(!FullRowSelect())
+	if (!FullRowSelect())
 		id.m_image.m_noSelection = true;
 #endif
 
@@ -1018,10 +1018,10 @@ CQuickList::CListItemData& CQuickList::GetItemData(const int item, const int sub
 #endif
 
 
-	::SendMessage(	GetParent()->GetSafeHwnd(), 
-					WM_QUICKLIST_GETLISTITEMDATA, 
-					(WPARAM) GetSafeHwnd(), 
-					(LPARAM) &id);
+	::SendMessage(GetParent()->GetSafeHwnd(),
+		WM_QUICKLIST_GETLISTITEMDATA,
+		(WPARAM)GetSafeHwnd(),
+		(LPARAM)&id);
 
 	return id;
 }
@@ -1032,9 +1032,9 @@ UINT CQuickList::GetTextJustify(const int headerpos)
 	HDITEM hditem;
 	hditem.mask = HDI_FORMAT;
 	GetHeaderCtrl()->GetItem(headerpos, &hditem);
-	
+
 	int nFmt = hditem.fmt & HDF_JUSTIFYMASK;
-		
+
 	if (nFmt == HDF_CENTER)
 		return  DT_CENTER;
 	else if (nFmt == HDF_LEFT)
@@ -1045,10 +1045,10 @@ UINT CQuickList::GetTextJustify(const int headerpos)
 
 #ifndef QUICKLIST_NOKEYFIND
 //Called when user writes in the list to find an item
-BOOL CQuickList::OnOdfinditem(NMHDR* pNMHDR, LRESULT* pResult) 
+BOOL CQuickList::OnOdfinditem(NMHDR* pNMHDR, LRESULT* pResult)
 {
-	if(m_keyFindColumn == KEYFIND_DISABLED)
-	{		
+	if (m_keyFindColumn == KEYFIND_DISABLED)
+	{
 		//When we return FALSE this message will be handled 
 		//by the parent. Just the way we want it!
 		return FALSE;
@@ -1058,7 +1058,7 @@ BOOL CQuickList::OnOdfinditem(NMHDR* pNMHDR, LRESULT* pResult)
 
 #ifndef QUICKLIST_NONAVIGATION
 	//Use current column?
-	if(column == KEYFIND_CURRENTCOLUMN)
+	if (column == KEYFIND_CURRENTCOLUMN)
 		column = GetNavigationColumn();
 #endif
 
@@ -1073,23 +1073,23 @@ BOOL CQuickList::OnOdfinditem(NMHDR* pNMHDR, LRESULT* pResult)
 	//This is the string we search for
 	CString searchstr = pFindInfo->lvfi.psz;
 
-//	TRACE(_T("Find: %s\n"), searchstr);
-	
+	//	TRACE(_T("Find: %s\n"), searchstr);
+
 	int startPos = pFindInfo->iStart;
 	//Is startPos outside the list (happens if last item is selected)
-	if(startPos >= GetItemCount())
+	if (startPos >= GetItemCount())
 		startPos = 0;
 
-	int currentPos=startPos;
-	
+	int currentPos = startPos;
+
 	//Let's search...
 	do
-	{		
+	{
 		//Do this word begins with all characters in searchstr?
-		if( _tcsnicmp(	GetItemData(currentPos, column).m_text, 
-						searchstr, 
-						searchstr.GetLength()
-						) == 0)
+		if (_tcsnicmp(GetItemData(currentPos, column).m_text,
+			searchstr,
+			searchstr.GetLength()
+		) == 0)
 		{
 			//Select this item and stop search.
 			*pResult = currentPos;
@@ -1100,11 +1100,11 @@ BOOL CQuickList::OnOdfinditem(NMHDR* pNMHDR, LRESULT* pResult)
 		currentPos++;
 
 		//Need to restart at top?
-		if(currentPos >= GetItemCount())
+		if (currentPos >= GetItemCount())
 			currentPos = 0;
 
-	//Stop if back to start
-	}while(currentPos != startPos);		
+		//Stop if back to start
+	} while (currentPos != startPos);
 
 	return TRUE;
 
@@ -1116,28 +1116,28 @@ bool CQuickList::HitTest(const POINT& point, int& item, int& subitem, bool* onCh
 {
 	LVHITTESTINFO test;
 	test.pt = point;
-	test.flags=0;
+	test.flags = 0;
 	test.iItem = test.iSubItem = -1;
 
-	iHitTest=1;
-	iHitTest=ListView_SubItemHitTest(m_hWnd, &test);
-	if(iHitTest==-1) return false;
-	iHitTest=0;
+	iHitTest = 1;
+	iHitTest = ListView_SubItemHitTest(m_hWnd, &test);
+	if (iHitTest == -1) return false;
+	iHitTest = 0;
 
 	item = test.iItem;
 	subitem = test.iSubItem;
 
 #ifndef QUICKLIST_NOBUTTON
 	//Make check box hit test?
-	if(onCheck != NULL)
+	if (onCheck != NULL)
 	{
 		*onCheck = false;
 		CListItemData& id = GetItemData(test.iItem, test.iSubItem);
 
 		//Has active check box?
-		if(id.m_button.m_draw && !(id.m_button.m_style&DFCS_INACTIVE)) {
+		if (id.m_button.m_draw && !(id.m_button.m_style&DFCS_INACTIVE)) {
 			CRect checkrect;
-			if(GetCheckboxRect(id, checkrect, true) && checkrect.PtInRect(point))
+			if (GetCheckboxRect(id, checkrect, true) && checkrect.PtInRect(point))
 				*onCheck = true;
 		}
 	}
@@ -1145,15 +1145,15 @@ bool CQuickList::HitTest(const POINT& point, int& item, int& subitem, bool* onCh
 
 #ifndef QUICKLIST_NOIMAGE
 	//Make image hit test?
-	if(onImage != NULL)
+	if (onImage != NULL)
 	{
 		*onImage = false;
 		CRect imgrect;
-	
+
 		//Has image box?
-		if(GetImageRect(test.iItem, test.iSubItem, imgrect, true))
+		if (GetImageRect(test.iItem, test.iSubItem, imgrect, true))
 		{
-			if(imgrect.PtInRect(point)) *onImage=true;
+			if (imgrect.PtInRect(point)) *onImage = true;
 		}
 	}
 #endif
@@ -1172,26 +1172,26 @@ void CQuickList::RedrawImages(const int top, const int bottom, const int column,
 //Redraw some of a subitem
 void CQuickList::RedrawSubitems(int top, int bottom, int column, int part, BOOL erase)
 {
-	if(GetItemCount() <= 0)
+	if (GetItemCount() <= 0)
 		return;
 
-	if(!MakeInside(top, bottom))
+	if (!MakeInside(top, bottom))
 		//No need to redraw items.
 		return;
 
 	CRect t, b;
-	
-	if(part == 0) //Redraw subitem completely
+
+	if (part == 0) //Redraw subitem completely
 	{
 		GetSubItemRect(top, column, LVIR_BOUNDS, t);
 		GetSubItemRect(bottom, column, LVIR_BOUNDS, b);
 	}
-	else if(part == 1)//Redraw check boxs
+	else if (part == 1)//Redraw check boxs
 	{
-		if(!GetCheckboxRect(top, column, t, true)) return;
+		if (!GetCheckboxRect(top, column, t, true)) return;
 		GetCheckboxRect(bottom, column, b, true);
 	}
-	else if(part == 2)//Redraw images
+	else if (part == 2)//Redraw images
 	{
 #ifndef QUICKLIST_NOIMAGE
 		GetImageRect(top, column, t, true);
@@ -1207,143 +1207,143 @@ void CQuickList::RedrawSubitems(int top, int bottom, int column, int part, BOOL 
 	//Mix them
 	t.UnionRect(&t, &b);
 
-	InvalidateRect( &t, erase );
+	InvalidateRect(&t, erase);
 
 }
 
 //Make items inside visible area
 bool CQuickList::MakeInside(int& top, int &bottom)
 {
-	int min = GetTopIndex(), max = min+GetCountPerPage();
+	int min = GetTopIndex(), max = min + GetCountPerPage();
 
-	if(max >= GetItemCount())
-		max = GetItemCount()-1;
+	if (max >= GetItemCount())
+		max = GetItemCount() - 1;
 
 	//Is both outside visible area?
-	if(top < min && bottom < min)
+	if (top < min && bottom < min)
 		return false;
-	if(top > max && bottom > max)
+	if (top > max && bottom > max)
 		return false;
 
-	if(top < min)
+	if (top < min)
 		top = min;
 
-	if(bottom > max)
+	if (bottom > max)
 		bottom = max;
 
 	return true;
 }
 
 //Start editing an sub item
-void CQuickList::EditSubItem (int Item, int Column, POINT *pt)
+void CQuickList::EditSubItem(int Item, int Column, POINT *pt)
 {
-    // Make sure that nCol is valid
+	// Make sure that nCol is valid
 	{
 		//CHeaderCtrl* pHeader = (CHeaderCtrl*) GetDlgItem(0);
 		CHeaderCtrl* pHeader = GetHeaderCtrl();
-		ASSERT(pHeader == (CHeaderCtrl*) GetDlgItem(0));
+		ASSERT(pHeader == (CHeaderCtrl*)GetDlgItem(0));
 		int nColumnCount = pHeader->GetItemCount();
-		if (!Column || Column >= nColumnCount || GetColumnWidth (Column) < 5)
+		if (!Column || Column >= nColumnCount || GetColumnWidth(Column) < 5)
 			return;
 	}
- 
+
 	CListItemData id = GetItemData(Item, Column); //can't use reference here due to Create!
 
-	if(id.m_button.m_draw && !(id.m_button.m_style&DFCS_BUTTONPUSH))
+	if (id.m_button.m_draw && !(id.m_button.m_style&DFCS_BUTTONPUSH))
 		return; //handles double-click outside of checkbox
 
 	//Prompt for editor's name and/or open memo --
-	if(id.m_allowEdit) {
+	if (id.m_allowEdit) {
 		LV_DISPINFO dispinfo;
 		dispinfo.hdr.hwndFrom = m_hWnd;
 		dispinfo.hdr.idFrom = GetDlgCtrlID();
 		dispinfo.hdr.code = LVN_BEGINLABELEDIT;
-		dispinfo.item.iItem=Item;
-		dispinfo.item.iSubItem=Column;
-		if(::SendMessage (GetParent()->GetSafeHwnd(),WM_NOTIFY,(WPARAM)GetDlgCtrlID(),(LPARAM)&dispinfo))
+		dispinfo.item.iItem = Item;
+		dispinfo.item.iSubItem = Column;
+		if (::SendMessage(GetParent()->GetSafeHwnd(), WM_NOTIFY, (WPARAM)GetDlgCtrlID(), (LPARAM)&dispinfo))
 			return;
 	}
 
-	if(id.m_button.m_draw) {
+	if (id.m_button.m_draw) {
 		return;
 	}
 
-    CRect Rect;
-    //Same as GetItemRect (Item, &Rect, LVIR_BOUNDS) when id.m_editBorder
+	CRect Rect;
+	//Same as GetItemRect (Item, &Rect, LVIR_BOUNDS) when id.m_editBorder
 	GetTextRect(id, Rect);
 
-    // Now scroll if we need to expose the column
-    CRect ClientRect;
-    GetClientRect(&ClientRect);
+	// Now scroll if we need to expose the column
+	CRect ClientRect;
+	GetClientRect(&ClientRect);
 	if (Rect.right > ClientRect.right) {
 		Rect.right = ClientRect.right;
-		if(Rect.Width()<40) return;
+		if (Rect.Width() < 40) return;
 	}
 
-	if(id.m_pXCMB && id.m_allowEdit) {
-		if(!bIgnoreEditTS && (id.m_pXCMB->wFlgs&XC_LISTNOEDIT) || !pt || pt->x > Rect.right-Rect.Height()) {
-			SelectComboItem(id,Rect); //dropdown list edit
+	if (id.m_pXCMB && id.m_allowEdit) {
+		if (!bIgnoreEditTS && (id.m_pXCMB->wFlgs&XC_LISTNOEDIT) || !pt || pt->x > Rect.right - Rect.Height()) {
+			SelectComboItem(id, Rect); //dropdown list edit
 			return;
 		}
-		if(pt->x==INT_MIN) pt=NULL; //return key
-		Rect.right-=Rect.Height()-3;
+		if (pt->x == INT_MIN) pt = NULL; //return key
+		Rect.right -= Rect.Height() - 3;
 	}
 
-	HFONT hFont=id.m_textStyle.m_hFont;
-	if(!hFont) hFont=*GetCellFont();
+	HFONT hFont = id.m_textStyle.m_hFont;
+	if (!hFont) hFont = *GetCellFont();
 
-	UINT cx,cy;
-	if(id.m_editBorder) {
-		cx=4; cy=0;
+	UINT cx, cy;
+	if (id.m_editBorder) {
+		cx = 4; cy = 0;
 	}
 	else {
 		Rect.bottom--;
-		Rect.left+=m_iGridMargin;
+		Rect.left += m_iGridMargin;
 	}
 
 	DWORD style = WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL;
-	if(!id.m_allowEdit) {
+	if (!id.m_allowEdit) {
 		style |= ES_READONLY;
 	}
 
-	if(id.m_editBorder) style |= WS_BORDER;
+	if (id.m_editBorder) style |= WS_BORDER;
 	{
-		UINT justify=GetTextJustify(Column);
-		if(justify==DT_LEFT) style |= ES_LEFT;
-		else if(justify==DT_CENTER) {
+		UINT justify = GetTextJustify(Column);
+		if (justify == DT_LEFT) style |= ES_LEFT;
+		else if (justify == DT_CENTER) {
 			style |= ES_CENTER;
 		}
 		else {
 			//ASSERT(style & WS_BORDER);
 			style |= DT_RIGHT;
-			cx=0;
-			cy=4;
-			if(wOSVersion<0x0600) cy--;
+			cx = 0;
+			cy = 4;
+			if (wOSVersion < 0x0600) cy--;
 		}
-	}	
+	}
 
-	if(m_edit != NULL)
+	if (m_edit != NULL)
 	{
 		TRACE(_T("Warning: Edit box was visible when an item was started to edit.\n"));
 		StopEdit();
 	}
 
-    m_edit = new CQuickEdit (this, Item, Column, hFont, id.m_text, id.m_cTyp, m_editEndOnLostFocus);
-    
-    VERIFY(m_edit->Create (style, Rect, this, 1001));
+	m_edit = new CQuickEdit(this, Item, Column, hFont, id.m_text, id.m_cTyp, m_editEndOnLostFocus);
 
- 	if(id.m_editBorder) {
-		m_edit->SetMargins(cx,cy);
+	VERIFY(m_edit->Create(style, Rect, this, 1001));
+
+	if (id.m_editBorder) {
+		m_edit->SetMargins(cx, cy);
 	}
 
 	m_edit->LimitText(id.m_textStyle.m_uFldWidth);
 
-	if(!id.m_cTyp) m_edit->SetSel(0,-1);
+	if (!id.m_cTyp) m_edit->SetSel(0, -1);
 	else {
-		if(pt && Rect.left<pt->x) {
-			int iStart=LOWORD(m_edit->CharFromPos(CPoint(pt->x-Rect.left,0)));
-			if(iStart>0) {
-				m_edit->SetSel(iStart,iStart);
+		if (pt && Rect.left < pt->x) {
+			int iStart = LOWORD(m_edit->CharFromPos(CPoint(pt->x - Rect.left, 0)));
+			if (iStart > 0) {
+				m_edit->SetSel(iStart, iStart);
 			}
 		}
 	}
@@ -1356,54 +1356,54 @@ void CQuickList::OnEndEdit(const int item, const int subitem, LPCSTR text, UINT 
 	//m_edit normally not yet destroyed, but will be after this fcn returns.
 	//NULL if selecting dropdown item!
 
-	if(m_edit) {
-		m_editLastSel=m_edit->GetSel();
+	if (m_edit) {
+		m_editLastSel = m_edit->GetSel();
 		m_editLastEndKey = endkey;
-		if(m_edit->IsReadOnly())
+		if (m_edit->IsReadOnly())
 			return;
 		m_edit = NULL;
 	}
 
-	if(endkey==VK_ESCAPE) {
-		RedrawItems(item,item);
+	if (endkey == VK_ESCAPE) {
+		RedrawItems(item, item);
 		return;
 	}
 
 	//SetFocus();
 
-    LV_DISPINFO dispinfo;
-    dispinfo.hdr.hwndFrom = m_hWnd;
-    dispinfo.hdr.idFrom = GetDlgCtrlID();
-    dispinfo.hdr.code = LVN_ENDLABELEDIT;
+	LV_DISPINFO dispinfo;
+	dispinfo.hdr.hwndFrom = m_hWnd;
+	dispinfo.hdr.idFrom = GetDlgCtrlID();
+	dispinfo.hdr.code = LVN_ENDLABELEDIT;
 
-    dispinfo.item.mask = LVIF_TEXT;
-    dispinfo.item.iItem = item;
-    dispinfo.item.iSubItem = subitem;
-    dispinfo.item.pszText = (LPSTR)text;
-	dispinfo.item.cchTextMax = text?strlen(text):0;
-	
+	dispinfo.item.mask = LVIF_TEXT;
+	dispinfo.item.iItem = item;
+	dispinfo.item.iSubItem = subitem;
+	dispinfo.item.pszText = (LPSTR)text;
+	dispinfo.item.cchTextMax = text ? strlen(text) : 0;
+
 	//RedrawText(item, item, subitem);
-	RedrawItems(item,item);
+	RedrawItems(item, item);
 
-    GetParent()->SendMessage (WM_NOTIFY, GetDlgCtrlID(), (LPARAM) &dispinfo);
+	GetParent()->SendMessage(WM_NOTIFY, GetDlgCtrlID(), (LPARAM)&dispinfo);
 }
 
 //When mouse wheel is used
-BOOL CQuickList::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt) 
+BOOL CQuickList::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
-	StopEdit();	
+	StopEdit();
 	return CListCtrl::OnMouseWheel(nFlags, zDelta, pt);
 }
 
 //When vertical scroll
-void CQuickList::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CQuickList::OnVScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
-	StopEdit();	
+	StopEdit();
 	CListCtrl::OnVScroll(nSBCode, nPos, pScrollBar);
 }
 
 //When horisontial scorll
-void CQuickList::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CQuickList::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	StopEdit();
 
@@ -1413,7 +1413,7 @@ void CQuickList::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 //Stop editing.
 void CQuickList::StopEdit(bool cancel)
 {
-	if(m_edit != NULL)
+	if (m_edit != NULL)
 	{
 		TRACE(_T("Stop editing\n"));
 		//m_edit->DestroyWindow();
@@ -1423,216 +1423,216 @@ void CQuickList::StopEdit(bool cancel)
 
 void CQuickList::OnRButtonDown(UINT nFlags, CPoint point)
 {
-	m_lastItem=m_lastCol=-1;
-	CListCtrl::OnRButtonDown(nFlags,point);
+	m_lastItem = m_lastCol = -1;
+	CListCtrl::OnRButtonDown(nFlags, point);
 }
 
 void CQuickList::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	LVHITTESTINFO test;
 	test.pt = point;
-	test.flags=0;
+	test.flags = 0;
 	test.iItem = test.iSubItem = -1;
 
-	if(ListView_SubItemHitTest(m_hWnd, &test) != -1) {
-		m_bCtrl = (nFlags&MK_CONTROL)!=0;
+	if (ListView_SubItemHitTest(m_hWnd, &test) != -1) {
+		m_bCtrl = (nFlags&MK_CONTROL) != 0;
 		int item = test.iItem;
 		int subitem = test.iSubItem;
-		CListItemData &id=GetItemData(item,subitem);
+		CListItemData &id = GetItemData(item, subitem);
 
 		ASSERT(!id.m_pXCMB || id.m_isSelected); //if no breaks, fix below
 
-		bool bStopList=(m_pListBox!=NULL);
-		if(bStopList) {
+		bool bStopList = (m_pListBox != NULL);
+		if (bStopList) {
 			StopListBoxEdit(NULL);
-			if(m_nComboItem==item && m_nComboSubItem==subitem)
+			if (m_nComboItem == item && m_nComboSubItem == subitem)
 				return;
 		}
 
-		bool bButton=id.m_button.m_draw && (id.m_button.m_style&DFCS_BUTTONPUSH)!=0;
+		bool bButton = id.m_button.m_draw && (id.m_button.m_style&DFCS_BUTTONPUSH) != 0;
 
-		if(!bButton && id.m_button.m_draw) {
-			m_lastItem=m_lastCol=-1;
+		if (!bButton && id.m_button.m_draw) {
+			m_lastItem = m_lastCol = -1;
 		}
 		else {
 
-			if(bButton || m_lastItem==item && m_lastCol==subitem || id.m_pXCMB && id.m_isSelected)
+			if (bButton || m_lastItem == item && m_lastCol == subitem || id.m_pXCMB && id.m_isSelected)
 			{
-				if(bButton) {
+				if (bButton) {
 					CRect rect;
 					GetCheckboxRect(id, rect, true);
 
-					if(m_lastItem!=item || m_lastCol!=subitem) {
-						CListCtrl::OnLButtonDown(nFlags,point);
-						m_lastItem=item;
-						m_lastCol=subitem;
+					if (m_lastItem != item || m_lastCol != subitem) {
+						CListCtrl::OnLButtonDown(nFlags, point);
+						m_lastItem = item;
+						m_lastCol = subitem;
 					}
-					if(!rect.PtInRect(point)) {
-						m_bCtrl=false;
+					if (!rect.PtInRect(point)) {
+						m_bCtrl = false;
 						return;
 					}
 				}
-				EditSubItem(item,subitem,&point);
-				m_lastItem=m_lastCol=-1;
-				m_bCtrl=false;
+				EditSubItem(item, subitem, &point);
+				m_lastItem = m_lastCol = -1;
+				m_bCtrl = false;
 				return;
 			}
-			m_lastItem=item;
-			m_lastCol=subitem;
+			m_lastItem = item;
+			m_lastCol = subitem;
 		}
 	}
 	else {
-		if(m_pListBox)
+		if (m_pListBox)
 			StopListBoxEdit(NULL);
 		else
-			m_lastItem=m_lastCol=-1;
+			m_lastItem = m_lastCol = -1;
 	}
-	CListCtrl::OnLButtonDown(nFlags,point);
-	m_bCtrl=false;
+	CListCtrl::OnLButtonDown(nFlags, point);
+	m_bCtrl = false;
 }
 
 //When key is pressed
-void CQuickList::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CQuickList::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 
 #ifndef QUICKLIST_NONAVIGATION
-	if(m_enableNavigation)
+	if (m_enableNavigation)
 	{
-		int incCol=0;
+		int incCol = 0;
 		bool ret = false;
 
 		switch (nChar)
-		{		
-			case VK_LEFT :
-			{
-				//TryNavigate(m_navigationColumn-1);			
-				incCol--;
-				break;
-			}
-			case VK_RIGHT :
-			{
-				//TryNavigate(m_navigationColumn+1);
-				incCol++;
-				break;
-			}
-			
-			case VK_DOWN :
-			{
-				if(m_bWrap && GetItemInFocus()+1>=GetItemCount()) {
-					SetSelected(0);
-					EnsureVisible(0,0);
-					ret=true;
-				}
-				break;
-			}
+		{
+		case VK_LEFT:
+		{
+			//TryNavigate(m_navigationColumn-1);			
+			incCol--;
+			break;
+		}
+		case VK_RIGHT:
+		{
+			//TryNavigate(m_navigationColumn+1);
+			incCol++;
+			break;
+		}
 
-			case VK_UP :
-			{
-				if(m_bWrap && !GetItemInFocus()) {
-					SetSelected(GetItemCount()-1);
-					EnsureVisible(GetItemCount()-1,0);
-					ret=true;
-				}
-				break;
+		case VK_DOWN:
+		{
+			if (m_bWrap && GetItemInFocus() + 1 >= GetItemCount()) {
+				SetSelected(0);
+				EnsureVisible(0, 0);
+				ret = true;
 			}
+			break;
+		}
 
-			case VK_SPACE:
-			case VK_RETURN:
+		case VK_UP:
+		{
+			if (m_bWrap && !GetItemInFocus()) {
+				SetSelected(GetItemCount() - 1);
+				EnsureVisible(GetItemCount() - 1, 0);
+				ret = true;
+			}
+			break;
+		}
+
+		case VK_SPACE:
+		case VK_RETURN:
+		{
+			if (m_editOnEnter)
 			{
- 				if(m_editOnEnter)
-				{
-					int item=GetItemInFocus();
-					CListItemData id=GetItemData(item,m_navigationColumn);
-					if(id.m_allowEdit && (!id.m_button.m_draw || (id.m_button.m_style&DFCS_BUTTONPUSH))) {
-						if(nChar==VK_RETURN && id.m_pXCMB) {
-							CPoint pt(INT_MIN,0); //edit box instead of dropdown list
-							EditSubItem(item,m_navigationColumn,&pt);
-						}
-						else
-							EditSubItem(item,m_navigationColumn);
+				int item = GetItemInFocus();
+				CListItemData id = GetItemData(item, m_navigationColumn);
+				if (id.m_allowEdit && (!id.m_button.m_draw || (id.m_button.m_style&DFCS_BUTTONPUSH))) {
+					if (nChar == VK_RETURN && id.m_pXCMB) {
+						CPoint pt(INT_MIN, 0); //edit box instead of dropdown list
+						EditSubItem(item, m_navigationColumn, &pt);
 					}
-					else if(id.m_button.m_draw) {
-						//id.m_allowEdit implies checkbox
-						if(id.m_allowEdit || (id.m_button.m_style&(DFCS_BUTTONPUSH|DFCS_INACTIVE))==DFCS_BUTTONPUSH) {
-							CListHitInfo hit;
-							hit.m_item = item;
-							hit.m_subitem=m_navigationColumn;
-							hit.m_onButton = true;
-							::SendMessage(	GetParent()->GetSafeHwnd(), 
-									WM_QUICKLIST_CLICK, 
-									(WPARAM) GetSafeHwnd(), 
-									(LPARAM) &hit);
-							if(id.m_allowEdit) {
-								::PostMessage(m_hWnd,WM_KEYDOWN,VK_DOWN,0);
-							}
-
+					else
+						EditSubItem(item, m_navigationColumn);
+				}
+				else if (id.m_button.m_draw) {
+					//id.m_allowEdit implies checkbox
+					if (id.m_allowEdit || (id.m_button.m_style&(DFCS_BUTTONPUSH | DFCS_INACTIVE)) == DFCS_BUTTONPUSH) {
+						CListHitInfo hit;
+						hit.m_item = item;
+						hit.m_subitem = m_navigationColumn;
+						hit.m_onButton = true;
+						::SendMessage(GetParent()->GetSafeHwnd(),
+							WM_QUICKLIST_CLICK,
+							(WPARAM)GetSafeHwnd(),
+							(LPARAM)&hit);
+						if (id.m_allowEdit) {
+							::PostMessage(m_hWnd, WM_KEYDOWN, VK_DOWN, 0);
 						}
+
 					}
-					return;
 				}
-				break;
+				return;
 			}
+			break;
+		}
 
-			case VK_F2:
+		case VK_F2:
+		{
+			if (m_editOnF2)
 			{
-				if(m_editOnF2)
-				{
-					EditSubItem(GetItemInFocus(), m_navigationColumn);
-					return;
-				}
-				break;
+				EditSubItem(GetItemInFocus(), m_navigationColumn);
+				return;
 			}
+			break;
+		}
 
-			default:
-				ret=false; //support page keys!
+		default:
+			ret = false; //support page keys!
 		}
 
 		//Navigation column changed?
-		if(incCol)
+		if (incCol)
 		{
-			int nCols=GetHeaderCtrl()->GetItemCount();
+			int nCols = GetHeaderCtrl()->GetItemCount();
 			VEC_INT v_order(nCols);
-			VERIFY(GetColumnOrderArray(&v_order[0],nCols));
+			VERIFY(GetColumnOrderArray(&v_order[0], nCols));
 			//find the actual table column --
-			int nCol=0;
-			for(;nCol<nCols;nCol++) {
-				if(m_navigationColumn==v_order[nCol]) {
-					nCol+=incCol;
+			int nCol = 0;
+			for (; nCol < nCols; nCol++) {
+				if (m_navigationColumn == v_order[nCol]) {
+					nCol += incCol;
 					break;
 				}
 			}
-			if(nCol<0 || nCol>=nCols)
+			if (nCol < 0 || nCol >= nCols)
 				return;
 
-			nCols=m_navigationColumn; //save old navigation column
+			nCols = m_navigationColumn; //save old navigation column
 
 			TryNavigate(v_order[nCol]);
 
 			//Redraw sub items (focus rect is changed)
 			int focus = GetItemInFocus();
-			RedrawSubitems( focus,
-							focus,
-							nCols);
-			
-			RedrawSubitems( focus,
-							focus,
-							m_navigationColumn);
+			RedrawSubitems(focus,
+				focus,
+				nCols);
+
+			RedrawSubitems(focus,
+				focus,
+				m_navigationColumn);
 			return;
 		}
 
-		if(ret) return;
+		if (ret) return;
 
 	}
-	#endif
-	
+#endif
+
 	CListCtrl::OnKeyDown(nChar, nRepCnt, nFlags);
 }
 
-void CQuickList::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CQuickList::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	if(	m_editOnWriting && 
-		nChar != VK_RETURN && 
-		nChar != VK_SPACE && 
+	if (m_editOnWriting &&
+		nChar != VK_RETURN &&
+		nChar != VK_SPACE &&
 		nChar != VK_BACK &&
 		nRepCnt >= 0 &&
 		nChar >= 32 //Ignore ctrl+a, b and similar
@@ -1652,10 +1652,10 @@ void CQuickList::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 void CQuickList::TryNavigate(const int newcol)
 {
 #ifndef QUICKLIST_NONAVIGATION
-	if(!m_enableNavigation)
+	if (!m_enableNavigation)
 		return;
 
-	if(newcol < 0 || newcol >= GetHeaderCtrl()->GetItemCount())
+	if (newcol < 0 || newcol >= GetHeaderCtrl()->GetItemCount())
 		return;
 
 	CQuickList::CNavigationTest test;
@@ -1664,12 +1664,12 @@ void CQuickList::TryNavigate(const int newcol)
 	test.m_allowChange = true;
 
 	//Ask parent if it's ok to change column
-	::SendMessage(	GetParent()->GetSafeHwnd(),
-					WM_QUICKLIST_NAVIGATIONTEST,
-					(WPARAM) GetSafeHwnd(),
-					(LPARAM) &test);
+	::SendMessage(GetParent()->GetSafeHwnd(),
+		WM_QUICKLIST_NAVIGATIONTEST,
+		(WPARAM)GetSafeHwnd(),
+		(LPARAM)&test);
 
-	if(test.m_allowChange)
+	if (test.m_allowChange)
 		SetNavigationColumn(test.m_newColumn);
 #else
 	UNREFERENCED_PARAMETER(newcol);
@@ -1684,13 +1684,13 @@ void CQuickList::SetNavigationColumn(const int column)
 
 	int oldCol = m_navigationColumn;
 
-	int topVisible = 0, bottomVisible = GetItemCount()-1;
+	int topVisible = 0, bottomVisible = GetItemCount() - 1;
 	MakeInside(topVisible, bottomVisible);
 
 	//Redraw the visible items that are selected
-	for(int item=topVisible; item <= bottomVisible; item++)
+	for (int item = topVisible; item <= bottomVisible; item++)
 	{
-		if(IsSelected(item, 0))
+		if (IsSelected(item, 0))
 		{
 			m_navigationColumn = -1;
 			RedrawSubitems(item, item, oldCol);
@@ -1706,31 +1706,31 @@ void CQuickList::SetNavigationColumn(const int column)
 }
 
 //Pretranslate message
-BOOL CQuickList::PreTranslateMessage(MSG* pMsg) 
+BOOL CQuickList::PreTranslateMessage(MSG* pMsg)
 {
 #ifndef QUICKLIST_NONAVIGATION
 	if (pMsg->message == WM_KEYDOWN)
-    {
-		switch(pMsg->wParam) {
+	{
+		switch (pMsg->wParam) {
 			//case VK_UP:
 			//case VK_DOWN:
-			case VK_RETURN:
-				{
-					::TranslateMessage (pMsg);
-					::DispatchMessage (pMsg);
-					return TRUE;		    	
-				}
+		case VK_RETURN:
+		{
+			::TranslateMessage(pMsg);
+			::DispatchMessage(pMsg);
+			return TRUE;
 		}
-    }
+		}
+	}
 #endif
 
-	if(m_bHdrToolTip && (pMsg->message== WM_LBUTTONDOWN ||
-        pMsg->message== WM_LBUTTONUP || pMsg->message== WM_MOUSEMOVE)) {
+	if (m_bHdrToolTip && (pMsg->message == WM_LBUTTONDOWN ||
+		pMsg->message == WM_LBUTTONUP || pMsg->message == WM_MOUSEMOVE)) {
 		m_hdrToolTip.RelayEvent(pMsg);
-		if(pMsg->message== WM_MOUSEMOVE && !m_hdrToolTipRect.IsRectNull()) {
+		if (pMsg->message == WM_MOUSEMOVE && !m_hdrToolTipRect.IsRectNull()) {
 			CPoint point(pMsg->pt);
 			ScreenToClient(&point);
-			if(!m_hdrToolTipRect.PtInRect(point)) {
+			if (!m_hdrToolTipRect.PtInRect(point)) {
 				//TRACE(_T("m_hdrToolTip.Pop() - pt.x=%d,pt.y=%d rect.lf=%d,rect.rt=%d\n"),
 					//point.x,point.y,m_hdrToolTipRect.left,m_hdrToolTipRect.right);
 
@@ -1738,31 +1738,31 @@ BOOL CQuickList::PreTranslateMessage(MSG* pMsg)
 			}
 		}
 	}
-	
+
 	return CListCtrl::PreTranslateMessage(pMsg);
 }
 
 //Make a column visible
 void CQuickList::MakeColumnVisible(int nCol)
 {
-	if(nCol < 0)
+	if (nCol < 0)
 		return;
 
 	// Get the column offset
-	int colwidth,offset=0;
+	int colwidth, offset = 0;
 	{
 		VEC_INT v_order(GetHeaderCtrl()->GetItemCount());
-		VERIFY(GetColumnOrderArray(&v_order[0],v_order.size()));
-		ASSERT(nCol<(int)v_order.size());
-		it_int it=v_order.begin();
-		for(;*it!=nCol;it++) {
-			if(it==v_order.end()) {
+		VERIFY(GetColumnOrderArray(&v_order[0], v_order.size()));
+		ASSERT(nCol < (int)v_order.size());
+		it_int it = v_order.begin();
+		for (; *it != nCol; it++) {
+			if (it == v_order.end()) {
 				ASSERT(0);
 				return;
 			}
-			offset+=GetColumnWidth(*it);
+			offset += GetColumnWidth(*it);
 		}
-		colwidth=GetColumnWidth(*it);
+		colwidth = GetColumnWidth(*it);
 	}
 
 	CRect rect;
@@ -1770,9 +1770,9 @@ void CQuickList::MakeColumnVisible(int nCol)
 	// Now scroll if we need to show the column
 	CRect rcClient;
 	GetClientRect(&rcClient);
-	if(offset + rect.left < 0 || offset + colwidth + rect.left > rcClient.right)
+	if (offset + rect.left < 0 || offset + colwidth + rect.left > rcClient.right)
 	{
-		CSize size(offset + rect.left,0);
+		CSize size(offset + rect.left, 0);
 		Scroll(size);
 		Invalidate(FALSE);
 		UpdateWindow();
@@ -1800,44 +1800,44 @@ int CQuickList::OnToolHitTest(CPoint point, TOOLINFO * pTI) const
 {
 	//The list could get focus in XP. We don't like that
 	//if we are editing 
-	if(m_edit != NULL)
+	if (m_edit != NULL)
 		return -1;
 
 	LVHITTESTINFO lvhitTestInfo;
-	
+
 	lvhitTestInfo.pt = point;
 	int nItem = ListView_SubItemHitTest(this->m_hWnd, &lvhitTestInfo);
 
 	int nSubItem = lvhitTestInfo.iSubItem;
 	UINT nFlags = lvhitTestInfo.flags;
 
-	if(nItem<0) {
+	if (nItem < 0) {
 		//BOOL bInHdr=PtInHeader(point);
-		if(!m_bHdrToolTip || nSubItem<=0 || point.y>m_hdrHeight) return -1;
-		nFlags=LVHT_ONITEMLABEL;
-		nItem=0;
+		if (!m_bHdrToolTip || nSubItem <= 0 || point.y > m_hdrHeight) return -1;
+		nFlags = LVHT_ONITEMLABEL;
+		nItem = 0;
 	}
 
 	// nFlags is 0 if the SubItemHitTest fails
 	// Therefore, 0 & <anything> will equal false
-	if (nFlags & (LVHT_ONITEMLABEL|LVHT_ONITEMICON|LVHT_ONITEMSTATEICON) )
+	if (nFlags & (LVHT_ONITEMLABEL | LVHT_ONITEMICON | LVHT_ONITEMSTATEICON))
 	{
 		// If it did fall on a list item,
 		// and it was also hit one of the
 		// item specific subitems we wish to show tool tips for
-		
+
 		// get the client (area occupied by this control
 		RECT rcClient;
 		GetClientRect(&rcClient);
-		
+
 		// fill in the TOOLINFO structure
 		pTI->hwnd = m_hWnd;
-		pTI->uId = (UINT) (nItem * 1000 + nSubItem + 1);
+		pTI->uId = (UINT)(nItem * 1000 + nSubItem + 1);
 		pTI->lpszText = LPSTR_TEXTCALLBACK;
 		pTI->rect = rcClient;
 
 		//TRACE(_T("OnToolHitTest rtn: %d\n"),pTI->uId);
-		
+
 		return pTI->uId;	// By returning a unique value per listItem,
 							// we ensure that when the mouse moves over another
 							// list item, the tooltip will change
@@ -1853,14 +1853,14 @@ int CQuickList::OnToolHitTest(CPoint point, TOOLINFO * pTI) const
 BOOL CQuickList::OnToolTipText(UINT /*id*/, NMHDR *pNMHDR, LRESULT *pResult)
 {
 	UINT nID = pNMHDR->idFrom;
-		
+
 	// check if this is the automatic tooltip of the control
-	if (nID == 0) 
+	if (nID == 0)
 		return TRUE;	// do not allow display of automatic tooltip,
 						// or our tooltip will disappear
 
 	*pResult = 0;
-	
+
 	// get the mouse position
 	const MSG* pMessage;
 	pMessage = GetCurrentMessage();
@@ -1869,73 +1869,73 @@ BOOL CQuickList::OnToolTipText(UINT /*id*/, NMHDR *pNMHDR, LRESULT *pResult)
 	pt = pMessage->pt;		// get the point from the message
 	ScreenToClient(&pt);	// convert the point's coords to be relative to this control
 
-	if(m_bHdrToolTip) {
-		if(pt.y<m_hdrHeight)
-			pt.y=m_hdrHeight;
+	if (m_bHdrToolTip) {
+		if (pt.y < m_hdrHeight)
+			pt.y = m_hdrHeight;
 		else {
 			return TRUE;
 		}
 	}
-	
-	// see if the point falls onto a list item
-	m_hdrToolTipRect.SetRect(0,0,0,0);
-	int nItem=-1, nSubItem=-1;
 
-	if(!HitTest(pt, nItem, nSubItem)) {
+	// see if the point falls onto a list item
+	m_hdrToolTipRect.SetRect(0, 0, 0, 0);
+	int nItem = -1, nSubItem = -1;
+
+	if (!HitTest(pt, nItem, nSubItem)) {
 		return TRUE;
 	}
 
-	ASSERT(nItem>=0);
+	ASSERT(nItem >= 0);
 
-	if(!m_bHdrToolTip && nSubItem)
+	if (!m_bHdrToolTip && nSubItem)
 		return TRUE;
 
 	//if((nSubItem==0)==!bFieldlist) //fieldlist:200 else 64
 		//return TRUE;
 
 	//Evidently, this must be called each time when other tooltip contexts are active! 
-	ToolTipCustomize(m_nTTInitial,m_nTTAutopop,m_nTTReshow,m_bHdrToolTip?&m_hdrToolTip:NULL);
+	ToolTipCustomize(m_nTTInitial, m_nTTAutopop, m_nTTReshow, m_bHdrToolTip ? &m_hdrToolTip : NULL);
 
-	if(m_bHdrToolTip && pt.y==m_hdrHeight) {
-		CListCtrl::GetSubItemRect(0,0,LVIR_BOUNDS,m_hdrToolTipRect);
+	if (m_bHdrToolTip && pt.y == m_hdrHeight) {
+		CListCtrl::GetSubItemRect(0, 0, LVIR_BOUNDS, m_hdrToolTipRect);
 		//m_hdrToolTipRect == client coords of part visible in row 0 plus scroll distance
-		int xoff=m_hdrToolTipRect.left; //<= 0
+		int xoff = m_hdrToolTipRect.left; //<= 0
 		//now get rect in clent coord of subitem --
-		m_HeaderCtrl.GetItemRect(nSubItem,m_hdrToolTipRect);
-		m_hdrToolTipRect.left+=xoff; m_hdrToolTipRect.right+=xoff;
-		if(nSubItem<=0) {
+		m_HeaderCtrl.GetItemRect(nSubItem, m_hdrToolTipRect);
+		m_hdrToolTipRect.left += xoff; m_hdrToolTipRect.right += xoff;
+		if (nSubItem <= 0) {
 			return TRUE;
 		}
-		nItem=-1;
+		nItem = -1;
 	}
-	
+
 	TOOLTIPTEXTA* pTTTA = (TOOLTIPTEXTA*)pNMHDR;
 	TOOLTIPTEXTW* pTTTW = (TOOLTIPTEXTW*)pNMHDR;
-	BOOL bW=(pNMHDR->code!=TTN_NEEDTEXTA);
+	BOOL bW = (pNMHDR->code != TTN_NEEDTEXTA);
 
-	QUICKLIST_TTINFO ttinfo(nItem,nSubItem,bW,bW?(LPVOID)&pTTTW->szText:(LPVOID)&pTTTA->szText);
+	QUICKLIST_TTINFO ttinfo(nItem, nSubItem, bW, bW ? (LPVOID)&pTTTW->szText : (LPVOID)&pTTTA->szText);
 	//TRACE("sending GetToolTip(nItem=%d,..)\n",nItem);
-	if(::SendMessage(GetParent()->GetSafeHwnd(), 
-				WM_QUICKLIST_GETTOOLTIP, 
-				(WPARAM) GetSafeHwnd(), 
-				(LPARAM) &ttinfo))
+	if (::SendMessage(GetParent()->GetSafeHwnd(),
+		WM_QUICKLIST_GETTOOLTIP,
+		(WPARAM)GetSafeHwnd(),
+		(LPARAM)&ttinfo))
 	{
-		if(!ttinfo.pvText80) {
+		if (!ttinfo.pvText80) {
 			ASSERT(0);
 			return TRUE;
 		}
 
-		if(!bW) {
-			if((LPVOID)pTTTA->szText!=ttinfo.pvText80) {
-				pTTTA->hinst=0;
-				pTTTA->lpszText=(LPSTR)ttinfo.pvText80;
+		if (!bW) {
+			if ((LPVOID)pTTTA->szText != ttinfo.pvText80) {
+				pTTTA->hinst = 0;
+				pTTTA->lpszText = (LPSTR)ttinfo.pvText80;
 			}
 		}
 		else {
 			ASSERT(pNMHDR->code == TTN_NEEDTEXTW);
-			if((LPVOID)pTTTW->szText!=ttinfo.pvText80) {
-				pTTTW->hinst=0;
-				pTTTW->lpszText=(LPWSTR)ttinfo.pvText80;
+			if ((LPVOID)pTTTW->szText != ttinfo.pvText80) {
+				pTTTW->hinst = 0;
+				pTTTW->lpszText = (LPWSTR)ttinfo.pvText80;
 			}
 		}
 	}
@@ -1944,22 +1944,22 @@ BOOL CQuickList::OnToolTipText(UINT /*id*/, NMHDR *pNMHDR, LRESULT *pResult)
 #endif
 
 //On click 
-BOOL CQuickList::OnClickEx(NMHDR* pNMHDR, LRESULT* pResult) 
+BOOL CQuickList::OnClickEx(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	NMLISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 
 	//Try to change navigation column when user clicks on an item
 	CListHitInfo hit;
 
-	if(HitTest(pNMListView->ptAction, hit))
+	if (HitTest(pNMListView->ptAction, hit))
 	{
 		//First, try to navigate to the column
 		TryNavigate(hit.m_subitem);
-		::SendMessage(	GetParent()->GetSafeHwnd(), 
-				WM_QUICKLIST_CLICK, 
-				(WPARAM) GetSafeHwnd(), 
-				(LPARAM) &hit);
-	}	
+		::SendMessage(GetParent()->GetSafeHwnd(),
+			WM_QUICKLIST_CLICK,
+			(WPARAM)GetSafeHwnd(),
+			(LPARAM)&hit);
+	}
 
 	*pResult = 0;
 
@@ -1967,28 +1967,28 @@ BOOL CQuickList::OnClickEx(NMHDR* pNMHDR, LRESULT* pResult)
 }
 
 //On double click
-BOOL CQuickList::OnDblClickEx(NMHDR* pNMHDR, LRESULT* ) //pResult)
+BOOL CQuickList::OnDblClickEx(NMHDR* pNMHDR, LRESULT*) //pResult)
 {
 	NMLISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 
 	CQuickList::CListHitInfo hit;
 
-	if(HitTest(pNMListView->ptAction, hit))
+	if (HitTest(pNMListView->ptAction, hit))
 	{
 		TryNavigate(hit.m_subitem);
-		if(!::SendMessage(	GetParent()->GetSafeHwnd(), 
-				WM_QUICKLIST_DBLCLICK, 
-				(WPARAM) GetSafeHwnd(), 
-				(LPARAM) &hit)) {
+		if (!::SendMessage(GetParent()->GetSafeHwnd(),
+			WM_QUICKLIST_DBLCLICK,
+			(WPARAM)GetSafeHwnd(),
+			(LPARAM)&hit)) {
 
-			if(!hit.m_onButton)
-				EditSubItem(hit.m_item,hit.m_subitem,&pNMListView->ptAction);
+			if (!hit.m_onButton)
+				EditSubItem(hit.m_item, hit.m_subitem, &pNMListView->ptAction);
 		}
 	}
 	return FALSE;
 }
 
-void CQuickList::OnMouseMove(UINT nFlags, CPoint point) 
+void CQuickList::OnMouseMove(UINT nFlags, CPoint point)
 {
 	/*	If you run CQuickList on a WindowXP system
 		and using a manifest file and editing an item
@@ -2008,7 +2008,7 @@ void CQuickList::OnLvnHotTrack(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	/*	If you run CQuickList on a WindowXP system
 		and using a manifest file, the hot item
 		will be changed. This is not good.
-		To solve this, we handle the LVN_HOTTRACK message 
+		To solve this, we handle the LVN_HOTTRACK message
 		and return -1.
 
 		Sense OnMouseMove is also handled this function
@@ -2024,7 +2024,7 @@ void CQuickList::OnLvnItemChanging(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 	/*	If you run CQuickList on a WindowXP system
 		and using a manifest file, the hot item
 		will be changed. This is not good.
-		To solve this, we handle the LVN_HOTTRACK message 
+		To solve this, we handle the LVN_HOTTRACK message
 		and return -1.
 
 		Sense OnMouseMove is also handled this function
@@ -2034,17 +2034,17 @@ void CQuickList::OnLvnItemChanging(NMHDR * /*pNMHDR*/, LRESULT *pResult)
 }
 #endif
 
-void CQuickList::PreSubclassWindow() 
+void CQuickList::PreSubclassWindow()
 {
 #ifdef _DEBUG
 	//Doesn't have LVS_OWNERDATA?
-	if(!(GetStyle() & LVS_OWNERDATA))
+	if (!(GetStyle() & LVS_OWNERDATA))
 	{
 		::MessageBox(NULL, _T("ERROR : You must set the LVS_OWNERDATA style for your CQuickList in the resources"), _T("Error"), MB_OK);
 	}
 
 	//Have owner draw fixed?
-	if(GetStyle() & LVS_OWNERDRAWFIXED)
+	if (GetStyle() & LVS_OWNERDRAWFIXED)
 	{
 		//ModifyStyle(LVS_OWNERDRAWFIXED, 0, 0 );
 		//::MessageBox(NULL, _T("ERROR : You should NOT set the LVS_OWNERDRAWFIXED style for your CQuickList in the resources"), _T("Error"), MB_OK);
@@ -2053,24 +2053,24 @@ void CQuickList::PreSubclassWindow()
 	//Not in report view?
 	DWORD style = GetStyle()&LVS_TYPEMASK;
 
-	if(style != LVS_REPORT)
+	if (style != LVS_REPORT)
 	{
 		::MessageBox(NULL, _T("You should only use CQuickList in report view. Please change!"), _T("Why not report view?"), MB_OK);
 	}
 #endif
-	
-	if(m_bUseHeaderEx) {
+
+	if (m_bUseHeaderEx) {
 		SubclassHeader();
-		m_bUseHeaderEx=false;
+		m_bUseHeaderEx = false;
 		//  m_nTTAutopop=3200;
 		//	m_nTTInitial=64;
 		//  m_nTTReshow=32; //for thumblist
 
-		if(m_bHdrToolTip) {
+		if (m_bHdrToolTip) {
 			m_hdrToolTip.Create(this);
 			m_hdrToolTip.SetMaxTipWidth(500);
 			m_hdrToolTip.SetDelayTime(TTDT_AUTOPOP, m_nTTAutopop);
-			m_hdrToolTip.SetDelayTime(TTDT_INITIAL, m_nTTInitial+200);
+			m_hdrToolTip.SetDelayTime(TTDT_INITIAL, m_nTTInitial + 200);
 			m_hdrToolTip.SetDelayTime(TTDT_RESHOW, m_nTTReshow);
 			m_hdrToolTip.AddTool(&m_HeaderCtrl);
 		}
@@ -2080,16 +2080,16 @@ void CQuickList::PreSubclassWindow()
 
 #if 0
 //To handle the "right click on column header" message
-BOOL CQuickList::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
+BOOL CQuickList::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 {
 	// Credits!
 	// http://www.codeguru.com/Cpp/controls/listview/columns/article.php/c985
 
 	HD_NOTIFY	*pHDN = (HD_NOTIFY*)lParam;
 
-	LPNMHDR pNH = (LPNMHDR) lParam; 
+	LPNMHDR pNH = (LPNMHDR)lParam;
 	// wParam is zero for Header ctrl
-	if( wParam == 0 && pNH->code == NM_RCLICK )
+	if (wParam == 0 && pNH->code == NM_RCLICK)
 	{
 		// Right button was clicked on header
 		CPoint pt(GetMessagePos());
@@ -2099,12 +2099,12 @@ BOOL CQuickList::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 		CHeaderRightClick cr;
 		cr.m_column = -1;
 		cr.m_mousePos = pt;
-		
+
 		// Determine the column index
 		CRect rcCol;
-		for( int i=0; Header_GetItemRect(pHeader->m_hWnd, i, &rcCol); i++ )
+		for (int i = 0; Header_GetItemRect(pHeader->m_hWnd, i, &rcCol); i++)
 		{
-			if( rcCol.PtInRect( pt ) )
+			if (rcCol.PtInRect(pt))
 			{
 				cr.m_column = i;
 				break;
@@ -2115,13 +2115,13 @@ BOOL CQuickList::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 		ClientToScreen(&cr.m_mousePos);
 
 		//Notify parent
-		::SendMessage (	GetParent()->GetSafeHwnd(),
-						WM_QUICKLIST_HEADERRIGHTCLICK,
-						(WPARAM) GetSafeHwnd(), 
-						(LPARAM) &cr);
+		::SendMessage(GetParent()->GetSafeHwnd(),
+			WM_QUICKLIST_HEADERRIGHTCLICK,
+			(WPARAM)GetSafeHwnd(),
+			(LPARAM)&cr);
 	}
 
-	
+
 	return CListCtrl::OnNotify(wParam, lParam, pResult);
 }
 #endif
@@ -2134,7 +2134,7 @@ void CQuickList::OnKillFocus(CWnd* pNewWnd)
 		StopListBoxEdit(NULL);
 	}
 	*/
-	m_lastItem=m_lastCol=-1;
+	m_lastItem = m_lastCol = -1;
 }
 
 //------------------------------------------------------------------------
@@ -2146,56 +2146,56 @@ void CQuickList::InitFonts(double margin)
 {
 	m_Margin = margin;
 
-	LOGFONT lf = {0};
-	VERIFY(GetFont()->GetLogFont(&lf)!=0);
+	LOGFONT lf = { 0 };
+	VERIFY(GetFont()->GetLogFont(&lf) != 0);
 
-	if(m_pCellFont) {
+	if (m_pCellFont) {
 		VERIFY(m_pCellFont->DeleteObject());
 		delete m_pCellFont;
 		m_pCellFont = NULL;
 	}
 	m_pCellFont = new CFont;
-	VERIFY( m_pCellFont->CreateFontIndirect(&lf) );
+	VERIFY(m_pCellFont->CreateFontIndirect(&lf));
 
-	if(wOSVersion<0x0600) {
+	if (wOSVersion < 0x0600) {
 		lf.lfHeight = (int)(lf.lfHeight * m_Margin);
 		lf.lfWidth = (int)(lf.lfWidth * m_Margin);
-		if(m_pGridFont) {
+		if (m_pGridFont) {
 			VERIFY(m_pGridFont->DeleteObject());
 			delete m_pGridFont;
 		}
 		m_pGridFont = new CFont();
-		VERIFY( m_pGridFont->CreateFontIndirect(&lf) );
+		VERIFY(m_pGridFont->CreateFontIndirect(&lf));
 	}
 
-	if(GetToolTips()!=NULL && GetToolTips()->m_hWnd!=NULL)
+	if (GetToolTips() != NULL && GetToolTips()->m_hWnd != NULL)
 		GetToolTips()->SetFont(m_pCellFont);
 }
 
 void CQuickList::EnableHeaderEx()
 {
 	//Must be called after adding columns --
-	if(m_bUsingHeaderEx) {
+	if (m_bUsingHeaderEx) {
 		ASSERT(m_pCellFont);
-	    //ASSERT(m_pGridFont==m_HeaderCtrl.GetFont());
+		//ASSERT(m_pGridFont==m_HeaderCtrl.GetFont());
 		HDITEM hdItem;
 		hdItem.mask = HDI_FORMAT;
 		for (int i = 0; i < m_HeaderCtrl.GetItemCount(); i++) {
-			m_HeaderCtrl.GetItem(i,&hdItem);
+			m_HeaderCtrl.GetItem(i, &hdItem);
 			hdItem.fmt |= HDF_OWNERDRAW;
-			VERIFY(m_HeaderCtrl.SetItem(i,&hdItem));
+			VERIFY(m_HeaderCtrl.SetItem(i, &hdItem));
 		}
-		m_HeaderCtrl.m_pCellFont=m_pCellFont;
+		m_HeaderCtrl.m_pCellFont = m_pCellFont;
 	}
 }
 
 void CQuickList::InitHeaderStyle()
 {
 #ifdef _USE_THEMES
-	if(m_bUsingHeaderEx) {
+	if (m_bUsingHeaderEx) {
 		ASSERT(m_HeaderCtrl.m_hWnd);
-		if(!m_pCellFont) InitFonts(1.2); //m_pCellfont same as list, m_pGridFont larger
-		if(wOSVersion<0x0600) {
+		if (!m_pCellFont) InitFonts(1.2); //m_pCellfont same as list, m_pGridFont larger
+		if (wOSVersion < 0x0600) {
 			CListCtrl::SetFont(m_pGridFont); //necessary for XP gridlines to work!
 			m_HeaderCtrl.SetFont(m_pGridFont);
 		}
@@ -2206,48 +2206,48 @@ void CQuickList::InitHeaderStyle()
 	}
 	else {
 		ASSERT(!m_HeaderCtrl.m_hWnd);
-		if(m_pCellFont) {
+		if (m_pCellFont) {
 			GetHeaderCtrl()->SetFont(m_pCellFont);
 		}
 	}
 #else
 	ASSERT(m_bUsingHeaderEx && m_HeaderCtrl.m_hWnd);
-	if(!m_pCellFont) InitFonts(1.2); //m_pCellfont same as list, m_pGridFont larger
-	#if 1
+	if (!m_pCellFont) InitFonts(1.2); //m_pCellfont same as list, m_pGridFont larger
+#if 1
 	CListCtrl::SetFont(m_pCellFont);
 	m_HeaderCtrl.SetFont(m_pCellFont); //necessary for XP gridlines to work!
-	#else
+#else
 	CListCtrl::SetFont(m_pGridFont);
 	m_HeaderCtrl.SetFont(m_pGridFont); //necessary for XP gridlines to work!
-	#endif
 #endif
-	if(m_bHdrToolTip) {
+#endif
+	if (m_bHdrToolTip) {
 		CRect rect;
 		m_HeaderCtrl.GetClientRect(rect);
-		m_hdrHeight=rect.bottom-1;
+		m_hdrHeight = rect.bottom - 1;
 	}
 }
 
 void CQuickList::SetSortArrow(int colIndex, bool ascending)
 {
-	if(m_bUsingHeaderEx ) {
-		m_HeaderCtrl.SetSortImage(colIndex,ascending);
+	if (m_bUsingHeaderEx) {
+		m_HeaderCtrl.SetSortImage(colIndex, ascending);
 	}
 #ifdef _USE_THEMES
-	else if(wOSVersion>=0x0600) //dmck
+	else if (wOSVersion >= 0x0600) //dmck
 	{
-		CHeaderCtrl *phdr=GetHeaderCtrl();
-		for(int i=phdr->GetItemCount()-1; i>=0; i--)
+		CHeaderCtrl *phdr = GetHeaderCtrl();
+		for (int i = phdr->GetItemCount() - 1; i >= 0; i--)
 		{
-			HDITEM hditem = {0};
+			HDITEM hditem = { 0 };
 			hditem.mask = HDI_FORMAT;
-			VERIFY( phdr->GetItem( i, &hditem ) );
-			hditem.fmt &= ~(HDF_SORTDOWN|HDF_SORTUP);
+			VERIFY(phdr->GetItem(i, &hditem));
+			hditem.fmt &= ~(HDF_SORTDOWN | HDF_SORTUP);
 			if (i == colIndex)
 			{
 				hditem.fmt |= (ascending ? HDF_SORTDOWN : HDF_SORTUP);
 			}
-			VERIFY(phdr->SetItem( i, &hditem ));
+			VERIFY(phdr->SetItem(i, &hditem));
 		}
 	}
 #endif
@@ -2259,16 +2259,16 @@ void CQuickList::OnContextMenu(CWnd* pWnd, CPoint point)
 	//necessary?
 	//if( GetFocus() != this ) SetFocus();	// Force focus to finish editing
 
-	if (point.x==-1 && point.y==-1)
+	if (point.x == -1 && point.y == -1)
 	{
 		return;
 		// OBS! point is initialized to (-1,-1) if using SHIFT+F10 or VK_APPS
 		//OnContextMenuKeyboard(pWnd, point);
 	}
-	::SendMessage(GetParent()->GetSafeHwnd(), 
-					WM_QUICKLIST_CONTEXTMENU, 
-					(WPARAM) pWnd, 
-					(LPARAM) &point);
+	::SendMessage(GetParent()->GetSafeHwnd(),
+		WM_QUICKLIST_CONTEXTMENU,
+		(WPARAM)pWnd,
+		(LPARAM)&point);
 }
 
 /*
@@ -2296,9 +2296,9 @@ BOOL CQuickList::OnHeaderBeginDrag(UINT, NMHDR* pNMHDR, LRESULT* pResult)
 	NMHEADER* pNMH = (NMHEADER*)pNMHDR;
 	//if( GetFocus() != this ) SetFocus();	// Force focus to finish editing
 
-	if(pNMH->iItem<1) {
+	if (pNMH->iItem < 1) {
 		//don't handle label col automatically?
-		return *pResult=TRUE;
+		return *pResult = TRUE;
 	}
 	return FALSE;
 }
@@ -2312,7 +2312,7 @@ BOOL CQuickList::OnHeaderEndDrag(UINT, NMHDR* pNMHDR, LRESULT* pResult)
 
 	if (pNMH->pitem->mask & HDI_ORDER)
 	{
-		if(pNMH->pitem->iOrder<1 || pNMH->iItem<1) {
+		if (pNMH->pitem->iOrder < 1 || pNMH->iItem < 1) {
 			*pResult = TRUE;
 			return TRUE;
 		}
@@ -2326,7 +2326,7 @@ BOOL CQuickList::OnHeaderEndDrag(UINT, NMHDR* pNMHDR, LRESULT* pResult)
 		{
 			if (IsColumnVisible(pOrderArray[i]))
 			{
-                pNMH->pitem->iOrder = max(pNMH->pitem->iOrder,i);
+				pNMH->pitem->iOrder = max(pNMH->pitem->iOrder,i);
 				break;
 			}
 		}
@@ -2346,49 +2346,49 @@ BOOL CQuickList::OnHeaderDividerDblClick(UINT, NMHDR* pNMHDR, LRESULT* pResult)
 
 void CQuickList::ResizeColumn(int nCol)
 {
-	if(nCol<GetHeaderCtrl()->GetItemCount()-1) {
+	if (nCol < GetHeaderCtrl()->GetItemCount() - 1) {
 		SetRedraw(0);
-		if(wOSVersion<0x0600 && m_pCellFont) {
-			ASSERT(m_pGridFont==GetFont());
+		if (wOSVersion < 0x0600 && m_pCellFont) {
+			ASSERT(m_pGridFont == GetFont());
 			SetFont(m_pCellFont);
 			//GetHeaderCtrl()->SetFont(m_pCellFont); unnecessary, assumes header font the same!
 		}
-		SetColumnWidth(nCol,LVSCW_AUTOSIZE_USEHEADER);
-		if(nCol && m_pAdjustWidth) {
-			m_pAdjustWidth(GetParent(),nCol);
+		SetColumnWidth(nCol, LVSCW_AUTOSIZE_USEHEADER);
+		if (nCol && m_pAdjustWidth) {
+			m_pAdjustWidth(GetParent(), nCol);
 			RedrawFocusItem(); //fix painting glitch!
 		}
-		if(wOSVersion<0x0600 && m_pGridFont) {
+		if (wOSVersion < 0x0600 && m_pGridFont) {
 			SetFont(m_pGridFont);
 		}
 		SetRedraw(1);
 	}
-	else SetColumnWidth(nCol,m_iLastColWidth); 
+	else SetColumnWidth(nCol, m_iLastColWidth);
 }
 
 void CQuickList::OnDestroy()
 {
-   //unsubclass edit and list box before destruction
-	if(m_HeaderCtrl.GetSafeHwnd() != NULL) {
-	   ASSERT(m_bUsingHeaderEx);
-       m_HeaderCtrl.UnsubclassWindow();
-	   ASSERT(!m_HeaderCtrl.m_hWnd);
+	//unsubclass edit and list box before destruction
+	if (m_HeaderCtrl.GetSafeHwnd() != NULL) {
+		ASSERT(m_bUsingHeaderEx);
+		m_HeaderCtrl.UnsubclassWindow();
+		ASSERT(!m_HeaderCtrl.m_hWnd);
 	}
-   CListCtrl::OnDestroy();
+	CListCtrl::OnDestroy();
 }
 
 void CQuickList::SubclassHeader()
 {
 #ifdef _USE_THEMESXXX
-//#ifdef _USE_THEMES
-	//Called in PreSubclassWindow() and CDBGridDlg::OnThemeChanged
-	bool bUsingVisualStyles=EnableVisualStyles(m_hWnd,true);
-	if(wOSVersion>=0x0600 && bUsingVisualStyles) {
-		if(m_bUsingHeaderEx) {
+	//#ifdef _USE_THEMES
+		//Called in PreSubclassWindow() and CDBGridDlg::OnThemeChanged
+	bool bUsingVisualStyles = EnableVisualStyles(m_hWnd, true);
+	if (wOSVersion >= 0x0600 && bUsingVisualStyles) {
+		if (m_bUsingHeaderEx) {
 			//Moving back to Vista theme from classic theme --
 			m_HeaderCtrl.UnsubclassWindow();
 			ASSERT(!m_HeaderCtrl.m_hWnd);
-			m_bUsingHeaderEx=false;
+			m_bUsingHeaderEx = false;
 			//GetHeaderCtrl()->SetFont(m_pCellFont);
 			//GetHeaderCtrl()->RedrawWindow();
 			//GetHeaderCtrl()->Invalidate();
@@ -2396,22 +2396,22 @@ void CQuickList::SubclassHeader()
 			//bChg=true;
 		}
 	}
-	else 
+	else
 #else
-	bool bUsingVisualStyles=EnableVisualStyles(m_hWnd,true);
+	bool bUsingVisualStyles = EnableVisualStyles(m_hWnd, true);
 #ifdef _DEBUG
-	if(!bUsingVisualStyles)
+	if (!bUsingVisualStyles)
 	{
 		CMsgBox("Not using visual styles!");
 	}
 #endif
 	//ASSERT(bUsingVisualStyles); //false for XP
 #endif	
-	if(!m_bUsingHeaderEx) {
+	if (!m_bUsingHeaderEx) {
 		//Moving to classic theme (custom header) OR starting with it from PreSubclassWindow() --
 		ASSERT(!m_HeaderCtrl.m_hWnd);
 		VERIFY(m_HeaderCtrl.SubclassWindow(GetHeaderCtrl()->m_hWnd));
-		m_bUsingHeaderEx=true;
+		m_bUsingHeaderEx = true;
 		//m_HeaderCtrl.SetFont(m_pGridFont);
 		//m_HeaderCtrl.RedrawWindow();
 		//m_HeaderCtrl.Invalidate();
@@ -2425,7 +2425,7 @@ void CQuickList::CellHitTest(const CPoint& pt, int& nRow, int& nCol) const
 	nRow = -1;
 	nCol = -1;
 
-	LVHITTESTINFO lvhti = {0};
+	LVHITTESTINFO lvhti = { 0 };
 	lvhti.pt = pt;
 	nRow = ListView_SubItemHitTest(m_hWnd, &lvhti);	// SubItemHitTest is non-const
 	nCol = lvhti.iSubItem;
@@ -2433,7 +2433,7 @@ void CQuickList::CellHitTest(const CPoint& pt, int& nRow, int& nCol) const
 		nRow = -1;
 }
 
-LRESULT CQuickList::OnTabletQuerySystemGestureStatus(WPARAM,LPARAM)
+LRESULT CQuickList::OnTabletQuerySystemGestureStatus(WPARAM, LPARAM)
 {
-   return 0;
+	return 0;
 }

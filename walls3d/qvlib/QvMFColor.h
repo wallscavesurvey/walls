@@ -4,9 +4,9 @@
 #include "QvSubField.h"
 
 class QvMFColor : public QvMField {
-  public:
-    float *values;			// 3 per color
-    QV_MFIELD_HEADER(QvMFColor);
+public:
+	float *values;			// 3 per color
+	QV_MFIELD_HEADER(QvMFColor);
 };
 
 #endif /* _QV_MF_COLOR_ */

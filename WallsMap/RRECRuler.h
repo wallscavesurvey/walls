@@ -1,23 +1,23 @@
 #ifndef _RRECRULER_H_
 #define _RRECRULER_H_
 
-class CRRECRuler : public CWnd 
+class CRRECRuler : public CWnd
 {
 
 public:
-// Construction/creation/destruction
+	// Construction/creation/destruction
 	CRRECRuler();
 	virtual ~CRRECRuler();
-	virtual BOOL Create( const CRect& rect, CWnd* parent, UINT id );
+	virtual BOOL Create(const CRect& rect, CWnd* parent, UINT id);
 
-// Implementation
-	void	SetMode( int mode );
+	// Implementation
+	void	SetMode(int mode);
 	int		GetMode() const;
-	void	SetMargin( int margin );
-	void	SetTabStops( const CDWordArray& arr );
+	void	SetMargin(int margin);
+	void	SetTabStops(const CDWordArray& arr);
 
 protected:
-// Message handlers
+	// Message handlers
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
@@ -26,7 +26,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-// Internal data
+	// Internal data
 	int m_margin;		// Left margin of ruler in pixels
 	int m_mode;			// MODE_INCH/MODE_METRIC, what units 
 						// to use for the ruler measure.

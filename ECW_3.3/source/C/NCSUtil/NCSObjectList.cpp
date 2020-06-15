@@ -2,20 +2,20 @@
 ** Copyright 1999 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:   	CNCSObjectList.cpp
 ** CREATED:	Wed Oct 18 2000
 ** AUTHOR: 	Jeff Pudwell
 ** PURPOSE:	Class to store lists of Objects.
-**		
+**
 ** EDITS:
 *******************************************************/
 
@@ -52,7 +52,7 @@ void CNCSObjectList::DeleteNode(NCSObjectListNode *pNode)
 
 INT32 CNCSObjectList::Add(char *pStringID, void *pObject)
 {
-	INT32 nIndex=NCS_OBJECT_BAD_NODE;
+	INT32 nIndex = NCS_OBJECT_BAD_NODE;
 
 	if (!pStringID || !pObject)
 		return nIndex;
@@ -80,7 +80,7 @@ INT32 CNCSObjectList::Add(char *pStringID, void *pObject)
 		if (pNode)
 		{
 			m_nNodes++;
-			nIndex = pNode->index = (m_pLastNode->index+1);
+			nIndex = pNode->index = (m_pLastNode->index + 1);
 			pNode->pObject = pObject;
 			pNode->pStringID = NCSStrDup(pStringID);
 			pNode->next = NULL;
@@ -179,7 +179,7 @@ void * CNCSObjectList::RemoveNode(NCSObjectListNode *pNode)
 	else if (!pPrev && pNext)	//node at head of the list, and > 1 nodes in list
 	{
 		pNext->prev = NULL;
-		m_pList		= pNext;
+		m_pList = pNext;
 		m_pCurrNode = pNext;
 	}
 	else if (!pPrev && !pNext)	//only node in the list
@@ -243,7 +243,7 @@ BOOLEAN CNCSObjectList::Move(INT32 nSrcIndex, INT32 nDestIndex)
 		pNewNode->pStringID = NCSStrDup(pDelNode->pStringID);
 		pNewNode->pObject = pDelNode->pObject;
 		pNewNode->prev = pNewNode->next = NULL;
-		
+
 		if (pInsert == NULL)				//has to be the last node in list
 		{
 			pNewNode->next = NULL;
@@ -313,7 +313,7 @@ BOOLEAN CNCSObjectList::isEmpty()
 {
 	if (m_nNodes == NCS_OBJECT_BAD_NODE) //or (m_pList == NULL)
 		return TRUE;
-	else 
+	else
 		return FALSE;
 }
 

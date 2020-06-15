@@ -2,13 +2,13 @@
 ** Copyright 1999 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:   	NCSUtil\malloc.c
@@ -48,8 +48,8 @@
 #ifdef MACINTOSH
 #include <stdio.h>
 
-static void *MACmalloc( size_t cb );
-static void *MACcalloc( size_t c, size_t cb );
+static void *MACmalloc(size_t cb);
+static void *MACcalloc(size_t c, size_t cb);
 static void *MACrealloc(void *pPtr, size_t cb, BOOLEAN bClear);
 static void MACfree(void *pPtr);
 
@@ -73,71 +73,71 @@ static DmOpenRef refPalmHeap = 0;
 void NCSMallocInit(void)
 {
 #ifdef NOTDEF
-PALM
-	if(DmCreateDatabase(nPalmHeapCardId, "NCS DynamicHeap", NCS_PALM_CREATOR_ID, 'NCSH', FALSE) == errNone) {
-		if(idPalmHeap = DmFindDatabase(nPalmHeapCardId, "NCS DynamicHeap")) {
-			refPalmHeap = DmOpenDatabase(nPalmHeapCardId, idPalmHeap, dmModeReadWrite);
+	PALM
+		if (DmCreateDatabase(nPalmHeapCardId, "NCS DynamicHeap", NCS_PALM_CREATOR_ID, 'NCSH', FALSE) == errNone) {
+			if (idPalmHeap = DmFindDatabase(nPalmHeapCardId, "NCS DynamicHeap")) {
+				refPalmHeap = DmOpenDatabase(nPalmHeapCardId, idPalmHeap, dmModeReadWrite);
+			}
 		}
-	}
 #endif
 }
 
 void NCSMallocFini(void)
 {
 #ifdef PALM
-	if(refPalmHeap != 0) {
+	if (refPalmHeap != 0) {
 		DmCloseDatabase(refPalmHeap);
 	}
-	if(idPalmHeap) {
+	if (idPalmHeap) {
 		DmDeleteDatabase(nPalmHeapCardId, idPalmHeap);
 	}
 #endif
 }
 
 #ifdef MACINTOSH  //[05]
-void *vmalloc( size_t cb )
+void *vmalloc(size_t cb)
+{
+	void	*p = malloc(cb);
+	if (!p)
 	{
-	void	*p = malloc( cb );
-	if(!p)
-		{
 		//
 		//	Out of Memory --
 		//
-		printf( "Out of Memory\n");	// remove and handle error better here
-		CompactMem( cb );
-		PurgeMem( cb );
-		p = malloc( cb );
-		if(!p)
-			{
+		printf("Out of Memory\n");	// remove and handle error better here
+		CompactMem(cb);
+		PurgeMem(cb);
+		p = malloc(cb);
+		if (!p)
+		{
 			//	worse case exit
-			printf( "Out of Memory 2\n");
+			printf("Out of Memory 2\n");
 			//ExitToShell();	// nothing we can do!
 			return NULL;
-			}
 		}
-	return p;
 	}
-void *vcalloc( size_t c, size_t cb )
+	return p;
+}
+void *vcalloc(size_t c, size_t cb)
+{
+	void	*p = calloc(c, cb);
+	if (!p)
 	{
-	void	*p = calloc( c, cb );
-	if(!p)
-		{
 		//
 		//	Out of Memory --
 		//
 		//printf( "Out of Memory\n");	// remove and handle error better here
-		CompactMem( cb*c );
-		PurgeMem( cb*c );
-		p = calloc( c, cb );
-		if(!p)
-			{
+		CompactMem(cb*c);
+		PurgeMem(cb*c);
+		p = calloc(c, cb);
+		if (!p)
+		{
 			//	worse case exit
 			//ExitToShell();	// nothing we can do!
 			return NULL;
-			}
 		}
-	return p;
 	}
+	return p;
+}
 #endif
 
 /*
@@ -145,10 +145,10 @@ void *vcalloc( size_t c, size_t cb )
 */
 void *NCSMalloc(UINT32 iSize, BOOLEAN bClear)
 {
-	void *pMem=NULL;
+	void *pMem = NULL;
 
-	if(iSize > 0) {
-		if(bClear) {
+	if (iSize > 0) {
+		if (bClear) {
 			/*
 			** Return a calloc'd block.
 			*/
@@ -156,46 +156,49 @@ void *NCSMalloc(UINT32 iSize, BOOLEAN bClear)
 			return(MACcalloc(iSize, 1));
 #elif defined PALM
 			void *p = (void*)NULL;
-			if(refPalmHeap != 0) {
+			if (refPalmHeap != 0) {
 				MemHandle h;
 				UInt16 Index = dmMaxRecordIndex;
 				PalmHeapHeader *pHdr;
-				
+
 				h = DmNewRecord(refPalmHeap, &Index, iSize + sizeof(PalmHeapHeader));
-				if(h != 0) {
+				if (h != 0) {
 					pHdr = (PalmHeapHeader*)MemHandleLock(h);
-					if(pHdr != NULL) {
+					if (pHdr != NULL) {
 						pHdr->hRecord = h;
 						pHdr->Index = Index;
-						
+
 						p = ((UINT8*)pHdr) + sizeof(PalmHeapHeader);
-					} 
+					}
 				}
-			} else {
+			}
+			else {
 				p = MemPtrNew(iSize);
 			}
-			if(p) {
+			if (p) {
 				MemSet(p, (Int32)iSize, 0);
-			} else {
+			}
+			else {
 				NCSGetLastErrorTextMsgBox(NCS_COULDNT_ALLOC_MEMORY, 0);
 			}
 			return(p);
 
 #elif defined _WIN32_WCE && (_WIN32_WCE <= 211)
 			void *p = malloc(iSize);
-			if(p) {
+			if (p) {
 				memset(p, 0, iSize);
 			}
 			return(p);
 #else
 			pMem = ((void*)calloc(1, iSize));
-			if( pMem ) return pMem;
+			if (pMem) return pMem;
 #ifdef NCSMALLOCLOG
 			else NCSLog(LOG_LOW, "NCSMalloc: calloc failed (%d bytes).", iSize); //[06]
 #endif //NCSMALLOCLOG
 
 #endif	/* MACINTOSH */
-		} else {
+		}
+		else {
 			/*
 			** Return a malloc'd block.
 			*/
@@ -203,29 +206,30 @@ void *NCSMalloc(UINT32 iSize, BOOLEAN bClear)
 			return(MACmalloc(iSize));
 #elif defined PALM
 			void *p;
-			if(refPalmHeap != 0) {
+			if (refPalmHeap != 0) {
 				MemHandle h;
 				UInt16 Index = dmMaxRecordIndex;
-				
+
 				h = DmNewRecord(refPalmHeap, &Index, iSize + sizeof(PalmHeapHeader));
-				if(h != 0) {
+				if (h != 0) {
 					p = MemHandleLock(h);
-					
-					if(p != NULL) {
+
+					if (p != NULL) {
 						((PalmHeapHeader*)p)->hRecord = h;
 						((PalmHeapHeader*)p)->Index = Index;
-						
+
 						(UInt8*)p += sizeof(PalmHeapHeader);
-					} 
+					}
 				}
-			} else {
+			}
+			else {
 				p = MemPtrNew(iSize);
 			}
 			return(p);
 #else	/* PALM */
 
 			pMem = ((void*)malloc(iSize));
-			if( pMem ) return pMem;
+			if (pMem) return pMem;
 #ifdef NCSMALLOCLOG
 			else NCSLog(LOG_LOW, "NCSMalloc: malloc failed (%d bytes).", iSize); //[06]
 #endif //NCSMALLOCLOG
@@ -237,13 +241,13 @@ void *NCSMalloc(UINT32 iSize, BOOLEAN bClear)
 }
 
 /*
-** Realloc a chunk of memory to given size, clear extra if requested and lager, 
+** Realloc a chunk of memory to given size, clear extra if requested and lager,
 ** return new pointer.  If pPtr is NULL, Malloc a new chunk.
 */
 void *NCSRealloc(void *pPtr, UINT32 iSize, BOOLEAN bClear)
 {
-	if(pPtr) {
-		if(iSize > 0) {
+	if (pPtr) {
+		if (iSize > 0) {
 			UINT32 iOldSize;
 			void *pNew;
 			/* Get the old size */
@@ -256,23 +260,25 @@ void *NCSRealloc(void *pPtr, UINT32 iSize, BOOLEAN bClear)
 			/* realloc block */
 			pNew = realloc(pPtr, iSize);
 #ifdef NCSMALLOCLOG
-			if( !pNew  ) NCSLog(LOG_LOW, "NCSRealloc: realloc failed (%d bytes).", iSize); //[06]
+			if (!pNew) NCSLog(LOG_LOW, "NCSRealloc: realloc failed (%d bytes).", iSize); //[06]
 #endif //NCSMALLOCLOG
 
 			/* if realloc ok, clear end of new block if bigger than old block */
-			if(pNew && bClear && (iSize > iOldSize)) {
+			if (pNew && bClear && (iSize > iOldSize)) {
 				memset((UINT8*)pNew + iOldSize, 0, iSize - iOldSize);
 			}
 			return(pNew);
-		} else {
+		}
+		else {
 			NCSFree(pPtr);
 		}
-	} else {
+	}
+	else {
 		/* NCSMalloc() a block */
-		void *pMem=NULL;
+		void *pMem = NULL;
 		pMem = ((void*)malloc(iSize));
 #ifdef NCSMALLOCLOG
-		if( !pMem ) NCSLog(LOG_LOW, "NCSMalloc: malloc failed (%d bytes).", iSize); //[06]
+		if (!pMem) NCSLog(LOG_LOW, "NCSMalloc: malloc failed (%d bytes).", iSize); //[06]
 #endif //NCSMALLOCLOG
 		return(pMem);
 	}
@@ -284,22 +290,23 @@ void *NCSRealloc(void *pPtr, UINT32 iSize, BOOLEAN bClear)
 */
 void NCSFree(void *pPtr)
 {
-	if(pPtr) {
+	if (pPtr) {
 #ifdef MACINTOSH
 		MACfree(pPtr);
 #elif defined PALM
-		if(refPalmHeap != 0) {
+		if (refPalmHeap != 0) {
 			MemHandle h;
 			UInt16 Index;
-				
+
 			(UInt8*)pPtr -= sizeof(PalmHeapHeader);
-			
+
 			h = ((PalmHeapHeader*)pPtr)->hRecord;
 			Index = ((PalmHeapHeader*)pPtr)->Index;
-		
+
 			MemHandleUnlock(h);
-			DmRemoveRecord(refPalmHeap, Index); 		
-		} else {
+			DmRemoveRecord(refPalmHeap, Index);
+		}
+		else {
 			MemPtrFree(pPtr);
 		}
 #else	/* PALM */
@@ -315,13 +322,13 @@ INT32 NCSPhysicalMemorySize(void)
 {
 #ifdef WIN32
 	INT64 nTotalPhysicalMemory = 0;
-	
+
 #ifndef _WIN32_WCE
 	HMODULE hLib = LoadLibraryA("kernel32.dll");
-	if(hLib) {
-		FARPROC pProc = GetProcAddress(hLib,"GlobalMemoryStatusEx");
+	if (hLib) {
+		FARPROC pProc = GetProcAddress(hLib, "GlobalMemoryStatusEx");
 
-		if(pProc) {
+		if (pProc) {
 			MEMORYSTATUSEX MemoryStatus;
 			MemoryStatus.dwLength = sizeof(MEMORYSTATUSEX);
 			pProc(&MemoryStatus);
@@ -330,7 +337,7 @@ INT32 NCSPhysicalMemorySize(void)
 		FreeLibrary(hLib);
 	}
 #endif // _WIN32_WCE
-	if(nTotalPhysicalMemory == 0) {
+	if (nTotalPhysicalMemory == 0) {
 		MEMORYSTATUS MemoryStatus;
 		MemoryStatus.dwLength = sizeof(MEMORYSTATUS);
 		GlobalMemoryStatus(&MemoryStatus);
@@ -340,14 +347,15 @@ INT32 NCSPhysicalMemorySize(void)
 		//Can't extend this function to return INT64 due to backwards compatibility concerns
 		nTotalPhysicalMemory = MemoryStatus.dwTotalPhys;
 	}
-	if(nTotalPhysicalMemory % (4 * ONE_MEG)) {
+	if (nTotalPhysicalMemory % (4 * ONE_MEG)) {
 		nTotalPhysicalMemory /= (4 * ONE_MEG);
 		nTotalPhysicalMemory++;
-	} else {
+	}
+	else {
 		nTotalPhysicalMemory /= (4 * ONE_MEG);
 	}
 	nTotalPhysicalMemory *= (4 * ONE_MEG);
-	nTotalPhysicalMemory = (nTotalPhysicalMemory >= (2 * ONE_GIG))?(2 * ONE_GIG - 1):nTotalPhysicalMemory;
+	nTotalPhysicalMemory = (nTotalPhysicalMemory >= (2 * ONE_GIG)) ? (2 * ONE_GIG - 1) : nTotalPhysicalMemory;
 
 	return (INT32)nTotalPhysicalMemory;
 	//end [06]
@@ -357,13 +365,13 @@ INT32 NCSPhysicalMemorySize(void)
 
 	INT32  contigiousSpace;
 	INT32	memorySpace;
-	
+
 	//	Don't ask me why this is named "Purge."  It doesn't purge anything.
 	//PurgeSpace(&memorySpace,&contigiousSpace);
-	
+
 	contigiousSpace = TempMaxMem(&memorySpace);
 
-	return (contigiousSpace/2) ;	
+	return (contigiousSpace / 2);
 
 #else	/* MACINTOSH */
 #ifdef IRIX
@@ -372,19 +380,19 @@ INT32 NCSPhysicalMemorySize(void)
 	UINT32 bytes = 0;
 
 	setinvent();
-	while(p_invent = getinvent()) {
-		if((p_invent->inv_class == INV_MEMORY) &&
-		   (p_invent->inv_type == INV_MAIN)) {
+	while (p_invent = getinvent()) {
+		if ((p_invent->inv_class == INV_MEMORY) &&
+			(p_invent->inv_type == INV_MAIN)) {
 			bytes += p_invent->inv_state;
 		}
 	}
 	endinvent();
 	bytes += 4096;  /* for Onyx */
 	return(bytes);
-	
+
 #else	/* IRIX */
 #ifdef SOLARIS
-	
+
 	return(sysconf(_SC_PHYS_PAGES) * sysconf(_SC_PAGESIZE));
 
 #else	/* SOLARIS */
@@ -392,7 +400,7 @@ INT32 NCSPhysicalMemorySize(void)
 #ifdef LINUX
 	return(sysconf(_SC_PHYS_PAGES) * sysconf(_SC_PAGESIZE));
 #elif defined MACOSX
-	return(128*1024*1024);
+	return(128 * 1024 * 1024);
 
 #else
 
@@ -401,12 +409,12 @@ INT32 NCSPhysicalMemorySize(void)
 #include <sys/pstat.h>
 
 	struct pst_static pss;
-	if (pstat_getstatic (&pss, sizeof(pss), 1, 0) >= 0) {
+	if (pstat_getstatic(&pss, sizeof(pss), 1, 0) >= 0) {
 
-//fprintf(stderr, "Memory : %lld\n", pss.physical_memory * pss.page_size);
+		//fprintf(stderr, "Memory : %lld\n", pss.physical_memory * pss.page_size);
 
-		if (pss.physical_memory > (LONG_MAX/2)/pss.page_size)
-			return LONG_MAX/2;
+		if (pss.physical_memory > (LONG_MAX / 2) / pss.page_size)
+			return LONG_MAX / 2;
 		else
 			return pss.physical_memory * pss.page_size;
 
@@ -416,19 +424,19 @@ INT32 NCSPhysicalMemorySize(void)
 #else
 
 #ifdef PALM
-	
+
 	UInt16 i;
 	UInt32 nTotalRam = 0;
-	
-	for(i = 0; i < MemNumCards(); i++) {
+
+	for (i = 0; i < MemNumCards(); i++) {
 		UInt32 nThisCardRam = 0;
-		 
-		if(MemCardInfo(i, 0, 0, 0, 0, 0, &nThisCardRam, 0) == errNone) {
+
+		if (MemCardInfo(i, 0, 0, 0, 0, 0, &nThisCardRam, 0) == errNone) {
 			nTotalRam += nThisCardRam;
-		} 
+		}
 	}
 	return((INT32)nTotalRam);
-	
+
 #else	/* PALM */
 #error - NCSPhysicalMemorySize()
 #endif	/* PALM */
@@ -450,17 +458,17 @@ INT32 NCSCellSize(NCSEcwCellType eCellType)
 {
 	switch (eCellType)
 	{
-		case NCSCT_UINT8: return 1;
-		case NCSCT_INT8: return 1;
-		case NCSCT_UINT16: return 2;
-		case NCSCT_INT16: return 2;
-		case NCSCT_UINT32: return 4;
-		case NCSCT_INT32: return 4;
-		case NCSCT_IEEE4: return 4;
-		case NCSCT_UINT64: return 8;
-		case NCSCT_INT64: return 8;
-		case NCSCT_IEEE8: return 8;
-		default: return 0;
+	case NCSCT_UINT8: return 1;
+	case NCSCT_INT8: return 1;
+	case NCSCT_UINT16: return 2;
+	case NCSCT_INT16: return 2;
+	case NCSCT_UINT32: return 4;
+	case NCSCT_INT32: return 4;
+	case NCSCT_IEEE4: return 4;
+	case NCSCT_UINT64: return 8;
+	case NCSCT_INT64: return 8;
+	case NCSCT_IEEE8: return 8;
+	default: return 0;
 	}
 }
 
@@ -469,8 +477,8 @@ INT32 NCSCellSize(NCSEcwCellType eCellType)
 ** Map SHM
 */
 NCSSHMInfo *NCSMapSHM(UINT64 nMapSize,
-  					  BOOLEAN bCreateUnique,
-					  char *pMapName)
+	BOOLEAN bCreateUnique,
+	char *pMapName)
 {
 #ifdef WIN32
 	HANDLE hSize = NULL;
@@ -487,91 +495,92 @@ NCSSHMInfo *NCSMapSHM(UINT64 nMapSize,
 
 #ifdef WIN32
 	hSize = CreateFileMapping(INVALID_HANDLE_VALUE,
-							  (LPSECURITY_ATTRIBUTES)NULL,
-							  (DWORD)PAGE_READWRITE|SEC_COMMIT,
-							  (DWORD)0,
-							  (DWORD)sizeof(UINT64),
-							  (LPCTSTR)szSizeName);
+		(LPSECURITY_ATTRIBUTES)NULL,
+		(DWORD)PAGE_READWRITE | SEC_COMMIT,
+		(DWORD)0,
+		(DWORD)sizeof(UINT64),
+		(LPCTSTR)szSizeName);
 #else
-	hSize = CreateFileMapping(INVALID_HANDLE_VALUE,	
-							  (LPSECURITY_ATTRIBUTES)NULL,
-							  (DWORD)PAGE_READWRITE|SEC_COMMIT,
-							  (DWORD)0,
-							  (DWORD)sizeof(UINT64),
-							  (unsigned short *)szSizeName);	/**[02]**/
+	hSize = CreateFileMapping(INVALID_HANDLE_VALUE,
+		(LPSECURITY_ATTRIBUTES)NULL,
+		(DWORD)PAGE_READWRITE | SEC_COMMIT,
+		(DWORD)0,
+		(DWORD)sizeof(UINT64),
+		(unsigned short *)szSizeName);	/**[02]**/
 #endif
-	if(hSize) {
+	if (hSize) {
 		UINT64 *pSize;
 		BOOLEAN bExists = FALSE;
 
-		if(GetLastError() == ERROR_ALREADY_EXISTS) {
+		if (GetLastError() == ERROR_ALREADY_EXISTS) {
 			bExists = TRUE;
 		}
 
-		if(bCreateUnique && bExists) {
+		if (bCreateUnique && bExists) {
 			CloseHandle(hSize);
 			return((NCSSHMInfo*)NULL);
 		}
-	
-		pSize = (UINT64*)MapViewOfFile(hSize, 
-									   FILE_MAP_ALL_ACCESS,
-									   0, 0, 0);
-		if(pSize) {
+
+		pSize = (UINT64*)MapViewOfFile(hSize,
+			FILE_MAP_ALL_ACCESS,
+			0, 0, 0);
+		if (pSize) {
 			HANDLE hMem;
 			DWORD dwError;
 
-			if(bExists) {
+			if (bExists) {
 				/* Already mapped, get size of SHM */
 				nMapSize = *pSize;
-			} else {
+			}
+			else {
 				/* Not mapped, set size of SHM */
 				*pSize = nMapSize;
 			}
 			UnmapViewOfFile(pSize);
 
-			if(nMapSize != 0) {
+			if (nMapSize != 0) {
 #ifdef WIN32
 				hMem = CreateFileMapping(INVALID_HANDLE_VALUE,
-										 (LPSECURITY_ATTRIBUTES)NULL,
-										 (DWORD)PAGE_READWRITE|SEC_COMMIT,
-										 (DWORD)(nMapSize >> 32),   
-										 (DWORD)(nMapSize & 0x00000000ffffffff),
-										 (LPCTSTR)szName);
+					(LPSECURITY_ATTRIBUTES)NULL,
+					(DWORD)PAGE_READWRITE | SEC_COMMIT,
+					(DWORD)(nMapSize >> 32),
+					(DWORD)(nMapSize & 0x00000000ffffffff),
+					(LPCTSTR)szName);
 #else
 				hMem = CreateFileMapping(INVALID_HANDLE_VALUE,
-										 (LPSECURITY_ATTRIBUTES)NULL,
-										 (DWORD)PAGE_READWRITE|SEC_COMMIT,
-										 (DWORD)(nMapSize >> 32),   
-										 (DWORD)(nMapSize & 0x00000000ffffffff),
-										 (unsigned short *)szName);	/**[02]**/
+					(LPSECURITY_ATTRIBUTES)NULL,
+					(DWORD)PAGE_READWRITE | SEC_COMMIT,
+					(DWORD)(nMapSize >> 32),
+					(DWORD)(nMapSize & 0x00000000ffffffff),
+					(unsigned short *)szName);	/**[02]**/
 #endif
 				dwError = GetLastError();
-				
-				if(dwError == ERROR_ALREADY_EXISTS) {
+
+				if (dwError == ERROR_ALREADY_EXISTS) {
 					bExists = TRUE;
 				}
-				if(bCreateUnique && bExists) {
+				if (bCreateUnique && bExists) {
 					CloseHandle(hSize);
 					CloseHandle(hMem);
 					return((NCSSHMInfo*)NULL);
 				}
-				if(hMem) {
+				if (hMem) {
 					void *pData;
-				
-					pData = MapViewOfFile(hMem, 
-										  FILE_MAP_ALL_ACCESS,
-										  0, 0, 0);
 
-					if(pData) {
+					pData = MapViewOfFile(hMem,
+						FILE_MAP_ALL_ACCESS,
+						0, 0, 0);
+
+					if (pData) {
 						NCSSHMInfo *pInfo;
-		
+
 						pInfo = NCSMalloc(sizeof(NCSSHMInfo), TRUE);
 
-						if(!bExists) {
+						if (!bExists) {
 							/* Clear SHM */
 							memset(pData, 0, (UINT32)(nMapSize & 0x00000000ffffffff));
 						}
-						if(pInfo) {
+						if (pInfo) {
 							FARPROC pProc = NULL;
 							HANDLE hLib = NULL;
 
@@ -580,41 +589,41 @@ NCSSHMInfo *NCSMapSHM(UINT64 nMapSize,
 							pInfo->pData = pData;
 							pInfo->nSize = nMapSize;
 
-							{					
-							//[01] Have to test to make sure that we are not running on 95
-							//if not call the Set Security Info.
-							if(NCSGetPlatform() == NCS_WINDOWS_NT) {	/**[04]**/
+							{
+								//[01] Have to test to make sure that we are not running on 95
+								//if not call the Set Security Info.
+								if (NCSGetPlatform() == NCS_WINDOWS_NT) {	/**[04]**/
 #if !defined(_WIN32_WCE)
-								hLib = LoadLibraryA("advapi32.dll");
+									hLib = LoadLibraryA("advapi32.dll");
 
-								if(hLib)
-									pProc = GetProcAddress(hLib,"SetSecurityInfo");
+									if (hLib)
+										pProc = GetProcAddress(hLib, "SetSecurityInfo");
 
-								if(pProc)
-								{
-									/* change the discretionary access control list to allow inetinfo and ncsservergui process to access */
-									pProc(hMem, 
+									if (pProc)
+									{
+										/* change the discretionary access control list to allow inetinfo and ncsservergui process to access */
+										pProc(hMem,
 											SE_KERNEL_OBJECT,
 											DACL_SECURITY_INFORMATION,
 											NULL,
 											NULL,
 											NULL,	/* this is the DACL - NULL means all access for all */
 											NULL);
-									pProc(hSize, 
+										pProc(hSize,
 											SE_KERNEL_OBJECT,
 											DACL_SECURITY_INFORMATION,
 											NULL,
 											NULL,
 											NULL,	/* this is the DACL - NULL means all access for all */
 											NULL);
+									}
+
+									if (hLib)
+										FreeLibrary(hLib);
+#endif
 								}
 
-								if(hLib)
-									FreeLibrary(hLib);
-#endif
-							}
-
-						  }	/**[03]**/
+							}	/**[03]**/
 
 							return(pInfo);
 						}
@@ -623,18 +632,18 @@ NCSSHMInfo *NCSMapSHM(UINT64 nMapSize,
 					CloseHandle(hMem);
 				}
 			}
-		} 
+		}
 		CloseHandle(hSize);
 	}
-	
+
 #else	/* WIN32 */
 
 	NCSSHMInfo *pInfo = (NCSSHMInfo*)NULL;
-		
-	if(NULL != (pInfo = (NCSSHMInfo *)NCSMalloc(sizeof(NCSSHMInfo), TRUE))) {
+
+	if (NULL != (pInfo = (NCSSHMInfo *)NCSMalloc(sizeof(NCSSHMInfo), TRUE))) {
 		pInfo->nSize = nMapSize;
 
-		if(NULL != (pInfo->pData = NCSMalloc(nMapSize, TRUE))) {
+		if (NULL != (pInfo->pData = NCSMalloc(nMapSize, TRUE))) {
 			return(pInfo);
 		}
 		NCSFree(pInfo);
@@ -649,23 +658,23 @@ NCSSHMInfo *NCSMapSHM(UINT64 nMapSize,
 */
 void NCSUnmapSHM(NCSSHMInfo *pInfo)
 {
-	if(pInfo) {
+	if (pInfo) {
 
 #ifdef WIN32
 
-		if(pInfo->pData) {
+		if (pInfo->pData) {
 			UnmapViewOfFile(pInfo->pData);
 		}
-		if(pInfo->hMem) {
+		if (pInfo->hMem) {
 			CloseHandle(pInfo->hMem);
 		}
-		if(pInfo->hSize) {
+		if (pInfo->hSize) {
 			CloseHandle(pInfo->hSize);
 		}
-		
+
 #else	/* WIN32 */
 
-		if(pInfo->pData) {
+		if (pInfo->pData) {
 			NCSFree(pInfo->pData);
 		}
 
@@ -675,71 +684,71 @@ void NCSUnmapSHM(NCSSHMInfo *pInfo)
 	}
 }
 
-/*	
+/*
 **	Bytes swapping routines
-*/	
+*/
 UINT16 NCSByteSwap16(UINT16 n)
 {
-    UINT16          res;
-    unsigned char   ch;
+	UINT16          res;
+	unsigned char   ch;
 
-    union
-        {
-        UINT16          a;
-        unsigned char   b[2];
-        } un;
+	union
+	{
+		UINT16          a;
+		unsigned char   b[2];
+	} un;
 
-    un.a = n;
-    ch = un.b[0];
-    un.b[0] = un.b[1];
-    un.b[1] = ch;
+	un.a = n;
+	ch = un.b[0];
+	un.b[0] = un.b[1];
+	un.b[1] = ch;
 
-    res = un.a;
-    return res;
+	res = un.a;
+	return res;
 }
 
 void NCSByteSwapRange16(UINT16 *pDst, UINT16 *pSrc, INT32 nValues)
 {
-	while(nValues-- > 0) {
-		*pDst++ = NCSByteSwap16( *pSrc++ );
+	while (nValues-- > 0) {
+		*pDst++ = NCSByteSwap16(*pSrc++);
 	}
 }
 
 UINT32 NCSByteSwap32(UINT32 n)
 {
-    UINT32  res;
-    UINT16  ch;
+	UINT32  res;
+	UINT16  ch;
 
-    union
-        {
-        UINT32   a;
-        UINT16   b[2];
-        } un;
+	union
+	{
+		UINT32   a;
+		UINT16   b[2];
+	} un;
 
-    //
-    //  Swap HI/LO word
-    //
-    un.a = n;
+	//
+	//  Swap HI/LO word
+	//
+	un.a = n;
 
-    ch = un.b[0];
-    un.b[0] = un.b[1];
-    un.b[1] = ch;
+	ch = un.b[0];
+	un.b[0] = un.b[1];
+	un.b[1] = ch;
 
-    //
-    //  Swap Bytes
-    //
-    un.b[0] = NCSByteSwap16(un.b[0]);
-    un.b[1] = NCSByteSwap16(un.b[1]);
+	//
+	//  Swap Bytes
+	//
+	un.b[0] = NCSByteSwap16(un.b[0]);
+	un.b[1] = NCSByteSwap16(un.b[1]);
 
 
-    res = un.a;
-    return res;
+	res = un.a;
+	return res;
 }
 
 void NCSByteSwapRange32(UINT32 *pDst, UINT32 *pSrc, INT32 nValues)
 {
-	while(nValues-- > 0) {
-		*pDst++ = NCSByteSwap32( *pSrc++ );
+	while (nValues-- > 0) {
+		*pDst++ = NCSByteSwap32(*pSrc++);
 	}
 }
 
@@ -754,10 +763,10 @@ UINT64 NCSByteSwap64(UINT64 n)
 
 	dataChanger.dataInt = n;
 
-	for(i = 0; i < 4; ++i) {
+	for (i = 0; i < 4; ++i) {
 		temp = dataChanger.dataChar[i];
-		dataChanger.dataChar[i] = dataChanger.dataChar[7-i];
-		dataChanger.dataChar[7-i] = temp;
+		dataChanger.dataChar[i] = dataChanger.dataChar[7 - i];
+		dataChanger.dataChar[7 - i] = temp;
 	}
 	return(dataChanger.dataInt);
 }
@@ -766,7 +775,7 @@ void NCSByteSwapRange64(UINT64 *pDst, UINT64 *pSrc, INT32 nValues)
 {
 	register int count;
 
-	for(count = 0; count < nValues; count++) {
+	for (count = 0; count < nValues; count++) {
 		*pDst++ = NCSByteSwap64(*pSrc++);
 	}
 }
@@ -786,36 +795,36 @@ typedef struct _mMallocHdr {
 #endif
 
 #ifdef MACINTOSH
-static void *MACmalloc( size_t cb )
+static void *MACmalloc(size_t cb)
 {
-/*	void *p = malloc( cb + sizeof(mMallocHdr) );
-	if(!p) {
-		//
-		//	Out of Memory --
-		//
-		printf( "Out of Memory\n");	// remove and handle error better here
-		CompactMem( cb + sizeof(mMallocHdr));
-		PurgeMem( cb + sizeof(mMallocHdr));
-		p = malloc( cb + sizeof(mMallocHdr) );
+	/*	void *p = malloc( cb + sizeof(mMallocHdr) );
 		if(!p) {
-			//	worse case exit
-			ExitToShell();	// nothing we can do!
-			return NULL;
+			//
+			//	Out of Memory --
+			//
+			printf( "Out of Memory\n");	// remove and handle error better here
+			CompactMem( cb + sizeof(mMallocHdr));
+			PurgeMem( cb + sizeof(mMallocHdr));
+			p = malloc( cb + sizeof(mMallocHdr) );
+			if(!p) {
+				//	worse case exit
+				ExitToShell();	// nothing we can do!
+				return NULL;
+			}
 		}
-	}
-	((PmMallocHdr)p)->cBytes = cb;
-	return ((PmMallocHdr)p)->arData;*/
+		((PmMallocHdr)p)->cBytes = cb;
+		return ((PmMallocHdr)p)->arData;*/
 
-	void *p = malloc( cb );
-	if(!p) {
+	void *p = malloc(cb);
+	if (!p) {
 		//
 		//	Out of Memory --
 		//
 		//printf( "Out of Memory\n");	// remove and handle error better here
-		CompactMem( cb );
-		PurgeMem( cb );
-		p = malloc( cb );
-		if(!p) {
+		CompactMem(cb);
+		PurgeMem(cb);
+		p = malloc(cb);
+		if (!p) {
 			//	worse case exit
 			//ExitToShell();	// nothing we can do!
 			return NULL;
@@ -824,38 +833,38 @@ static void *MACmalloc( size_t cb )
 	return p;
 }
 
-static void *MACcalloc( size_t c, size_t cb )
+static void *MACcalloc(size_t c, size_t cb)
 {
-/*	void *p = calloc( c, cb + sizeof(mMallocHdr));
-	
-	if(!p) {
-		//
-		//	Out of Memory --
-		//
-		printf( "Out of Memory\n");	// remove and handle error better here
-		CompactMem( (cb + sizeof(mMallocHdr)) *c );
-		PurgeMem( (cb + + sizeof(mMallocHdr)) *c );
-		p = calloc( c, cb + sizeof(mMallocHdr));
+	/*	void *p = calloc( c, cb + sizeof(mMallocHdr));
+
 		if(!p) {
-			//	worse case exit
-			ExitToShell();	// nothing we can do!
-			return NULL;
+			//
+			//	Out of Memory --
+			//
+			printf( "Out of Memory\n");	// remove and handle error better here
+			CompactMem( (cb + sizeof(mMallocHdr)) *c );
+			PurgeMem( (cb + + sizeof(mMallocHdr)) *c );
+			p = calloc( c, cb + sizeof(mMallocHdr));
+			if(!p) {
+				//	worse case exit
+				ExitToShell();	// nothing we can do!
+				return NULL;
+			}
 		}
-	}
-	((PmMallocHdr)p)->cBytes = cb;
-	return ((PmMallocHdr)p)->arData;
-*/
-	void *p = calloc( c, cb );
-	
-	if(!p) {
+		((PmMallocHdr)p)->cBytes = cb;
+		return ((PmMallocHdr)p)->arData;
+	*/
+	void *p = calloc(c, cb);
+
+	if (!p) {
 		//
 		//	Out of Memory --
 		//
 		//printf( "Out of Memory\n");	// remove and handle error better here
-		CompactMem( cb  );
-		PurgeMem( cb  );
-		p = calloc( c, cb );
-		if(!p) {
+		CompactMem(cb);
+		PurgeMem(cb);
+		p = calloc(c, cb);
+		if (!p) {
 			//	worse case exit
 			//ExitToShell();	// nothing we can do!
 			return NULL;
@@ -865,34 +874,34 @@ static void *MACcalloc( size_t c, size_t cb )
 }
 
 static void *MACrealloc(void *pPtr, size_t iSize, BOOLEAN bClear)
-{	
+{
 	void *p = realloc(pPtr, iSize);
-	if(!p) {
+	if (!p) {
 		//
 		//	Out of Memory --
 		//
 		//printf( "Out of Memory\n");	// remove and handle error better here
-		CompactMem( iSize  );
-		PurgeMem( iSize  );
+		CompactMem(iSize);
+		PurgeMem(iSize);
 		p = realloc(pPtr, iSize);
-		if(!p) {
+		if (!p) {
 			//	worse case exit
 			//ExitToShell();	// nothing we can do!
 			return NULL;
 		}
 	}
-	
-	if( bClear ) {
+
+	if (bClear) {
 		//memset((UINT8*)p + iOldSize, 0, iSize - iOldSize);
 	}
-	
+
 	return p;
-	
-	
+
+
 }
 
 static void MACfree(void *pPtr)
 {
-	if( pPtr ) free(pPtr);
+	if (pPtr) free(pPtr);
 }
 #endif	/* MACINTOSH */

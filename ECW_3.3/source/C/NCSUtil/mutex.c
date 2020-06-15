@@ -2,13 +2,13 @@
 ** Copyright 1999 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:   	NCSUtil\mutex.c
@@ -27,7 +27,7 @@
 *******************************************************/
 
 //#define _WIN32_WINNT 0x400
- 
+
 #include "NCSMutex.h"
 #ifndef NCSMALLOC_H
 #include "NCSMalloc.h"
@@ -36,7 +36,7 @@
 //#ifdef WIN32	//Pocket PC 2002
 #if (defined(WIN32) && !defined(_WIN32_WCE))
 #include <aclapi.h>
-static BOOL (APIENTRY*pTryEnterCriticalSection)(LPCRITICAL_SECTION lpCriticalSection) = NULL;
+static BOOL(APIENTRY*pTryEnterCriticalSection)(LPCRITICAL_SECTION lpCriticalSection) = NULL;
 #endif
 
 #include "NCSUtil.h"
@@ -53,19 +53,19 @@ pthread_mutex_t *NCSMutexGetNative(NCSMutex *pMutex)
 */
 void NCSMutexInit(NCSMutex *pMutex)
 {
-//#ifndef LINUX
-	// TODO : FIXME
+	//#ifndef LINUX
+		// TODO : FIXME
 	NCSMemSet(pMutex, 0, sizeof(NCSMutex));
-//#endif
+	//#endif
 
 #ifdef WIN32
 
 	InitializeCriticalSection(&(pMutex->cs));
 
-	if(!pTryEnterCriticalSection && NCSGetPlatform() != NCS_WINDOWS_9X) {
+	if (!pTryEnterCriticalSection && NCSGetPlatform() != NCS_WINDOWS_9X) {
 		pTryEnterCriticalSection = (BOOL(APIENTRY*)(LPCRITICAL_SECTION))GetProcAddress(GetModuleHandle(NCS_T("Kernel32.dll")), "TryEnterCriticalSection");
 	}
-	if(!pTryEnterCriticalSection) {
+	if (!pTryEnterCriticalSection) {
 		// No TryEnterCriticalSection(), so we have to emulate
 		pMutex->pTryCS = (NCSMutexTryCS*)NCSMalloc(sizeof(NCSMutexTryCS), TRUE);
 		pMutex->pTryCS->nLockCount = -1;
@@ -76,7 +76,7 @@ void NCSMutexInit(NCSMutex *pMutex)
 #elif defined MACINTOSH
 #	ifdef MAC_PREEMPTIVE
 		//OSStatus result = 
-		MPCreateCriticalRegion( &(pMutex->cs) ); 
+	MPCreateCriticalRegion(&(pMutex->cs));
 #	endif //MAC_PREEMPTIVE
 #elif defined POSIX
 
@@ -90,7 +90,7 @@ void NCSMutexInit(NCSMutex *pMutex)
 	pthread_mutex_init(&(pMutex->m), (pthread_mutexattr_t*)&a);
 
 #else	/* WIN32 */
-ERROR: NCSMutexInit() needs to be written in NCSUtil/mutex.c
+ERROR: NCSMutexInit() needs to be written in NCSUtil / mutex.c
 #endif	/* WIN32 */
 
 	NCSMemSet(&(pMutex->msStats), 0, sizeof(NCSMutexStats));
@@ -104,24 +104,24 @@ void NCSMutexFini(NCSMutex *pMutex)
 #ifdef WIN32
 
 	DeleteCriticalSection(&(pMutex->cs));
-	if(pMutex->pTryCS) {
+	if (pMutex->pTryCS) {
 		DeleteCriticalSection(&pMutex->pTryCS->cs);
 		NCSFree(pMutex->pTryCS);
 	}
 #elif defined PALM
 #elif defined MACINTOSH
 #	ifdef MAC_PREEMPTIVE
-		//OSStatus result = 
-		MPDeleteCriticalRegion( pMutex->cs ); 
+	//OSStatus result = 
+	MPDeleteCriticalRegion(pMutex->cs);
 #	endif //MAC_PREEMPTIVE
 #elif defined POSIX
-	
+
 	pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;
 	pthread_mutex_destroy(&(pMutex->m));
 	pMutex->m = m;
 
 #else	/* WIN32 */
-ERROR: NCSMutexFini() needs to be written in NCSUtil/mutex.c
+ERROR: NCSMutexFini() needs to be written in NCSUtil / mutex.c
 #endif	/* WIN32 */
 }
 
@@ -132,15 +132,15 @@ void NCSMutexBegin(NCSMutex *pMutex)
 {
 	NCSTimeStampMs tsStart = 0;
 
-	if(pMutex->bCollectStats) {
+	if (pMutex->bCollectStats) {
 		tsStart = NCSGetTimeStampMs();
 	}
 #ifdef WIN32
 
-	if(pMutex->pTryCS) {
+	if (pMutex->pTryCS) {
 		// lock TryCS, prevents anything else from attempting to lock.
 		EnterCriticalSection(&pMutex->pTryCS->cs);
-		while(pMutex->pTryCS->nLockCount >= 0 && (DWORD)pMutex->pTryCS->dwOwnerTID != GetCurrentThreadId()) {
+		while (pMutex->pTryCS->nLockCount >= 0 && (DWORD)pMutex->pTryCS->dwOwnerTID != GetCurrentThreadId()) {
 			// Locked already, spin
 			LeaveCriticalSection(&pMutex->pTryCS->cs);
 			NCSSleep(1);
@@ -150,24 +150,25 @@ void NCSMutexBegin(NCSMutex *pMutex)
 		pMutex->pTryCS->nLockCount++;
 		pMutex->pTryCS->dwOwnerTID = GetCurrentThreadId();
 		LeaveCriticalSection(&pMutex->pTryCS->cs);
-	} else {
+	}
+	else {
 		EnterCriticalSection(&(pMutex->cs));
 	}
 #elif defined	PALM
 #elif defined	MACINTOSH
 #	ifdef MAC_PREEMPTIVE
-		//OSStatus result = 
-		MPEnterCriticalRegion( pMutex->cs, kDurationForever /*Duration timeout*/ ); 
+	//OSStatus result = 
+	MPEnterCriticalRegion(pMutex->cs, kDurationForever /*Duration timeout*/);
 #	endif //MAC_PREEMPTIVE
 #elif defined POSIX
 
 	pthread_mutex_lock(&(pMutex->m));
 
 #else	/* WIN32 */
-ERROR: NCSMutexBegin() needs to be written in NCSUtil/mutex.c
+ERROR: NCSMutexBegin() needs to be written in NCSUtil / mutex.c
 #endif	/* WIN32 */
 
-		   if(pMutex->bCollectStats) {
+	if (pMutex->bCollectStats) {
 		pMutex->msStats.tsStartTemp = NCSGetTimeStampMs();
 		pMutex->msStats.tsBeginTime += pMutex->msStats.tsStartTemp - tsStart;
 		pMutex->msStats.nLocks++;
@@ -183,14 +184,14 @@ BOOLEAN NCSMutexTryBegin(NCSMutex *pMutex)
 	BOOLEAN bRet = FALSE;
 	NCSTimeStampMs tsStart = 0;
 
-	if(pMutex->bCollectStats) {
+	if (pMutex->bCollectStats) {
 		tsStart = NCSGetTimeStampMs();
 	}
 #ifdef WIN32
 
-	if(pMutex->pTryCS) {
+	if (pMutex->pTryCS) {
 		EnterCriticalSection(&pMutex->pTryCS->cs);
-		if(pMutex->pTryCS->nLockCount < 0 || (pMutex->pTryCS->nLockCount >= 0 && (DWORD)pMutex->pTryCS->dwOwnerTID == GetCurrentThreadId())) {
+		if (pMutex->pTryCS->nLockCount < 0 || (pMutex->pTryCS->nLockCount >= 0 && (DWORD)pMutex->pTryCS->dwOwnerTID == GetCurrentThreadId())) {
 			// not locked
 			EnterCriticalSection(&(pMutex->cs));
 			pMutex->pTryCS->nLockCount++;
@@ -199,34 +200,36 @@ BOOLEAN NCSMutexTryBegin(NCSMutex *pMutex)
 			bRet = TRUE;
 		}
 		LeaveCriticalSection(&pMutex->pTryCS->cs);
-	} else {
+	}
+	else {
 		bRet = (BOOLEAN)(*pTryEnterCriticalSection)(&(pMutex->cs));
 	}
 
 #elif defined	PALM
 #elif defined	MACINTOSH
 #	ifdef MAC_PREEMPTIVE
-		if ( MPEnterCriticalRegion( pMutex->cs, kDurationImmediate) == 0) {
-			bRet = TRUE;
-		} else {
-			bRet = FALSE;
-		}
+	if (MPEnterCriticalRegion(pMutex->cs, kDurationImmediate) == 0) {
+		bRet = TRUE;
+	}
+	else {
+		bRet = FALSE;
+	}
 
 #	endif //MAC_PREEMPTIVE
 #elif defined POSIX
 
-		bRet = (pthread_mutex_trylock(&(pMutex->m)) == 0) ? TRUE : FALSE;
+	bRet = (pthread_mutex_trylock(&(pMutex->m)) == 0) ? TRUE : FALSE;
 
 #else	/* WIN32 */
-ERROR: NCSMutexBegin() needs to be written in NCSUtil/mutex.c
+ERROR: NCSMutexBegin() needs to be written in NCSUtil / mutex.c
 #endif	/* WIN32 */
 
-   if(pMutex->bCollectStats) {
+	if (pMutex->bCollectStats) {
 		pMutex->msStats.tsStartTemp = NCSGetTimeStampMs();
 		pMutex->msStats.tsBeginTime += pMutex->msStats.tsStartTemp - tsStart;
 		pMutex->msStats.nLocks++;
-   }
-   return(bRet);
+	}
+	   return(bRet);
 }
 
 /*
@@ -236,39 +239,40 @@ void NCSMutexEnd(NCSMutex *pMutex)
 {
 	NCSTimeStampMs tsStart = 0, tsEnd = 0;
 
-	if(pMutex->bCollectStats) {
+	if (pMutex->bCollectStats) {
 		tsStart = NCSGetTimeStampMs();
 		pMutex->msStats.nUnLocks++;
 	}
 
 #ifdef WIN32
 
-	if(pMutex->pTryCS) {
+	if (pMutex->pTryCS) {
 		EnterCriticalSection(&pMutex->pTryCS->cs);
 		pMutex->pTryCS->nLockCount--;
-		if(pMutex->pTryCS->nLockCount < 0) {
+		if (pMutex->pTryCS->nLockCount < 0) {
 			pMutex->pTryCS->dwOwnerTID = 0;
 		}
 		LeaveCriticalSection(&(pMutex->cs));
 		LeaveCriticalSection(&pMutex->pTryCS->cs);
-	} else {
+	}
+	else {
 		LeaveCriticalSection(&(pMutex->cs));
 	}
 #elif defined PALM
 #elif defined MACINTOSH
 #	ifdef MAC_PREEMPTIVE
-		//OSStatus result = 
-		MPExitCriticalRegion ( pMutex->cs );
+	//OSStatus result = 
+	MPExitCriticalRegion(pMutex->cs);
 #	endif //MAC_PREEMPTIVE
 #elif defined POSIX
 
 	pthread_mutex_unlock(&(pMutex->m));
 
 #else	/* WIN32 */
-ERROR: NCSMutexBegin() needs to be written in NCSUtil/mutex.c
+ERROR: NCSMutexBegin() needs to be written in NCSUtil / mutex.c
 #endif 	/* WIN32 */
-	
-	if(pMutex->bCollectStats) {
+
+	if (pMutex->bCollectStats) {
 		tsEnd = NCSGetTimeStampMs();
 		pMutex->msStats.tsTotalLockedTime += tsEnd - pMutex->msStats.tsStartTemp;
 		pMutex->msStats.tsEndTime += tsEnd - tsStart;
@@ -310,7 +314,7 @@ INT32			nGlobalLockInit = 0;
 
 void NCSGlobalLockInit(void)
 {
-	if(nGlobalLockInit == 0) {
+	if (nGlobalLockInit == 0) {
 		NCSMutexInit(&mGlobalLockMutex);
 	}
 	nGlobalLockInit++;
@@ -319,9 +323,9 @@ void NCSGlobalLockInit(void)
 void NCSGlobalLockFini(void)
 {
 	nGlobalLockInit--;
-	if(nGlobalLockInit == 0) {
+	if (nGlobalLockInit == 0) {
 		NCSMutexBegin(&mGlobalLockMutex);
-		while(nGlobalLocks > 0) {
+		while (nGlobalLocks > 0) {
 #ifdef WIN32
 			CloseHandle(pGlobalLocks[0].hLock);
 #endif //WIN32
@@ -341,22 +345,22 @@ NCSGlobalLockInfo *NCSGlobalLock(char *pLockName)
 	NCSGlobalLockInit();
 
 	NCSMutexBegin(&mGlobalLockMutex);
-	for(i = 0; i < nGlobalLocks; i++) {
-		if(!strcmp(pGlobalLocks[i].pLockName, pLockName)) {
+	for (i = 0; i < nGlobalLocks; i++) {
+		if (!strcmp(pGlobalLocks[i].pLockName, pLockName)) {
 			break;
 		}
 	}
-	if(i >= nGlobalLocks) {
+	if (i >= nGlobalLocks) {
 		NCSGlobalLockInfo Info;
 		BOOL bSetInfo = TRUE;
 
 		Info.hLock = CreateMutex((LPSECURITY_ATTRIBUTES)NULL,
-								  FALSE,
-								  (LPCTSTR)pLockName);
-		if(GetLastError() == ERROR_ALREADY_EXISTS) {
+			FALSE,
+			(LPCTSTR)pLockName);
+		if (GetLastError() == ERROR_ALREADY_EXISTS) {
 			bSetInfo = FALSE;
 		}
-		if(Info.hLock) {
+		if (Info.hLock) {
 			Info.pLockName = NCSStrDup(pLockName);
 			NCSArrayAppendElement(pGlobalLocks, nGlobalLocks, &Info);
 			i = nGlobalLocks - 1;
@@ -366,21 +370,21 @@ NCSGlobalLockInfo *NCSGlobalLock(char *pLockName)
 				FARPROC pProc = NULL;			/**[01]**/
 				HANDLE hLib = NULL;				/**[01]**/
 
-				if(bSetInfo && NCSGetPlatform() == NCS_WINDOWS_NT) {	/**[04]**/
+				if (bSetInfo && NCSGetPlatform() == NCS_WINDOWS_NT) {	/**[04]**/
 					hLib = LoadLibrary(NCS_T("advapi32.dll"));					/**[01]**/
 
-					if(hLib) {											/**[01]**/
-						pProc = GetProcAddress(hLib,"SetSecurityInfo");	/**[01]**/
-						
-						if(pProc) {										/**[01]**/
+					if (hLib) {											/**[01]**/
+						pProc = GetProcAddress(hLib, "SetSecurityInfo");	/**[01]**/
+
+						if (pProc) {										/**[01]**/
 							/* change the discretionary access control list to allow inetinfo and ncsservergui process to access */
 #ifdef _MANAGED
 							((DWORD(*)(HANDLE, SE_OBJECT_TYPE, SECURITY_INFORMATION, PSID, PSID, PACL, PACL))pProc)
 #else
-								DWORD dwRes = pProc
+							DWORD dwRes = pProc
 #endif
 								(
-								Info.hLock,								/**[01]**/
+									Info.hLock,								/**[01]**/
 									SE_KERNEL_OBJECT,					/**[01]**/
 									DACL_SECURITY_INFORMATION,			/**[01]**/
 									NULL,								/**[01]**/
@@ -397,9 +401,9 @@ NCSGlobalLockInfo *NCSGlobalLock(char *pLockName)
 	}
 	NCSMutexEnd(&mGlobalLockMutex);
 
-	if(i >= 0 && i < nGlobalLocks) {
-		if(WaitForSingleObject(pGlobalLocks[i].hLock,
-							   INFINITE) != WAIT_FAILED) {
+	if (i >= 0 && i < nGlobalLocks) {
+		if (WaitForSingleObject(pGlobalLocks[i].hLock,
+			INFINITE) != WAIT_FAILED) {
 			return(&pGlobalLocks[i]);
 		}
 		CloseHandle(pGlobalLocks[i].hLock);
@@ -416,15 +420,15 @@ NCSGlobalLockInfo *NCSGlobalLock(char *pLockName)
 */
 void NCSGlobalUnlock(NCSGlobalLockInfo *pInfo)
 {
-	if(pInfo) {
+	if (pInfo) {
 #ifdef WIN32
-		if(pInfo->hLock) {
+		if (pInfo->hLock) {
 			ReleaseMutex(pInfo->hLock);
-//			CloseHandle(pInfo->hLock);
+			//			CloseHandle(pInfo->hLock);
 		}
 #else	/* WIN32 */
 #endif	/* WIN32 */
-//		NCSFree(pInfo);
+		//		NCSFree(pInfo);
 	}
 	NCSGlobalLockFini();
 }

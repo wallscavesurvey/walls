@@ -18,10 +18,10 @@
 #include "jpeglib.h"
 
 
-/*
- * jpeg_zigzag_order[i] is the zigzag-order position of the i'th element
- * of a DCT block read in natural order (left to right, top to bottom).
- */
+ /*
+  * jpeg_zigzag_order[i] is the zigzag-order position of the i'th element
+  * of a DCT block read in natural order (left to right, top to bottom).
+  */
 
 #if 0                           /* This table is not actually needed in v6a */
 
@@ -52,7 +52,7 @@ const int jpeg_zigzag_order[DCTSIZE2] = {
  * fake entries.
  */
 
-const int jpeg_natural_order[DCTSIZE2+16] = {
+const int jpeg_natural_order[DCTSIZE2 + 16] = {
   0,  1,  8, 16,  9,  2,  3, 10,
  17, 24, 32, 25, 18, 11,  4,  5,
  12, 19, 26, 33, 40, 48, 41, 34,
@@ -71,62 +71,62 @@ const int jpeg_natural_order[DCTSIZE2+16] = {
  */
 
 GLOBAL(long)
-jdiv_round_up (long a, long b)
+jdiv_round_up(long a, long b)
 /* Compute a/b rounded up to next integer, ie, ceil(a/b) */
 /* Assumes a >= 0, b > 0 */
 {
-  return (a + b - 1L) / b;
+	return (a + b - 1L) / b;
 }
 
 
 GLOBAL(long)
-jround_up (long a, long b)
+jround_up(long a, long b)
 /* Compute a rounded up to next multiple of b, ie, ceil(a/b)*b */
 /* Assumes a >= 0, b > 0 */
 {
-  a += b - 1L;
-  return a - (a % b);
+	a += b - 1L;
+	return a - (a % b);
 }
 
 
 GLOBAL(void)
-jcopy_sample_rows (JSAMPARRAY input_array, int source_row,
-                   JSAMPARRAY output_array, int dest_row,
-                   int num_rows, JDIMENSION num_cols)
-/* Copy some rows of samples from one place to another.
- * num_rows rows are copied from input_array[source_row++]
- * to output_array[dest_row++]; these areas may overlap for duplication.
- * The source and destination arrays must be at least as wide as num_cols.
- */
+jcopy_sample_rows(JSAMPARRAY input_array, int source_row,
+	JSAMPARRAY output_array, int dest_row,
+	int num_rows, JDIMENSION num_cols)
+	/* Copy some rows of samples from one place to another.
+	 * num_rows rows are copied from input_array[source_row++]
+	 * to output_array[dest_row++]; these areas may overlap for duplication.
+	 * The source and destination arrays must be at least as wide as num_cols.
+	 */
 {
-  register JSAMPROW inptr, outptr;
-  register size_t count = (size_t) (num_cols * sizeof(JSAMPLE));
-  register int row;
+	register JSAMPROW inptr, outptr;
+	register size_t count = (size_t)(num_cols * sizeof(JSAMPLE));
+	register int row;
 
-  input_array += source_row;
-  output_array += dest_row;
+	input_array += source_row;
+	output_array += dest_row;
 
-  for (row = num_rows; row > 0; row--) {
-    inptr = *input_array++;
-    outptr = *output_array++;
-    MEMCOPY(outptr, inptr, count);
-  }
+	for (row = num_rows; row > 0; row--) {
+		inptr = *input_array++;
+		outptr = *output_array++;
+		MEMCOPY(outptr, inptr, count);
+	}
 }
 
 
 GLOBAL(void)
-jcopy_block_row (JBLOCKROW input_row, JBLOCKROW output_row,
-                 JDIMENSION num_blocks)
-/* Copy a row of coefficient blocks from one place to another. */
+jcopy_block_row(JBLOCKROW input_row, JBLOCKROW output_row,
+	JDIMENSION num_blocks)
+	/* Copy a row of coefficient blocks from one place to another. */
 {
-  MEMCOPY(output_row, input_row, num_blocks * (DCTSIZE2 * sizeof(JCOEF)));
+	MEMCOPY(output_row, input_row, num_blocks * (DCTSIZE2 * sizeof(JCOEF)));
 }
 
 
 GLOBAL(void)
-jzero_far (void * target, size_t bytestozero)
+jzero_far(void * target, size_t bytestozero)
 /* Zero out a chunk of memory. */
 /* This might be sample-array data, block-array data, or alloc_large data. */
 {
-  MEMZERO(target, bytestozero);
+	MEMZERO(target, bytestozero);
 }

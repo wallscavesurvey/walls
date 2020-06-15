@@ -4,45 +4,45 @@
  * Copyright (c) 1988-1997 Sam Leffler
  * Copyright (c) 1991-1997 Silicon Graphics, Inc.
  *
- * Permission to use, copy, modify, distribute, and sell this software and 
+ * Permission to use, copy, modify, distribute, and sell this software and
  * its documentation for any purpose is hereby granted without fee, provided
  * that (i) the above copyright notices and this permission notice appear in
  * all copies of the software and related documentation, and (ii) the names of
  * Sam Leffler and Silicon Graphics may not be used in any advertising or
  * publicity relating to the software without the specific, prior written
  * permission of Sam Leffler and Silicon Graphics.
- * 
- * THE SOFTWARE IS PROVIDED "AS-IS" AND WITHOUT WARRANTY OF ANY KIND, 
- * EXPRESS, IMPLIED OR OTHERWISE, INCLUDING WITHOUT LIMITATION, ANY 
- * WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.  
- * 
+ *
+ * THE SOFTWARE IS PROVIDED "AS-IS" AND WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS, IMPLIED OR OTHERWISE, INCLUDING WITHOUT LIMITATION, ANY
+ * WARRANTY OF MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+ *
  * IN NO EVENT SHALL SAM LEFFLER OR SILICON GRAPHICS BE LIABLE FOR
  * ANY SPECIAL, INCIDENTAL, INDIRECT OR CONSEQUENTIAL DAMAGES OF ANY KIND,
  * OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS,
- * WHETHER OR NOT ADVISED OF THE POSSIBILITY OF DAMAGE, AND ON ANY THEORY OF 
- * LIABILITY, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE 
+ * WHETHER OR NOT ADVISED OF THE POSSIBILITY OF DAMAGE, AND ON ANY THEORY OF
+ * LIABILITY, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE
  * OF THIS SOFTWARE.
  */
 
-/*
- * TIFF Library.
- */
+ /*
+  * TIFF Library.
+  */
 #include "tiffiop.h"
 
-/*
- * Dummy functions to fill the omitted client procedures.
- */
+  /*
+   * Dummy functions to fill the omitted client procedures.
+   */
 static int
 _tiffDummyMapProc(thandle_t fd, void** pbase, toff_t* psize)
 {
-	(void) fd; (void) pbase; (void) psize;
+	(void)fd; (void)pbase; (void)psize;
 	return (0);
 }
 
 static void
 _tiffDummyUnmapProc(thandle_t fd, void* base, toff_t size)
 {
-	(void) fd; (void) base; (void) size;
+	(void)fd; (void)base; (void)size;
 }
 
 int
@@ -58,7 +58,7 @@ _TIFFgetMode(const char* mode, const char* module)
 		break;
 	case 'w':
 	case 'a':
-		m = O_RDWR|O_CREAT;
+		m = O_RDWR | O_CREAT;
 		if (mode[0] == 'w')
 			m |= O_TRUNC;
 		break;
@@ -90,49 +90,49 @@ TIFFClientOpen(
 	/* The following are configuration checks. They should be redundant, but should not
 	 * compile to any actual code in an optimised release build anyway. If any of them
 	 * fail, (makefile-based or other) configuration is not correct */
-	assert(sizeof(uint8)==1);
-	assert(sizeof(int8)==1);
-	assert(sizeof(uint16)==2);
-	assert(sizeof(int16)==2);
-	assert(sizeof(uint32)==4);
-	assert(sizeof(int32)==4);
-	assert(sizeof(uint64)==8);
-	assert(sizeof(int64)==8);
-	assert(sizeof(tmsize_t)==sizeof(void*));
+	assert(sizeof(uint8) == 1);
+	assert(sizeof(int8) == 1);
+	assert(sizeof(uint16) == 2);
+	assert(sizeof(int16) == 2);
+	assert(sizeof(uint32) == 4);
+	assert(sizeof(int32) == 4);
+	assert(sizeof(uint64) == 8);
+	assert(sizeof(int64) == 8);
+	assert(sizeof(tmsize_t) == sizeof(void*));
 	{
-		union{
+		union {
 			uint8 a8[2];
 			uint16 a16;
 		} n;
-		n.a8[0]=1;
-		n.a8[1]=0;
-		#ifdef WORDS_BIGENDIAN
-		assert(n.a16==256);
-		#else
-		assert(n.a16==1);
-		#endif
+		n.a8[0] = 1;
+		n.a8[1] = 0;
+#ifdef WORDS_BIGENDIAN
+		assert(n.a16 == 256);
+#else
+		assert(n.a16 == 1);
+#endif
 	}
 
 	m = _TIFFgetMode(mode, module);
 	if (m == -1)
 		goto bad2;
-	tif = (TIFF *)_TIFFmalloc((tmsize_t)(sizeof (TIFF) + strlen(name) + 1));
+	tif = (TIFF *)_TIFFmalloc((tmsize_t)(sizeof(TIFF) + strlen(name) + 1));
 	if (tif == NULL) {
 		TIFFErrorExt(clientdata, module, "%s: Out of memory (TIFF structure)", name);
 		goto bad2;
 	}
-	_TIFFmemset(tif, 0, sizeof (*tif));
-	tif->tif_name = (char *)tif + sizeof (TIFF);
+	_TIFFmemset(tif, 0, sizeof(*tif));
+	tif->tif_name = (char *)tif + sizeof(TIFF);
 	strcpy(tif->tif_name, name);
-	tif->tif_mode = m &~ (O_CREAT|O_TRUNC);
-	tif->tif_curdir = (uint16) -1;		/* non-existent directory */
+	tif->tif_mode = m & ~(O_CREAT | O_TRUNC);
+	tif->tif_curdir = (uint16)-1;		/* non-existent directory */
 	tif->tif_curoff = 0;
-	tif->tif_curstrip = (uint32) -1;	/* invalid strip */
-	tif->tif_row = (uint32) -1;		/* read/write pre-increment */
+	tif->tif_curstrip = (uint32)-1;	/* invalid strip */
+	tif->tif_row = (uint32)-1;		/* read/write pre-increment */
 	tif->tif_clientdata = clientdata;
 	if (!readproc || !writeproc || !seekproc || !closeproc || !sizeproc) {
 		TIFFErrorExt(clientdata, module,
-		    "One of the client procedures is NULL pointer.");
+			"One of the client procedures is NULL pointer.");
 		goto bad2;
 	}
 	tif->tif_readproc = readproc;
@@ -155,13 +155,13 @@ TIFFClientOpen(
 	 * a file is opened read-only.
 	 */
 	tif->tif_flags = FILLORDER_MSB2LSB;
-	if (m == O_RDONLY )
+	if (m == O_RDONLY)
 		tif->tif_flags |= TIFF_MAPPED;
 
-	#ifdef STRIPCHOP_DEFAULT
+#ifdef STRIPCHOP_DEFAULT
 	if (m == O_RDONLY || m == O_RDWR)
 		tif->tif_flags |= STRIPCHOP_DEFAULT;
-	#endif
+#endif
 
 	/*
 	 * Process library-specific flags in the open mode string.
@@ -217,74 +217,74 @@ TIFFClientOpen(
 	 */
 	for (cp = mode; *cp; cp++)
 		switch (*cp) {
-			case 'b':
-				#ifndef WORDS_BIGENDIAN
-				if (m&O_CREAT)
-					tif->tif_flags |= TIFF_SWAB;
-				#endif
-				break;
-			case 'l':
-				#ifdef WORDS_BIGENDIAN
-				if ((m&O_CREAT))
-					tif->tif_flags |= TIFF_SWAB;
-				#endif
-				break;
-			case 'B':
-				tif->tif_flags = (tif->tif_flags &~ TIFF_FILLORDER) |
-				    FILLORDER_MSB2LSB;
-				break;
-			case 'L':
-				tif->tif_flags = (tif->tif_flags &~ TIFF_FILLORDER) |
-				    FILLORDER_LSB2MSB;
-				break;
-			case 'H':
-				tif->tif_flags = (tif->tif_flags &~ TIFF_FILLORDER) |
-				    HOST_FILLORDER;
-				break;
-			case 'M':
-				if (m == O_RDONLY)
-					tif->tif_flags |= TIFF_MAPPED;
-				break;
-			case 'm':
-				if (m == O_RDONLY)
-					tif->tif_flags &= ~TIFF_MAPPED;
-				break;
-			case 'C':
-				if (m == O_RDONLY)
-					tif->tif_flags |= TIFF_STRIPCHOP;
-				break;
-			case 'c':
-				if (m == O_RDONLY)
-					tif->tif_flags &= ~TIFF_STRIPCHOP;
-				break;
-			case 'h':
-				tif->tif_flags |= TIFF_HEADERONLY;
-				break;
-			case '8':
-				if (m&O_CREAT)
-					tif->tif_flags |= TIFF_BIGTIFF;
-				break;
+		case 'b':
+#ifndef WORDS_BIGENDIAN
+			if (m&O_CREAT)
+				tif->tif_flags |= TIFF_SWAB;
+#endif
+			break;
+		case 'l':
+#ifdef WORDS_BIGENDIAN
+			if ((m&O_CREAT))
+				tif->tif_flags |= TIFF_SWAB;
+#endif
+			break;
+		case 'B':
+			tif->tif_flags = (tif->tif_flags &~TIFF_FILLORDER) |
+				FILLORDER_MSB2LSB;
+			break;
+		case 'L':
+			tif->tif_flags = (tif->tif_flags &~TIFF_FILLORDER) |
+				FILLORDER_LSB2MSB;
+			break;
+		case 'H':
+			tif->tif_flags = (tif->tif_flags &~TIFF_FILLORDER) |
+				HOST_FILLORDER;
+			break;
+		case 'M':
+			if (m == O_RDONLY)
+				tif->tif_flags |= TIFF_MAPPED;
+			break;
+		case 'm':
+			if (m == O_RDONLY)
+				tif->tif_flags &= ~TIFF_MAPPED;
+			break;
+		case 'C':
+			if (m == O_RDONLY)
+				tif->tif_flags |= TIFF_STRIPCHOP;
+			break;
+		case 'c':
+			if (m == O_RDONLY)
+				tif->tif_flags &= ~TIFF_STRIPCHOP;
+			break;
+		case 'h':
+			tif->tif_flags |= TIFF_HEADERONLY;
+			break;
+		case '8':
+			if (m&O_CREAT)
+				tif->tif_flags |= TIFF_BIGTIFF;
+			break;
 		}
 	/*
 	 * Read in TIFF header.
 	 */
 	if ((m & O_TRUNC) ||
-	    !ReadOK(tif, &tif->tif_header, sizeof (TIFFHeaderClassic))) {
+		!ReadOK(tif, &tif->tif_header, sizeof(TIFFHeaderClassic))) {
 		if (tif->tif_mode == O_RDONLY) {
 			TIFFErrorExt(tif->tif_clientdata, name,
-			    "Cannot read TIFF header");
+				"Cannot read TIFF header");
 			goto bad;
 		}
 		/*
 		 * Setup header and write.
 		 */
-		#ifdef WORDS_BIGENDIAN
+#ifdef WORDS_BIGENDIAN
 		tif->tif_header.common.tiff_magic = tif->tif_flags & TIFF_SWAB
-		    ? TIFF_LITTLEENDIAN : TIFF_BIGENDIAN;
-		#else
+			? TIFF_LITTLEENDIAN : TIFF_BIGENDIAN;
+#else
 		tif->tif_header.common.tiff_magic = tif->tif_flags & TIFF_SWAB
-		    ? TIFF_BIGENDIAN : TIFF_LITTLEENDIAN;
-		#endif
+			? TIFF_BIGENDIAN : TIFF_LITTLEENDIAN;
+#endif
 		if (!(tif->tif_flags&TIFF_BIGTIFF))
 		{
 			tif->tif_header.common.tiff_version = TIFF_VERSION_CLASSIC;
@@ -304,7 +304,7 @@ TIFFClientOpen(
 				TIFFSwabShort(&tif->tif_header.common.tiff_version);
 				TIFFSwabShort(&tif->tif_header.big.tiff_offsetsize);
 			}
-			tif->tif_header_size = sizeof (TIFFHeaderBig);
+			tif->tif_header_size = sizeof(TIFFHeaderBig);
 		}
 		/*
 		 * The doc for "fopen" for some STD_C_LIBs says that if you
@@ -313,23 +313,24 @@ TIFFClientOpen(
 		 * necessary on most systems, but has been shown to be needed
 		 * on Solaris.
 		 */
-		TIFFSeekFile( tif, 0, SEEK_SET );
+		TIFFSeekFile(tif, 0, SEEK_SET);
 		if (!WriteOK(tif, &tif->tif_header, (tmsize_t)(tif->tif_header_size))) {
 			TIFFErrorExt(tif->tif_clientdata, name,
-			    "Error writing TIFF header");
+				"Error writing TIFF header");
 			goto bad;
 		}
 		/*
 		 * Setup the byte order handling.
 		 */
 		if (tif->tif_header.common.tiff_magic == TIFF_BIGENDIAN) {
-			#ifndef WORDS_BIGENDIAN
+#ifndef WORDS_BIGENDIAN
 			tif->tif_flags |= TIFF_SWAB;
-			#endif
-		} else {
-			#ifdef WORDS_BIGENDIAN
+#endif
+		}
+		else {
+#ifdef WORDS_BIGENDIAN
 			tif->tif_flags |= TIFF_SWAB;
-			#endif
+#endif
 		}
 		/*
 		 * Setup default directory.
@@ -346,43 +347,44 @@ TIFFClientOpen(
 	 * Setup the byte order handling.
 	 */
 	if (tif->tif_header.common.tiff_magic != TIFF_BIGENDIAN &&
-	    tif->tif_header.common.tiff_magic != TIFF_LITTLEENDIAN
-	    #if MDI_SUPPORT
-	    &&
-	    #if HOST_BIGENDIAN
-	    tif->tif_header.common.tiff_magic != MDI_BIGENDIAN
-	    #else
-	    tif->tif_header.common.tiff_magic != MDI_LITTLEENDIAN
-	    #endif
-	    ) {
+		tif->tif_header.common.tiff_magic != TIFF_LITTLEENDIAN
+#if MDI_SUPPORT
+		&&
+#if HOST_BIGENDIAN
+		tif->tif_header.common.tiff_magic != MDI_BIGENDIAN
+#else
+		tif->tif_header.common.tiff_magic != MDI_LITTLEENDIAN
+#endif
+		) {
 		TIFFErrorExt(tif->tif_clientdata, name,
-		    "Not a TIFF or MDI file, bad magic number %d (0x%x)",
-	    #else
-	    ) {
-		TIFFErrorExt(tif->tif_clientdata, name,
-		    "Not a TIFF file, bad magic number %d (0x%x)",
-	    #endif
-		    tif->tif_header.common.tiff_magic,
-		    tif->tif_header.common.tiff_magic);
-		goto bad;
-	}
+			"Not a TIFF or MDI file, bad magic number %d (0x%x)",
+#else
+		) {
+			TIFFErrorExt(tif->tif_clientdata, name,
+				"Not a TIFF file, bad magic number %d (0x%x)",
+#endif
+				tif->tif_header.common.tiff_magic,
+				tif->tif_header.common.tiff_magic);
+			goto bad;
+		}
 	if (tif->tif_header.common.tiff_magic == TIFF_BIGENDIAN) {
-		#ifndef WORDS_BIGENDIAN
+#ifndef WORDS_BIGENDIAN
 		tif->tif_flags |= TIFF_SWAB;
-		#endif
-	} else {
-		#ifdef WORDS_BIGENDIAN
-		tif->tif_flags |= TIFF_SWAB;
-		#endif
+#endif
 	}
-	if (tif->tif_flags & TIFF_SWAB) 
+	else {
+#ifdef WORDS_BIGENDIAN
+		tif->tif_flags |= TIFF_SWAB;
+#endif
+	}
+	if (tif->tif_flags & TIFF_SWAB)
 		TIFFSwabShort(&tif->tif_header.common.tiff_version);
-	if ((tif->tif_header.common.tiff_version != TIFF_VERSION_CLASSIC)&&
-	    (tif->tif_header.common.tiff_version != TIFF_VERSION_BIG)) {
+	if ((tif->tif_header.common.tiff_version != TIFF_VERSION_CLASSIC) &&
+		(tif->tif_header.common.tiff_version != TIFF_VERSION_BIG)) {
 		TIFFErrorExt(tif->tif_clientdata, name,
-		    "Not a TIFF file, bad version number %d (0x%x)",
-		    tif->tif_header.common.tiff_version,
-		    tif->tif_header.common.tiff_version);
+			"Not a TIFF file, bad version number %d (0x%x)",
+			tif->tif_header.common.tiff_version,
+			tif->tif_header.common.tiff_version);
 		goto bad;
 	}
 	if (tif->tif_header.common.tiff_version == TIFF_VERSION_CLASSIC)
@@ -393,10 +395,10 @@ TIFFClientOpen(
 	}
 	else
 	{
-		if (!ReadOK(tif, ((uint8*)(&tif->tif_header) + sizeof(TIFFHeaderClassic)), (sizeof(TIFFHeaderBig)-sizeof(TIFFHeaderClassic))))
+		if (!ReadOK(tif, ((uint8*)(&tif->tif_header) + sizeof(TIFFHeaderClassic)), (sizeof(TIFFHeaderBig) - sizeof(TIFFHeaderClassic))))
 		{
 			TIFFErrorExt(tif->tif_clientdata, name,
-			    "Cannot read TIFF header");
+				"Cannot read TIFF header");
 			goto bad;
 		}
 		if (tif->tif_flags & TIFF_SWAB)
@@ -407,17 +409,17 @@ TIFFClientOpen(
 		if (tif->tif_header.big.tiff_offsetsize != 8)
 		{
 			TIFFErrorExt(tif->tif_clientdata, name,
-			    "Not a TIFF file, bad BigTIFF offsetsize %d (0x%x)",
-			    tif->tif_header.big.tiff_offsetsize,
-			    tif->tif_header.big.tiff_offsetsize);
+				"Not a TIFF file, bad BigTIFF offsetsize %d (0x%x)",
+				tif->tif_header.big.tiff_offsetsize,
+				tif->tif_header.big.tiff_offsetsize);
 			goto bad;
 		}
 		if (tif->tif_header.big.tiff_unused != 0)
 		{
 			TIFFErrorExt(tif->tif_clientdata, name,
-			    "Not a TIFF file, bad BigTIFF unused %d (0x%x)",
-			    tif->tif_header.big.tiff_unused,
-			    tif->tif_header.big.tiff_unused);
+				"Not a TIFF file, bad BigTIFF unused %d (0x%x)",
+				tif->tif_header.big.tiff_unused,
+				tif->tif_header.big.tiff_unused);
 			goto bad;
 		}
 		tif->tif_header_size = sizeof(TIFFHeaderBig);
@@ -426,73 +428,73 @@ TIFFClientOpen(
 	tif->tif_flags |= TIFF_MYBUFFER;
 	tif->tif_rawcp = tif->tif_rawdata = 0;
 	tif->tif_rawdatasize = 0;
-        tif->tif_rawdataoff = 0;
-        tif->tif_rawdataloaded = 0;
+	tif->tif_rawdataoff = 0;
+	tif->tif_rawdataloaded = 0;
 
 	switch (mode[0]) {
-		case 'r':
-			if (!(tif->tif_flags&TIFF_BIGTIFF))
-				tif->tif_nextdiroff = tif->tif_header.classic.tiff_diroff;
-			else
-				tif->tif_nextdiroff = tif->tif_header.big.tiff_diroff;
-			/*
-			 * Try to use a memory-mapped file if the client
-			 * has not explicitly suppressed usage with the
-			 * 'm' flag in the open mode (see above).
-			 */
-			if (tif->tif_flags & TIFF_MAPPED)
+	case 'r':
+		if (!(tif->tif_flags&TIFF_BIGTIFF))
+			tif->tif_nextdiroff = tif->tif_header.classic.tiff_diroff;
+		else
+			tif->tif_nextdiroff = tif->tif_header.big.tiff_diroff;
+		/*
+		 * Try to use a memory-mapped file if the client
+		 * has not explicitly suppressed usage with the
+		 * 'm' flag in the open mode (see above).
+		 */
+		if (tif->tif_flags & TIFF_MAPPED)
+		{
+			toff_t n;
+			if (TIFFMapFileContents(tif, (void**)(&tif->tif_base), &n))
 			{
-				toff_t n;
-				if (TIFFMapFileContents(tif,(void**)(&tif->tif_base),&n))
-				{
-					tif->tif_size=(tmsize_t)n;
-					assert((toff_t)tif->tif_size==n);
-				}
-				else
-					tif->tif_flags &= ~TIFF_MAPPED;
+				tif->tif_size = (tmsize_t)n;
+				assert((toff_t)tif->tif_size == n);
 			}
-			/*
-			 * Sometimes we do not want to read the first directory (for example,
-			 * it may be broken) and want to proceed to other directories. I this
-			 * case we use the TIFF_HEADERONLY flag to open file and return
-			 * immediately after reading TIFF header.
-			 */
-			if (tif->tif_flags & TIFF_HEADERONLY)
-				return (tif);
-
-			/*
-			 * Setup initial directory.
-			 */
-			if (TIFFReadDirectory(tif)) {
-				tif->tif_rawcc = (tmsize_t)-1;
-				tif->tif_flags |= TIFF_BUFFERSETUP;
-				return (tif);
-			}
-			break;
-		case 'a':
-			/*
-			 * New directories are automatically append
-			 * to the end of the directory chain when they
-			 * are written out (see TIFFWriteDirectory).
-			 */
-			if (!TIFFDefaultDirectory(tif))
-				goto bad;
+			else
+				tif->tif_flags &= ~TIFF_MAPPED;
+		}
+		/*
+		 * Sometimes we do not want to read the first directory (for example,
+		 * it may be broken) and want to proceed to other directories. I this
+		 * case we use the TIFF_HEADERONLY flag to open file and return
+		 * immediately after reading TIFF header.
+		 */
+		if (tif->tif_flags & TIFF_HEADERONLY)
 			return (tif);
+
+		/*
+		 * Setup initial directory.
+		 */
+		if (TIFFReadDirectory(tif)) {
+			tif->tif_rawcc = (tmsize_t)-1;
+			tif->tif_flags |= TIFF_BUFFERSETUP;
+			return (tif);
+		}
+		break;
+	case 'a':
+		/*
+		 * New directories are automatically append
+		 * to the end of the directory chain when they
+		 * are written out (see TIFFWriteDirectory).
+		 */
+		if (!TIFFDefaultDirectory(tif))
+			goto bad;
+		return (tif);
 	}
 bad:
 	tif->tif_mode = O_RDONLY;	/* XXX avoid flush */
-        TIFFCleanup(tif);
+	TIFFCleanup(tif);
 bad2:
 	return ((TIFF*)0);
-}
+	}
 
 /*
  * Query functions to access private data.
  */
 
-/*
- * Return open file's name.
- */
+ /*
+  * Return open file's name.
+  */
 const char *
 TIFFFileName(TIFF* tif)
 {
@@ -525,7 +527,7 @@ TIFFFileno(TIFF* tif)
 int
 TIFFSetFileno(TIFF* tif, int fd)
 {
-        int old_fd = tif->tif_fd;
+	int old_fd = tif->tif_fd;
 	tif->tif_fd = fd;
 	return old_fd;
 }

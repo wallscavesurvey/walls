@@ -9,5 +9,5 @@
 bool IsCommonControlsEnabled();
 bool IsThemeEnabled();
 LRESULT EnableWindowTheme(HWND hwnd, LPCWSTR classList, LPCWSTR subApp, LPCWSTR idlist);
-bool EnableVisualStyles(HWND hwnd,bool bValue); //true if successful
+bool EnableVisualStyles(HWND hwnd, bool bValue); //true if successful
 #endif

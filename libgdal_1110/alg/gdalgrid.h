@@ -31,17 +31,17 @@
 #ifndef GDALGRID_H_INCLUDED
 #define GDALGRID_H_INCLUDED
 
-/**
- * \file gdalgrid.h
- *
- * GDAL gridder related entry points and definitions.
- */
+ /**
+  * \file gdalgrid.h
+  *
+  * GDAL gridder related entry points and definitions.
+  */
 
 #include "gdal_alg.h"
 
-/*
- *  GridCreate Algorithm names
- */
+  /*
+   *  GridCreate Algorithm names
+   */
 
 static const char szAlgNameInvDist[] = "invdist";
 static const char szAlgNameAverage[] = "average";
@@ -55,68 +55,68 @@ static const char szAlgNameAverageDistancePts[] = "average_distance_pts";
 
 CPL_C_START
 
-typedef CPLErr (*GDALGridFunction)( const void *, GUInt32,
-                                    const double *, const double *,
-                                    const double *,
-                                    double, double, double *,
-                                    void* );
+typedef CPLErr(*GDALGridFunction)(const void *, GUInt32,
+	const double *, const double *,
+	const double *,
+	double, double, double *,
+	void*);
 CPLErr
-GDALGridInverseDistanceToAPower( const void *, GUInt32,
-                                 const double *, const double *,
-                                 const double *,
-                                 double, double, double *,
-                                 void* );
+GDALGridInverseDistanceToAPower(const void *, GUInt32,
+	const double *, const double *,
+	const double *,
+	double, double, double *,
+	void*);
 CPLErr
-GDALGridInverseDistanceToAPowerNoSearch( const void *, GUInt32,
-                                         const double *, const double *,
-                                         const double *,
-                                         double, double, double *,
-                                         void*  );
+GDALGridInverseDistanceToAPowerNoSearch(const void *, GUInt32,
+	const double *, const double *,
+	const double *,
+	double, double, double *,
+	void*);
 CPLErr
-GDALGridMovingAverage( const void *, GUInt32,
-                       const double *, const double *, const double *,
-                       double, double, double *,
-                       void*  );
+GDALGridMovingAverage(const void *, GUInt32,
+	const double *, const double *, const double *,
+	double, double, double *,
+	void*);
 CPLErr
-GDALGridNearestNeighbor( const void *, GUInt32,
-                         const double *, const double *, const double *,
-                         double, double, double *,
-                         void* );
+GDALGridNearestNeighbor(const void *, GUInt32,
+	const double *, const double *, const double *,
+	double, double, double *,
+	void*);
 CPLErr
-GDALGridDataMetricMinimum( const void *, GUInt32,
-                           const double *, const double *, const double *,
-                           double, double, double *,
-                           void*  );
+GDALGridDataMetricMinimum(const void *, GUInt32,
+	const double *, const double *, const double *,
+	double, double, double *,
+	void*);
 CPLErr
-GDALGridDataMetricMaximum( const void *, GUInt32,
-                           const double *, const double *, const double *,
-                           double, double, double *,
-                           void*  );
+GDALGridDataMetricMaximum(const void *, GUInt32,
+	const double *, const double *, const double *,
+	double, double, double *,
+	void*);
 CPLErr
-GDALGridDataMetricRange( const void *, GUInt32,
-                         const double *, const double *, const double *,
-                         double, double, double *,
-                         void*  );
+GDALGridDataMetricRange(const void *, GUInt32,
+	const double *, const double *, const double *,
+	double, double, double *,
+	void*);
 CPLErr
-GDALGridDataMetricCount( const void *, GUInt32,
-                         const double *, const double *, const double *,
-                         double, double, double *,
-                         void*  );
+GDALGridDataMetricCount(const void *, GUInt32,
+	const double *, const double *, const double *,
+	double, double, double *,
+	void*);
 CPLErr
-GDALGridDataMetricAverageDistance( const void *, GUInt32,
-                                   const double *, const double *,
-                                   const double *, double, double, double *,
-                                   void* );
+GDALGridDataMetricAverageDistance(const void *, GUInt32,
+	const double *, const double *,
+	const double *, double, double, double *,
+	void*);
 CPLErr
-GDALGridDataMetricAverageDistancePts( const void *, GUInt32,
-                                      const double *, const double *,
-                                      const double *, double, double,
-                                      double *,
-                                      void*  );
+GDALGridDataMetricAverageDistancePts(const void *, GUInt32,
+	const double *, const double *,
+	const double *, double, double,
+	double *,
+	void*);
 CPLErr CPL_DLL
-ParseAlgorithmAndOptions( const char *,
-                          GDALGridAlgorithm *,
-                          void ** );
+ParseAlgorithmAndOptions(const char *,
+	GDALGridAlgorithm *,
+	void **);
 CPL_C_END
 
 #endif /* GDALGRID_H_INCLUDED */

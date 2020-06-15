@@ -12,7 +12,7 @@
 
 class CMapExpDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
 	CMapExpDlg(CWnd* pParent = NULL);   // standard constructor
 
@@ -24,17 +24,17 @@ public:
 
 	CString m_defpath;
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CMapExpDlg)
-	protected:
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CMapExpDlg)
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
 // Implementation
 protected:
 	void FixWMFname();
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 	// Generated message map functions
 	//{{AFX_MSG(CMapExpDlg)
 	afx_msg void OnBrowse();

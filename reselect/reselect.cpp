@@ -30,14 +30,14 @@ static char THIS_FILE[] = __FILE__;
 BEGIN_MESSAGE_MAP(CReselectApp, CWinApp)
 	//{{AFX_MSG_MAP(CReselectApp)
 	ON_COMMAND(ID_APP_ABOUT, OnAppAbout)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-		//    DO NOT EDIT what you see in these blocks of generated code!
-	//}}AFX_MSG_MAP
-	// Standard file based document commands
-	//ON_COMMAND(ID_FILE_NEW, CWinApp::OnFileNew)
-	//ON_COMMAND(ID_FILE_OPEN, CWinApp::OnFileOpen)
-	// Standard print setup command
-	//ON_COMMAND(ID_FILE_PRINT_SETUP, CWinApp::OnFilePrintSetup)
+	// NOTE - the ClassWizard will add and remove mapping macros here.
+	//    DO NOT EDIT what you see in these blocks of generated code!
+//}}AFX_MSG_MAP
+// Standard file based document commands
+//ON_COMMAND(ID_FILE_NEW, CWinApp::OnFileNew)
+//ON_COMMAND(ID_FILE_OPEN, CWinApp::OnFileOpen)
+// Standard print setup command
+//ON_COMMAND(ID_FILE_PRINT_SETUP, CWinApp::OnFilePrintSetup)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -51,7 +51,7 @@ CReselectApp::CReselectApp()
 
 CReselectApp::~CReselectApp()
 {
-	if ( m_pDispOM != NULL)
+	if (m_pDispOM != NULL)
 	{
 		delete m_pDispOM;
 	}
@@ -109,24 +109,24 @@ BOOL CReselectApp::InitInstance()
 	AddDocTemplate(m_pDocTemplate);
 
 	{
-	  char *p=_strdup(m_pszHelpFilePath);
-	  strcpy(p+strlen(p)-3,"INI");
-	  m_pszProfileName=p;
+		char *p = _strdup(m_pszHelpFilePath);
+		strcpy(p + strlen(p) - 3, "INI");
+		m_pszProfileName = p;
 	}
- 	
-	if(!_getcwd(m_szDBFilePath,_MAX_PATH)) strcpy(m_szDBFilePath,m_pszProfileName);
-	else if(m_szDBFilePath[strlen(m_szDBFilePath)-1]!='\\') strcat(m_szDBFilePath,"\\");
+
+	if (!_getcwd(m_szDBFilePath, _MAX_PATH)) strcpy(m_szDBFilePath, m_pszProfileName);
+	else if (m_szDBFilePath[strlen(m_szDBFilePath) - 1] != '\\') strcat(m_szDBFilePath, "\\");
 
 	CReselectVw::Initialize();
-	m_link=GetProfileString("Url","TSS",NULL);
-	if(m_link.IsEmpty()) m_link=TSS_URL;
+	m_link = GetProfileString("Url", "TSS", NULL);
+	if (m_link.IsEmpty()) m_link = TSS_URL;
 
 	// Parse command line for standard shell commands, DDE, file open
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
 
 	// Dispatch commands specified on the command line
-	m_nCmdShow=SW_HIDE;
+	m_nCmdShow = SW_HIDE;
 	if (!ProcessShellCommand(cmdInfo)) return FALSE;
 
 	((CMainFrame *)m_pMainWnd)->RestoreWindow(SW_SHOW);
@@ -141,7 +141,7 @@ BOOL CReselectApp::InitInstance()
 
 class CUpLnkDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
 	CUpLnkDlg(LPCSTR pURL, CWnd* pParent = NULL);   // standard constructor
 
@@ -149,14 +149,14 @@ public:
 	//{{AFX_DATA(CUpLnkDlg)
 	enum { IDD = IDD_UPDATELINK };
 	CString m_NewURL;
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+	// NOTE: the ClassWizard will add data members here
+//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CUpLnkDlg)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
@@ -174,7 +174,7 @@ protected:
 /////////////////////////////////////////////////////////////////////////////
 // CUpLnkDlg dialog
 
-CUpLnkDlg::CUpLnkDlg(LPCSTR pURL,CWnd* pParent /*=NULL*/)
+CUpLnkDlg::CUpLnkDlg(LPCSTR pURL, CWnd* pParent /*=NULL*/)
 	: CDialog(CUpLnkDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CUpLnkDlg)
@@ -203,8 +203,8 @@ BOOL CUpLnkDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	CenterWindow();
-	CEdit *ce=(CEdit *)GetDlgItem(IDC_NEWURL);
-	ce->SetSel(0,-1);
+	CEdit *ce = (CEdit *)GetDlgItem(IDC_NEWURL);
+	ce->SetSel(0, -1);
 	ce->SetFocus();
 	return FALSE;  // return TRUE  unless you set the focus to a control
 }
@@ -214,14 +214,14 @@ class CAboutDlg : public CDialog
 public:
 	CAboutDlg();
 
-// Dialog Data
-	//{{AFX_DATA(CAboutDlg)
+	// Dialog Data
+		//{{AFX_DATA(CAboutDlg)
 	enum { IDD = IDD_ABOUTBOX };
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CAboutDlg)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 	//}}AFX_VIRTUAL
@@ -270,57 +270,57 @@ void CReselectApp::OnAppAbout()
 // CReselectApp message handlers
 
 
-int CReselectApp::ExitInstance() 
+int CReselectApp::ExitInstance()
 {
 	CReselectVw::Terminate();
 	return CWinApp::ExitInstance();
 }
 
-void CAboutDlg::OnLButtonDown(UINT nFlags, CPoint point) 
+void CAboutDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	EndDialog(IDOK);
 }
 
-void CAboutDlg::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) 
+void CAboutDlg::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	EndDialog(IDOK);
 }
 
-BOOL CAboutDlg::OnInitDialog() 
+BOOL CAboutDlg::OnInitDialog()
 {
 	GetDlgItem(IDC_ST_TEXDATE)->SetWindowText(theApp.m_texbib_date);
 	GetDlgItem(IDC_ST_NWDATE)->SetWindowText(theApp.m_nwbb_date);
-	m_textLink.SubclassDlgItem(IDC_TSS_URL,this);
+	m_textLink.SubclassDlgItem(IDC_TSS_URL, this);
 	CDialog::OnInitDialog();
 	CenterWindow();
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
-void CAboutDlg::OnLinkUpdate() 
+void CAboutDlg::OnLinkUpdate()
 {
 	CUpLnkDlg dlg(theApp.m_link);
 
-	if(IDOK==dlg.DoModal()) {
-		theApp.m_link=dlg.m_NewURL;
-		VERIFY(AfxGetApp()->WriteProfileString("Url","TSS",dlg.m_NewURL));
+	if (IDOK == dlg.DoModal()) {
+		theApp.m_link = dlg.m_NewURL;
+		VERIFY(AfxGetApp()->WriteProfileString("Url", "TSS", dlg.m_NewURL));
 	}
 }
 
-BOOL CAboutDlg::OnCommand(WPARAM wParam, LPARAM lParam) 
+BOOL CAboutDlg::OnCommand(WPARAM wParam, LPARAM lParam)
 {
 	// TODO: Add your specialized code here and/or call the base class
-	BOOL bRet=CDialog::OnCommand(wParam, lParam);
-	if(bRet && (WORD)wParam==IDC_TSS_URL) EndDialog(IDOK);
+	BOOL bRet = CDialog::OnCommand(wParam, lParam);
+	if (bRet && (WORD)wParam == IDC_TSS_URL) EndDialog(IDOK);
 	return bRet;
 }
 
 void CReselectApp::ExecuteUrl(LPCSTR url)
 {
 	DWORD flags;
-	if(InternetGetConnectedState(&flags,0)) {
+	if (InternetGetConnectedState(&flags, 0)) {
 		//bool b=TestURL(url); //doesn't fail even if file is missing
 		//ASSERT(b);
-		VERIFY((UINT)ShellExecute(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL)>32);
+		VERIFY((UINT)ShellExecute(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL) > 32);
 	}
 	else AfxMessageBox(IDS_INET_NOTCONNECTED);
 }
@@ -345,7 +345,7 @@ bool CReselectApp::TestURL(LPCSTR url)
 	}
 
 	bool bRet=file!=NULL;
-    if(bRet) {
+	if(bRet) {
 		DWORD dwLen = sizeof(szBuffer);
 		bRet=HttpQueryInfo(file, HTTP_QUERY_STATUS_CODE,szBuffer, &dwLen, NULL)!=0;
 		if (bRet && atoi(szBuffer) < 300 )
@@ -354,7 +354,7 @@ bool CReselectApp::TestURL(LPCSTR url)
 		}
 		file->Close();
 	}
-	session.Close(); 
+	session.Close();
 	return bRet;
 }
 */

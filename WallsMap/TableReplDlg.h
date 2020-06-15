@@ -11,10 +11,10 @@ class CTableReplDlg : public CDialog
 	DECLARE_DYNAMIC(CTableReplDlg)
 
 public:
-	CTableReplDlg(WORD nFld,CWnd* pParent = NULL);   // standard constructor
+	CTableReplDlg(WORD nFld, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CTableReplDlg();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_TABLE_REPL };
 
 	CString m_csFindWhat;
@@ -32,7 +32,7 @@ protected:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 
 private:
-    CDBGridDlg *m_pGDlg;
+	CDBGridDlg *m_pGDlg;
 	int m_fLen;
 	WORD m_nFld;
 };

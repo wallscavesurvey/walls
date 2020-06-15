@@ -19,14 +19,14 @@ class CQuickList;
 #define ME_SELECTALL		WM_USER + 0x7000
 
 /*
-	The code in this class is very much based on Lee Nowotny's article 
+	The code in this class is very much based on Lee Nowotny's article
 	"Easy Navigation Through an Editable List View",
 	http://www.codeproject.com/listctrl/listeditor.asp
 
 	And that article is based on another article by Zafir Anjum, "Editable Subitems":
 	http://www.codeguru.com/listview/edit_subitems.shtml
 
-    However, currently most of it is now rewritten. But I thought it 
+	However, currently most of it is now rewritten. But I thought it
 	would be unfair to not mention it.
 */
 
@@ -35,49 +35,49 @@ class CQuickList;
 class CQuickEdit : public CEdit
 {
 public:
-	CQuickEdit (CQuickList* pCtrl, int iItem, int iSubItem,
+	CQuickEdit(CQuickList* pCtrl, int iItem, int iSubItem,
 		HFONT hFont, CString sInitText, BYTE cTyp, bool endonlostfocus);
-    virtual ~CQuickEdit();
+	virtual ~CQuickEdit();
 
 	void SetEndOnLostFocus(bool autoend);
-	void StopEdit(UINT endkey=0);
+	void StopEdit(UINT endkey = 0);
 	bool IsChanged();
-	bool IsReadOnly() {return m_bReadOnly;}
+	bool IsReadOnly() { return m_bReadOnly; }
 
-    //{{AFX_VIRTUAL(CQuickEdit)
-	public:
+	//{{AFX_VIRTUAL(CQuickEdit)
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	//}}AFX_VIRTUAL
 
 protected:
-    CQuickList* pListCtrl;
-    int			Item;
-    int			SubItem;
-    CString		InitText;
+	CQuickList* pListCtrl;
+	int			Item;
+	int			SubItem;
+	CString		InitText;
 	HFONT		m_hFont;
-	
+
 	bool		m_endOnLostFocus;
 	bool		m_bReadOnly;
 	bool		m_isClosing;
 	bool		m_bChanged;
 	BYTE		m_bAccent;
 	BYTE		m_cTyp;
-	char		m_pYN[4],m_pTF[4];
+	char		m_pYN[4], m_pTF[4];
 	char		m_pLogStr[2];
 	LPSTR		m_pLogChar;
 	int			m_iLogChar;
-  
-    //{{AFX_MSG(CQuickEdit)
+
+	//{{AFX_MSG(CQuickEdit)
 	afx_msg void OnChange();
-    afx_msg void OnKillFocus(CWnd* pNewWnd);
-    afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
-    afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg void OnKillFocus(CWnd* pNewWnd);
+	afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg UINT OnGetDlgCode();
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	//}}AFX_MSG
 	//afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point);
 
-    DECLARE_MESSAGE_MAP()
+	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 };

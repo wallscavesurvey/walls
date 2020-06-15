@@ -5,15 +5,15 @@
 #pragma once
 #endif // _MSC_VER >= 1000
 
-typedef void (* TABCOMBO_CB)(void);
+typedef void(*TABCOMBO_CB)(void);
 
 class CComboHistItem
 {
 public:
-	CComboHistItem(CComboHistItem *pNext,CString &str,WORD flags=0) : m_pNext(pNext),m_wFlags(flags),m_Str(str) {};
+	CComboHistItem(CComboHistItem *pNext, CString &str, WORD flags = 0) : m_pNext(pNext), m_wFlags(flags), m_Str(str) {};
 	virtual ~CComboHistItem() {
 		delete m_pNext;
-		m_pNext=NULL;
+		m_pNext = NULL;
 	}
 	CComboHistItem *m_pNext;
 	WORD m_wFlags;
@@ -23,7 +23,7 @@ public:
 class CTabComboHist
 {
 public:
-	CTabComboHist(int maxItems) : m_nMaxItems(maxItems),m_nItems(0),m_pFirst(NULL)
+	CTabComboHist(int maxItems) : m_nMaxItems(maxItems), m_nItems(0), m_pFirst(NULL)
 	{
 	}
 
@@ -31,10 +31,10 @@ public:
 		delete m_pFirst;
 	}
 
-	void InsertAsFirst(CString &str,WORD flags=0);
-	BOOL IsEmpty() {return m_nItems==0;}
-	LPCSTR GetFirstString() {return m_nItems?m_pFirst->m_Str:"";}
-	WORD GetFirstFlags() {return m_nItems?m_pFirst->m_wFlags:0;}
+	void InsertAsFirst(CString &str, WORD flags = 0);
+	BOOL IsEmpty() { return m_nItems == 0; }
+	LPCSTR GetFirstString() { return m_nItems ? m_pFirst->m_Str : ""; }
+	WORD GetFirstFlags() { return m_nItems ? m_pFirst->m_wFlags : 0; }
 	CComboHistItem *GetItem(int index);
 
 	int m_nItems;
@@ -44,22 +44,22 @@ public:
 
 class CTabCombo : public CComboBox
 {
-// Construction
+	// Construction
 public:
 	CTabCombo();
 
-// Attributes
+	// Attributes
 public:
 
-// Operations
+	// Operations
 public:
 
 	void LoadHistory(CTabComboHist *pHist);
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CTabCombo)
-	public:
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CTabCombo)
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	//}}AFX_VIRTUAL
 
@@ -76,7 +76,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-extern CTabComboHist hist_prjfind,hist_prjrepl;
-void OnSelChangeFindStr(CDialog *pDlg,BOOL bGlobal);
+extern CTabComboHist hist_prjfind, hist_prjrepl;
+void OnSelChangeFindStr(CDialog *pDlg, BOOL bGlobal);
 
 #endif

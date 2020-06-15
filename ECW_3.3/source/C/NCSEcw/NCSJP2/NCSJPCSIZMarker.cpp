@@ -2,13 +2,13 @@
 ** Copyright 2002 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:     $Archive: /NCS/Source/C/NCSEcw/NCSJP2/NCSJPCSIZMarker.cpp $
@@ -21,11 +21,11 @@
 #include "NCSJPCSIZMarker.h"
 #include "NCSUtil.h"
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+ //////////////////////////////////////////////////////////////////////
+ // Construction/Destruction
+ //////////////////////////////////////////////////////////////////////
 
-// Constructor
+ // Constructor
 CNCSJPCSIZMarker::CNCSJPCSIZMarker()
 {
 	// Initialise the base marker class members
@@ -56,27 +56,27 @@ CNCSError CNCSJPCSIZMarker::Parse(CNCSJPC &JPC, CNCSJPCIOStream &Stream)
 	m_bHaveMarker = true;
 
 	NCSJP2_CHECKIO_BEGIN(Error, Stream);
-		NCSJP2_CHECKIO(ReadUINT16(m_nLength));
-		NCSJP2_CHECKIO(ReadUINT16(m_nRsiz));
-		NCSJP2_CHECKIO(ReadUINT32(m_nXsiz));
-		NCSJP2_CHECKIO(ReadUINT32(m_nYsiz));
-		NCSJP2_CHECKIO(ReadUINT32(m_nXOsiz));
-		NCSJP2_CHECKIO(ReadUINT32(m_nYOsiz));
-		NCSJP2_CHECKIO(ReadUINT32(m_nXTsiz));
-		NCSJP2_CHECKIO(ReadUINT32(m_nYTsiz));
-		NCSJP2_CHECKIO(ReadUINT32(m_nXTOsiz));
-		NCSJP2_CHECKIO(ReadUINT32(m_nYTOsiz));
-		NCSJP2_CHECKIO(ReadUINT16(m_nCsiz));
+	NCSJP2_CHECKIO(ReadUINT16(m_nLength));
+	NCSJP2_CHECKIO(ReadUINT16(m_nRsiz));
+	NCSJP2_CHECKIO(ReadUINT32(m_nXsiz));
+	NCSJP2_CHECKIO(ReadUINT32(m_nYsiz));
+	NCSJP2_CHECKIO(ReadUINT32(m_nXOsiz));
+	NCSJP2_CHECKIO(ReadUINT32(m_nYOsiz));
+	NCSJP2_CHECKIO(ReadUINT32(m_nXTsiz));
+	NCSJP2_CHECKIO(ReadUINT32(m_nYTsiz));
+	NCSJP2_CHECKIO(ReadUINT32(m_nXTOsiz));
+	NCSJP2_CHECKIO(ReadUINT32(m_nYTOsiz));
+	NCSJP2_CHECKIO(ReadUINT16(m_nCsiz));
 
-		for(int c = 0; c < m_nCsiz; c++) {
-			ComponentInfo ci;
+	for (int c = 0; c < m_nCsiz; c++) {
+		ComponentInfo ci;
 
-			NCSJP2_CHECKIO_ERROR(ci.Parse(JPC, Stream));
-			m_Components.push_back(ci);
-		}
-		if(Error == NCS_SUCCESS) {
-			m_bValid = true;
-		}
+		NCSJP2_CHECKIO_ERROR(ci.Parse(JPC, Stream));
+		m_Components.push_back(ci);
+	}
+	if (Error == NCS_SUCCESS) {
+		m_bValid = true;
+	}
 	NCSJP2_CHECKIO_END();
 	return(Error);
 }
@@ -88,21 +88,21 @@ CNCSError CNCSJPCSIZMarker::UnParse(CNCSJPC &JPC, CNCSJPCIOStream &Stream)
 
 	Error = CNCSJPCMarker::UnParse(JPC, Stream);
 	NCSJP2_CHECKIO_BEGIN(Error, Stream);
-		NCSJP2_CHECKIO(WriteUINT16(m_nLength));
-		NCSJP2_CHECKIO(WriteUINT16(m_nRsiz));
-		NCSJP2_CHECKIO(WriteUINT32(m_nXsiz));
-		NCSJP2_CHECKIO(WriteUINT32(m_nYsiz));
-		NCSJP2_CHECKIO(WriteUINT32(m_nXOsiz));
-		NCSJP2_CHECKIO(WriteUINT32(m_nYOsiz));
-		NCSJP2_CHECKIO(WriteUINT32(m_nXTsiz));
-		NCSJP2_CHECKIO(WriteUINT32(m_nYTsiz));
-		NCSJP2_CHECKIO(WriteUINT32(m_nXTOsiz));
-		NCSJP2_CHECKIO(WriteUINT32(m_nYTOsiz));
-		NCSJP2_CHECKIO(WriteUINT16(m_nCsiz));
+	NCSJP2_CHECKIO(WriteUINT16(m_nLength));
+	NCSJP2_CHECKIO(WriteUINT16(m_nRsiz));
+	NCSJP2_CHECKIO(WriteUINT32(m_nXsiz));
+	NCSJP2_CHECKIO(WriteUINT32(m_nYsiz));
+	NCSJP2_CHECKIO(WriteUINT32(m_nXOsiz));
+	NCSJP2_CHECKIO(WriteUINT32(m_nYOsiz));
+	NCSJP2_CHECKIO(WriteUINT32(m_nXTsiz));
+	NCSJP2_CHECKIO(WriteUINT32(m_nYTsiz));
+	NCSJP2_CHECKIO(WriteUINT32(m_nXTOsiz));
+	NCSJP2_CHECKIO(WriteUINT32(m_nYTOsiz));
+	NCSJP2_CHECKIO(WriteUINT16(m_nCsiz));
 
-		for(int c = 0; c < m_nCsiz; c++) {
-			NCSJP2_CHECKIO_ERROR(m_Components[c].UnParse(JPC, Stream));
-		}
+	for (int c = 0; c < m_nCsiz; c++) {
+		NCSJP2_CHECKIO_ERROR(m_Components[c].UnParse(JPC, Stream));
+	}
 	NCSJP2_CHECKIO_END();
 	return(Error);
 }
@@ -192,8 +192,8 @@ CNCSError CNCSJPCSIZMarker::ComponentInfo::Parse(CNCSJPC &JPC, CNCSJPCIOStream &
 
 	Error = CNCSJPCComponentDepthType::Parse(JPC, Stream);
 	NCSJP2_CHECKIO_BEGIN(Error, Stream);
-		NCSJP2_CHECKIO(ReadUINT8(m_nXRsiz));
-		NCSJP2_CHECKIO(ReadUINT8(m_nYRsiz));
+	NCSJP2_CHECKIO(ReadUINT8(m_nXRsiz));
+	NCSJP2_CHECKIO(ReadUINT8(m_nYRsiz));
 	NCSJP2_CHECKIO_END();
 	return(Error);
 }
@@ -205,8 +205,8 @@ CNCSError CNCSJPCSIZMarker::ComponentInfo::UnParse(CNCSJPC &JPC, CNCSJPCIOStream
 
 	Error = CNCSJPCComponentDepthType::UnParse(JPC, Stream);
 	NCSJP2_CHECKIO_BEGIN(Error, Stream);
-		NCSJP2_CHECKIO(WriteUINT8(m_nXRsiz));
-		NCSJP2_CHECKIO(WriteUINT8(m_nYRsiz));
+	NCSJP2_CHECKIO(WriteUINT8(m_nXRsiz));
+	NCSJP2_CHECKIO(WriteUINT8(m_nYRsiz));
 	NCSJP2_CHECKIO_END();
 	return(Error);
 }

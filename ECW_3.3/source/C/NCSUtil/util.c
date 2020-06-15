@@ -2,13 +2,13 @@
  ** Copyright 1999 Earth Resource Mapping Ltd.
  ** This document contains proprietary source code of
  ** Earth Resource Mapping Ltd, and can only be used under
- ** one of the three licenses as described in the 
- ** license.txt file supplied with this distribution. 
- ** See separate license.txt file for license details 
+ ** one of the three licenses as described in the
+ ** license.txt file supplied with this distribution.
+ ** See separate license.txt file for license details
  ** and conditions.
  **
  ** This software is covered by US patent #6,442,298,
- ** #6,102,897 and #6,633,688.  Rights to use these patents 
+ ** #6,102,897 and #6,633,688.  Rights to use these patents
  ** is included in the license agreements.
  **
  ** FILE:   	NCSUtil/util.c
@@ -60,7 +60,7 @@
 #		include <Types.h>
 #		include <stdio.h>
 #		include <stdlib.h>
-//#		include <sioux.h>
+ //#		include <sioux.h>
 #		include <math64.h> 
 #	endif //MAC_PREEMPTIVE
 #include <extras.h>
@@ -74,7 +74,7 @@ INT32 NCSUtilInitialised() {
 
 void NCSUtilInit(void)
 {
-	if(nInitialised == 0) {
+	if (nInitialised == 0) {
 		NCSMallocInit();
 		NCSThreadInit();
 		NCSErrorInit();
@@ -90,7 +90,7 @@ void NCSUtilFini(void)
 {
 	nInitialised--;
 
-	if(nInitialised == 0) {
+	if (nInitialised == 0) {
 		NCSGlobalLockFini();
 
 		NCSLogFini();
@@ -114,9 +114,9 @@ void NCSSleep(NCSTimeStampMs tsSleepTime)
 #ifdef MAC_PREEMPTIVE
 	Duration sleepDuration = (Duration)tsSleepTime * durationMillisecond;
 	AbsoluteTime absTNow = UpTime();
-	AbsoluteTime absTEnd = AddDurationToAbsolute( sleepDuration, absTNow );
+	AbsoluteTime absTEnd = AddDurationToAbsolute(sleepDuration, absTNow);
 
-	OSStatus result = MPDelayUntil ( &absTEnd /*AbsoluteTime * expirationTime*/ );
+	OSStatus result = MPDelayUntil(&absTEnd /*AbsoluteTime * expirationTime*/);
 #else
 	NCSTimeStampMs tNow = NCSGetTimeStampMs();
 	NCSTimeStampMs tEnd = tNow + tsSleepTime;
@@ -133,7 +133,7 @@ void NCSSleep(NCSTimeStampMs tsSleepTime)
 	  }
 	  } else {*/
 	NCSThreadYield();
-	while( NCSGetTimeStampMs() < tEnd ) {
+	while (NCSGetTimeStampMs() < tEnd) {
 		NCSThreadYield();
 	}
 	//}
@@ -144,9 +144,9 @@ void NCSSleep(NCSTimeStampMs tsSleepTime)
 	NCSTimeStampMs tEnd = tNow + tsSleepTime;
 	struct timespec tv = { 0, 0 };
 
-	while(1) {
+	while (1) {
 		NCSThreadYield();
-		if((tNow = NCSGetTimeStampMs()) >= tEnd) {
+		if ((tNow = NCSGetTimeStampMs()) >= tEnd) {
 			break;
 		}
 		tv.tv_nsec = MIN(tEnd - tNow, 100) * 1000 * 1000;
@@ -154,13 +154,13 @@ void NCSSleep(NCSTimeStampMs tsSleepTime)
 	}
 
 #else	/* WIN32 */
-ERROR: NCSSleep() needs coding in NCSUtil/util.c
+ERROR: NCSSleep() needs coding in NCSUtil / util.c
 #endif	/* WIN32 */
 }
 
 void NCSFormatSizeText(INT64 nSizeBytes, char *buf)
 {
-	if(nSizeBytes < 1024) {
+	if (nSizeBytes < 1024) {
 #ifdef WIN32
 		sprintf(buf, "%I64d bytes", nSizeBytes);
 #elif defined SOLARIS
@@ -176,15 +176,19 @@ void NCSFormatSizeText(INT64 nSizeBytes, char *buf)
 #else
 #error whats the 64bit format specifier?
 #endif // WIN32
-	} else if(nSizeBytes < 1024 * 1024) {
+	}
+	else if (nSizeBytes < 1024 * 1024) {
 		sprintf(buf, "%.1lf KB", (double)nSizeBytes / 1024.0);
-	} else if(nSizeBytes < 1024 * 1024 * 1024) {
+	}
+	else if (nSizeBytes < 1024 * 1024 * 1024) {
 		nSizeBytes /= 1024;
 		sprintf(buf, "%.1lf MB", (double)nSizeBytes / 1024.0);
-	} else if(nSizeBytes < (INT64)1024 * 1024 * 1024 * 1024) {
+	}
+	else if (nSizeBytes < (INT64)1024 * 1024 * 1024 * 1024) {
 		nSizeBytes /= (1024 * 1024);
 		sprintf(buf, "%.1lf GB", (double)nSizeBytes / 1024.0);
-	} else {
+	}
+	else {
 		nSizeBytes /= (1024 * 1024 * 1024);
 		sprintf(buf, "%.1lf TB", (double)nSizeBytes / 1024.0);
 	}
@@ -201,8 +205,8 @@ NCSTimeStampMs NCSGetTimeStampMs(void)
 
 	tsNow = (NCSTimeStampMs)GetTickCount();
 
-	if(tsNow < tsLocalLast) {		// wrapped
-		tsLocalAdd += (NCSTimeStampMs)0x100000000;		
+	if (tsNow < tsLocalLast) {		// wrapped
+		tsLocalAdd += (NCSTimeStampMs)0x100000000;
 		tsAdd = tsLocalAdd;
 	}
 	tsLast = tsNow;
@@ -226,7 +230,7 @@ NCSTimeStampMs NCSGetTimeStampMs(void)
 	return(((UINT64)t.tv_sec * 1000000 + t.tv_usec) / 1000);
 
 #else
-ERROR: code NCSGetTimeStampMs() in NCSUtil/util.c
+ERROR: code NCSGetTimeStampMs() in NCSUtil / util.c
 #endif	/* WIN32 */
 
 }
@@ -241,19 +245,21 @@ NCSTimeStampUs NCSGetTimeStampUs(void)
 	NCSTimeStampMs tsNow;
 	LARGE_INTEGER iFrequency;
 
-	if(QueryPerformanceFrequency(&iFrequency)) {
+	if (QueryPerformanceFrequency(&iFrequency)) {
 		LARGE_INTEGER iCount;
 
-		if(QueryPerformanceCounter(&iCount)) {
+		if (QueryPerformanceCounter(&iCount)) {
 			tsNow = (iCount.QuadPart * 1000000) / iFrequency.QuadPart;
-		} else {
+		}
+		else {
 			tsNow = (NCSTimeStampMs)GetTickCount() * 1000;
 		}
-	} else {
+	}
+	else {
 		tsNow = (NCSTimeStampMs)GetTickCount() * 1000;
 	}
-	if(tsNow < tsLocalLast) {		// wrapped
-		tsLocalAdd += (NCSTimeStampMs)0x100000000;		
+	if (tsNow < tsLocalLast) {		// wrapped
+		tsLocalAdd += (NCSTimeStampMs)0x100000000;
 		tsAdd = tsLocalAdd;
 	}
 	tsLast = tsNow;
@@ -270,14 +276,15 @@ NCSPlatform NCSGetPlatform(void)
 
 	osv.dwOSVersionInfoSize = sizeof(osv);
 
-	if(GetVersionEx(&osv)) {
-		if(osv.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS) {
+	if (GetVersionEx(&osv)) {
+		if (osv.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS) {
 			return(NCS_WINDOWS_9X);
 		}
 		else if (osv.dwPlatformId == VER_PLATFORM_WIN32_NT) {
 			return(NCS_WINDOWS_NT);
 #if defined(_WIN32_WCE)
-		} else if (osv.dwPlatformId == VER_PLATFORM_WIN32_CE) {
+		}
+		else if (osv.dwPlatformId == VER_PLATFORM_WIN32_CE) {
 			return (NCS_WINDOWS_CE);
 #endif
 		}
@@ -318,8 +325,9 @@ char *NCSStrDup(char *pString)
 
 	if (pString == NULL) {
 		cp = NCSStrDup("");
-	} else {
-		cp = (char *)NCSMalloc((unsigned)strlen(pString)+1, 1);
+	}
+	else {
+		cp = (char *)NCSMalloc((unsigned)strlen(pString) + 1, 1);
 		(void)strcpy(cp, pString);
 	}
 
@@ -332,12 +340,13 @@ NCSTChar *NCSStrDupT(NCSTChar *pString)
 
 	if (pString == NULL) {
 		cp = NCSStrDupT(NCS_T(""));
-	} else {
+	}
+	else {
 #ifdef NCS_BUILD_UNICODE
-		cp = (NCSTChar *)NCSMalloc((unsigned)wcslen(pString)+1, 1);
+		cp = (NCSTChar *)NCSMalloc((unsigned)wcslen(pString) + 1, 1);
 		(void)wcscpy(cp, pString);
 #else
-		cp = (NCSTChar *)NCSMalloc((unsigned)strlen(pString)+1, 1);
+		cp = (NCSTChar *)NCSMalloc((unsigned)strlen(pString) + 1, 1);
 		(void)strcpy(cp, pString);
 #endif
 	}
@@ -348,7 +357,7 @@ NCSTChar *NCSStrDupT(NCSTChar *pString)
 BOOLEAN NCSIsLocalFile(char *string)
 {
 	if (!string) return(FALSE);
-	if (strlen(string)>2) {
+	if (strlen(string) > 2) {
 		if (string[1] == ':') return(TRUE);								// Mapped drive name
 		if ((string[0] == '\\') && (string[1] == '\\')) return(TRUE);	// UNC name
 #ifdef MACINTOSH
@@ -375,14 +384,15 @@ BOOLEAN NCSPathExists(char *pPath, BOOLEAN *pIsDirectory)
 	BY_HANDLE_FILE_INFORMATION Info;
 	HANDLE hFile;
 
-	if(hFile = CreateFile(OS_STRING(pPath), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_READONLY, NULL)) {
-		if(GetFileInformationByHandle(hFile, &Info)) {
-			if(Info.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+	if (hFile = CreateFile(OS_STRING(pPath), GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_READONLY, NULL)) {
+		if (GetFileInformationByHandle(hFile, &Info)) {
+			if (Info.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
 				*pIsDirectory = TRUE;
 				bPathExists = TRUE;
-			} else if(Info.dwFileAttributes & FILE_ATTRIBUTE_NORMAL) {
+			}
+			else if (Info.dwFileAttributes & FILE_ATTRIBUTE_NORMAL) {
 				*pIsDirectory = FALSE;
-				bPathExists = TRUE;	
+				bPathExists = TRUE;
 			}
 		}
 		CloseHandle(hFile);
@@ -398,15 +408,17 @@ BOOLEAN NCSPathExists(char *pPath, BOOLEAN *pIsDirectory)
 		pPathCopy[strlen(pPath) - 1] = '\0';
 	}
 
-	if (stat( (const char *)pPathCopy, &buffer) != -1) {
+	if (stat((const char *)pPathCopy, &buffer) != -1) {
 
 		if (((buffer.st_mode)&S_IFMT) == S_IFDIR) {
 			*pIsDirectory = TRUE;
 			bPathExists = TRUE;
-		} else if (((buffer.st_mode)&S_IFMT) == S_IFREG) {
+		}
+		else if (((buffer.st_mode)&S_IFMT) == S_IFREG) {
 			*pIsDirectory = FALSE;
 			bPathExists = TRUE;
-		} else { 
+		}
+		else {
 			bPathExists = FALSE;
 		}
 	}
@@ -425,10 +437,10 @@ BOOLEAN NCSPathExists(char *pPath, BOOLEAN *pIsDirectory)
 	bPathExists = TRUE;
 
 #else
-#ERROR: define NCSPathExists() for this platform
+	#ERROR: define NCSPathExists() for this platform
 #endif	/* WIN32||LINUX */
 
-	return bPathExists;
+		return bPathExists;
 }
 
 // Following code stolen and modified from ER Mapper library
@@ -462,7 +474,7 @@ void NCSDegreesToDMSString(char **ppDegreeString, double dDecimalDegrees, UINT8 
 	}
 
 	ten_fac = 1.0;
-	for (i=0; i<nPrecision; i++) {
+	for (i = 0; i < nPrecision; i++) {
 		ten_fac *= 10.0;
 	}
 
@@ -473,7 +485,7 @@ void NCSDegreesToDMSString(char **ppDegreeString, double dDecimalDegrees, UINT8 
 	}
 	if (minutes >= 60) {
 		minutes -= 60;
-		degrees ++;
+		degrees++;
 	}
 	sprintf(Buffer, "%d:%d:%.*f", degrees, minutes, nPrecision, seconds);
 
@@ -481,7 +493,7 @@ void NCSDegreesToDMSString(char **ppDegreeString, double dDecimalDegrees, UINT8 
 	 ** strip trailing zeros up to last one before the decimal point
 	 */
 	i = (INT32)strlen(Buffer) - 1;
-	while (i > 0 && Buffer[i] == '0' && Buffer[i-1] != '.') {
+	while (i > 0 && Buffer[i] == '0' && Buffer[i - 1] != '.') {
 		Buffer[i--] = '\0';
 	}
 
@@ -491,43 +503,45 @@ void NCSDegreesToDMSString(char **ppDegreeString, double dDecimalDegrees, UINT8 
 /*
  **	For a gien number 125.223466 it will format it to look like 125:55:33N
  */
-NCSError NCSFormatCoordStringsLL(double dLatitude, double dLongitude, char **ppLatString, char **ppLongString )
+NCSError NCSFormatCoordStringsLL(double dLatitude, double dLongitude, char **ppLatString, char **ppLongString)
 {
 	char *coord_ll_NS = "N";
 	char *coord_ll_EW = "E";
-	char Buffer [100];
+	char Buffer[100];
 	char *pDMSString = NULL;
 
 	if (dLatitude != 0.0) {
 		if (dLatitude < 0.0) {
-			dLatitude = -dLatitude; 
+			dLatitude = -dLatitude;
 			coord_ll_NS = "S";
 			NCSDegreesToDMSString(&pDMSString, dLatitude, 2);
-			sprintf(Buffer, "%s%s", pDMSString, coord_ll_NS );
+			sprintf(Buffer, "%s%s", pDMSString, coord_ll_NS);
 		}
 		else {
 			NCSDegreesToDMSString(&pDMSString, dLatitude, 2);
-			sprintf(Buffer, "%s%s", pDMSString, coord_ll_NS );
+			sprintf(Buffer, "%s%s", pDMSString, coord_ll_NS);
 		}
-	} else {
+	}
+	else {
 		strcpy(Buffer, "0:0:0.0N");
 	}
 
 	*ppLatString = NCSStrDup(Buffer);
 
 
-	if( dLongitude != 0.0 ) {       
+	if (dLongitude != 0.0) {
 		/* Normalise longitude around 180 degrees */
 		int nr_revs = 0;
-		nr_revs = ((int)dLongitude)/360;
+		nr_revs = ((int)dLongitude) / 360;
 		if (dLongitude < 0.0) {
-			dLongitude = dLongitude + (((double)(nr_revs+1)) * 360.0);
-			nr_revs = ((int)dLongitude)/360;
+			dLongitude = dLongitude + (((double)(nr_revs + 1)) * 360.0);
+			nr_revs = ((int)dLongitude) / 360;
 		}
 		dLongitude = dLongitude - (((double)nr_revs) * 360.0);
-		if ((((int)dLongitude)/180)%2 == 0) {
+		if ((((int)dLongitude) / 180) % 2 == 0) {
 			coord_ll_EW = "E";
-		} else {
+		}
+		else {
 			dLongitude = 360.0 - dLongitude;
 			coord_ll_EW = "W";
 		}
@@ -535,8 +549,9 @@ NCSError NCSFormatCoordStringsLL(double dLatitude, double dLongitude, char **ppL
 		NCSFree(pDMSString);
 		NCSDegreesToDMSString(&pDMSString, dLongitude, 2);
 
-		sprintf(Buffer,"%s%s", pDMSString, coord_ll_EW );
-	} else {                               
+		sprintf(Buffer, "%s%s", pDMSString, coord_ll_EW);
+	}
+	else {
 		strcpy(Buffer, "0:0:0.0E");
 	}
 
@@ -548,22 +563,24 @@ NCSError NCSFormatCoordStringsLL(double dLatitude, double dLongitude, char **ppL
 /*
  **	For a gien number 125.223466 it will format it to look like 125:55:33N
  */
-NCSError NCSFormatCoordStringsEN(double dEasting, double dNorthing, char **ppEastString, char **ppNorthString )
+NCSError NCSFormatCoordStringsEN(double dEasting, double dNorthing, char **ppEastString, char **ppNorthString)
 {
 	char    e_str_buf[256];
 	char    n_str_buf[256];
 
-	if( dEasting != 0.0 ) {
+	if (dEasting != 0.0) {
 		sprintf(e_str_buf, "%.2lf%s", dEasting, "E");
-	} else {                           
+	}
+	else {
 		strcpy(e_str_buf, "0.0E");
 	}
-	if( dNorthing != 0.0 ) { 
+	if (dNorthing != 0.0) {
 		sprintf(n_str_buf, "%.2lf%s", dNorthing, "N");
-	} else {                            
-		strcpy(n_str_buf, "0.0N");  
 	}
-	*ppEastString = NCSStrDup(e_str_buf); 
+	else {
+		strcpy(n_str_buf, "0.0N");
+	}
+	*ppEastString = NCSStrDup(e_str_buf);
 	*ppNorthString = NCSStrDup(n_str_buf);
 
 	return NCS_SUCCESS;
@@ -583,11 +600,11 @@ BOOLEAN NCSIsService(void)	/**[09]**/
 #ifdef WIN32
 	HKEY hKey;
 
-	if(RegOpenKeyEx(HKEY_CURRENT_USER,
-				OS_STRING("Software"),
-				0,	
-				KEY_QUERY_VALUE,
-				&hKey) != ERROR_SUCCESS) {
+	if (RegOpenKeyEx(HKEY_CURRENT_USER,
+		OS_STRING("Software"),
+		0,
+		KEY_QUERY_VALUE,
+		&hKey) != ERROR_SUCCESS) {
 		return(TRUE);
 	}
 	RegCloseKey(hKey);
@@ -602,7 +619,7 @@ BOOLEAN NCSIsIWS(void)
 	return g_bPrcessIsIWS;
 }
 
-void NCSSetIsIWS( BOOLEAN bValue )
+void NCSSetIsIWS(BOOLEAN bValue)
 {
 	g_bPrcessIsIWS = bValue;
 }
@@ -611,14 +628,14 @@ BOOLEAN NCSDoubleIsNan(double v)
 {
 #ifdef SOLARIS
 	fpclass_t c = fpclass(v);
-	if((c == FP_SNAN) || (c == FP_QNAN)) {
+	if ((c == FP_SNAN) || (c == FP_QNAN)) {
 		return(TRUE);
 	}
 #endif
 
 #ifdef HPUX
 	int c = fpclassify(v);
-	if(c == FP_NAN) {
+	if (c == FP_NAN) {
 		return(TRUE);
 	}
 #endif
@@ -630,7 +647,7 @@ BOOLEAN NCSDoubleIsNan(double v)
 #ifdef WIN32
 	int c = _fpclass(v);
 
-	if((c == _FPCLASS_SNAN) || (c == _FPCLASS_QNAN)) {
+	if ((c == _FPCLASS_SNAN) || (c == _FPCLASS_QNAN)) {
 		return(TRUE);
 	}
 #endif
@@ -641,18 +658,18 @@ double NCSNanVal(void)	/**[10]**/
 {
 	union {
 		struct {
-			unsigned lowbits        :32;
-			unsigned highbits       :19;
-			unsigned qnanbit        : 1;
-			unsigned exponent       :11;
-			unsigned sign           : 1;
+			unsigned lowbits : 32;
+			unsigned highbits : 19;
+			unsigned qnanbit : 1;
+			unsigned exponent : 11;
+			unsigned sign : 1;
 		} lsbfirst_map;
 		struct {
-			unsigned sign           : 1;
-			unsigned exponent       :11;
-			unsigned qnanbit        : 1;
-			unsigned highbits       :19;
-			unsigned lowbits        :32;
+			unsigned sign : 1;
+			unsigned exponent : 11;
+			unsigned qnanbit : 1;
+			unsigned highbits : 19;
+			unsigned lowbits : 32;
 		} msbfirst_map;
 		double d;
 	} u;
@@ -692,18 +709,18 @@ const char *NCSUtilGetModuleName(NCSModule eModuleName)
 	const char *pName = NULL;
 
 	switch (eModuleName) {
-		case NCS_MODULE_UTIL:
-		case NCS_MODULE_ECW:
-		case NCS_MODULE_JPEG:
-		case NCS_MODULE_GDT:
-		case NCS_MODULE_CNET:
-		case NCS_MODULE_SNET:
-		case NCS_MODULE_VIEW:
-		case NCS_MODULE_NPVIEW:
-			pName =  NCSModuleName[eModuleName];
-		default:
-			pName = NULL;
-			break;
+	case NCS_MODULE_UTIL:
+	case NCS_MODULE_ECW:
+	case NCS_MODULE_JPEG:
+	case NCS_MODULE_GDT:
+	case NCS_MODULE_CNET:
+	case NCS_MODULE_SNET:
+	case NCS_MODULE_VIEW:
+	case NCS_MODULE_NPVIEW:
+		pName = NCSModuleName[eModuleName];
+	default:
+		pName = NULL;
+		break;
 	}
 
 	return pName;
@@ -717,33 +734,34 @@ BOOLEAN NCSGetUserAndDomainName(char *UserName, LPDWORD cchUserName, char* Domai
 	HANDLE hToken = NULL;
 
 #define MY_BUFSIZE 512  // highly unlikely to exceed 512 bytes
-	UCHAR InfoBuffer[ MY_BUFSIZE ];
+	UCHAR InfoBuffer[MY_BUFSIZE];
 	DWORD cbInfoBuffer = MY_BUFSIZE;
 	SID_NAME_USE snu;
 
 	BOOLEAN bSuccess;
 
-	if(!OpenThreadToken(
-				GetCurrentThread(),
-				TOKEN_QUERY,
-				TRUE,
-				&hToken
-			   )) {
+	if (!OpenThreadToken(
+		GetCurrentThread(),
+		TOKEN_QUERY,
+		TRUE,
+		&hToken
+	)) {
 
-		if(GetLastError() == ERROR_NO_TOKEN) {
+		if (GetLastError() == ERROR_NO_TOKEN) {
 
 			// 
 			// attempt to open the process token, since no thread token
 			// exists
 			// 
 
-			if(!OpenProcessToken(
-						GetCurrentProcess(),
-						TOKEN_QUERY,
-						&hToken
-					    )) return FALSE;
+			if (!OpenProcessToken(
+				GetCurrentProcess(),
+				TOKEN_QUERY,
+				&hToken
+			)) return FALSE;
 
-		} else {
+		}
+		else {
 
 			// 
 			// error trying to get thread token
@@ -754,15 +772,15 @@ BOOLEAN NCSGetUserAndDomainName(char *UserName, LPDWORD cchUserName, char* Domai
 	}
 
 	bSuccess = (BOOLEAN)GetTokenInformation(
-			hToken,
-			TokenUser,
-			InfoBuffer,
-			cbInfoBuffer,
-			&cbInfoBuffer
-			);
+		hToken,
+		TokenUser,
+		InfoBuffer,
+		cbInfoBuffer,
+		&cbInfoBuffer
+	);
 
-	if(!bSuccess) {
-		if(GetLastError() == ERROR_INSUFFICIENT_BUFFER) {
+	if (!bSuccess) {
+		if (GetLastError() == ERROR_INSUFFICIENT_BUFFER) {
 
 			// 
 			// alloc buffer and try GetTokenInformation() again
@@ -771,7 +789,8 @@ BOOLEAN NCSGetUserAndDomainName(char *UserName, LPDWORD cchUserName, char* Domai
 			CloseHandle(hToken);
 			return FALSE;
 
-		} else {
+		}
+		else {
 
 			// 
 			// error getting token info
@@ -785,14 +804,14 @@ BOOLEAN NCSGetUserAndDomainName(char *UserName, LPDWORD cchUserName, char* Domai
 	CloseHandle(hToken);
 
 	return (BOOLEAN)LookupAccountSid(
-			NULL,
-			((PTOKEN_USER)InfoBuffer)->User.Sid,
-			OS_STRING(UserName),
-			cchUserName,
-			OS_STRING(DomainName),
-			cchDomainName,
-			&snu
-			);
+		NULL,
+		((PTOKEN_USER)InfoBuffer)->User.Sid,
+		OS_STRING(UserName),
+		cchUserName,
+		OS_STRING(DomainName),
+		cchDomainName,
+		&snu
+	);
 }
 
 UINT32 NCSGetWebServerID(const char *szPath, DWORD nPathLen)	/**[06]**/
@@ -802,14 +821,14 @@ UINT32 NCSGetWebServerID(const char *szPath, DWORD nPathLen)	/**[06]**/
 	int index = nPathLen - 1;
 	char szNumber[256];
 	/* Locate the first "/" from the right hand side */
-	for (i=(nPathLen-1);i>=0;i--) {
-		if (szPath[i]=='/') {
+	for (i = (nPathLen - 1); i >= 0; i--) {
+		if (szPath[i] == '/') {
 			index = i;
 			break;
 		}
 	}
-	strcpy(szNumber,&(szPath[index+1]));
-	sscanf(szNumber,"%d",&result);
+	strcpy(szNumber, &(szPath[index + 1]));
+	sscanf(szNumber, "%d", &result);
 	return result;
 }
 
@@ -827,25 +846,25 @@ UINT32 NCSGetWebServerID(const char *szPath, DWORD nPathLen)
 #ifdef MACINTOSH_OLD
 int NCSstrcasecmp(const char *s1, const char *s2) /**[07]**/
 {
-	char *ls1,*ls2;
-	int i1,i2,i,result;
+	char *ls1, *ls2;
+	int i1, i2, i, result;
 
-	i1  = strlen(s1);
-	i2  = strlen(s2);
-	ls1 = (char *)malloc(i1+1);
-	ls2 = (char *)malloc(i2+1);
+	i1 = strlen(s1);
+	i2 = strlen(s2);
+	ls1 = (char *)malloc(i1 + 1);
+	ls2 = (char *)malloc(i2 + 1);
 
-	for (i=0;i<i1;i++) {
+	for (i = 0; i < i1; i++) {
 		ls1[i] = tolower(s1[i]);
 	}
 	ls1[i1] = '\0';
 
-	for (i=0;i<i2;i++) {
+	for (i = 0; i < i2; i++) {
 		ls2[i] = tolower(s2[i]);
 	}
 	ls2[i2] = '\0';
 
-	result = strcmp(ls1,ls2);
+	result = strcmp(ls1, ls2);
 	free(ls1);
 	free(ls2);
 	return result;
@@ -857,60 +876,60 @@ int NCSstrcasecmp(const char *s1, const char *s2) /**[07]**/
 
 char *gcvt(double value, int digits, char *buffer)
 {
-	sprintf( buffer, "%.*f", digits, value );
+	sprintf(buffer, "%.*f", digits, value);
 	return buffer;
 }
 
 char * itoa(int val, char *str, int radix)
 {
-	sprintf( str, "%d", val );
+	sprintf(str, "%d", val);
 	return str;
 }
 
-int _stricmp( const char *cA, const char *cB )
+int _stricmp(const char *cA, const char *cB)
 {
 	char *cAtmp = NULL;
 	char *cBtmp = NULL;
-	int i=0;
+	int i = 0;
 
-	if( !cA || !cB ) {
+	if (!cA || !cB) {
 		return -1;
 	}
-	if( strlen( cA ) != strlen( cB ) ) {
+	if (strlen(cA) != strlen(cB)) {
 		return -1;
 	}
 	//Convert both string to upper
-	cAtmp = NCSStrDup( (char *)cA );
-	cBtmp = NCSStrDup( (char *)cB );
-	for( i=0; i < strlen( cAtmp ); i++ ) {
-		cAtmp[i] = toupper( (int)cAtmp[i] );
-		cBtmp[i] = toupper( (int)cBtmp[i] );
+	cAtmp = NCSStrDup((char *)cA);
+	cBtmp = NCSStrDup((char *)cB);
+	for (i = 0; i < strlen(cAtmp); i++) {
+		cAtmp[i] = toupper((int)cAtmp[i]);
+		cBtmp[i] = toupper((int)cBtmp[i]);
 	}
 
-	return strcmp( cAtmp, cBtmp );
+	return strcmp(cAtmp, cBtmp);
 }
 
-int _strnicmp( const char *cA, const char *cB, unsigned long nSize )
+int _strnicmp(const char *cA, const char *cB, unsigned long nSize)
 {
 	char *cAtmp = NULL;
 	char *cBtmp = NULL;
-	int i=0;
+	int i = 0;
 
-	if( !cA || !cB ) {
+	if (!cA || !cB) {
 		return -1;
 	}
-	if( (strlen( cA ) < nSize) || (strlen( cB ) < nSize) ) {
+	if ((strlen(cA) < nSize) || (strlen(cB) < nSize)) {
 		return -1;
 	}
 	//Convert both string to upper
-	cAtmp = NCSStrDup( (char *)cA );
-	cBtmp = NCSStrDup( (char *)cB );
-	for( i=0; i < strlen( cAtmp ); i++ ) {
-		cAtmp[i] = toupper( (int)cAtmp[i] );
-		cBtmp[i] = toupper( (int)cBtmp[i] );
+	cAtmp = NCSStrDup((char *)cA);
+	cBtmp = NCSStrDup((char *)cB);
+	for (i = 0; i < strlen(cAtmp); i++) {
+		cAtmp[i] = toupper((int)cAtmp[i]);
+		cBtmp[i] = toupper((int)cBtmp[i]);
 	}
 
-	return strncmp( cAtmp, cBtmp, nSize );
+	return strncmp(cAtmp, cBtmp, nSize);
 }
 #endif //TARGET_API_MAC_CARBON
 #endif //MACINTOSH

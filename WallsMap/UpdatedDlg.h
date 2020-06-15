@@ -8,7 +8,7 @@ class CUpdatedDlg : public CDialog
 	DECLARE_DYNAMIC(CUpdatedDlg)
 
 public:
-	CUpdatedDlg(SHP_DBFILE *pdbfile,BOOL bUpdating,CWnd* pParent = NULL);   // standard constructor
+	CUpdatedDlg(SHP_DBFILE *pdbfile, BOOL bUpdating, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CUpdatedDlg();
 
 private:
@@ -19,7 +19,7 @@ private:
 	CEditLabel m_ceEditorName;
 	SHP_DBFILE *m_pdbfile;
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_UPDATED };
 
 protected:
@@ -29,5 +29,5 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedCancel();
-	afx_msg LRESULT OnCommandHelp(WPARAM,LPARAM);
+	afx_msg LRESULT OnCommandHelp(WPARAM, LPARAM);
 };

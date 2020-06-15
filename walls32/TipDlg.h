@@ -11,7 +11,7 @@
 
 class CTipDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
 	CTipDlg(CWnd* pParent = NULL);	 // standard constructor
 
@@ -28,10 +28,10 @@ protected:
 	int  m_idHelp;
 	int  m_iVersion;
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CTipDlg)
-	protected:
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CTipDlg)
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
@@ -41,7 +41,7 @@ public:
 
 protected:
 	// Generated message map functions
-	afx_msg void OnPrevTip(); 
+	afx_msg void OnPrevTip();
 	//{{AFX_MSG(CTipDlg)
 	afx_msg void OnNextTip();
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
@@ -50,7 +50,7 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
-    afx_msg void OnTellMeMore();
+	afx_msg void OnTellMeMore();
 };
 
 #endif // !defined(TIPDLG_H_INCLUDED_)

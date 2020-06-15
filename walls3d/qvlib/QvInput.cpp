@@ -9,35 +9,35 @@
 #define CURVERSION 1.0f 			/* Current version of file format */
 #define COMMENT_CHAR '#'
 
-char QvInput::FirstComment[SIZ_FIRSTCOMMENT]={0}; //DMcK
+char QvInput::FirstComment[SIZ_FIRSTCOMMENT] = { 0 }; //DMcK
 
 static const int numValidASCIIHeaders = 1;
-struct headerStorage 
+struct headerStorage
 {
-    const char *string;
-    float version;
+	const char *string;
+	float version;
 };
 
 static const headerStorage ASCIIHeader[1] = {
-    { "#VRML V1.0 ascii",	/* 20 chars */ 1.0f },
+	{ "#VRML V1.0 ascii",	/* 20 chars */ 1.0f },
 };
 
 float
 QvInput::isASCIIHeader(const char *string)
 {
-// gorasche: allow trailing garbage in header (conforming to VRML spec)
-    for (int i = 0; i < numValidASCIIHeaders; i++) {
-//	if (strcmp(ASCIIHeader[i].string, string) == 0)
-	if (!strncmp(ASCIIHeader[i].string, string,strlen(ASCIIHeader[i].string)))
-	    return ASCIIHeader[i].version;
-    }
-    return 0.0f;
+	// gorasche: allow trailing garbage in header (conforming to VRML spec)
+	for (int i = 0; i < numValidASCIIHeaders; i++) {
+		//	if (strcmp(ASCIIHeader[i].string, string) == 0)
+		if (!strncmp(ASCIIHeader[i].string, string, strlen(ASCIIHeader[i].string)))
+			return ASCIIHeader[i].version;
+	}
+	return 0.0f;
 }
 
 QvInput::QvInput()
 {
-    setFilePointer(stdin);
-	*FirstComment=0; //DMcK
+	setFilePointer(stdin);
+	*FirstComment = 0; //DMcK
 }
 
 QvInput::~QvInput()
@@ -47,169 +47,169 @@ QvInput::~QvInput()
 void
 QvInput::setFilePointer(FILE *newFP)
 {
-    fp = newFP;
-    lineNum = 1;
-    version = CURVERSION;
-    readHeader = FALSE;
-    headerOk = TRUE;
-    backBufIndex = -1;		
+	fp = newFP;
+	lineNum = 1;
+	version = CURVERSION;
+	readHeader = FALSE;
+	headerOk = TRUE;
+	backBufIndex = -1;
 }
 
 float
 QvInput::getVersion()
 {
-    if (! readHeader)
-	(void) checkHeader();
+	if (!readHeader)
+		(void)checkHeader();
 
-    return version;
+	return version;
 }
 
 QvBool
 QvInput::get(char &c)
 {
-    QvBool ret;
+	QvBool ret;
 
-    if (backBufIndex >= 0) {
-	c = backBuf.getString()[backBufIndex++];
+	if (backBufIndex >= 0) {
+		c = backBuf.getString()[backBufIndex++];
 
-	if (c != '\0')
-	    return TRUE;
+		if (c != '\0')
+			return TRUE;
 
-	backBuf.makeEmpty();
-	backBufIndex = -1;
-    }
-
-    if (! readHeader && ! checkHeader())
-	return FALSE;
-
-    if (eof()) {
-	c = (char)EOF;
-	ret = FALSE;
-    }
-
-    else {
-	int i = getc(fp);
-
-	if (i == EOF) {
-	    c = (char)EOF;
-	    ret = FALSE;
+		backBuf.makeEmpty();
+		backBufIndex = -1;
 	}
+
+	if (!readHeader && !checkHeader())
+		return FALSE;
+
+	if (eof()) {
+		c = (char)EOF;
+		ret = FALSE;
+	}
+
 	else {
-	    c = (char) i;
-	    ret = TRUE;
-	}
-    }
+		int i = getc(fp);
 
-    return ret;
+		if (i == EOF) {
+			c = (char)EOF;
+			ret = FALSE;
+		}
+		else {
+			c = (char)i;
+			ret = TRUE;
+		}
+	}
+
+	return ret;
 }
 
 QvBool
 QvInput::read(char &c)
 {
-    return (skipWhiteSpace() && get(c));
+	return (skipWhiteSpace() && get(c));
 }
 
 QvBool
 QvInput::read(QvString &s)
 {
-    if (! skipWhiteSpace())
-	return FALSE;
+	if (!skipWhiteSpace())
+		return FALSE;
 
-    QvBool      quoted;
-    char        c;
-    char        bufStore[256];
-    char        *buf;
-    int         bytesLeft;
+	QvBool      quoted;
+	char        c;
+	char        bufStore[256];
+	char        *buf;
+	int         bytesLeft;
 
-    s.makeEmpty();
+	s.makeEmpty();
 
-    if (! get(c))
-	return FALSE;
+	if (!get(c))
+		return FALSE;
 
-    quoted = (c == '\"');
-    if (! quoted)
-	putBack(c);
+	quoted = (c == '\"');
+	if (!quoted)
+		putBack(c);
 
-    do {
-	buf       = bufStore;
-	bytesLeft = sizeof(bufStore) - 1;
+	do {
+		buf = bufStore;
+		bytesLeft = sizeof(bufStore) - 1;
 
-	while (bytesLeft > 0) {
+		while (bytesLeft > 0) {
 
-	    if (! get(*buf))
-		break;
+			if (!get(*buf))
+				break;
 
-	    if (quoted) {
-		if (*buf == '\"')
-		    break;
+			if (quoted) {
+				if (*buf == '\"')
+					break;
 
-		if (*buf == '\\') {
-		    if ((get(c)) && c == '\"')
-			*buf = '\"';
-		    else
-			putBack(c);
+				if (*buf == '\\') {
+					if ((get(c)) && c == '\"')
+						*buf = '\"';
+					else
+						putBack(c);
+				}
+
+				if (*buf == '\n')
+					lineNum++;
+			}
+
+			else if (isspace(*buf)) {
+				putBack(*buf);
+				break;
+			}
+
+			buf++;
+			bytesLeft--;
 		}
+		*buf = '\0';
 
-		if (*buf == '\n')
-		    lineNum++;
-	    }
+		s += bufStore;
 
-	    else if (isspace(*buf)) {
-		putBack(*buf);
-		break;
-	    }
+	} while (bytesLeft == 0);
 
-	    buf++;
-	    bytesLeft--;
-	}
-	*buf = '\0';
-
-	s += bufStore;
-
-    } while (bytesLeft == 0);
-
-    return TRUE;
+	return TRUE;
 }
 
 QvBool
 QvInput::read(QvName &n, QvBool validIdent)
 {
-    QvBool	gotChar;
+	QvBool	gotChar;
 
-    if (! skipWhiteSpace())
-	return FALSE;
+	if (!skipWhiteSpace())
+		return FALSE;
 
-    if (! validIdent) {
-	QvString s;
+	if (!validIdent) {
+		QvString s;
 
-	if (! read(s))
-	    return FALSE;
+		if (!read(s))
+			return FALSE;
 
-	n = s;
-    }
-
-    else {
-	char	buf[256];
-	char	*b = buf;
-	char	c;
-
-	if ((gotChar = get(c)) && QvName::isIdentStartChar(c)) {
-	    *b++ = c;
-
-	    while ((gotChar = get(c)) && QvName::isIdentChar(c)) {
-		if (b - buf < 255)
-		    *b++ = c;
-	    }
+		n = s;
 	}
-	*b = '\0';
 
-	if (gotChar)
-	    putBack(c);
+	else {
+		char	buf[256];
+		char	*b = buf;
+		char	c;
 
-	n = buf;
-    }
+		if ((gotChar = get(c)) && QvName::isIdentStartChar(c)) {
+			*b++ = c;
 
-    return TRUE;
+			while ((gotChar = get(c)) && QvName::isIdentChar(c)) {
+				if (b - buf < 255)
+					*b++ = c;
+			}
+		}
+		*b = '\0';
+
+		if (gotChar)
+			putBack(c);
+
+		n = buf;
+	}
+
+	return TRUE;
 }
 
 #define READ_NUM(reader, readType, num, type)				      \
@@ -236,371 +236,373 @@ QvInput::read(QvName &n, QvBool validIdent)
 QvBool
 QvInput::read(int &i)
 {
-    READ_INTEGER(i, int);
+	READ_INTEGER(i, int);
 }
 
 QvBool
 QvInput::read(unsigned int &i)
 {
-    READ_UNSIGNED_INTEGER(i, unsigned int);
+	READ_UNSIGNED_INTEGER(i, unsigned int);
 }
 
 QvBool
 QvInput::read(short &s)
 {
-    READ_INTEGER(s, short);
+	READ_INTEGER(s, short);
 }
 
 QvBool
 QvInput::read(unsigned short &s)
 {
-    READ_UNSIGNED_INTEGER(s, unsigned short);
+	READ_UNSIGNED_INTEGER(s, unsigned short);
 }
 
 QvBool
 QvInput::read(long &l)
 {
-    READ_INTEGER(l, long);
+	READ_INTEGER(l, long);
 }
 
 QvBool
 QvInput::read(unsigned long &l)
 {
-    READ_UNSIGNED_INTEGER(l, unsigned long);
+	READ_UNSIGNED_INTEGER(l, unsigned long);
 }
 
 QvBool
 QvInput::read(float &f)
 {
-    READ_REAL(f, float);
+	READ_REAL(f, float);
 }
 
 QvBool
 QvInput::read(double &d)
 {
-    READ_REAL(d, double);
+	READ_REAL(d, double);
 }
 
 QvBool
 QvInput::eof() const
 {
-    return feof(fp);
+	return feof(fp);
 }
 
 void
 QvInput::getLocationString(QvString &string) const
 {
-    char buf[128];
-    sprintf(buf, "        Occurred at line %3d", lineNum);
-    string = buf;
+	char buf[128];
+	sprintf(buf, "        Occurred at line %3d", lineNum);
+	string = buf;
 }
 
 void
 QvInput::putBack(char c)
 {
-    if (c == (char) EOF)
-	return;
+	if (c == (char)EOF)
+		return;
 
-    if (backBufIndex >= 0)
-	--backBufIndex;
-    else
-	ungetc(c, fp);
+	if (backBufIndex >= 0)
+		--backBufIndex;
+	else
+		ungetc(c, fp);
 }
 
 void
 QvInput::putBack(const char *string)
 {
-    backBuf = string;
-    backBufIndex = 0;
+	backBuf = string;
+	backBufIndex = 0;
 }
 
 void QvInput::getFirstComment()
 {
-    char	c;
-    QvBool	gotChar;
+	char	c;
+	QvBool	gotChar;
 
-	if(get(c)) {
-	  if(c==COMMENT_CHAR) {
-		int i=0;
-		while((gotChar=get(c)) && c==' ');
-		while(gotChar && c != '\n') {
-		  if (c != '\r' && i<SIZ_FIRSTCOMMENT-1) FirstComment[i++] = c;
-		  gotChar=get(c);
+	if (get(c)) {
+		if (c == COMMENT_CHAR) {
+			int i = 0;
+			while ((gotChar = get(c)) && c == ' ');
+			while (gotChar && c != '\n') {
+				if (c != '\r' && i < SIZ_FIRSTCOMMENT - 1) FirstComment[i++] = c;
+				gotChar = get(c);
+			}
+			FirstComment[i] = 0;
 		}
-		FirstComment[i]=0;
-	  }
-	  else putBack(c);
+		else putBack(c);
 	}
 }
 
 QvBool
 QvInput::checkHeader()
 {
-    char	c;
+	char	c;
 
-    readHeader = TRUE;
+	readHeader = TRUE;
 
-    if (get(c)) {
-    	if (c == COMMENT_CHAR) {
+	if (get(c)) {
+		if (c == COMMENT_CHAR) {
 			char	buf[256];
 			int		i = 0;
 
 			buf[i++] = c;
 			//care for dos files. mpichler, 19950627
 			while (get(c) && c != '\n') if (c != '\r') buf[i++] = c;
-						
+
 			buf[i] = '\0';
 			if (c == '\n') {
-			  lineNum++;
-			  getFirstComment();
+				lineNum++;
+				getFirstComment();
 			}
 
 			if ((version = isASCIIHeader(buf)))	return TRUE;
 		}
 
 		else putBack(c);
-    }
-// mpichler: give no error massage on wrong headers (used for header identification)
-//    QvReadError::post(this, "File does not have a valid header string");
-    headerOk = FALSE;
-    return FALSE;
+	}
+	// mpichler: give no error massage on wrong headers (used for header identification)
+	//    QvReadError::post(this, "File does not have a valid header string");
+	headerOk = FALSE;
+	return FALSE;
 }
 
 QvBool
 QvInput::skipWhiteSpace()
 {
-    char	c;
-    QvBool	gotChar;
+	char	c;
+	QvBool	gotChar;
 
-    if (! readHeader && ! checkHeader())
-	return FALSE;
+	if (!readHeader && !checkHeader())
+		return FALSE;
 
-    while (TRUE) {
+	while (TRUE) {
 
 		while ((gotChar = get(c)) && isspace(c))
 			if (c == '\n')
-			lineNum++;
+				lineNum++;
 
-		if (! gotChar)
+		if (!gotChar)
 			break;
 
 		if (c == COMMENT_CHAR) {
 			while (get(c) && c != '\n')
-			;
+				;
 
 			if (eof())
-			QvReadError::post(this, "EOF reached before end of comment");
+				QvReadError::post(this, "EOF reached before end of comment");
 			else
-			lineNum++;
+				lineNum++;
 		}
 		else {
 			putBack(c);
-			break;				    }
-    }
+			break;
+		}
+	}
 
-    return TRUE;
+	return TRUE;
 }
 
 QvBool
 QvInput::readInteger(long &l)
 {
-    char str[32];
-    char *s = str;
+	char str[32];
+	char *s = str;
 
-    if (readChar(s, '-') || readChar(s, '+'))
-	s++;
+	if (readChar(s, '-') || readChar(s, '+'))
+		s++;
 
-    if (! readUnsignedIntegerString(s))
-	return FALSE;
+	if (!readUnsignedIntegerString(s))
+		return FALSE;
 
-    l = strtol(str, NULL, 0);
+	l = strtol(str, NULL, 0);
 
-    return TRUE;
+	return TRUE;
 }
 
 QvBool
 QvInput::readUnsignedInteger(unsigned long &l)
 {
-    char	str[32];		
-    if (! readUnsignedIntegerString(str))
-	return FALSE;
+	char	str[32];
+	if (!readUnsignedIntegerString(str))
+		return FALSE;
 
-    l = strtoul(str, NULL, 0);
+	l = strtoul(str, NULL, 0);
 
-    return TRUE;
+	return TRUE;
 }
 
 QvBool
 QvInput::readUnsignedIntegerString(char *str)
 {
-    int  minSize = 1;
-    char *s = str;
+	int  minSize = 1;
+	char *s = str;
 
-    if (readChar(s, '0')) {
+	if (readChar(s, '0')) {
 
-	if (readChar(s + 1, 'x')) {
-	    s += 2 + readHexDigits(s + 2);
-	    minSize = 3;
+		if (readChar(s + 1, 'x')) {
+			s += 2 + readHexDigits(s + 2);
+			minSize = 3;
+		}
+
+		else
+			s += 1 + readDigits(s + 1);
 	}
 
 	else
-	    s += 1 + readDigits(s + 1);
-    }
+		s += readDigits(s);
 
-    else
-	s += readDigits(s);
+	if (s - str < minSize)
+		return FALSE;
 
-    if (s - str < minSize)
-	return FALSE;
+	*s = '\0';
 
-    *s = '\0';
-
-    return TRUE;
+	return TRUE;
 }
 
 QvBool
 QvInput::readReal(double& d)
 {
-    char	str[32];
-    int		n;
-    char	*s = str;
-    QvBool	gotNum = FALSE;
+	char	str[32];
+	int		n;
+	char	*s = str;
+	QvBool	gotNum = FALSE;
 
-/* begin hard hat area */
+	/* begin hard hat area */
 
-    // may try something like this to speed up things:
-//     if (backBufIndex < 0)  // backbuf empty
-//     {    
-//       return (fscanf (fp, "%lf", &d) == 1);  // EOF considered as failure
-//     }
-//     // else
-//     // fprintf (stderr, "reading real from backbuffer ");
+		// may try something like this to speed up things:
+	//     if (backBufIndex < 0)  // backbuf empty
+	//     {    
+	//       return (fscanf (fp, "%lf", &d) == 1);  // EOF considered as failure
+	//     }
+	//     // else
+	//     // fprintf (stderr, "reading real from backbuffer ");
 
-/* end hard hat area */
+	/* end hard hat area */
 
-
-    n = readChar(s, '-');
-    if (n == 0)
-	n = readChar(s, '+');
-    s += n;
-
-    if ((n = readDigits(s)) > 0) {
-	gotNum = TRUE;
-	s += n;
-    }
-
-    if (readChar(s, '.') > 0) {
-	s++;
-
-	if ((n = readDigits(s)) > 0) {
-	    gotNum = TRUE;
-	    s += n;
-	}
-    }
-
-    if (! gotNum)
-	return FALSE;
-
-    n = readChar(s, 'e');
-    if (n == 0)
-	n = readChar(s, 'E');
-
-    if (n > 0) {
-	s += n;
 
 	n = readChar(s, '-');
 	if (n == 0)
-	    n = readChar(s, '+');
+		n = readChar(s, '+');
 	s += n;
 
-	if ((n = readDigits(s)) > 0)
-	    s += n;
+	if ((n = readDigits(s)) > 0) {
+		gotNum = TRUE;
+		s += n;
+	}
 
-	else
-	    return FALSE;		    }
+	if (readChar(s, '.') > 0) {
+		s++;
 
-    *s = '\0';
+		if ((n = readDigits(s)) > 0) {
+			gotNum = TRUE;
+			s += n;
+		}
+	}
 
-    d = atof(str);
+	if (!gotNum)
+		return FALSE;
 
-    return TRUE;
+	n = readChar(s, 'e');
+	if (n == 0)
+		n = readChar(s, 'E');
+
+	if (n > 0) {
+		s += n;
+
+		n = readChar(s, '-');
+		if (n == 0)
+			n = readChar(s, '+');
+		s += n;
+
+		if ((n = readDigits(s)) > 0)
+			s += n;
+
+		else
+			return FALSE;
+	}
+
+	*s = '\0';
+
+	d = atof(str);
+
+	return TRUE;
 }
 
 int
 QvInput::readDigits(char *string)
 {
-    char c, *s = string;
+	char c, *s = string;
 
-    while (get(c)) {
+	while (get(c)) {
 
-	if (isdigit(c))
-	    *s++ = c;
+		if (isdigit(c))
+			*s++ = c;
 
-	else {
-	    putBack(c);
-	    break;
+		else {
+			putBack(c);
+			break;
+		}
 	}
-    }
 
-    return s - string;
+	return s - string;
 }
 
 int
 QvInput::readHexDigits(char *string)
 {
-    char c, *s = string;
+	char c, *s = string;
 
-    while (get(c)) {
+	while (get(c)) {
 
-	if (isxdigit(c))
-	    *s++ = c;
+		if (isxdigit(c))
+			*s++ = c;
 
-	else {
-	    putBack(c);
-	    break;
+		else {
+			putBack(c);
+			break;
+		}
 	}
-    }
 
-    return s - string;
+	return s - string;
 }
 
 int
 QvInput::readChar(char *string, char charToRead)
 {
-    char	c;
-    int		ret;
+	char	c;
+	int		ret;
 
-    if (! get(c))
-	ret = 0;
+	if (!get(c))
+		ret = 0;
 
-    else if (c == charToRead) {
-	*string = c;
-	ret = 1;
-    }
+	else if (c == charToRead) {
+		*string = c;
+		ret = 1;
+	}
 
-    else {
-	putBack(c);
-	ret = 0;
-    }
+	else {
+		putBack(c);
+		ret = 0;
+	}
 
-    return ret;
+	return ret;
 }
 
 void
 QvInput::addReference(const QvName &name, QvNode *node)
 {
-    refDict.enter((u_long) name.getString(), (void *) node);
+	refDict.enter((u_long)name.getString(), (void *)node);
 
-    node->setName(name);
+	node->setName(name);
 }
 
 QvNode *
 QvInput::findReference(const QvName &name) const
 {
-    void	*node;
+	void	*node;
 
-    if (refDict.find((u_long) name.getString(), node))
-	return (QvNode *) node;
+	if (refDict.find((u_long)name.getString(), node))
+		return (QvNode *)node;
 
-    return NULL;
+	return NULL;
 }

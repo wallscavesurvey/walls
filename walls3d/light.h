@@ -33,35 +33,39 @@
 
 
 class Light
-: public Object3D
+	: public Object3D
 {
-  public:
-    Light (int obj_n, int par = 0, const char* name = 0);
+public:
+	Light(int obj_n, int par = 0, const char* name = 0);
 
-    const char* type () const  { return "lgt"; }
+	const char* type() const { return "lgt"; }
 
-    int readLgtFile (FILE*);
-    void print ();
-    void dependsOnCamera ();
+	int readLgtFile(FILE*);
+	void print();
+	void dependsOnCamera();
 
-    void setlight (int);  // to ge3d
+	void setlight(int);  // to ge3d
 
-    const colorRGB* intensity () const
-    { return &intensity_; }
-    int positional () const
-    { return (int) positional_; }
+	const colorRGB* intensity() const
+	{
+		return &intensity_;
+	}
+	int positional() const
+	{
+		return (int)positional_;
+	}
 
-  private:
-    colorRGB intensity_;  // light specifics
-    float positional_;  // positional or directional
-    int camlgt_;  // relative to camera?
+private:
+	colorRGB intensity_;  // light specifics
+	float positional_;  // positional or directional
+	int camlgt_;  // relative to camera?
 };
 
 
-inline void Light::dependsOnCamera ()
+inline void Light::dependsOnCamera()
 {
-  parent_ = 0;  // do not calculate overall trf-matrix
-  camlgt_ = 1;
+	parent_ = 0;  // do not calculate overall trf-matrix
+	camlgt_ = 1;
 }
 
 

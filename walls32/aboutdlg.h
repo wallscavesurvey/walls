@@ -4,7 +4,7 @@
 
 class CUpLnkDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
 	CUpLnkDlg(LPCSTR pURL, CWnd* pParent = NULL);   // standard constructor
 
@@ -12,14 +12,14 @@ public:
 	//{{AFX_DATA(CUpLnkDlg)
 	enum { IDD = IDD_UPDATELINK };
 	CString m_NewURL;
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+	// NOTE: the ClassWizard will add data members here
+//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CUpLnkDlg)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
@@ -39,15 +39,15 @@ protected:
 
 class CAboutDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
 	CAboutDlg(CWnd* pParent = NULL);	// standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CAboutDlg)
 	enum { IDD = IDD_ABOUTBOX };
-		// NOTE: the ClassWizard will add data members here
-	//}}AFX_DATA
+	// NOTE: the ClassWizard will add data members here
+//}}AFX_DATA
 
 // Implementation
 protected:

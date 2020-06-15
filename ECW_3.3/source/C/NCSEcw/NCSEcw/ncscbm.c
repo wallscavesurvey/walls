@@ -1,16 +1,16 @@
-/********************************************************** 
+/**********************************************************
 ** Copyright 1998 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
-** 
+**
 ** FILE:   	ncscbm.c
 ** CREATED:	1 March 1999
 ** AUTHOR: 	SNS
@@ -25,7 +25,7 @@
 ** [07] sjc 30-Dec-99 Added global mutex for stats seg
 ** [08]  ny 12-May-00 Added support to propagate lost of connection information
 **					  higher up for proper handling.
-** [09] sjc 15-May-00 QueueIDWT in this case, so callback called immediately after setview() 
+** [09] sjc 15-May-00 QueueIDWT in this case, so callback called immediately after setview()
 **					  rather than waiting for network packets arriving
 ** [10] sjc 23-May-00 Only queue callback if some data is available
 ** [11] sjc 20-Jun-00 Out-of-Order block fix
@@ -53,18 +53,18 @@
 
 #include "NCSEcw.h"
 #if !defined(_WIN32_WCE)
-	#ifdef WIN32 // [16]
-		#include "crtdbg.h"
-	#endif
+#ifdef WIN32 // [16]
+#include "crtdbg.h"
+#endif
 #endif
 #include "NCSLog.h"
 #include "NCSBuildNumber.h"
 
 int NCScbmFileViewRequestBlocks(NCSFileView *pNCSFileView, QmfRegionStruct *pQmfRegion, NCSEcwBlockRequestMethod eRequest);
 #ifdef MACINTOSH
-Handle NCScbmReadFileBlockLocal(NCSFile *pNCSFile, NCSBlockId nBlock, UINT32 *pBlockLength );
+Handle NCScbmReadFileBlockLocal(NCSFile *pNCSFile, NCSBlockId nBlock, UINT32 *pBlockLength);
 #else
-UINT8	*NCScbmReadFileBlockLocal(NCSFile *pNCSFile, NCSBlockId nBlock, UINT32 *pBlockLength );
+UINT8	*NCScbmReadFileBlockLocal(NCSFile *pNCSFile, NCSBlockId nBlock, UINT32 *pBlockLength);
 #endif
 
 
@@ -85,22 +85,22 @@ UINT8	*NCScbmReadFileBlockLocal(NCSFile *pNCSFile, NCSBlockId nBlock, UINT32 *pB
 
 #ifdef NCSJPC_ECW_SUPPORT
 NCSError	NCScbmSetFileViewEx_ECW(NCSFileView *pNCSFileView,
-				UINT32 nBands,					// number of bands to read
-				UINT32 *pBandList,				// index into actual band numbers from source file
-			    UINT32 nTopX, UINT32 nLeftY,	// Top-Left in image coordinates
-				UINT32 nBottomX, UINT32 nRightY,// Bottom-Right in image coordinates
-				UINT32 nSizeX, UINT32 nSizeY,	// Output view size in window pixels
-				IEEE8 fTopX, IEEE8 fLeftY,		// Top-Left in world coordinates
-				IEEE8 fBottomX, IEEE8 fRightY)	// Bottom-Right in world coordinates
+	UINT32 nBands,					// number of bands to read
+	UINT32 *pBandList,				// index into actual band numbers from source file
+	UINT32 nTopX, UINT32 nLeftY,	// Top-Left in image coordinates
+	UINT32 nBottomX, UINT32 nRightY,// Bottom-Right in image coordinates
+	UINT32 nSizeX, UINT32 nSizeY,	// Output view size in window pixels
+	IEEE8 fTopX, IEEE8 fLeftY,		// Top-Left in world coordinates
+	IEEE8 fBottomX, IEEE8 fRightY)	// Bottom-Right in world coordinates
 #else
 NCSError	NCScbmSetFileViewEx(NCSFileView *pNCSFileView,
-				UINT32 nBands,					// number of bands to read
-				UINT32 *pBandList,				// index into actual band numbers from source file
-			    UINT32 nTopX, UINT32 nLeftY,	// Top-Left in image coordinates
-				UINT32 nBottomX, UINT32 nRightY,// Bottom-Right in image coordinates
-				UINT32 nSizeX, UINT32 nSizeY,	// Output view size in window pixels
-				IEEE8 fTopX, IEEE8 fLeftY,		// Top-Left in world coordinates
-				IEEE8 fBottomX, IEEE8 fRightY)	// Bottom-Right in world coordinates
+	UINT32 nBands,					// number of bands to read
+	UINT32 *pBandList,				// index into actual band numbers from source file
+	UINT32 nTopX, UINT32 nLeftY,	// Top-Left in image coordinates
+	UINT32 nBottomX, UINT32 nRightY,// Bottom-Right in image coordinates
+	UINT32 nSizeX, UINT32 nSizeY,	// Output view size in window pixels
+	IEEE8 fTopX, IEEE8 fLeftY,		// Top-Left in world coordinates
+	IEEE8 fBottomX, IEEE8 fRightY)	// Bottom-Right in world coordinates
 #endif
 {
 	QmfRegionStruct	*pOldQmfRegion;
@@ -115,13 +115,13 @@ NCSError	NCScbmSetFileViewEx(NCSFileView *pNCSFileView,
 #define MAXRECONNECTCOUNT 4
 
 	// If connection has been lost then try and reconnect
-	if( !pNCSFileView->pNCSFile->bLocalFile && !pNCSFileView->pNCSFile->bIsConnected &&
-				(pNCSFileView->pNCSFile->nReconnectCount < MAXRECONNECTCOUNT) && pNCSEcwInfo->bEcwpReConnect ) {
+	if (!pNCSFileView->pNCSFile->bLocalFile && !pNCSFileView->pNCSFile->bIsConnected &&
+		(pNCSFileView->pNCSFile->nReconnectCount < MAXRECONNECTCOUNT) && pNCSEcwInfo->bEcwpReConnect) {
 		NCSTimeStampMs tsNow = NCSGetTimeStampMs();
-		if( tsNow > (pNCSFileView->pNCSFile->tsLastReconnectTry + 10*1000) ) {
+		if (tsNow > (pNCSFileView->pNCSFile->tsLastReconnectTry + 10 * 1000)) {
 			//Try and reconnect
-			UINT8	*pFileHeaderMemImage=NULL;
-			UINT32	nFileHeaderMemImageLen=0;
+			UINT8	*pFileHeaderMemImage = NULL;
+			UINT32	nFileHeaderMemImageLen = 0;
 			NCSError eResult = NCS_SUCCESS;
 
 			pNCSFileView->pNCSFile->tsLastReconnectTry = tsNow;
@@ -132,28 +132,29 @@ NCSError	NCScbmSetFileViewEx(NCSFileView *pNCSFileView,
 			pNCSFileView->pNCSFile->pClientNetID = NULL;
 			//Re-Connect
 			eResult = NCScbmNetFileOpen(&pFileHeaderMemImage, &nFileHeaderMemImageLen, pNCSFileView->pNCSFile, pNCSFileView->pNCSFile->szUrlPath);
-			if( eResult == NCS_SUCCESS) {
+			if (eResult == NCS_SUCCESS) {
 				//compare the headers to make sure they are the same
-				if( pNCSFileView->pNCSFile->pTopQmf->pHeaderMemImage &&
+				if (pNCSFileView->pNCSFile->pTopQmf->pHeaderMemImage &&
 					(nFileHeaderMemImageLen == pNCSFileView->pNCSFile->pTopQmf->nHeaderMemImageLen) &&
-					(memcmp(pNCSFileView->pNCSFile->pTopQmf->pHeaderMemImage, pFileHeaderMemImage, nFileHeaderMemImageLen)==0) )
+					(memcmp(pNCSFileView->pNCSFile->pTopQmf->pHeaderMemImage, pFileHeaderMemImage, nFileHeaderMemImageLen) == 0))
 				{
 					// the headers are the same
 					pNCSFileView->pNCSFile->bIsConnected = TRUE;
 					pNCSFileView->pNCSFile->nReconnectCount = 0;
-				} else {
+				}
+				else {
 					pNCSFileView->pNCSFile->nReconnectCount = MAXRECONNECTCOUNT; // The headers were different so don't retry as the file must have changed
 					NCScnetDestroy(pNCSFileView->pNCSFile->pClientNetID);
 					pNCSFileView->pNCSFile->pClientNetID = NULL;
 					pNCSFileView->pNCSFile->bIsConnected = FALSE;
 				}
-				NCS_SAFE_FREE( pFileHeaderMemImage );
+				NCS_SAFE_FREE(pFileHeaderMemImage);
 			}
 		}
 	}
 
 
-	if(pNCSFileView->pNCSFile->pTopQmf && pNCSFileView->pNCSFile->pTopQmf->p_file_qmf) {		/**[06]**/
+	if (pNCSFileView->pNCSFile->pTopQmf && pNCSFileView->pNCSFile->pTopQmf->p_file_qmf) {		/**[06]**/
 		UINT32 x_size = pNCSFileView->pNCSFile->pTopQmf->p_file_qmf->x_size;
 		UINT32 y_size = pNCSFileView->pNCSFile->pTopQmf->p_file_qmf->y_size;
 		UINT32 nBand;
@@ -161,46 +162,46 @@ NCSError	NCScbmSetFileViewEx(NCSFileView *pNCSFileView,
 		// Range check region. Must be inside image, and number to extract can not be
 		// larger than start/end region size. So if you want to read from [2,3] to [10,15],
 		// then number_x must be <= (1 + 10 - 2) and number_y must be <= [1 + 15 - 3]
-		if( nTopX > nBottomX || nLeftY > nRightY
+		if (nTopX > nBottomX || nLeftY > nRightY
 			|| nBottomX >= x_size || nRightY >= y_size) {	/**[06]**/
 			NCSMutexEnd(&pNCSEcwInfo->mutex);
 			return(NCS_REGION_OUTSIDE_FILE);
 		}
-//		if(nSizeX > (1 + nBottomX - nTopX) || nSizeY > (1 + nRightY - nLeftY)) {/**[06]**/
-//			NCSMutexEnd(&pNCSEcwInfo->mutex);
-//			return(NCS_NO_SUPERSAMPLE);
-//		}
-		if(nSizeX == 0 || nSizeY == 0) {/**[06]**/
+		//		if(nSizeX > (1 + nBottomX - nTopX) || nSizeY > (1 + nRightY - nLeftY)) {/**[06]**/
+		//			NCSMutexEnd(&pNCSEcwInfo->mutex);
+		//			return(NCS_NO_SUPERSAMPLE);
+		//		}
+		if (nSizeX == 0 || nSizeY == 0) {/**[06]**/
 			NCSMutexEnd(&pNCSEcwInfo->mutex);
 			return(NCS_ZERO_SIZE);
 		}
 		// Sanity check band list
-		if( nBands > pNCSFileView->pNCSFile->pTopQmf->nr_bands ) {/**[06]**/
+		if (nBands > pNCSFileView->pNCSFile->pTopQmf->nr_bands) {/**[06]**/
 			NCSMutexEnd(&pNCSEcwInfo->mutex);
 			return(NCS_TOO_MANY_BANDS);
 		}
-		for( nBand = 0; nBand < nBands; nBand++ ) {/**[06]**/
-			if( pBandList[nBand] >= pNCSFileView->pNCSFile->pTopQmf->nr_bands ) {
+		for (nBand = 0; nBand < nBands; nBand++) {/**[06]**/
+			if (pBandList[nBand] >= pNCSFileView->pNCSFile->pTopQmf->nr_bands) {
 				NCSMutexEnd(&pNCSEcwInfo->mutex);
 				return(NCS_INVALID_BAND_NR);
 			}
 		}
 	}
 
-	if( pNCSFileView->pRefreshCallback && pNCSFileView->eCallbackState != NCSECW_VIEW_QUIET ) {
+	if (pNCSFileView->pRefreshCallback && pNCSFileView->eCallbackState != NCSECW_VIEW_QUIET) {
 		// [04] if pending, and did complete a SetView recently,
 		//		then flush the queue and start this Setview going
 		//	Can only cancel the request here if not too far progressed
-		if( pNCSFileView->eCallbackState == NCSECW_VIEW_SET || pNCSFileView->eCallbackState == NCSECW_VIEW_QUEUED ) {
-			if( pNCSFileView->nPending >= NCSECW_HIGHMAX_SETVIEW_PENDING
-			 ||	(pNCSFileView->nPending >= NCSECW_MAX_SETVIEW_PENDING
-					&& pNCSFileView->nCancelled < NCSECW_MAX_SETVIEW_CANCELS) ) {
+		if (pNCSFileView->eCallbackState == NCSECW_VIEW_SET || pNCSFileView->eCallbackState == NCSECW_VIEW_QUEUED) {
+			if (pNCSFileView->nPending >= NCSECW_HIGHMAX_SETVIEW_PENDING
+				|| (pNCSFileView->nPending >= NCSECW_MAX_SETVIEW_PENDING
+					&& pNCSFileView->nCancelled < NCSECW_MAX_SETVIEW_CANCELS)) {
 				// cancel this SetView and use the pending one instead.
 				// If queued, we have to remove it from the queue
-				if( pNCSFileView->eCallbackState == NCSECW_VIEW_QUEUED ) {
+				if (pNCSFileView->eCallbackState == NCSECW_VIEW_QUEUED) {
 					int nQueue = 0;
-					while( nQueue < pNCSEcwInfo->pIDWT->nQueueNumber ) {
-						if( pNCSEcwInfo->pIDWT->ppNCSFileView[nQueue] == pNCSFileView ) {
+					while (nQueue < pNCSEcwInfo->pIDWT->nQueueNumber) {
+						if (pNCSEcwInfo->pIDWT->ppNCSFileView[nQueue] == pNCSFileView) {
 							// We just set it to NULL - this is OK, and faster than copying
 							// the array down. The IDWT thread can handle NULL SetViews
 							pNCSEcwInfo->pIDWT->ppNCSFileView[nQueue] = NULL;
@@ -211,52 +212,53 @@ NCSError	NCScbmSetFileViewEx(NCSFileView *pNCSFileView,
 				}
 				pNCSFileView->nCancelled += 1;
 				pNCSFileView->eCallbackState = NCSECW_VIEW_QUIET;
-			 }
+			}
 		}
 
 		// If still busy, then queue this request
-		if( pNCSFileView->eCallbackState != NCSECW_VIEW_QUIET ) {
+		if (pNCSFileView->eCallbackState != NCSECW_VIEW_QUIET) {
 			/*
 			**	Just make this request pending
 			*/
 			UINT32	nCopy = 0;
 			pNCSFileView->nPending += 1;
-			pNCSFileView->pending.nBands	= nBands;
-			while( nCopy < nBands ) {
+			pNCSFileView->pending.nBands = nBands;
+			while (nCopy < nBands) {
 				pNCSFileView->pending.pBandList[nCopy] = pBandList[nCopy];
 				nCopy++;
 			}
-			pNCSFileView->pending.nTopX	= nTopX;
-			pNCSFileView->pending.nLeftY	= nLeftY;			// Top-Left in image coordinates
-			pNCSFileView->pending.nBottomX	= nBottomX;
-			pNCSFileView->pending.nRightY	= nRightY;			// Bottom-Left in image coordinates
-			pNCSFileView->pending.nSizeX	= nSizeX;
-			pNCSFileView->pending.nSizeY	= nSizeY;			// Size of window
-			pNCSFileView->pending.fTopX		= fTopX;
-			pNCSFileView->pending.fLeftY	= fLeftY;			// Top-Left in world coordinates
-			pNCSFileView->pending.fBottomX	= fBottomX;
-			pNCSFileView->pending.fRightY	= fRightY;			// Bottom-Right in world coordinates
+			pNCSFileView->pending.nTopX = nTopX;
+			pNCSFileView->pending.nLeftY = nLeftY;			// Top-Left in image coordinates
+			pNCSFileView->pending.nBottomX = nBottomX;
+			pNCSFileView->pending.nRightY = nRightY;			// Bottom-Left in image coordinates
+			pNCSFileView->pending.nSizeX = nSizeX;
+			pNCSFileView->pending.nSizeY = nSizeY;			// Size of window
+			pNCSFileView->pending.fTopX = fTopX;
+			pNCSFileView->pending.fLeftY = fLeftY;			// Top-Left in world coordinates
+			pNCSFileView->pending.fBottomX = fBottomX;
+			pNCSFileView->pending.fRightY = fRightY;			// Bottom-Right in world coordinates
 
 
 			// [09] - added this NCScbmQueueIDWTCallback()
-			if(pNCSFileView->pRefreshCallback && 
-			   (pNCSFileView->eCallbackState == NCSECW_VIEW_SET) && 
-			   (pNCSFileView->info.nBlocksAvailable != 0/**[10]**/)) {
+			if (pNCSFileView->pRefreshCallback &&
+				(pNCSFileView->eCallbackState == NCSECW_VIEW_SET) &&
+				(pNCSFileView->info.nBlocksAvailable != 0/**[10]**/)) {
 				NCScbmQueueIDWTCallback(pNCSFileView, NCSECW_QUEUE_LIFO);
 			}
 			// [09] - end
-			NCSMutexEnd(&pNCSEcwInfo->mutex);	
+			NCSMutexEnd(&pNCSEcwInfo->mutex);
 
 			if (!pNCSFileView->pNCSFile->bIsConnected) {	/**[12]**/
-				if( (pNCSFileView->pNCSFile->nReconnectCount >= MAXRECONNECTCOUNT) || !pNCSEcwInfo->bEcwpReConnect ) {
+				if ((pNCSFileView->pNCSFile->nReconnectCount >= MAXRECONNECTCOUNT) || !pNCSEcwInfo->bEcwpReConnect) {
 					// The connection has been lost permantently
 					return (NCS_CONNECTION_LOST);
-				} else {
+				}
+				else {
 					// The connection has been lost but the client will try and reconnect
 					return(NCS_SERVER_ERROR);
 				}
 			}
-			else if(pNCSFileView->pNCSFile->bFileIOError) { // if read local block failed //[20]
+			else if (pNCSFileView->pNCSFile->bFileIOError) { // if read local block failed //[20]
 				return(NCS_FILEIO_ERROR);
 			}
 			else										/**[12]**/
@@ -271,7 +273,7 @@ NCSError	NCScbmSetFileViewEx(NCSFileView *pNCSFileView,
 	nNewCacheMethod = NCS_CACHE_VIEW;
 #ifndef NCSJPC_ECW_SUPPORT /**[26]**/
 	// decide on method used to cache image, based on current window size
-	if( nSizeX > NCSECW_MAX_VIEW_SIZE_TO_CACHE || nSizeY > NCSECW_MAX_VIEW_SIZE_TO_CACHE ) {
+	if (nSizeX > NCSECW_MAX_VIEW_SIZE_TO_CACHE || nSizeY > NCSECW_MAX_VIEW_SIZE_TO_CACHE) {
 		nNewCacheMethod = NCS_CACHE_DONT;
 	}
 #endif
@@ -279,8 +281,8 @@ NCSError	NCScbmSetFileViewEx(NCSFileView *pNCSFileView,
 	// If swapping from View to Non-view mode or vica-versa, must
 	// flush the old blocks and close the old QMF structure first
 
-	if( pOldQmfRegion && (nNewCacheMethod != nOldCacheMethod) ) {
-		if( nOldCacheMethod == NCS_CACHE_VIEW )
+	if (pOldQmfRegion && (nNewCacheMethod != nOldCacheMethod)) {
+		if (nOldCacheMethod == NCS_CACHE_VIEW)
 			NCScbmFileViewRequestBlocks(pNCSFileView, pOldQmfRegion, NCSECW_BLOCK_CANCEL);
 		erw_decompress_end_region(pOldQmfRegion);
 		pOldQmfRegion = NULL;
@@ -288,26 +290,26 @@ NCSError	NCScbmSetFileViewEx(NCSFileView *pNCSFileView,
 
 	// Request blocks for the new region
 
-	pNCSFileView->info.nBands	= nBands;
+	pNCSFileView->info.nBands = nBands;
 	// [02] copy from client band list so that they can free it, and we don't have
 	//		to track multiple band lists during multiple pending setviews
 	{
 		UINT32	nCopy = 0;
-		while( nCopy < nBands ) {
+		while (nCopy < nBands) {
 			pNCSFileView->info.pBandList[nCopy] = pBandList[nCopy];
 			nCopy++;
 		}
 	}
-	pNCSFileView->info.nTopX		= nTopX;
-	pNCSFileView->info.nLeftY	= nLeftY;			// Top-Left in image coordinates
-	pNCSFileView->info.nBottomX	= nBottomX;
-	pNCSFileView->info.nRightY	= nRightY;			// Bottom-Left in image coordinates
-	pNCSFileView->info.nSizeX	= nSizeX;
-	pNCSFileView->info.nSizeY	= nSizeY;			// Size of window
-	pNCSFileView->info.fTopX	= fTopX;
-	pNCSFileView->info.fLeftY	= fLeftY;			// Top-Left in world coordinates
-	pNCSFileView->info.fBottomX	= fBottomX;
-	pNCSFileView->info.fRightY	= fRightY;			// Bottom-Right in world coordinates
+	pNCSFileView->info.nTopX = nTopX;
+	pNCSFileView->info.nLeftY = nLeftY;			// Top-Left in image coordinates
+	pNCSFileView->info.nBottomX = nBottomX;
+	pNCSFileView->info.nRightY = nRightY;			// Bottom-Left in image coordinates
+	pNCSFileView->info.nSizeX = nSizeX;
+	pNCSFileView->info.nSizeY = nSizeY;			// Size of window
+	pNCSFileView->info.fTopX = fTopX;
+	pNCSFileView->info.fLeftY = fLeftY;			// Top-Left in world coordinates
+	pNCSFileView->info.fBottomX = fBottomX;
+	pNCSFileView->info.fRightY = fRightY;			// Bottom-Right in world coordinates
 	pNCSFileView->info.nMissedBlocksDuringRead = 0;	// no blocks failed on read so far
 	pNCSFileView->bIsRefreshView = FALSE;			// A new view
 	pNCSFileView->bTriggerRefreshCallback = FALSE;
@@ -315,14 +317,14 @@ NCSError	NCScbmSetFileViewEx(NCSFileView *pNCSFileView,
 	pNCSFileView->nPending = 0;						// nothing pending right now
 	pNCSFileView->nCacheMethod = nNewCacheMethod;
 
-	pNCSFileView->pQmfRegion = erw_decompress_start_region( 
-				pNCSFileView->pNCSFile->pTopQmf,
-				 nBands, pNCSFileView->info.pBandList,
-				 nTopX, nLeftY, nBottomX, nRightY,
-				 nSizeX, nSizeY);
+	pNCSFileView->pQmfRegion = erw_decompress_start_region(
+		pNCSFileView->pNCSFile->pTopQmf,
+		nBands, pNCSFileView->info.pBandList,
+		nTopX, nLeftY, nBottomX, nRightY,
+		nSizeX, nSizeY);
 
-	if( !pNCSFileView->pQmfRegion ) {
-		if( pOldQmfRegion )
+	if (!pNCSFileView->pQmfRegion) {
+		if (pOldQmfRegion)
 			erw_decompress_end_region(pOldQmfRegion);
 		pNCSFileView->eCallbackState = NCSECW_VIEW_QUIET;	// error, so back to quiet state
 		NCSMutexEnd(&pNCSEcwInfo->mutex);
@@ -332,25 +334,25 @@ NCSError	NCScbmSetFileViewEx(NCSFileView *pNCSFileView,
 	pNCSFileView->pQmfRegion->pNCSFileView = pNCSFileView;
 
 	// Now request blocks that cover the new view
-	if( pNCSFileView->nCacheMethod == NCS_CACHE_VIEW )
+	if (pNCSFileView->nCacheMethod == NCS_CACHE_VIEW)
 		NCScbmFileViewRequestBlocks(pNCSFileView, pNCSFileView->pQmfRegion, NCSECW_BLOCK_REQUEST);
 
 	// Now remove the old cache request count for the old view
 	// Only VIEW types had block reads cached
-	if( pOldQmfRegion && (nOldCacheMethod == NCS_CACHE_VIEW) )
+	if (pOldQmfRegion && (nOldCacheMethod == NCS_CACHE_VIEW))
 		NCScbmFileViewRequestBlocks(pNCSFileView, pOldQmfRegion, NCSECW_BLOCK_CANCEL);
 
 	// Now we can remove the old set view's QMF structures
-	if( pOldQmfRegion )
+	if (pOldQmfRegion)
 		erw_decompress_end_region(pOldQmfRegion);
 
-	_ASSERT( NCScbmSanityCheckFileView(pNCSFileView) );
+	_ASSERT(NCScbmSanityCheckFileView(pNCSFileView));
 
 	// Now, if there is a requirement to request or cancel blocks for the file, do this now
 	// but only if there is not already a send in progress (which will automatically pick these up)
-	if( !pNCSFileView->pNCSFile->bLocalFile /**[17]**/ && !pNCSFileView->pNCSFile->bSendInProgress
-	 && (pNCSFileView->pNCSFile->nRequestsXmitPending || pNCSFileView->pNCSFile->nCancelsXmitPending) )
-		NCScbmNetFileXmitRequests(NCS_SUCCESS, NULL, pNCSFileView->pNCSFile );
+	if (!pNCSFileView->pNCSFile->bLocalFile /**[17]**/ && !pNCSFileView->pNCSFile->bSendInProgress
+		&& (pNCSFileView->pNCSFile->nRequestsXmitPending || pNCSFileView->pNCSFile->nCancelsXmitPending))
+		NCScbmNetFileXmitRequests(NCS_SUCCESS, NULL, pNCSFileView->pNCSFile);
 
 	_ASSERT(NCScbmSanityCheckFileView(pNCSFileView));
 
@@ -360,25 +362,26 @@ NCSError	NCScbmSetFileViewEx(NCSFileView *pNCSFileView,
 
 	NCScbmPurgeCache(pNCSFileView);	// see if we need to purge cache
 
-	if( (pNCSFileView->nCacheMethod == NCS_CACHE_VIEW) && (pNCSFileView->pRefreshCallback) ) {
-		if( (pNCSFileView->info.nBlocksAvailable == pNCSFileView->info.nBlocksInView)		// [02] all blocks are here
- 		 || (pNCSFileView->info.nBlocksAvailable) ) {					// [02] view moved; some blocks are here
+	if ((pNCSFileView->nCacheMethod == NCS_CACHE_VIEW) && (pNCSFileView->pRefreshCallback)) {
+		if ((pNCSFileView->info.nBlocksAvailable == pNCSFileView->info.nBlocksInView)		// [02] all blocks are here
+			|| (pNCSFileView->info.nBlocksAvailable)) {					// [02] view moved; some blocks are here
 			NCScbmQueueIDWTCallback(pNCSFileView, NCSECW_QUEUE_LIFO);
 		}
 	}
 
 	NCSMutexEnd(&pNCSEcwInfo->mutex);			// [02] moved mutex to prevent multiple callbacks
-	if (pNCSFileView->pNCSFile->bLocalFile ) {
-		if(pNCSFileView->pNCSFile->bFileIOError) { // if read local block failed //[20]
+	if (pNCSFileView->pNCSFile->bLocalFile) {
+		if (pNCSFileView->pNCSFile->bFileIOError) { // if read local block failed //[20]
 			return(NCS_FILEIO_ERROR);
 		}
 		else return(NCS_SUCCESS);
 	}
-	else if( !pNCSFileView->pNCSFile->bIsConnected ) {
-		if( (pNCSFileView->pNCSFile->nReconnectCount >= MAXRECONNECTCOUNT) || !pNCSEcwInfo->bEcwpReConnect ) {
+	else if (!pNCSFileView->pNCSFile->bIsConnected) {
+		if ((pNCSFileView->pNCSFile->nReconnectCount >= MAXRECONNECTCOUNT) || !pNCSEcwInfo->bEcwpReConnect) {
 			// The connection has been lost permantently
 			return (NCS_CONNECTION_LOST);
-		} else {
+		}
+		else {
 			// The connection has been lost but the client will try and reconnect
 			return(NCS_SERVER_ERROR);
 		}
@@ -389,28 +392,28 @@ NCSError	NCScbmSetFileViewEx(NCSFileView *pNCSFileView,
 
 #ifdef NCSJPC_ECW_SUPPORT
 NCSError	NCScbmSetFileView_ECW(NCSFileView *pNCSFileView,
-				UINT32 nBands,					// number of bands to read
-				UINT32 *pBandList,				// index into actual band numbers from source file
-				UINT32 nTopX, UINT32 nLeftY,	// Top-Left in image coordinates
-				UINT32 nBottomX, UINT32 nRightY,// Bottom-Left in image coordinates
-				UINT32 nSizeX, UINT32 nSizeY)	// Output view size in window pixels
+	UINT32 nBands,					// number of bands to read
+	UINT32 *pBandList,				// index into actual band numbers from source file
+	UINT32 nTopX, UINT32 nLeftY,	// Top-Left in image coordinates
+	UINT32 nBottomX, UINT32 nRightY,// Bottom-Left in image coordinates
+	UINT32 nSizeX, UINT32 nSizeY)	// Output view size in window pixels
 #else
 NCSError	NCScbmSetFileView(NCSFileView *pNCSFileView,
-				UINT32 nBands,					// number of bands to read
-				UINT32 *pBandList,				// index into actual band numbers from source file
-				UINT32 nTopX, UINT32 nLeftY,	// Top-Left in image coordinates
-				UINT32 nBottomX, UINT32 nRightY,// Bottom-Left in image coordinates
-				UINT32 nSizeX, UINT32 nSizeY)	// Output view size in window pixels
+	UINT32 nBands,					// number of bands to read
+	UINT32 *pBandList,				// index into actual band numbers from source file
+	UINT32 nTopX, UINT32 nLeftY,	// Top-Left in image coordinates
+	UINT32 nBottomX, UINT32 nRightY,// Bottom-Left in image coordinates
+	UINT32 nSizeX, UINT32 nSizeY)	// Output view size in window pixels
 #endif
 {
 	return(NCScbmSetFileViewEx(pNCSFileView,
-							   nBands,
-							   pBandList,
-							   nTopX, nLeftY,
-							   nBottomX, nRightY,
-							   nSizeX, nSizeY,
-							   nTopX, nLeftY,
-							   nBottomX, nRightY));
+		nBands,
+		pBandList,
+		nTopX, nLeftY,
+		nBottomX, nRightY,
+		nSizeX, nSizeY,
+		nTopX, nLeftY,
+		nBottomX, nRightY));
 }
 
 /*******************************************************
@@ -423,7 +426,7 @@ NCSError	NCScbmSetFileView(NCSFileView *pNCSFileView,
 #ifdef _DEBUG
 int	NCScbmSanityCheckFileView(NCSFileView *pNCSFileView)
 {
-	if(pNCSFileView) {
+	if (pNCSFileView) {
 		NCSFileCachedBlock	*pBlock;
 		NCSFile				*pNCSFile;
 		UINT32				nCancelCount = 0, nRequestCount = 0;
@@ -431,22 +434,22 @@ int	NCScbmSanityCheckFileView(NCSFileView *pNCSFileView)
 		pNCSFile = pNCSFileView->pNCSFile;
 
 		pBlock = pNCSFile->pFirstCachedBlock;
-		while( pBlock ) {
-			if(pBlock->bRequested && !pBlock->nUsageCount )
+		while (pBlock) {
+			if (pBlock->bRequested && !pBlock->nUsageCount)
 				nCancelCount += 1;
-			if(!pBlock->bRequested && !pBlock->pPackedECWBlock && pBlock->nUsageCount )
+			if (!pBlock->bRequested && !pBlock->pPackedECWBlock && pBlock->nUsageCount)
 				nRequestCount += 1;
 
 			pBlock = pBlock->pNextCachedBlock;
 		}
-		_ASSERT( pNCSFile->nCancelsXmitPending == nCancelCount );
-		_ASSERT( pNCSFile->nRequestsXmitPending == nRequestCount );
-		if((pNCSFile->nCancelsXmitPending != nCancelCount) ||
+		_ASSERT(pNCSFile->nCancelsXmitPending == nCancelCount);
+		_ASSERT(pNCSFile->nRequestsXmitPending == nRequestCount);
+		if ((pNCSFile->nCancelsXmitPending != nCancelCount) ||
 			(pNCSFile->nRequestsXmitPending != nRequestCount)) {
 			return(FALSE);
 		}
 	}
-	return( TRUE );
+	return(TRUE);
 }
 
 #endif
@@ -472,44 +475,44 @@ int NCScbmFileViewRequestBlocks(NCSFileView *pNCSFileView, QmfRegionStruct *pQmf
 	fprintf(pFile, "RequestBlocks(%s)\r\n", (eRequest == NCSECW_BLOCK_REQUEST) ? "Request" : ((eRequest == NCSECW_BLOCK_CANCEL) ? "Cancel" : "Unknown");
 #endif
 	// Traverse from smallest to largest level, working out blocks we need
-	while( nLevel <= pQmfRegion->p_largest_qmf->level ) {
+	while (nLevel <= pQmfRegion->p_largest_qmf->level) {
 		QmfRegionLevelStruct	*pLevel = &(pQmfRegion->p_levels[nLevel]);
 		QmfLevelStruct			*pQmf = pLevel->p_qmf;
 
 		UINT32					nStartXBlock, nEndXBlock, nStartYBlock, nEndYBlock;
 		UINT32					nRowsOfBlocks;
 
-		nStartXBlock	= pLevel->start_x_block;
-		nEndXBlock		= (nStartXBlock + pLevel->x_block_count) - 1;
-		nStartYBlock	= pLevel->level_start_y / pQmf->y_block_size;
-		nEndYBlock		= pLevel->level_end_y   / pQmf->y_block_size;
-		nLevelBlocks = ((nEndXBlock - nStartXBlock)+1) * ((nEndYBlock - nStartYBlock)+1);
+		nStartXBlock = pLevel->start_x_block;
+		nEndXBlock = (nStartXBlock + pLevel->x_block_count) - 1;
+		nStartYBlock = pLevel->level_start_y / pQmf->y_block_size;
+		nEndYBlock = pLevel->level_end_y / pQmf->y_block_size;
+		nLevelBlocks = ((nEndXBlock - nStartXBlock) + 1) * ((nEndYBlock - nStartYBlock) + 1);
 
 		// We now have the rectangle of blocks required for this level.
 		// Loop through the rows of blocks, and request the blocks from the actual file
 		nRowsOfBlocks = 1 + (nEndYBlock - nStartYBlock);
-		while(nRowsOfBlocks--) {
+		while (nRowsOfBlocks--) {
 			UINT32					nFileBlock;
 			UINT32					nFileBlockCount;
 			// Now compute block number in the file for this level's block
 
 			nFileBlock = pQmf->nFirstBlockNumber +
-							(pQmf->nr_x_blocks * nStartYBlock) + nStartXBlock;
+				(pQmf->nr_x_blocks * nStartYBlock) + nStartXBlock;
 			nFileBlockCount = 1 + (nEndXBlock - nStartXBlock);
 			nStartYBlock += 1;		// move on to the next row
 
-			while(nFileBlockCount--) {
+			while (nFileBlockCount--) {
 				NCSFileCachedBlock	*pBlock;
 				pBlock = NCScbmGetCacheBlock(pNCSFileView->pNCSFile, pNCSFileView->pNCSFile->pWorkingCachedBlock,
-											nFileBlock, eRequest);
+					nFileBlock, eRequest);
 				pNCSFileView->pNCSFile->pWorkingCachedBlock = pBlock;
-				_ASSERT( pBlock );
-				if( !pBlock )
+				_ASSERT(pBlock);
+				if (!pBlock)
 					return(1);		// Internal logic error
 #ifdef LOG_REQUESTS
 				fprintf(pFile, "Block %ld, Usage %ld, Requested %s\r\n", nFileBlock, pBlock->nUsageCount, pBlock->bRequested ? "True" : "False");
 #endif
-				if( eRequest == NCSECW_BLOCK_REQUEST && pBlock->pPackedECWBlock)
+				if (eRequest == NCSECW_BLOCK_REQUEST && pBlock->pPackedECWBlock)
 					nBlocksAvailable += 1;
 				nFileBlock += 1;
 			}
@@ -521,7 +524,7 @@ int NCScbmFileViewRequestBlocks(NCSFileView *pNCSFileView, QmfRegionStruct *pQmf
 #ifdef LOG_REQUESTS
 	fclose(pFile);
 #endif
-	if( eRequest == NCSECW_BLOCK_REQUEST ) {
+	if (eRequest == NCSECW_BLOCK_REQUEST) {
 		pNCSFileView->info.nBlocksInView = nBlocks;
 		pNCSFileView->info.nBlocksAvailableAtSetView = pNCSFileView->info.nBlocksAvailable = nBlocksAvailable;
 	}
@@ -555,15 +558,15 @@ int NCScbmFileViewRequestBlocks(NCSFileView *pNCSFileView, QmfRegionStruct *pQmf
 ********************************************************/
 
 NCSFileCachedBlock *NCScbmGetCacheBlock(NCSFile *pNCSFile, NCSFileCachedBlock *pWorkingCachedBlock,
-											   NCSBlockId nBlock, NCSEcwBlockRequestMethod eRequest)
+	NCSBlockId nBlock, NCSEcwBlockRequestMethod eRequest)
 {
 	NCSFileCachedBlock	*pBlock, *pPreviousBlock;
 
 	// Find the block in the list, if there. Start looking from the pWorkingCached list for speed
 	pBlock = pWorkingCachedBlock;
 
-	if( pBlock ) {
-		if( pBlock->nBlockNumber > nBlock )
+	if (pBlock) {
+		if (pBlock->nBlockNumber > nBlock)
 			pBlock = pNCSFile->pFirstCachedBlock;	// gone too far in the list, so start again
 	}
 	else
@@ -577,18 +580,18 @@ NCSFileCachedBlock *NCScbmGetCacheBlock(NCSFile *pNCSFile, NCSFileCachedBlock *p
 	//										 unless at start of list, in which case will be NULL)
 	pPreviousBlock = NULL;
 
-	while( pBlock ) {
-		if(pBlock->nBlockNumber == nBlock )
+	while (pBlock) {
+		if (pBlock->nBlockNumber == nBlock)
 			break;				// found the block
-		if(pBlock->nBlockNumber > nBlock ) {
-			if( pPreviousBlock ) {
+		if (pBlock->nBlockNumber > nBlock) {
+			if (pPreviousBlock) {
 				pBlock = pPreviousBlock;				// go to the previous block
 				break;
 			}
 			else {
 				pBlock = pNCSFile->pFirstCachedBlock;	// started too far down the list, so have to
 														// wrap back to the start
-				if( pBlock->nBlockNumber > nBlock ) {
+				if (pBlock->nBlockNumber > nBlock) {
 					pBlock = NULL;						// if before start of list, return ptr as NULL
 					break;
 				}
@@ -598,51 +601,51 @@ NCSFileCachedBlock *NCScbmGetCacheBlock(NCSFile *pNCSFile, NCSFileCachedBlock *p
 		}
 		pPreviousBlock = pBlock;
 		pBlock = pBlock->pNextCachedBlock;
-		if( pBlock && pPreviousBlock->nBlockNumber >= pBlock->nBlockNumber )
+		if (pBlock && pPreviousBlock->nBlockNumber >= pBlock->nBlockNumber)
 			return(NULL);			// SERIOUS ERROR - corrupted memory structure
 
-		if( !pBlock ) {
+		if (!pBlock) {
 			pBlock = pPreviousBlock;
 			break;					// got to the end, and nBlock is > than largest block in the list
 		}
 	}
 
 	// now process the type of request (return pointer, add block to cache, cancel block from cache)
-	switch( eRequest ) {
-	case NCSECW_BLOCK_RETURN :
-			if( pBlock ) {
-				if( pBlock->nBlockNumber == nBlock ) {
-					pBlock->nHitCount += 1;
-					return(pBlock);
-				}
-				else
-					return( NULL );					// ERROR - we could not find the requested block
+	switch (eRequest) {
+	case NCSECW_BLOCK_RETURN:
+		if (pBlock) {
+			if (pBlock->nBlockNumber == nBlock) {
+				pBlock->nHitCount += 1;
+				return(pBlock);
 			}
-			return(NULL);
+			else
+				return(NULL);					// ERROR - we could not find the requested block
+		}
+		return(NULL);
 		break;
-	case NCSECW_BLOCK_CANCEL :
-		if( !pBlock )
-			return( NULL );							// ERROR - should never happen
-		if( pBlock->nBlockNumber != nBlock )
-			return( NULL );							// ERROR - should never happen
+	case NCSECW_BLOCK_CANCEL:
+		if (!pBlock)
+			return(NULL);							// ERROR - should never happen
+		if (pBlock->nBlockNumber != nBlock)
+			return(NULL);							// ERROR - should never happen
 
 		_ASSERT(NCScbmSanityCheckFileView(pNCSFile->pNCSFileViewList));
 
 		// Decrement usage count
 		pBlock->nUsageCount -= 1;
-		if( pBlock->nUsageCount == 0) {
+		if (pBlock->nUsageCount == 0) {
 			// indicate we have a block request to cancel. We leave the bRequested
 			// set (the CANCEL packet will unset it) to flag this block as one that
 			// was requested, that we now want to cancel the request for
-			if( pBlock->bRequested ) {
+			if (pBlock->bRequested) {
 				NCSEcwStatsLock();
-				
+
 				NCSEcwStatsIncrement(&pNCSEcwInfo->pStatistics->nCancelsXmitPending, 1);
 				pNCSFile->nCancelsXmitPending += 1;
-				
+
 				NCSEcwStatsUnLock();
 			}
-			else if( !pBlock->pPackedECWBlock ) {
+			else if (!pBlock->pPackedECWBlock) {
 				NCSEcwStatsLock();
 
 				pNCSFile->nRequestsXmitPending -= 1;			// No longer need the packet
@@ -656,116 +659,117 @@ NCSFileCachedBlock *NCScbmGetCacheBlock(NCSFile *pNCSFile, NCSFileCachedBlock *p
 		_ASSERT(NCScbmSanityCheckFileView(pNCSFile->pNCSFileViewList));
 		return(pBlock);
 		break;
-	case NCSECW_BLOCK_REQUEST : {
-			NCSFileCachedBlock *pNewBlock;
+	case NCSECW_BLOCK_REQUEST: {
+		NCSFileCachedBlock *pNewBlock;
 
-			_ASSERT(NCScbmSanityCheckFileView(pNCSFile->pNCSFileViewList));
+		_ASSERT(NCScbmSanityCheckFileView(pNCSFile->pNCSFileViewList));
 
-			if( pBlock ) {
-				if( pBlock->nBlockNumber == nBlock ) {
-					// block is already in the list. Just increment usage count
-					NCSEcwStatsLock();
-
-					NCSEcwStatsIncrement(&pNCSEcwInfo->pStatistics->nSetViewBlocksCacheHits, 1);
-					
-					pBlock->nUsageCount += 1;
-					// If usage gone to 1, and no block in memory, and request not
-					// already in progress, request it by incrementing Xmit pending requests by 1
-					// There also exists the situation where (1) a request went out (2) the
-					// request was flagged as to be canceled (3) the block is re-requested before
-					// the cancel could be xmitted. In this case, we have to decrement the cancel
-					// request count.
-					if( (pBlock->nUsageCount == 1) && !pBlock->pPackedECWBlock ) {
-						if( pBlock->bRequested ) {
-							pNCSFile->nCancelsXmitPending -= 1;		// cancel the cancel operation
-							NCSEcwStatsDecrement(&pNCSEcwInfo->pStatistics->nCancelsXmitPending, 1);
-						}
-						else {
-							pNCSFile->nRequestsXmitPending += 1;	// request the packet
-							NCSEcwStatsIncrement(&pNCSEcwInfo->pStatistics->nRequestsXmitPending, 1);
-						}
-					}
-					NCSEcwStatsUnLock();
-					_ASSERT(NCScbmSanityCheckFileView(pNCSFile->pNCSFileViewList));
-
-					return(pBlock);
-				}
-			}
-			_ASSERT(NCScbmSanityCheckFileView(pNCSFile->pNCSFileViewList));
-
-			// else allocate a new block
-			pNewBlock = NCSPoolAlloc(pNCSFile->pBlockCachePool, TRUE);
-			if( !pNewBlock )
-				return( NULL );						// ERROR - out of memory
-			pNewBlock->nBlockNumber = nBlock;
-			pNewBlock->nUsageCount = 1;
-			pNewBlock->bRequested = FALSE;
-			// make sure we add the item carefully, so READS won't break without Mutex's
-			if( pBlock ) {
-				pNewBlock->pNextCachedBlock = pBlock->pNextCachedBlock;
-				pBlock->pNextCachedBlock = pNewBlock;
-			}
-			else {
-					// insert at start of list. If list is NULL, sets pNextCachedBlock to NULL
-					pNewBlock->pNextCachedBlock = pNCSFile->pFirstCachedBlock;
-					pNCSFile->pFirstCachedBlock = pNewBlock;
-			}
-			if( pNCSFile->bLocalFile ) {
-				UINT8 *pPackedECWBlock;
-				UINT32 nPackedECWBlockLength;
-
-				pPackedECWBlock = NCScbmReadFileBlockLocal(pNCSFile, nBlock, &nPackedECWBlockLength );
-				if( pPackedECWBlock && nPackedECWBlockLength != 0 && align_ecw_block(pNCSFile, nBlock, 
-																				   &pNewBlock->pPackedECWBlock, 
-																				   &pNewBlock->nPackedECWBlockLength, 
-																				   pPackedECWBlock, 
-																				   nPackedECWBlockLength) == 0) {
-					NCSEcwStatsLock();
-					//if( pNCSEcwInfo->pStatistics )
-					NCSEcwStatsIncrement(&pNCSEcwInfo->pStatistics->nPackedBlocksCacheSize, pNewBlock->nPackedECWBlockLength);
-					NCSEcwStatsUnLock();
-				}
-#if defined( MACINTOSH ) && TARGET_API_MAC_OS8
-				DisposeHandle( pPackedECWBlock);
-#else
-				NCSFree(pPackedECWBlock);//[19]
-#endif
-
-				if(nPackedECWBlockLength != 0) {
-					pNewBlock->pUnpackedECWBlock = NULL;
-					pNewBlock->nUnpackedECWBlockLength = 0;
-				} else {
-					NCSPoolFree(pNCSFile->pBlockCachePool, pNewBlock);
-					pNewBlock = NULL;
-				}
-			}
-			else {
+		if (pBlock) {
+			if (pBlock->nBlockNumber == nBlock) {
+				// block is already in the list. Just increment usage count
 				NCSEcwStatsLock();
 
-				pNewBlock->pPackedECWBlock = NULL;
-				pNewBlock->pUnpackedECWBlock = NULL;
-				pNewBlock->nPackedECWBlockLength = 0;
-				pNewBlock->nUnpackedECWBlockLength = 0;
-				// request the block at some stage in the future by incrementing Requests Pending
-				// count
-				pNCSFile->nRequestsXmitPending += 1;
-				NCSEcwStatsIncrement(&pNCSEcwInfo->pStatistics->nRequestsXmitPending, 1);
+				NCSEcwStatsIncrement(&pNCSEcwInfo->pStatistics->nSetViewBlocksCacheHits, 1);
 
+				pBlock->nUsageCount += 1;
+				// If usage gone to 1, and no block in memory, and request not
+				// already in progress, request it by incrementing Xmit pending requests by 1
+				// There also exists the situation where (1) a request went out (2) the
+				// request was flagged as to be canceled (3) the block is re-requested before
+				// the cancel could be xmitted. In this case, we have to decrement the cancel
+				// request count.
+				if ((pBlock->nUsageCount == 1) && !pBlock->pPackedECWBlock) {
+					if (pBlock->bRequested) {
+						pNCSFile->nCancelsXmitPending -= 1;		// cancel the cancel operation
+						NCSEcwStatsDecrement(&pNCSEcwInfo->pStatistics->nCancelsXmitPending, 1);
+					}
+					else {
+						pNCSFile->nRequestsXmitPending += 1;	// request the packet
+						NCSEcwStatsIncrement(&pNCSEcwInfo->pStatistics->nRequestsXmitPending, 1);
+					}
+				}
+				NCSEcwStatsUnLock();
 				_ASSERT(NCScbmSanityCheckFileView(pNCSFile->pNCSFileViewList));
 
+				return(pBlock);
+			}
+		}
+		_ASSERT(NCScbmSanityCheckFileView(pNCSFile->pNCSFileViewList));
+
+		// else allocate a new block
+		pNewBlock = NCSPoolAlloc(pNCSFile->pBlockCachePool, TRUE);
+		if (!pNewBlock)
+			return(NULL);						// ERROR - out of memory
+		pNewBlock->nBlockNumber = nBlock;
+		pNewBlock->nUsageCount = 1;
+		pNewBlock->bRequested = FALSE;
+		// make sure we add the item carefully, so READS won't break without Mutex's
+		if (pBlock) {
+			pNewBlock->pNextCachedBlock = pBlock->pNextCachedBlock;
+			pBlock->pNextCachedBlock = pNewBlock;
+		}
+		else {
+			// insert at start of list. If list is NULL, sets pNextCachedBlock to NULL
+			pNewBlock->pNextCachedBlock = pNCSFile->pFirstCachedBlock;
+			pNCSFile->pFirstCachedBlock = pNewBlock;
+		}
+		if (pNCSFile->bLocalFile) {
+			UINT8 *pPackedECWBlock;
+			UINT32 nPackedECWBlockLength;
+
+			pPackedECWBlock = NCScbmReadFileBlockLocal(pNCSFile, nBlock, &nPackedECWBlockLength);
+			if (pPackedECWBlock && nPackedECWBlockLength != 0 && align_ecw_block(pNCSFile, nBlock,
+				&pNewBlock->pPackedECWBlock,
+				&pNewBlock->nPackedECWBlockLength,
+				pPackedECWBlock,
+				nPackedECWBlockLength) == 0) {
+				NCSEcwStatsLock();
+				//if( pNCSEcwInfo->pStatistics )
+				NCSEcwStatsIncrement(&pNCSEcwInfo->pStatistics->nPackedBlocksCacheSize, pNewBlock->nPackedECWBlockLength);
 				NCSEcwStatsUnLock();
 			}
+#if defined( MACINTOSH ) && TARGET_API_MAC_OS8
+			DisposeHandle(pPackedECWBlock);
+#else
+			NCSFree(pPackedECWBlock);//[19]
+#endif
+
+			if (nPackedECWBlockLength != 0) {
+				pNewBlock->pUnpackedECWBlock = NULL;
+				pNewBlock->nUnpackedECWBlockLength = 0;
+			}
+			else {
+				NCSPoolFree(pNCSFile->pBlockCachePool, pNewBlock);
+				pNewBlock = NULL;
+			}
+		}
+		else {
 			NCSEcwStatsLock();
-			NCSEcwStatsIncrement(&pNCSEcwInfo->pStatistics->nSetViewBlocksCacheMisses, 1);
-			NCSEcwStatsUnLock();
+
+			pNewBlock->pPackedECWBlock = NULL;
+			pNewBlock->pUnpackedECWBlock = NULL;
+			pNewBlock->nPackedECWBlockLength = 0;
+			pNewBlock->nUnpackedECWBlockLength = 0;
+			// request the block at some stage in the future by incrementing Requests Pending
+			// count
+			pNCSFile->nRequestsXmitPending += 1;
+			NCSEcwStatsIncrement(&pNCSEcwInfo->pStatistics->nRequestsXmitPending, 1);
+
 			_ASSERT(NCScbmSanityCheckFileView(pNCSFile->pNCSFileViewList));
 
-			return(pNewBlock);
+			NCSEcwStatsUnLock();
 		}
-		break;
+		NCSEcwStatsLock();
+		NCSEcwStatsIncrement(&pNCSEcwInfo->pStatistics->nSetViewBlocksCacheMisses, 1);
+		NCSEcwStatsUnLock();
+		_ASSERT(NCScbmSanityCheckFileView(pNCSFile->pNCSFileViewList));
+
+		return(pNewBlock);
+	}
+							   break;
 	}
 
-	return( NULL);
+	return(NULL);
 }
 
 /*******************************************************
@@ -781,7 +785,7 @@ NCSFileCachedBlock *NCScbmGetCacheBlock(NCSFile *pNCSFile, NCSFileCachedBlock *p
 **		using the block - don't try freeing it yourself!
 ********************************************************/
 UINT8	*NCScbmReadViewBlock(QmfRegionLevelStruct	*pQmfRegionLevel,
-					  UINT32 nBlockX, UINT32 nBlockY)
+	UINT32 nBlockX, UINT32 nBlockY)
 {
 	UINT32	nBlock;
 	UINT8	*pECWBlock = NULL;
@@ -805,63 +809,67 @@ UINT8	*NCScbmReadViewBlock(QmfRegionLevelStruct	*pQmfRegionLevel,
 	// currently open on the file.
 	// [03] Latest version: now only mutex's if adding an unpacked block
 
-	if( pNCSFileView->nCacheMethod == NCS_CACHE_VIEW ) {
+	if (pNCSFileView->nCacheMethod == NCS_CACHE_VIEW) {
 		UINT32 nReadUnpackedBlocksCacheHits = 0;
 		UINT32 nUnpackedBlocksCacheSize = 0;
-	//	QmfLevelStruct	*pParentQmfLevel = pQmfLevel->p_smaller_qmf;
-	//	INT32 nParentBlockX = nBlockX / 2;
-	//	INT32 nParentBlockY = nBlockY / 2;
+		//	QmfLevelStruct	*pParentQmfLevel = pQmfLevel->p_smaller_qmf;
+		//	INT32 nParentBlockX = nBlockX / 2;
+		//	INT32 nParentBlockY = nBlockY / 2;
 
 #ifdef DO_READ_MUTEX
 		NCSMutexBegin(&pNCSEcwInfo->mutex);		// have to MUTEX because of the possible unpacked memory allocation
 #endif
-		pNCSBlock = pNCSFile->pWorkingCachedBlock = 
+		pNCSBlock = pNCSFile->pWorkingCachedBlock =
 			NCScbmGetCacheBlock(pNCSFileView->pNCSFile,
-								pNCSFile->pWorkingCachedBlock, nBlock, NCSECW_BLOCK_RETURN);
+				pNCSFile->pWorkingCachedBlock, nBlock, NCSECW_BLOCK_RETURN);
 #ifdef NOTDEF
-//_DEBUG
-		if(pNCSBlock && (pNCSBlock->pPackedECWBlock || pNCSBlock->pUnpackedECWBlock)) {
-			while(pParentQmfLevel) {	/**[11]*/
+		//_DEBUG
+		if (pNCSBlock && (pNCSBlock->pPackedECWBlock || pNCSBlock->pUnpackedECWBlock)) {
+			while (pParentQmfLevel) {	/**[11]*/
 				/*
 				** Check to make sure all "parent" blocks to this one exist,
-				** before returning this block.  This is because in some 
+				** before returning this block.  This is because in some
 				** instances it's possible for blocks to be returned from the
 				** server (ECWP:) out-of-order, so a "parent" block may be missing.
 				** If included, this can cause an "edge" effect (high-pass filter).
 				*/
 				NCSFileCachedBlock	*pParentNCSBlock;
 				UINT32	nParentBlock = pParentQmfLevel->nFirstBlockNumber + (pParentQmfLevel->nr_x_blocks * nParentBlockY) + nParentBlockX;
-					
+
 				pParentNCSBlock = NCScbmGetCacheBlock(pNCSFileView->pNCSFile, pNCSFile->pWorkingCachedBlock, nParentBlock, NCSECW_BLOCK_RETURN);
 
-				if(pParentNCSBlock && 
-				   (pParentNCSBlock->pPackedECWBlock || pParentNCSBlock->pUnpackedECWBlock) && 
-				   (pParentNCSBlock->nDecodeMissID != pNCSFileView->nNextDecodeMissID)) {
-				
+				if (pParentNCSBlock &&
+					(pParentNCSBlock->pPackedECWBlock || pParentNCSBlock->pUnpackedECWBlock) &&
+					(pParentNCSBlock->nDecodeMissID != pNCSFileView->nNextDecodeMissID)) {
+
 					nParentBlockX = nParentBlockX / 2;
 					nParentBlockY = nParentBlockY / 2;
 					pParentQmfLevel = pParentQmfLevel->p_smaller_qmf;
-				} else {
-					if(pParentNCSBlock && pParentNCSBlock->nUsageCount) {
-						if(pParentNCSBlock->pPackedECWBlock || pParentNCSBlock->pUnpackedECWBlock) {
-							if(!pParentNCSBlock->bRequested) {
+				}
+				else {
+					if (pParentNCSBlock && pParentNCSBlock->nUsageCount) {
+						if (pParentNCSBlock->pPackedECWBlock || pParentNCSBlock->pUnpackedECWBlock) {
+							if (!pParentNCSBlock->bRequested) {
 								MessageBox(NULL, "NOT REQUESTED BUT HAVE IT", "DEBUG", MB_OK);
-							} else {
+							}
+							else {
 								MessageBox(NULL, "REQUESTED BUT HAVE IT", "DEBUG", MB_OK);
 							}
-						} else {
-							if(!pParentNCSBlock->bRequested) {
-								MessageBox(NULL, "NOT REQUESTED AND DON'T HAVE IT", "DEBUG", MB_OK);
-							} else {
-								MessageBox(NULL, "REQUESTED AND DON'T HAVE IT", "DEBUG", MB_OK);
-							}						
 						}
-						if(pNCSFileView->pNCSFile->nRequestsXmitPending) {
+						else {
+							if (!pParentNCSBlock->bRequested) {
+								MessageBox(NULL, "NOT REQUESTED AND DON'T HAVE IT", "DEBUG", MB_OK);
+							}
+							else {
+								MessageBox(NULL, "REQUESTED AND DON'T HAVE IT", "DEBUG", MB_OK);
+							}
+						}
+						if (pNCSFileView->pNCSFile->nRequestsXmitPending) {
 							char buf[1024];
 							sprintf(buf, "%ld PENDING", pNCSFileView->pNCSFile->nRequestsXmitPending);
 							MessageBox(NULL, buf, "DEBUG", MB_OK);
 						}
-						if(!NCScbmSanityCheckFileView(pNCSFileView->pNCSFile->pNCSFileViewList)) {
+						if (!NCScbmSanityCheckFileView(pNCSFileView->pNCSFile->pNCSFileViewList)) {
 							MessageBox(NULL, "FileView is INSANE!", "DEBUG", MB_OK);
 						}
 					}
@@ -871,29 +879,30 @@ UINT8	*NCScbmReadViewBlock(QmfRegionLevelStruct	*pQmfRegionLevel,
 		}
 #endif
 #ifdef USE_PARENT_CHECK
-		while(pParentQmfLevel) {	/**[11]*/
+		while (pParentQmfLevel) {	/**[11]*/
 			/*
 			** Check to make sure all "parent" blocks to this one exist,
-			** before returning this block.  This is because in some 
+			** before returning this block.  This is because in some
 			** instances it's possible for blocks to be returned from the
 			** server (ECWP:) out-of-order, so a "parent" block may be missing.
 			** If included, this can cause an "edge" effect (high-pass filter).
 			*/
 			NCSFileCachedBlock	*pParentNCSBlock;
 			UINT32	nParentBlock = pParentQmfLevel->nFirstBlockNumber + (pParentQmfLevel->nr_x_blocks * nParentBlockY) + nParentBlockX;
-				
+
 			pParentNCSBlock = NCScbmGetCacheBlock(pNCSFileView->pNCSFile, pNCSFile->pWorkingCachedBlock, nParentBlock, NCSECW_BLOCK_RETURN);
 
-			if(pParentNCSBlock && 
-			   (pParentNCSBlock->pPackedECWBlock || pParentNCSBlock->pUnpackedECWBlock) && 
-			   (pParentNCSBlock->nDecodeMissID != pNCSFileView->nNextDecodeMissID)) {
-			
+			if (pParentNCSBlock &&
+				(pParentNCSBlock->pPackedECWBlock || pParentNCSBlock->pUnpackedECWBlock) &&
+				(pParentNCSBlock->nDecodeMissID != pNCSFileView->nNextDecodeMissID)) {
+
 				nParentBlockX = nParentBlockX / 2;
 				nParentBlockY = nParentBlockY / 2;
 				pParentQmfLevel = pParentQmfLevel->p_smaller_qmf;
-			} else {
-				if(pParentNCSBlock) {
-					if((pParentNCSBlock->pPackedECWBlock || pParentNCSBlock->pUnpackedECWBlock) &&	/**[13]**/
+			}
+			else {
+				if (pParentNCSBlock) {
+					if ((pParentNCSBlock->pPackedECWBlock || pParentNCSBlock->pUnpackedECWBlock) &&	/**[13]**/
 						(pParentNCSBlock->nDecodeMissID == pNCSFileView->nNextDecodeMissID)) {		/**[13]**/
 						NCScbmQueueIDWTCallback(pNCSFileView, NCSECW_QUEUE_LIFO);					/**[13]**/
 					}																				/**[13]**/
@@ -902,15 +911,15 @@ UINT8	*NCScbmReadViewBlock(QmfRegionLevelStruct	*pQmfRegionLevel,
 #ifdef DO_READ_MUTEX
 				NCSMutexEnd(&pNCSEcwInfo->mutex);
 #endif
-				if( pQmfLevel->level )
-					return( pNCSFileView->pNCSFile->pLevelnZeroBlock );
+				if (pQmfLevel->level)
+					return(pNCSFileView->pNCSFile->pLevelnZeroBlock);
 				else
-					return( pNCSFileView->pNCSFile->pLevel0ZeroBlock );
+					return(pNCSFileView->pNCSFile->pLevel0ZeroBlock);
 			}
 		}
 #endif	/* USE_PARENT_CHECK */
 
-		if( !pNCSBlock ) {
+		if (!pNCSBlock) {
 			// ERROR - internal logic has broken, as this should never happen
 			// So just try and return a zero-block instead
 			NCSEcwStatsLock();
@@ -921,36 +930,36 @@ UINT8	*NCScbmReadViewBlock(QmfRegionLevelStruct	*pQmfRegionLevel,
 #ifdef DO_READ_MUTEX
 			NCSMutexEnd(&pNCSEcwInfo->mutex);
 #endif
-			_ASSERT( pNCSBlock );
-			if( pQmfLevel->level )
-				return( pNCSFileView->pNCSFile->pLevelnZeroBlock );
+			_ASSERT(pNCSBlock);
+			if (pQmfLevel->level)
+				return(pNCSFileView->pNCSFile->pLevelnZeroBlock);
 			else
-				return( pNCSFileView->pNCSFile->pLevel0ZeroBlock );
-//			return( NULL );			// ERROR - internal logic has broken, as this should never happen
+				return(pNCSFileView->pNCSFile->pLevel0ZeroBlock);
+			//			return( NULL );			// ERROR - internal logic has broken, as this should never happen
 		}
 
 		// If there is no block available, and no callback has been set, we
 		// wait until the block comes in. We have to go in and out of the MUTEX while this
 		// is happening, to ensure that the rest of the world gets a look in
-		if( !pNCSFileView->pRefreshCallback && !pNCSBlock->pPackedECWBlock ) {
+		if (!pNCSFileView->pRefreshCallback && !pNCSBlock->pPackedECWBlock) {
 #ifdef DO_READ_MUTEX
 			NCSMutexEnd(&pNCSEcwInfo->mutex);		// Out of MUTEX while waiting for the block
 #endif
-			while( !pNCSBlock->pPackedECWBlock ) {
-				NCSTimeStampMs	tNow  = NCSGetTimeStampMs();
+			while (!pNCSBlock->pPackedECWBlock) {
+				NCSTimeStampMs	tNow = NCSGetTimeStampMs();
 
 				// If the view is being shut down, just return zero blocks.
 				// The higher level will return the view state to QUIET once the line has been
 				// processed
-				if( pNCSFileView->bGoToQuietState ) {
-					if( pQmfLevel->level )
-						return( pNCSFileView->pNCSFile->pLevelnZeroBlock );
+				if (pNCSFileView->bGoToQuietState) {
+					if (pQmfLevel->level)
+						return(pNCSFileView->pNCSFile->pLevelnZeroBlock);
 					else
-						return( pNCSFileView->pNCSFile->pLevel0ZeroBlock );
+						return(pNCSFileView->pNCSFile->pLevel0ZeroBlock);
 				}
 
 				// Note: nBlockingTime == -1 is INDEFINITE delay.
-				if( (tNow < pNCSFileView->tLastBlockTime)	// ms timer wrapped
+				if ((tNow < pNCSFileView->tLastBlockTime)	// ms timer wrapped
 					|| ((pNCSEcwInfo->pStatistics->nBlockingTime != 0xffffffff) && (tNow > (pNCSFileView->tLastBlockTime + pNCSEcwInfo->pStatistics->nBlockingTime)))) {
 					break;			// Too much time has passed, so quit waiting
 				}
@@ -966,8 +975,8 @@ UINT8	*NCScbmReadViewBlock(QmfRegionLevelStruct	*pQmfRegionLevel,
 #else
 		pECWBlock = pNCSBlock->pUnpackedECWBlock;
 #endif
-		if( pECWBlock ) {
-				// unpacked block cache hit
+		if (pECWBlock) {
+			// unpacked block cache hit
 			nReadUnpackedBlocksCacheHits += 1;
 		}
 		else {
@@ -983,8 +992,8 @@ UINT8	*NCScbmReadViewBlock(QmfRegionLevelStruct	*pQmfRegionLevel,
 			pECWBlock = pNCSBlock->pPackedECWBlock;		 // [02] try the unpack if the block is there
 #endif
 			/** [24] Change to caching logic, see inequality below */
-			if( pECWBlock && (pNCSEcwInfo->pStatistics->nUnpackedBlocksCacheSize + pNCSEcwInfo->pStatistics->nPackedBlocksCacheSize)
-				   < pNCSEcwInfo->pStatistics->nMaximumCacheSize /** [24] ((pNCSEcwInfo->pStatistics->nMaximumCacheSize / 3)*2)*/) {
+			if (pECWBlock && (pNCSEcwInfo->pStatistics->nUnpackedBlocksCacheSize + pNCSEcwInfo->pStatistics->nPackedBlocksCacheSize)
+				< pNCSEcwInfo->pStatistics->nMaximumCacheSize /** [24] ((pNCSEcwInfo->pStatistics->nMaximumCacheSize / 3)*2)*/) {
 				// we have a packed block, and enough RAM to be OK to unpack it
 #if defined( MACINTOSH ) && TARGET_API_MAC_OS8
 				Handle pUnpackedECWBlock = NULL;
@@ -999,7 +1008,7 @@ UINT8	*NCScbmReadViewBlock(QmfRegionLevelStruct	*pQmfRegionLevel,
 				// [03] unpacked block test a few lines ago
 
 				NCSMutexBegin(&pNCSEcwInfo->mutex);				// [03] mutex for the unpack
-				if( pNCSBlock->pUnpackedECWBlock ) {			// [03]
+				if (pNCSBlock->pUnpackedECWBlock) {			// [03]
 					// [03] the unpacked block came into being after our out-of-mutex test, so use it
 #if defined( MACINTOSH ) && TARGET_API_MAC_OS8
 					pECWBlock = pNCSBlock->pUnpackedECWBlock ? *pNCSBlock->pUnpackedECWBlock : NULL;
@@ -1014,7 +1023,7 @@ UINT8	*NCScbmReadViewBlock(QmfRegionLevelStruct	*pQmfRegionLevel,
 
 					__try {
 #endif //WIN32					
-						if( unpack_ecw_block(pQmfLevel, nBlockX, nBlockY, &pUnpackedECWBlock, &nUnpackedLength,pECWBlock) == 0 ) {
+						if (unpack_ecw_block(pQmfLevel, nBlockX, nBlockY, &pUnpackedECWBlock, &nUnpackedLength, pECWBlock) == 0) {
 #if defined( MACINTOSH ) && TARGET_API_MAC_OS8
 							pECWBlock = pUnpackedECWBlock ? *pUnpackedECWBlock : NULL;
 #else
@@ -1025,25 +1034,26 @@ UINT8	*NCScbmReadViewBlock(QmfRegionLevelStruct	*pQmfRegionLevel,
 							nUnpackedBlocksCacheSize += nUnpackedLength;
 						}
 #ifdef WIN32		// [16]
-					} __except (pNCSFile->bIsCorrupt ? EXCEPTION_EXECUTE_HANDLER : NCSDbgGetExceptionInfoMsg(_exception_info(), msg)) {
+					}
+					__except (pNCSFile->bIsCorrupt ? EXCEPTION_EXECUTE_HANDLER : NCSDbgGetExceptionInfoMsg(_exception_info(), msg)) {
 						pECWBlock = NULL;
 						pNCSBlock->pUnpackedECWBlock = NULL;
 						pNCSBlock->nUnpackedECWBlockLength = 0;
 
-						if(!pNCSFile->bIsCorrupt) {
+						if (!pNCSFile->bIsCorrupt) {
 #if !defined(_WIN32_WCE)
 							char extended_msg[16384] = { '\0' };
 							sprintf(extended_msg,
 								"(ncscbm) Version : %s\n%s",
-								NCS_VERSION_STRING,msg);
+								NCS_VERSION_STRING, msg);
 							NCSLog(LOG_LOW, extended_msg);//, NCS_FILE_INVALID, (char*)NCSGetErrorText(NCS_FILE_INVALID));
 #else
-							char *pExtMsg = (char *) NCSMalloc(strlen(msg) + strlen(NCS_VERSION_STRING) + 50, FALSE);
+							char *pExtMsg = (char *)NCSMalloc(strlen(msg) + strlen(NCS_VERSION_STRING) + 50, FALSE);
 							if (pExtMsg)
 							{
 								sprintf(pExtMsg,
 									"(ncscbm) Version : %s\n%s",
-									NCS_VERSION_STRING,msg);
+									NCS_VERSION_STRING, msg);
 								NCSLog(LOG_LOW, pExtMsg);//, NCS_FILE_INVALID, (char*)NCSGetErrorText(NCS_FILE_INVALID));
 								NCSFree(pExtMsg);
 							}
@@ -1052,7 +1062,7 @@ UINT8	*NCScbmReadViewBlock(QmfRegionLevelStruct	*pQmfRegionLevel,
 						}
 					}
 #endif //WIN32					
-			}
+				}
 				NCSMutexEnd(&pNCSEcwInfo->mutex);		// [03] end unpack mutex
 			}
 		}
@@ -1061,8 +1071,8 @@ UINT8	*NCScbmReadViewBlock(QmfRegionLevelStruct	*pQmfRegionLevel,
 #ifdef DO_READ_MUTEX
 		NCSMutexEnd(&pNCSEcwInfo->mutex);
 #endif
-		
-		if( pECWBlock ) {
+
+		if (pECWBlock) {
 			NCSEcwStatsLock();
 			// there was a block already loaded
 			NCSEcwStatsIncrement(&pNCSEcwInfo->pStatistics->nReadBlocksCacheHits, 1);
@@ -1080,18 +1090,18 @@ UINT8	*NCScbmReadViewBlock(QmfRegionLevelStruct	*pQmfRegionLevel,
 			NCSEcwStatsUnLock();
 
 			pNCSFileView->info.nMissedBlocksDuringRead += 1;			// [02]
-			if( pQmfLevel->level )
-				return( pNCSFileView->pNCSFile->pLevelnZeroBlock );
+			if (pQmfLevel->level)
+				return(pNCSFileView->pNCSFile->pLevelnZeroBlock);
 			else
-				return( pNCSFileView->pNCSFile->pLevel0ZeroBlock );
+				return(pNCSFileView->pNCSFile->pLevel0ZeroBlock);
 		}
 		return(pECWBlock);
 	}
 
 	// Direct reading, in non-VIEW mode (e.g. non-cached)
 	// FIXME!! Currently only VIEW (cached) mode supported for non-local files
-	if( !pNCSFile->bLocalFile )
-		return( NULL );			// FIXME!! Not implemented yet for served files
+	if (!pNCSFile->bLocalFile)
+		return(NULL);			// FIXME!! Not implemented yet for served files
 
 	NCSEcwStatsLock();
 	// Read block directly from local file, not cache
@@ -1100,13 +1110,13 @@ UINT8	*NCScbmReadViewBlock(QmfRegionLevelStruct	*pQmfRegionLevel,
 
 	{
 		UINT32	nBlockLength = 0;
-		UINT8 *pPackedBlock = NCScbmReadFileBlockLocal(pNCSFileView->pNCSFile, nBlock, &nBlockLength );
+		UINT8 *pPackedBlock = NCScbmReadFileBlockLocal(pNCSFileView->pNCSFile, nBlock, &nBlockLength);
 		UINT8 *pAlignedBlock = (UINT8*)NULL;
 		UINT32 nAlignedLength = 0;
 
-		if(pPackedBlock && nBlockLength/**[23]**/) {
+		if (pPackedBlock && nBlockLength/**[23]**/) {
 			align_ecw_block(pNCSFile, nBlock, &pAlignedBlock, &nAlignedLength, pPackedBlock, nBlockLength);
-		
+
 #if defined( MACINTOSH ) && TARGET_API_MAC_OS8
 			DisposeHandle(pPackedBlock);
 #else
@@ -1114,7 +1124,7 @@ UINT8	*NCScbmReadViewBlock(QmfRegionLevelStruct	*pQmfRegionLevel,
 #endif
 		}
 		return(pAlignedBlock);
-//		return( NCScbmReadFileBlockLocal(pNCSFileView->pNCSFile, nBlock, &nBlockLength ));
+		//		return( NCScbmReadFileBlockLocal(pNCSFileView->pNCSFile, nBlock, &nBlockLength ));
 	}
 }
 
@@ -1141,10 +1151,10 @@ void NCScbmFreeViewBlock(QmfRegionLevelStruct	*pQmfRegionLevel, UINT8 *pECWBlock
 	QmfRegionStruct *pRegion = pQmfRegionLevel->p_region;
 	NCSFileView		*pNCSFileView = pRegion->pNCSFileView;
 
-	if( pECWBlock ) {
-		if( !pNCSFileView )
+	if (pECWBlock) {
+		if (!pNCSFileView)
 			NCSFree(pECWBlock);		// should never happen, but just in case someone uses the old ECW calls
-		else if( pNCSFileView->nCacheMethod == NCS_CACHE_DONT )
+		else if (pNCSFileView->nCacheMethod == NCS_CACHE_DONT)
 			NCSFree(pECWBlock);		// the ECW block bypassed the cache system, so free it
 	}
 }
@@ -1157,15 +1167,15 @@ void NCScbmFreeViewBlock(QmfRegionLevelStruct	*pQmfRegionLevel, UINT8 *pECWBlock
 ********************************************************/
 #ifdef NCSJPC_ECW_SUPPORT
 #ifdef MACINTOSH
-Handle NCScbmReadFileBlockLocal_ECW(NCSFile *pNCSFile, NCSBlockId nBlock, UINT32 *pBlockLength )
+Handle NCScbmReadFileBlockLocal_ECW(NCSFile *pNCSFile, NCSBlockId nBlock, UINT32 *pBlockLength)
 #else
-UINT8	*NCScbmReadFileBlockLocal_ECW(NCSFile *pNCSFile, NCSBlockId nBlock, UINT32 *pBlockLength )
+UINT8	*NCScbmReadFileBlockLocal_ECW(NCSFile *pNCSFile, NCSBlockId nBlock, UINT32 *pBlockLength)
 #endif
 #else
 #ifdef MACINTOSH
-Handle NCScbmReadFileBlockLocal(NCSFile *pNCSFile, NCSBlockId nBlock, UINT32 *pBlockLength )
+Handle NCScbmReadFileBlockLocal(NCSFile *pNCSFile, NCSBlockId nBlock, UINT32 *pBlockLength)
 #else
-UINT8	*NCScbmReadFileBlockLocal(NCSFile *pNCSFile, NCSBlockId nBlock, UINT32 *pBlockLength )
+UINT8	*NCScbmReadFileBlockLocal(NCSFile *pNCSFile, NCSBlockId nBlock, UINT32 *pBlockLength)
 #endif
 #endif
 {
@@ -1180,7 +1190,7 @@ UINT8	*NCScbmReadFileBlockLocal(NCSFile *pNCSFile, NCSBlockId nBlock, UINT32 *pB
 
 	NCSMutexBegin(&pNCSFile->mFileAccess); //[21]
 
-	if(NCScbmGetFileBlockSizeLocal(pNCSFile, nBlock, &length, &offset)) {
+	if (NCScbmGetFileBlockSizeLocal(pNCSFile, nBlock, &length, &offset)) {
 		QmfLevelStruct	*pTopQmf = pNCSFile->pTopQmf;		// we always go relative to the top level
 		UINT32  nPaddedLength = 1;
 #ifdef POSIX
@@ -1193,94 +1203,95 @@ UINT8	*NCScbmReadFileBlockLocal(NCSFile *pNCSFile, NCSBlockId nBlock, UINT32 *pB
 		}
 		else
 		{
-			nPaddedLength = (((int)(length/4)) + 1)*4;
+			nPaddedLength = (((int)(length / 4)) + 1) * 4;
 		}
 		*pBlockLength = length;
 #else		
-		while(nPaddedLength < length) {
+		while (nPaddedLength < length) {
 			nPaddedLength *= 2;
 		}
 		*pBlockLength = length;
 #endif
 
 #if defined( MACINTOSH ) && TARGET_API_MAC_OS8
-		pECWBlock = TempNewHandle( nPaddedLength, &osErr );
+		pECWBlock = TempNewHandle(nPaddedLength, &osErr);
 #else
 		pECWBlock = NCSMalloc((UINT32)nPaddedLength /*length*/, FALSE);
 #endif
 
-		if( !pECWBlock ) {
+		if (!pECWBlock) {
 			NCSMutexEnd(&pNCSFile->mFileAccess); //[21]
-			return( NULL ); 
+			return(NULL);
 		}
 
-		if( EcwFileSetPos(pTopQmf->hEcwFile, offset) ) {
+		if (EcwFileSetPos(pTopQmf->hEcwFile, offset)) {
 			//[20] start...
 #ifdef WIN32
 			DWORD dError = GetLastError();
 			*pBlockLength = dError;
-			if( dError == ERROR_ADAP_HDW_ERR || dError == ERROR_NETNAME_DELETED || dError == ERROR_UNEXP_NET_ERR ) {
+			if (dError == ERROR_ADAP_HDW_ERR || dError == ERROR_NETNAME_DELETED || dError == ERROR_UNEXP_NET_ERR) {
 				pNCSFile->bFileIOError = TRUE;
-				NCSLog( LOG_MED, "NCScbmReadFileBlockLocal() EcwFileSetPos, File IO Error %d.", dError );
+				NCSLog(LOG_MED, "NCScbmReadFileBlockLocal() EcwFileSetPos, File IO Error %d.", dError);
 			}
 #else
 			pNCSFile->bFileIOError = TRUE;
 #endif //WIN32
 			//[20] ...end
-			if( pECWBlock )
+			if (pECWBlock)
 #if defined( MACINTOSH ) && TARGET_API_MAC_OS8
-				DisposeHandle( pECWBlock );
+				DisposeHandle(pECWBlock);
 #else
 				NCSFree(pECWBlock);//[19]
 #endif
 			NCSMutexEnd(&pNCSFile->mFileAccess); //[21]
-			return( NULL );
+			return(NULL);
 		}
 
 #if defined( MACINTOSH ) && TARGET_API_MAC_OS8
-		if( EcwFileRead(pTopQmf->hEcwFile, *pECWBlock, length) ) {
+		if (EcwFileRead(pTopQmf->hEcwFile, *pECWBlock, length)) {
 #else
-		if( EcwFileRead(pTopQmf->hEcwFile, pECWBlock, length) ) {
+		if (EcwFileRead(pTopQmf->hEcwFile, pECWBlock, length)) {
 #endif
 			//[20] start...
 #ifdef WIN32
 			DWORD dError = GetLastError();
 			*pBlockLength = dError;
-			if( dError == ERROR_ADAP_HDW_ERR || dError == ERROR_NETNAME_DELETED || dError == ERROR_UNEXP_NET_ERR ) {
+			if (dError == ERROR_ADAP_HDW_ERR || dError == ERROR_NETNAME_DELETED || dError == ERROR_UNEXP_NET_ERR) {
 				pNCSFile->bFileIOError = TRUE;
-				NCSLog( LOG_MED, "NCScbmReadFileBlockLocal() EcwFileRead, File IO Error %d.", dError );
+				NCSLog(LOG_MED, "NCScbmReadFileBlockLocal() EcwFileRead, File IO Error %d.", dError);
 			}
 #else
 			pNCSFile->bFileIOError = TRUE;
 #endif //WIN32
 			//[20] ...end
 #if defined( MACINTOSH ) && TARGET_API_MAC_OS8
-				DisposeHandle( pECWBlock );
+			DisposeHandle(pECWBlock);
 #else
-				NCSFree(pECWBlock);//[19]
+			NCSFree(pECWBlock);//[19]
 #endif
 	//		ERS_setup_error(ERS_RASTER_ERROR,"\nNCScbmReadViewBlock: error reading QMF block");
 			NCSMutexEnd(&pNCSFile->mFileAccess); //[21]
 			return(NULL);
 		}
-	} else {
+		}
+	else {
 		//[20] start...
 #ifdef WIN32
 		DWORD dError = GetLastError();
 		*pBlockLength = dError;
-		NCSLog( LOG_LOW, "NCScbmReadFileBlockLocal() File IO Error %d.", dError );
+		NCSLog(LOG_LOW, "NCScbmReadFileBlockLocal() File IO Error %d.", dError);
 #endif //WIN32
 		//[20] ...end
 	}
 
 	NCSMutexEnd(&pNCSFile->mFileAccess); //[21]
 	return(pECWBlock);
-}
+	}
 
 #ifdef NCSJPC_ECW_SUPPORT
-BOOLEAN NCScbmGetFileBlockSizeLocal_ECW(NCSFile *pNCSFile, NCSBlockId nBlock, UINT32 *pBlockLength, UINT64 *pBlockOffset )
+BOOLEAN NCScbmGetFileBlockSizeLocal_ECW(NCSFile *pNCSFile, NCSBlockId nBlock, UINT32 *pBlockLength, UINT64 *pBlockOffset)
 #else
-BOOLEAN NCScbmGetFileBlockSizeLocal(NCSFile *pNCSFile, NCSBlockId nBlock, UINT32 *pBlockLength, UINT64 *pBlockOffset )
+BOOLEAN NCScbmGetFileBlockSizeLocal(NCSFile *pNCSFile, NCSBlockId nBlock, UINT32 *pBlockLength, UINT64 *pBlockOffset)
 #endif
 {
 	UINT64	offset = 0;
@@ -1291,27 +1302,28 @@ BOOLEAN NCScbmGetFileBlockSizeLocal(NCSFile *pNCSFile, NCSBlockId nBlock, UINT32
 	NCSMutexBegin(&pNCSFile->mFileAccess); //[21]
 
 	// Read block directly from local file, not cache
-	if(pTopQmf->p_block_offsets) {
+	if (pTopQmf->p_block_offsets) {
 		UINT64	*p_block_offset = pTopQmf->p_block_offsets + nBlock;	// will go up to higher levels if need be
 		offset = *p_block_offset++;							// get offset to block
-		length = (UINT32) (*p_block_offset - offset);		// get length
+		length = (UINT32)(*p_block_offset - offset);		// get length
 		offset += pTopQmf->file_offset;// add offset to first block in file
-	} else if(pTopQmf->bRawBlockTable) {
+	}
+	else if (pTopQmf->bRawBlockTable) {
 		INT32 i;
-		
-		for(i = 0; i < (INT32)pNCSFile->nOffsetCache; i++) {
-			if(pNCSFile->pOffsetCache[i].nID == nBlock) {
+
+		for (i = 0; i < (INT32)pNCSFile->nOffsetCache; i++) {
+			if (pNCSFile->pOffsetCache[i].nID == nBlock) {
 				pNCSFile->pOffsetCache[i].tsLastUsed = NCSGetTimeStampMs();
 				length = pNCSFile->pOffsetCache[i].nLength;
 				offset = pNCSFile->pOffsetCache[i].nOffset;
 				break;
 			}
 		}
-		if(length == 0 || offset == 0) {
+		if (length == 0 || offset == 0) {
 			UINT64 offset2;
 			EcwFileSetPos(pTopQmf->hEcwFile, pTopQmf->nHeaderMemImageLen + sizeof(UINT32) + sizeof(UINT8) + sizeof(UINT64) * nBlock);
-		//[22]	NCSFileReadUINT64_LSB(pTopQmf->hEcwFile.hFile, &offset);
-		//[22]	NCSFileReadUINT64_LSB(pTopQmf->hEcwFile.hFile, &offset2);
+			//[22]	NCSFileReadUINT64_LSB(pTopQmf->hEcwFile.hFile, &offset);
+			//[22]	NCSFileReadUINT64_LSB(pTopQmf->hEcwFile.hFile, &offset2);
 			EcwFileRead(pTopQmf->hEcwFile, &offset, sizeof(offset));		//[22]
 			EcwFileRead(pTopQmf->hEcwFile, &offset2, sizeof(offset2));		//[22]
 #ifdef NCSBO_MSBFIRST														//[22]
@@ -1321,18 +1333,19 @@ BOOLEAN NCScbmGetFileBlockSizeLocal(NCSFile *pNCSFile, NCSBlockId nBlock, UINT32
 			length = (UINT32)(offset2 - offset);
 			offset += pTopQmf->file_offset;
 
-			if(pNCSFile->nOffsetCache < pNCSEcwInfo->nMaxOffsetCache) {
+			if (pNCSFile->nOffsetCache < pNCSEcwInfo->nMaxOffsetCache) {
 				NCSFileBlockOffsetEntry Entry;
 				Entry.nID = nBlock;
 				Entry.nLength = length;
 				Entry.nOffset = offset;
 				Entry.tsLastUsed = NCSGetTimeStampMs();
 				NCSArrayAppendElement(pNCSFile->pOffsetCache, pNCSFile->nOffsetCache, &Entry);
-			} else {
+			}
+			else {
 				INT32 nLFU = 0;
-				for(i = 0; i < (INT32)pNCSFile->nOffsetCache; i++) {
-					if((pNCSFile->pOffsetCache[i].tsLastUsed < pNCSFile->pOffsetCache[nLFU].tsLastUsed) ||
-					   ((pNCSFile->pOffsetCache[i].tsLastUsed == pNCSFile->pOffsetCache[nLFU].tsLastUsed) && 
+				for (i = 0; i < (INT32)pNCSFile->nOffsetCache; i++) {
+					if ((pNCSFile->pOffsetCache[i].tsLastUsed < pNCSFile->pOffsetCache[nLFU].tsLastUsed) ||
+						((pNCSFile->pOffsetCache[i].tsLastUsed == pNCSFile->pOffsetCache[nLFU].tsLastUsed) &&
 						(pNCSFile->pOffsetCache[i].nID > pNCSFile->pOffsetCache[nLFU].nID))) {
 						nLFU = i;
 					}
@@ -1344,10 +1357,10 @@ BOOLEAN NCScbmGetFileBlockSizeLocal(NCSFile *pNCSFile, NCSBlockId nBlock, UINT32
 			}
 		}
 	}
-	if(pBlockLength) {
+	if (pBlockLength) {
 		*pBlockLength = length;
 	}
-	if(pBlockOffset) {
+	if (pBlockOffset) {
 		*pBlockOffset = offset;
 	}
 
@@ -1362,16 +1375,16 @@ BOOLEAN NCScbmGetFileBlockSizeLocal(NCSFile *pNCSFile, NCSBlockId nBlock, UINT32
 ** Returns NCSECW_READ_OK if no error on the read.
 ********************************************************/
 #ifdef NCSJPC_ECW_SUPPORT
-NCSEcwReadStatus NCScbmReadViewLineBIL_ECW( NCSFileView *pNCSFileView, UINT8 **p_p_output_line)
+NCSEcwReadStatus NCScbmReadViewLineBIL_ECW(NCSFileView *pNCSFileView, UINT8 **p_p_output_line)
 #else
-NCSEcwReadStatus NCScbmReadViewLineBIL( NCSFileView *pNCSFileView, UINT8 **p_p_output_line)
+NCSEcwReadStatus NCScbmReadViewLineBIL(NCSFileView *pNCSFileView, UINT8 **p_p_output_line)
 #endif
 {
-	if( pNCSFileView->bGoToQuietState ) {
+	if (pNCSFileView->bGoToQuietState) {
 		pNCSFileView->eCallbackState = NCSECW_VIEW_QUIET;
 		return(NCSECW_READ_CANCELLED);
 	}
-	if( erw_decompress_read_region_line_bil(pNCSFileView->pQmfRegion, p_p_output_line, NCSECW_READLINE_UINT8) )	// [14]
+	if (erw_decompress_read_region_line_bil(pNCSFileView->pQmfRegion, p_p_output_line, NCSECW_READLINE_UINT8))	// [14]
 		return(NCSECW_READ_FAILED);
 	else
 		return(NCSECW_READ_OK);
@@ -1382,55 +1395,58 @@ NCSEcwReadStatus NCScbmReadViewLineBIL( NCSFileView *pNCSFileView, UINT8 **p_p_o
 ** Returns NCSECW_READ_OK if no error on the read.
 ********************************************************/
 #ifdef NCSJPC_ECW_SUPPORT
-NCSEcwReadStatus NCScbmReadViewLineBILEx_ECW( NCSFileView *pNCSFileView, NCSEcwCellType eType, void **p_p_output_line)
+NCSEcwReadStatus NCScbmReadViewLineBILEx_ECW(NCSFileView *pNCSFileView, NCSEcwCellType eType, void **p_p_output_line)
 #else
-NCSEcwReadStatus NCScbmReadViewLineBILEx( NCSFileView *pNCSFileView, NCSEcwCellType eType, void **p_p_output_line)
+NCSEcwReadStatus NCScbmReadViewLineBILEx(NCSFileView *pNCSFileView, NCSEcwCellType eType, void **p_p_output_line)
 #endif
 {
-	if( pNCSFileView->bGoToQuietState ) {
+	if (pNCSFileView->bGoToQuietState) {
 		pNCSFileView->eCallbackState = NCSECW_VIEW_QUIET;
 		return(NCSECW_READ_CANCELLED);
 	}
 	switch (eType) {
-		case NCSCT_UINT16 :
-				if( erw_decompress_read_region_line_bil(pNCSFileView->pQmfRegion,
-														(UINT8 **)p_p_output_line,
-														NCSECW_READLINE_UINT16)) {
-					return(NCSECW_READ_FAILED);
-				} else {
-					return(NCSECW_READ_OK);
-				}
-				break;
-		case NCSCT_IEEE4 :
-				if( erw_decompress_read_region_line_bil(pNCSFileView->pQmfRegion,
-														(UINT8 **)p_p_output_line,
-														NCSECW_READLINE_IEEE4)) {
-					return(NCSECW_READ_FAILED);
-				} else {
-					return(NCSECW_READ_OK);
-				}
-				break;
-		case NCSCT_UINT8 :
-				if( erw_decompress_read_region_line_bil(pNCSFileView->pQmfRegion,
-														(UINT8 **)p_p_output_line,
-														NCSECW_READLINE_UINT8)) {
-					return(NCSECW_READ_FAILED);
-				} else {
-					return(NCSECW_READ_OK);
-				}
-				break;
-		case NCSCT_UINT32 :
-		case NCSCT_UINT64 :
-		case NCSCT_INT8	:
-		case NCSCT_INT16 :
-		case NCSCT_INT32 :
-		case NCSCT_INT64 :
-		case NCSCT_IEEE8 :
-			return (NCSECW_READ_FAILED);//NCS_INVALID_PARAMETER); [18]
-		default :
-			return (NCSECW_READ_FAILED);//NCS_INVALID_PARAMETER); [18]
+	case NCSCT_UINT16:
+		if (erw_decompress_read_region_line_bil(pNCSFileView->pQmfRegion,
+			(UINT8 **)p_p_output_line,
+			NCSECW_READLINE_UINT16)) {
+			return(NCSECW_READ_FAILED);
+		}
+		else {
+			return(NCSECW_READ_OK);
+		}
+		break;
+	case NCSCT_IEEE4:
+		if (erw_decompress_read_region_line_bil(pNCSFileView->pQmfRegion,
+			(UINT8 **)p_p_output_line,
+			NCSECW_READLINE_IEEE4)) {
+			return(NCSECW_READ_FAILED);
+		}
+		else {
+			return(NCSECW_READ_OK);
+		}
+		break;
+	case NCSCT_UINT8:
+		if (erw_decompress_read_region_line_bil(pNCSFileView->pQmfRegion,
+			(UINT8 **)p_p_output_line,
+			NCSECW_READLINE_UINT8)) {
+			return(NCSECW_READ_FAILED);
+		}
+		else {
+			return(NCSECW_READ_OK);
+		}
+		break;
+	case NCSCT_UINT32:
+	case NCSCT_UINT64:
+	case NCSCT_INT8:
+	case NCSCT_INT16:
+	case NCSCT_INT32:
+	case NCSCT_INT64:
+	case NCSCT_IEEE8:
+		return (NCSECW_READ_FAILED);//NCS_INVALID_PARAMETER); [18]
+	default:
+		return (NCSECW_READ_FAILED);//NCS_INVALID_PARAMETER); [18]
 	}
-//unreachable	return(NCSECW_READ_FAILED);
+	//unreachable	return(NCSECW_READ_FAILED);
 }
 
 /******************************************************
@@ -1438,16 +1454,16 @@ NCSEcwReadStatus NCScbmReadViewLineBILEx( NCSFileView *pNCSFileView, NCSEcwCellT
 ** Returns NCSECW_READ_OK if no error on the read.
 ********************************************************/
 #ifdef NCSJPC_ECW_SUPPORT
-NCSEcwReadStatus NCScbmReadViewLineRGB_ECW( NCSFileView *pNCSFileView, UINT8 *pRGBTriplets)
+NCSEcwReadStatus NCScbmReadViewLineRGB_ECW(NCSFileView *pNCSFileView, UINT8 *pRGBTriplets)
 #else
-NCSEcwReadStatus NCScbmReadViewLineRGB( NCSFileView *pNCSFileView, UINT8 *pRGBTriplets)
+NCSEcwReadStatus NCScbmReadViewLineRGB(NCSFileView *pNCSFileView, UINT8 *pRGBTriplets)
 #endif
 {
-	if( pNCSFileView->bGoToQuietState ) {
+	if (pNCSFileView->bGoToQuietState) {
 		pNCSFileView->eCallbackState = NCSECW_VIEW_QUIET;
 		return(NCSECW_READ_CANCELLED);
 	}
-	if( erw_decompress_read_region_line_rgb(pNCSFileView->pQmfRegion,pRGBTriplets) )
+	if (erw_decompress_read_region_line_rgb(pNCSFileView->pQmfRegion, pRGBTriplets))
 		return(NCSECW_READ_FAILED);
 	else
 		return(NCSECW_READ_OK);
@@ -1458,16 +1474,16 @@ NCSEcwReadStatus NCScbmReadViewLineRGB( NCSFileView *pNCSFileView, UINT8 *pRGBTr
 ** Returns NCSECW_READ_OK if no error on the read.
 ********************************************************/
 #ifdef NCSJPC_ECW_SUPPORT
-NCSEcwReadStatus NCScbmReadViewLineRGBA_ECW( NCSFileView *pNCSFileView, UINT32 *pRGBTriplets)
+NCSEcwReadStatus NCScbmReadViewLineRGBA_ECW(NCSFileView *pNCSFileView, UINT32 *pRGBTriplets)
 #else
-NCSEcwReadStatus NCScbmReadViewLineRGBA( NCSFileView *pNCSFileView, UINT32 *pRGBTriplets)
+NCSEcwReadStatus NCScbmReadViewLineRGBA(NCSFileView *pNCSFileView, UINT32 *pRGBTriplets)
 #endif
 {
-	if( pNCSFileView->bGoToQuietState ) {
+	if (pNCSFileView->bGoToQuietState) {
 		pNCSFileView->eCallbackState = NCSECW_VIEW_QUIET;
 		return(NCSECW_READ_CANCELLED);
 	}
-	if( erw_decompress_read_region_line_rgba(pNCSFileView->pQmfRegion, pRGBTriplets) )
+	if (erw_decompress_read_region_line_rgba(pNCSFileView->pQmfRegion, pRGBTriplets))
 		return(NCSECW_READ_FAILED);
 	else
 		return(NCSECW_READ_OK);
@@ -1478,16 +1494,16 @@ NCSEcwReadStatus NCScbmReadViewLineRGBA( NCSFileView *pNCSFileView, UINT32 *pRGB
 ** Returns NCSECW_READ_OK if no error on the read.
 ********************************************************/
 #ifdef NCSJPC_ECW_SUPPORT
-NCSEcwReadStatus NCScbmReadViewLineBGRA_ECW( NCSFileView *pNCSFileView, UINT32 *pRGBTriplets)
+NCSEcwReadStatus NCScbmReadViewLineBGRA_ECW(NCSFileView *pNCSFileView, UINT32 *pRGBTriplets)
 #else
-NCSEcwReadStatus NCScbmReadViewLineBGRA( NCSFileView *pNCSFileView, UINT32 *pRGBTriplets)
+NCSEcwReadStatus NCScbmReadViewLineBGRA(NCSFileView *pNCSFileView, UINT32 *pRGBTriplets)
 #endif
 {
-	if( pNCSFileView->bGoToQuietState ) {
+	if (pNCSFileView->bGoToQuietState) {
 		pNCSFileView->eCallbackState = NCSECW_VIEW_QUIET;
 		return(NCSECW_READ_CANCELLED);
 	}
-	if( erw_decompress_read_region_line_bgra(pNCSFileView->pQmfRegion, pRGBTriplets) )
+	if (erw_decompress_read_region_line_bgra(pNCSFileView->pQmfRegion, pRGBTriplets))
 		return(NCSECW_READ_FAILED);
 	else
 		return(NCSECW_READ_OK);
@@ -1498,16 +1514,16 @@ NCSEcwReadStatus NCScbmReadViewLineBGRA( NCSFileView *pNCSFileView, UINT32 *pRGB
 ** Returns NCSECW_READ_OK if no error on the read.
 ********************************************************/
 #ifdef NCSJPC_ECW_SUPPORT
-NCSEcwReadStatus NCScbmReadViewLineBGR_ECW( NCSFileView *pNCSFileView, UINT8 *pRGBTriplets)
+NCSEcwReadStatus NCScbmReadViewLineBGR_ECW(NCSFileView *pNCSFileView, UINT8 *pRGBTriplets)
 #else
-NCSEcwReadStatus NCScbmReadViewLineBGR( NCSFileView *pNCSFileView, UINT8 *pRGBTriplets)
+NCSEcwReadStatus NCScbmReadViewLineBGR(NCSFileView *pNCSFileView, UINT8 *pRGBTriplets)
 #endif
 {
-	if( pNCSFileView->bGoToQuietState ) {
+	if (pNCSFileView->bGoToQuietState) {
 		pNCSFileView->eCallbackState = NCSECW_VIEW_QUIET;
 		return(NCSECW_READ_CANCELLED);
 	}
-	if( erw_decompress_read_region_line_bgr(pNCSFileView->pQmfRegion,pRGBTriplets) )
+	if (erw_decompress_read_region_line_bgr(pNCSFileView->pQmfRegion, pRGBTriplets))
 		return(NCSECW_READ_FAILED);
 	else
 		return(NCSECW_READ_OK);
@@ -1526,16 +1542,16 @@ NCSEcwReadStatus NCScbmReadViewLineBGR( NCSFileView *pNCSFileView, UINT8 *pRGBTr
 **	simulating reality...
 ********************************************************/
 #ifdef NCSJPC_ECW_SUPPORT
-NCSEcwReadStatus NCScbmReadViewFake_ECW( NCSFileView *pNCSFileView)
+NCSEcwReadStatus NCScbmReadViewFake_ECW(NCSFileView *pNCSFileView)
 #else
-NCSEcwReadStatus NCScbmReadViewFake( NCSFileView *pNCSFileView)
+NCSEcwReadStatus NCScbmReadViewFake(NCSFileView *pNCSFileView)
 #endif
 {
 	UINT8 *pECWBlock;
 	QmfRegionStruct *pQmfRegion;
 	UINT16					nLevel = 0;
 
-	if( pNCSFileView->bGoToQuietState ) {
+	if (pNCSFileView->bGoToQuietState) {
 		pNCSFileView->eCallbackState = NCSECW_VIEW_QUIET;
 		return(NCSECW_READ_CANCELLED);
 	}
@@ -1544,33 +1560,33 @@ NCSEcwReadStatus NCScbmReadViewFake( NCSFileView *pNCSFileView)
 
 	pQmfRegion = pNCSFileView->pQmfRegion;
 	// Traverse from smallest to largest level, working out blocks we need
-	while( nLevel <= pQmfRegion->p_largest_qmf->level ) {
+	while (nLevel <= pQmfRegion->p_largest_qmf->level) {
 		QmfRegionLevelStruct	*pLevel = &(pQmfRegion->p_levels[nLevel]);
 		QmfLevelStruct			*pQmf = pLevel->p_qmf;
 
 		UINT32					nStartXBlock, nEndXBlock, nStartYBlock, nEndYBlock;
 		UINT32					nCurrentXBlock, nCurrentYBlock;
 
-		nStartXBlock	= pLevel->start_x_block;
-		nEndXBlock		= (nStartXBlock + pLevel->x_block_count) - 1;
-		nStartYBlock	= pLevel->level_start_y / pQmf->y_block_size;
-		nEndYBlock		= pLevel->level_end_y   / pQmf->y_block_size;
+		nStartXBlock = pLevel->start_x_block;
+		nEndXBlock = (nStartXBlock + pLevel->x_block_count) - 1;
+		nStartYBlock = pLevel->level_start_y / pQmf->y_block_size;
+		nEndYBlock = pLevel->level_end_y / pQmf->y_block_size;
 		// We now have the rectangle of blocks required for this level.
 		// Loop through the rows of blocks, and request the blocks from the actual file
-		for(nCurrentYBlock = nStartYBlock; nCurrentYBlock <= nEndYBlock; nCurrentYBlock++ )
-			for(nCurrentXBlock = nStartXBlock; nCurrentXBlock <= nEndXBlock; nCurrentXBlock++ ) {
+		for (nCurrentYBlock = nStartYBlock; nCurrentYBlock <= nEndYBlock; nCurrentYBlock++)
+			for (nCurrentXBlock = nStartXBlock; nCurrentXBlock <= nEndXBlock; nCurrentXBlock++) {
 				// read the block
 				pECWBlock = NCScbmReadViewBlock(pLevel, nCurrentXBlock, nCurrentYBlock);
-				if( !pECWBlock ) {
+				if (!pECWBlock) {
 					NCSMutexEnd(&pNCSEcwInfo->mutex);
-					return( NCSECW_READ_FAILED );		// Error - internal logic failure
+					return(NCSECW_READ_FAILED);		// Error - internal logic failure
 				}
 				// and free it again
 				NCScbmFreeViewBlock(pLevel, pECWBlock);
 			}
 		nLevel++;
 	}
-	
+
 	NCSMutexEnd(&pNCSEcwInfo->mutex);
 	return(NCSECW_READ_OK);
 }

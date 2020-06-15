@@ -16,8 +16,8 @@
 #define MAXCC_INC 100
 #define EXP_MAX_NAMLEN 20
 
-enum exp_flags {EXP_USEDATES=1,EXP_NOCVTPFX=2,EXP_USE_ALLSEF=4,EXP_USE_VDIST=8};
-enum exp_fcn {EXP_OPEN,EXP_CLOSE,EXP_SRVOPEN,EXP_SURVEY,EXP_OPENDIR,EXP_CLOSEDIR,EXP_SETOPTIONS};
+enum exp_flags { EXP_USEDATES = 1, EXP_NOCVTPFX = 2, EXP_USE_ALLSEF = 4, EXP_USE_VDIST = 8 };
+enum exp_fcn { EXP_OPEN, EXP_CLOSE, EXP_SRVOPEN, EXP_SURVEY, EXP_OPENDIR, EXP_CLOSEDIR, EXP_SETOPTIONS };
 
 typedef struct {
 	UINT fcn;
@@ -34,9 +34,9 @@ typedef struct {
 	int maxnamlen;
 	double fTotalLength;
 	PRJREF *pREF
-	;double grid;
-	;char *pdatumname;
-	;int zone;
+		; double grid;
+	; char *pdatumname;
+	; int zone;
 } EXPTYP;
 
 typedef struct {

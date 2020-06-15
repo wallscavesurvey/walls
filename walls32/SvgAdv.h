@@ -13,9 +13,9 @@
 
 class CSvgAdv : public CDialog
 {
-// Construction
+	// Construction
 public:
-	CSvgAdv(SVG_ADV_PARAMS *pAdv,CWnd* pParent = NULL);   // standard constructor
+	CSvgAdv(SVG_ADV_PARAMS *pAdv, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CSvgAdv)
@@ -34,17 +34,17 @@ public:
 	BOOL m_bLrudBoxes;
 
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CSvgAdv)
-	protected:
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CSvgAdv)
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
 // Implementation
 
 public:
-	static void LoadAdvParams(SVG_ADV_PARAMS *pAdv,BOOL bMerging);
+	static void LoadAdvParams(SVG_ADV_PARAMS *pAdv, BOOL bMerging);
 	static void SaveAdvParams(SVG_ADV_PARAMS *pAdv);
 
 protected:
@@ -56,7 +56,7 @@ protected:
 	//{{AFX_MSG(CSvgAdv)
 	afx_msg void OnDefaults();
 	//}}AFX_MSG
-    afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
+	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedLrudbars();

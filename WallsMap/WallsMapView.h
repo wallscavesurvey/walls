@@ -21,47 +21,47 @@ class CWallsMapDoc;
 
 struct HIST_REC {
 	HIST_REC() {}
-	HIST_REC(const CFltPoint &ctr,double sc) : geoCtr(ctr),scale(sc) {}
+	HIST_REC(const CFltPoint &ctr, double sc) : geoCtr(ctr), scale(sc) {}
 	CFltPoint geoCtr;
 	double scale;
 };
 
 template<typename TYPE> class CCircList {
 public:
-	CCircList(int len) : clist(len),pos_start(0),pos_current(-1),pos_end(0) {}
-	void Clear() {pos_start=pos_current=pos_end=0;}
-	BOOL IsNext() {return pos_current!=pos_end;}
-	BOOL IsPrev() {return pos_current!=pos_start;}
+	CCircList(int len) : clist(len), pos_start(0), pos_current(-1), pos_end(0) {}
+	void Clear() { pos_start = pos_current = pos_end = 0; }
+	BOOL IsNext() { return pos_current != pos_end; }
+	BOOL IsPrev() { return pos_current != pos_start; }
 	int inc_pos(int &pos)
 	{
-		if(++pos==clist.size()) pos=0;
+		if (++pos == clist.size()) pos = 0;
 		return pos;
 	}
 	int dec_pos(int &pos)
 	{
-		if(0==pos--) pos+=clist.size();
+		if (0 == pos--) pos += clist.size();
 		return pos;
 	}
 	TYPE & GetNext()
 	{
 		ASSERT(IsNext());
-		int pos=pos_current;
+		int pos = pos_current;
 		return clist[inc_pos(pos)];
 	}
 	TYPE & GetPrev()
 	{
 		ASSERT(IsPrev());
-		int pos=pos_current;
+		int pos = pos_current;
 		return clist[dec_pos(pos)];
 	}
 	void Add(const TYPE &t)
 	{
-		clist[inc_pos(pos_current)]=t;
-		if(pos_current && (pos_end=pos_current)==pos_start)
+		clist[inc_pos(pos_current)] = t;
+		if (pos_current && (pos_end = pos_current) == pos_start)
 			inc_pos(pos_start);
 	}
 	std::vector<TYPE> clist;
-	int pos_start,pos_current,pos_end;
+	int pos_start, pos_current, pos_end;
 };
 
 class CWallsMapView : public CView
@@ -72,7 +72,7 @@ protected: // create from serialization only
 	CWallsMapView();
 	DECLARE_DYNCREATE(CWallsMapView)
 
-// Attributes
+	// Attributes
 public:
 	CWallsMapDoc* GetDocument() const;
 	static CWallsMapView *m_pViewDrag;
@@ -80,35 +80,35 @@ public:
 	static bool m_bTestPoint;
 	static bool m_bMarkCenter;
 
-	bool m_bAutoCenterGPS,m_bTrackingGPS;
+	bool m_bAutoCenterGPS, m_bTrackingGPS;
 
-	bool m_bUseMarkPosition,m_bTrackRubber,m_bMeasuring;
+	bool m_bUseMarkPosition, m_bTrackRubber, m_bMeasuring;
 
 	CFltPoint m_fMarkPosition;
 
 	//Scroll wheel behavior --
-	BOOL IsSelecting() {return GetDocument()->m_bSelecting;}
-	void SetSelecting(BOOL bSel) {GetDocument()->m_bSelecting=bSel;}
+	BOOL IsSelecting() { return GetDocument()->m_bSelecting; }
+	void SetSelecting(BOOL bSel) { GetDocument()->m_bSelecting = bSel; }
 	CBitmapRenderTarget m_RT;
 
 private:
-    CDIBWrapper m_DIB;
+	CDIBWrapper m_DIB;
 	CScaleWnd *m_pScaleWnd;
 	double m_fScale; //Screen pixels per geounit (meters or degrees, or image px if not georeferenced)
 	double m_fSignY;
 	static int m_nMdiShift;
 	CFltPoint m_fViewOrigin;
 	CFltRect m_geoExtDIB;
-	CPoint m_ptBitmapOverlap,m_ptDrag,m_ptMeasure;
-	UINT m_xBorders,m_yBorders;
+	CPoint m_ptBitmapOverlap, m_ptDrag, m_ptMeasure;
+	UINT m_xBorders, m_yBorders;
 	UINT m_uAction;
 	int m_iFullView;
 
 	CPoint m_ptPopup;
 	CFltPoint m_fptPopup;
 	bool m_bDisplayTrack;
-	BOOL m_bSync,m_bSyncCursor,m_bNoHist;
-	bool m_bTestPointVisible,m_bTracking,m_bFirstViewDisplayed;
+	BOOL m_bSync, m_bSyncCursor, m_bNoHist;
+	bool m_bTestPointVisible, m_bTracking, m_bFirstViewDisplayed;
 	CPoint m_ptSyncCursor;
 	TOOLINFO m_ToolInfo;
 	HWND m_wndTooltip;
@@ -116,49 +116,49 @@ private:
 	MAP_PTNODE *m_pMapPtNode;
 	CCircList<HIST_REC> m_hist;
 
-// Operations
+	// Operations
 public:
-	static void SyncStop()	{
-		if(CMainFrame::m_bSync) {
-			GetMF()->UpdateViews(NULL,LHINT_SYNCSTOP);
-			CMainFrame::m_bSync=FALSE;
-			m_pSyncView=NULL;
+	static void SyncStop() {
+		if (CMainFrame::m_bSync) {
+			GetMF()->UpdateViews(NULL, LHINT_SYNCSTOP);
+			CMainFrame::m_bSync = FALSE;
+			m_pSyncView = NULL;
 		}
 	}
 
 	void RefreshDIB();
 
-	void GeoPtToClientPt(const CFltPoint &fpt,CPoint &pt)
+	void GeoPtToClientPt(const CFltPoint &fpt, CPoint &pt)
 	{
-		pt.x=_rnd((fpt.x-m_fViewOrigin.x)*m_fScale);
-		pt.y=_rnd((fpt.y-m_fViewOrigin.y)*m_fScale*m_fSignY);
+		pt.x = _rnd((fpt.x - m_fViewOrigin.x)*m_fScale);
+		pt.y = _rnd((fpt.y - m_fViewOrigin.y)*m_fScale*m_fSignY);
 	}
 
-	void ClientPtToGeoPt(const CPoint &pt,CFltPoint &fpt)
+	void ClientPtToGeoPt(const CPoint &pt, CFltPoint &fpt)
 	{
-		fpt.x=m_fViewOrigin.x+pt.x/m_fScale;
-		fpt.y=m_fViewOrigin.y+pt.y/(m_fScale*m_fSignY);
+		fpt.x = m_fViewOrigin.x + pt.x / m_fScale;
+		fpt.y = m_fViewOrigin.y + pt.y / (m_fScale*m_fSignY);
 	}
 
 	void FitImage(BOOL bVisible);
 #ifdef _USE_CTR
 	void CenterOnPointDlg(CFltPoint *pfpt);
 #endif
-	void CenterOnGeoPoint(const CFltPoint &fpt,double fZoom);
+	void CenterOnGeoPoint(const CFltPoint &fpt, double fZoom);
 
 	void FitShpExtent(CFltRect &geoExt);
 
 	void GetViewExtent(CFltRect &fRect);
-	double GetScale() {return m_fScale;} //m_fScale is pixels per geounit
+	double GetScale() { return m_fScale; } //m_fScale is pixels per geounit
 
-	void OnUpdateStatusBar(CCmdUI* pCmdUI,int id);
+	void OnUpdateStatusBar(CCmdUI* pCmdUI, int id);
 
 	UINT GetScaleDenom()
 	{
-		return CLayerSet::GetScaleDenom(m_geoExtDIB,m_fScale,GetDocument()->IsProjected());
+		return CLayerSet::GetScaleDenom(m_geoExtDIB, m_fScale, GetDocument()->IsProjected());
 	}
 
-// Overrides
+	// Overrides
 public:
 	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
@@ -171,7 +171,7 @@ protected:
 	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnUpdate(CView* /*pSender*/, LPARAM /*lHint*/, CObject* /*pHint*/);
 
-// Implementation
+	// Implementation
 public:
 	virtual ~CWallsMapView();
 #ifdef _DEBUG
@@ -180,9 +180,9 @@ public:
 #endif
 
 private:
-	static void GetTooltip(MAP_PTNODE *pn,LPSTR text)
+	static void GetTooltip(MAP_PTNODE *pn, LPSTR text)
 	{
-		pn->pLayer->GetTooltip(pn->rec,text);
+		pn->pLayer->GetTooltip(pn->rec, text);
 	}
 	void ShowTooltip(CPoint point);
 	void SetTooltipText();
@@ -197,7 +197,7 @@ private:
 
 	void DrawScale()
 	{
-		m_pScaleWnd->Draw(MetersPerPixel(m_fScale),GetDocument()->IsFeetUnits());
+		m_pScaleWnd->Draw(MetersPerPixel(m_fScale), GetDocument()->IsFeetUnits());
 		SetScalePos();
 	}
 
@@ -212,33 +212,33 @@ private:
 		//m_fScale is pixels per geounit
 		CRect client;
 		GetClientRect(&client);
-		double fact=0.5/m_fScale;
-		fpt.x=m_fViewOrigin.x+client.right*fact;
-		fpt.y=m_fViewOrigin.y+client.bottom*fact*m_fSignY;
+		double fact = 0.5 / m_fScale;
+		fpt.x = m_fViewOrigin.x + client.right*fact;
+		fpt.y = m_fViewOrigin.y + client.bottom*fact*m_fSignY;
 		return fpt;
 	}
 
 	void UpdateOnClientPt(const CPoint &pt)
 	{
 		CFltPoint fpt;
-		ClientPtToGeoPt(pt,fpt);
-		UpdateDIB(fpt,m_fScale);
+		ClientPtToGeoPt(pt, fpt);
+		UpdateDIB(fpt, m_fScale);
 	}
 
-	void UpdateOnClientPt(const CPoint &pt,double scale)
+	void UpdateOnClientPt(const CPoint &pt, double scale)
 	{
 		CFltPoint fpt;
-		ClientPtToGeoPt(pt,fpt);
-		UpdateDIB(fpt,scale);
+		ClientPtToGeoPt(pt, fpt);
+		UpdateDIB(fpt, scale);
 	}
 
-	MAP_PTNODE *GetPtNode(int x,int y)
+	MAP_PTNODE *GetPtNode(int x, int y)
 	{
-		return m_ptNode.GetPtNode(x-m_ptBitmapOverlap.x,y-m_ptBitmapOverlap.y);
+		return m_ptNode.GetPtNode(x - m_ptBitmapOverlap.x, y - m_ptBitmapOverlap.y);
 	}
 
 	bool IsPointerValid() {
-		return (m_uAction&(CWallsMapDoc::ACTION_PAN|CWallsMapDoc::ACTION_SELECT|CWallsMapDoc::ACTION_NOCOORD))==0;
+		return (m_uAction&(CWallsMapDoc::ACTION_PAN | CWallsMapDoc::ACTION_SELECT | CWallsMapDoc::ACTION_NOCOORD)) == 0;
 	}
 
 	double MaxImagePixelsPerGeoUnit()
@@ -253,8 +253,8 @@ private:
 
 	CImageLayer *GetTopNteLayer(const CFltPoint &ptGeo)
 	{
-		CLayerSet &lSet=GetDocument()->LayerSet();
-		return lSet.HasNteLayers()?lSet.GetTopNteLayer(ptGeo):NULL;
+		CLayerSet &lSet = GetDocument()->LayerSet();
+		return lSet.HasNteLayers() ? lSet.GetTopNteLayer(ptGeo) : NULL;
 	}
 
 	double ImagePixelsPerGeoUnit(const CFltPoint &ptGeo)
@@ -265,7 +265,7 @@ private:
 	double PopupPixelsPerGeoUnit()
 	{
 		CFltPoint ptGeo;
-		ClientPtToGeoPt(m_ptPopup,ptGeo);
+		ClientPtToGeoPt(m_ptPopup, ptGeo);
 		return ImagePixelsPerGeoUnit(ptGeo);
 	}
 
@@ -275,22 +275,22 @@ private:
 		//fScale == 512*MaxImagePixelsPerGeoUnit() --> scrn_px == 512 * Img_px, or
 		//fScale == 8/geo_perim --> fScale*geo_perim==8 px
 		//(fZoom=scrn px/img_px)==1 --> fScale/(img_px/geo_units)==1 --> fScale==MaxImagePixelsPerGeoUnit()
-		return fScale<=100000000.0 && fScale*GetDocument()->ExtentHalfPerim()>=8.0;
+		return fScale <= 100000000.0 && fScale*GetDocument()->ExtentHalfPerim() >= 8.0;
 	}
 	void DrawSyncCursor();
 	void RefreshMeasure();
 	double GetDragAz();
 	void GetDragDistAz(CString &cs);
-	BOOL ClearDIB(int width,int height);
-	void UpdateDIB(const CFltPoint &ptGeoCtr,double newScale);
-	void UpdateViewsAtPoint(const CPoint &point,LPARAM lHint);
+	BOOL ClearDIB(int width, int height);
+	void UpdateDIB(const CFltPoint &ptGeoCtr, double newScale);
+	void UpdateViewsAtPoint(const CPoint &point, LPARAM lHint);
 	double GetPtSyncCursorFromHint(CObject *pHint);
 	//void UpdateZoomPane();
 	void UpdateTimePane();
 	void GetFrameClient(CRect &rect);
-	void InitFullViewWindow(); 
+	void InitFullViewWindow();
 	void CenterOnPtPopup(double scale);
-	void EditShape(int x,int cx,int y,int cy);
+	void EditShape(int x, int cx, int y, int cy);
 	void SelectEdited(BOOL bNew);
 	//void MaximizeWindow();
 	CMDIChildWnd * ComputeBorders();
@@ -298,7 +298,7 @@ private:
 protected:
 	DECLARE_MESSAGE_MAP()
 
-// Generated message map functions
+	// Generated message map functions
 public:
 	virtual void OnInitialUpdate();
 	//afx_msg void OnViewNozoom();
@@ -335,9 +335,9 @@ public:
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 	afx_msg void OnDestroy();
 	afx_msg void OnContextZoomSpecify();
-	afx_msg LRESULT OnMouseLeave(WPARAM,LPARAM);
-	afx_msg LRESULT OnMouseHover(WPARAM,LPARAM);
-	afx_msg LRESULT OnExitSizeMove (WPARAM, LPARAM);
+	afx_msg LRESULT OnMouseLeave(WPARAM, LPARAM);
+	afx_msg LRESULT OnMouseHover(WPARAM, LPARAM);
+	afx_msg LRESULT OnExitSizeMove(WPARAM, LPARAM);
 	afx_msg void OnOptionsShowoutlines();
 	afx_msg void OnUpdateOptionsShowoutlines(CCmdUI *pCmdUI);
 	afx_msg void OnFitExtent();
@@ -398,7 +398,7 @@ public:
 	afx_msg LRESULT OnCommandHelp(WPARAM wNone, LPARAM lParam);
 	//afx_msg void OnUpdateLaunchGe(CCmdUI *pCmdUI);
 	afx_msg void OnImageOpacity();
-	afx_msg LRESULT OnTabletQuerySystemGestureStatus(WPARAM,LPARAM);
+	afx_msg LRESULT OnTabletQuerySystemGestureStatus(WPARAM, LPARAM);
 	afx_msg void OnGpsTracking();
 	afx_msg void OnUpdateGpsTracking(CCmdUI *pCmdUI);
 	afx_msg void OnCtrOnGPSPoint();
@@ -407,12 +407,14 @@ public:
 	afx_msg void OnUpdateGpsDisplaytrack(CCmdUI *pCmdUI);
 	afx_msg void OnGpsEnablecentering();
 	afx_msg void OnUpdateGpsEnablecentering(CCmdUI *pCmdUI);
-	afx_msg LRESULT OnPropViewDoc(WPARAM wParam,LPARAM lParam);
+	afx_msg LRESULT OnPropViewDoc(WPARAM wParam, LPARAM lParam);
 };
 
 #ifndef _DEBUG  // debug version in WallsMapView.cpp
 inline CWallsMapDoc* CWallsMapView::GetDocument() const
-   { return reinterpret_cast<CWallsMapDoc*>(m_pDocument); }
+{
+	return reinterpret_cast<CWallsMapDoc*>(m_pDocument);
+}
 #endif
 
 

@@ -8,14 +8,14 @@
 // CIgrfExportDlg dialog
 class CIgrfExportDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
 	CIgrfExportDlg(CWnd* pParent = NULL);	// standard constructor
 
 // Dialog Data
 	enum { IDD = IDD_TSSTRAVIS_DIALOG };
 
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 
 
@@ -26,7 +26,7 @@ protected:
 	BOOL m_bLogFailed;
 	HICON m_hIcon;
 
-	void CDECL WriteLog(const char *format,...);
+	void CDECL WriteLog(const char *format, ...);
 
 	// Generated message map functions
 	virtual BOOL OnInitDialog();

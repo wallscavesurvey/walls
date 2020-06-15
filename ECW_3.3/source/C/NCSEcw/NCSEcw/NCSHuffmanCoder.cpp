@@ -2,13 +2,13 @@
 ** Copyright 2002 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
 **
 ** FILE:     $Archive: /NCS/Source/C/NCSEcw/NCSEcw/NCSHuffmanCoder.cpp $
@@ -35,7 +35,7 @@ const UINT8 CNCSHuffmanCoder::SMALL_SHIFT = 10;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CNCSHuffmanCoder::CCodeNode::CCodeNode() 
+CNCSHuffmanCoder::CCodeNode::CCodeNode()
 {
 	m_Children.m_P.m_p0Child = NULL;
 	m_Children.m_P.m_p1Child = NULL;
@@ -43,37 +43,38 @@ CNCSHuffmanCoder::CCodeNode::CCodeNode()
 	memset(&m_Symbol, 0, sizeof(m_Symbol));
 
 	m_nFrequency = 0;
-	m_pNext = (CCodeNode*)NULL;  
+	m_pNext = (CCodeNode*)NULL;
 	m_nCode = 0;
 	m_nCodeBits = 0;
 	m_bInHistogram = false;
 }
 
-CNCSHuffmanCoder::CCodeNode::CCodeNode(UINT8 **ppPacked, 
-									   UINT32 &nNodes) 
+CNCSHuffmanCoder::CCodeNode::CCodeNode(UINT8 **ppPacked,
+	UINT32 &nNodes)
 {
 	Unpack(ppPacked, nNodes);
 }
 
-CNCSHuffmanCoder::CCodeNode::~CCodeNode() 
+CNCSHuffmanCoder::CCodeNode::~CCodeNode()
 {
 	delete m_Children.m_P.m_p0Child;
 	delete m_Children.m_P.m_p1Child;
 }
 
-void CNCSHuffmanCoder::CCodeNode::Pack(UINT8 **ppPacked, 
-									   UINT32 &nNodes)
+void CNCSHuffmanCoder::CCodeNode::Pack(UINT8 **ppPacked,
+	UINT32 &nNodes)
 {
-	if(m_Children.m_P.m_p0Child == NULL) {
+	if (m_Children.m_P.m_p0Child == NULL) {
 		nNodes++;
 
 		UINT16 nSymbol = m_Symbol.nValue;
 
-		if((nSymbol & VALUE_MASK) <= 0x0f ) {
+		if ((nSymbol & VALUE_MASK) <= 0x0f) {
 			nSymbol = SMALL_SYMBOL | (nSymbol >> 10) | (nSymbol & 0x0f);
 			**ppPacked = (UINT8)nSymbol;
 			(*ppPacked)++;
-		} else {
+		}
+		else {
 			**ppPacked = 0x80;
 			(*ppPacked)++;
 
@@ -82,7 +83,8 @@ void CNCSHuffmanCoder::CCodeNode::Pack(UINT8 **ppPacked,
 			**ppPacked = (UINT8)((nSymbol >> 8) & 0xff);
 			(*ppPacked)++;
 		}
-	} else {
+	}
+	else {
 		nNodes++;
 		**ppPacked = 0;
 		(*ppPacked)++;
@@ -91,16 +93,16 @@ void CNCSHuffmanCoder::CCodeNode::Pack(UINT8 **ppPacked,
 	}
 }
 
-CNCSHuffmanCoder::CCodeNode *CNCSHuffmanCoder::CCodeNode::Unpack(UINT8 **ppPacked, 
-																 UINT32 &nNodes) 
+CNCSHuffmanCoder::CCodeNode *CNCSHuffmanCoder::CCodeNode::Unpack(UINT8 **ppPacked,
+	UINT32 &nNodes)
 {
 	nNodes--;
-	if(nNodes == 0) {
+	if (nNodes == 0) {
 		return(NULL);
 	}
 	UINT8 nByte = (*(*ppPacked)++);
 
-	if( nByte == 0 ) {
+	if (nByte == 0) {
 		m_Children.m_P.m_p0Child = new CCodeNode(ppPacked, nNodes);
 		m_Children.m_P.m_p1Child = new CCodeNode(ppPacked, nNodes);
 		memset(&m_Symbol, 0, sizeof(m_Symbol));
@@ -110,26 +112,28 @@ CNCSHuffmanCoder::CCodeNode *CNCSHuffmanCoder::CCodeNode::Unpack(UINT8 **ppPacke
 		m_Children.m_P.m_p1Child = NULL;
 
 		UINT16 nValue;
-		if( nByte & SMALL_SYMBOL ) {
+		if (nByte & SMALL_SYMBOL) {
 			nValue = (((UINT16)(nByte & 0x30)) << SMALL_SHIFT) | (nByte & 0x0f);
 		}
 		else {
 			nValue = ((UINT16)**ppPacked) | (((UINT16)(*((*ppPacked) + 1))) << 8);
 			*ppPacked += 2;
 		}
-		if(nValue & NCS_HUFFMAN_RUN_MASK) {
+		if (nValue & NCS_HUFFMAN_RUN_MASK) {
 			m_Symbol.bZeroRun = TRUE;
 			m_Symbol.nValue = (nValue & NCS_HUFFMAN_MAX_RUN_LENGTH) - 1;
-		} else {
+		}
+		else {
 			m_Symbol.bZeroRun = FALSE;
 
-			if(nValue & SIGN_MASK) {
+			if (nValue & SIGN_MASK) {
 #ifdef NCSBO_MSBFIRST
 				m_Symbol.nValue = (INT16)NCSByteSwap16(((INT16)(nValue & VALUE_MASK)) * -1);
 #else
 				m_Symbol.nValue = ((INT16)(nValue & VALUE_MASK)) * -1;
 #endif
-			} else {
+			}
+			else {
 #ifdef NCSBO_MSBFIRST
 				m_Symbol.nValue = (INT16)NCSByteSwap16((INT16)nValue);
 #else
@@ -143,21 +147,22 @@ CNCSHuffmanCoder::CCodeNode *CNCSHuffmanCoder::CCodeNode::Unpack(UINT8 **ppPacke
 
 void CNCSHuffmanCoder::CCodeNode::SetCode(UINT32 nCode, UINT8 nCodeBits)
 {
-	if(m_Children.m_P.m_p0Child) {
+	if (m_Children.m_P.m_p0Child) {
 		m_Children.m_P.m_p0Child->SetCode((nCode << 1), nCodeBits + 1);
 		m_Children.m_P.m_p1Child->SetCode((nCode << 1) | 0x1, nCodeBits + 1);
-	} else {
+	}
+	else {
 		m_nCode = nCode;
 		m_nCodeBits = nCodeBits;
 	}
 }
 
-CNCSHuffmanCoder::CTree::CTree() 
+CNCSHuffmanCoder::CTree::CTree()
 {
 	m_pRoot = NULL;
 }
 
-CNCSHuffmanCoder::CTree::CTree(UINT8 **ppPacked) 
+CNCSHuffmanCoder::CTree::CTree(UINT8 **ppPacked)
 {
 	m_pRoot = NULL;
 	Unpack(ppPacked);
@@ -169,17 +174,17 @@ CNCSHuffmanCoder::CTree::~CTree()
 }
 
 CNCSError CNCSHuffmanCoder::CTree::Pack(UINT8 **ppPacked,
-										INT16 *pUnPacked,
-										UINT32 nSymbols)
+	INT16 *pUnPacked,
+	UINT32 nSymbols)
 {
 	UINT32 i;
 	std::map<INT16, CCodeNode*>::iterator pEnd = m_Histogram.end();
 
-	for(i=0; i < nSymbols; i++) {
+	for (i = 0; i < nSymbols; i++) {
 		UINT16 nSymbol = pUnPacked[i];
 		std::map<INT16, CCodeNode*>::iterator Leaf = m_Histogram.find(nSymbol);
 		CCodeNode *pLeaf = (Leaf != pEnd) ? (*Leaf).second : NULL;
-			
+
 		if (pLeaf == NULL) {
 			pLeaf = new CCodeNode();
 			pLeaf->m_bInHistogram = TRUE;
@@ -187,25 +192,28 @@ CNCSError CNCSHuffmanCoder::CTree::Pack(UINT8 **ppPacked,
 			pLeaf->m_nFrequency = 1;
 			const std::pair<const INT16, CCodeNode*> pr(nSymbol, pLeaf);
 			m_Histogram.insert(pr);
-		} else if(pLeaf->m_nFrequency == 0) {
+		}
+		else if (pLeaf->m_nFrequency == 0) {
 			pLeaf->m_Symbol.nValue = nSymbol;
 			pLeaf->m_nFrequency = 1;
-		} else {
+		}
+		else {
 			pLeaf->m_nFrequency++;
 		}
 	}
 	std::map<INT16, CCodeNode*>::iterator pCur = m_Histogram.begin();
 
-	while(pCur != pEnd) {
+	while (pCur != pEnd) {
 		CCodeNode *pLeaf = (*pCur).second;
 
-		if(pLeaf && (pLeaf->m_nFrequency != 0)) {
-			if((m_pRoot == NULL) || (pLeaf->m_nFrequency <= m_pRoot->m_nFrequency)) {
+		if (pLeaf && (pLeaf->m_nFrequency != 0)) {
+			if ((m_pRoot == NULL) || (pLeaf->m_nFrequency <= m_pRoot->m_nFrequency)) {
 				pLeaf->m_pNext = m_pRoot;
 				m_pRoot = pLeaf;
-			} else {
+			}
+			else {
 				CCodeNode *pList = m_pRoot;
-				while((pList->m_pNext != NULL) && (pLeaf->m_nFrequency > pList->m_pNext->m_nFrequency) )
+				while ((pList->m_pNext != NULL) && (pLeaf->m_nFrequency > pList->m_pNext->m_nFrequency))
 					pList = pList->m_pNext;
 				pLeaf->m_pNext = pList->m_pNext;
 				pList->m_pNext = pLeaf;
@@ -218,15 +226,16 @@ CNCSError CNCSHuffmanCoder::CTree::Pack(UINT8 **ppPacked,
 		pLeaf->m_Children.m_P.m_p0Child = m_pRoot;
 		pLeaf->m_Children.m_P.m_p1Child = m_pRoot->m_pNext;
 		pLeaf->m_nFrequency = pLeaf->m_Children.m_P.m_p0Child->m_nFrequency + pLeaf->m_Children.m_P.m_p1Child->m_nFrequency;
-		m_pRoot = m_pRoot->m_pNext->m_pNext;       
-		
-		if((m_pRoot == NULL) || (pLeaf->m_nFrequency <= m_pRoot->m_nFrequency)) {
+		m_pRoot = m_pRoot->m_pNext->m_pNext;
+
+		if ((m_pRoot == NULL) || (pLeaf->m_nFrequency <= m_pRoot->m_nFrequency)) {
 			pLeaf->m_pNext = m_pRoot;
 			m_pRoot = pLeaf;
-		} else {
+		}
+		else {
 			CCodeNode *pList = m_pRoot;
 
-			while((pList->m_pNext != NULL) && (pLeaf->m_nFrequency > pList->m_pNext->m_nFrequency))
+			while ((pList->m_pNext != NULL) && (pLeaf->m_nFrequency > pList->m_pNext->m_nFrequency))
 				pList = pList->m_pNext;
 			pLeaf->m_pNext = pList->m_pNext;
 			pList->m_pNext = pLeaf;
@@ -250,9 +259,10 @@ CNCSError CNCSHuffmanCoder::CTree::Unpack(UINT8 **ppPacked)
 	UINT32 nNodes = (((UINT32)**ppPacked) | (((UINT32)(*((*ppPacked) + 1))) << 8)) + 1;
 	*ppPacked += 2;
 	m_pRoot = new CCodeNode(ppPacked, nNodes);
-	if(m_pRoot) {
+	if (m_pRoot) {
 		return(NCS_SUCCESS);
-	} else {
+	}
+	else {
 		return(NCS_COULDNT_ALLOC_MEMORY);
 	}
 }
@@ -269,10 +279,10 @@ CNCSHuffmanCoder::~CNCSHuffmanCoder()
 	delete m_pTree;
 }
 
-CNCSError CNCSHuffmanCoder::Pack(UINT8 *pPacked, 
-								 UINT32 *pPackedLength,
-								 INT16 *pUnPacked,
-								 UINT32 nRawLength)
+CNCSError CNCSHuffmanCoder::Pack(UINT8 *pPacked,
+	UINT32 *pPackedLength,
+	INT16 *pUnPacked,
+	UINT32 nRawLength)
 {
 	UINT8 *pOutput = pPacked;
 	register UINT32	nWordCount = nRawLength / 2;
@@ -283,23 +293,23 @@ CNCSError CNCSHuffmanCoder::Pack(UINT8 *pPacked,
 	UINT8 nBitsUsed = 0;
 	UINT8 nByte = 0;
 
-	for(i = 0; i < nWordCount; i++) {
+	for (i = 0; i < nWordCount; i++) {
 		CCodeNode *pNode = m_pTree->m_Histogram[pUnPacked[i]];
 		UINT8 b;
 		UINT8 nBits = pNode->m_nCodeBits;
 		UINT32 nCode = pNode->m_nCode;
 
-		for(b = 0; b < nBits; b++) {
+		for (b = 0; b < nBits; b++) {
 			nByte |= ((nCode >> (nBits - 1 - b)) & 0x1) << nBitsUsed;
 			nBitsUsed++;
-			if(nBitsUsed == 8) {
-				nBitsUsed = 0; 
+			if (nBitsUsed == 8) {
+				nBitsUsed = 0;
 				*pOutput++ = nByte;
 				nByte = 0;
 			}
 		}
 	}
-	if(nBitsUsed != 0) {
+	if (nBitsUsed != 0) {
 		*pOutput++ = nByte;
 	}
 	*pPackedLength = (UINT32)(pOutput - pPacked + 1);
@@ -308,8 +318,8 @@ CNCSError CNCSHuffmanCoder::Pack(UINT8 *pPacked,
 
 // UnParse the marker out to the stream.
 CNCSError CNCSHuffmanCoder::UnPack(UINT8 *pPacked,
-								   INT16 *pUnPacked,
-								   UINT32 nRawLength)
+	INT16 *pUnPacked,
+	UINT32 nRawLength)
 {
 	register UINT32	nWordCount = nRawLength / 2;
 	register INT16 *pOutput = (INT16*)pUnPacked;
@@ -317,32 +327,34 @@ CNCSError CNCSHuffmanCoder::UnPack(UINT8 *pPacked,
 
 	m_pTree = new CTree(&pPacked);
 
-	if(!m_pTree) {
+	if (!m_pTree) {
 		return(NCS_COULDNT_ALLOC_MEMORY);
 	}
-	
-	while(nWordCount--) {
+
+	while (nWordCount--) {
 		// Decode a packed Huffman value
 		CCodeNode *pNode = m_pTree->m_pRoot;
 		while (pNode->m_Children.m_P.m_p0Child != NULL) {
 			pNode = pNode->m_Children.m_Children[(pPacked[nBitsUsed >> 3] >> (nBitsUsed & 0x7)) & 0x1];
 			nBitsUsed++;
 		}
-				 
-		if(pNode->m_Symbol.bZeroRun) {
+
+		if (pNode->m_Symbol.bZeroRun) {
 			register UINT16 nZero;
 			register UINT16	nZeroRun = pNode->m_Symbol.nValue;
-			
-			if( nZeroRun >= nWordCount ) {
-				nZero = (UINT16)nWordCount + 1;	
-				nWordCount = 0;			
-			} else {
+
+			if (nZeroRun >= nWordCount) {
+				nZero = (UINT16)nWordCount + 1;
+				nWordCount = 0;
+			}
+			else {
 				nZero = nZeroRun + 1;
-				nWordCount -= nZeroRun;		
+				nWordCount -= nZeroRun;
 			}
 			memset(pOutput, 0, nZero * sizeof(INT16));
 			pOutput += nZero;
-		} else {
+		}
+		else {
 			*pOutput++ = pNode->m_Symbol.nValue;
 		}
 	}
@@ -353,9 +365,9 @@ CNCSError CNCSHuffmanCoder::UnPack(UINT8 *pPacked,
 
 
 
-extern "C" NCSError unpack_huffman(UINT8 *pPacked, 
-								  INT16 *pUnPacked,
-								  UINT32 nRawLength)
+extern "C" NCSError unpack_huffman(UINT8 *pPacked,
+	INT16 *pUnPacked,
+	UINT32 nRawLength)
 {
 	CNCSHuffmanCoder HC;
 	CNCSError Error = HC.UnPack(pPacked, pUnPacked, nRawLength);
@@ -376,7 +388,7 @@ extern "C" void unpack_huffman_fini_state(NCSHuffmanState *pState)
 }
 
 extern "C" NCSHuffmanSymbol *unpack_huffman_symbol(UINT8 **ppPacked,
-												   NCSHuffmanState *pState)
+	NCSHuffmanState *pState)
 {
 	register UINT32 nBitsUsed = pState->nBitsUsed;
 	register CNCSHuffmanCoder::CCodeNode *pNode = ((CNCSHuffmanCoder::CTree*)pState->pTree)->m_pRoot;

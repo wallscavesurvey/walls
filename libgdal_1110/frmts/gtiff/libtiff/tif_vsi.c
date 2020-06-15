@@ -29,65 +29,65 @@
  * DEALINGS IN THE SOFTWARE.
  ****************************************************************************/
 
-/*
- * TIFF Library UNIX-specific Routines.
- */
+ /*
+  * TIFF Library UNIX-specific Routines.
+  */
 #include "tiffiop.h"
 #include "cpl_vsi.h"
 
 static tsize_t
 _tiffReadProc(thandle_t fd, tdata_t buf, tsize_t size)
 {
-    return VSIFReadL( buf, 1, size, (VSILFILE *) fd );
+	return VSIFReadL(buf, 1, size, (VSILFILE *)fd);
 }
 
 static tsize_t
 _tiffWriteProc(thandle_t fd, tdata_t buf, tsize_t size)
 {
-    return VSIFWriteL( buf, 1, size, (VSILFILE *) fd );
+	return VSIFWriteL(buf, 1, size, (VSILFILE *)fd);
 }
 
 static toff_t
 _tiffSeekProc(thandle_t fd, toff_t off, int whence)
 {
-    if( VSIFSeekL( (VSILFILE *) fd, off, whence ) == 0 )
-        return (toff_t) VSIFTellL( (VSILFILE *) fd );
-    else
-        return (toff_t) -1;
+	if (VSIFSeekL((VSILFILE *)fd, off, whence) == 0)
+		return (toff_t)VSIFTellL((VSILFILE *)fd);
+	else
+		return (toff_t)-1;
 }
 
 static int
 _tiffCloseProc(thandle_t fd)
 {
-    return VSIFCloseL( (VSILFILE *) fd );
+	return VSIFCloseL((VSILFILE *)fd);
 }
 
 static toff_t
 _tiffSizeProc(thandle_t fd)
 {
-    vsi_l_offset  old_off;
-    toff_t        file_size;
+	vsi_l_offset  old_off;
+	toff_t        file_size;
 
-    old_off = VSIFTellL( (VSILFILE *) fd );
-    VSIFSeekL( (VSILFILE *) fd, 0, SEEK_END );
-    
-    file_size = (toff_t) VSIFTellL( (VSILFILE *) fd );
-    VSIFSeekL( (VSILFILE *) fd, old_off, SEEK_SET );
+	old_off = VSIFTellL((VSILFILE *)fd);
+	VSIFSeekL((VSILFILE *)fd, 0, SEEK_END);
 
-    return file_size;
+	file_size = (toff_t)VSIFTellL((VSILFILE *)fd);
+	VSIFSeekL((VSILFILE *)fd, old_off, SEEK_SET);
+
+	return file_size;
 }
 
 static int
 _tiffMapProc(thandle_t fd, tdata_t* pbase, toff_t* psize)
 {
-	(void) fd; (void) pbase; (void) psize;
+	(void)fd; (void)pbase; (void)psize;
 	return (0);
 }
 
 static void
 _tiffUnmapProc(thandle_t fd, tdata_t base, toff_t size)
 {
-	(void) fd; (void) base; (void) size;
+	(void)fd; (void)base; (void)size;
 }
 
 /*
@@ -107,83 +107,83 @@ TIFFOpen(const char* name, const char* mode)
 {
 	static const char module[] = "TIFFOpen";
 	int           i, a_out;
-        char          access[32];
-        VSILFILE          *fp;
-        TIFF          *tif;
+	char          access[32];
+	VSILFILE          *fp;
+	TIFF          *tif;
 
-        a_out = 0;
-        access[0] = '\0';
-        for( i = 0; mode[i] != '\0'; i++ )
-        {
-            if( mode[i] == 'r'
-                || mode[i] == 'w'
-                || mode[i] == '+'
-                || mode[i] == 'a' )
-            {
-                access[a_out++] = mode[i];
-                access[a_out] = '\0';
-            }
-        }
+	a_out = 0;
+	access[0] = '\0';
+	for (i = 0; mode[i] != '\0'; i++)
+	{
+		if (mode[i] == 'r'
+			|| mode[i] == 'w'
+			|| mode[i] == '+'
+			|| mode[i] == 'a')
+		{
+			access[a_out++] = mode[i];
+			access[a_out] = '\0';
+		}
+	}
 
-        strcat( access, "b" );
-                    
-        fp = VSIFOpenL( name, access );
+	strcat(access, "b");
+
+	fp = VSIFOpenL(name, access);
 	if (fp == NULL) {
-            if( errno >= 0 )
-                TIFFError(module,"%s: %s", name, VSIStrerror( errno ) );
-            else
-		TIFFError(module, "%s: Cannot open", name);
-            return ((TIFF *)0);
+		if (errno >= 0)
+			TIFFError(module, "%s: %s", name, VSIStrerror(errno));
+		else
+			TIFFError(module, "%s: Cannot open", name);
+		return ((TIFF *)0);
 	}
 
 	tif = TIFFClientOpen(name, mode,
-	    (thandle_t) fp,
-	    _tiffReadProc, _tiffWriteProc,
-	    _tiffSeekProc, _tiffCloseProc, _tiffSizeProc,
-	    _tiffMapProc, _tiffUnmapProc);
+		(thandle_t)fp,
+		_tiffReadProc, _tiffWriteProc,
+		_tiffSeekProc, _tiffCloseProc, _tiffSizeProc,
+		_tiffMapProc, _tiffUnmapProc);
 
-        if( tif != NULL )
-            tif->tif_fd = 0;
-        else
-            VSIFCloseL( fp );
-        
+	if (tif != NULL)
+		tif->tif_fd = 0;
+	else
+		VSIFCloseL(fp);
+
 	return tif;
 }
 
 void*
 _TIFFmalloc(tsize_t s)
 {
-    return VSIMalloc((size_t) s);
+	return VSIMalloc((size_t)s);
 }
 
 void
 _TIFFfree(tdata_t p)
 {
-    VSIFree( p );
+	VSIFree(p);
 }
 
 void*
 _TIFFrealloc(tdata_t p, tsize_t s)
 {
-    return VSIRealloc( p, s );
+	return VSIRealloc(p, s);
 }
 
 void
 _TIFFmemset(void* p, int v, tmsize_t c)
 {
-	memset(p, v, (size_t) c);
+	memset(p, v, (size_t)c);
 }
 
 void
 _TIFFmemcpy(void* d, const void* s, tmsize_t c)
 {
-	memcpy(d, s, (size_t) c);
+	memcpy(d, s, (size_t)c);
 }
 
 int
 _TIFFmemcmp(const void* p1, const void* p2, tmsize_t c)
 {
-	return (memcmp(p1, p2, (size_t) c));
+	return (memcmp(p1, p2, (size_t)c));
 }
 
 static void

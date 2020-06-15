@@ -1,7 +1,7 @@
 // This may look like C code, but it is really -*- C++ -*-
-/* 
+/*
 Copyright (C) 1988 Free Software Foundation
-    written by Doug Lea (dl@rocky.oswego.edu)
+	written by Doug Lea (dl@rocky.oswego.edu)
 
 This file is part of the GNU C++ Library.  This library is free
 software; you can redistribute it and/or modify it under the terms of
@@ -41,8 +41,8 @@ Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 #define implement(clas,t)      name2(clas,implement)(t)
 #define implement2(clas,t1,t2) name2(clas,implement2)(t1,t2)
 
-//extern genericerror(int,char*);
-typedef int (*GPT)(int,char*);
+ //extern genericerror(int,char*);
+typedef int(*GPT)(int, char*);
 
 #define set_handler(gen,type,x) name4(set_,type,gen,_handler)(x)
 

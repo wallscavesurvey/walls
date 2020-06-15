@@ -15,12 +15,12 @@
 
 class CExpavDlg : public CDialog
 {
-// Construction
+	// Construction
 public:
-	CExpavDlg(CSegListNode *pNode,SEGSTATS *st,CWnd* pParent = NULL);   // standard constructor
+	CExpavDlg(CSegListNode *pNode, SEGSTATS *st, CWnd* pParent = NULL);   // standard constructor
 	void StatusMsg(int veccount);
-// Dialog Data
-	//{{AFX_DATA(CExpavDlg)
+	// Dialog Data
+		//{{AFX_DATA(CExpavDlg)
 	enum { IDD = IDD_EXPAVDLG };
 	BOOL	m_bFlags;
 	BOOL	m_bNotes;
@@ -36,15 +36,15 @@ public:
 	BOOL	m_bUTM;
 	//}}AFX_DATA
 
-	void Enable(int id,BOOL bEnable)
+	void Enable(int id, BOOL bEnable)
 	{
-	   GetDlgItem(id)->EnableWindow(bEnable);
+		GetDlgItem(id)->EnableWindow(bEnable);
 
 	}
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CExpavDlg)
-	protected:
+	// Overrides
+		// ClassWizard generated virtual function overrides
+		//{{AFX_VIRTUAL(CExpavDlg)
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

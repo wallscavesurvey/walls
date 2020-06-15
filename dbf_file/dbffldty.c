@@ -2,11 +2,11 @@
 
 #include "a__dbf.h"
 
-int DBFAPI dbf_FldTyp(DBF_NO dbf,UINT nFld)
+int DBFAPI dbf_FldTyp(DBF_NO dbf, UINT nFld)
 {
-  DBF_pFLDDEF fp;
+	DBF_pFLDDEF fp;
 
-  if(!_dbf_GetDbfP(dbf)) return 0;
-  if(!nFld) return 'C';
-  return (fp=_dbf_GetFldDef(nFld))!=0?fp->F_Typ:0;
+	if (!_dbf_GetDbfP(dbf)) return 0;
+	if (!nFld) return 'C';
+	return (fp = _dbf_GetFldDef(nFld)) != 0 ? fp->F_Typ : 0;
 }

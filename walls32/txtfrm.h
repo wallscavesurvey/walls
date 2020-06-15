@@ -9,11 +9,11 @@
 
 class CTxtFrame : public CMDIChildWnd
 {
-    DECLARE_DYNCREATE(CTxtFrame)
+	DECLARE_DYNCREATE(CTxtFrame)
 public:
-    BOOL m_bClosed;
+	BOOL m_bClosed;
 protected:
-    BOOL m_bIconTitle;
+	BOOL m_bIconTitle;
 	BOOL PreCreateWindow(CREATESTRUCT& cs);
 	afx_msg void OnIconEraseBkgnd(CDC* pDC);
 	afx_msg void OnWindowPosChanged(WINDOWPOS FAR* lpwndpos);

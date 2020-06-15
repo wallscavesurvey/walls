@@ -77,10 +77,10 @@ CSerialEx::~CSerialEx()
 	}
 }
 
-LONG CSerialEx::Open (LPCTSTR lpszDevice, DWORD dwInQueue, DWORD dwOutQueue, bool fStartListener)
+LONG CSerialEx::Open(LPCTSTR lpszDevice, DWORD dwInQueue, DWORD dwOutQueue, bool fStartListener)
 {
 	// Call the base class first
-	long lLastError = CSerial::Open(lpszDevice,dwInQueue,dwOutQueue,SERIAL_DEFAULT_OVERLAPPED);
+	long lLastError = CSerial::Open(lpszDevice, dwInQueue, dwOutQueue, SERIAL_DEFAULT_OVERLAPPED);
 	if (lLastError != ERROR_SUCCESS)
 		return lLastError;
 
@@ -88,12 +88,12 @@ LONG CSerialEx::Open (LPCTSTR lpszDevice, DWORD dwInQueue, DWORD dwOutQueue, boo
 	// Create an event that is used for the workerthread. The globally
 	// used event is used by the main-thread and cannot be reused
 	// for this thread.
-	m_hevtOverlappedWorkerThread = ::CreateEvent(NULL,TRUE,FALSE,NULL);
+	m_hevtOverlappedWorkerThread = ::CreateEvent(NULL, TRUE, FALSE, NULL);
 	if (m_hevtOverlappedWorkerThread == 0)
 	{
 		// Obtain the error information
 		m_lLastError = ::GetLastError();
-		_RPTF0(_CRT_WARN,"CSerialEx::Open - Unable to create event\n");
+		_RPTF0(_CRT_WARN, "CSerialEx::Open - Unable to create event\n");
 
 		// Close the serial port again
 		CSerial::Close();
@@ -116,7 +116,7 @@ LONG CSerialEx::Open (LPCTSTR lpszDevice, DWORD dwInQueue, DWORD dwOutQueue, boo
 	return m_lLastError;
 }
 
-LONG CSerialEx::Close (void)
+LONG CSerialEx::Close(void)
 {
 	// Stop listener thread (wait until it ends)
 	StopListener(INFINITE);
@@ -135,7 +135,7 @@ LONG CSerialEx::Close (void)
 	return CSerial::Close();
 }
 
-LONG CSerialEx::StartListener (void)
+LONG CSerialEx::StartListener(void)
 {
 	// Check if the watcher thread was already running
 	if (m_hThread == 0)
@@ -145,7 +145,7 @@ LONG CSerialEx::StartListener (void)
 
 		// Start the watcher thread
 		DWORD dwThreadId = 0;
-		m_hThread = ::CreateThread(0,0,ThreadProc,LPVOID(this),0,&dwThreadId);
+		m_hThread = ::CreateThread(0, 0, ThreadProc, LPVOID(this), 0, &dwThreadId);
 		if (m_hThread == 0)
 		{
 			// Display a warning
@@ -162,7 +162,7 @@ LONG CSerialEx::StartListener (void)
 	return m_lLastError;
 }
 
-LONG CSerialEx::StopListener (DWORD dwTimeout)
+LONG CSerialEx::StopListener(DWORD dwTimeout)
 {
 	// Check if the thread is running
 	if (m_hThread)
@@ -176,9 +176,9 @@ LONG CSerialEx::StopListener (DWORD dwTimeout)
 		// setting the event mask again, the call will also be
 		// completed before the thread exits.
 		SetMask(GetEventMask());
-		
+
 		// Wait until the watcher thread has stopped
-		::WaitForSingleObject(m_hThread,dwTimeout);
+		::WaitForSingleObject(m_hThread, dwTimeout);
 
 		// The thread has stopped
 		m_fStopping = false;
@@ -193,14 +193,14 @@ LONG CSerialEx::StopListener (DWORD dwTimeout)
 	return m_lLastError;
 }
 
-DWORD WINAPI CSerialEx::ThreadProc (LPVOID lpArg)
+DWORD WINAPI CSerialEx::ThreadProc(LPVOID lpArg)
 {
 	// Route the method to the actual object
 	CSerialEx* pThis = reinterpret_cast<CSerialEx*>(lpArg);
 	return pThis->ThreadProc();
 }
 
-DWORD CSerialEx::ThreadProc (void)
+DWORD CSerialEx::ThreadProc(void)
 {
 	// Keep looping
 	do
@@ -210,7 +210,7 @@ DWORD CSerialEx::ThreadProc (void)
 		VERIFY(::ResetEvent(m_hevtOverlappedWorkerThread));
 
 		// Initialize the overlapped structure
-		OVERLAPPED ovInternal = {0};
+		OVERLAPPED ovInternal = { 0 };
 		ovInternal.hEvent = m_hevtOverlappedWorkerThread;
 
 		// Start the WaitEvent (use our own overlapped structure)
@@ -219,12 +219,12 @@ DWORD CSerialEx::ThreadProc (void)
 
 		// Wait for the overlapped operation to complete
 
-		DWORD eWait=::WaitForSingleObject(m_hevtOverlappedWorkerThread,INFINITE);
-		if (eWait!= WAIT_OBJECT_0)
+		DWORD eWait = ::WaitForSingleObject(m_hevtOverlappedWorkerThread, INFINITE);
+		if (eWait != WAIT_OBJECT_0)
 		{
 			m_lLastError = ::GetLastError();
-			OnEvent(EEventNone,EErrorTimeout);
-			_RPTF0(_CRT_WARN,"CSerialEx::ThreadProc - Unable to wait until COM event has arrived\n");
+			OnEvent(EEventNone, EErrorTimeout);
+			_RPTF0(_CRT_WARN, "CSerialEx::ThreadProc - Unable to wait until COM event has arrived\n");
 			return m_lLastError;
 		}
 #else
@@ -241,7 +241,7 @@ DWORD CSerialEx::ThreadProc (void)
 
 			// Obtain the error status during this event
 			DWORD dwErrors = 0;
-			if (!::ClearCommError(m_hFile,&dwErrors,0))
+			if (!::ClearCommError(m_hFile, &dwErrors, 0))
 			{
 				// Set the internal error code
 				m_lLastError = ::GetLastError();
@@ -258,10 +258,9 @@ DWORD CSerialEx::ThreadProc (void)
 			// mask or event character has been set. We won't pass this
 			// down to the window.
 			if (eEvent)
-				OnEvent(eEvent,eError);
+				OnEvent(eEvent, eError);
 		}
-	}
-	while (!m_fStopping);
+	} while (!m_fStopping);
 
 	// Bye bye
 	return 0;

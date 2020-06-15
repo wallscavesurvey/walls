@@ -45,21 +45,21 @@ CPL_CVSID("$Id: gdal_misc.cpp 25494 2013-01-13 12:55:17Z etourigny $");
  * to use one of the other progress functions that actually do something.
  */
 
-int CPL_STDCALL GDALDummyProgress( double dfComplete, const char *pszMessage,
-                                   void *pData )
+int CPL_STDCALL GDALDummyProgress(double dfComplete, const char *pszMessage,
+	void *pData)
 
 {
-    return TRUE;
+	return TRUE;
 }
 
 /************************************************************************/
 /*                         GDALScaledProgress()                         */
 /************************************************************************/
 typedef struct {
-    GDALProgressFunc pfnProgress;
-    void *pData;
-    double dfMin;
-    double dfMax;
+	GDALProgressFunc pfnProgress;
+	void *pData;
+	double dfMin;
+	double dfMax;
 } GDALScaledProgressInfo;
 
 /**
@@ -69,15 +69,15 @@ typedef struct {
  * callback data returned by GDALCreateScaledProgress().
  */
 
-int CPL_STDCALL GDALScaledProgress( double dfComplete, const char *pszMessage,
-                                    void *pData )
+int CPL_STDCALL GDALScaledProgress(double dfComplete, const char *pszMessage,
+	void *pData)
 
 {
-    GDALScaledProgressInfo *psInfo = (GDALScaledProgressInfo *) pData;
+	GDALScaledProgressInfo *psInfo = (GDALScaledProgressInfo *)pData;
 
-    return psInfo->pfnProgress( dfComplete * (psInfo->dfMax - psInfo->dfMin)
-                                + psInfo->dfMin,
-                                pszMessage, psInfo->pData );
+	return psInfo->pfnProgress(dfComplete * (psInfo->dfMax - psInfo->dfMin)
+		+ psInfo->dfMin,
+		pszMessage, psInfo->pData);
 }
 
 /************************************************************************/
@@ -128,25 +128,25 @@ int CPL_STDCALL GDALScaledProgress( double dfComplete, const char *pszMessage,
  * \endcode
  */
 
-void * CPL_STDCALL GDALCreateScaledProgress( double dfMin, double dfMax,
-                                GDALProgressFunc pfnProgress,
-                                void * pData )
+void * CPL_STDCALL GDALCreateScaledProgress(double dfMin, double dfMax,
+	GDALProgressFunc pfnProgress,
+	void * pData)
 
 {
-    GDALScaledProgressInfo *psInfo;
+	GDALScaledProgressInfo *psInfo;
 
-    psInfo = (GDALScaledProgressInfo *)
-        CPLCalloc(sizeof(GDALScaledProgressInfo),1);
+	psInfo = (GDALScaledProgressInfo *)
+		CPLCalloc(sizeof(GDALScaledProgressInfo), 1);
 
-    if( ABS(dfMin-dfMax) < 0.0000001 )
-        dfMax = dfMin + 0.01;
+	if (ABS(dfMin - dfMax) < 0.0000001)
+		dfMax = dfMin + 0.01;
 
-    psInfo->pData = pData;
-    psInfo->pfnProgress = pfnProgress;
-    psInfo->dfMin = dfMin;
-    psInfo->dfMax = dfMax;
+	psInfo->pData = pData;
+	psInfo->pfnProgress = pfnProgress;
+	psInfo->dfMin = dfMin;
+	psInfo->dfMax = dfMax;
 
-    return (void *) psInfo;
+	return (void *)psInfo;
 }
 
 /************************************************************************/
@@ -162,10 +162,10 @@ void * CPL_STDCALL GDALCreateScaledProgress( double dfMin, double dfMax,
  * @param pData scaled progress handle returned by GDALCreateScaledProgress().
  */
 
-void CPL_STDCALL GDALDestroyScaledProgress( void * pData )
+void CPL_STDCALL GDALDestroyScaledProgress(void * pData)
 
 {
-    CPLFree( pData );
+	CPLFree(pData);
 }
 
 /************************************************************************/
@@ -200,37 +200,37 @@ void CPL_STDCALL GDALDestroyScaledProgress( void * pData )
  * @return Always returns TRUE indicating the process should continue.
  */
 
-int CPL_STDCALL GDALTermProgress( double dfComplete, const char *pszMessage,
-                      void * pProgressArg )
+int CPL_STDCALL GDALTermProgress(double dfComplete, const char *pszMessage,
+	void * pProgressArg)
 
 {
-    static int nLastTick = -1;
-    int nThisTick = (int) (dfComplete * 40.0);
+	static int nLastTick = -1;
+	int nThisTick = (int)(dfComplete * 40.0);
 
-    (void) pProgressArg;
+	(void)pProgressArg;
 
-    nThisTick = MIN(40,MAX(0,nThisTick));
+	nThisTick = MIN(40, MAX(0, nThisTick));
 
-    // Have we started a new progress run?
-    if( nThisTick < nLastTick && nLastTick >= 39 )
-        nLastTick = -1;
+	// Have we started a new progress run?
+	if (nThisTick < nLastTick && nLastTick >= 39)
+		nLastTick = -1;
 
-    if( nThisTick <= nLastTick )
-        return TRUE;
+	if (nThisTick <= nLastTick)
+		return TRUE;
 
-    while( nThisTick > nLastTick )
-    {
-        nLastTick++;
-        if( nLastTick % 4 == 0 )
-            fprintf( stdout, "%d", (nLastTick / 4) * 10 );
-        else
-            fprintf( stdout, "." );
-    }
+	while (nThisTick > nLastTick)
+	{
+		nLastTick++;
+		if (nLastTick % 4 == 0)
+			fprintf(stdout, "%d", (nLastTick / 4) * 10);
+		else
+			fprintf(stdout, ".");
+	}
 
-    if( nThisTick == 40 )
-        fprintf( stdout, " - done.\n" );
-    else
-        fflush( stdout );
+	if (nThisTick == 40)
+		fprintf(stdout, " - done.\n");
+	else
+		fflush(stdout);
 
-    return TRUE;
+	return TRUE;
 }

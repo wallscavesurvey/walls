@@ -1,10 +1,10 @@
 /*****************************************************************************
 * CColumnTreeCtrl
-* Version: 1.1 
+* Version: 1.1
 * Date: February 18, 2008
 * Author: Oleg A. Krivtsov
 * E-mail: olegkrivtsov@mail.ru
-* Based on ideas implemented in Michal Mecinski's CColumnTreeCtrl class 
+* Based on ideas implemented in Michal Mecinski's CColumnTreeCtrl class
 * (see copyright note below).
 *
 *****************************************************************************/
@@ -41,11 +41,11 @@ class CColumnTreeCtrl : public CStatic
 {
 public:
 	DECLARE_DYNCREATE(CColumnTreeCtrl)
-	
+
 	/*
 	 * Construction/destruction
 	 */
-	 
+
 	CColumnTreeCtrl();
 	virtual ~CColumnTreeCtrl();
 
@@ -57,32 +57,32 @@ public:
 	/*
 	 *  Operations
 	 */
-	bool HasSiblings(HTREEITEM hItem) {return m_Tree.HasSiblings(hItem);}
-	HTREEITEM GetParentItem(HTREEITEM hItem) {return m_Tree.GetParentItem(hItem);}
+	bool HasSiblings(HTREEITEM hItem) { return m_Tree.HasSiblings(hItem); }
+	HTREEITEM GetParentItem(HTREEITEM hItem) { return m_Tree.GetParentItem(hItem); }
 	void ClearTree();
-	int GetColumnWidth(int i) {return m_arrColWidths[i];}
+	int GetColumnWidth(int i) { return m_arrColWidths[i]; }
 
-	virtual void AssertValid( ) const;
+	virtual void AssertValid() const;
 
 	CCustomTreeChildCtrl& GetTreeCtrl() { return m_Tree; }
 	CHeaderCtrl& GetHeaderCtrl() { return m_Header; }
 
-	HTREEITEM InsertItem(LPVOID pData,LPCSTR label,int nIcon,UINT nState,LPCSTR *colstr,HTREEITEM hParent=TVI_ROOT,HTREEITEM hAfter=TVI_LAST);
-	void SetCheck(HTREEITEM hItem,bool bCheck=true) {m_Tree.SetCheck(hItem,bCheck);}
-	int InsertColumn(int nCol,LPCTSTR lpszColumnHeading, int nFormat=0, int nWidth=-1, int nSubItem=-1);
+	HTREEITEM InsertItem(LPVOID pData, LPCSTR label, int nIcon, UINT nState, LPCSTR *colstr, HTREEITEM hParent = TVI_ROOT, HTREEITEM hAfter = TVI_LAST);
+	void SetCheck(HTREEITEM hItem, bool bCheck = true) { m_Tree.SetCheck(hItem, bCheck); }
+	int InsertColumn(int nCol, LPCTSTR lpszColumnHeading, int nFormat = 0, int nWidth = -1, int nSubItem = -1);
 	void UpdateColumns();
 
 	void SetFirstColumnMinWidth(UINT uMinWidth);
-		
-	HTREEITEM HitTest(CPoint pt, UINT* pFlags=NULL) const;
+
+	HTREEITEM HitTest(CPoint pt, UINT* pFlags = NULL) const;
 	HTREEITEM HitTest(CTVHITTESTINFO* pHitTestInfo) const;
 
 protected:
 
 	DECLARE_MESSAGE_MAP()
 
-	enum ChildrenIDs { HeaderID = 1, TreeID = 2, HScrollID = 3, Header2ID = 4};
-	
+	enum ChildrenIDs { HeaderID = 1, TreeID = 2, HScrollID = 3, Header2ID = 4 };
+
 	CCustomTreeChildCtrl m_Tree;
 	CScrollBar m_horScroll;
 
@@ -95,7 +95,7 @@ protected:
 #endif
 
 	CFont *m_pHdrFont;
-	
+
 	int m_cyHeader;
 	int m_cxTotal;
 	int m_xPos;
@@ -103,11 +103,11 @@ protected:
 	int m_uMinFirstColWidth;
 	BOOL m_bHeaderChangesBlocked;
 
-	enum{MAX_COLUMN_COUNT=16}; // change this value if you need more than 16 columns
+	enum { MAX_COLUMN_COUNT = 16 }; // change this value if you need more than 16 columns
 
 	int m_arrColWidths[MAX_COLUMN_COUNT];
 	DWORD m_arrColFormats[MAX_COLUMN_COUNT];
-	
+
 	virtual void Initialize();
 	void RepositionControls();
 

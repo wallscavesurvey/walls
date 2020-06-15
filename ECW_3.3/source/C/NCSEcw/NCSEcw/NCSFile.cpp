@@ -1,16 +1,16 @@
-/********************************************************** 
+/**********************************************************
 ** Copyright 1998 Earth Resource Mapping Ltd.
 ** This document contains proprietary source code of
 ** Earth Resource Mapping Ltd, and can only be used under
-** one of the three licenses as described in the 
-** license.txt file supplied with this distribution. 
-** See separate license.txt file for license details 
+** one of the three licenses as described in the
+** license.txt file supplied with this distribution.
+** See separate license.txt file for license details
 ** and conditions.
 **
 ** This software is covered by US patent #6,442,298,
-** #6,102,897 and #6,633,688.  Rights to use these patents 
+** #6,102,897 and #6,633,688.  Rights to use these patents
 ** is included in the license agreements.
-** 
+**
 ** FILE:   	NCSFile.c
 ** CREATED:	12 Jan 2000
 ** AUTHOR: 	Mark Sheridan
@@ -27,7 +27,7 @@
  *  \brief A C++ wrapper class around the NCSECW library.
  *
  *  This class provides a file oriented object to access ecw images.
- *  It provides simple open/setview/read/close operations, which are 
+ *  It provides simple open/setview/read/close operations, which are
  *  simple wrappers around the NCSEcwlibrary (which is view oriented).
  *  \author Mark Sheridan
  *  \date    12 Jan 2000
@@ -37,7 +37,7 @@
 
 #include <string.h>
 #ifdef WIN32
-	//#define _WIN32_WINNT 0x0400	// For MB_SERVICE_NOTIFICATION
+ //#define _WIN32_WINNT 0x0400	// For MB_SERVICE_NOTIFICATION
 #endif
 #include "NCSFile.h"
 #include "NCSUtil.h"
@@ -77,16 +77,16 @@ CNCSFile::~CNCSFile()
  * @see BreakdownURL()
  * @return ERS_SUCCESS if successfull, or some NCSError if failed. Use FormatErrorText() to determine the reason for failure.
  */
-NCSError CNCSFile::Open(char * pURLPath, 
-						BOOLEAN bProgressiveDisplay,
-						BOOLEAN bWrite)
+NCSError CNCSFile::Open(char * pURLPath,
+	BOOLEAN bProgressiveDisplay,
+	BOOLEAN bWrite)
 {
 	return(CNCSJP2FileView::Open(pURLPath, bProgressiveDisplay ? true : false, bWrite ? true : false).GetErrorNumber());
 }
 
 /**
  * Close an ECW File.
- * Closes an ecw image and optionally free the cache. If passed false, the cache is free'd 
+ * Closes an ecw image and optionally free the cache. If passed false, the cache is free'd
  * when the ecw library performs garbage collection at a later time and deems the image to
  * be no longer in use. This is usefull if the user is continually opening and closing a view
  * on the same image file.
@@ -95,7 +95,7 @@ NCSError CNCSFile::Open(char * pURLPath,
  * @see FormatErrorText()
  * @return NCS_SUCCESS if successfull, or an NCSError value.
  */
-NCSError CNCSFile::Close (BOOLEAN bFreeCache)
+NCSError CNCSFile::Close(BOOLEAN bFreeCache)
 {
 	return(CNCSJP2FileView::Close(bFreeCache ? true : false).GetErrorNumber());
 }
@@ -107,17 +107,17 @@ NCSError CNCSFile::Close (BOOLEAN bFreeCache)
  * @param pBandList Pointer to a list of INT bands to view
  * @param nWidth The output view sampled width
  * @param nHeight The output view sampled height
- * @param dWorldTLX Top left X value in world coordinates 
+ * @param dWorldTLX Top left X value in world coordinates
  * @param dWorldTLY Top left Y value in world coordinates
  * @param dWorldBRX Bottom right X value in world coordinates
  * @param dWorldBRY Bottom right Y value in world coordinates
  * @see SetView()
  * @return NCS_SUCCESS if successfull, or an NCSError value.
  */
-NCSError CNCSFile::SetView ( INT32 nBands, INT32 *pBandList,
-					   INT32 nWidth, INT32 nHeight,
-					   IEEE8 dWorldTLX, IEEE8 dWorldTLY,
-					   IEEE8 dWorldBRX, IEEE8 dWorldBRY )
+NCSError CNCSFile::SetView(INT32 nBands, INT32 *pBandList,
+	INT32 nWidth, INT32 nHeight,
+	IEEE8 dWorldTLX, IEEE8 dWorldTLY,
+	IEEE8 dWorldBRX, IEEE8 dWorldBRY)
 {
 	INT32 nDatasetTLX, nDatasetTLY, nDatasetBRX, nDatasetBRY;
 	NCSError nError;
@@ -131,25 +131,28 @@ NCSError CNCSFile::SetView ( INT32 nBands, INT32 *pBandList,
 	ConvertWorldToDataset(m_dSetViewWorldTLX, m_dSetViewWorldTLY, &nDatasetTLX, &nDatasetTLY);
 	ConvertWorldToDataset(m_dSetViewWorldBRX, m_dSetViewWorldBRY, &nDatasetBRX, &nDatasetBRY);
 
-		// Do the set view with the adjusted extents
-	nError = CNCSJP2FileView::SetView(nBands, 
-									(UINT32*)pBandList, 
-									nDatasetTLX, nDatasetTLY,
-									nDatasetBRX, nDatasetBRY,
-									nWidth, nHeight,
-									m_dSetViewWorldTLX, m_dSetViewWorldTLY,
-									m_dSetViewWorldBRX, m_dSetViewWorldBRY).GetErrorNumber();
+	// Do the set view with the adjusted extents
+	nError = CNCSJP2FileView::SetView(nBands,
+		(UINT32*)pBandList,
+		nDatasetTLX, nDatasetTLY,
+		nDatasetBRX, nDatasetBRY,
+		nWidth, nHeight,
+		m_dSetViewWorldTLX, m_dSetViewWorldTLY,
+		m_dSetViewWorldBRX, m_dSetViewWorldBRY).GetErrorNumber();
 
 	if (nError == NCS_SUCCESS) {
 		m_bHaveValidSetView = TRUE;
-	} else if( nError == NCS_FILEIO_ERROR ) {
+	}
+	else if (nError == NCS_FILEIO_ERROR) {
 		m_bHaveValidSetView = FALSE;
-	} else if( nError == NCS_CONNECTION_LOST ) {
+	}
+	else if (nError == NCS_CONNECTION_LOST) {
 		char buf[1024];														//[01]
 		sprintf(buf, "SetView() Error - %s", NCSGetErrorText(nError));		//[01]
 		NCSFormatErrorText(nError, buf);									//[01]
 		m_bHaveValidSetView = FALSE;
-	} else {
+	}
+	else {
 		char buf[1024];														//[01]
 		sprintf(buf, "SetView() Error - %s", NCSGetErrorText(nError));		//[01]
 		nError = NCS_ECW_ERROR;												//[01]
@@ -169,60 +172,62 @@ NCSError CNCSFile::SetView ( INT32 nBands, INT32 *pBandList,
  * @param pBandList Pointer to a list of INT bands to view
  * @param nWidth The output view sampled width
  * @param nHeight The output view sampled height
- * @param dDatasetTLX Top left X value in dataset units 
+ * @param dDatasetTLX Top left X value in dataset units
  * @param dDatasetTLY Top left Y value in dataset units
  * @param dDatasetBRX Bottom right X value in dataset units
  * @param dDatasetBRY Bottom right Y value in dataset units
  * @see SetView()
  * @return NCS_SUCCESS if successfull, or an NCSError value.
  */
-NCSError CNCSFile::SetView ( INT32 nBands, INT32 *pBandList, 
-				   INT32 nWidth, INT32 nHeight,
-				   INT32 dDatasetTLX, INT32 dDatasetTLY,
-				   INT32 dDatasetBRX, INT32 dDatasetBRY )
+NCSError CNCSFile::SetView(INT32 nBands, INT32 *pBandList,
+	INT32 nWidth, INT32 nHeight,
+	INT32 dDatasetTLX, INT32 dDatasetTLY,
+	INT32 dDatasetBRX, INT32 dDatasetBRY)
 {
 	NCSError	nError;
-	
+
 	m_nSetViewDatasetTLX = dDatasetTLX;
 	m_nSetViewDatasetTLY = dDatasetTLY;
 	m_nSetViewDatasetBRX = dDatasetBRX;
 	m_nSetViewDatasetBRY = dDatasetBRY;
 
-	if ((m_nSetViewDatasetTLX < 0) || (m_nSetViewDatasetTLY < 0 ) ||
-		(m_nSetViewDatasetBRX > m_nWidth-1) || (m_nSetViewDatasetBRY > m_nHeight-1)) {
+	if ((m_nSetViewDatasetTLX < 0) || (m_nSetViewDatasetTLY < 0) ||
+		(m_nSetViewDatasetBRX > m_nWidth - 1) || (m_nSetViewDatasetBRY > m_nHeight - 1)) {
 		// OK some or all of the view is outside the dataset, adjust accordingly
 /*#ifdef _DEBUG
 		::MessageBox(NULL, NCS_T("Problem with view"), NCS_T("DEBUG"), MB_OK);
 #endif*/
-		
-		// clamp
+
+// clamp
 		if (m_nSetViewDatasetTLX < 0)
 			m_nSetViewDatasetTLX = 0;
-		if (m_nSetViewDatasetTLY < 0 )
+		if (m_nSetViewDatasetTLY < 0)
 			m_nSetViewDatasetTLY = 0;
-		if (m_nSetViewDatasetBRX > m_nWidth-1)
-			m_nSetViewDatasetBRX = m_nWidth-1;
-		if (m_nSetViewDatasetBRY > m_nHeight-1)
-			m_nSetViewDatasetBRY = m_nHeight-1;
+		if (m_nSetViewDatasetBRX > m_nWidth - 1)
+			m_nSetViewDatasetBRX = m_nWidth - 1;
+		if (m_nSetViewDatasetBRY > m_nHeight - 1)
+			m_nSetViewDatasetBRY = m_nHeight - 1;
 	}
 
 	// Do the set view with the adjusted extents
-	nError = CNCSJP2FileView::SetView(nBands, 
-									  (UINT32*)pBandList, 
-									  m_nSetViewDatasetTLX, m_nSetViewDatasetTLY,
-									  m_nSetViewDatasetBRX, m_nSetViewDatasetBRY,
-									  nWidth, nHeight).GetErrorNumber();
+	nError = CNCSJP2FileView::SetView(nBands,
+		(UINT32*)pBandList,
+		m_nSetViewDatasetTLX, m_nSetViewDatasetTLY,
+		m_nSetViewDatasetBRX, m_nSetViewDatasetBRY,
+		nWidth, nHeight).GetErrorNumber();
 
 	if (nError == NCS_SUCCESS) {
 		m_bHaveValidSetView = TRUE;
-	} else if( nError == NCS_FILEIO_ERROR ) {
+	}
+	else if (nError == NCS_FILEIO_ERROR) {
 		m_bHaveValidSetView = FALSE;
-	} else {
+	}
+	else {
 		char buf[1024];														//[01]
 		sprintf(buf, "SetView() Error - %s", NCSGetErrorText(nError));		//[01]
 		nError = NCS_ECW_ERROR;												//[01]
 		NCSFormatErrorText(nError, buf);									//[01]
-		
+
 		m_bHaveValidSetView = FALSE;
 	}
 
@@ -241,7 +246,7 @@ NCSError CNCSFile::SetView ( INT32 nBands, INT32 *pBandList,
  * @see NCSFree()
  * @return TRUE or FALSE if the path represented a valid URL
  */
-BOOLEAN CNCSFile::BreakdownURL(  char *pURLPath, char **ppProtocol, char **ppHost, char **ppFilename)
+BOOLEAN CNCSFile::BreakdownURL(char *pURLPath, char **ppProtocol, char **ppHost, char **ppFilename)
 {
 	int nProtocolLength;
 	int nHostLength;
@@ -249,18 +254,18 @@ BOOLEAN CNCSFile::BreakdownURL(  char *pURLPath, char **ppProtocol, char **ppHos
 	char *pHost, *pProtocol, *pFilename;
 
 	BOOLEAN bError = NCSecwNetBreakdownUrl(pURLPath,
-										   &pProtocol, &nProtocolLength,
-										   &pHost, &nHostLength,
-										   &pFilename, &nFilenameLength);
+		&pProtocol, &nProtocolLength,
+		&pHost, &nHostLength,
+		&pFilename, &nFilenameLength);
 	if (bError == TRUE) {
 		*ppProtocol = (char *)NCSMalloc(nProtocolLength + 1, TRUE);
 		strncpy(*ppProtocol, pProtocol, nProtocolLength);
 
-		pHost+=2;
+		pHost += 2;
 		nHostLength -= 3;
-		*ppHost = (char *)NCSMalloc(nHostLength + 1, TRUE); 
+		*ppHost = (char *)NCSMalloc(nHostLength + 1, TRUE);
 		strncpy(*ppHost, pHost, nHostLength);
-		
+
 		*ppFilename = (char *)NCSMalloc(nFilenameLength + 1, TRUE);
 		strncpy(*ppFilename, pFilename, nFilenameLength);
 	}
@@ -273,11 +278,11 @@ BOOLEAN CNCSFile::BreakdownURL(  char *pURLPath, char **ppProtocol, char **ppHos
  * @param nErrorNum An error number, of enumerated type NCSError.
  * @return A constant pointer to a C string containing the error text
  */
-const char *CNCSFile::FormatErrorText ( NCSError nErrorNum )
+const char *CNCSFile::FormatErrorText(NCSError nErrorNum)
 {
 	return NCSGetLastErrorText(nErrorNum);	//[02]
 }
-																								
+
 /**
  * Set the custome client data.
  * @param pClientData A pointer to a custom client data structure
@@ -294,7 +299,7 @@ void CNCSFile::SetClientData(void *pClientData)
  * @see SetClientData()
  * @return A pointer to the custom client data
  */
-void *CNCSFile::GetClientData ()
+void *CNCSFile::GetClientData()
 {
 	return m_pClientData;
 }
@@ -314,10 +319,10 @@ NCSError CNCSFile::ConvertWorldToDataset(IEEE8 dWorldX, IEEE8 dWorldY, INT32 *pn
 {
 	NCSError nError = NCS_SUCCESS;
 	if (m_bIsOpen) {
-		_ASSERT(m_dCellIncrementX!=0.0);
-		_ASSERT(m_dCellIncrementY!=0.0);
-		*pnDatasetX = (INT32)(((dWorldX - m_dOriginX)/m_dCellIncrementX) - 0.5);
-		*pnDatasetY = (INT32)(((dWorldY - m_dOriginY)/m_dCellIncrementY) - 0.5);
+		_ASSERT(m_dCellIncrementX != 0.0);
+		_ASSERT(m_dCellIncrementY != 0.0);
+		*pnDatasetX = (INT32)(((dWorldX - m_dOriginX) / m_dCellIncrementX) - 0.5);
+		*pnDatasetY = (INT32)(((dWorldY - m_dOriginY) / m_dCellIncrementY) - 0.5);
 	}
 	else {
 		*pnDatasetX = 0;
@@ -376,7 +381,7 @@ extern "C" char *NCSGetGDTPath()
 
 extern "C" NCSError NCSGetEPSGCode(char *szProjection, char *szDatum, INT32 *pnEPSG)
 {
-	return (CNCSJP2FileView::GetEPSGCode(szProjection,szDatum,pnEPSG)).GetErrorNumber();
+	return (CNCSJP2FileView::GetEPSGCode(szProjection, szDatum, pnEPSG)).GetErrorNumber();
 }
 
 extern "C" NCSError NCSGetProjectionAndDatum(INT32 nEPSG, char **pszProjection, char **pszDatum)

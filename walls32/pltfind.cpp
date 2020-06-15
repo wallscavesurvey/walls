@@ -15,20 +15,20 @@ static char BASED_CODE THIS_FILE[] = __FILE__;
 // CPltFindDlg dialog
 
 CTabComboHist hist_pltfind(6);
-BOOL CPltFindDlg::m_bMatchCase=FALSE;
+BOOL CPltFindDlg::m_bMatchCase = FALSE;
 
 CPltFindDlg::CPltFindDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CPltFindDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CPltFindDlg)
 	//}}AFX_DATA_INIT
-	m_Name=hist_pltfind.GetFirstString();
-	m_bUseCase=m_bMatchCase;
+	m_Name = hist_pltfind.GetFirstString();
+	m_bUseCase = m_bMatchCase;
 }
 
 static BOOL IsToken(LPCSTR p)
 {
-	while(*p) if(isspace((BYTE)*p) || *p++==',') return FALSE;
+	while (*p) if (isspace((BYTE)*p) || *p++ == ',') return FALSE;
 	return TRUE;
 }
 
@@ -40,30 +40,30 @@ void CPltFindDlg::DoDataExchange(CDataExchange* pDX)
 	DDV_MaxChars(pDX, m_Name, 40);
 	DDX_Check(pDX, IDC_MATCHCASE, m_bUseCase);
 	//}}AFX_DATA_MAP
-	
-	if(pDX->m_bSaveAndValidate) {
+
+	if (pDX->m_bSaveAndValidate) {
 		m_Name.Trim();
-		if(!IsToken(m_Name)) {
+		if (!IsToken(m_Name)) {
 			AfxMessageBox(IDS_ERR_NOTSTANAME);
 			goto _fail;
 		}
 
-		int e=parse_name(m_Name);
-		if(e) {
+		int e = parse_name(m_Name);
+		if (e) {
 			AfxMessageBox(e);
 			goto _fail;
 		}
 
-	    if(!CPrjDoc::FindStation(m_Name,m_bUseCase,0)) goto _fail;
+		if (!CPrjDoc::FindStation(m_Name, m_bUseCase, 0)) goto _fail;
 		hist_pltfind.InsertAsFirst(m_Name);
-		m_bMatchCase=m_bUseCase;
+		m_bMatchCase = m_bUseCase;
 	}
 	return;
 
 _fail:
-	pDX->m_idLastControl=IDC_FINDSTATION;
+	pDX->m_idLastControl = IDC_FINDSTATION;
 	//***7.1 pDX->m_hWndLastControl=GetDlgItem(IDC_FINDSTATION)->m_hWnd;
-	pDX->m_bEditLastControl=TRUE;
+	pDX->m_bEditLastControl = TRUE;
 	pDX->Fail();
 }
 
@@ -80,9 +80,9 @@ BOOL CPltFindDlg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	CenterWindow();
-	VERIFY(m_ce.SubclassDlgItem(IDC_FINDSTATION,this));
+	VERIFY(m_ce.SubclassDlgItem(IDC_FINDSTATION, this));
 	m_ce.LoadHistory(&hist_pltfind);
-	m_ce.SetEditSel(0,-1);
+	m_ce.SetEditSel(0, -1);
 	m_ce.SetFocus();
 	return FALSE;  // return TRUE  unless you set the focus to a control
 }

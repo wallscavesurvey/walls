@@ -55,20 +55,20 @@ extern "C" {
 
 #pragma pack(1)
 
-typedef struct { /*15*8 + 3*8 = 144 bytes --*/                                                
+typedef struct { /*15*8 + 3*8 = 144 bytes --*/
 	char flag;					/* NET_VEC_x flags (see above) Initially SRV_VERSION*/
 	BYTE date[3];
- 	WORD pfx[2];				/* Name prefixes returned by srv_CB or 0*/
+	WORD pfx[2];				/* Name prefixes returned by srv_CB or 0*/
 	char  nam[2][SRV_SIZNAME];	/* From/to station name (each space extended)*/
 	double xyz[3];              /* E-N-U vector components in meters*/
-    double hv[2];			    /* Variance of Hz and Vt components*/
+	double hv[2];			    /* Variance of Hz and Vt components*/
 	/*The following fields are used only by Walls and wallnet4.dll --*/
 	long id[2];                 /* Reserved for name id's*/
-    long str_id;                /* NTS rec # if in string (or 0) - used by NETLIB*/
-    long str_nxt_vc;            /* NTV rec # of next string vec (or 0) - used by NETLI*/
+	long str_id;                /* NTS rec # if in string (or 0) - used by NETLIB*/
+	long str_nxt_vc;            /* NTV rec # of next string vec (or 0) - used by NETLI*/
 	double e_xyz[3];            /* Set by adjustment DLL*/
 	DWORD  lineno;              /* Line number in file (1-based)*/
- 	WORD  seg_id;   		    /* Set to -1 by DLL when segment changes */
+	WORD  seg_id;   		    /* Set to -1 by DLL when segment changes */
 	WORD  charno;               /* Character offset in line (0-based) of error*/
 								/* Also used for flags by srv_Open() */
 	BYTE filename[SRV_SIZFILE];
@@ -90,28 +90,30 @@ typedef NTVRec FAR *lpNTVRec;
 #define LRUD_FLG_CS 1
 
 typedef struct {
- 	WORD pfx;				
+	WORD pfx;
 	char  nam[SRV_SIZNAME];	/* Station name (space extended)*/
 	float dim[4];
 	float az;				/* Facing azimuth from nam[1] to nam[2]*/
-	WORD flags;				/* 0 or LRUD_FLG_CS */ 
+	WORD flags;				/* 0 or LRUD_FLG_CS */
 	UINT lineno;
 } SRV_LRUD;
 
 #pragma pack()
 
-typedef int (FAR PASCAL * LPSTR_CB)(int fcn_id,LPSTR lpStr);
-enum e_fcn_id {FCN_SEGMENT,FCN_PREFIX,FCN_NOTE,FCN_FLAG,FCN_SYMBOL,FCN_FLAGNAME,
-			   FCN_DATEDECL,FCN_LRUD,FCN_ERROR,FCN_CVTDATUM,FCN_CVTLATLON,FCN_CVT2OUTOFZONE};
+typedef int (FAR PASCAL * LPSTR_CB)(int fcn_id, LPSTR lpStr);
+enum e_fcn_id {
+	FCN_SEGMENT, FCN_PREFIX, FCN_NOTE, FCN_FLAG, FCN_SYMBOL, FCN_FLAGNAME,
+	FCN_DATEDECL, FCN_LRUD, FCN_ERROR, FCN_CVTDATUM, FCN_CVTLATLON, FCN_CVT2OUTOFZONE
+};
 
-enum e_srv_ref {SRV_USEDATES=1,SRV_FIXVTLEN=2,SRV_FIXVTVERT=4};
+enum e_srv_ref { SRV_USEDATES = 1, SRV_FIXVTLEN = 2, SRV_FIXVTVERT = 4 };
 
-int PASCAL srv_Open(LPSTR pathname,lpNTVRec pvec,LPSTR_CB pSrv_CB); 
-int PASCAL srv_SetOptions(LPSTR pathname); 
-int PASCAL srv_Next(void); 
+int PASCAL srv_Open(LPSTR pathname, lpNTVRec pvec, LPSTR_CB pSrv_CB);
+int PASCAL srv_SetOptions(LPSTR pathname);
+int PASCAL srv_Next(void);
 void PASCAL srv_Close(void);
 #define SRV_ERR_LOGMSG 1000 
-LPSTR PASCAL srv_ErrMsg(LPSTR buffer,int code);
+LPSTR PASCAL srv_ErrMsg(LPSTR buffer, int code);
 
 #pragma pack()
 /*

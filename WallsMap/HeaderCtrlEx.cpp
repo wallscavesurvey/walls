@@ -4,7 +4,7 @@
 
 #if 0
 #ifdef _DEBUG
-		char debug_msg[80];
+char debug_msg[80];
 #endif
 #endif
 
@@ -37,7 +37,7 @@ void CHeaderCtrlEx::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct) // override
 
 #if 0
 #ifdef _DEBUG
-		sprintf(debug_msg,"rect.top=%u rect.bottom=%u",rect.top,rect.bottom);
+	sprintf(debug_msg, "rect.top=%u rect.bottom=%u", rect.top, rect.bottom);
 #endif
 #endif
 
@@ -45,7 +45,7 @@ void CHeaderCtrlEx::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct) // override
 	dc.DrawFrameControl(&rect, DFC_BUTTON, DFCS_BUTTONPUSH);
 
 	// Adjust the rect if the mouse button is pressed on it
-	if( lpDrawItemStruct->itemState == ODS_SELECTED )
+	if (lpDrawItemStruct->itemState == ODS_SELECTED)
 	{
 		rect.left++;
 		rect.top += 2;
@@ -54,21 +54,21 @@ void CHeaderCtrlEx::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct) // override
 
 	//Draw the text --
 	CFont *pFontOld;
-	if(m_pCellFont)	pFontOld=dc.SelectObject(m_pCellFont);
+	if (m_pCellFont)	pFontOld = dc.SelectObject(m_pCellFont);
 
-	rect.bottom-=3;
+	rect.bottom -= 3;
 	dc.DrawText(lpBuffer, -1, &rect,
 		DT_SINGLELINE | DT_CENTER | DT_BOTTOM | DT_END_ELLIPSIS); // | DT_NOCLIP);
-	rect.bottom+=3;
+	rect.bottom += 3;
 
-	if(m_pCellFont) dc.SelectObject(pFontOld);
+	if (m_pCellFont) dc.SelectObject(pFontOld);
 
 	// Draw the Sort arrow
-	if(lpDrawItemStruct->itemID == (UINT)m_nSortCol)
+	if (lpDrawItemStruct->itemID == (UINT)m_nSortCol)
 	{
-		rect=lpDrawItemStruct->rcItem;
-		int x0=rect.left+rect.Width()/2;
-		int y0=rect.top+2;
+		rect = lpDrawItemStruct->rcItem;
+		int x0 = rect.left + rect.Width() / 2;
+		int y0 = rect.top + 2;
 		CBrush brush;
 		brush.CreateStockObject(BLACK_BRUSH);
 		CBrush *pOldBrush = dc.SelectObject(&brush);
@@ -76,31 +76,31 @@ void CHeaderCtrlEx::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct) // override
 		{
 			// Arrow pointing down
 			CPoint Pt[3];
-			Pt[0] = CPoint(x0+3, y0);	// Right
-			Pt[1] = CPoint(x0-3, y0);	// Left
-			Pt[2] = CPoint(x0, y0+3);	// Bottom
+			Pt[0] = CPoint(x0 + 3, y0);	// Right
+			Pt[1] = CPoint(x0 - 3, y0);	// Left
+			Pt[2] = CPoint(x0, y0 + 3);	// Bottom
 			dc.Polygon(Pt, 3);
 		}
 		else
 		{
 			// Arrow pointing up
 			CPoint Pt[3];
-			Pt[0] = CPoint(x0,  y0);	// Top
-			Pt[1] = CPoint(x0-3,  y0+3);	// Left
-			Pt[2] = CPoint(x0+3, y0+3);	// Right
+			Pt[0] = CPoint(x0, y0);	// Top
+			Pt[1] = CPoint(x0 - 3, y0 + 3);	// Left
+			Pt[2] = CPoint(x0 + 3, y0 + 3);	// Right
 			dc.Polygon(Pt, 3);
 		}
 		dc.SelectObject(pOldBrush);
 	}
 
 	// Restore dc
-	dc.RestoreDC( nSavedDC );
+	dc.RestoreDC(nSavedDC);
 
 	// Detach the dc before returning
 	dc.Detach();
 }
 
-int CHeaderCtrlEx::SetSortImage( int nCol, bool bAsc )
+int CHeaderCtrlEx::SetSortImage(int nCol, bool bAsc)
 {
 	int nPrevCol = m_nSortCol;
 
@@ -122,16 +122,16 @@ BEGIN_MESSAGE_MAP(CHeaderCtrlEx, CHeaderCtrl)
 	ON_MESSAGE(WM_TABLET_QUERYSYSTEMGESTURESTATUS, OnTabletQuerySystemGestureStatus)
 END_MESSAGE_MAP()
 
-LRESULT CHeaderCtrlEx::OnLayout( WPARAM wParam, LPARAM lParam )
+LRESULT CHeaderCtrlEx::OnLayout(WPARAM wParam, LPARAM lParam)
 {
 	LRESULT lResult = CHeaderCtrl::DefWindowProc(HDM_LAYOUT, 0, lParam);
 
-	if(wOSVersion>=0x0600) {
-		HD_LAYOUT &hdl = *( HD_LAYOUT * ) lParam;
+	if (wOSVersion >= 0x0600) {
+		HD_LAYOUT &hdl = *(HD_LAYOUT *)lParam;
 		RECT *prc = hdl.prc;
 		WINDOWPOS *pwpos = hdl.pwpos;
 
-		int nHeight = pwpos->cy-4;
+		int nHeight = pwpos->cy - 4;
 
 		pwpos->cy = nHeight;
 		prc->top = nHeight;
@@ -147,13 +147,13 @@ void CHeaderCtrlEx::OnLButtonUp(UINT nFlags, CPoint point)
 	CHeaderCtrl::OnLButtonUp(nFlags, point);
 }
 
-LRESULT CHeaderCtrlEx::OnTabletQuerySystemGestureStatus(WPARAM,LPARAM)
+LRESULT CHeaderCtrlEx::OnTabletQuerySystemGestureStatus(WPARAM, LPARAM)
 {
-   return 0;
+	return 0;
 }
 
 /*
-BOOL CHeaderCtrlEx::PreTranslateMessage(MSG* pMsg) 
+BOOL CHeaderCtrlEx::PreTranslateMessage(MSG* pMsg)
 {
 	//MSG msg=*pMsg;
 	BOOL bRet = CHeaderCtrl::PreTranslateMessage(pMsg);

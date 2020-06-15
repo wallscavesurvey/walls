@@ -10,10 +10,10 @@ class CDlgOptionsGE : public CDialog
 	DECLARE_DYNAMIC(CDlgOptionsGE)
 
 public:
-	CDlgOptionsGE(CShpLayer *pShp,VEC_DWORD &vRec,CWnd* pParent = NULL);   // standard constructor
+	CDlgOptionsGE(CShpLayer *pShp, VEC_DWORD &vRec, CWnd* pParent = NULL);   // standard constructor
 	virtual ~CDlgOptionsGE();
 
-// Dialog Data
+	// Dialog Data
 	enum { IDD = IDD_OPTIONS_GE };
 
 private:

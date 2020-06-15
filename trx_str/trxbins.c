@@ -101,94 +101,94 @@ static int bindupflag;
 
 void _BTFIND(void);
 
-TRXFCN_V trx_Bininit(DWORD *seqbuf,DWORD *seqlen,TRXFCN_IF seqfcn)
+TRXFCN_V trx_Bininit(DWORD *seqbuf, DWORD *seqlen, TRXFCN_IF seqfcn)
 {
 	__asm {
-		mov		eax,seqfcn
-		mov		bincompfcn,eax
-		mov		eax,seqlen
-		mov		binseqlen,eax
-		mov		eax,seqbuf
-		mov		binseqbuf,eax
+		mov		eax, seqfcn
+		mov		bincompfcn, eax
+		mov		eax, seqlen
+		mov		binseqlen, eax
+		mov		eax, seqbuf
+		mov		binseqbuf, eax
 	}
 }
 
 TRXFCN_V trx_Bdelete(DWORD *seqitem)
 {
 	__asm {
-		mov		eax,seqitem
-		mov		ebx,binseqlen
-		mov		ecx,[ebx]
-		sub		ecx,1
+		mov		eax, seqitem
+		mov		ebx, binseqlen
+		mov		ecx, [ebx]
+		sub		ecx, 1
 		jb		_dret
-		mov		[ebx],ecx
-		shl		ecx,2
-		add		ecx,binseqbuf
-		sub		ecx,eax
+		mov[ebx], ecx
+		shl		ecx, 2
+		add		ecx, binseqbuf
+		sub		ecx, eax
 		jna		_dret
 
-		mov		edi,eax
-		mov		esi,eax
-		add		esi,4
-		shr		ecx,2
+		mov		edi, eax
+		mov		esi, eax
+		add		esi, 4
+		shr		ecx, 2
 		rep		movsd
-_dret:
+		_dret :
 	}
 }
 
 TRXFCN_DWP trx_Blookup(int dupflag)
 {
 	__asm {
-        mov     esi,dupflag		;force saving of esi and edi in prolog
-        mov     bindupflag,esi
-		xor		edi,edi
-        mov		trx_binMatch,edi
+		mov     esi, dupflag; force saving of esi and edi in prolog
+		mov     bindupflag, esi
+		xor		edi, edi
+		mov		trx_binMatch, edi
 		call	_BTFIND
 		jnz		_ex1
-		xor		eax,eax
+		xor		eax, eax
 		jmp		short _ex0
 
-_ex1:	cmp		bindupflag,TRX_DUP_LAST
-		jnz		_ex0
-		sub		eax,4			;position at last duplicate
-_ex0:
+		_ex1 : cmp		bindupflag, TRX_DUP_LAST
+			   jnz		_ex0
+			   sub		eax, 4; position at last duplicate
+			   _ex0 :
 	}
 }
 
-TRXFCN_DWP trx_Binsert(DWORD seqitem,int dupflag)
+TRXFCN_DWP trx_Binsert(DWORD seqitem, int dupflag)
 {
 	__asm {
-        mov     eax,dupflag
-        mov     bindupflag,eax
-		mov		trx_binMatch,0
-        call    _BTFIND
+		mov     eax, dupflag
+		mov     bindupflag, eax
+		mov		trx_binMatch, 0
+		call    _BTFIND
 		jz		_ins1
-		cmp		bindupflag,TRX_DUP_NONE
+		cmp		bindupflag, TRX_DUP_NONE
 		jz		_lookex
 
-_ins1:	mov		edx,seqitem
-		mov		edi,binseqlen
-		mov		ecx,[edi]
-		inc		dword ptr [edi]
-		mov		edi,ecx
-		shl		edi,2
-		add		edi,binseqbuf
-		cmp		eax,edi
-		jnb		_ins2
+		_ins1 : mov		edx, seqitem
+				mov		edi, binseqlen
+				mov		ecx, [edi]
+				inc		dword ptr[edi]
+				mov		edi, ecx
+				shl		edi, 2
+				add		edi, binseqbuf
+				cmp		eax, edi
+				jnb		_ins2
 
-		mov		esi,edi
-		sub		esi,4
-		mov		ecx,edi
-		sub		ecx,eax
-		shr		ecx,2 
-		std	
-		rep		movsd	
-		cld	
+				mov		esi, edi
+				sub		esi, 4
+				mov		ecx, edi
+				sub		ecx, eax
+				shr		ecx, 2
+				std
+				rep		movsd
+				cld
 
-	_ins2:
-		mov		[edi],edx
+				_ins2 :
+		mov[edi], edx
 
-_lookex:
+			_lookex :
 	}
 }
 
@@ -202,45 +202,45 @@ __declspec(naked) void _BTFIND(void)
 {
 	__asm {
 		push	ebx
-		mov		edi,binseqlen
-		mov		edi,[edi]
-		mov		esi,binseqbuf
-		shl		edi,2			;esi=min points to seqbuf
-		add		edi,esi			;edi=max points to seqbuf+seqlen
-_cut:
-		cmp	esi,edi
-		jnb	_sexit
+		mov		edi, binseqlen
+		mov		edi, [edi]
+		mov		esi, binseqbuf
+		shl		edi, 2; esi = min points to seqbuf
+		add		edi, esi; edi = max points to seqbuf + seqlen
+		_cut :
+		cmp	esi, edi
+			jnb	_sexit
 
-		mov		ebx,edi			;if (di=max)>(si=min)
-		sub		ebx,esi
-		shr		ebx,1
-		and		bl,0FCh			;multiple of 4
-		add		ebx,esi			;bx=cut=(max+min)/2
+			mov		ebx, edi; if (di = max) > (si = min)
+			sub		ebx, esi
+			shr		ebx, 1
+			and bl, 0FCh; multiple of 4
+			add		ebx, esi; bx = cut = (max + min) / 2
 
-		push	ebx
-		push	dword ptr [ebx]			
-		call    bincompfcn		;ax=compfcn(seqbuf[cut])
-		pop     ebx
-		or		eax,eax
-		js		_back
-		jz		_match
+			push	ebx
+			push	dword ptr[ebx]
+			call    bincompfcn; ax = compfcn(seqbuf[cut])
+			pop     ebx
+			or eax, eax
+			js		_back
+			jz		_match
 
-_forw:	mov		esi,ebx
-		add		esi,4			;if(target>=&seqbuf[cut])
-		jmp		short _cut		;min=cut+1
+			_forw : mov		esi, ebx
+			add		esi, 4; if (target >= &seqbuf[cut])
+			jmp		short _cut; min = cut + 1
 
-_back:	mov		edi,ebx			;if(target<&seqbuf[cut])
-		jmp		short _cut		;max=cut
+			_back:	mov		edi, ebx; if (target < &seqbuf[cut])
+			jmp		short _cut; max = cut
 
-_match: mov     trx_binMatch,1  ;an exact match is detected
-		cmp		bindupflag,TRX_DUP_FIRST
-		ja		_forw
-		jz		_back
-		mov		esi,ebx
+			_match : mov     trx_binMatch, 1; an exact match is detected
+			cmp		bindupflag, TRX_DUP_FIRST
+			ja		_forw
+			jz		_back
+			mov		esi, ebx
 
-_sexit: cmp     trx_binMatch,0
-		mov		eax,esi
-		pop		ebx
-		ret
+			_sexit : cmp     trx_binMatch, 0
+			mov		eax, esi
+			pop		ebx
+			ret
 	}
 }

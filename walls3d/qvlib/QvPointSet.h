@@ -8,19 +8,19 @@
 
 class QvPointSet : public QvNode {
 
-    QV_NODE_HEADER(QvPointSet);
+	QV_NODE_HEADER(QvPointSet);
 
-  public:
-    // Fields
-    QvSFLong		startIndex;	// Index of 1st coordinate of shape
-    QvSFLong		numPoints;	// Number of points to draw
+public:
+	// Fields
+	QvSFLong		startIndex;	// Index of 1st coordinate of shape
+	QvSFLong		numPoints;	// Number of points to draw
 
-    // mpichler, 19950512
-    const point3D* points_;             // start of point array
-    int num_;                           // number of points
+	// mpichler, 19950512
+	const point3D* points_;             // start of point array
+	int num_;                           // number of points
 
-    // mpichler, 19951019
-    float epsilon_;                             // picking tolerance
+	// mpichler, 19951019
+	float epsilon_;                             // picking tolerance
 };
 
 #endif /* _QV_POINT_SET_ */

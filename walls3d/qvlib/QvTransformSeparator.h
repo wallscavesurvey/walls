@@ -5,9 +5,9 @@
 
 class QvTransformSeparator : public QvGroup {
 
-    QV_NODE_HEADER(QvTransformSeparator);
+	QV_NODE_HEADER(QvTransformSeparator);
 
-    // No fields
+	// No fields
 };
 
 #endif /* _QV_TRANSFORM_SEPARATOR_ */

@@ -2,13 +2,13 @@
  ** Copyright 1999 Earth Resource Mapping Ltd.
  ** This document contains proprietary source code of
  ** Earth Resource Mapping Ltd, and can only be used under
- ** one of the three licenses as described in the 
- ** license.txt file supplied with this distribution. 
- ** See separate license.txt file for license details 
+ ** one of the three licenses as described in the
+ ** license.txt file supplied with this distribution.
+ ** See separate license.txt file for license details
  ** and conditions.
  **
  ** This software is covered by US patent #6,442,298,
- ** #6,102,897 and #6,633,688.  Rights to use these patents 
+ ** #6,102,897 and #6,633,688.  Rights to use these patents
  ** is included in the license agreements.
  **
  ** FILE:   	NCSUtil/thread.h
@@ -28,8 +28,8 @@
  *******************************************************/
 
 #ifdef WIN32
-// For SwitchToThread()
-//#define _WIN32_WINNT 0x0400
+ // For SwitchToThread()
+ //#define _WIN32_WINNT 0x0400
 #endif //WIN32
 
 #include "NCSUtil.h"
@@ -80,10 +80,10 @@ typedef struct {
 ERROR: define NCSThread for this platform
 #endif
 
-	       NCSThreadStats	tsStats;
-       BOOLEAN			bCollectStats;
-       BOOLEAN			bThreadRunning;
-       void *pStartData;
+	NCSThreadStats	tsStats;
+	   BOOLEAN			bCollectStats;
+	   BOOLEAN			bThreadRunning;
+	   void *pStartData;
 } NCSThreadInfo;
 
 /*
@@ -91,7 +91,7 @@ ERROR: define NCSThread for this platform
  */
 typedef struct {
 	NCSThread		*pThread;
-	void			(*pFunc)(void*);
+	void(*pFunc)(void*);
 	void			*pData;
 #if defined MACINTOSH && defined MAC_PREEMPTIVE
 	NCSThreadInfo   *pThreadInfo;
@@ -133,7 +133,7 @@ static int NCSThreadStartFunc(NCSThreadStartData *pStartData);
  */
 void NCSThreadInit(void)
 {
-	if(nThreadsInitialised == 0) {
+	if (nThreadsInitialised == 0) {
 		NCSMutexInit(&mMutex);
 
 		ThreadIDKey = NCSThreadLSAlloc();
@@ -166,9 +166,9 @@ void NCSThreadFini(void)
 	nThreadsInitialised--;
 	NCSMutexEnd(&mMutex);
 
-	if(nThreadsInitialised == 0) {
+	if (nThreadsInitialised == 0) {
 		NCSMutexBegin(&mMutex);
-		while(nThreadInfos) {
+		while (nThreadInfos) {
 			NCSThreadFreeInfo(&(ppThreadInfos[0]->tid));
 		}
 		NCSMutexEnd(&mMutex);
@@ -184,12 +184,12 @@ void NCSThreadFini(void)
 /*
  ** Spawn a thread.
  */
-BOOLEAN NCSThreadSpawn(NCSThread *pThread, void (*pFunc)(void*), void *pData, BOOLEAN bCreateSuspended)
+BOOLEAN NCSThreadSpawn(NCSThread *pThread, void(*pFunc)(void*), void *pData, BOOLEAN bCreateSuspended)
 {
 #ifdef WIN32
 	NCSThreadStartData *pStartData;
 	//MessageBox(NULL, "HERE", "DEBUG", MB_OK);
-	if((pStartData = (NCSThreadStartData*)NCSMalloc(sizeof(NCSThreadStartData), TRUE)) != NULL) {
+	if ((pStartData = (NCSThreadStartData*)NCSMalloc(sizeof(NCSThreadStartData), TRUE)) != NULL) {
 #ifdef _WIN32_WCE
 		HANDLE hThread;
 #elif WIN64
@@ -219,24 +219,24 @@ BOOLEAN NCSThreadSpawn(NCSThread *pThread, void (*pFunc)(void*), void *pData, BO
 #ifdef _WIN32_WCE
 
 		hThread = CreateThread((void*)NULL,
-				0,
-				(unsigned(__stdcall*)(void*))NCSThreadStartFunc,
-				pStartData,
-				CREATE_SUSPENDED,
-				(unsigned*)&(pThreadInfo->dwTID));
+			0,
+			(unsigned(__stdcall*)(void*))NCSThreadStartFunc,
+			pStartData,
+			CREATE_SUSPENDED,
+			(unsigned*)&(pThreadInfo->dwTID));
 
 #else	/* _WIN32_WCE */
 
 		hThread = (unsigned long)_beginthreadex((void*)NULL,
-				0,
-				(unsigned(__stdcall*)(void*))NCSThreadStartFunc,
-				pStartData,
-				CREATE_SUSPENDED,
-				(unsigned*)&(pThreadInfo->dwTID));
+			0,
+			(unsigned(__stdcall*)(void*))NCSThreadStartFunc,
+			pStartData,
+			CREATE_SUSPENDED,
+			(unsigned*)&(pThreadInfo->dwTID));
 #endif	/* _WIN32_WCE */
 
-		if(hThread > 0) {
-			if(pThread) {
+		if (hThread > 0) {
+			if (pThread) {
 				*pThread = pThreadInfo->tid;
 			}
 			pThreadInfo->hThread = (HANDLE)hThread;
@@ -247,7 +247,7 @@ BOOLEAN NCSThreadSpawn(NCSThread *pThread, void (*pFunc)(void*), void *pData, BO
 			NCSLog(LOG_HIGH, "Spawn: ID 0x%lx, Handle 0x%lx", pThreadInfo->dwTID, pThreadInfo->hThread);
 			NCSMutexEnd(&mMutex);
 
-			if(!bCreateSuspended) {
+			if (!bCreateSuspended) {
 				/*
 				 ** Resume thread.
 				 */
@@ -266,7 +266,7 @@ BOOLEAN NCSThreadSpawn(NCSThread *pThread, void (*pFunc)(void*), void *pData, BO
 	NCSThreadInfo *pThreadInfo = (NCSThreadInfo*)NCSMalloc(sizeof(NCSThreadInfo), TRUE);
 	MacThreadID hThread;
 	NCSThreadStartData *pStartData = NULL;
-	if( pThreadInfo ) {
+	if (pThreadInfo) {
 
 		NCSMutexBegin(&mMutex);
 		pThreadInfo->tid = tidNextTID++;
@@ -277,11 +277,11 @@ BOOLEAN NCSThreadSpawn(NCSThread *pThread, void (*pFunc)(void*), void *pData, BO
 
 #ifdef MAC_PREEMPTIVE
 		{
-			OSStatus status = MPCreateSemaphore ( 1, 0, &pThreadInfo->suspend_condition);
+			OSStatus status = MPCreateSemaphore(1, 0, &pThreadInfo->suspend_condition);
 			pStartData = (NCSThreadStartData*)NCSMalloc(sizeof(NCSThreadStartData), TRUE);
-			if( status != noErr && pStartData ) {
+			if (status != noErr && pStartData) {
 				NCSFree(pThreadInfo);
-				if( pStartData ) NCSFree( pStartData );
+				if (pStartData) NCSFree(pStartData);
 				return(FALSE);
 			}
 			pThreadInfo->bSuspended = FALSE;
@@ -291,37 +291,37 @@ BOOLEAN NCSThreadSpawn(NCSThread *pThread, void (*pFunc)(void*), void *pData, BO
 			pStartData->pData = pData;
 			pStartData->pThreadInfo = pThreadInfo;
 
-			errWhatTaskErr = MPCreateTask( (TaskProc)NCSThreadStartFunc,
-					(void *)pStartData,
-					(ByteCount)10*1024/*stackSize*/,
-					0/*MPQueueID notifyQueue*/,
-					(void *) NULL/*terminationParameter1*/,
-					(void *) NULL/* terminationParameter2*/,
-					0/*MPTaskOptions options*/,
-					(MPTaskID *) &hThread
-					);
+			errWhatTaskErr = MPCreateTask((TaskProc)NCSThreadStartFunc,
+				(void *)pStartData,
+				(ByteCount)10 * 1024/*stackSize*/,
+				0/*MPQueueID notifyQueue*/,
+				(void *)NULL/*terminationParameter1*/,
+				(void *)NULL/* terminationParameter2*/,
+				0/*MPTaskOptions options*/,
+				(MPTaskID *)&hThread
+			);
 		}
 #else
 #if TARGET_API_MAC_CARBON
-		errWhatTaskErr = NewThread ( kCooperativeThread, 
-				(ThreadEntryTPP) NewThreadEntryUPP( pFunc ), 
-				(void *)pData, 
-				0, //stack size
-				kNewSuspend, 
-				0, 
-				&hThread );
+		errWhatTaskErr = NewThread(kCooperativeThread,
+			(ThreadEntryTPP)NewThreadEntryUPP(pFunc),
+			(void *)pData,
+			0, //stack size
+			kNewSuspend,
+			0,
+			&hThread);
 #else
-		errWhatTaskErr = NewThread ( kCooperativeThread, 
-				(ThreadEntryProcPtr) pFunc, 
-				(void *)pData, 
-				0, //stack size
-				kNewSuspend, 
-				0, 
-				&hThread );
+		errWhatTaskErr = NewThread(kCooperativeThread,
+			(ThreadEntryProcPtr)pFunc,
+			(void *)pData,
+			0, //stack size
+			kNewSuspend,
+			0,
+			&hThread);
 #endif
 #endif //MAC_PREEMPTIVE
 
-		if( errWhatTaskErr == noErr ) {
+		if (errWhatTaskErr == noErr) {
 			pThreadInfo->hThread = hThread;
 			pThreadInfo->bThreadRunning = TRUE;
 
@@ -331,9 +331,9 @@ BOOLEAN NCSThreadSpawn(NCSThread *pThread, void (*pFunc)(void*), void *pData, BO
 
 #ifdef MAC_PREEMPTIVE
 			//Wait until the created thread has been suspended before continuing
-			while( !pThreadInfo->bSuspended	) NCSSleep( 10 );
+			while (!pThreadInfo->bSuspended) NCSSleep(10);
 #endif //MAC_PREEMPTIVE
-			if(!bCreateSuspended) {
+			if (!bCreateSuspended) {
 				NCSThreadResume(pThread);
 			}
 
@@ -349,7 +349,7 @@ BOOLEAN NCSThreadSpawn(NCSThread *pThread, void (*pFunc)(void*), void *pData, BO
 
 #elif defined POSIX
 
-	int nError = 0;	
+	int nError = 0;
 	NCSThreadStartData *pStartData = NULL;
 	pthread_cond_t c = PTHREAD_COND_INITIALIZER;
 	NCSThreadInfo *pThreadInfo = (NCSThreadInfo*)NCSMalloc(sizeof(NCSThreadInfo), TRUE);
@@ -378,9 +378,9 @@ BOOLEAN NCSThreadSpawn(NCSThread *pThread, void (*pFunc)(void*), void *pData, BO
 
 	pThreadInfo->pStartData = pStartData;
 
-	if(0 == (nError = pthread_create(&(pThreadInfo->thread),
-					&sAttributes, 
-					(void *(*)(void*))NCSThreadStartFunc, pStartData))) {
+	if (0 == (nError = pthread_create(&(pThreadInfo->thread),
+		&sAttributes,
+		(void *(*)(void*))NCSThreadStartFunc, pStartData))) {
 
 		NCSMutexBegin(&mMutex);
 		NCSArrayAppendElement(ppThreadInfos, nThreadInfos, &pThreadInfo);
@@ -388,11 +388,12 @@ BOOLEAN NCSThreadSpawn(NCSThread *pThread, void (*pFunc)(void*), void *pData, BO
 
 		NCSMutexEnd(&pThreadInfo->mSuspendMutex);
 		// Wait for thread to start
-		while(!pThreadInfo->bThreadStarted) {
+		while (!pThreadInfo->bThreadStarted) {
 			NCSThreadYield();
 		}
 		return(TRUE);
-	} else {
+	}
+	else {
 		NCSMutexEnd(&pThreadInfo->mSuspendMutex);
 		NCSMutexFini(&pThreadInfo->mSuspendMutex);
 		NCSFree(pThreadInfo);
@@ -401,7 +402,7 @@ BOOLEAN NCSThreadSpawn(NCSThread *pThread, void (*pFunc)(void*), void *pData, BO
 	}
 
 #else
-ERROR: Need to code NCSThreadSpawn() in NCSUtil/thread.c
+ERROR: Need to code NCSThreadSpawn() in NCSUtil / thread.c
 #endif
 
 }
@@ -411,15 +412,15 @@ ERROR: Need to code NCSThreadSpawn() in NCSUtil/thread.c
  */
 void NCSThreadFreeInfo(NCSThread *pThread)
 {
-	if(pThread) {
+	if (pThread) {
 		INT32 i;
 
 		NCSMutexBegin(&mMutex);
-		for(i = 0; i < nThreadInfos; i++) {
-			if(ppThreadInfos[i] && ppThreadInfos[i]->tid == *pThread) {
+		for (i = 0; i < nThreadInfos; i++) {
+			if (ppThreadInfos[i] && ppThreadInfos[i]->tid == *pThread) {
 #ifdef WIN32
 				ppThreadInfos[i]->dwTID = 0;
-				if(ppThreadInfos[i]->hThread) {
+				if (ppThreadInfos[i]->hThread) {
 					CloseHandle(ppThreadInfos[i]->hThread);
 					ppThreadInfos[i]->hThread = 0;
 				}
@@ -432,7 +433,7 @@ void NCSThreadFreeInfo(NCSThread *pThread)
 #else
 #error NCSThreadFreeInfo()
 #endif
-				if( ppThreadInfos[i]->pStartData ) NCSFree(ppThreadInfos[i]->pStartData);
+				if (ppThreadInfos[i]->pStartData) NCSFree(ppThreadInfos[i]->pStartData);
 				NCSFree(ppThreadInfos[i]);
 				NCSArrayRemoveElement(ppThreadInfos, nThreadInfos, i);
 				break;
@@ -449,22 +450,22 @@ void NCSThreadExit(INT32 dwExitId)
 {
 	NCSThreadInfo *pThreadInfo;
 
-	if(NULL != (pThreadInfo = NCSThreadGetCurrentInfo())) {
+	if (NULL != (pThreadInfo = NCSThreadGetCurrentInfo())) {
 		pThreadInfo->bThreadRunning = FALSE;
 
-		if(pThreadInfo->bCollectStats) {
+		if (pThreadInfo->bCollectStats) {
 			pThreadInfo->tsStats.tsTotalRunning = NCSGetTimeStampMs() - pThreadInfo->tsStats.tsStart;
 		}
 
 		NCSMutexBegin(&mMutex);
 #ifdef WIN32
 		pThreadInfo->dwTID = 0;
-		if(pThreadInfo->hThread) {
+		if (pThreadInfo->hThread) {
 			OSVERSIONINFO osv;
 			memset(&osv, 0, sizeof(osv));
 			osv.dwOSVersionInfoSize = sizeof(osv);
 
-			if(GetVersionEx(&osv) && (osv.dwPlatformId == VER_PLATFORM_WIN32_NT)) {
+			if (GetVersionEx(&osv) && (osv.dwPlatformId == VER_PLATFORM_WIN32_NT)) {
 				CloseHandle(pThreadInfo->hThread);
 			}
 			pThreadInfo->hThread = 0;
@@ -486,14 +487,14 @@ void NCSThreadExit(INT32 dwExitId)
 #elif defined(PALM)
 #elif defined(MACINTOSH)
 #ifdef MAC_PREEMPTIVE
-	MPExit( (OSStatus)dwExitId ); 
+	MPExit((OSStatus)dwExitId);
 #else
 	//NCSThreadTerminate(&pThreadInfo->hThread);
 #endif // MAC_PREEMPTIVE
 #elif defined(POSIX)
 	pthread_exit((void *)NULL);
 #else
-ERROR: Need to code NCSThreadExit() in NCSUtil/thread.c
+ERROR: Need to code NCSThreadExit() in NCSUtil / thread.c
 #endif
 }
 
@@ -504,8 +505,8 @@ void NCSThreadSuspend(void)
 {
 	NCSThreadInfo *pThreadInfo = NCSThreadGetCurrentInfo();
 
-	if(pThreadInfo) {
-		if(pThreadInfo->bCollectStats) {
+	if (pThreadInfo) {
+		if (pThreadInfo->bCollectStats) {
 			pThreadInfo->tsStats.tsSuspendStart = NCSGetTimeStampMs();
 			pThreadInfo->tsStats.nSuspends += 1;
 		}
@@ -517,17 +518,17 @@ void NCSThreadSuspend(void)
 #elif defined(PALM)
 #elif defined(MACINTOSH)
 #ifdef MAC_PREEMPTIVE
-		{	
+		{
 			OSStatus eResult;
 			pThreadInfo->bSuspended = TRUE;
-			eResult = MPWaitOnSemaphore ( pThreadInfo->suspend_condition, kDurationForever );
+			eResult = MPWaitOnSemaphore(pThreadInfo->suspend_condition, kDurationForever);
 			pThreadInfo->bSuspended = FALSE;
 		}
 #else
 		{
-			OSErr eResult = SetThreadState( kCurrentThreadID, 
-					kStoppedThreadState, 
-					kNoThreadID );
+			OSErr eResult = SetThreadState(kCurrentThreadID,
+				kStoppedThreadState,
+				kNoThreadID);
 			//NCSThreadYield();
 		}
 #endif // MAC_PREEMPTIVE
@@ -544,7 +545,7 @@ void NCSThreadSuspend(void)
 			NCSMutexEnd(&pThreadInfo->mSuspendMutex);
 		}
 #else
-ERROR: Need to code NCSThreadSuspend() in NCSUtil/thread.c
+	ERROR: Need to code NCSThreadSuspend() in NCSUtil / thread.c
 #endif
 	}
 }
@@ -557,8 +558,8 @@ void NCSThreadResume(NCSThread *pThread)
 	NCSThreadInfo *pThreadInfo;
 	NCSMutexBegin(&mMutex);
 
-	if(NULL != (pThreadInfo = NCSThreadGetInfo(pThread))) {
-		if(pThreadInfo->bCollectStats) {
+	if (NULL != (pThreadInfo = NCSThreadGetInfo(pThread))) {
+		if (pThreadInfo->bCollectStats) {
 			pThreadInfo->tsStats.tsTotalSuspended = NCSGetTimeStampMs() - pThreadInfo->tsStats.tsSuspendStart;
 			pThreadInfo->tsStats.nResumes += 1;
 		}
@@ -571,8 +572,8 @@ void NCSThreadResume(NCSThread *pThread)
 #elif defined(MACINTOSH)
 
 #ifdef MAC_PREEMPTIVE
-		if( pThreadInfo->bSuspended ) {
-			MPSignalSemaphore( pThreadInfo->suspend_condition );		
+		if (pThreadInfo->bSuspended) {
+			MPSignalSemaphore(pThreadInfo->suspend_condition);
 		}
 #else
 		{
@@ -586,33 +587,34 @@ void NCSThreadResume(NCSThread *pThread)
 				/* If it's not stopped, something is wrong. */
 				if (threadState != kStoppedThreadState) {
 					//DebugStr("\pWake-up thread is in the wrong state!");
-				} else {
+				}
+				else {
 					/* Should be sleeping, mark it for wake up! */
-					eResult = SetThreadState( pThreadInfo->hThread, 
-							kReadyThreadState, 
-							kNoThreadID );
+					eResult = SetThreadState(pThreadInfo->hThread,
+						kReadyThreadState,
+						kNoThreadID);
 				}
 			}
 			//} while ( eResult != noErr );
-			if( eResult == noErr ) {
+			if (eResult == noErr) {
 				eResult = YieldToThread(pThreadInfo->hThread);
-				if( eResult != noErr ) {
+				if (eResult != noErr) {
 					printf("bugger.\n");
 				}
 			}
-	}
+		}
 #endif // MAC_PREEMPTIVE
 
 #elif defined POSIX
-	NCSMutexBegin(&pThreadInfo->mSuspendMutex);
-	if( pThreadInfo->bSuspended ) {
-		pthread_cond_signal(&pThreadInfo->suspend_condition);
-	}
-	NCSMutexEnd(&pThreadInfo->mSuspendMutex);
+		NCSMutexBegin(&pThreadInfo->mSuspendMutex);
+		if (pThreadInfo->bSuspended) {
+			pthread_cond_signal(&pThreadInfo->suspend_condition);
+		}
+		NCSMutexEnd(&pThreadInfo->mSuspendMutex);
 #else
-ERROR: Need to code NCSThreadResume() in NCSUtil/thread.c
+	ERROR: Need to code NCSThreadResume() in NCSUtil / thread.c
 #endif
-}
+	}
 	NCSMutexEnd(&mMutex);
 }
 
@@ -624,13 +626,13 @@ NCSThread *NCSThreadGetCurrent(void)
 #ifdef WIN32
 	NCSThread *pThread = (NCSThread*)NCSThreadLSGetValue(ThreadIDKey);
 
-	if(!pThread) {
+	if (!pThread) {
 		/*
 		 ** Non NCSThread, create an NCSThreadInfo struct for it.
 		 */
 		NCSThreadInfo *pThreadInfo = (NCSThreadInfo*)NCSMalloc(sizeof(NCSThreadInfo), TRUE);
 
-		if(pThreadInfo) {
+		if (pThreadInfo) {
 			NCSMutexBegin(&mMutex);
 
 			pThreadInfo->tid = tidNextTID++;
@@ -640,12 +642,12 @@ NCSThread *NCSThreadGetCurrent(void)
 			pThreadInfo->hThread = GetCurrentThread(); // FIXME - no DuplicateHandle()?
 #else /* _WIN32_WCE */
 			DuplicateHandle(GetCurrentProcess(),
-					GetCurrentThread(),
-					GetCurrentProcess(),
-					&(pThreadInfo->hThread),
-					0,
-					TRUE,
-					DUPLICATE_SAME_ACCESS);
+				GetCurrentThread(),
+				GetCurrentProcess(),
+				&(pThreadInfo->hThread),
+				0,
+				TRUE,
+				DUPLICATE_SAME_ACCESS);
 #endif /* _WIN32_WCE */
 #endif /* WIN32 */
 			pThreadInfo->bThreadRunning = TRUE;
@@ -667,30 +669,30 @@ NCSThread *NCSThreadGetCurrent(void)
 	NCSThreadInfo *pThreadInfo = (NCSThreadInfo*)NULL;
 	NCSThread *tid;
 	NCSMutexBegin(&mMutex);
-	for(i = 0; i < nThreadInfos; i++) {
-		if(ppThreadInfos[i]->hThread == currentThread) {
+	for (i = 0; i < nThreadInfos; i++) {
+		if (ppThreadInfos[i]->hThread == currentThread) {
 			pThreadInfo = ppThreadInfos[i];
 			break;
 		}
-	}	
+	}
 	tid = &(pThreadInfo->tid);
 	NCSMutexEnd(&mMutex);
-	return(tid);	
+	return(tid);
 #else
 	ThreadID hThread;
-	OSStatus errWhatTaskErr = GetCurrentThread( &hThread );
+	OSStatus errWhatTaskErr = GetCurrentThread(&hThread);
 
-	if( errWhatTaskErr == noErr ) {
+	if (errWhatTaskErr == noErr) {
 		INT32 i;
 		NCSThreadInfo *pThreadInfo = (NCSThreadInfo*)NULL;
 		NCSThread *tid;
 		NCSMutexBegin(&mMutex);
-		for(i = 0; i < nThreadInfos; i++) {
-			if(ppThreadInfos[i]->hThread == hThread) {
+		for (i = 0; i < nThreadInfos; i++) {
+			if (ppThreadInfos[i]->hThread == hThread) {
 				pThreadInfo = ppThreadInfos[i];
 				break;
 			}
-		}	
+		}
 		tid = &(pThreadInfo->tid);
 		NCSMutexEnd(&mMutex);
 		return(tid);
@@ -703,12 +705,12 @@ NCSThread *NCSThreadGetCurrent(void)
 	NCSThreadInfo *pThreadInfo = (NCSThreadInfo*)NULL;
 	NCSThread *tid;
 	NCSMutexBegin(&mMutex);
-	for(i = 0; i < nThreadInfos; i++) {
-		if(ppThreadInfos[i]->thread == t) {
+	for (i = 0; i < nThreadInfos; i++) {
+		if (ppThreadInfos[i]->thread == t) {
 			pThreadInfo = ppThreadInfos[i];
 			break;
 		}
-	}	
+	}
 	tid = &(pThreadInfo->tid);
 	NCSMutexEnd(&mMutex);
 	return(tid);
@@ -724,17 +726,17 @@ BOOLEAN NCSThreadIsRunning(NCSThread *pThread)
 	NCSThreadInfo *pThreadInfo;
 	NCSMutexBegin(&mMutex);
 
-	if(NULL != (pThreadInfo = NCSThreadGetInfo(pThread))) {
+	if (NULL != (pThreadInfo = NCSThreadGetInfo(pThread))) {
 		bThreadRunning = pThreadInfo->bThreadRunning;
 
 #ifdef WIN32
 		{
 			DWORD dwExitCode = 0;
 
-			if(bThreadRunning) {
+			if (bThreadRunning) {
 				GetExitCodeThread(pThreadInfo->hThread, &dwExitCode);
 
-				if(dwExitCode != STILL_ACTIVE) {
+				if (dwExitCode != STILL_ACTIVE) {
 					bThreadRunning = FALSE;
 				}
 			}
@@ -744,9 +746,9 @@ BOOLEAN NCSThreadIsRunning(NCSThread *pThread)
 			int  policy;
 			struct sched_param param;
 
-			if(pthread_getschedparam(pThreadInfo->thread,  
-						&policy,
-						&param) == ESRCH) {
+			if (pthread_getschedparam(pThreadInfo->thread,
+				&policy,
+				&param) == ESRCH) {
 				bThreadRunning = FALSE;
 			}
 		}
@@ -763,12 +765,12 @@ BOOLEAN NCSThreadIsRunning(NCSThread *pThread)
 			OSErr err;
 			ThreadState state;
 
-			if(bThreadRunning) {
+			if (bThreadRunning) {
 				err = GetThreadState(pThreadInfo->hThread, &state);
 
-				if(err == threadNotFoundErr || state == kStoppedThreadState) {
+				if (err == threadNotFoundErr || state == kStoppedThreadState) {
 					bThreadRunning = FALSE;
-					if( err == threadNotFoundErr ) { // thread has exited
+					if (err == threadNotFoundErr) { // thread has exited
 						pThreadInfo->hThread = 0;
 					}
 				}
@@ -791,12 +793,12 @@ BOOLEAN NCSThreadIsSuspended(NCSThread *pThread)
 	NCSThreadInfo *pThreadInfo;
 	NCSMutexBegin(&mMutex);
 
-	if(NULL != (pThreadInfo = NCSThreadGetInfo(pThread))) {
+	if (NULL != (pThreadInfo = NCSThreadGetInfo(pThread))) {
 
 #ifdef WIN32
 
 		// Suspend returns previous suspend count.
-		if(SuspendThread(pThreadInfo->hThread) > 0) {
+		if (SuspendThread(pThreadInfo->hThread) > 0) {
 			bSuspended = TRUE;
 		}
 		// Resume the thread.
@@ -811,7 +813,7 @@ BOOLEAN NCSThreadIsSuspended(NCSThread *pThread)
 #elif defined(POSIX)
 		bSuspended = pThreadInfo->bSuspended;
 #else
-ERROE: Code NCSThreadIsSuspended() in NCSUtil/thread.c
+	ERROE: Code NCSThreadIsSuspended() in NCSUtil / thread.c
 #endif
 
 	}
@@ -844,9 +846,9 @@ BOOLEAN NCSThreadYield(void)
 #elif defined(MACOSX)
 	pthread_yield_np();
 #else
-ERROR: NCSThreadYield() needs coding in NCSUtil/thread.c
+ERROR: NCSThreadYield() needs coding in NCSUtil / thread.c
 #endif
-	       return(FALSE);
+	return(FALSE);
 }
 
 /*
@@ -858,8 +860,8 @@ NCSThreadStats NCSThreadGetStats(NCSThread *pThread)
 	NCSThreadStats tsStats = { 0 };
 
 	NCSMutexBegin(&mMutex);
-	if(NULL != (pThreadInfo = NCSThreadGetInfo(pThread))) {
-		if(pThreadInfo->bThreadRunning) {
+	if (NULL != (pThreadInfo = NCSThreadGetInfo(pThread))) {
+		if (pThreadInfo->bThreadRunning) {
 			pThreadInfo->tsStats.tsTotalRunning = NCSGetTimeStampMs() - pThreadInfo->tsStats.tsStart;
 		}
 		NCSMutexEnd(&mMutex);
@@ -877,7 +879,7 @@ void NCSThreadEnableStats(NCSThread *pThread)
 	NCSThreadInfo *pThreadInfo;
 
 	NCSMutexBegin(&mMutex);
-	if(NULL != (pThreadInfo = NCSThreadGetInfo(pThread))) {
+	if (NULL != (pThreadInfo = NCSThreadGetInfo(pThread))) {
 		pThreadInfo->bCollectStats = TRUE;
 	}
 	NCSMutexEnd(&mMutex);
@@ -890,7 +892,7 @@ void NCSThreadDisableStats(NCSThread *pThread)
 {
 	NCSThreadInfo *pThreadInfo;
 	NCSMutexBegin(&mMutex);
-	if(NULL != (pThreadInfo = NCSThreadGetInfo(pThread))) {
+	if (NULL != (pThreadInfo = NCSThreadGetInfo(pThread))) {
 		pThreadInfo->bCollectStats = FALSE;
 	}
 	NCSMutexEnd(&mMutex);
@@ -912,14 +914,15 @@ NCSThreadLSKey NCSThreadLSAlloc(void)
 #elif defined(POSIX)
 	pthread_key_t *key = NCSMalloc(sizeof(pthread_key_t), TRUE);
 
-	if(pthread_key_create(key, NULL) == 0) {
+	if (pthread_key_create(key, NULL) == 0) {
 		return(key);
-	} else {
+	}
+	else {
 		NCSFree(key);
 		return(NULL);
 	}
 #else
-ERROR: Need to code NCSThreadLSAlloc() in NCSUtil/thread.c
+ERROR: Need to code NCSThreadLSAlloc() in NCSUtil / thread.c
 #endif
 }
 
@@ -935,12 +938,12 @@ void NCSThreadLSFree(NCSThreadLSKey Key)
 #elif defined(PALM)
 #elif defined(MACINTOSH)
 #elif defined(POSIX)
-	if(Key != NULL) {
+	if (Key != NULL) {
 		pthread_key_delete(*Key);
 		NCSFree(Key);
 	}
 #else
-ERROR: Need to code NCSThreadLSFree() in NCSUtil/thread.c
+ERROR: Need to code NCSThreadLSFree() in NCSUtil / thread.c
 #endif
 }
 
@@ -958,7 +961,7 @@ void NCSThreadLSSetValue(NCSThreadLSKey Key, void *pValue)
 #elif defined(POSIX)
 	pthread_setspecific(*Key, pValue);
 #else
-ERROR: Need to code NCSThreadLSSetValue() in NCSUtil/thread.c
+ERROR: Need to code NCSThreadLSSetValue() in NCSUtil / thread.c
 #endif
 }
 
@@ -978,59 +981,59 @@ void *NCSThreadLSGetValue(NCSThreadLSKey Key)
 #elif defined(POSIX)
 	return(pthread_getspecific(*Key));
 #else
-ERROR: Need to code NCSThreadLSSetValue() in NCSUtil/thread.c
+ERROR: Need to code NCSThreadLSSetValue() in NCSUtil / thread.c
 #endif
 }
 
-/* 
+/*
  ** Set Thread priority
  */
 BOOLEAN NCSThreadSetPriority(NCSThread *pThread,
-		NCSThreadPriority pri)
+	NCSThreadPriority pri)
 {
 	NCSThreadInfo *pThreadInfo;
 	NCSMutexBegin(&mMutex);
 
 	pThreadInfo = NCSThreadGetInfo(pThread);
-	if(pThreadInfo) {
+	if (pThreadInfo) {
 #ifdef WIN32
-		switch(pri) {
-			case NCS_THREAD_PRI_IDLE:
-				SetThreadPriority(pThreadInfo->hThread, 
-						THREAD_PRIORITY_IDLE);
-				break;
-			case NCS_THREAD_PRI_BELOW_NORMAL:
-				SetThreadPriority(pThreadInfo->hThread, 
-						THREAD_PRIORITY_BELOW_NORMAL);
-				break;
-			case NCS_THREAD_PRI_NORMAL:
-			default:
-				SetThreadPriority(pThreadInfo->hThread, 
-						THREAD_PRIORITY_NORMAL);
-				break;
-			case NCS_THREAD_PRI_ABOVE_NORMAL:
-				SetThreadPriority(pThreadInfo->hThread, 
-						THREAD_PRIORITY_ABOVE_NORMAL);
-				break;
-			case NCS_THREAD_PRI_REALTIME:
-				SetThreadPriority(pThreadInfo->hThread, 
-						THREAD_PRIORITY_TIME_CRITICAL);
-				break;
+		switch (pri) {
+		case NCS_THREAD_PRI_IDLE:
+			SetThreadPriority(pThreadInfo->hThread,
+				THREAD_PRIORITY_IDLE);
+			break;
+		case NCS_THREAD_PRI_BELOW_NORMAL:
+			SetThreadPriority(pThreadInfo->hThread,
+				THREAD_PRIORITY_BELOW_NORMAL);
+			break;
+		case NCS_THREAD_PRI_NORMAL:
+		default:
+			SetThreadPriority(pThreadInfo->hThread,
+				THREAD_PRIORITY_NORMAL);
+			break;
+		case NCS_THREAD_PRI_ABOVE_NORMAL:
+			SetThreadPriority(pThreadInfo->hThread,
+				THREAD_PRIORITY_ABOVE_NORMAL);
+			break;
+		case NCS_THREAD_PRI_REALTIME:
+			SetThreadPriority(pThreadInfo->hThread,
+				THREAD_PRIORITY_TIME_CRITICAL);
+			break;
 		}
 #elif defined(PALM)
 #elif defined(MACINTOSH)
 #elif defined(POSIX)
 #else
-ERROR: Need to code NCSThreadSetPriority() in NCSUtil/thread.c
+	ERROR: Need to code NCSThreadSetPriority() in NCSUtil / thread.c
 #endif
-	   	NCSMutexEnd(&mMutex);
-		return(TRUE);
+		NCSMutexEnd(&mMutex);
+		   return(TRUE);
 	}
 	NCSMutexEnd(&mMutex);
 	return(FALSE);
 }
 
-/* 
+/*
  ** Get Thread priority
  */
 NCSThreadPriority NCSThreadGetPriority(NCSThread *pThread)
@@ -1038,37 +1041,37 @@ NCSThreadPriority NCSThreadGetPriority(NCSThread *pThread)
 	NCSThreadInfo *pThreadInfo;
 	NCSMutexBegin(&mMutex);
 	pThreadInfo = NCSThreadGetInfo(pThread);
-	if(pThreadInfo) {
+	if (pThreadInfo) {
 #ifdef WIN32
-		switch(GetThreadPriority(pThreadInfo->hThread)) {
-			case THREAD_PRIORITY_IDLE:
-					NCSMutexEnd(&mMutex);
-				return(NCS_THREAD_PRI_IDLE);
-				break;
-			case THREAD_PRIORITY_BELOW_NORMAL:
-					NCSMutexEnd(&mMutex);
-				return(NCS_THREAD_PRI_BELOW_NORMAL);
-				break;
-			case THREAD_PRIORITY_NORMAL:
-			default:
-					NCSMutexEnd(&mMutex);
-				return(NCS_THREAD_PRI_NORMAL);
-				break;
-			case THREAD_PRIORITY_ABOVE_NORMAL:
-					NCSMutexEnd(&mMutex);
-				return(NCS_THREAD_PRI_ABOVE_NORMAL);
-				break;
-			case THREAD_PRIORITY_TIME_CRITICAL:
-					NCSMutexEnd(&mMutex);
-				return(NCS_THREAD_PRI_REALTIME);
-				break;
-		}	
+		switch (GetThreadPriority(pThreadInfo->hThread)) {
+		case THREAD_PRIORITY_IDLE:
+			NCSMutexEnd(&mMutex);
+			return(NCS_THREAD_PRI_IDLE);
+			break;
+		case THREAD_PRIORITY_BELOW_NORMAL:
+			NCSMutexEnd(&mMutex);
+			return(NCS_THREAD_PRI_BELOW_NORMAL);
+			break;
+		case THREAD_PRIORITY_NORMAL:
+		default:
+			NCSMutexEnd(&mMutex);
+			return(NCS_THREAD_PRI_NORMAL);
+			break;
+		case THREAD_PRIORITY_ABOVE_NORMAL:
+			NCSMutexEnd(&mMutex);
+			return(NCS_THREAD_PRI_ABOVE_NORMAL);
+			break;
+		case THREAD_PRIORITY_TIME_CRITICAL:
+			NCSMutexEnd(&mMutex);
+			return(NCS_THREAD_PRI_REALTIME);
+			break;
+		}
 
 #elif defined(PALM)||defined(MACINTOSH)||defined(POSIX)
 		NCSMutexEnd(&mMutex);
 		return(NCS_THREAD_PRI_NORMAL);
 #else
-ERROR: Need to code NCSThreadGetPriority() in NCSUtil/thread.c
+	ERROR: Need to code NCSThreadGetPriority() in NCSUtil / thread.c
 #endif
 	}
 	NCSMutexEnd(&mMutex);
@@ -1079,14 +1082,14 @@ ERROR: Need to code NCSThreadGetPriority() in NCSUtil/thread.c
  ** Local functions.
  */
 
-/*
- ** Get current thread info.
- */
+ /*
+  ** Get current thread info.
+  */
 static NCSThreadInfo *NCSThreadGetCurrentInfo(void)
 {
 	NCSThread *pThread;
 
-	if(NULL != (pThread = NCSThreadGetCurrent())) {
+	if (NULL != (pThread = NCSThreadGetCurrent())) {
 		return(NCSThreadGetInfo(pThread));
 	}
 	return((NCSThreadInfo*)NULL);
@@ -1100,13 +1103,13 @@ static NCSThreadInfo *NCSThreadGetInfo(NCSThread *pThread)
 	INT32 i;
 	NCSThreadInfo *pThreadInfo = (NCSThreadInfo*)NULL;
 
-	if(ppThreadInfos) {
-		for(i = 0; i < nThreadInfos; i++) {
-			if(ppThreadInfos[i]->tid == *pThread) {
+	if (ppThreadInfos) {
+		for (i = 0; i < nThreadInfos; i++) {
+			if (ppThreadInfos[i]->tid == *pThread) {
 				pThreadInfo = ppThreadInfos[i];
 				break;
 			}
-		}	
+		}
 	}
 	return(pThreadInfo);
 }
@@ -1121,31 +1124,31 @@ static int NCSThreadStartFunc(NCSThreadStartData *pStartData)
 
 	__try {										/**[04]**/
 #endif	/* WIN32 */
-		if(pStartData) {
+		if (pStartData) {
 			NCSThreadInfo *pThreadInfo;
-			void (*pFunc)(void*);
+			void(*pFunc)(void*);
 			void *pData;
 
 #if defined(MACINTOSH) && defined(MAC_PREEMPTIVE)
 			//NCSThreadSuspend();
 			OSStatus eResult;
 			pStartData->pThreadInfo->bSuspended = TRUE;
-			eResult = MPWaitOnSemaphore ( pStartData->pThreadInfo->suspend_condition, kDurationForever );
+			eResult = MPWaitOnSemaphore(pStartData->pThreadInfo->suspend_condition, kDurationForever);
 			pStartData->pThreadInfo->bSuspended = FALSE;
 #endif //defined(MACINTOSH) && defined(MAC_PREEMPTIVE)
 
 #ifdef POSIX
 			NCSMutexBegin(&pStartData->pThreadInfo->mSuspendMutex);
 			pStartData->pThreadInfo->bThreadStarted = TRUE;
-			if( pStartData->pThreadInfo->bSuspended ) {
+			if (pStartData->pThreadInfo->bSuspended) {
 				pthread_cond_wait(&(pStartData->pThreadInfo->suspend_condition), &pStartData->pThreadInfo->mSuspendMutex.m);
 				pStartData->pThreadInfo->bSuspended = FALSE;
 			}
 			NCSMutexEnd(&pStartData->pThreadInfo->mSuspendMutex);
 #endif
 			NCSMutexBegin(&mMutex);
-			if(NULL != (pThreadInfo = NCSThreadGetInfo(pStartData->pThread))) {
-				if(pThreadInfo->bCollectStats) {
+			if (NULL != (pThreadInfo = NCSThreadGetInfo(pStartData->pThread))) {
+				if (pThreadInfo->bCollectStats) {
 					pThreadInfo->tsStats.tsStart = NCSGetTimeStampMs();
 				}
 
@@ -1159,34 +1162,37 @@ static int NCSThreadStartFunc(NCSThreadStartData *pStartData)
 				NCSMutexEnd(&mMutex);
 
 				(*pFunc)(pData);
-			} else {
+			}
+			else {
 				NCSMutexEnd(&mMutex);
 			}
 		}
 #ifdef WIN32 // [05]
-	} __except (NCSDbgGetExceptionInfoMsg(_exception_info(), msg)) {														/**[04]**/
+	}
+	__except (NCSDbgGetExceptionInfoMsg(_exception_info(), msg)) {														/**[04]**/
 		char chName[MAX_PATH];
 		char extended_msg[16384] = { '\0' };
 
-		if(GetModuleFileName(NULL, OS_STRING(chName), MAX_PATH) &&	_strlwr(chName) && (strstr(chName, "inetinfo.exe") || strstr(chName, "dllhost.exe"))) {
+		if (GetModuleFileName(NULL, OS_STRING(chName), MAX_PATH) && _strlwr(chName) && (strstr(chName, "inetinfo.exe") || strstr(chName, "dllhost.exe"))) {
 			sprintf(extended_msg,
-					"(thread) Image Web Server Version : %s\n%s",
-					NCS_VERSION_STRING,msg);
+				"(thread) Image Web Server Version : %s\n%s",
+				NCS_VERSION_STRING, msg);
 			NCSLog(LOG_LOW, extended_msg, NCS_UNKNOWN_ERROR, (char*)NCSGetErrorText(NCS_UNKNOWN_ERROR));									/**[04]**/
 #ifdef _WIN32_WCE
 			//MessageBox(NULL, OS_STRING(extended_msg), NCS_T("Image Web Server Exception"), MB_ICONERROR|MB_OK); /**[04]**/
 #else
 			//MessageBox(NULL, OS_STRING(extended_msg), NCS_T("Image Web Server Exception"), MB_ICONERROR|MB_OK|MB_SERVICE_NOTIFICATION|MB_SYSTEMMODAL); /**[04]**/
 #endif
-		} else {
+		}
+		else {
 			sprintf(extended_msg,
-					"(thread) ECW Version : %s\n%s",
-					NCS_VERSION_STRING,msg);
+				"(thread) ECW Version : %s\n%s",
+				NCS_VERSION_STRING, msg);
 			NCSLog(LOG_LOW, extended_msg, NCS_UNKNOWN_ERROR, (char*)NCSGetErrorText(NCS_UNKNOWN_ERROR));									/**[04]**/
 #ifdef NCS_BUILD_UNICODE
-			MessageBox(NULL, OS_STRING(extended_msg), NCS_T("ECW Exception"), MB_ICONERROR|MB_OK); /**[04]**/
+			MessageBox(NULL, OS_STRING(extended_msg), NCS_T("ECW Exception"), MB_ICONERROR | MB_OK); /**[04]**/
 #else
-			MessageBox(NULL, OS_STRING(extended_msg), NCS_T("ECW Exception"), MB_ICONERROR|MB_OK|MB_SERVICE_NOTIFICATION|MB_SYSTEMMODAL); /**[04]**/
+			MessageBox(NULL, OS_STRING(extended_msg), NCS_T("ECW Exception"), MB_ICONERROR | MB_OK | MB_SERVICE_NOTIFICATION | MB_SYSTEMMODAL); /**[04]**/
 #endif
 		}
 	}
@@ -1205,34 +1211,34 @@ BOOLEAN NCSThreadTerminate(NCSThread *pThread)
 	NCSThreadInfo *pThreadInfo;
 
 	//***DMcK -- added to prevent crash on exit due to uninitialized mMutex!!
-	if(!nThreadsInitialised)
+	if (!nThreadsInitialised)
 		return FALSE;
 
 	NCSMutexBegin(&mMutex);
 
-	if(NULL != (pThreadInfo = NCSThreadGetInfo(pThread))) {
+	if (NULL != (pThreadInfo = NCSThreadGetInfo(pThread))) {
 		bThreadRunning = pThreadInfo->bThreadRunning;
 
 #ifdef WIN32
 		{
 			DWORD dwExitCode = 0;
 
-			if(bThreadRunning) {
+			if (bThreadRunning) {
 				bThreadTerminated = (BOOLEAN)TerminateThread(pThreadInfo->hThread, dwExitCode);
 
 			}
 		}
 #elif defined(MACINTOSH)
-		if( pThreadInfo->bThreadRunning && pThreadInfo->hThread ) {
+		if (pThreadInfo->bThreadRunning && pThreadInfo->hThread) {
 #ifdef MAC_PREEMPTIVE
-			OSErr eResult = MPTerminateTask ( pThreadInfo->hThread, (OSStatus)0 /*terminationStatus*/ );
+			OSErr eResult = MPTerminateTask(pThreadInfo->hThread, (OSStatus)0 /*terminationStatus*/);
 			bThreadTerminated = TRUE;
 			pThreadInfo->bThreadRunning = FALSE;
 			pThreadInfo->hThread = 0;
 #else
 			//OSErr eResult = DisposeThread ( pThreadInfo->hThread, NULL, TRUE );
-			OSErr eResult = SetThreadState( pThreadInfo->hThread, kStoppedThreadState, kNoThreadID );
-			if( eResult == noErr ) {
+			OSErr eResult = SetThreadState(pThreadInfo->hThread, kStoppedThreadState, kNoThreadID);
+			if (eResult == noErr) {
 				bThreadTerminated = TRUE;
 				pThreadInfo->bThreadRunning = FALSE;
 				pThreadInfo->hThread = 0;
@@ -1240,7 +1246,7 @@ BOOLEAN NCSThreadTerminate(NCSThread *pThread)
 #endif //MAC_PREEMPTIVE
 		}
 #elif defined(POSIX)
-		if(pthread_cancel(pThreadInfo->thread) == 0) {
+		if (pthread_cancel(pThreadInfo->thread) == 0) {
 			bThreadTerminated = TRUE;
 		}
 #endif
@@ -1277,46 +1283,46 @@ pthread_t *NCSThreadGetSysID(NCSThread* t)
 	return(thread);
 }
 #else
-ERROR: Need to code NCSThreadGetSysID() in NCSUtil/thread.c
+ERROR: Need to code NCSThreadGetSysID() in NCSUtil / thread.c
 #endif //[07]
 
 
 #if defined(WIN32)&&defined(_X86_)&&!defined(_WIN32_WCE)
 
-//-------------------------------------------------------------------------------------------------
-//
-// Copyright C 2001, Intel Corporation . Other brands and names may be claimed as the property of others. 
-//
-//
-// CPU Counting Utility
-// Date   : 10/30/2001
-// Version: 1.4
-// 
-//
-//
-// File Name: CPUCount.cpp
-//
-// Note: 1) LogicalNum = Number of logical processors per PHYSICAL PROCESSOR.  If you want to count
-//       the total number of logical processors, multiply this number with the total number of 
-//       physical processors (PhysicalNum)
-//
-//       2) To detect whether hyper-threading is enabled or not is to see how many logical ID exist 
-//       per single physical ID in APIC
-//
-//       3) For systems that don't support hyper-threading like AMD or PIII and below. the variable
-//       LogicalNum will be set to 1 (which means number of logical processors equals to number of
-//       physical processors.)
-//    
-//       4) Hyper-threading cannot be detected when application cannot access all processors in 
-//       the system. The number of physical processors will be set to 255.  Make sure to enable ALL 
-//       physical processors at startup of windows, and applications calling this function, CPUCount,
-//       are NOT restricted to run on any particular logical or physical processors(can run on ALL
-//       processors.)
-// 
-//       5) Windows currently can handle up to 32 processors. 
-//
-//
-//-------------------------------------------------------------------------------------------------
+	//-------------------------------------------------------------------------------------------------
+	//
+	// Copyright C 2001, Intel Corporation . Other brands and names may be claimed as the property of others. 
+	//
+	//
+	// CPU Counting Utility
+	// Date   : 10/30/2001
+	// Version: 1.4
+	// 
+	//
+	//
+	// File Name: CPUCount.cpp
+	//
+	// Note: 1) LogicalNum = Number of logical processors per PHYSICAL PROCESSOR.  If you want to count
+	//       the total number of logical processors, multiply this number with the total number of 
+	//       physical processors (PhysicalNum)
+	//
+	//       2) To detect whether hyper-threading is enabled or not is to see how many logical ID exist 
+	//       per single physical ID in APIC
+	//
+	//       3) For systems that don't support hyper-threading like AMD or PIII and below. the variable
+	//       LogicalNum will be set to 1 (which means number of logical processors equals to number of
+	//       physical processors.)
+	//    
+	//       4) Hyper-threading cannot be detected when application cannot access all processors in 
+	//       the system. The number of physical processors will be set to 255.  Make sure to enable ALL 
+	//       physical processors at startup of windows, and applications calling this function, CPUCount,
+	//       are NOT restricted to run on any particular logical or physical processors(can run on ALL
+	//       processors.)
+	// 
+	//       5) Windows currently can handle up to 32 processors. 
+	//
+	//
+	//-------------------------------------------------------------------------------------------------
 
 
 #define HT_BIT             0x10000000     // EDX[28]  Bit 28 is set if HT is supported
@@ -1340,266 +1346,267 @@ ERROR: Need to code NCSThreadGetSysID() in NCSUtil/thread.c
 #define HT_CANNOT_DETECT         4
 
 unsigned int  HTSupported(void);
-unsigned char LogicalProcPerPhysicalProc(void);
-unsigned char GetAPIC_ID(void);
-unsigned char CPUCount(unsigned char *,
-		unsigned char *);
+	   unsigned char LogicalProcPerPhysicalProc(void);
+	   unsigned char GetAPIC_ID(void);
+	   unsigned char CPUCount(unsigned char *,
+		   unsigned char *);
 
-unsigned int HTSupported(void)
-{
-
-
-	unsigned int Regedx      = 0,
-		     Regeax      = 0,
-		     VendorId[3] = {0, 0, 0};
-
-	__try    // Verify cpuid instruction is supported
-	{
-		__asm
-		{
-			xor eax, eax          // call cpuid with eax = 0
-				cpuid                 // Get vendor id string
-				mov VendorId, ebx
-				mov VendorId + 4, edx
-				mov VendorId + 8, ecx
-
-				mov eax, 1            // call cpuid with eax = 1
-				cpuid
-				mov Regeax, eax      // eax contains family processor type
-				mov Regedx, edx      // edx has info about the availability of hyper-Threading
-
-		}
-	}
-
-	__except (EXCEPTION_EXECUTE_HANDLER)
-	{
-		return(0);                   // cpuid is unavailable
-	}
-
-	if (((Regeax & FAMILY_ID) ==  PENTIUM4_ID) || (Regeax & EXT_FAMILY_ID))
-		if (VendorId[0] == 'uneG')
-			if (VendorId[1] == 'Ieni')
-				if (VendorId[2] == 'letn')
-					return(Regedx & HT_BIT);    // Genuine Intel with hyper-Threading technology
-
-	return 0;    // Not genuine Intel processor
-}
+	   unsigned int HTSupported(void)
+	   {
 
 
-unsigned char LogicalProcPerPhysicalProc(void)
-{
-	unsigned int Regebx = 0;
-	if (!HTSupported()) return (unsigned char) 1;  // HT not supported
-	// Logical processor = 1
-	__asm
-	{
-		mov eax, 1
-			cpuid
-			mov Regebx, ebx
-	}
+		   unsigned int Regedx = 0,
+			   Regeax = 0,
+			   VendorId[3] = { 0, 0, 0 };
 
-	return (unsigned char) ((Regebx & NUM_LOGICAL_BITS) >> 16);
-}
+		   __try    // Verify cpuid instruction is supported
+		   {
+			   __asm
+			   {
+				   xor eax, eax          // call cpuid with eax = 0
+				   cpuid                 // Get vendor id string
+				   mov VendorId, ebx
+				   mov VendorId + 4, edx
+				   mov VendorId + 8, ecx
 
+				   mov eax, 1            // call cpuid with eax = 1
+				   cpuid
+				   mov Regeax, eax      // eax contains family processor type
+				   mov Regedx, edx      // edx has info about the availability of hyper-Threading
 
-unsigned char GetAPIC_ID(void)
-{
+			   }
+		   }
 
-	unsigned int Regebx = 0;
-	if (!HTSupported()) return (unsigned char) -1;  // HT not supported
-	// Logical processor = 1
-	__asm
-	{
-		mov eax, 1
-			cpuid
-			mov Regebx, ebx
-	}
+		   __except (EXCEPTION_EXECUTE_HANDLER)
+		   {
+			   return(0);                   // cpuid is unavailable
+		   }
 
-	return (unsigned char) ((Regebx & INITIAL_APIC_ID_BITS) >> 24);
+		   if (((Regeax & FAMILY_ID) == PENTIUM4_ID) || (Regeax & EXT_FAMILY_ID))
+			   if (VendorId[0] == 'uneG')
+				   if (VendorId[1] == 'Ieni')
+					   if (VendorId[2] == 'letn')
+						   return(Regedx & HT_BIT);    // Genuine Intel with hyper-Threading technology
 
-}
-
-
-unsigned char CPUCount(unsigned char *LogicalNum,
-		unsigned char *PhysicalNum)
-{
-	unsigned char StatusFlag  = 0;
-	SYSTEM_INFO info;
+		   return 0;    // Not genuine Intel processor
+	   }
 
 
-	*PhysicalNum = 0;
-	*LogicalNum  = 0;
-	info.dwNumberOfProcessors = 0;
-	GetSystemInfo (&info);
+	   unsigned char LogicalProcPerPhysicalProc(void)
+	   {
+		   unsigned int Regebx = 0;
+		   if (!HTSupported()) return (unsigned char)1;  // HT not supported
+		   // Logical processor = 1
+		   __asm
+		   {
+			   mov eax, 1
+			   cpuid
+			   mov Regebx, ebx
+		   }
 
-	// Number of physical processors in a non-Intel system
-	// or in a 32-bit Intel system with Hyper-Threading technology disabled
-	*PhysicalNum = (unsigned char) info.dwNumberOfProcessors;  
+		   return (unsigned char)((Regebx & NUM_LOGICAL_BITS) >> 16);
+	   }
 
-	if (HTSupported())
-	{
-		unsigned char HT_Enabled = 0;
 
-		*LogicalNum= LogicalProcPerPhysicalProc();
+	   unsigned char GetAPIC_ID(void)
+	   {
 
-		if (*LogicalNum >= 1)    // >1 Doesn't mean HT is enabled in the BIOS
-			// 
-		{
-			HANDLE hCurrentProcessHandle;
-			DWORD  dwProcessAffinity;
-			DWORD  dwSystemAffinity;
-			DWORD  dwAffinityMask;
+		   unsigned int Regebx = 0;
+		   if (!HTSupported()) return (unsigned char)-1;  // HT not supported
+		   // Logical processor = 1
+		   __asm
+		   {
+			   mov eax, 1
+			   cpuid
+			   mov Regebx, ebx
+		   }
 
-			// Calculate the appropriate  shifts and mask based on the 
-			// number of logical processors.
+		   return (unsigned char)((Regebx & INITIAL_APIC_ID_BITS) >> 24);
 
-			unsigned char i = 1,
-				      PHY_ID_MASK  = 0xFF,
-				      PHY_ID_SHIFT = 0;
+	   }
 
-			while (i < *LogicalNum)
-			{
-				i *= 2;
-				PHY_ID_MASK <<= 1;
-				PHY_ID_SHIFT++;
 
-			}
+	   unsigned char CPUCount(unsigned char *LogicalNum,
+		   unsigned char *PhysicalNum)
+	   {
+		   unsigned char StatusFlag = 0;
+		   SYSTEM_INFO info;
 
-			hCurrentProcessHandle = GetCurrentProcess();
-			GetProcessAffinityMask(hCurrentProcessHandle, 
-					&dwProcessAffinity,
-					&dwSystemAffinity);
 
-			// Check if available process affinity mask is equal to the
-			// available system affinity mask
-			if (dwProcessAffinity != dwSystemAffinity)
-			{
-				StatusFlag = HT_CANNOT_DETECT;
-				*PhysicalNum = (unsigned char)-1;
-				return StatusFlag;
-			}
-			dwAffinityMask = 1;
-			while (dwAffinityMask != 0 && dwAffinityMask <= dwProcessAffinity)
-			{
-				// Check if this CPU is available
-				if (dwAffinityMask & dwProcessAffinity)
-				{
-					if (SetProcessAffinityMask(hCurrentProcessHandle,
-								dwAffinityMask))
-					{
-						unsigned char APIC_ID,
-						LOG_ID,
-						PHY_ID;
+		   *PhysicalNum = 0;
+		   *LogicalNum = 0;
+		   info.dwNumberOfProcessors = 0;
+		   GetSystemInfo(&info);
 
-						Sleep(0); // Give OS time to switch CPU
+		   // Number of physical processors in a non-Intel system
+		   // or in a 32-bit Intel system with Hyper-Threading technology disabled
+		   *PhysicalNum = (unsigned char)info.dwNumberOfProcessors;
 
-						APIC_ID = GetAPIC_ID();
-						LOG_ID  = APIC_ID & ~PHY_ID_MASK;
-						PHY_ID  = APIC_ID >> PHY_ID_SHIFT;
+		   if (HTSupported())
+		   {
+			   unsigned char HT_Enabled = 0;
 
-						if (LOG_ID != 0)  HT_Enabled = 1;
-					}
-				}
-				dwAffinityMask = dwAffinityMask << 1;
-			}
-			// Reset the processor affinity
-			SetProcessAffinityMask(hCurrentProcessHandle, dwProcessAffinity);
+			   *LogicalNum = LogicalProcPerPhysicalProc();
 
-			if (*LogicalNum == 1)  // Normal P4 : HT is disabled in hardware
-				StatusFlag = HT_DISABLED;
-			else
-				if (HT_Enabled) {
-					// Total physical processors in a Hyper-Threading enabled system.
-					*PhysicalNum = *PhysicalNum / (*LogicalNum);
-					StatusFlag = HT_ENABLED;
-				}
-				else StatusFlag = HT_SUPPORTED_NOT_ENABLED;
-		}
-	}
-	else
-	{
-		// Processors do not have Hyper-Threading technology
-		StatusFlag = HT_NOT_CAPABLE;
-		*LogicalNum = 1;
-	}
-	return StatusFlag;
-}
+			   if (*LogicalNum >= 1)    // >1 Doesn't mean HT is enabled in the BIOS
+				   // 
+			   {
+				   HANDLE hCurrentProcessHandle;
+				   DWORD  dwProcessAffinity;
+				   DWORD  dwSystemAffinity;
+				   DWORD  dwAffinityMask;
+
+				   // Calculate the appropriate  shifts and mask based on the 
+				   // number of logical processors.
+
+				   unsigned char i = 1,
+					   PHY_ID_MASK = 0xFF,
+					   PHY_ID_SHIFT = 0;
+
+				   while (i < *LogicalNum)
+				   {
+					   i *= 2;
+					   PHY_ID_MASK <<= 1;
+					   PHY_ID_SHIFT++;
+
+				   }
+
+				   hCurrentProcessHandle = GetCurrentProcess();
+				   GetProcessAffinityMask(hCurrentProcessHandle,
+					   &dwProcessAffinity,
+					   &dwSystemAffinity);
+
+				   // Check if available process affinity mask is equal to the
+				   // available system affinity mask
+				   if (dwProcessAffinity != dwSystemAffinity)
+				   {
+					   StatusFlag = HT_CANNOT_DETECT;
+					   *PhysicalNum = (unsigned char)-1;
+					   return StatusFlag;
+				   }
+				   dwAffinityMask = 1;
+				   while (dwAffinityMask != 0 && dwAffinityMask <= dwProcessAffinity)
+				   {
+					   // Check if this CPU is available
+					   if (dwAffinityMask & dwProcessAffinity)
+					   {
+						   if (SetProcessAffinityMask(hCurrentProcessHandle,
+							   dwAffinityMask))
+						   {
+							   unsigned char APIC_ID,
+								   LOG_ID,
+								   PHY_ID;
+
+							   Sleep(0); // Give OS time to switch CPU
+
+							   APIC_ID = GetAPIC_ID();
+							   LOG_ID = APIC_ID & ~PHY_ID_MASK;
+							   PHY_ID = APIC_ID >> PHY_ID_SHIFT;
+
+							   if (LOG_ID != 0)  HT_Enabled = 1;
+						   }
+					   }
+					   dwAffinityMask = dwAffinityMask << 1;
+				   }
+				   // Reset the processor affinity
+				   SetProcessAffinityMask(hCurrentProcessHandle, dwProcessAffinity);
+
+				   if (*LogicalNum == 1)  // Normal P4 : HT is disabled in hardware
+					   StatusFlag = HT_DISABLED;
+				   else
+					   if (HT_Enabled) {
+						   // Total physical processors in a Hyper-Threading enabled system.
+						   *PhysicalNum = *PhysicalNum / (*LogicalNum);
+						   StatusFlag = HT_ENABLED;
+					   }
+					   else StatusFlag = HT_SUPPORTED_NOT_ENABLED;
+			   }
+		   }
+		   else
+		   {
+			   // Processors do not have Hyper-Threading technology
+			   StatusFlag = HT_NOT_CAPABLE;
+			   *LogicalNum = 1;
+		   }
+		   return StatusFlag;
+	   }
 #endif // WIN32 & _X86_
 
 
-UINT32 NCSGetNumCPUs(void)
-{
+	   UINT32 NCSGetNumCPUs(void)
+	   {
 
-	UINT32 ncpus = 1;
+		   UINT32 ncpus = 1;
 
 #ifdef WIN32
 #if !defined(_WIN32_WCE)&&defined(_X86_)
 
-	unsigned char LogicalNum   = 0,  // Number of logical CPU per ONE PHYSICAL CPU
-		      PhysicalNum  = 0,  // Total number of physical processor
-		      HTStatusFlag = 0;  
+		   unsigned char LogicalNum = 0,  // Number of logical CPU per ONE PHYSICAL CPU
+			   PhysicalNum = 0,  // Total number of physical processor
+			   HTStatusFlag = 0;
 
-	HTStatusFlag = CPUCount(&LogicalNum, &PhysicalNum);
+		   HTStatusFlag = CPUCount(&LogicalNum, &PhysicalNum);
 
-	if(PhysicalNum != (unsigned char)-1) {
-		ncpus = LogicalNum * PhysicalNum;
-	} else 
+		   if (PhysicalNum != (unsigned char)-1) {
+			   ncpus = LogicalNum * PhysicalNum;
+		   }
+		   else
 #endif // !_WIn32_WCE
-	{
-		SYSTEM_INFO si;
-		GetSystemInfo(&si);
-		ncpus = (UINT32)si.dwNumberOfProcessors;		
-	}
+		   {
+			   SYSTEM_INFO si;
+			   GetSystemInfo(&si);
+			   ncpus = (UINT32)si.dwNumberOfProcessors;
+		   }
 #else
 #ifdef SOLARIS
-	long n;
-	n = sysconf(_SC_NPROCESSORS_ONLN);
-	if(n > 0) {
-		ncpus = n;
-	}
+		   long n;
+		   n = sysconf(_SC_NPROCESSORS_ONLN);
+		   if (n > 0) {
+			   ncpus = n;
+		   }
 #else
 #ifdef HPUX
 #include <sys/param.h>
 #include <sys/pstat.h>
 
-	struct pst_dynamic psd;
-	struct pst_processor *psp;
+		   struct pst_dynamic psd;
+		   struct pst_processor *psp;
 
-	if (pstat_getdynamic(&psd, sizeof(psd), (size_t)1, 0) != -1) {
-		fprintf(stderr, "NCSGetNumCPUs() : value not tested [%d]\n",psd.psd_proc_cnt);
-		return (psd.psd_proc_cnt);
-	}
+		   if (pstat_getdynamic(&psd, sizeof(psd), (size_t)1, 0) != -1) {
+			   fprintf(stderr, "NCSGetNumCPUs() : value not tested [%d]\n", psd.psd_proc_cnt);
+			   return (psd.psd_proc_cnt);
+		   }
 #else
 #ifdef LINUX
-	long n;
-	n = sysconf(_SC_NPROCESSORS_ONLN);
-	if(n > 0) {
-		ncpus = n;
-	}
+		   long n;
+		   n = sysconf(_SC_NPROCESSORS_ONLN);
+		   if (n > 0) {
+			   ncpus = n;
+		   }
 #endif
 #endif
 #endif
 #endif
 
-	return(ncpus);
-}
+		   return(ncpus);
+	   }
 
-UINT32 NCSGetNumPhysicalCPUs(void) 
-{
-	UINT32 ncpus = NCSGetNumCPUs();
+	   UINT32 NCSGetNumPhysicalCPUs(void)
+	   {
+		   UINT32 ncpus = NCSGetNumCPUs();
 
 #if defined(WIN32)&&!defined(_WIN32_WCE)&&defined(_X86_)
-	unsigned char LogicalNum   = 0,  // Number of logical CPU per ONE PHYSICAL CPU
-		      PhysicalNum  = 0,  // Total number of physical processor
-		      HTStatusFlag = 0;  
+		   unsigned char LogicalNum = 0,  // Number of logical CPU per ONE PHYSICAL CPU
+			   PhysicalNum = 0,  // Total number of physical processor
+			   HTStatusFlag = 0;
 
-	HTStatusFlag = CPUCount(&LogicalNum, &PhysicalNum);
+		   HTStatusFlag = CPUCount(&LogicalNum, &PhysicalNum);
 
-	if(PhysicalNum != (unsigned char)-1) {
-		ncpus = PhysicalNum;
-	}
+		   if (PhysicalNum != (unsigned char)-1) {
+			   ncpus = PhysicalNum;
+		   }
 
 #endif
-	return(ncpus);
-}
+		   return(ncpus);
+	   }
 

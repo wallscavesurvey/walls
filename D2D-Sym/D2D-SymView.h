@@ -42,7 +42,7 @@ class CD2DSymDoc;
 #define _START_ANTIALIASED TRUE
 
 #define VEC_COUNT_IDX 2
-const int vec_count[]={10,50,100,200,500,1000,2000,5000,7000,10000};
+const int vec_count[] = { 10,50,100,200,500,1000,2000,5000,7000,10000 };
 
 //fps for antialiased 1-pixel lines (aliased in paren)--
 //_D2D_SW_RENDERING defined --
@@ -55,21 +55,21 @@ const int vec_count[]={10,50,100,200,500,1000,2000,5000,7000,10000};
 template<class Interface>
 inline void
 SafeRelease(
-    Interface **ppInterfaceToRelease
-    )
+	Interface **ppInterfaceToRelease
+)
 {
-    if (*ppInterfaceToRelease != NULL)
-    {
-        (*ppInterfaceToRelease)->Release();
+	if (*ppInterfaceToRelease != NULL)
+	{
+		(*ppInterfaceToRelease)->Release();
 
-        (*ppInterfaceToRelease) = NULL;
-    }
+		(*ppInterfaceToRelease) = NULL;
+	}
 }
 
 struct CPOINTF {
-   CPOINTF(float fx,float fy) : x(fx),y(fy) {}
-   float x;
-   float y;
+	CPOINTF(float fx, float fy) : x(fx), y(fy) {}
+	float x;
+	float y;
 };
 
 typedef std::vector<CPOINTF> VECPOINTF;
@@ -84,21 +84,21 @@ protected: // create from serialization only
 	CD2DSymView();
 	DECLARE_DYNCREATE(CD2DSymView)
 
-// Attributes
+	// Attributes
 public:
 	CD2DSymDoc* GetDocument() const;
-	CMainFrame * GetMF() {return (CMainFrame *)theApp.m_pMainWnd;}
+	CMainFrame * GetMF() { return (CMainFrame *)theApp.m_pMainWnd; }
 
-// Operations
+	// Operations
 public:
 	void UpdateSymbols(CSymDlg &dlg);
-	void UpdateOpacity(UINT id,int iPos);
-	void UpdateColor(UINT id,COLORREF clr);
+	void UpdateOpacity(UINT id, int iPos);
+	void UpdateColor(UINT id, COLORREF clr);
 	void UpdateSymSize(int i);
 
 	void Start_fps_timer();
 
-// Overrides
+	// Overrides
 public:
 	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
@@ -113,33 +113,33 @@ protected:
 #endif
 
 #ifdef _USE_CAIRO
-	afx_msg void OnDrawCairo() ;
+	afx_msg void OnDrawCairo();
 #endif
-	afx_msg void OnUpdateDrawCairo(CCmdUI* pCmdUI) ;
+	afx_msg void OnUpdateDrawCairo(CCmdUI* pCmdUI);
 
 	afx_msg void OnDrawD2D();
 	afx_msg void OnUpdateDrawD2D(CCmdUI *pCmdUI);
 
-	afx_msg void OnDrawGDI() ;
+	afx_msg void OnDrawGDI();
 	afx_msg void OnUpdateDrawGDI(CCmdUI* pCmdUI);
 
 	afx_msg void OnDrawAntialias();
 	afx_msg void OnUpdateDrawAntialias(CCmdUI* pCmdUI);
 	afx_msg void OnSymbology();
 	afx_msg void OnAppAbout();
-	afx_msg LRESULT OnDisplayChange(WPARAM wParam,LPARAM lParam);
+	afx_msg LRESULT OnDisplayChange(WPARAM wParam, LPARAM lParam);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnD2dsw();
 	afx_msg void OnUpdateD2dsw(CCmdUI *pCmdUI);
 
-// Implementation
+	// Implementation
 private:
 	VECPOINTF m_vPT;
 	VEC2DPOINTF m_vPTsc;
 	CRect m_CRsc;
 	void FixModeStr();
 	void DrawDataCairo(CDC* pDC);
-	void DrawDataGDI(CDC *dc,CRect &rect);
+	void DrawDataGDI(CDC *dc, CRect &rect);
 
 	bool InitializeD2D();
 	void DrawDataD2D(CDC &dc);
@@ -147,11 +147,11 @@ private:
 	bool InitVecArray(int idx);
 	int m_iVecCountIdx;
 
-	bool m_bD2D,m_bD2Dsw,m_bCairo;
-	int m_right,m_bottom;
+	bool m_bD2D, m_bD2Dsw, m_bCairo;
+	int m_right, m_bottom;
 	CString m_csMode;
 	HBITMAP m_hbm;
-	
+
 	//Declare D2D resources --
 public:
 	static ID2D1Factory *m_pFactory;
@@ -176,13 +176,15 @@ public:
 
 protected:
 
-// Generated message map functions
+	// Generated message map functions
 protected:
 	DECLARE_MESSAGE_MAP()
 };
 
 #ifndef _DEBUG  // debug version in D2D_SymView.cpp
 inline CD2DSymDoc* CD2DSymView::GetDocument() const
-   { return reinterpret_cast<CD2DSymDoc*>(m_pDocument); }
+{
+	return reinterpret_cast<CD2DSymDoc*>(m_pDocument);
+}
 #endif
 

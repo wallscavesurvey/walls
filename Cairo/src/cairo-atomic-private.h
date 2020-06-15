@@ -63,13 +63,13 @@ typedef int cairo_atomic_int_t;
 typedef int cairo_atomic_int_t;
 
 cairo_private void
-_cairo_atomic_int_inc (int *x);
+_cairo_atomic_int_inc(int *x);
 
 cairo_private cairo_bool_t
-_cairo_atomic_int_dec_and_test (int *x);
+_cairo_atomic_int_dec_and_test(int *x);
 
 cairo_private int
-_cairo_atomic_int_cmpxchg (int *x, int oldv, int newv);
+_cairo_atomic_int_cmpxchg(int *x, int oldv, int newv);
 
 #endif
 
@@ -79,10 +79,10 @@ _cairo_atomic_int_cmpxchg (int *x, int oldv, int newv);
 # include "cairo-compiler-private.h"
 
 cairo_private int
-_cairo_atomic_int_get (int *x);
+_cairo_atomic_int_get(int *x);
 
 cairo_private void
-_cairo_atomic_int_set (int *x, int value);
+_cairo_atomic_int_set(int *x, int value);
 
 #else
 

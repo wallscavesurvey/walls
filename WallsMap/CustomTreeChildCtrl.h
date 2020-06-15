@@ -14,13 +14,13 @@ extern UINT WM_XHTMLTREE_SELCHANGE;
 
 #define MAX_TREEDEPTH 6 //allow 6 subfolders, 8 levels
 
-enum CheckedState {UNCHECKED=1, CHECKED=2, TRISTATE=3};
+enum CheckedState { UNCHECKED = 1, CHECKED = 2, TRISTATE = 3 };
 
-typedef struct _CTVHITTESTINFO { 
-  POINT pt; 
-  UINT flags; 
-  HTREEITEM hItem; 
-  int iSubItem;
+typedef struct _CTVHITTESTINFO {
+	POINT pt;
+	UINT flags;
+	HTREEITEM hItem;
+	int iSubItem;
 } CTVHITTESTINFO;
 
 class CCustomTreeChildCtrl : public CTreeCtrl
@@ -36,29 +36,31 @@ public:
 	void Initialize();
 	BOOL CreateCheckboxImages();
 	BOOL GetBit(DWORD bits, DWORD bitmask) { return bits & bitmask; }
-	
-	CCustomTreeChildCtrl&	SetDragOps(DWORD dwOps)	{ m_dwDragOps = dwOps; return *this; }
+
+	CCustomTreeChildCtrl&	SetDragOps(DWORD dwOps) { m_dwDragOps = dwOps; return *this; }
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
-	bool		IsFolder(HTREEITEM hItem) {return GetImageIndex(hItem)<2;}
-	bool		IsOpenFolder(HTREEITEM hItem) {return GetImageIndex(hItem)==1;}
-	bool		HasSiblings(HTREEITEM hItem) {return GetNextSiblingItem(hItem) || GetPrevSiblingItem(hItem);}
-	bool		IsAncestor(HTREEITEM hAncestor,HTREEITEM hChild);
+	bool		IsFolder(HTREEITEM hItem) { return GetImageIndex(hItem) < 2; }
+	bool		IsOpenFolder(HTREEITEM hItem) { return GetImageIndex(hItem) == 1; }
+	bool		HasSiblings(HTREEITEM hItem) { return GetNextSiblingItem(hItem) || GetPrevSiblingItem(hItem); }
+	bool		IsAncestor(HTREEITEM hAncestor, HTREEITEM hChild);
 	int			GetDepthBranch(HTREEITEM hItem);
-	
-	void		ExpandBranch(HTREEITEM hItem,bool bExpand);
-	void		ExpandItem(HTREEITEM hItem,bool bExpand);
+
+	void		ExpandBranch(HTREEITEM hItem, bool bExpand);
+	void		ExpandItem(HTREEITEM hItem, bool bExpand);
 
 	int			GetImageIndex(HTREEITEM hItem);
 	void		DeleteBranch(HTREEITEM hItem);
 
 	HTREEITEM	GetNextItem(HTREEITEM hItem);
-				// do not hide CTreeCtrl version
-	HTREEITEM	GetNextItem(HTREEITEM hItem, UINT nCode)	
-				{ return CTreeCtrl::GetNextItem(hItem, nCode); }
+	// do not hide CTreeCtrl version
+	HTREEITEM	GetNextItem(HTREEITEM hItem, UINT nCode)
+	{
+		return CTreeCtrl::GetNextItem(hItem, nCode);
+	}
 	HTREEITEM	GetPrevItem(HTREEITEM hItem);
-	HTREEITEM	GetLastItem(HTREEITEM hItem=NULL);
-	
+	HTREEITEM	GetLastItem(HTREEITEM hItem = NULL);
+
 	void		SetCheck(HTREEITEM hItem, bool fCheck = true);
 	BOOL		AreAncestorsEnabled(HTREEITEM hItem);
 	bool		EnableChildren(HTREEITEM hItem);
@@ -72,33 +74,33 @@ public:
 
 	int	GetNumAncestors(HTREEITEM hItem)
 	{
-		int n=0;
-		while(hItem=GetParentItem(hItem)) n++;
+		int n = 0;
+		while (hItem = GetParentItem(hItem)) n++;
 		return n;
 	}
 
 	UINT GetCheckedState(HTREEITEM hItem)
 	{
-		return GetItemState(hItem, TVIS_STATEIMAGEMASK)>>12;
+		return GetItemState(hItem, TVIS_STATEIMAGEMASK) >> 12;
 	}
 
 	bool IsExpanded(HTREEITEM hItem)
 	{
-		return ItemHasChildren(hItem) && 0!=(GetItemState(hItem,TVIS_EXPANDED) & TVIS_EXPANDED);
+		return ItemHasChildren(hItem) && 0 != (GetItemState(hItem, TVIS_EXPANDED) & TVIS_EXPANDED);
 	}
 	HTREEITEM GetLastClientItem();
 	HTREEITEM GetLastClientItem0();
 
-	void MoveItem(HTREEITEM hDrag,HTREEITEM hDrop,bool bBelow);
+	void MoveItem(HTREEITEM hDrag, HTREEITEM hDrop, bool bBelow);
 
 	HTREEITEM InsertItem(LPTVINSERTSTRUCT lpInsertStruct);
-	HTREEITEM InsertItem(LPCTSTR lpszItem, int nImage,UINT state, 
-					HTREEITEM hParent = TVI_ROOT, 
-					HTREEITEM hInsertAfter = TVI_LAST);
+	HTREEITEM InsertItem(LPCTSTR lpszItem, int nImage, UINT state,
+		HTREEITEM hParent = TVI_ROOT,
+		HTREEITEM hInsertAfter = TVI_LAST);
 
-	void SetCheckedState(HTREEITEM hItem,UINT nState)
+	void SetCheckedState(HTREEITEM hItem, UINT nState)
 	{
-		SetItemState(hItem,INDEXTOSTATEIMAGEMASK(nState),TVIS_STATEIMAGEMASK);
+		SetItemState(hItem, INDEXTOSTATEIMAGEMASK(nState), TVIS_STATEIMAGEMASK);
 	}
 	BOOL m_bDestroyingTree;
 
@@ -111,16 +113,16 @@ private:
 	int m_nFirstColumnWidth; // the width of the first column 
 	int m_nOffsetX;      	 // offset of this window inside the parent
 
-	LRESULT SendRegisteredMessage(UINT nMessage,HTREEITEM hItem,LPARAM lParam=0)
+	LRESULT SendRegisteredMessage(UINT nMessage, HTREEITEM hItem, LPARAM lParam = 0)
 	{
-		CWnd *pWnd=GetParent();
-		if(pWnd && (pWnd=pWnd->GetParent())) return pWnd->SendMessage(nMessage, (WPARAM)hItem, lParam);
+		CWnd *pWnd = GetParent();
+		if (pWnd && (pWnd = pWnd->GetParent())) return pWnd->SendMessage(nMessage, (WPARAM)hItem, lParam);
 		return 0;
 	}
-	LRESULT PostRegisteredMessage(UINT nMessage,HTREEITEM hItem,LPARAM lParam=0)
+	LRESULT PostRegisteredMessage(UINT nMessage, HTREEITEM hItem, LPARAM lParam = 0)
 	{
-		CWnd *pWnd=GetParent();
-		if(pWnd && (pWnd=pWnd->GetParent())) return pWnd->PostMessage(nMessage, (WPARAM)hItem, lParam);
+		CWnd *pWnd = GetParent();
+		if (pWnd && (pWnd = pWnd->GetParent())) return pWnd->PostMessage(nMessage, (WPARAM)hItem, lParam);
 		return 0;
 	}
 
@@ -137,11 +139,11 @@ private:
 
 	HTREEITEM		m_hDragItem;
 	int				m_iDragItemDepth;
-	HTREEITEM		m_hDropItem,m_hLineItem;
-	bool			m_bLineBelow,m_bDropBelow;
+	HTREEITEM		m_hDropItem, m_hLineItem;
+	bool			m_bLineBelow, m_bDropBelow;
 	UINT_PTR		m_tmAutoExpand;
 	UINT_PTR		m_tmAutoScroll;
-	int				m_iScrollDir,m_idir;
+	int				m_iScrollDir, m_idir;
 
 	DWORD			m_dwDropHoverTime;		// number of ticks over a drop item
 	//#endif XHTMLDRAGDROP
@@ -151,43 +153,43 @@ private:
 	int			GetScrollDir(CPoint point);
 	BOOL		IsCtrlDown();
 	//void		AdjustEditRect();
-	
+
 //#ifdef // XHTMLDRAGDROP
 
-	HTREEITEM GetDropParent(HTREEITEM &hItem,CPoint point);
+	HTREEITEM GetDropParent(HTREEITEM &hItem, CPoint point);
 
 	void KillScrollTimer()
 	{
-		if(m_iScrollDir) {
-			m_iScrollDir=0;
+		if (m_iScrollDir) {
+			m_iScrollDir = 0;
 			KillTimer(m_tmAutoScroll);
-			m_tmAutoScroll=NULL;
+			m_tmAutoScroll = NULL;
 		}
 	}
 	void KillExpandTimer()
 	{
-		if(m_tmAutoExpand) {
+		if (m_tmAutoExpand) {
 			KillTimer(m_tmAutoExpand);
-			m_tmAutoExpand=NULL;
+			m_tmAutoExpand = NULL;
 		}
 	}
 
-	void DragToPoint(HTREEITEM hItem,CPoint point);
+	void DragToPoint(HTREEITEM hItem, CPoint point);
 
-	void DrawTheLines(HTREEITEM hItem,bool bBelow=true);
+	void DrawTheLines(HTREEITEM hItem, bool bBelow = true);
 
 	HTREEITEM	IsOverItem(LPPOINT lpPoint = NULL);
 
-	HTREEITEM	CopyItem(HTREEITEM hBranch, 
-						   HTREEITEM hNewParent,
-						   HTREEITEM hAfter = TVI_LAST);
-	HTREEITEM	CopyBranch(HTREEITEM hItem, 
-						 HTREEITEM hNewParent,
-						 HTREEITEM hAfter = TVI_LAST);
+	HTREEITEM	CopyItem(HTREEITEM hBranch,
+		HTREEITEM hNewParent,
+		HTREEITEM hAfter = TVI_LAST);
+	HTREEITEM	CopyBranch(HTREEITEM hItem,
+		HTREEITEM hNewParent,
+		HTREEITEM hAfter = TVI_LAST);
 
 	void BeginDrag(HTREEITEM hItem);
 
-//#endif // XHTMLDRAGDROP
+	//#endif // XHTMLDRAGDROP
 
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
@@ -203,5 +205,5 @@ private:
 	afx_msg BOOL OnSelchanged(NMHDR * pNMHDR, LRESULT * pResult);
 	afx_msg BOOL OnSelchanging(NMHDR * pNMHDR, LRESULT * pResult);
 	afx_msg void OnRButtonDown(UINT nFlags, CPoint point);
-	afx_msg LRESULT OnTabletQuerySystemGestureStatus(WPARAM,LPARAM);
+	afx_msg LRESULT OnTabletQuerySystemGestureStatus(WPARAM, LPARAM);
 };
