@@ -30,4 +30,8 @@ directory as gl.h, which is something like `C:\Program Files (x86)\Windows Kits\
 * Cross your fingers
 * Hit F7 to build the solution
 * Run the project!
+
+## Building the Installer
+* Build the `Walls_Help` project first.  I would make the installer project depend on `Walls_Help` if I could, but I can't...because Visual Studio/Installer Projects kinda suck.
 * Build the `WallsInstaller` project if you want to make an installer for distribution.
+

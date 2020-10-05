@@ -15,6 +15,12 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_02B85EFA54074BE5AEA2121C5DBBF9D0"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_032407C853734B2889E1BB7CC4090E00"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -39,12 +45,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_3F63475ADA584809A560F27E473214D3"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_6704107C4AF24631ACE010D2EEB75C0E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -64,6 +64,12 @@
         "Entry"
         {
         "MsmKey" = "8:_9AF66B1327EE411AA98EEE3A2218570C"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9BB0B820D042468EA68E93D6C6518B39"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -131,7 +137,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\WallsInstaller.msi"
+        "OutputFilename" = "8:..\\bin\\WallsInstaller.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -178,6 +184,46 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_02B85EFA54074BE5AEA2121C5DBBF9D0"
+            {
+            "SourcePath" = "8:..\\bin\\Walls_manual.pdf"
+            "TargetName" = "8:Walls_manual.pdf"
+            "Tag" = "8:"
+            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9BB0B820D042468EA68E93D6C6518B39"
+            {
+            "SourcePath" = "8:..\\bin\\walls32.chm"
+            "TargetName" = "8:walls32.chm"
+            "Tag" = "8:"
+            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
         }
         "FileType"
         {
@@ -292,7 +338,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Walls v2"
         "ProductCode" = "8:{E891C7EB-389A-4F08-8526-F9DC2F19DE9B}"
-        "PackageCode" = "8:{09872045-08A5-4883-8DA5-E61360D56937}"
+        "PackageCode" = "8:{F0C83EA9-C211-4D8E-969E-E5888C85E99A}"
         "UpgradeCode" = "8:{B8B0A649-478B-4F72-B710-B10AA12ACCA6}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -1254,34 +1300,6 @@
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:ContentFiles"
             "OutputProjectGuid" = "8:{97E30A78-7906-4BD9-BD16-02D6E0692109}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_3F63475ADA584809A560F27E473214D3"
-            {
-            "SourcePath" = "8:Z:\\Walls_Help.exe"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:Built"
-            "OutputProjectGuid" = "8:{EA00AA8A-25A4-4874-AF33-EEB34DCE73EB}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {

@@ -87,8 +87,6 @@
     </Link>
     <CustomBuildStep>
       <Command>HELPMAN.EXE walls32.hmxp /CHM=$(WorkBIN)\walls32.chm /PDF=$(WorkBIN)\Walls_Manual.pdf /HTML=$(WorkBIN)\HTML</Command>
-    </CustomBuildStep>
-    <CustomBuildStep>
       <Outputs>$(WorkBIN)\walls32.chm;$(WorkBIN)\Walls_Manual.pdf;$(WorkBIN)\HTML</Outputs>
       <Message>Build Help</Message>
     </CustomBuildStep>
