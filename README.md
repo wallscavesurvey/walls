@@ -21,10 +21,10 @@ and possibly other projects in this repo as well.
 * Install 32-bit CMake 3.3, afterward there should be files in C:\Program Files (x86)\CMake\share\cmake-3.3
 * Install the latest [Windows SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk)
 * Install the [OpenGL extension headers](https://www.khronos.org/registry/khronos_headers.zip).  These go in the same
-directory as gl.h, which is something like `C:\Program Files (x86)\Windows Kits\8.1\Include\um\gl` (depending on the
-Windows SDK version)
+directory as gl.h, which is something like `C:\Program Files (x86)\Windows Kits\8.1\Include\um\gl` (depending on the Windows SDK version)
 * Install the [Visual Studio Installer Projects Extension](https://marketplace.visualstudio.com/items?itemName=VisualStudioClient.MicrosoftVisualStudio2015InstallerProjects)
-* Install [Help+Manual](https://www.helpandmanual.com/index.html) and a license (it's very expensive... but `Walls_Help` can't built without it.  I haven't made `WallsInstaller` depend on it and include its outputs yet...)
+* Install [Help+Manual](https://www.helpandmanual.com/index.html) version >= 6 and a license (it's very expensive... contact Andy Edwards if you need a license)
+* Make sure the `Help+Manual` directory is on your `PATH` (e.g. `C:\Program Files (x86)\EC Software\HelpAndManual6`)
 * Open `Walls.sln`
 * Select a build configuration: `Debug_XP` if you're on Windows XP, or `Debug` otherwise.
 * Cross your fingers
