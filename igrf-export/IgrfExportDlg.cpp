@@ -110,7 +110,7 @@ static void elim_fs(char *p)
 
 CIgrfExportDlg::CIgrfExportDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CIgrfExportDlg::IDD, pParent)
-	, m_csPathName("igrf12.xls")
+	, m_csPathName("igrf13coeffs.xls")
 	, m_nLogMsgs(0)
 	, m_bLogFailed(FALSE)
 	, m_fbLog(2048)
