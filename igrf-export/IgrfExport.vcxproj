@@ -15,7 +15,7 @@
     <ProjectGuid>{54B04CD6-98B1-476A-B34E-C84D45B8078A}</ProjectGuid>
     <RootNamespace>IgrfExport</RootNamespace>
     <Keyword>MFCProj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -110,7 +110,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>libgeoref.lib;trx_file.lib;dbf_file.lib;trx_csh.lib;trx_str.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>e:\gis\tss\russell\IgrfExport.exe</OutputFile>
+      <!-- <OutputFile>e:\gis\tss\russell\IgrfExport.exe</OutputFile> -->
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>

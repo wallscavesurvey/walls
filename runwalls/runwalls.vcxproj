@@ -22,7 +22,6 @@
     <ProjectGuid>{05EE7366-8257-44B4-85BB-F8B341812D7C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>runwalls</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_XP|Win32'" Label="Configuration">
