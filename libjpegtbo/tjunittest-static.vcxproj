@@ -264,7 +264,7 @@
     <CustomBuild Include="$(SolutionDir)\libjpeg-turbo\CMakeLists.txt">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule $(SolutionDir)/libjpeg-turbo/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
-"C:\Program Files (x86)\Cmake\bin\cmake.exe" -H$(SolutionDir)/libjpeg-turbo -B$(SolutionDir)/libjpegtbo --check-stamp-file $(SolutionDir)\libjpegtbo\CMakeFiles\generate.stamp
+"C:\Program Files (x86)\Cmake\bin\cmake.exe" -H$(SolutionDir)/libjpeg-turbo -B$(SolutionDir)/libjpegtbo -G "Visual Studio 15 2017" --check-stamp-file $(SolutionDir)\libjpegtbo\CMakeFiles\generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -277,7 +277,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule $(SolutionDir)/libjpeg-turbo/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
-"C:\Program Files (x86)\Cmake\bin\cmake.exe" -H$(SolutionDir)/libjpeg-turbo -B$(SolutionDir)/libjpegtbo --check-stamp-file $(SolutionDir)\libjpegtbo\CMakeFiles\generate.stamp
+"C:\Program Files (x86)\Cmake\bin\cmake.exe" -H$(SolutionDir)/libjpeg-turbo -B$(SolutionDir)/libjpegtbo -G "Visual Studio 15 2017" --check-stamp-file $(SolutionDir)\libjpegtbo\CMakeFiles\generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -290,7 +290,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
       <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule $(SolutionDir)/libjpeg-turbo/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
-"C:\Program Files (x86)\Cmake\bin\cmake.exe" -H$(SolutionDir)/libjpeg-turbo -B$(SolutionDir)/libjpegtbo --check-stamp-file $(SolutionDir)\libjpegtbo\CMakeFiles\generate.stamp
+"C:\Program Files (x86)\Cmake\bin\cmake.exe" -H$(SolutionDir)/libjpeg-turbo -B$(SolutionDir)/libjpegtbo -G "Visual Studio 15 2017" --check-stamp-file $(SolutionDir)\libjpegtbo\CMakeFiles\generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -303,7 +303,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
       <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
       <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule $(SolutionDir)/libjpeg-turbo/CMakeLists.txt</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
-"C:\Program Files (x86)\Cmake\bin\cmake.exe" -H$(SolutionDir)/libjpeg-turbo -B$(SolutionDir)/libjpegtbo --check-stamp-file $(SolutionDir)\libjpegtbo\CMakeFiles\generate.stamp
+"C:\Program Files (x86)\Cmake\bin\cmake.exe" -H$(SolutionDir)/libjpeg-turbo -B$(SolutionDir)/libjpegtbo -G "Visual Studio 15 2017" --check-stamp-file $(SolutionDir)\libjpegtbo\CMakeFiles\generate.stamp
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
