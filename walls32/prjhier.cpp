@@ -922,6 +922,7 @@ LRESULT CPrjList::OnDrop(WPARAM NumItems, LPARAM dragData)
 	moveBranch_SameList = pDrag->m_pServerWnd == this;
 	moveBranch_id = -1;
 
+	bool isOther = srcNode->IsOther();
 	bool bMenu = (pDrag->m_bDragCopy == 2);
 
 	if (bMenu) {
@@ -1073,7 +1074,7 @@ LRESULT CPrjList::OnDrop(WPARAM NumItems, LPARAM dragData)
 		pItemProp->m_pNode = NULL; //prevent update of deleted node
 	}
 
-	if (!srcNode->IsOther()) {
+	if (!isOther) {
 		//Recompute survey and workfile checksums for all tree nodes --
 		dstDoc->BranchFileChk(dstDoc->m_pRoot);
 		dstDoc->BranchWorkChk(dstDoc->m_pRoot);
