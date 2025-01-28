@@ -533,7 +533,7 @@ BEGIN
     PUSHBUTTON      "Change Link",IDC_UPDATELINK,111,91,55,12
     DEFPUSHBUTTON   "OK",IDOK,173,91,55,12
     ICON            IDR_MAINFRAME,IDC_STATIC,7,14,20,20
-    CTEXT           "\nWALLS Project Editor -- Version 2.2.1-beta.0\nBuild 2025-01-27",IDC_STATIC,32,7,219,38,SS_SUNKEN
+    CTEXT           "\nWALLS Project Editor -- Version 2.2.1-beta.1\nBuild 2025-01-27",IDC_STATIC,32,7,219,38,SS_SUNKEN
     LTEXT           "This version of Walls may be freely distributed. Click on the link below\nto obtain information on new releases and related software.",IDC_STATIC,19,52,238,18,NOT WS_GROUP
     LTEXT           "http://texasspeleologicalsurvey.org/software/walls/tsswalls.php",IDC_WALLSURL,19,73,248,11
 END
@@ -2559,8 +2559,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,2,1,0
- PRODUCTVERSION 2,2,1,0
+ FILEVERSION 2,2,1,1
+ PRODUCTVERSION 2,2,1,1
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -2577,12 +2577,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "David McKenzie"
             VALUE "FileDescription", "Walls executable"
-            VALUE "FileVersion", "2.2.1.0"
+            VALUE "FileVersion", "2.2.1.1"
             VALUE "InternalName", "Walls32.exe"
             VALUE "LegalCopyright", "(c) 2016, David McKenzie"
             VALUE "OriginalFilename", "Walls32.exe"
             VALUE "ProductName", "Walls Project Editor"
-            VALUE "ProductVersion", "2.2.1.0"
+            VALUE "ProductVersion", "2.2.1.1"
         END
     END
     BLOCK "VarFileInfo"
@@ -2649,7 +2649,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_ERR_DELETEOPEN      "Existing file:  %s\nThe new name is that of an existing file you currently have open.\nYou must close it before it can be replaced or attached to this project."
-    IDR_MAINFRAME           "Walls Project Editor v2.2.1-beta.0 2025-01-27"
+    IDR_MAINFRAME           "Walls Project Editor v2.2.1-beta.1 2025-01-27"
     IDR_PRJTYPE             "\nPROJECT\nWALLS Project\nProject Files (*.wpj)\n.wpj\nWPJFileType\nWPJ File Type"
     IDS_PRJ_FILES           "Project Files (*.wpj)"
     IDR_SRVTYPE             "\nSURVEY\nWALLS Survey\nSurvey Files (*.srv)\n.srv\nSRVFileType\nSRV File Type"
