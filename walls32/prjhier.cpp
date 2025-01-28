@@ -9,6 +9,7 @@
 #include "copyfile.h"
 #include "dragdrop.h"
 #include "itemprop.h"
+#include <iostream>
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -221,7 +222,11 @@ BOOL CPrjListNode::IsPathCompatible(CPrjListNode *pNode)
 	//respect to the base name contained in pNode?
 
 	char fname[LEN_BASENAME + 2];
-	return !FindName(strcpy(fname, pNode->BaseName()));
+	CPrjListNode *found = FindName(strcpy(fname, pNode->BaseName()));
+	if (found) {
+		return false;
+	}
+	return true;
 }
 
 BOOL CPrjListNode::IsNodeCompatible(CPrjListNode *pNode)
@@ -230,7 +235,10 @@ BOOL CPrjListNode::IsNodeCompatible(CPrjListNode *pNode)
 	//to pNode and its children?
 
 	if (!m_bLeaf) {
-		if (pNode->FindName(m_Name)) return FALSE;
+		CPrjListNode *found = pNode->FindName(m_Name);
+		if (found) {
+			return FALSE;
+		}
 		CPrjListNode *pNext = FirstChild();
 		while (pNext) {
 			if (!pNext->IsNodeCompatible(pNode)) return FALSE;
@@ -240,6 +248,30 @@ BOOL CPrjListNode::IsNodeCompatible(CPrjListNode *pNode)
 	}
 	if (IsOther()) return TRUE;
 	return pNode->IsPathCompatible(this);
+}
+
+CPrjListNodeConflict CPrjListNode::FindConflict(CPrjListNode *pNode)
+{
+	if (!m_bLeaf) {
+		CPrjListNode *found = pNode->FindName(m_Name);
+		if (found) {
+			return CPrjListNodeConflict(this, found);
+		}
+		CPrjListNode *pNext = FirstChild();
+		while (pNext) {
+			CPrjListNodeConflict found = pNext->FindConflict(pNode);
+			if (found.HasConflict()) return found;
+			pNext = pNext->NextSibling();
+		}
+	}
+	if (IsOther()) return CPrjListNodeConflict();
+	char fname[LEN_BASENAME + 2];
+	CPrjListNode *found = pNode->FindName(strcpy(fname, BaseName()));
+	if (found) {
+		return CPrjListNodeConflict(this, found);
+	}
+	
+	return CPrjListNodeConflict();
 }
 
 BOOL CPrjListNode::IsCompatible(CHierListNode *pNode)
@@ -921,6 +953,7 @@ LRESULT CPrjList::OnDrop(WPARAM NumItems, LPARAM dragData)
 
 	moveBranch_SameList = pDrag->m_pServerWnd == this;
 	moveBranch_id = -1;
+	CPrjListNodeConflict conflict;
 
 	bool isOther = srcNode->IsOther();
 	bool bMenu = (pDrag->m_bDragCopy == 2);
@@ -1026,6 +1059,7 @@ LRESULT CPrjList::OnDrop(WPARAM NumItems, LPARAM dragData)
 			//Check if names are unique before any files are copied!
 			if (!srcNode->IsNodeCompatible(dstDoc->m_pRoot)) {
 				selIndex = HN_ERR_Compare;
+				conflict = srcNode->FindConflict(dstDoc->m_pRoot);
 				break;
 			}
 
@@ -1065,6 +1099,14 @@ LRESULT CPrjList::OnDrop(WPARAM NumItems, LPARAM dragData)
 	} //!moveBranch_SameList
 
 	if (selIndex < 0) {
+		if (conflict.HasConflict()) {
+			if (AfxMessageBox(IDS_PRJ_ERR_COMPARE, MB_YESNO) == IDYES) {
+				SelectNode(conflict.m_destNode);
+				((CPrjList *)pDrag->m_pServerWnd)->SelectNode(conflict.m_srcNode);
+			}
+			return TRUE;
+		}
+
 		PrjErrMsg(selIndex);
 		selIndex = 0;
 	}
@@ -1316,4 +1358,18 @@ int CPrjList::DeepRefresh(CPrjListNode *pParent, int iParentIndex)
 		pNode = pNode->NextSibling();
 	}
 	return iParentIndex;
+}
+
+CPrjListNodeConflict::CPrjListNodeConflict()
+	: m_srcNode(NULL), m_destNode(NULL)
+{
+}
+
+CPrjListNodeConflict::CPrjListNodeConflict(CPrjListNode *srcNode, CPrjListNode *destNode)
+	: m_srcNode(srcNode), m_destNode(destNode)
+{
+}
+
+BOOL CPrjListNodeConflict::HasConflict() {
+	return m_srcNode != NULL && m_destNode != NULL;
 }
