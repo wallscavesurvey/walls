@@ -54,6 +54,8 @@ enum {
 	FLG_MASK_UNCHK = FLG_REFUSEUNCHK + FLG_DATEUNCHK + FLG_GRIDUNCHK + FLG_VTVERTUNCHK + FLG_VTLENUNCHK
 };
 
+class CPrjListNodeConflict;
+
 class CPrjListNode : public CHierListNode
 {
 	friend class CPrjList;
@@ -164,6 +166,10 @@ public:
 	CPrjListNode *FindName(const char FAR *pName);
 	BOOL IsNodeCompatible(CPrjListNode *pNode);
 	BOOL IsPathCompatible(CPrjListNode *pNode);
+	/// <summary>Finds conflicting nodes among this node, pNode, and their descendants.
+	/// There is only a conflict if the returned CPrjListNodeConflict.HasConflict() is true.
+	/// </summary>
+	CPrjListNodeConflict FindConflict(CPrjListNode *pNode);
 	CPrjListNode *ChangedAncestor(CPrjListNode *pDestNode);
 };
 
@@ -254,6 +260,15 @@ protected:
 	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+};
+
+class CPrjListNodeConflict {
+public: 
+	CPrjListNodeConflict();
+	CPrjListNodeConflict(CPrjListNode *srcNode, CPrjListNode *destNode);
+	CPrjListNode *m_srcNode;
+	CPrjListNode *m_destNode;
+	BOOL HasConflict();
 };
 
 /////////////////////////////////////////////////////////////////////////////
