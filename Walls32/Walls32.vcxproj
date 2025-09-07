@@ -38,6 +38,7 @@
     <ClCompile Include="3dconfig.cpp" />
     <ClCompile Include="aboutdlg.cpp" />
     <ClCompile Include="Buttonb.cpp" />
+    <ClCompile Include="CExportKmlDialog.cpp" />
     <ClCompile Include="ColorButton.cpp" />
     <ClCompile Include="ColorPopup.cpp" />
     <ClCompile Include="Compile.cpp" />
@@ -175,6 +176,7 @@
     <ClCompile Include="Walls.cpp" />
     <ClCompile Include="wallzip.cpp" />
     <ClCompile Include="Wedview.cpp" />
+    <ClCompile Include="XMLWriter.cpp" />
     <ClCompile Include="zip.cpp" />
     <ClCompile Include="ZipDlg.cpp" />
   </ItemGroup>
@@ -182,6 +184,7 @@
     <ClInclude Include="3dconfig.h" />
     <ClInclude Include="aboutdlg.h" />
     <ClInclude Include="Buttonb.h" />
+    <ClInclude Include="CExportKmlDialog.h" />
     <ClInclude Include="ColorButton.h" />
     <ClInclude Include="ColorPopup.h" />
     <ClInclude Include="Compile.h" />
@@ -248,7 +251,6 @@
     <ClInclude Include="ROCombo.h" />
     <ClInclude Include="ScaleWnd.h" />
     <ClInclude Include="seghier.h" />
-    <ClInclude Include="segview.h" />
     <ClInclude Include="statdlg.h" />
     <ClInclude Include="StatLink.h" />
     <ClInclude Include="stdafx.h" />
@@ -271,6 +273,7 @@
     <ClInclude Include="Walls.h" />
     <ClInclude Include="wall_srv.h" />
     <ClInclude Include="wedview.h" />
+    <ClInclude Include="XMLWriter.h" />
     <ClInclude Include="zip.h" />
     <ClInclude Include="ZipDlg.h" />
   </ItemGroup>

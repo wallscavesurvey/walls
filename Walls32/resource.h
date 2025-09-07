@@ -67,6 +67,7 @@
 #define IDS_WPJ_FILES                   39
 #define IDS_WPJBROWSE                   40
 #define IDS_PRJ_EXPORTLOG               41
+#define IDS_KML_FILES                   42
 #define IDS_LST_FILES                   61
 #define IDD_ABOUTBOX                    100
 #define IDC_VECTORLIST                  100
@@ -759,6 +760,7 @@
 #define IDC_APPLYLBL                    682
 #define IDC_APPLYLBL2                   683
 #define IDC_RESET                       683
+#define IDC_KML_PATH                    683
 #define IDC_COPYSINGLE                  914
 #define IDC_COPYMULTIPLE                915
 #define ID_CHANGEFONT                   987
@@ -790,6 +792,7 @@
 #define IDC_MOVEMULTIPLE                1027
 #define IDC_COPY                        1028
 #define IDC_MOVE                        1029
+#define IDD_EXPORT_KML_DIALOG           1542
 #define IDS_STRING21039                 21039
 #define ID_PRJ_EDITITEM                 32601
 #define ID_PRJ_NEWITEM                  32602
@@ -996,6 +999,8 @@
 #define ID_OPTIONS_MAPFORMAT            33031
 #define ID_OPTIONS_SCREENMAPNAVIGATION  33032
 #define ID_MAPNAVIGATION                33033
+#define ID_Menu33034                    33034
+#define ID_KML_EXPORT                   33035
 #define ID_SCALEUNITS_METERS            33085
 #define ID_SCALEUNITS_FEET              33086
 #define ID_PRJ_SAVE                     57603
@@ -1153,6 +1158,7 @@
 #define IDS_SVG_BROWSE                  61349
 #define IDS_ERR_BADPRINTER1             61350
 #define IDS_ERR_SRVNODATUM2             61351
+#define IDS_KML_BROWSE                  61352
 #define IDS_ERR_BADZONE2                61353
 #define IDS_ERR_IMPVERSION1             61355
 #define IDS_ERR_WRTNTW1                 61356
@@ -1224,9 +1230,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        260
-#define _APS_NEXT_COMMAND_VALUE         33034
-#define _APS_NEXT_CONTROL_VALUE         683
+#define _APS_NEXT_RESOURCE_VALUE        262
+#define _APS_NEXT_COMMAND_VALUE         33036
+#define _APS_NEXT_CONTROL_VALUE         684
 #define _APS_NEXT_SYMED_VALUE           149
 #endif
 #endif

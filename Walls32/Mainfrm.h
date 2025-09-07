@@ -241,6 +241,7 @@ protected:
 	afx_msg void On3DExport();
 	afx_msg void OnSvgExport();
 	afx_msg void OnUpdateSvgExport(CCmdUI* pCmdUI);
+	afx_msg void OnKmlExport();
 	afx_msg void OnDetails();
 	afx_msg void OnUpdateDetails(CCmdUI* pCmdUI);
 	//}}AFX_MSG

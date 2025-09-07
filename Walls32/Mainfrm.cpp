@@ -109,6 +109,8 @@ BEGIN_MESSAGE_MAP(CMainFrame, CMDIFrameWnd)
 	ON_UPDATE_COMMAND_UI(ID_MARKERSTYLE, OnUpdateMarkerStyle)
 	ON_COMMAND(ID_SVG_EXPORT, OnSvgExport)
 	ON_UPDATE_COMMAND_UI(ID_SVG_EXPORT, OnUpdateSvgExport)
+	ON_COMMAND(ID_KML_EXPORT, OnKmlExport)
+	ON_UPDATE_COMMAND_UI(ID_KML_EXPORT, OnUpdateSvgExport)
 	ON_COMMAND(ID_EXPORT3D, On3DExport)
 	ON_UPDATE_COMMAND_UI(ID_EXPORT3D, OnUpdateSvgExport)
 	ON_COMMAND(ID_WINDOW_CLOSEALL, OnWindowCloseAll)
@@ -175,6 +177,7 @@ static UINT BASED_CODE buttons[] =
 	ID_LAUNCH3D,
 		ID_SEPARATOR,
 		ID_SEPARATOR,
+	ID_KML_EXPORT,
 	ID_SVG_EXPORT,
 	ID_LAUNCH2D,
 		ID_SEPARATOR,
@@ -1494,6 +1497,15 @@ void CMainFrame::OnSvgExport()
 void CMainFrame::OnUpdateSvgExport(CCmdUI* pCmdUI)
 {
 	pCmdUI->Enable(pCV != NULL && pSV->m_pRoot);
+}
+
+void CMainFrame::OnKmlExport()
+{
+	ASSERT(pCV != NULL);
+	if (pSV->InitSegTree()) {
+		pPV->ClearTracker();
+		pSV->OnKmlExport();
+	}
 }
 
 void CMainFrame::On3DExport()

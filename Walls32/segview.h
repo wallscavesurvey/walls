@@ -46,6 +46,7 @@ enum { TYP_LST_VECTOR, TYP_LST_NAME = 1, TYP_LST_NOTE = 2, TYP_LST_FLAG = 4, TYP
 class CMarkerDlg;
 class CExpavDlg;
 class CExpSvgDlg;
+class CExportKmlDialog;
 struct SVG_VIEWFORMAT;
 
 class CSegView : public CPanelView
@@ -58,6 +59,7 @@ public:
 	friend class CSegList;
 	friend class CExpavDlg;
 	friend class CExpSvgDlg;
+	friend class CExportKmlDialog;
 
 private:
 	CSegList m_SegList;       //Constructed after CSegView()
@@ -268,6 +270,7 @@ public:
 	afx_msg void OnDetails();
 	afx_msg void OnMapExport();
 	afx_msg void OnSvgExport();
+	afx_msg void OnKmlExport();
 	afx_msg void On3DExport();
 	afx_msg LRESULT OnChgColor(WPARAM, LPARAM);
 	afx_msg void OnSymbols();
@@ -306,6 +309,7 @@ private:
 	BOOL ExportWRL(LPCSTR pathname, LPSTR title, UINT flags, UINT dimGrid, float fScaleVert);
 	BOOL ExportSHP(CExpavDlg *pDlg, LPCSTR pathname, LPCSTR basename, CSegListNode *pNode, UINT flags);
 	int ExportSVG(CExpSvgDlg *pDlg, SVG_VIEWFORMAT *pVF);
+	int ExportKML(CExportKmlDialog *pDlg, LPCSTR pathname, UINT flags);
 
 	LONG OnGetGradient(UINT lParam, LONG /*wParam*/);
 	LONG OnDrawGradient(UINT lParam, LONG /*wParam*/);

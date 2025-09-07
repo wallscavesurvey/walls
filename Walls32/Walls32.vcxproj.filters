@@ -336,6 +336,12 @@
     <ClCompile Include="ScaleWnd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="XMLWriter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CExportKmlDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3dconfig.h">
@@ -536,9 +542,6 @@
     <ClInclude Include="seghier.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="segview.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="statdlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -618,6 +621,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="wall_srv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XMLWriter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CExportKmlDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

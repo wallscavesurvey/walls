@@ -146,6 +146,7 @@ BEGIN
         POPUP "Export"
         BEGIN
             MENUITEM "Map as SV&G file...",         ID_SVG_EXPORT
+            MENUITEM "Map as &KML file...",         ID_KML_EXPORT
             MENUITEM "Map as 3D model (&VRML)...",  ID_EXPORT3D
             MENUITEM "Map as &Metafile...",         ID_MAP_EXPORT
             MENUITEM "&Data in branch as SEF file...", ID_PRJ_EXPORTITEM
@@ -1887,6 +1888,28 @@ BEGIN
     GROUPBOX        "",IDC_STATIC,6,53,335,103
 END
 
+IDD_EXPORT_KML_DIALOG DIALOGEX 0, 0, 354, 128
+STYLE DS_SETFONT | DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Export to KML"
+FONT 8, "Arial", 0, 0, 0x0
+BEGIN
+    EDITTEXT        IDC_KML_PATH,63,49,266,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "...",IDBROWSE,331,48,15,13
+    CONTROL         "Vectors",IDC_SHP_VECTORS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,81,40,11
+    CONTROL         "Stations",IDC_SHP_STATIONS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,59,81,40,11
+    CONTROL         "Notes",IDC_SHP_NOTES,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,103,81,40,11
+    CONTROL         "Flags",IDC_SHP_FLAGS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,147,81,40,11
+    CONTROL         "Wall outlines",IDC_SHP_WALLS,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,191,81,56,11
+    DEFPUSHBUTTON   "Export",IDOK,233,108,54,13
+    PUSHBUTTON      "Cancel",IDCANCEL,292,108,54,13
+    LTEXT           "This operation exports the compiled database as a KML file.",-1,13,12,323,9
+    GROUPBOX        "",-1,7,3,339,36
+    LTEXT           "Output file:",-1,13,50,47,9
+    GROUPBOX        "Shape Types",-1,8,68,338,33
+    LTEXT           "",IDC_ST_COUNTER,7,111,194,12
+    LTEXT           "NOTE: Passage wall outlines can be exported only when a suitable SVG file has been processed.",-1,13,24,323,10
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -2308,6 +2331,7 @@ BEGIN
     BEGIN
         LEFTMARGIN, 5
         RIGHTMARGIN, 380
+        VERTGUIDE, 169
         TOPMARGIN, 7
         BOTTOMMARGIN, 211
     END
@@ -2447,6 +2471,14 @@ BEGIN
         TOPMARGIN, 2
         BOTTOMMARGIN, 177
     END
+
+    IDD_EXPORT_KML_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 346
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 123
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -2548,6 +2580,16 @@ BEGIN
 END
 
 IDD_STATDLG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_EXPORT_KML_DIALOG AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_EXPAVDLG AFX_DIALOG_LAYOUT
 BEGIN
     0
 END
@@ -3180,6 +3222,7 @@ BEGIN
     IDS_SVG_BROWSE          "Select Folder and Name for SVG File"
     IDS_ERR_BADPRINTER1     "NOTE: Unable to connect to default printer: %s. If you print, the page dimensions displayed by Walls may not be accurate."
     IDS_ERR_SRVNODATUM2     "File %s: %s\nAlthough you've requested UTM-relative coordinates, this attached survey file has no assigned (or inherited) geographical reference. You must either detach it or edit its geographical reference properties."
+    IDS_KML_BROWSE          "Select KML File"
     IDS_ERR_BADZONE2        "File %s: %s\nThe geographical reference assigned to this file has a UTM zone that's different from that of the parent branch being compiled. To generate UTM coordinates, you must compile data from different zones separately."
     IDS_ERR_IMPVERSION1     "Incorrect version of %s in Walls program folder. Function aborted."
     IDS_ERR_WRTNTW1         "NOTE: Error processing SVG: %s\nOnly LRUDs will be used to represent passage on non-SVG maps"
@@ -3387,12 +3430,14 @@ BEGIN
     IDS_WPJ_FILES           "Walls project files (*.wpj)"
     IDS_WPJBROWSE           "Select Folder and File Name for Walls Project"
     IDS_PRJ_EXPORTLOG       "Select OK to review errors logged during the export operation. Double-click file address in first column to edit survey data."
+    IDS_KML_FILES           "KML Files (*.kml)"
 END
 
 STRINGTABLE
 BEGIN
     ID_IMPORT_CSS           "Create project from Compass MAK or DAT file"
     ID_IMPORT_SEF           "Create project from SEF file"
+    ID_KML_EXPORT           "Export map as KML (Keyhole Markup Language) file for Google Earth.\nExport map as KML"
 END
 
 #endif    // English (United States) resources
