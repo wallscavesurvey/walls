@@ -18,6 +18,7 @@
 #include "MarkerDlg.h"
 #include "lruddlg.h"
 #include "ExpSvgDlg.h"
+#include "CExportKmlDialog.h"
 #include "graddlg.h"
 
 #ifdef _DEBUG
@@ -1553,6 +1554,14 @@ static void maxDiffStr(CString &sd, double f, LPCSTR idstr, SVG_VIEWFORMAT &svg)
 	}
 	else s.Format("  Vector id: %s", idstr);
 	sd.Format("%s%.1f m%s", p, f, (LPCSTR)s);
+}
+
+void CSegView::OnKmlExport()
+{
+	CExportKmlDialog exportDialog;
+
+	if (IDOK == exportDialog.DoModal()) {
+	}
 }
 
 void CSegView::OnSvgExport()

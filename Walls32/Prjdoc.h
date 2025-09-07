@@ -189,6 +189,7 @@ private:
 	int InitCompView(CPrjListNode *pNode);
 	BOOL OpenWorkFiles(CPrjListNode *pNode);
 	char *m_pShapeFilePath;
+	CString m_pKmlFilePath;
 
 #ifdef _USE_FILETIMER
 	int m_bCheckForChange;
@@ -207,6 +208,12 @@ public:
 			if (m_pShapeFilePath) strcpy(m_pShapeFilePath, path);
 		}
 	}
+	CString KmlFilePath() { return m_pKmlFilePath; }
+	void SetKmlFilePath(CString path) {
+		m_pKmlFilePath = path;
+	}
+
+
 
 	int OpenWork(PPVOID pRecPtr, CDBFile *pDB, CPrjListNode *pNode, int typ);
 	int OpenSegment(CTRXFile *pix, CPrjListNode *pNode, int mode);

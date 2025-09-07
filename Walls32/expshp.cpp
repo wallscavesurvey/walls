@@ -1109,6 +1109,11 @@ static LPCSTR GetOrphanErrorMsg(CString &s, const STRING_BUF &sb, LPCSTR path)
 	return s;
 }
 
+int CSegView::ExportKML(CExportKmlDialog *pDlg, LPCSTR pathname, UINT flags)
+{
+	return 0;
+}
+
 int CSegView::ExportSVG(CExpSvgDlg *pDlg, SVG_VIEWFORMAT *psvg)
 {
 	CExportShp ex;
