@@ -6,6 +6,7 @@
 #include "plotview.h"
 #include "segview.h"
 #include "compile.h"
+#include <functional>
 
 //Functions in HULL2D.CPP --
 UINT GetConvexHull(POINT *pt, UINT ptCnt);
@@ -18,7 +19,7 @@ static BOOL bLastLrud;
 static DWORD *pPltRec;
 static double *pPltZ;
 static DWORD numSeqRec, numPltRec;
-static LRUDPOLY_CB pOutPoly;
+static std::function<int(SHP_TYP_LRUDPOLY*)> pOutPoly;
 
 static UINT ElimDupsF(CFltPoint *pt, UINT ptCnt)
 {
@@ -277,7 +278,7 @@ BOOL AllocPltRecLrud()
 	return TRUE;
 }
 
-int WriteLrudPolygons(LRUDPOLY_CB pOP)
+int WriteLrudPolygons(std::function<int(SHP_TYP_LRUDPOLY *)> pOP)
 {
 	int e = 0;
 	if (!AllocPltRecLrud()) return SHP_ERR_NOMEM;

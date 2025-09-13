@@ -7,6 +7,7 @@ XMLWriter::XMLWriter(std::ostream &out)
 	: m_out(out),
 	m_elementStack(),
 	m_startTagIsOpen(false),
+	m_multilineElement(false),
 	m_indent("")
 {
 }
@@ -17,20 +18,22 @@ void XMLWriter::writeStartDocument()
 	m_out << CW2A(L"<?xml version=\"1.0\" encoding=\"UTF-8\"?>", CP_UTF8) << std::endl;
 }
 
-void XMLWriter::closeStartTagIfNecessary()
+void XMLWriter::closeStartTagIfNecessary(bool multiline)
 {
 	if (!m_startTagIsOpen) return;
-	m_out << ">" << std::endl;
+	m_multilineElement = multiline;
+	m_out << ">";
+	if (multiline) m_out << std::endl;
 	m_startTagIsOpen = false;
 }
 
-void XMLWriter::writeStartElement(CStringW name)
+void XMLWriter::writeStartElement(const CStringW &name)
 {
 	USES_CONVERSION;
 	closeStartTagIfNecessary();
 	CW2A convName(name, CP_UTF8);
 	m_out << m_indent << "<" << convName;
-	m_elementStack.AddTail(name);
+	m_elementStack.AddTail(CStringW(name));
 	m_indent += "  ";
 	m_startTagIsOpen = true;
 }
@@ -49,7 +52,7 @@ bool isReservedChar(wchar_t c)
 	return false;
 }
 
-void XMLWriter::writeEscapedValue(CStringW value)
+void XMLWriter::writeEscapedValue(const CStringW &value)
 {
 	USES_CONVERSION;
 	int start = 0;
@@ -87,7 +90,7 @@ void XMLWriter::writeEscapedValue(CStringW value)
 	}
 }
 
-void XMLWriter::writeAttribute(CStringW name, CStringW value)
+void XMLWriter::writeAttribute(const CStringW &name, const CStringW &value)
 {
 	USES_CONVERSION;
 	if (!m_startTagIsOpen) {
@@ -100,7 +103,7 @@ void XMLWriter::writeAttribute(CStringW name, CStringW value)
 	m_out << '"';
 }
 
-void XMLWriter::writeElementString(CStringW name, CStringW value)
+void XMLWriter::writeElementString(const CStringW &name, const CStringW &value)
 {
 	USES_CONVERSION;
 	closeStartTagIfNecessary();
@@ -108,6 +111,13 @@ void XMLWriter::writeElementString(CStringW name, CStringW value)
 	m_out << m_indent << "<" << convName << ">";
 	writeEscapedValue(value);
 	m_out << "</" << convName << ">" << std::endl;
+}
+
+void XMLWriter::writeString(const CStringW &string)
+{
+	USES_CONVERSION;
+	closeStartTagIfNecessary(false);
+	writeEscapedValue(string);
 }
 
 void XMLWriter::writeEndElement()
@@ -121,5 +131,7 @@ void XMLWriter::writeEndElement()
 	m_indent.Truncate(m_indent.GetLength() - 2);
 	CStringW name = m_elementStack.RemoveTail();
 	CW2A convName(name, CP_UTF8);
-	m_out << m_indent << "</" << convName << ">" << std::endl;
+	if (m_multilineElement) m_out << m_indent;
+	m_out << "</" << convName << ">" << std::endl;
+	m_multilineElement = true;
 }

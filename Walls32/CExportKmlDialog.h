@@ -1,7 +1,5 @@
 #pragma once
 
-// CExportKmlDialog dialog
-
 #include "stdafx.h"
 #include "resource.h"
 

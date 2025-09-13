@@ -11,19 +11,21 @@ class XMLWriter
 public:
 	XMLWriter(std::ostream &out);
 	void writeStartDocument();
-	void writeStartElement(CStringW name);
+	void writeStartElement(const CStringW &name);
 	template<typename T>
-	void writeStartElement(CStringW name);
-	void writeEscapedValue(CStringW value);
-	void writeAttribute(CStringW name, CStringW value);
-	void writeElementString(CStringW name, CStringW value);
+	void writeStartElement(const CStringW &name);
+	void writeElementString(const CStringW &name, const CStringW &value);
+	void writeAttribute(const CStringW &name, const CStringW &value);
+	void writeString(const CStringW &string);
 	void writeEndElement();
 private:
-	void closeStartTagIfNecessary();
+	void writeEscapedValue(const CStringW &value);
+	void closeStartTagIfNecessary(bool multiline = true);
 	std::ostream &m_out;
 	//CStringList m_elementStack;
 	CList<CStringW, CStringW &> m_elementStack;
 	CString m_indent;
 	bool m_startTagIsOpen;
+	bool m_multilineElement;
 };
 

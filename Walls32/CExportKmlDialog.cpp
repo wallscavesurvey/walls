@@ -13,7 +13,7 @@
 // CExportKmlDialog dialog
 
 CExportKmlDialog::CExportKmlDialog(CWnd* pParent /*=nullptr*/)
-	: CDialog(IDD_EXPORT_KML_DIALOG, pParent)
+	: CDialog(CExportKmlDialog::IDD, pParent)
 {
 	CPrjDoc *pDoc = pSV->GetDocument();
 	m_pathname = pDoc->KmlFilePath();
@@ -54,9 +54,7 @@ void CExportKmlDialog::DoDataExchange(CDataExchange* pDX)
 		pDoc->SetKmlFilePath(m_pathname);
 		pDoc->m_uShapeTypes = m_uTypes;
 
-		int i = pSV->ExportKML(this, m_pathname, flags);
-
-		if (i) {
+		if (!pSV->ExportKML(this, m_pathname, flags)) {
 			EndDialog(IDCANCEL);
 			pDX->Fail();
 			return;
