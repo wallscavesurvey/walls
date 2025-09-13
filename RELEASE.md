@@ -7,3 +7,5 @@
     - `IDD_ABOUTBOX`
   - Version
     - VS_VERSION_INFO
+- WallsInstaller project
+  - properties tab
