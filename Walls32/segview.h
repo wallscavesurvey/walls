@@ -309,7 +309,7 @@ private:
 	BOOL ExportWRL(LPCSTR pathname, LPSTR title, UINT flags, UINT dimGrid, float fScaleVert);
 	BOOL ExportSHP(CExpavDlg *pDlg, LPCSTR pathname, LPCSTR basename, CSegListNode *pNode, UINT flags);
 	int ExportSVG(CExpSvgDlg *pDlg, SVG_VIEWFORMAT *pVF);
-	int ExportKML(CExportKmlDialog *pDlg, LPCSTR pathname, UINT flags);
+	BOOL ExportKML(CExportKmlDialog *pDlg, LPCSTR pathname, UINT flags);
 
 	LONG OnGetGradient(UINT lParam, LONG /*wParam*/);
 	LONG OnDrawGradient(UINT lParam, LONG /*wParam*/);

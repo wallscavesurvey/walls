@@ -13,7 +13,10 @@
 #include "expavdlg.h"
 #include "svgadv.h"
 #include "ExpSvgDlg.h"
+#include "CExportKmlDialog.h"
 #include "SvgProc.h"
+#include "KMLExporter.h"
+#include <functional>
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -24,13 +27,13 @@ CExportShp *pExpShp;
 bool bUseMag;
 
 static BOOL bCRF, bVersionNotChecked;
-enum { TYP_SHP = 0, TYP_CRF = 1, TYP_SVG = 2, TYP_SVGP = 3 };
+enum { TYP_SHP = 0, TYP_KML = 1, TYP_CRF = 2, TYP_SVG = 3, TYP_SVGP = 4 };
 static int typ_shp;
 static HINSTANCE SVGhinst;
 
 static STRING_BUF id_Orphans[2]; //vector id's ignored because not found in Walls project
 
-int WriteLrudPolygons(LRUDPOLY_CB pOutPoly);
+int WriteLrudPolygons(std::function<int(SHP_TYP_LRUDPOLY *)>  pOutPoly);
 
 static SVG_VIEWFORMAT *pSvg;
 
@@ -400,6 +403,12 @@ static COLORREF getFillColor(NTW_POLYGON *pPly)
 	if (flg&(NTW_FLG_NOFILL | NTW_FLG_BACKGROUND)) return (COLORREF)-1;
 	return (flg&NTW_FLG_FLOOR) ? pSV->FloorColor() : pPly->clr;
 }
+
+BOOL CExportShp::HasSVGFloors()
+{
+	return pSV->HasSVGFloors();
+}
+
 
 int CExportShp::GetPolygon(SHP_TYP_POLYGON *pP)
 {
@@ -816,6 +825,7 @@ int CExportShp::GetFlagLocation(SHP_TYP_FLAGLOCATION *pF)
 
 void CExportShp::ShpStatusMsg(int counter)
 {
+	if (!pDlg) return;
 	((CExpavDlg *)(pDlg))->StatusMsg(counter);
 }
 
@@ -826,6 +836,7 @@ void CExportShp::IncPolyCnt()
 
 void CExportShp::SvgStatusMsg(char *msg)
 {
+	if (!pDlg) return;
 	if (typ_shp == TYP_SVG) ((CExpSvgDlg *)(pDlg))->StatusMsg(msg);
 	else if (typ_shp == TYP_SVGP) ((CSvgProcDlg *)(pDlg))->StatusMsg(msg);
 }
@@ -1109,9 +1120,67 @@ static LPCSTR GetOrphanErrorMsg(CString &s, const STRING_BUF &sb, LPCSTR path)
 	return s;
 }
 
-int CSegView::ExportKML(CExportKmlDialog *pDlg, LPCSTR pathname, UINT flags)
+BOOL CSegView::ExportKML(CExportKmlDialog *pDlg, LPCSTR pathname, UINT flags)
 {
-	return 0;
+	CExportShp ex;
+	ex.pDlg = pDlg;
+
+	typ_shp = TYP_KML;
+
+	pExpShp = &ex;
+
+	if (!ex.Init(dbNTV.MaxID() + 1)) {
+		CMsgBox(MB_ICONEXCLAMATION, IDS_ERR_MEMORY);
+		return false;
+	}
+
+	//pSV->GetPrefixRecs();
+	pSV->m_pRoot->FlagVisible(LST_INCLUDE);
+
+	ASSERT(CPrjDoc::m_pReviewNode->GetAssignedRef());
+	CMainFrame::PutRef(CPrjDoc::m_pReviewNode->GetAssignedRef());
+	bUseMag = true;
+
+	bVersionNotChecked = TRUE;
+
+	BeginWaitCursor();
+	KMLExporter exporter(pExpShp, pathname, flags);
+	try {
+		exporter.writeKML();
+	}
+	catch (std::exception &e) {
+		// TODO
+	}
+	EndWaitCursor();
+
+	// if (e == 0) {
+		// int numsets = ((flags&SHP_FLAGS) != 0) +
+		//	((flags&SHP_NOTES) != 0) +
+		//	((flags&SHP_VECTORS) != 0) +
+		//	((flags&SHP_STATIONS) != 0) +
+		//	((flags&SHP_WALLS) != 0);
+		//
+		// CString msg;
+		// msg.Format(IDS_SHP_NOTIFY3, numsets, (flags&SHP_UTM) ? " UTM" : "", pathname, basename);
+		// if (flags&SHP_WALLS) {
+		// 	msg += '\n';
+		// 	msg += pfnErrMsg(bUseMag ? -1 : SHP_GET_NTWSTATS);
+		// }
+		// AfxMessageBox(msg);
+	// }
+	// else if (e > 1) {
+		// if (pfnErrMsg) {
+		// 	CMsgBox(MB_ICONEXCLAMATION, IDS_ERR_EXPTEXT1, pfnErrMsg(e));
+		// }
+	// }
+
+	bUseMag = false;
+
+	pSV->m_pRoot->FlagVisible(~LST_INCLUDE);
+	//free(pSV->pPrefixRecs);
+	//pSV->pPrefixRecs=NULL;
+
+	return true;
 }
 
 int CSegView::ExportSVG(CExpSvgDlg *pDlg, SVG_VIEWFORMAT *psvg)

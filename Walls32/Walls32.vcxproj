@@ -79,6 +79,7 @@
     <ClCompile Include="ImpCssDlg.cpp" />
     <ClCompile Include="ImpSefDlg.cpp" />
     <ClCompile Include="ItemProp.cpp" />
+    <ClCompile Include="KMLExporter.cpp" />
     <ClCompile Include="latlong.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug_XP|Win32'">NotUsing</PrecompiledHeader>
@@ -215,6 +216,7 @@
     <ClInclude Include="ImpCssDlg.h" />
     <ClInclude Include="ImpSefDlg.h" />
     <ClInclude Include="ItemProp.h" />
+    <ClInclude Include="KMLExporter.h" />
     <ClInclude Include="Launchfd.h" />
     <ClInclude Include="linedoc.h" />
     <ClInclude Include="lineview.h" />

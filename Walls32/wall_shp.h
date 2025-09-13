@@ -401,6 +401,7 @@ extern "C" {
 		int GetStation(SHP_TYP_STATION *pS, BOOL bNeedNames = FALSE);
 		BOOL VecIsVertical(void);
 		BOOL GetVector(SHP_TYP_VECTOR *pV);
+		BOOL HasSVGFloors();
 		int GetPolygon(SHP_TYP_POLYGON *pP);
 		BOOL GetNoteOrFlag(SHP_TYP_NOTE *pN, int typ);
 		int GetFlagStyle(SHP_TYP_FLAGSTYLE *pS);
