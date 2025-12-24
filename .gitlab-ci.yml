@@ -1,0 +1,380 @@
+# GitLab CI/CD for Walls Cave Survey Software
+# Requires Windows runner with Visual Studio 2017+ and Windows SDK
+
+stages:
+  - build
+  - build_help
+  - installer
+  - release
+
+variables:
+  # Build configuration - can be overridden in pipeline
+  BUILD_CONFIGURATION: "Release"
+  BUILD_PLATFORM: "x86"
+  SOLUTION_PATH: "Walls32/Walls.sln"
+  WALLSMAP_SOLUTION_PATH: "WallsMap/WallsMap.sln"
+  # Set to "true" to enable Help+Manual builds (requires license)
+  BUILD_HELP: "false"
+  # Help+Manual path (adjust if installed elsewhere)
+  HELPMAN_PATH: "C:\\Program Files (x86)\\EC Software\\HelpAndManual6"
+
+# Default settings for all jobs
+default:
+  tags:
+    - windows
+    - vs2017
+
+# Cache NuGet packages and tools between builds
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - packages/
+    - tools/
+
+# ==============================================================================
+# TEMPLATES
+# ==============================================================================
+
+.setup_environment: &setup_environment
+  # Install NASM assembler via Chocolatey
+  - choco install nasm -y --no-progress
+  - $env:PATH = "C:\Program Files\NASM;$env:PATH"
+
+  # Verify NASM installation
+  - nasm --version
+
+  # Download OpenGL extension headers if not present
+  - |
+    $glDirs = Get-ChildItem -Path "C:\Program Files (x86)\Windows Kits\10\Include" -Directory -ErrorAction SilentlyContinue |
+              Where-Object { Test-Path "$($_.FullName)\um\gl" } |
+              Sort-Object Name -Descending |
+              Select-Object -First 1
+    if ($glDirs) {
+      $glPath = "$($glDirs.FullName)\um\gl"
+      if (-not (Test-Path "$glPath\glext.h")) {
+        Write-Host "Downloading OpenGL extension headers to $glPath..."
+        New-Item -ItemType Directory -Force -Path $glPath | Out-Null
+        Invoke-WebRequest -Uri "https://www.khronos.org/registry/OpenGL/api/GL/glext.h" -OutFile "$glPath\glext.h"
+        Invoke-WebRequest -Uri "https://www.khronos.org/registry/OpenGL/api/GL/wglext.h" -OutFile "$glPath\wglext.h"
+        # Create KHR directory for khrplatform.h
+        $khrPath = Split-Path $glPath -Parent | Join-Path -ChildPath "KHR"
+        New-Item -ItemType Directory -Force -Path $khrPath | Out-Null
+        Invoke-WebRequest -Uri "https://www.khronos.org/registry/EGL/api/KHR/khrplatform.h" -OutFile "$khrPath\khrplatform.h"
+      }
+    }
+
+  # Find and setup Visual Studio environment
+  - |
+    $vsPath = &"${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property installationPath
+    if ($vsPath) {
+      Import-Module "$vsPath\Common7\Tools\Microsoft.VisualStudio.DevShell.dll"
+      Enter-VsDevShell -VsInstallPath $vsPath -SkipAutomaticLocation
+    }
+
+.build_template: &build_template
+  stage: build
+  before_script:
+    - *setup_environment
+  script:
+    # Restore NuGet packages if needed
+    - nuget restore "$SOLUTION_PATH" -NonInteractive || true
+
+    # Build the solution
+    - |
+      msbuild "$SOLUTION_PATH" `
+        /p:Configuration=$BUILD_CONFIGURATION `
+        /p:Platform=$BUILD_PLATFORM `
+        /m `
+        /verbosity:minimal `
+        /t:Build
+
+  artifacts:
+    name: "walls-${BUILD_CONFIGURATION}-${BUILD_PLATFORM}-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - Walls32/$BUILD_CONFIGURATION/*.exe
+      - Walls32/$BUILD_CONFIGURATION/*.dll
+      - Walls32/wallnet/$BUILD_CONFIGURATION/*.dll
+      - Walls32/wallsvg/$BUILD_CONFIGURATION/*.dll
+      - Walls32/wallshp/$BUILD_CONFIGURATION/*.dll
+      - Walls32/wallsef/$BUILD_CONFIGURATION/*.dll
+      - Walls32/wallcss/$BUILD_CONFIGURATION/*.dll
+      - Walls32/wallgps/$BUILD_CONFIGURATION/*.dll
+      - Walls32/wallexp/$BUILD_CONFIGURATION/*.dll
+    expire_in: 1 week
+
+# ==============================================================================
+# WALLS32 BUILDS
+# ==============================================================================
+
+build:walls:release:x86:
+  <<: *build_template
+  variables:
+    BUILD_CONFIGURATION: "Release"
+    BUILD_PLATFORM: "x86"
+
+build:walls:debug:x86:
+  <<: *build_template
+  variables:
+    BUILD_CONFIGURATION: "Debug"
+    BUILD_PLATFORM: "x86"
+  when: manual
+
+build:walls:release:x64:
+  <<: *build_template
+  variables:
+    BUILD_CONFIGURATION: "Release"
+    BUILD_PLATFORM: "x64"
+  when: manual
+
+build:walls:debug:x64:
+  <<: *build_template
+  variables:
+    BUILD_CONFIGURATION: "Debug"
+    BUILD_PLATFORM: "x64"
+  when: manual
+
+# XP-compatible builds (manual trigger)
+build:walls:release_xp:x86:
+  <<: *build_template
+  variables:
+    BUILD_CONFIGURATION: "Release_XP"
+    BUILD_PLATFORM: "x86"
+  when: manual
+
+build:walls:debug_xp:x86:
+  <<: *build_template
+  variables:
+    BUILD_CONFIGURATION: "Debug_XP"
+    BUILD_PLATFORM: "x86"
+  when: manual
+
+# ==============================================================================
+# WALLSMAP BUILDS
+# ==============================================================================
+
+build:wallsmap:release:x86:
+  stage: build
+  before_script:
+    - *setup_environment
+  script:
+    - nuget restore "$WALLSMAP_SOLUTION_PATH" -NonInteractive || true
+    - |
+      msbuild "$WALLSMAP_SOLUTION_PATH" `
+        /p:Configuration=Release `
+        /p:Platform=x86 `
+        /m `
+        /verbosity:minimal `
+        /t:Build
+  artifacts:
+    name: "wallsmap-release-x86-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - WallsMap/Release/*.exe
+      - WallsMap/Release/*.dll
+    expire_in: 1 week
+  when: manual
+
+build:wallsmap:debug:x86:
+  stage: build
+  before_script:
+    - *setup_environment
+  script:
+    - nuget restore "$WALLSMAP_SOLUTION_PATH" -NonInteractive || true
+    - |
+      msbuild "$WALLSMAP_SOLUTION_PATH" `
+        /p:Configuration=Debug `
+        /p:Platform=x86 `
+        /m `
+        /verbosity:minimal `
+        /t:Build
+  artifacts:
+    name: "wallsmap-debug-x86-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - WallsMap/Debug/*.exe
+      - WallsMap/Debug/*.dll
+    expire_in: 1 week
+  when: manual
+
+# ==============================================================================
+# HELP BUILD (requires Help+Manual license)
+# ==============================================================================
+
+build:help:
+  stage: build_help
+  rules:
+    - if: $BUILD_HELP == "true"
+      when: on_success
+    - when: manual
+      allow_failure: true
+  needs:
+    - job: build:walls:release:x86
+      artifacts: true
+  before_script:
+    # Verify Help+Manual is installed
+    - |
+      if (-not (Test-Path "$env:HELPMAN_PATH\HELPMAN.EXE")) {
+        Write-Error "Help+Manual not found at $env:HELPMAN_PATH"
+        Write-Host "Please install Help+Manual or adjust HELPMAN_PATH variable"
+        exit 1
+      }
+    - $env:PATH = "$env:HELPMAN_PATH;$env:PATH"
+  script:
+    # Build Walls Help project
+    - |
+      $helpProject = Get-ChildItem -Path "." -Filter "*.hmxp" -Recurse | Select-Object -First 1
+      if ($helpProject) {
+        Write-Host "Building help from: $($helpProject.FullName)"
+        & HELPMAN.EXE $helpProject.FullName /CHM
+      } else {
+        Write-Host "No Help+Manual project file (.hmxp) found"
+        exit 1
+      }
+  artifacts:
+    name: "walls-help-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - "**/*.chm"
+    expire_in: 1 week
+
+# ==============================================================================
+# INSTALLER BUILD (requires VS Installer Projects Extension)
+# ==============================================================================
+
+build:installer:
+  stage: installer
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: on_success
+    - when: manual
+      allow_failure: true
+  needs:
+    - job: build:walls:release:x86
+      artifacts: true
+    - job: build:help
+      artifacts: true
+      optional: true
+  before_script:
+    - *setup_environment
+    # Install VS Installer Projects build tools
+    - |
+      $vsixPath = "$env:TEMP\InstallerProjects.vsix"
+      if (-not (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\2017\*\Common7\IDE\CommonExtensions\Microsoft\VSI\DisableOutOfProcBuild")) {
+        Write-Host "Note: VS Installer Projects Extension may not be installed"
+      }
+  script:
+    # Find and build installer project
+    - |
+      $installerProj = Get-ChildItem -Path "." -Filter "*.vdproj" -Recurse | Select-Object -First 1
+      if ($installerProj) {
+        Write-Host "Building installer from: $($installerProj.FullName)"
+        # devenv is required for .vdproj files (MSBuild doesn't support them)
+        $vsPath = &"${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -latest -property installationPath
+        $devenv = "$vsPath\Common7\IDE\devenv.com"
+        & $devenv "Walls32/Walls.sln" /Build "Release|x86" /Project $installerProj.Name
+      } else {
+        Write-Host "No installer project (.vdproj) found"
+        exit 1
+      }
+  artifacts:
+    name: "walls-installer-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - "**/*.msi"
+      - "**/*.exe"
+    expire_in: 4 weeks
+
+# ==============================================================================
+# RELEASE (only on tags)
+# ==============================================================================
+
+release:package:
+  stage: release
+  rules:
+    - if: $CI_COMMIT_TAG
+  needs:
+    - job: build:walls:release:x86
+      artifacts: true
+    - job: build:installer
+      artifacts: true
+      optional: true
+  script:
+    # Create release package
+    - |
+      $releaseDir = "release-${CI_COMMIT_TAG}"
+      New-Item -ItemType Directory -Force -Path $releaseDir
+
+      # Copy main executables
+      Copy-Item -Path "Walls32/Release/*.exe" -Destination $releaseDir -ErrorAction SilentlyContinue
+      Copy-Item -Path "Walls32/Release/*.dll" -Destination $releaseDir -ErrorAction SilentlyContinue
+
+      # Copy DLL plugins
+      $dllDirs = @("wallnet", "wallsvg", "wallshp", "wallsef", "wallcss", "wallgps", "wallexp")
+      foreach ($dir in $dllDirs) {
+        $srcPath = "Walls32/$dir/Release/*.dll"
+        if (Test-Path $srcPath) {
+          Copy-Item -Path $srcPath -Destination $releaseDir
+        }
+      }
+
+      # Copy help file if exists
+      Get-ChildItem -Path "." -Filter "*.chm" -Recurse | Copy-Item -Destination $releaseDir -ErrorAction SilentlyContinue
+
+      # Create ZIP archive
+      Compress-Archive -Path "$releaseDir/*" -DestinationPath "Walls-${CI_COMMIT_TAG}.zip"
+
+      Write-Host "Release package created: Walls-${CI_COMMIT_TAG}.zip"
+  artifacts:
+    name: "walls-release-${CI_COMMIT_TAG}"
+    paths:
+      - "Walls-*.zip"
+      - "**/*.msi"
+    expire_in: never
+
+# ==============================================================================
+# UTILITY JOBS
+# ==============================================================================
+
+# Validate build on merge requests
+validate:mr:
+  stage: build
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+  before_script:
+    - *setup_environment
+  script:
+    - nuget restore "$SOLUTION_PATH" -NonInteractive || true
+    - |
+      msbuild "$SOLUTION_PATH" `
+        /p:Configuration=Release `
+        /p:Platform=x86 `
+        /m `
+        /verbosity:minimal `
+        /t:Build
+  artifacts:
+    when: on_failure
+    paths:
+      - "**/*.log"
+    expire_in: 3 days
+
+# Clean build (rebuilds everything from scratch)
+build:clean:
+  stage: build
+  when: manual
+  before_script:
+    - *setup_environment
+  script:
+    - |
+      msbuild "$SOLUTION_PATH" `
+        /p:Configuration=Release `
+        /p:Platform=x86 `
+        /t:Clean
+    - |
+      msbuild "$SOLUTION_PATH" `
+        /p:Configuration=Release `
+        /p:Platform=x86 `
+        /m `
+        /verbosity:minimal `
+        /t:Rebuild
+  artifacts:
+    name: "walls-clean-build-${CI_COMMIT_SHORT_SHA}"
+    paths:
+      - Walls32/Release/*.exe
+      - Walls32/Release/*.dll
+    expire_in: 1 week
