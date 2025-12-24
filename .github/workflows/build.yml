@@ -1,0 +1,204 @@
+# GitHub Actions CI/CD for Walls Cave Survey Software
+# Requires Windows runner with Visual Studio
+
+name: Build Walls
+
+on:
+  push:
+    branches: [master, main]
+    tags: ['v*']
+  pull_request:
+    branches: [master, main]
+  workflow_dispatch:
+    inputs:
+      configuration:
+        description: 'Build configuration'
+        required: true
+        default: 'Release'
+        type: choice
+        options:
+          - Release
+          - Debug
+          - Release_XP
+          - Debug_XP
+      platform:
+        description: 'Build platform'
+        required: true
+        default: 'x86'
+        type: choice
+        options:
+          - x86
+          - x64
+
+env:
+  SOLUTION_PATH: Walls32/Walls.sln
+  WALLSMAP_SOLUTION_PATH: WallsMap/WallsMap.sln
+
+jobs:
+  # ==============================================================================
+  # WALLS32 BUILD
+  # ==============================================================================
+  build-walls:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        configuration: [Release]
+        platform: [x86]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: nuget/setup-nuget@v2
+
+      - name: Install NASM
+        run: |
+          choco install nasm -y --no-progress
+          echo "C:\Program Files\NASM" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Verify NASM
+        run: nasm --version
+
+      - name: Download OpenGL headers
+        run: |
+          $sdkPath = "C:\Program Files (x86)\Windows Kits\10\Include"
+          $sdkDirs = Get-ChildItem -Path $sdkPath -Directory | Sort-Object Name -Descending | Select-Object -First 1
+          if ($sdkDirs) {
+            $glPath = "$($sdkDirs.FullName)\um\gl"
+            $khrPath = "$($sdkDirs.FullName)\um\KHR"
+
+            if (-not (Test-Path $glPath)) {
+              New-Item -ItemType Directory -Force -Path $glPath | Out-Null
+            }
+            if (-not (Test-Path $khrPath)) {
+              New-Item -ItemType Directory -Force -Path $khrPath | Out-Null
+            }
+
+            Write-Host "Downloading OpenGL headers to $glPath"
+            Invoke-WebRequest -Uri "https://www.khronos.org/registry/OpenGL/api/GL/glext.h" -OutFile "$glPath\glext.h"
+            Invoke-WebRequest -Uri "https://www.khronos.org/registry/OpenGL/api/GL/wglext.h" -OutFile "$glPath\wglext.h"
+            Invoke-WebRequest -Uri "https://www.khronos.org/registry/EGL/api/KHR/khrplatform.h" -OutFile "$khrPath\khrplatform.h"
+          }
+
+      - name: Restore NuGet packages
+        run: nuget restore ${{ env.SOLUTION_PATH }}
+        continue-on-error: true
+
+      - name: Build Walls32
+        run: |
+          msbuild ${{ env.SOLUTION_PATH }} `
+            /p:Configuration=${{ matrix.configuration }} `
+            /p:Platform=${{ matrix.platform }} `
+            /m `
+            /verbosity:minimal
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: walls-${{ matrix.configuration }}-${{ matrix.platform }}
+          path: |
+            Walls32/${{ matrix.configuration }}/*.exe
+            Walls32/${{ matrix.configuration }}/*.dll
+            Walls32/wallnet/${{ matrix.configuration }}/*.dll
+            Walls32/wallsvg/${{ matrix.configuration }}/*.dll
+            Walls32/wallshp/${{ matrix.configuration }}/*.dll
+            Walls32/wallsef/${{ matrix.configuration }}/*.dll
+            Walls32/wallcss/${{ matrix.configuration }}/*.dll
+            Walls32/wallgps/${{ matrix.configuration }}/*.dll
+            Walls32/wallexp/${{ matrix.configuration }}/*.dll
+          retention-days: 7
+
+  # ==============================================================================
+  # WALLSMAP BUILD (manual)
+  # ==============================================================================
+  build-wallsmap:
+    runs-on: windows-latest
+    if: github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: nuget/setup-nuget@v2
+
+      - name: Install NASM
+        run: |
+          choco install nasm -y --no-progress
+          echo "C:\Program Files\NASM" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Download OpenGL headers
+        run: |
+          $sdkPath = "C:\Program Files (x86)\Windows Kits\10\Include"
+          $sdkDirs = Get-ChildItem -Path $sdkPath -Directory | Sort-Object Name -Descending | Select-Object -First 1
+          if ($sdkDirs) {
+            $glPath = "$($sdkDirs.FullName)\um\gl"
+            $khrPath = "$($sdkDirs.FullName)\um\KHR"
+
+            if (-not (Test-Path $glPath)) {
+              New-Item -ItemType Directory -Force -Path $glPath | Out-Null
+            }
+            if (-not (Test-Path $khrPath)) {
+              New-Item -ItemType Directory -Force -Path $khrPath | Out-Null
+            }
+
+            Invoke-WebRequest -Uri "https://www.khronos.org/registry/OpenGL/api/GL/glext.h" -OutFile "$glPath\glext.h"
+            Invoke-WebRequest -Uri "https://www.khronos.org/registry/OpenGL/api/GL/wglext.h" -OutFile "$glPath\wglext.h"
+            Invoke-WebRequest -Uri "https://www.khronos.org/registry/EGL/api/KHR/khrplatform.h" -OutFile "$khrPath\khrplatform.h"
+          }
+
+      - name: Restore NuGet packages
+        run: nuget restore ${{ env.WALLSMAP_SOLUTION_PATH }}
+        continue-on-error: true
+
+      - name: Build WallsMap
+        run: |
+          msbuild ${{ env.WALLSMAP_SOLUTION_PATH }} `
+            /p:Configuration=Release `
+            /p:Platform=x86 `
+            /m `
+            /verbosity:minimal
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: wallsmap-release-x86
+          path: |
+            WallsMap/Release/*.exe
+            WallsMap/Release/*.dll
+          retention-days: 7
+
+  # ==============================================================================
+  # RELEASE (on tags)
+  # ==============================================================================
+  release:
+    runs-on: windows-latest
+    needs: build-walls
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: walls-Release-x86
+          path: release-files
+
+      - name: Create release archive
+        run: |
+          $tag = "${{ github.ref_name }}"
+          Compress-Archive -Path "release-files/*" -DestinationPath "Walls-$tag.zip"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: Walls-*.zip
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
