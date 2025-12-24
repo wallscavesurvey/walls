@@ -51,28 +51,32 @@ jobs:
 
       - name: Fix project paths
         run: |
-          # Copy vs_version.props to Walls32/ where projects expect it
+          # Copy props files to Walls32/ where projects expect them
           Copy-Item -Path "vs_version.props" -Destination "Walls32/vs_version.props"
+          Copy-Item -Path "zlib.props" -Destination "Walls32/zlib.props"
 
-          # Solution references external libs at ..\..\lib which is outside repo
-          # Create copies at expected locations (D:\a\lib from D:\a\walls\walls\Walls32\)
+          # Checkout is at D:\a\walls\walls\
+          # Solution at D:\a\walls\walls\Walls32\Walls.sln references ..\..\lib
+          # That resolves to D:\a\walls\lib (one level up from repo)
           $parentDir = Split-Path -Parent (Get-Location)  # D:\a\walls
-          $grandparentDir = Split-Path -Parent $parentDir  # D:\a
 
           # Copy library folders to expected location
           $libs = @("expatlib_2010-10-10", "pcrelib", "gziplib")
           foreach ($lib in $libs) {
             $src = Join-Path (Get-Location) $lib
-            $dst = Join-Path $grandparentDir $lib
+            $dst = Join-Path $parentDir $lib
             if (Test-Path $src) {
               Write-Host "Copying $lib to $dst"
               Copy-Item -Path $src -Destination $dst -Recurse -Force
+            } else {
+              Write-Host "Warning: $lib not found in repo"
             }
           }
 
           # sefin is referenced as ..\sefin from Walls32/ - should be at repo root
           if (-not (Test-Path "sefin")) {
-            Write-Host "Warning: sefin directory not found - this project may fail"
+            Write-Host "Warning: sefin directory not found - creating empty placeholder"
+            New-Item -ItemType Directory -Path "sefin" -Force | Out-Null
           }
 
       - name: Setup MSBuild
@@ -119,6 +123,7 @@ jobs:
           msbuild ${{ env.SOLUTION_PATH }} `
             /p:Configuration=${{ matrix.configuration }} `
             /p:Platform=${{ matrix.platform }} `
+            /p:PlatformToolset=v143 `
             /m `
             /verbosity:minimal
 
@@ -153,11 +158,13 @@ jobs:
         run: |
           Copy-Item -Path "vs_version.props" -Destination "Walls32/vs_version.props" -ErrorAction SilentlyContinue
           Copy-Item -Path "vs_version.props" -Destination "WallsMap/vs_version.props" -ErrorAction SilentlyContinue
-          $grandparentDir = Split-Path -Parent (Split-Path -Parent (Get-Location))
+          Copy-Item -Path "zlib.props" -Destination "Walls32/zlib.props" -ErrorAction SilentlyContinue
+          Copy-Item -Path "zlib.props" -Destination "WallsMap/zlib.props" -ErrorAction SilentlyContinue
+          $parentDir = Split-Path -Parent (Get-Location)
           $libs = @("expatlib_2010-10-10", "pcrelib", "gziplib")
           foreach ($lib in $libs) {
             $src = Join-Path (Get-Location) $lib
-            $dst = Join-Path $grandparentDir $lib
+            $dst = Join-Path $parentDir $lib
             if (Test-Path $src) {
               Copy-Item -Path $src -Destination $dst -Recurse -Force
             }
@@ -203,6 +210,7 @@ jobs:
           msbuild ${{ env.WALLSMAP_SOLUTION_PATH }} `
             /p:Configuration=Release `
             /p:Platform=x86 `
+            /p:PlatformToolset=v143 `
             /m `
             /verbosity:minimal
 
