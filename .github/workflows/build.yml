@@ -125,6 +125,16 @@ jobs:
 
       - name: Build Walls32
         run: |
+          # First pass - builds libraries (may have link errors, that's expected)
+          msbuild ${{ env.SOLUTION_PATH }} `
+            /p:Configuration=${{ matrix.configuration }} `
+            /p:Platform=${{ matrix.platform }} `
+            /p:PlatformToolset=v143 `
+            /m `
+            /verbosity:minimal `
+            /p:ContinueOnError=true || true
+
+          # Second pass - now all libs are built, linking should succeed
           msbuild ${{ env.SOLUTION_PATH }} `
             /p:Configuration=${{ matrix.configuration }} `
             /p:Platform=${{ matrix.platform }} `
