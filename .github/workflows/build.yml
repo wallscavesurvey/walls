@@ -49,6 +49,32 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Fix project paths
+        run: |
+          # Copy vs_version.props to Walls32/ where projects expect it
+          Copy-Item -Path "vs_version.props" -Destination "Walls32/vs_version.props"
+
+          # Solution references external libs at ..\..\lib which is outside repo
+          # Create copies at expected locations (D:\a\lib from D:\a\walls\walls\Walls32\)
+          $parentDir = Split-Path -Parent (Get-Location)  # D:\a\walls
+          $grandparentDir = Split-Path -Parent $parentDir  # D:\a
+
+          # Copy library folders to expected location
+          $libs = @("expatlib_2010-10-10", "pcrelib", "gziplib")
+          foreach ($lib in $libs) {
+            $src = Join-Path (Get-Location) $lib
+            $dst = Join-Path $grandparentDir $lib
+            if (Test-Path $src) {
+              Write-Host "Copying $lib to $dst"
+              Copy-Item -Path $src -Destination $dst -Recurse -Force
+            }
+          }
+
+          # sefin is referenced as ..\sefin from Walls32/ - should be at repo root
+          if (-not (Test-Path "sefin")) {
+            Write-Host "Warning: sefin directory not found - this project may fail"
+          }
+
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
@@ -122,6 +148,20 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Fix project paths
+        run: |
+          Copy-Item -Path "vs_version.props" -Destination "Walls32/vs_version.props" -ErrorAction SilentlyContinue
+          Copy-Item -Path "vs_version.props" -Destination "WallsMap/vs_version.props" -ErrorAction SilentlyContinue
+          $grandparentDir = Split-Path -Parent (Split-Path -Parent (Get-Location))
+          $libs = @("expatlib_2010-10-10", "pcrelib", "gziplib")
+          foreach ($lib in $libs) {
+            $src = Join-Path (Get-Location) $lib
+            $dst = Join-Path $grandparentDir $lib
+            if (Test-Path $src) {
+              Copy-Item -Path $src -Destination $dst -Recurse -Force
+            }
+          }
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
