@@ -55,6 +55,17 @@ jobs:
           Copy-Item -Path "vs_version.props" -Destination "Walls32/vs_version.props"
           Copy-Item -Path "zlib.props" -Destination "Walls32/zlib.props"
 
+          # Copy inc/ and lib/ directories to Walls32/ where vs_version.props expects them
+          # (WorkINC=$(SolutionDir)inc, WorkLIB=$(SolutionDir)lib)
+          if (Test-Path "inc") {
+            Write-Host "Copying inc/ to Walls32/inc/"
+            Copy-Item -Path "inc" -Destination "Walls32/inc" -Recurse -Force
+          }
+          if (Test-Path "lib") {
+            Write-Host "Copying lib/ to Walls32/lib/"
+            Copy-Item -Path "lib" -Destination "Walls32/lib" -Recurse -Force
+          }
+
           # Checkout is at D:\a\walls\walls\
           # Solution at D:\a\walls\walls\Walls32\Walls.sln references ..\..\lib
           # That resolves to D:\a\walls\lib (one level up from repo)
@@ -71,12 +82,6 @@ jobs:
             } else {
               Write-Host "Warning: $lib not found in repo"
             }
-          }
-
-          # sefin is referenced as ..\sefin from Walls32/ - should be at repo root
-          if (-not (Test-Path "sefin")) {
-            Write-Host "Warning: sefin directory not found - creating empty placeholder"
-            New-Item -ItemType Directory -Path "sefin" -Force | Out-Null
           }
 
       - name: Setup MSBuild
