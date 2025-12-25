@@ -256,6 +256,13 @@ jobs:
           }
           "stamp" | Out-File -FilePath "$stampDir/generate.stamp" -Encoding ascii
 
+          # Create the stamp rule file that ZERO_CHECK looks for
+          $stampRuleDir = "WallsMap/libjpegtbo/CMakeFiles/1596c735aba799af362fbf67e22d12e2"
+          if (-not (Test-Path $stampRuleDir)) {
+            New-Item -ItemType Directory -Force -Path $stampRuleDir | Out-Null
+          }
+          "stamp" | Out-File -FilePath "$stampRuleDir/generate.stamp.rule" -Encoding ascii
+
           # Also create in parent dir location (for ..\..\libjpegtbo references)
           $parentStampDir = Join-Path $parentDir "libjpegtbo/CMakeFiles"
           if (-not (Test-Path $parentStampDir)) {
@@ -263,14 +270,22 @@ jobs:
           }
           "stamp" | Out-File -FilePath "$parentStampDir/generate.stamp" -Encoding ascii
 
+          $parentStampRuleDir = Join-Path $parentDir "libjpegtbo/CMakeFiles/1596c735aba799af362fbf67e22d12e2"
+          if (-not (Test-Path $parentStampRuleDir)) {
+            New-Item -ItemType Directory -Force -Path $parentStampRuleDir | Out-Null
+          }
+          "stamp" | Out-File -FilePath "$parentStampRuleDir/generate.stamp.rule" -Encoding ascii
+
           # Remove CustomBuild sections from libjpegtbo vcxproj files to skip CMake calls
           $vcxprojFiles = @(
             "WallsMap/libjpegtbo/jpeg-static.vcxproj",
             "WallsMap/libjpegtbo/turbojpeg-static.vcxproj",
             "WallsMap/libjpegtbo/simd/simd.vcxproj",
+            "WallsMap/libjpegtbo/ZERO_CHECK.vcxproj",
             (Join-Path $parentDir "libjpegtbo/jpeg-static.vcxproj"),
             (Join-Path $parentDir "libjpegtbo/turbojpeg-static.vcxproj"),
-            (Join-Path $parentDir "libjpegtbo/simd/simd.vcxproj")
+            (Join-Path $parentDir "libjpegtbo/simd/simd.vcxproj"),
+            (Join-Path $parentDir "libjpegtbo/ZERO_CHECK.vcxproj")
           )
           foreach ($vcxproj in $vcxprojFiles) {
             if (Test-Path $vcxproj) {
