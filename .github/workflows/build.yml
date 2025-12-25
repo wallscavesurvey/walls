@@ -159,15 +159,8 @@ jobs:
         with:
           name: walls-${{ matrix.configuration }}-${{ matrix.platform }}
           path: |
-            Walls32/${{ matrix.configuration }}/*.exe
-            Walls32/${{ matrix.configuration }}/*.dll
-            Walls32/wallnet/${{ matrix.configuration }}/*.dll
-            Walls32/wallsvg/${{ matrix.configuration }}/*.dll
-            Walls32/wallshp/${{ matrix.configuration }}/*.dll
-            Walls32/wallsef/${{ matrix.configuration }}/*.dll
-            Walls32/wallcss/${{ matrix.configuration }}/*.dll
-            Walls32/wallgps/${{ matrix.configuration }}/*.dll
-            Walls32/wallexp/${{ matrix.configuration }}/*.dll
+            Walls32/bin/*.exe
+            Walls32/bin/*.dll
           retention-days: 7
 
   # ==============================================================================
