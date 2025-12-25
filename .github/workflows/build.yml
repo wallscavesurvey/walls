@@ -164,11 +164,10 @@ jobs:
           retention-days: 7
 
   # ==============================================================================
-  # WALLSMAP BUILD (manual)
+  # WALLSMAP BUILD
   # ==============================================================================
   build-wallsmap:
     runs-on: windows-latest
-    if: github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Checkout repository
@@ -176,17 +175,47 @@ jobs:
 
       - name: Fix project paths
         run: |
+          # Copy props files
           Copy-Item -Path "vs_version.props" -Destination "Walls32/vs_version.props" -ErrorAction SilentlyContinue
           Copy-Item -Path "vs_version.props" -Destination "WallsMap/vs_version.props" -ErrorAction SilentlyContinue
           Copy-Item -Path "zlib.props" -Destination "Walls32/zlib.props" -ErrorAction SilentlyContinue
           Copy-Item -Path "zlib.props" -Destination "WallsMap/zlib.props" -ErrorAction SilentlyContinue
+
+          # Copy inc/ and lib/ to WallsMap/
+          if (Test-Path "inc") {
+            Copy-Item -Path "inc" -Destination "WallsMap/inc" -Recurse -Force
+          }
+          if (Test-Path "lib") {
+            Copy-Item -Path "lib" -Destination "WallsMap/lib" -Recurse -Force
+          }
+
+          # Checkout is at D:\a\walls\walls\
+          # WallsMap.sln references ..\..\ paths for many libraries
+          # That resolves to D:\a\walls\ (one level up from repo)
           $parentDir = Split-Path -Parent (Get-Location)
-          $libs = @("expatlib_2010-10-10", "pcrelib", "gziplib")
+
+          # Copy all external libraries to parent directory
+          $libs = @(
+            "expatlib_2010-10-10",
+            "pcrelib",
+            "gziplib",
+            "zlib-1.2.8",
+            "Kakadu6_4",
+            "ECW_3.3",
+            "iqalib",
+            "libgdal_1110",
+            "libpng164",
+            "libjpegtbo",
+            "libwebp"
+          )
           foreach ($lib in $libs) {
             $src = Join-Path (Get-Location) $lib
             $dst = Join-Path $parentDir $lib
             if (Test-Path $src) {
+              Write-Host "Copying $lib to $dst"
               Copy-Item -Path $src -Destination $dst -Recurse -Force
+            } else {
+              Write-Host "Warning: $lib not found in repo"
             }
           }
 
@@ -227,6 +256,16 @@ jobs:
 
       - name: Build WallsMap
         run: |
+          # First pass - builds libraries (may have link errors, that's expected)
+          msbuild ${{ env.WALLSMAP_SOLUTION_PATH }} `
+            /p:Configuration=Release `
+            /p:Platform=x86 `
+            /p:PlatformToolset=v143 `
+            /m `
+            /verbosity:minimal `
+            /p:ContinueOnError=true || true
+
+          # Second pass - now all libs are built, linking should succeed
           msbuild ${{ env.WALLSMAP_SOLUTION_PATH }} `
             /p:Configuration=Release `
             /p:Platform=x86 `
@@ -248,15 +287,22 @@ jobs:
   # ==============================================================================
   release:
     runs-on: windows-latest
-    needs: build-walls
+    needs: [build-walls, build-wallsmap]
     if: startsWith(github.ref, 'refs/tags/v')
 
     steps:
-      - name: Download artifacts
+      - name: Download Walls artifacts
         uses: actions/download-artifact@v4
         with:
           name: walls-Release-x86
-          path: release-files
+          path: release-files/walls
+
+      - name: Download WallsMap artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: wallsmap-release-x86
+          path: release-files/wallsmap
+        continue-on-error: true
 
       - name: Create release archive
         run: |
