@@ -106,14 +106,19 @@ jobs:
           Set-Content $wallgpsPath -Value $wallgpsXml -NoNewline
           Write-Host "Fixed wallgps.vcxproj SDK version and toolset"
 
-          # Fix Walls.sln: change Release_XP|Win32 to Release|Win32 for Release|x86 config
+          # Fix Walls.sln: remove non-existent sefin project and fix config mappings
           $slnPath = "Walls32/Walls.sln"
           $slnContent = Get-Content $slnPath -Raw
+
+          # Remove sefin project (doesn't exist in repo)
+          $slnContent = $slnContent -replace 'Project\("\{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942\}"\) = "sefin"[^\r\n]*\r?\nEndProject\r?\n', ''
+          $slnContent = $slnContent -replace '\s*\{17D16115-259F-462A-9B4A-4C6F19C09EE6\}[^\r\n]*\r?\n', "`n"
+
           # Replace Release_XP|Win32 with Release|Win32 for Release|x86 mappings
           $slnContent = $slnContent -replace '(\.Release\|x86\.ActiveCfg = )Release_XP\|Win32', '$1Release|Win32'
           $slnContent = $slnContent -replace '(\.Release\|x86\.Build\.0 = )Release_XP\|Win32', '$1Release|Win32'
           Set-Content $slnPath -Value $slnContent -NoNewline
-          Write-Host "Fixed Walls.sln configuration mappings"
+          Write-Host "Fixed Walls.sln: removed sefin, fixed configuration mappings"
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
