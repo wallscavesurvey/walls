@@ -96,6 +96,25 @@ jobs:
             }
           }
 
+          # Fix wallgps.vcxproj: update SDK version and toolset for CI build
+          $wallgpsPath = "Walls32/wallgps/wallgps.vcxproj"
+          $wallgpsXml = Get-Content $wallgpsPath -Raw
+          # Change WindowsTargetPlatformVersion from 7.0 to 10.0
+          $wallgpsXml = $wallgpsXml -replace '<WindowsTargetPlatformVersion>7\.0</WindowsTargetPlatformVersion>', '<WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>'
+          # Change PlatformToolset from v141_xp to v141 for Release|Win32
+          $wallgpsXml = $wallgpsXml -replace "(<PropertyGroup Condition=`"'\`$\(Configuration\)\|\`$\(Platform\)'=='Release\|Win32'`" Label=`"Configuration`">[\s\S]*?<PlatformToolset>)v141_xp(</PlatformToolset>)", '$1v141$2'
+          Set-Content $wallgpsPath -Value $wallgpsXml -NoNewline
+          Write-Host "Fixed wallgps.vcxproj SDK version and toolset"
+
+          # Fix Walls.sln: change Release_XP|Win32 to Release|Win32 for Release|x86 config
+          $slnPath = "Walls32/Walls.sln"
+          $slnContent = Get-Content $slnPath -Raw
+          # Replace Release_XP|Win32 with Release|Win32 for Release|x86 mappings
+          $slnContent = $slnContent -replace '(\.Release\|x86\.ActiveCfg = )Release_XP\|Win32', '$1Release|Win32'
+          $slnContent = $slnContent -replace '(\.Release\|x86\.Build\.0 = )Release_XP\|Win32', '$1Release|Win32'
+          Set-Content $slnPath -Value $slnContent -NoNewline
+          Write-Host "Fixed Walls.sln configuration mappings"
+
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
