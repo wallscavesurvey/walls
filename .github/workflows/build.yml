@@ -66,6 +66,12 @@ jobs:
             Copy-Item -Path "lib" -Destination "Walls32/lib" -Recurse -Force
           }
 
+          # Copy expatlib to Walls32/ where wallsvg expects it ($(WorkDIR)expatlib_2010-10-10)
+          if (Test-Path "expatlib_2010-10-10") {
+            Write-Host "Copying expatlib_2010-10-10/ to Walls32/"
+            Copy-Item -Path "expatlib_2010-10-10" -Destination "Walls32/expatlib_2010-10-10" -Recurse -Force
+          }
+
           # Checkout is at D:\a\walls\walls\
           # Solution at D:\a\walls\walls\Walls32\Walls.sln references ..\..\lib
           # That resolves to D:\a\walls\lib (one level up from repo)
