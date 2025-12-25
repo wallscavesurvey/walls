@@ -72,6 +72,12 @@ jobs:
             Copy-Item -Path "expatlib_2010-10-10" -Destination "Walls32/expatlib_2010-10-10" -Recurse -Force
           }
 
+          # Copy zlib-1.2.8 to Walls32/ where zlib.props expects it ($(SolutionDir)\zlib-1.2.8)
+          if (Test-Path "zlib-1.2.8") {
+            Write-Host "Copying zlib-1.2.8/ to Walls32/"
+            Copy-Item -Path "zlib-1.2.8" -Destination "Walls32/zlib-1.2.8" -Recurse -Force
+          }
+
           # Checkout is at D:\a\walls\walls\
           # Solution at D:\a\walls\walls\Walls32\Walls.sln references ..\..\lib
           # That resolves to D:\a\walls\lib (one level up from repo)
