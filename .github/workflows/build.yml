@@ -229,13 +229,24 @@ jobs:
             }
           }
 
-          # Remove SampleSpellingClient from solution (project doesn't exist in repo)
+          # Remove missing projects from solution (don't exist in repo)
           $slnPath = "WallsMap/WallsMap.sln"
           $content = Get-Content $slnPath -Raw
+
+          # Remove SampleSpellingClient project
           $content = $content -replace 'Project\("\{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942\}"\) = "SampleSpellingClient"[^\r\n]*EndProject\r?\n', ''
-          # Remove config entries for SampleSpellingClient GUID
           $content = $content -replace '\s*\{6D04155E-C3D9-4CB6-BCFD-2B5A205C0329\}[^\r\n]*\r?\n', "`n"
+
+          # Remove webpc project (not in repo)
+          $content = $content -replace 'Project\("\{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942\}"\) = "webpc"[^\r\n]*EndProject\r?\n', ''
+          $content = $content -replace '\s*\{7B365444-F5F6-4347-AE6E-11BA9C374FFC\}[^\r\n]*\r?\n', "`n"
+
+          # Remove webpd project (not in repo)
+          $content = $content -replace 'Project\("\{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942\}"\) = "webpd"[^\r\n]*EndProject\r?\n', ''
+          $content = $content -replace '\s*\{A7CC633C-905E-4DE7-9EBE-FA3FAAF1FF1B\}[^\r\n]*\r?\n', "`n"
+
           Set-Content $slnPath -Value $content -NoNewline
+          Write-Host "Removed missing projects from WallsMap.sln"
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
