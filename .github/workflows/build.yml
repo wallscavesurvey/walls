@@ -259,7 +259,7 @@ jobs:
           # First pass - builds libraries (may have link errors, that's expected)
           msbuild ${{ env.WALLSMAP_SOLUTION_PATH }} `
             /p:Configuration=Release `
-            /p:Platform=x86 `
+            /p:Platform=Win32 `
             /p:PlatformToolset=v143 `
             /m `
             /verbosity:minimal `
@@ -268,7 +268,7 @@ jobs:
           # Second pass - now all libs are built, linking should succeed
           msbuild ${{ env.WALLSMAP_SOLUTION_PATH }} `
             /p:Configuration=Release `
-            /p:Platform=x86 `
+            /p:Platform=Win32 `
             /p:PlatformToolset=v143 `
             /m `
             /verbosity:minimal
