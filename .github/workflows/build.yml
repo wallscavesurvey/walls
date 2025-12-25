@@ -248,6 +248,42 @@ jobs:
           Set-Content $slnPath -Value $content -NoNewline
           Write-Host "Removed missing projects from WallsMap.sln"
 
+          # Fix libjpegtbo CMake custom build issues
+          # Create stamp file so CMake custom builds think they're up-to-date
+          $stampDir = "WallsMap/libjpegtbo/CMakeFiles"
+          if (-not (Test-Path $stampDir)) {
+            New-Item -ItemType Directory -Force -Path $stampDir | Out-Null
+          }
+          "stamp" | Out-File -FilePath "$stampDir/generate.stamp" -Encoding ascii
+
+          # Also create in parent dir location (for ..\..\libjpegtbo references)
+          $parentStampDir = Join-Path $parentDir "libjpegtbo/CMakeFiles"
+          if (-not (Test-Path $parentStampDir)) {
+            New-Item -ItemType Directory -Force -Path $parentStampDir | Out-Null
+          }
+          "stamp" | Out-File -FilePath "$parentStampDir/generate.stamp" -Encoding ascii
+
+          # Remove CustomBuild sections from libjpegtbo vcxproj files to skip CMake calls
+          $vcxprojFiles = @(
+            "WallsMap/libjpegtbo/jpeg-static.vcxproj",
+            "WallsMap/libjpegtbo/turbojpeg-static.vcxproj",
+            "WallsMap/libjpegtbo/simd/simd.vcxproj",
+            (Join-Path $parentDir "libjpegtbo/jpeg-static.vcxproj"),
+            (Join-Path $parentDir "libjpegtbo/turbojpeg-static.vcxproj"),
+            (Join-Path $parentDir "libjpegtbo/simd/simd.vcxproj")
+          )
+          foreach ($vcxproj in $vcxprojFiles) {
+            if (Test-Path $vcxproj) {
+              Write-Host "Removing CustomBuild from $vcxproj"
+              $xml = Get-Content $vcxproj -Raw
+              # Remove entire ItemGroup containing CustomBuild for CMakeLists.txt
+              $xml = $xml -replace '(?s)<ItemGroup>\s*<CustomBuild Include="[^"]*CMakeLists\.txt"[^>]*>.*?</CustomBuild>\s*</ItemGroup>', ''
+              # Remove ItemGroup with generate.stamp.rule
+              $xml = $xml -replace '(?s)<ItemGroup>\s*<CustomBuild Include="[^"]*generate\.stamp\.rule"[^>]*>.*?</CustomBuild>\s*</ItemGroup>', ''
+              Set-Content $vcxproj -Value $xml -NoNewline
+            }
+          }
+
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
