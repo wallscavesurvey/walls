@@ -90,7 +90,7 @@ int CExportShp::GetLrud(SHP_TYP_LRUD *pL)
 	SHP_TYP_STATION pS;
 	NTA_LRUDTREE_REC lrud;
 	static UINT id;
-	static double xy[2];
+	static double xyz[3];
 	int iNewKey;
 	char key[6];
 	double az;
@@ -105,7 +105,7 @@ int CExportShp::GetLrud(SHP_TYP_LRUD *pL)
 		if (id == (UINT)-1) {
 			if (!GetStation(&pS)) break;
 			id = pS.id;
-			memcpy(xy, pS.xyz, sizeof(xy));
+			memcpy(xyz, pS.xyz, sizeof(xyz));
 			iNewKey = 1;
 		}
 		*key = 3;
@@ -122,27 +122,29 @@ int CExportShp::GetLrud(SHP_TYP_LRUD *pL)
 				(lrud.dim[1] == LRUD_BLANK && (lrud.dim[0] == LRUD_BLANK || lrud.dim[0] == LRUD_BLANK_NEG))) continue;
 			//We have at least one ray with a horizontal component
 			az = lrud.az*(PI / 180.0);
+			pL->xyzFr[2] = xyz[2];
+			pL->xyzTo[2] = xyz[2];
 			if (lrud.dim[1] == LRUD_BLANK || lrud.dim[0] == LRUD_BLANK || lrud.dim[0] == LRUD_BLANK_NEG) {
-				pL->xyFr[0] = xy[0];
-				pL->xyFr[1] = xy[1];
+				pL->xyzFr[0] = xyz[0];
+				pL->xyzFr[1] = xyz[1];
 				if (lrud.dim[1] == LRUD_BLANK) {
 					az -= PI2;
-					pL->xyTo[0] = xy[0] + lrud.dim[0] * sin(az);
-					pL->xyTo[1] = xy[1] + lrud.dim[0] * cos(az);
+					pL->xyzTo[0] = xyz[0] + lrud.dim[0] * sin(az);
+					pL->xyzTo[1] = xyz[1] + lrud.dim[0] * cos(az);
 				}
 				else {
 					if (lrud.dim[0] == LRUD_BLANK) az += PI2;
-					pL->xyTo[0] = xy[0] + lrud.dim[1] * sin(az);
-					pL->xyTo[1] = xy[1] + lrud.dim[1] * cos(az);
+					pL->xyzTo[0] = xyz[0] + lrud.dim[1] * sin(az);
+					pL->xyzTo[1] = xyz[1] + lrud.dim[1] * cos(az);
 				}
 			}
 			else {
 				az -= PI2;
-				pL->xyFr[0] = xy[0] + lrud.dim[0] * sin(az);
-				pL->xyFr[1] = xy[1] + lrud.dim[0] * cos(az);
+				pL->xyzFr[0] = xyz[0] + lrud.dim[0] * sin(az);
+				pL->xyzFr[1] = xyz[1] + lrud.dim[0] * cos(az);
 				az += PI;
-				pL->xyTo[0] = xy[0] + lrud.dim[1] * sin(az);
-				pL->xyTo[1] = xy[1] + lrud.dim[1] * cos(az);
+				pL->xyzTo[0] = xyz[0] + lrud.dim[1] * sin(az);
+				pL->xyzTo[1] = xyz[1] + lrud.dim[1] * cos(az);
 			}
 			if ((lrud.flags&LRUD_FLG_CS) != 0 && lrud.dim[2] != LRUD_BLANK && lrud.dim[3] != LRUD_BLANK) {
 				pL->flags = lrud.flags;

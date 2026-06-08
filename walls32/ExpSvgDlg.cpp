@@ -197,6 +197,7 @@ void CExpSvgDlg::DoDataExchange(CDataExchange* pDX)
 		}
 
 		//Initialize SVG_VIEWFORMAT from m_pVF and grid settings --
+		m_pSVG->profile = m_pVF->bProfile;
 		m_pSVG->view = m_pVF->fPanelView; /*degrees*/
 		m_pSVG->width = m_pVF->fFrameWidth*72.0; /*points*/
 		m_pSVG->height = m_pVF->fFrameHeight*72.0; /*points*/
@@ -204,6 +205,7 @@ void CExpSvgDlg::DoDataExchange(CDataExchange* pDX)
 		//metric coordinates of upper left corner --
 		m_pSVG->centerEast = m_pVF->fCenterEast;
 		m_pSVG->centerNorth = m_pVF->fCenterNorth;
+		m_pSVG->centerUp = m_pVF->fCenterUp;
 		m_pSVG->title = m_title;
 
 		WORD w = (WORD)atoi(m_GridSub);

@@ -50,6 +50,7 @@ static SHP_TYP_FLAGSTYLE sFS;
 static SHP_TYP_FLAG sF;
 static SVG_VIEWFORMAT *pSVG;
 
+static bool bProfile;
 static double viewA, cosA, sinA, xMid, yMid, grid_xMin, grid_yMin, grid_xMax, grid_yMax, width, height, scale;
 static double max_diff, max_diff_allowed;
 static double max_diffx, max_diffy;
@@ -70,7 +71,7 @@ static bool bFirstCommentSeen, bWriting, bInUse;
 static bool bMerge2, bMerging2, bGzout;
 static BOOL bNTW;
 static int bInTextElement, bInTextPath;
-static double midE, midN;
+static double midE, midN, midU;
 
 #ifdef _DEBUG
 static int bugcount;
@@ -304,7 +305,7 @@ static SVG_PATHPOINT legendPt, *pLegendPt;
 //static int skiplin[MAX_VEC_SKIPPED];
 static double max_dsquared, max_dsq_x, max_dsq_y;
 static double mrgViewA, mrgCosA, mrgSinA, xMrgMid, yMrgMid, xMrgMin, yMrgMin, xMrgMax, yMrgMax;
-static double mrgMidE, mrgMidN, mrgScale, scaleRatio;
+static double mrgMidE, mrgMidN, mrgMidU, mrgScale, scaleRatio;
 static UINT node_visits;
 static UINT tpoints, tpoints_w, tpoints_d, pathcnt, max_pathcnt, symcnt, max_symcnt, tptotal, tppcnt;
 static double flength_w, flength_d;
@@ -321,7 +322,9 @@ static LPCSTR pNextPolyPt;
 static char lastTextStyle[SIZ_LASTTEXTSTYLE];
 static int lastTextStyleIdx;
 
-#pragma pack(1)
+// / a c e \ / x \
+// \ b d f / | y |
+//           \ 1 /
 typedef struct {
 	double a;
 	double b;
@@ -330,9 +333,28 @@ typedef struct {
 	double e;
 	double f;
 } SVG_CTM;
-#pragma pack()
 
-static SVG_CTM utm_to_xy, utm_to_mrgxy, mrgxy_to_xy, xy_to_mrgxy, pathCTM, textCTM, groupCTM, symTransCTM;
+// / a d g j \ / x \
+// | b e h k | | y |
+// \ c f i l / | z |
+//             \ 1 /
+typedef struct {
+	double a;
+	double b;
+	double c;
+	double d;
+	double e;
+	double f;
+	double g;
+	double h;
+	double i;
+	double j;
+	double k;
+	double l;
+} XYZ_CTM;
+
+static SVG_CTM mrgxy_to_xy, xy_to_mrgxy, pathCTM, textCTM, groupCTM, symTransCTM;
+static XYZ_CTM utm_to_xyz, utm_to_mrgxyz, mrgxyz_to_xyz, xyz_to_mrgxyz;
 static bool bPathCTM; //,bGroupCTM;
 
 //static clock_t tm_scan,tm_walls;
@@ -350,7 +372,7 @@ typedef struct {
 } SVG_TYP_FLAGSTYLE;
 
 typedef struct {
-	double xy[2];
+	double xyz[3];
 	UINT flag_id;
 } SVG_TYP_FLAGLOCATION;
 
@@ -784,6 +806,36 @@ static void mult(SVG_CTM *ctm, double *x1, double *x2)
 	x2[1] = ctm->b*x + ctm->d*x1[1] + ctm->f;
 }
 
+static void mult(XYZ_CTM *ctm, double *xyz1, double *xyz2)
+{
+	double x = xyz1[0];
+	double y = xyz1[1];
+	double z = xyz1[2];
+
+	xyz2[0] = ctm->a * x + ctm->d * y + ctm->g * z + ctm->j;
+	xyz2[1] = ctm->b * x + ctm->e * y + ctm->h * z + ctm->k;
+	xyz2[2] = ctm->c * x + ctm->f * y + ctm->i * z + ctm->l;
+}
+
+static void mult(XYZ_CTM *ctm, double *xyz1)
+{
+	mult(ctm, xyz1, xyz1);
+}
+
+static void mult_xy(XYZ_CTM *ctm, double *xy1, double *xy2)
+{
+	double x = xy1[0];
+	double y = xy1[1];
+
+	xy2[0] = ctm->a * x + ctm->d * y + ctm->j;
+	xy2[1] = ctm->b * x + ctm->e * y + ctm->k;
+}
+
+static void mult_xy(XYZ_CTM *ctm, double *xy1)
+{
+	mult_xy(ctm, xy1, xy1);
+}
+
 static void mult(SVG_CTM *ctmlf, SVG_CTM *ctmrt)
 {
 	double x = ctmrt->a;
@@ -797,6 +849,35 @@ static void mult(SVG_CTM *ctmlf, SVG_CTM *ctmrt)
 	ctmrt->f = ctmlf->f + ctmlf->b*x + ctmlf->d*ctmrt->f;
 }
 
+static void mult(XYZ_CTM *ctmlf, XYZ_CTM *ctmrt)
+{
+	double a = ctmrt->a;
+	double b = ctmrt->b;
+	double c = ctmrt->c;
+	double d = ctmrt->d;
+	double e = ctmrt->e;
+	double f = ctmrt->f;
+	double g = ctmrt->g;
+	double h = ctmrt->h;
+	double i = ctmrt->i;
+	double j = ctmrt->j;
+	double k = ctmrt->k;
+	double l = ctmrt->l;
+
+	ctmrt->a = ctmlf->a*a + ctmlf->d*b + ctmlf->g*c;
+	ctmrt->b = ctmlf->b*a + ctmlf->e*b + ctmlf->h*c;
+	ctmrt->c = ctmlf->c*a + ctmlf->f*b + ctmlf->i*c;
+	ctmrt->d = ctmlf->a*d + ctmlf->d*e + ctmlf->g*f;
+	ctmrt->e = ctmlf->b*d + ctmlf->e*e + ctmlf->h*f;
+	ctmrt->f = ctmlf->c*d + ctmlf->f*e + ctmlf->i*f;
+	ctmrt->g = ctmlf->a*g + ctmlf->d*h + ctmlf->g*i;
+	ctmrt->h = ctmlf->b*g + ctmlf->e*h + ctmlf->h*i;
+	ctmrt->i = ctmlf->c*g + ctmlf->f*h + ctmlf->i*i;
+	ctmrt->j = ctmlf->a*j + ctmlf->d*k + ctmlf->g*l + ctmlf->j;
+	ctmrt->k = ctmlf->b*j + ctmlf->e*k + ctmlf->h*l + ctmlf->k;
+	ctmrt->l = ctmlf->c*j + ctmlf->f*k + ctmlf->i*l + ctmlf->l;
+}
+
 static void ctm_invert(SVG_CTM *ctm, SVG_CTM *ctmi)
 {
 	double det = 1.0 / (ctm->a*ctm->d - ctm->b*ctm->c);
@@ -806,6 +887,47 @@ static void ctm_invert(SVG_CTM *ctm, SVG_CTM *ctmi)
 	ctmi->d = ctm->a*det;
 	ctmi->e = (ctm->c*ctm->f - ctm->d*ctm->e)*det;
 	ctmi->f = (ctm->b*ctm->e - ctm->a*ctm->f)*det;
+}
+
+static void ctm_invert(XYZ_CTM *ctm, XYZ_CTM *ctmi)
+{
+	double a = ctm->a;
+	double d = ctm->b;
+	double g = ctm->c;
+	double b = ctm->d;
+	double e = ctm->e;
+	double h = ctm->f;
+	double c = ctm->g;
+	double f = ctm->h;
+	double i = ctm->i;
+	double j = ctm->j;
+	double k = ctm->k;
+	double l = ctm->l;
+
+	double A = e*i - f*h;
+	double B = -d*i + f*g;
+	double C = d*h - e*g;
+	double D = -b*i + c*h;
+	double E = a*i - c*g;
+	double F = -a*h + b*g;
+	double G = b*f - c*e;
+	double H = -a*f + c + d;
+	double I = a*e - b*d;
+
+	double det = 1.0 / (a*A + b*B + c*C);
+
+	ctmi->a = det*A;
+	ctmi->b = det*B;
+	ctmi->c = det*C;
+	ctmi->d = det*D;
+	ctmi->e = det*E;
+	ctmi->f = det*F;
+	ctmi->g = det*G;
+	ctmi->h = det*H;
+	ctmi->i = det*I;
+	ctmi->j = -ctmi->a*j - ctmi->d*k - ctmi->g*l;
+	ctmi->k = -ctmi->b*j - ctmi->e*k - ctmi->h*l;
+	ctmi->l = -ctmi->c*j - ctmi->f*k - ctmi->i*l;
 }
 
 static void getRotateCTM(SVG_CTM *ctm, SVG_PATHPOINT *pp, double angle)
@@ -819,42 +941,100 @@ static void getRotateCTM(SVG_CTM *ctm, SVG_PATHPOINT *pp, double angle)
 	else ctm->e = ctm->f = 0.0;
 }
 
-static void init_utm_to_xy()
+static void init_utm_to_xyz()
 {
 	//Matrix to convert world coordinates to exported page coordinates --
 	double sA = scale * sinA;
 	double cA = scale * cosA;
 
-	utm_to_xy.a = cA;
-	utm_to_xy.b = -sA;
-	utm_to_xy.c = -sA;
-	utm_to_xy.d = -cA;
-	utm_to_xy.e = xMid + sA * midN - cA * midE;
-	utm_to_xy.f = yMid + sA * midE + cA * midN;
+	if (bProfile) {
+		utm_to_xyz.a = cA;
+		utm_to_xyz.b = 0;
+		utm_to_xyz.c = -sA;
+		utm_to_xyz.d = -sA;
+		utm_to_xyz.e = 0;
+		utm_to_xyz.f = -cA;
+		utm_to_xyz.g = 0;
+		utm_to_xyz.h = -scale;
+		utm_to_xyz.i = 0;
+		utm_to_xyz.j = xMid + sA * midN - cA * midE;
+		utm_to_xyz.k = yMid + scale * midU;
+		utm_to_xyz.l = sA * midE + cA * midN;
+	}
+	else {
+		utm_to_xyz.a = cA;
+		utm_to_xyz.b = -sA;
+		utm_to_xyz.c = 0;
+		utm_to_xyz.d = -sA;
+		utm_to_xyz.e = -cA;
+		utm_to_xyz.f = 0;
+		utm_to_xyz.g = 0;
+		utm_to_xyz.h = 0;
+		utm_to_xyz.i = scale;
+		utm_to_xyz.j = xMid + sA * midN - cA * midE;
+		utm_to_xyz.k = yMid + sA * midE + cA * midN;
+		utm_to_xyz.l = -scale * midU;
+	}
 }
 
-static void init_utm_to_mrgxy()
+static void init_utm_to_mrgxyz()
 {
 	//Matrix to convert world coordinates to merge SVG's page coordinates --
 	double sA = mrgScale * mrgSinA;
 	double cA = mrgScale * mrgCosA;
 
-	utm_to_mrgxy.a = cA;
-	utm_to_mrgxy.b = -sA;
-	utm_to_mrgxy.c = -sA;
-	utm_to_mrgxy.d = -cA;
-	utm_to_mrgxy.e = xMrgMid + sA * mrgMidN - cA * mrgMidE;
-	utm_to_mrgxy.f = yMrgMid + sA * mrgMidE + cA * mrgMidN;
+	if (bProfile) {
+		utm_to_mrgxyz.a = cA;
+		utm_to_mrgxyz.b = 0;
+		utm_to_mrgxyz.c = -sA;
+		utm_to_mrgxyz.d = -sA;
+		utm_to_mrgxyz.e = 0;
+		utm_to_mrgxyz.f = -cA;
+		utm_to_mrgxyz.g = 0;
+		utm_to_mrgxyz.h = -mrgScale;
+		utm_to_mrgxyz.i = 0;
+		utm_to_mrgxyz.j = xMrgMid + sA * mrgMidN - cA * mrgMidE;
+		utm_to_mrgxyz.k = yMrgMid + mrgScale * mrgMidU;
+		utm_to_mrgxyz.l = sA * mrgMidE + cA * mrgMidN;
+	}
+	else {
+		utm_to_mrgxyz.a = cA;
+		utm_to_mrgxyz.b = -sA;
+		utm_to_mrgxyz.c = 0;
+		utm_to_mrgxyz.d = -sA;
+		utm_to_mrgxyz.e = -cA;
+		utm_to_mrgxyz.f = 0;
+		utm_to_mrgxyz.g = 0;
+		utm_to_mrgxyz.h = 0;
+		utm_to_mrgxyz.i = mrgScale;
+		utm_to_mrgxyz.j = xMrgMid + sA * mrgMidN - cA * mrgMidE;
+		utm_to_mrgxyz.k = yMrgMid + sA * mrgMidE + cA * mrgMidN;
+		utm_to_mrgxyz.l = -mrgScale * mrgMidU;
+	}
 }
 
-static void init_mrgxy_to_xy()
+static void init_mrgxyz_to_xyz()
 {
 	//Matrix to convert from merge SVG's page coordinates to exported page coordinates --
-	//mrgxy_to_xy = utm_to_xy * inverse(utm_to_mrgxy)
+	//mrgxyz_to_xyz = utm_to_xyz * inverse(utm_to_mrgxyz)
 
-	ctm_invert(&utm_to_mrgxy, &mrgxy_to_xy);
-	mult(&utm_to_xy, &mrgxy_to_xy);
-	ctm_invert(&mrgxy_to_xy, &xy_to_mrgxy);
+	ctm_invert(&utm_to_mrgxyz, &mrgxyz_to_xyz);
+	mult(&utm_to_xyz, &mrgxyz_to_xyz);
+	ctm_invert(&mrgxyz_to_xyz, &xyz_to_mrgxyz);
+
+	mrgxy_to_xy.a = mrgxyz_to_xyz.a;
+	mrgxy_to_xy.b = mrgxyz_to_xyz.b;
+	mrgxy_to_xy.c = mrgxyz_to_xyz.d;
+	mrgxy_to_xy.d = mrgxyz_to_xyz.e;
+	mrgxy_to_xy.e = mrgxyz_to_xyz.j;
+	mrgxy_to_xy.f = mrgxyz_to_xyz.k;
+
+	xy_to_mrgxy.a = xyz_to_mrgxyz.a;
+	xy_to_mrgxy.b = xyz_to_mrgxyz.b;
+	xy_to_mrgxy.c = xyz_to_mrgxyz.d;
+	xy_to_mrgxy.d = xyz_to_mrgxyz.e;
+	xy_to_mrgxy.e = xyz_to_mrgxyz.j;
+	xy_to_mrgxy.f = xyz_to_mrgxyz.k;
 }
 
 static int write_polygons()
@@ -2442,7 +2622,7 @@ static int outFlags()
 			//if(!fpmrg || !bUseStyles || !(iSym=find_style(symname,pfs->pFlagname))) pvb=&vb;
 			//else pvb=&flagViewBox[iSym];
 
-			outSymInstance(&vb, pfs->pFlagname, pfl->xy[0], pfl->xy[1], TRUE); //bScaled=TRUE
+			outSymInstance(&vb, pfs->pFlagname, pfl->xyz[0], pfl->xyz[1], TRUE); //bScaled=TRUE
 		}
 	}
 	return 0;
@@ -2465,13 +2645,13 @@ static int outNotes()
 	if (!pGetData(SHP_NOTELOCATION, NULL)) return 0;
 
 	SHP_TYP_NOTELOCATION sN;
-	double xy[2];
+	double xyz[3];
 	double n_x = fNoteSize * 0.15;
 	double n_y = fNoteSize * -0.15;
 
 	while (pGetData(SHP_NOTELOCATION, &sN)) {
-		mult(&utm_to_xy, sN.xyz, xy);
-		if (!isInside(xy)) continue;
+		mult(&utm_to_xyz, sN.xyz, xyz);
+		if (!isInside(xyz)) continue;
 
 		bool bOverride = false;
 
@@ -2485,18 +2665,18 @@ static int outNotes()
 		}
 
 		if (bOverride) {
-			xy[0] += labelRec.nx; xy[1] += labelRec.ny;
+			xyz[0] += labelRec.nx; xyz[1] += labelRec.ny;
 		}
 		else {
-			xy[0] += n_x; xy[1] += n_y;
+			xyz[0] += n_x; xyz[1] += n_y;
 		}
 
 		skip_depth();
 		if (flags&SVG_ADJUSTABLE) gz_printf("<g id=\"%s_\">", argv_buf);
 		OUTS("<text style=\"&N_s;\" x=\"");
-		OUTS(fltstr(xy[0]));
+		OUTS(fltstr(xyz[0]));
 		OUTS("\" y=\"");
-		OUTS(fltstr(xy[1]));
+		OUTS(fltstr(xyz[1]));
 		OUTS("\">");
 		out_xmlstr(sN.note);
 		OUTS("</text>");
@@ -2642,47 +2822,54 @@ static int outGrid()
 
 	if (fIntval*scale < width / 300) return 0;
 
-	double minE = DBL_MAX, maxE = -DBL_MAX, minN = DBL_MAX, maxN = -DBL_MAX;
-	double f, xy0[2], xy1[2], xyz0[2], xyz1[2];
-
-	grid_xMin = grid_yMin = fFrameThick;
-	grid_xMax = width - fFrameThick;
-	grid_yMax = height - fFrameThick;
-
-	GetRange(minE, maxE, minN, maxN, grid_xMin, grid_yMin);
-	GetRange(minE, maxE, minN, maxN, grid_xMin, grid_yMax);
-	GetRange(minE, maxE, minN, maxN, grid_xMax, grid_yMin);
-	GetRange(minE, maxE, minN, maxN, grid_xMax, grid_yMax);
-
-	UINT iSub = 0;
-
-	//Draw North-South gridlines --
-	f = minE - fmod(minE, pSVG->gridint);
-	if (f > minE) f -= pSVG->gridint;
-	while (f < maxE) {
-		xyz0[0] = f; xyz0[1] = maxN;
-		xyz1[0] = f; xyz1[1] = minN;
-		mult(&utm_to_xy, xyz0, xy0);
-		mult(&utm_to_xy, xyz1, xy1);
-		outGridLn(xy0, xy1, '1');
-		if (numSubs > 1 && !(iSub%numSubs)) outGridLn(xy0, xy1, '0'); //Major grid line
-		f += fIntval;
-		iSub++;
+	if (bProfile) {
+		// TODO
 	}
+	else {
+		double minE = DBL_MAX, maxE = -DBL_MAX, minN = DBL_MAX, maxN = -DBL_MAX;
+		double f, xyz0[3], xyz1[3], utm0[3], utm1[3];
 
-	//Draw West-East gridlines --
-	iSub = 0;
-	f = minN - fmod(minN, pSVG->gridint);
-	if (f > minN) f -= pSVG->gridint;
-	while (f < maxN) {
-		xyz0[0] = minE; xyz0[1] = f;
-		xyz1[0] = maxE; xyz1[1] = f;
-		mult(&utm_to_xy, xyz0, xy0);
-		mult(&utm_to_xy, xyz1, xy1);
-		outGridLn(xy0, xy1, '1');
-		if (numSubs > 1 && !(iSub%numSubs)) outGridLn(xy0, xy1, '0');
-		f += fIntval;
-		iSub++;
+		utm0[2] = 0; utm1[2] = 0;
+
+		grid_xMin = grid_yMin = fFrameThick;
+		grid_xMax = width - fFrameThick;
+		grid_yMax = height - fFrameThick;
+
+		GetRange(minE, maxE, minN, maxN, grid_xMin, grid_yMin);
+		GetRange(minE, maxE, minN, maxN, grid_xMin, grid_yMax);
+		GetRange(minE, maxE, minN, maxN, grid_xMax, grid_yMin);
+		GetRange(minE, maxE, minN, maxN, grid_xMax, grid_yMax);
+
+		UINT iSub = 0;
+
+		//Draw North-South gridlines --
+		f = minE - fmod(minE, pSVG->gridint);
+		if (f > minE) f -= pSVG->gridint;
+		while (f < maxE) {
+			utm0[0] = f; utm0[1] = maxN;
+			utm1[0] = f; utm1[1] = minN;
+			mult(&utm_to_xyz, utm0, xyz0);
+			mult(&utm_to_xyz, utm1, xyz1);
+			outGridLn(xyz0, xyz1, '1');
+			if (numSubs > 1 && !(iSub%numSubs)) outGridLn(xyz0, xyz1, '0'); //Major grid line
+			f += fIntval;
+			iSub++;
+		}
+
+		//Draw West-East gridlines --
+		iSub = 0;
+		f = minN - fmod(minN, pSVG->gridint);
+		if (f > minN) f -= pSVG->gridint;
+		while (f < maxN) {
+			utm0[0] = minE; utm0[1] = f;
+			utm1[0] = maxE; utm1[1] = f;
+			mult(&utm_to_xyz, utm0, xyz0);
+			mult(&utm_to_xyz, utm1, xyz1);
+			outGridLn(xyz0, xyz1, '1');
+			if (numSubs > 1 && !(iSub%numSubs)) outGridLn(xyz0, xyz1, '0');
+			f += fIntval;
+			iSub++;
+		}
 	}
 	return 0;
 }
@@ -2803,9 +2990,9 @@ static void get_station_ptrs(SHP_TYP_VECTOR *psV, SHP_TYP_STATION **pF, SHP_TYP_
 
 static bool isStationInFrame(SHP_TYP_STATION *pS)
 {
-	double xy[2];
-	mult(&utm_to_xy, pS->xyz, xy);
-	return isInside(xy);
+	double xyz[3];
+	mult(&utm_to_xyz, pS->xyz, xyz);
+	return isInside(xyz);
 }
 
 static int createIndex(void)
@@ -2875,7 +3062,7 @@ static int outVectors()
 	SHP_TYP_VECTOR sV;
 	SHP_TYP_STATION *pFr, *pTo;
 	SVG_TYP_TRXVECTOR rec;
-	double xyFr[2], xyTo[2];
+	double xyzFr[3], xyzTo[3];
 	char idstr[64];
 	int iVecColor;
 
@@ -2903,10 +3090,10 @@ static int outVectors()
 		rec.wVecColor = (WORD)-1;
 		trx.PutRec(&rec);
 
-		mult(&utm_to_xy, pFr->xyz, xyFr);
-		mult(&utm_to_xy, pTo->xyz, xyTo);
+		mult(&utm_to_xyz, pFr->xyz, xyzFr);
+		mult(&utm_to_xyz, pTo->xyz, xyzTo);
 
-		if (!isInside(xyFr) && !isInside(xyTo)) {
+		if (!isInside(xyzFr) && !isInside(xyzTo)) {
 			assert(0);
 			continue;
 		}
@@ -2927,13 +3114,13 @@ static int outVectors()
 		else OUTS("&V_s;");
 
 		OUTS("\" d=\"M");
-		OUTS(fltstr(xyFr[0]));
-		fltstr(idstr, xyFr[1]);
+		OUTS(fltstr(xyzFr[0]));
+		fltstr(idstr, xyzFr[1]);
 		if (*idstr != '-') OUTC(',');
 		OUTS(idstr);
 		OUTC('l');
-		OUTS(fltstr(xyTo[0] - xyFr[0]));
-		fltstr(idstr, xyTo[1] - xyFr[1]);
+		OUTS(fltstr(xyzTo[0] - xyzFr[0]));
+		fltstr(idstr, xyzTo[1] - xyzFr[1]);
 		if (*idstr != '-') OUTC(',');
 		OUTS(idstr);
 		OUTS("\"/>\r\n");
@@ -2944,17 +3131,17 @@ static int outVectors()
 static int outMarkers()
 {
 	SHP_TYP_STATION sS;
-	double xy[2];
+	double xyz[3];
 
 	if (!(flags&SVG_VECTORS) || !pGetData(SHP_STATIONS, NULL)) return 0;
 	while (pGetData(SHP_STATIONS, &sS)) {
-		mult(&utm_to_xy, sS.xyz, xy);
-		if (!isInside(xy)) continue;
+		mult(&utm_to_xyz, sS.xyz, xyz);
+		if (!isInside(xyz)) continue;
 		skip_depth();
 		OUTS("<use xlink:href=\"#_m\" width=\"2\" height=\"2\" x=\"-1\" y=\"-1\" transform=\"matrix(&_M; 0 0 -&_M; ");
-		OUTS(fltstr(xy[0]));
+		OUTS(fltstr(xyz[0]));
 		OUTC(' ');
-		OUTS(fltstr(xy[1]));
+		OUTS(fltstr(xyz[1]));
 		OUTS(")\"/>\r\n");
 	}
 	return 0;
@@ -2963,19 +3150,26 @@ static int outMarkers()
 static void outLrudBox(char *fbuf, SHP_TYP_LRUD &sL)
 {
 #define LRUD_OFFSET 1.0 //offset in meters of left edge of box from bar's right endpoint
+
+	if (bProfile) {
+		// TODO
+		return;
+	}
+
 	int i;
-	double a, h, p[8];
+	double a, h, p[12];
 	double l = 0.0;
 
-	for (i = 0; i < 2; i++) {
-		p[i] = sL.xyTo[i] - sL.xyFr[i];
+	for (i = 0; i < 3; i++) {
+		p[i] = sL.xyzTo[i] - sL.xyzFr[i];
 		l += p[i] * p[i];
 	}
 	l = sqrt(l); //length of bar in meters
 	a = atan2(p[0], p[1]); //UTM direction of bar
 	//Define box's center of rotation near bar's right end (TO position) --
-	p[0] = sL.xyTo[0] + LRUD_OFFSET * sin(a);
-	p[1] = sL.xyTo[1] + LRUD_OFFSET * cos(a);
+	p[0] = sL.xyzTo[0] + LRUD_OFFSET * sin(a);
+	p[1] = sL.xyzTo[1] + LRUD_OFFSET * cos(a);
+	p[2] = sL.xyzTo[2];
 
 	//Define TL, TR, BR corner points by simply traversing to them.
 	//To avoid sin/cos we could have moved orthogonally and used a rotation matrix --
@@ -2984,30 +3178,30 @@ static void outLrudBox(char *fbuf, SHP_TYP_LRUD &sL)
 	p[0] += h * sin(a);
 	p[1] += h * cos(a);
 	a += PI2;
-	p[2] = p[0] + l * sin(a);
-	p[3] = p[1] + l * cos(a);
+	p[3] = p[0] + l * sin(a);
+	p[4] = p[1] + l * cos(a);
 	a += PI2;
 	h += sL.dn;
-	p[4] = p[2] + h * sin(a);
-	p[5] = p[3] + h * cos(a);
+	p[6] = p[3] + h * sin(a);
+	p[7] = p[4] + h * cos(a);
 	a += PI2;
-	p[6] = p[4] + l * sin(a);
-	p[7] = p[5] + l * cos(a);
+	p[9] = p[6] + l * sin(a);
+	p[10] = p[7] + l * cos(a);
 
 	//Convert to page coordinates --
-	for (i = 0; i < 8; i += 2) {
-		mult(&utm_to_xy, p + i);
+	for (i = 0; i < 12; i += 3) {
+		mult(&utm_to_xyz, p + i);
 		if (!isInside(p + i)) return;
 	}
-	for (i = 6; i; i -= 2) {
-		p[i + 1] -= p[i - 1];
-		p[i] -= p[i - 2];
+	for (i = 9; i; i -= 3) {
+		p[i + 1] -= p[i - 2];
+		p[i] -= p[i - 3];
 	}
 
 	skip_depth();
 	char cmd = 'M';
 	OUTS("<path d=\"");
-	for (i = 0; i < 8; i += 2) {
+	for (i = 0; i < 12; i += 3) {
 		OUTC(cmd);
 		OUTS(fltstr(p[i]));
 		fltstr(fbuf, p[i + 1]);
@@ -3021,28 +3215,28 @@ static void outLrudBox(char *fbuf, SHP_TYP_LRUD &sL)
 static int outLruds()
 {
 	SHP_TYP_LRUD sL;
-	double xyFr[2], xyTo[2];
+	double xyzFr[3], xyzTo[3];
 	char fbuf[40];
 
 	if (!pGetData(SHP_LRUDS, NULL)) return 0;
 
 	while (pGetData(SHP_LRUDS, &sL)) {
 
-		mult(&utm_to_xy, sL.xyFr, xyFr);
-		mult(&utm_to_xy, sL.xyTo, xyTo);
+		mult(&utm_to_xyz, sL.xyzFr, xyzFr);
+		mult(&utm_to_xyz, sL.xyzTo, xyzTo);
 
-		if (!isInside(xyFr) && !isInside(xyTo)) continue;
+		if (!isInside(xyzFr) && !isInside(xyzTo)) continue;
 
 		skip_depth();
 		OUTS("<path d=\"M"); //All lruds have same style
 
-		OUTS(fltstr(xyFr[0]));
-		fltstr(fbuf, xyFr[1]);
+		OUTS(fltstr(xyzFr[0]));
+		fltstr(fbuf, xyzFr[1]);
 		if (*fbuf != '-') OUTC(',');
 		OUTS(fbuf);
 		OUTC('l');
-		OUTS(fltstr(xyTo[0] - xyFr[0]));
-		fltstr(fbuf, xyTo[1] - xyFr[1]);
+		OUTS(fltstr(xyzTo[0] - xyzFr[0]));
+		fltstr(fbuf, xyzTo[1] - xyzFr[1]);
 		if (*fbuf != '-') OUTC(',');
 		OUTS(fbuf);
 		OUTS("\"/>\r\n");
@@ -3059,13 +3253,13 @@ static int outLabels()
 	if (!pGetData(SHP_STATIONS, NULL)) return 0;
 
 	SHP_TYP_STATION sS;
-	double xy[2];
+	double xyz[3];
 	double l_x = scaleRatio * (pSVG->offLabelX - 1);
 	double l_y = scaleRatio * (pSVG->offLabelY - 1) + fLabelSize;
 
 	while (pGetData(SHP_STATIONS, &sS)) {
-		mult(&utm_to_xy, sS.xyz, xy);
-		if (!isInside(xy)) continue;
+		mult(&utm_to_xyz, sS.xyz, xyz);
+		if (!isInside(xyz)) continue;
 
 		bool bOverride = false;
 
@@ -3080,18 +3274,18 @@ static int outLabels()
 		}
 
 		if (bOverride) {
-			xy[0] += labelRec.sx; xy[1] += labelRec.sy;
+			xyz[0] += labelRec.sx; xyz[1] += labelRec.sy;
 		}
 		else {
-			xy[0] += l_x; xy[1] += l_y;
+			xyz[0] += l_x; xyz[1] += l_y;
 		}
 
 		skip_depth();
 		if (flags&SVG_ADJUSTABLE) gz_printf("<g id=\"%s\">", argv_buf);
 		OUTS("<text style=\"&L_s;\" x=\"");
-		OUTS(fltstr(xy[0]));
+		OUTS(fltstr(xyz[0]));
 		OUTS("\" y=\"");
-		OUTS(fltstr(xy[1]));
+		OUTS(fltstr(xyz[1]));
 		OUTS("\">");
 		if ((flags&SVG_SHOWPREFIX) && sS.prefix[0]) {
 			out_xmlstr(sS.prefix);
@@ -3869,8 +4063,8 @@ static int GetFlagData()
 			}
 			//if(pFS[sFL.flag_id].wHidden) continue;
 			//check and convert coordinates --
-			mult(&utm_to_xy, sFL.xyz, pFL[l].xy);
-			if (isInside(pFL[l].xy)) {
+			mult(&utm_to_xyz, sFL.xyz, pFL[l].xyz);
+			if (isInside(pFL[l].xyz)) {
 				pFL[l].flag_id = sFL.flag_id;
 				pFS[sFL.flag_id].wFlag++;
 				l++;
@@ -3896,13 +4090,13 @@ static void getNumNoteLocations()
 {
 	SHP_TYP_NOTELOCATION sN;
 	UINT count;
-	double xy[2];
+	double xyz[3];
 
 	count = 0;
 	if (pGetData(SHP_NOTELOCATION, NULL)) {
 		while (pGetData(SHP_NOTELOCATION, &sN)) {
-			mult(&utm_to_xy, sN.xyz, xy);
-			if (isInside(xy)) count++;
+			mult(&utm_to_xyz, sN.xyz, xyz);
+			if (isInside(xyz)) count++;
 		}
 	}
 	numNoteLocations = count;
@@ -3921,18 +4115,22 @@ static void init_constants()
 	strcpy(height_str, p);
 	height = atof(height_str);
 
+	bProfile = pSVG->profile;
+
 	xMid = 0.5*width;
 	yMid = 0.5*height;
 	grid_xMin = grid_yMin = 0.0;
 	grid_xMax = width;
 	grid_yMax = height;
+
 	viewA = pSVG->view*U_DEGREES;
 	sinA = sin(viewA);
 	cosA = cos(viewA);
 	midE = pSVG->centerEast;
 	midN = pSVG->centerNorth;
+	midU = pSVG->centerUp;
 	scale = pSVG->scale; //pts per meter
-	init_utm_to_xy();
+	init_utm_to_xyz();
 
 	numNoteLocations = numFlagLocations = numFlagStyles = 0;
 	pFS = NULL;
@@ -4199,7 +4397,7 @@ static int addto_vnode(LPCSTR *attr)
 		return 0; //Must be a vertical shot
 	}
 
-	//Correct for AI id renaming bug!!
+	//Correct for Adobe Illustrator id renaming bug!!
 	if (idstr[strlen(idstr) - 1] == '_') {
 		trim_idsuffix((char *)idstr);
 	}
@@ -4304,8 +4502,9 @@ static int addto_vnode(LPCSTR *attr)
 
 	double abs_diffx, abs_diffy, bxy[2], mxy[2];
 
-	mult(&utm_to_mrgxy, rec.fr_xy, bxy);
-	mult(&utm_to_mrgxy, rec.to_xy, mxy);
+	// TODO handle elevation here in profile view -- not sure if we can get it from trx?
+	mult_xy(&utm_to_mrgxyz, rec.fr_xy, bxy);
+	mult_xy(&utm_to_mrgxyz, rec.to_xy, mxy);
 
 	//Save maximum absolute change in coordinates --
 	abs_diffx = abs_max(bxy[0] - ep0.x, mxy[0] - ep1.x);
@@ -5941,7 +6140,7 @@ static int parse_georef()
 			xMrgMid *= (0.5*mrgScale);
 			yMrgMid *= (0.5*mrgScale);
 
-			init_utm_to_mrgxy();
+			init_utm_to_mrgxyz();
 
 			if (bNTW) {
 				//not necessary? 
@@ -5951,7 +6150,7 @@ static int parse_georef()
 				ntw_hdr.datumE = mrgMidE;	   //world East coordinate of (0,0)
 				ntw_hdr.datumN = mrgMidN;	   //world North coordinate of (0,0)
 			}
-			else init_mrgxy_to_xy();
+			else init_mrgxyz_to_xyz();
 
 			scaleRatio = scale / mrgScale;
 
@@ -6507,7 +6706,7 @@ static void scanv_endElement(void *userData, LPCSTR el)
 	}
 	else if (iLevel == -4) {
 		if (!strcmp(el, "pattern")) iLevel = 0;
-	}
+	} 
 
 	//w2d_Ref --
 	else if (!strcmp(el, "text")) {
