@@ -3158,65 +3158,69 @@ static void outLrudBox(char *fbuf, SHP_TYP_LRUD &sL)
 {
 #define LRUD_OFFSET 1.0 //offset in meters of left edge of box from bar's right/bottom endpoint
 	int i;
-	double a, h, p[12];
-	double l = 0.0;
+	double p[12];
+	double rt[3], up[3];
 
-	for (i = 0; i < 3; i++) {
-		p[i] = sL.xyzTo[i] - sL.xyzFr[i];
-		l += p[i] * p[i];
-	}
-	l = sqrt(l); //length of bar in meters
-	//Define box's center of rotation near bar's right/bottom end (TO position) --
-	double offsetRatio = (l + LRUD_OFFSET) / l;
-	p[0] = sL.xyzFr[0] + p[0] * offsetRatio;
-	p[1] = sL.xyzFr[1] + p[1] * offsetRatio;
-	p[2] = sL.xyzFr[2] + p[2] * offsetRatio;
+	// compute right unit vector in world coordates
+	rt[0] = sL.xyzTo[0] - sL.xyzFr[0];
+	rt[1] = sL.xyzTo[1] - sL.xyzFr[1];
+	rt[2] = sL.xyzTo[2] - sL.xyzFr[2];
+	double len = sqrt(rt[0] * rt[0] + rt[1] * rt[1] + rt[2] * rt[2]);
+	rt[0] /= len;
+	rt[1] /= len;
+	rt[2] /= len;
+
+	// compute p[0-2] as the left center of the box (plan) or top center (profile)
+	// in the next step we'll set it to top left
+	p[0] = sL.xyzTo[0] + rt[0] * LRUD_OFFSET;
+	p[1] = sL.xyzTo[1] + rt[1] * LRUD_OFFSET;
+	p[2] = sL.xyzTo[2] + rt[2] * LRUD_OFFSET;
 
 	if (bProfile) {
-		double top = p[2];
-		double bottom = top - sL.up - sL.dn;
-		// compute left/right relative to the view azimuth
-		double leftE = p[0] - sL.lt * cosA;
-		double leftN = p[1] - sL.lt * -sinA;
-		double rightE = leftE + (sL.lt + sL.rt) * cosA;
-		double rightN = leftN + (sL.lt + sL.rt) * -sinA;
-		p[0] = leftE;
-		p[1] = leftN;
-		p[2] = top;
-		p[3] = rightE;
-		p[4] = rightN;
-		p[5] = top;
-		p[6] = rightE;
-		p[7] = rightN;
-		p[8] = bottom;
-		p[9] = leftE;
-		p[10] = leftN;
-		p[11] = bottom;
+		// in profile we orient the box to the page
+		rt[0] = cosA;
+		rt[1] = -sinA;
+		rt[2] = 0;
+		up[0] = 0;
+		up[1] = 0;
+		up[2] = 1;
+		// p is currently at what we want to be top center, move to top left
+		p[0] -= rt[0] * sL.lt;
+		p[1] -= rt[1] * sL.lt;
 	}
 	else {
-		a = atan2(p[0], p[1]); //UTM direction of bar
-		//Define TL, TR, BR corner points by simply traversing to them.
-		//To avoid sin/cos we could have moved orthogonally and used a rotation matrix --
-		a -= PI2;
-		h = sL.up;
-		p[0] += h * sin(a);
-		p[1] += h * cos(a);
-		a += PI2;
-		p[3] = p[0] + l * sin(a);
-		p[4] = p[1] + l * cos(a);
-		a += PI2;
-		h += sL.dn;
-		p[6] = p[3] + h * sin(a);
-		p[7] = p[4] + h * cos(a);
-		a += PI2;
-		p[9] = p[6] + l * sin(a);
-		p[10] = p[7] + l * cos(a);
+		// rotate 90 degrees to get up unit vector
+		up[0] = -rt[1];
+		up[1] = rt[0];
+		up[2] = 0;
+		// p is currently at what we want to be left center, move to top left
+		p[0] += up[0] * sL.up;
+		p[1] += up[1] * sL.up;
 	}
 
+	//Define TL, TR, BR corner points by simply traversing to them.
+	double w = sL.lt + sL.rt;
+	double h = sL.up + sL.dn;
+	// top right
+	p[3] = p[0] + rt[0] * w;
+	p[4] = p[1] + rt[1] * w;
+	p[5] = p[2] + rt[2] * w;
+	// bottom right
+	p[6] = p[3] - up[0] * h;
+	p[7] = p[4] - up[1] * h;
+	p[8] = p[5] - up[2] * h;
+	// bottom left
+	p[9] = p[6] - rt[0] * w;
+	p[10] = p[7] - rt[1] * w;
+	p[11] = p[8] - rt[2] * w;
+
 	//Convert to page coordinates --
-	for (i = 0; i < 12; i += 3) {
-		mult(&utm_to_xyz, p + i);
-		if (!isInside(p + i)) return;
+	mult(&utm_to_xyz, p);
+	mult(&utm_to_xyz, p + 3);
+	mult(&utm_to_xyz, p + 6);
+	mult(&utm_to_xyz, p + 9);
+	if (!isInside(p) && !isInside(p + 3) && !isInside(p + 6) && !isInside(p + 9)) {
+		return;
 	}
 	for (i = 9; i; i -= 3) {
 		p[i + 1] -= p[i - 2];
@@ -3224,15 +3228,13 @@ static void outLrudBox(char *fbuf, SHP_TYP_LRUD &sL)
 	}
 
 	skip_depth();
-	char cmd = 'M';
 	OUTS("<path d=\"");
 	for (i = 0; i < 12; i += 3) {
-		OUTC(cmd);
+		OUTC(i == 0 ? 'M' : 'l');
 		OUTS(fltstr(p[i]));
 		fltstr(fbuf, p[i + 1]);
 		if (*fbuf != '-') OUTC(',');
 		OUTS(fbuf);
-		cmd = 'l';
 	}
 	OUTS("z\"/>\r\n");
 }
