@@ -92,8 +92,10 @@ extern "C" {
 		SVG_ERR_FINALMRG,
 		SVG_ERR_W2DGROUP,
 		SVG_ERR_W2DDUP,
+		SVG_ERR_REFVIEW,
+		SVG_ERR_PROFILEAZIMUTH,
 		SVG_ERR_UNKNOWN,
-		SVG_ERR_ENDSCAN
+		SVG_ERR_ENDSCAN,
 	};
 
 	//SVG advanced dialog flags --
@@ -300,9 +302,10 @@ extern "C" {
 #endif
 
 	typedef struct {
+		SHP_TYP_STATION station;
 		double xyzFr[3];
 		double xyzTo[3];
-		double up, dn;
+		double lt, rt, up, dn;
 		byte flags;
 	} SHP_TYP_LRUD;
 

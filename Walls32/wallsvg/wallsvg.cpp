@@ -89,8 +89,8 @@ static CTRXFile trx;
 
 #pragma pack(1)
 typedef struct {
-	double fr_xy[2];
-	double to_xy[2];
+	double fr_xyz[3];
+	double to_xyz[3];
 	WORD wVecColor;
 } SVG_TYP_TRXVECTOR;
 
@@ -304,6 +304,7 @@ static SVG_VIEWBOX flagViewBox[MAX_STYLES + 1];
 static SVG_PATHPOINT legendPt, *pLegendPt;
 //static int skiplin[MAX_VEC_SKIPPED];
 static double max_dsquared, max_dsq_x, max_dsq_y;
+static bool mrgProfile;
 static double mrgViewA, mrgCosA, mrgSinA, xMrgMid, yMrgMid, xMrgMin, yMrgMin, xMrgMax, yMrgMax;
 static double mrgMidE, mrgMidN, mrgMidU, mrgScale, scaleRatio;
 static UINT node_visits;
@@ -638,6 +639,8 @@ static NPSTR errstr[] = {
   "File creation error during final merge",
   "Unexpected w2d_%s layer encountered",
   "Duplicate wd2_%s layer encountered",
+  "View type (plan or profile) doesn't match w2d_Ref",
+  "View azimuth doesn't match w2d_Ref",
   "Unknown error"
 };
 
@@ -983,7 +986,7 @@ static void init_utm_to_mrgxyz()
 	double sA = mrgScale * mrgSinA;
 	double cA = mrgScale * mrgCosA;
 
-	if (bProfile) {
+	if (mrgProfile) {
 		utm_to_mrgxyz.a = cA;
 		utm_to_mrgxyz.b = 0;
 		utm_to_mrgxyz.c = -sA;
@@ -2911,7 +2914,7 @@ static int outRef()
 	OUTS(fltstr(height - fFrameThick - 0.25*fTitleSize));
 	OUTS("\">");
 	out_xmlstr(pSVG->title);
-	OUTS(" Plan: ");
+	OUTS(bProfile ? " Profile: " : " Plan: ");
 	OUTS(fltstr(pSVG->view, 6));
 	OUTS(" Scale: 1:");
 	OUTS(fltstr((72 * 12) / (scale*0.3048), 6));
@@ -2927,6 +2930,10 @@ static int outRef()
 	OUTS(fltstr(f*midE, 3));
 	OUTC(' ');
 	OUTS(fltstr(f*midN, 3));
+	if (bProfile) {
+		OUTC(' ');
+		OUTS(fltstr(f*midU, 3));
+	}
 	OUTS("</text>\r\n");
 	return 0;
 }
@@ -3034,8 +3041,8 @@ static int createIndex(void)
 	while (pGetData(SHP_VECTORS, &sV)) {
 		get_station_ptrs(&sV, &pFr, &pTo);
 		if (flags&SVG_MERGEDCONTENT) {
-			memcpy(rec.fr_xy, pFr->xyz, sizeof(rec.fr_xy));
-			memcpy(rec.to_xy, pTo->xyz, sizeof(rec.to_xy));
+			memcpy(rec.fr_xyz, pFr->xyz, sizeof(rec.fr_xyz));
+			memcpy(rec.to_xyz, pTo->xyz, sizeof(rec.to_xyz));
 		}
 		if (!bNTW) {
 			if (isStationInFrame(pFr) || isStationInFrame(pTo)) {
@@ -3149,13 +3156,7 @@ static int outMarkers()
 
 static void outLrudBox(char *fbuf, SHP_TYP_LRUD &sL)
 {
-#define LRUD_OFFSET 1.0 //offset in meters of left edge of box from bar's right endpoint
-
-	if (bProfile) {
-		// TODO
-		return;
-	}
-
+#define LRUD_OFFSET 1.0 //offset in meters of left edge of box from bar's right/bottom endpoint
 	int i;
 	double a, h, p[12];
 	double l = 0.0;
@@ -3165,28 +3166,52 @@ static void outLrudBox(char *fbuf, SHP_TYP_LRUD &sL)
 		l += p[i] * p[i];
 	}
 	l = sqrt(l); //length of bar in meters
-	a = atan2(p[0], p[1]); //UTM direction of bar
-	//Define box's center of rotation near bar's right end (TO position) --
-	p[0] = sL.xyzTo[0] + LRUD_OFFSET * sin(a);
-	p[1] = sL.xyzTo[1] + LRUD_OFFSET * cos(a);
-	p[2] = sL.xyzTo[2];
+	//Define box's center of rotation near bar's right/bottom end (TO position) --
+	double offsetRatio = (l + LRUD_OFFSET) / l;
+	p[0] = sL.xyzFr[0] + p[0] * offsetRatio;
+	p[1] = sL.xyzFr[1] + p[1] * offsetRatio;
+	p[2] = sL.xyzFr[2] + p[2] * offsetRatio;
 
-	//Define TL, TR, BR corner points by simply traversing to them.
-	//To avoid sin/cos we could have moved orthogonally and used a rotation matrix --
-	a -= PI2;
-	h = sL.up;
-	p[0] += h * sin(a);
-	p[1] += h * cos(a);
-	a += PI2;
-	p[3] = p[0] + l * sin(a);
-	p[4] = p[1] + l * cos(a);
-	a += PI2;
-	h += sL.dn;
-	p[6] = p[3] + h * sin(a);
-	p[7] = p[4] + h * cos(a);
-	a += PI2;
-	p[9] = p[6] + l * sin(a);
-	p[10] = p[7] + l * cos(a);
+	if (bProfile) {
+		double top = p[2];
+		double bottom = top - sL.up - sL.dn;
+		// compute left/right relative to the view azimuth
+		double leftE = p[0] - sL.lt * cosA;
+		double leftN = p[1] - sL.lt * -sinA;
+		double rightE = leftE + (sL.lt + sL.rt) * cosA;
+		double rightN = leftN + (sL.lt + sL.rt) * -sinA;
+		p[0] = leftE;
+		p[1] = leftN;
+		p[2] = top;
+		p[3] = rightE;
+		p[4] = rightN;
+		p[5] = top;
+		p[6] = rightE;
+		p[7] = rightN;
+		p[8] = bottom;
+		p[9] = leftE;
+		p[10] = leftN;
+		p[11] = bottom;
+	}
+	else {
+		a = atan2(p[0], p[1]); //UTM direction of bar
+		//Define TL, TR, BR corner points by simply traversing to them.
+		//To avoid sin/cos we could have moved orthogonally and used a rotation matrix --
+		a -= PI2;
+		h = sL.up;
+		p[0] += h * sin(a);
+		p[1] += h * cos(a);
+		a += PI2;
+		p[3] = p[0] + l * sin(a);
+		p[4] = p[1] + l * cos(a);
+		a += PI2;
+		h += sL.dn;
+		p[6] = p[3] + h * sin(a);
+		p[7] = p[4] + h * cos(a);
+		a += PI2;
+		p[9] = p[6] + l * sin(a);
+		p[10] = p[7] + l * cos(a);
+	}
 
 	//Convert to page coordinates --
 	for (i = 0; i < 12; i += 3) {
@@ -3221,7 +3246,12 @@ static int outLruds()
 	if (!pGetData(SHP_LRUDS, NULL)) return 0;
 
 	while (pGetData(SHP_LRUDS, &sL)) {
-
+		if (bProfile) {
+			memcpy(sL.xyzFr, sL.station.xyz, sizeof(sL.xyzFr));
+			memcpy(sL.xyzTo, sL.station.xyz, sizeof(sL.xyzTo));
+			sL.xyzFr[2] += sL.up;
+			sL.xyzTo[2] -= sL.dn;
+		}
 		mult(&utm_to_xyz, sL.xyzFr, xyzFr);
 		mult(&utm_to_xyz, sL.xyzTo, xyzTo);
 
@@ -4500,28 +4530,28 @@ static int addto_vnode(LPCSTR *attr)
 		return 0;
 	}
 
-	double abs_diffx, abs_diffy, bxy[2], mxy[2];
+	double abs_diffx, abs_diffy, bxyz[3], mxyz[3];
 
 	// TODO handle elevation here in profile view -- not sure if we can get it from trx?
-	mult_xy(&utm_to_mrgxyz, rec.fr_xy, bxy);
-	mult_xy(&utm_to_mrgxyz, rec.to_xy, mxy);
+	mult(&utm_to_mrgxyz, rec.fr_xyz, bxyz);
+	mult(&utm_to_mrgxyz, rec.to_xyz, mxyz);
 
 	//Save maximum absolute change in coordinates --
-	abs_diffx = abs_max(bxy[0] - ep0.x, mxy[0] - ep1.x);
-	abs_diffy = abs_max(bxy[1] - ep0.y, mxy[1] - ep1.y);
+	abs_diffx = abs_max(bxyz[0] - ep0.x, mxyz[0] - ep1.x);
+	abs_diffy = abs_max(bxyz[1] - ep0.y, mxyz[1] - ep1.y);
 
 	//Parametric form --
 	ep1.x -= ep0.x; ep1.y -= ep0.y;
-	mxy[0] -= bxy[0];
-	mxy[1] -= bxy[1];
+	mxyz[0] -= bxyz[0];
+	mxyz[1] -= bxyz[1];
 
 	//Don't use a vector with squared hz length less than min_veclen_sq --
-	if (length_small(&ep1.x) || length_small(mxy)) {
+	if (length_small(&ep1.x) || length_small(mxyz)) {
 		return 0;
 	}
 
 	//Check vector orientation
-	double d = fabs(atan2(ep1.y, ep1.x) - atan2(mxy[1], mxy[0]));
+	double d = fabs(atan2(ep1.y, ep1.x) - atan2(mxyz[1], mxyz[0]));
 	if (d > PI) d = 2 * PI - d;
 	if (d > PI / 2) {
 		skipcnt++;
@@ -4551,8 +4581,8 @@ static int addto_vnode(LPCSTR *attr)
 	}
 
 	for (e = 0; e < 2; e++) {
-		pn->Bn_xy[e] = bxy[e];
-		pn->Mn_xy[e] = mxy[e];
+		pn->Bn_xy[e] = bxyz[e];
+		pn->Mn_xy[e] = mxyz[e];
 	}
 
 	veccnt++;
@@ -6122,12 +6152,20 @@ static int parse_georef()
 {
 	LPCSTR p;
 	//Tamapatz Project  Plan: 90  Scale: 1:75  Frame: 17.15x13.33m  Center: 489311.3 2393778.12
-	if (reflen && (p = strstr(refbuf, " Plan: "))) {
+	//Tamapatz Project  Profile: 90  Scale: 1:75  Frame: 17.15x13.33m  Center: 489311.3 2393778.12 432.86
+	mrgProfile = reflen && (p = strstr(refbuf, " Profile: ")) != NULL;
+	if (reflen && (mrgProfile || (p = strstr(refbuf, " Plan: ")))) {
+		if (mrgProfile != bProfile) {
+			return SVG_ERR_REFVIEW;
+		}
 		char cUnits;
-		int numval = sscanf(p + 7, "%lf Scale: 1:%lf Frame: %lfx%lf%c Center: %lf %lf",
-			&mrgViewA, &mrgScale, &xMrgMid, &yMrgMid, &cUnits, &mrgMidE, &mrgMidN);
-		if (numval == 7 && mrgScale > 0.0) {
+		int numval = sscanf(p + (mrgProfile ? 10 : 7), "%lf Scale: 1:%lf Frame: %lfx%lf%c Center: %lf %lf %lf",
+			&mrgViewA, &mrgScale, &xMrgMid, &yMrgMid, &cUnits, &mrgMidE, &mrgMidN, &mrgMidU);
+		if (numval >= 7 && mrgScale > 0.0) {
 			mrgViewA *= U_DEGREES;
+			if (bProfile && mrgViewA != viewA) {
+				return SVG_ERR_PROFILEAZIMUTH;
+			}
 			mrgSinA = sin(mrgViewA);
 			mrgCosA = cos(mrgViewA);
 			if (cUnits == 'f') {
@@ -6135,6 +6173,7 @@ static int parse_georef()
 				yMrgMid *= 0.3048;
 				mrgMidE *= 0.3048;
 				mrgMidN *= 0.3048;
+				mrgMidU *= 0.3048;
 			}
 			mrgScale = (72 * 12.0 / 0.3048) / mrgScale;  //page pts per world meter
 			xMrgMid *= (0.5*mrgScale);
