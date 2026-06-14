@@ -2816,6 +2816,22 @@ static void outGridLn(double *xy0, double *xy1, char c)
 	OUTS("\"/>\r\n");
 }
 
+/// returns the greatest multiple of b <= a
+static double mod_floor(double a, double b) {
+	double rem = fmod(a, b);
+	// Adjust if the remainder is non-zero and operands have opposite signs
+	if (rem != 0 && ((a < 0) ^ (b < 0))) {
+		rem += b;
+	}
+	return a - rem;
+}
+
+/// returns the least multiple of b >= a
+static double mod_ceil(double a, double b) {
+	double floor = mod_floor(a, b);
+	return floor == a ? a : floor + b;
+}
+
 static int outGrid()
 {
 	if (!(flags&SVG_GRID)) return 0;
@@ -2825,18 +2841,51 @@ static int outGrid()
 
 	if (fIntval*scale < width / 300) return 0;
 
+	grid_xMin = grid_yMin = fFrameThick;
+	grid_xMax = width - fFrameThick;
+	grid_yMax = height - fFrameThick;
+
 	if (bProfile) {
-		// TODO
+		double xyz0[2], xyz1[2];
+
+		//Draw Up-Down gridlines
+		int count = (int)ceil((grid_xMax - xMid) / fIntval);
+		for (int i = 0; i < count; i++) {
+			xyz0[0] = xMid + i * fIntval * scale;
+			xyz0[1] = grid_yMin;
+			xyz1[0] = xyz0[0];
+			xyz0[1] = grid_yMax;
+			outGridLn(xyz0, xyz1, '1');
+			if (numSubs > 1 && !(i%numSubs)) outGridLn(xyz0, xyz1, '0'); //Major grid line
+			if (i > 0) {
+				xyz0[0] = xyz1[0] = xMid - i * fIntval * scale;
+				outGridLn(xyz0, xyz1, '1');
+				if (numSubs > 1 && !(i%numSubs)) outGridLn(xyz0, xyz1, '0'); //Major grid line
+			}
+		}
+
+		//Draw Left-Right gridlines
+		double minUp = midU - (grid_yMax - yMid) / scale;
+		double maxUp = midU + (yMid - grid_yMin) / scale;
+
+		xyz0[0] = grid_xMin;
+		xyz1[0] = grid_xMax;
+
+		double up = mod_ceil(minUp, fIntval);
+		UINT iSub = round((up - mod_floor(minUp, pSVG->gridint)) / fIntval);
+		while (up < maxUp) {
+			xyz0[1] = xyz1[1] = yMid - (up - midU) * scale;
+			outGridLn(xyz0, xyz1, '1');
+			if (numSubs > 1 && !(iSub%numSubs)) outGridLn(xyz0, xyz1, '0'); //Major grid line
+			up += fIntval;
+			iSub++;
+		}
 	}
 	else {
 		double minE = DBL_MAX, maxE = -DBL_MAX, minN = DBL_MAX, maxN = -DBL_MAX;
 		double f, xyz0[3], xyz1[3], utm0[3], utm1[3];
 
 		utm0[2] = 0; utm1[2] = 0;
-
-		grid_xMin = grid_yMin = fFrameThick;
-		grid_xMax = width - fFrameThick;
-		grid_yMax = height - fFrameThick;
 
 		GetRange(minE, maxE, minN, maxN, grid_xMin, grid_yMin);
 		GetRange(minE, maxE, minN, maxN, grid_xMin, grid_yMax);
