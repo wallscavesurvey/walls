@@ -1562,12 +1562,6 @@ void CSegView::OnSvgExport()
 	BOOL bView;
 
 	/*
-	if (InitPlotView()->m_bProfile) {
-		AfxMessageBox(IDS_ERR_SVGPROFILE);
-		return;
-	}
-	/
-	/*
 	if(LEN_ISFEET() && CPrjDoc::m_pReviewNode->InheritedState(FLG_GRIDMASK)) {
 		CMsgBox(MB_ICONEXCLAMATION,IDS_ERR_GRIDFEET,"n SVG");
 		return;
