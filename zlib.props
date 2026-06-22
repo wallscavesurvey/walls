@@ -32,6 +32,6 @@
 	 versions do not match.  The zlib version used in this build is recorded
 	 below:
      -->
-    <ZLibSrcDir>$(SolutionDir)\zlib-1.2.8</ZLibSrcDir>
+    <ZLibSrcDir>$(MSBuildThisFileDirectory)\zlib-1.2.8</ZLibSrcDir>
   </PropertyGroup>
 </Project>

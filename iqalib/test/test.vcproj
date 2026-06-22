@@ -21,7 +21,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="$(SolutionDir)\build\debug"
+			OutputDirectory="$(ProjectDir)\..\..\build\debug"
 			IntermediateDirectory="$(OutDir)\int"
 			ConfigurationType="1"
 			CharacterSet="1"
@@ -44,7 +44,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)/include&quot;;&quot;$(ProjectDir)/include&quot;"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)/../../include&quot;;&quot;$(ProjectDir)/include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
@@ -97,7 +97,7 @@
 		</Configuration>
 		<Configuration
 			Name="Debug|x64"
-			OutputDirectory="$(SolutionDir)\build\debug"
+			OutputDirectory="$(ProjectDir)\..\..\build\debug"
 			IntermediateDirectory="$(OutDir)\int"
 			ConfigurationType="1"
 			CharacterSet="1"
@@ -121,7 +121,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)/include&quot;;&quot;$(ProjectDir)/include&quot;"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)/../../include&quot;;&quot;$(ProjectDir)/include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE"
 				MinimalRebuild="true"
 				ExceptionHandling="0"
@@ -173,7 +173,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)\build\release"
+			OutputDirectory="$(ProjectDir)\..\..\build\release"
 			IntermediateDirectory="$(OutDir)\int"
 			ConfigurationType="1"
 			CharacterSet="1"
@@ -200,7 +200,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)/include&quot;;&quot;$(ProjectDir)/include&quot;"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)/../../include&quot;;&quot;$(ProjectDir)/include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				ExceptionHandling="0"
 				RuntimeLibrary="2"
@@ -256,7 +256,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|x64"
-			OutputDirectory="$(SolutionDir)\build\release"
+			OutputDirectory="$(ProjectDir)\..\..\build\release"
 			IntermediateDirectory="$(OutDir)\int"
 			ConfigurationType="1"
 			CharacterSet="1"
@@ -284,7 +284,7 @@
 				InlineFunctionExpansion="2"
 				EnableIntrinsicFunctions="true"
 				FavorSizeOrSpeed="1"
-				AdditionalIncludeDirectories="&quot;$(SolutionDir)/include&quot;;&quot;$(ProjectDir)/include&quot;"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)/../../include&quot;;&quot;$(ProjectDir)/include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
 				ExceptionHandling="0"
 				RuntimeLibrary="2"
