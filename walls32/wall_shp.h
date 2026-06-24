@@ -92,8 +92,10 @@ extern "C" {
 		SVG_ERR_FINALMRG,
 		SVG_ERR_W2DGROUP,
 		SVG_ERR_W2DDUP,
+		SVG_ERR_REFVIEW,
+		SVG_ERR_PROFILEAZIMUTH,
 		SVG_ERR_UNKNOWN,
-		SVG_ERR_ENDSCAN
+		SVG_ERR_ENDSCAN,
 	};
 
 	//SVG advanced dialog flags --
@@ -218,12 +220,14 @@ extern "C" {
 #define SIZ_DIFF_IDSTR 80
 
 	struct SVG_VIEWFORMAT {
+		bool profile;  /* true = profile view, false = plan view */
 		double view;   /* plan orientation in degrees*/
 		double width;  /* frame width in points*/
 		double height; /* frame height in points*/
 		double scale;  /* scale*meters=points */
 		double centerEast; /* metric coordinates of frame center*/
 		double centerNorth;
+		double centerUp;
 		double gridint;  /*grid interval in survey units (feet or meters)*/
 		int gridsub;  /*number of grid subintervals*/
 		float labelSize; /*points*/
@@ -298,9 +302,10 @@ extern "C" {
 #endif
 
 	typedef struct {
-		double xyFr[2];
-		double xyTo[2];
-		double up, dn;
+		SHP_TYP_STATION station;
+		double xyzFr[3];
+		double xyzTo[3];
+		double lt, rt, up, dn;
 		byte flags;
 	} SHP_TYP_LRUD;
 
