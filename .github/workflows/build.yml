@@ -1,0 +1,422 @@
+# GitHub Actions CI/CD for Walls Cave Survey Software
+# Requires Windows runner with Visual Studio
+
+name: Build Walls
+
+on:
+  push:
+    branches: [master, main]
+    tags: ['v*']
+  pull_request:
+    branches: [master, main]
+  workflow_dispatch:
+    inputs:
+      configuration:
+        description: 'Build configuration'
+        required: true
+        default: 'Release'
+        type: choice
+        options:
+          - Release
+          - Debug
+          - Release_XP
+          - Debug_XP
+      platform:
+        description: 'Build platform'
+        required: true
+        default: 'x86'
+        type: choice
+        options:
+          - x86
+          - x64
+
+env:
+  SOLUTION_PATH: Walls32/Walls.sln
+  WALLSMAP_SOLUTION_PATH: WallsMap/WallsMap.sln
+
+jobs:
+  # ==============================================================================
+  # WALLS32 BUILD
+  # ==============================================================================
+  build-walls:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        configuration: [Release]
+        platform: [x86]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fix project paths
+        run: |
+          # Copy props files to Walls32/ where projects expect them
+          Copy-Item -Path "vs_version.props" -Destination "Walls32/vs_version.props"
+          Copy-Item -Path "zlib.props" -Destination "Walls32/zlib.props"
+
+          # Copy inc/ and lib/ directories to Walls32/ where vs_version.props expects them
+          # (WorkINC=$(SolutionDir)inc, WorkLIB=$(SolutionDir)lib)
+          if (Test-Path "inc") {
+            Write-Host "Copying inc/ to Walls32/inc/"
+            Copy-Item -Path "inc" -Destination "Walls32/inc" -Recurse -Force
+          }
+          if (Test-Path "lib") {
+            Write-Host "Copying lib/ to Walls32/lib/"
+            Copy-Item -Path "lib" -Destination "Walls32/lib" -Recurse -Force
+          }
+
+          # Copy expatlib to Walls32/ where wallsvg expects it ($(WorkDIR)expatlib_2010-10-10)
+          if (Test-Path "expatlib_2010-10-10") {
+            Write-Host "Copying expatlib_2010-10-10/ to Walls32/"
+            Copy-Item -Path "expatlib_2010-10-10" -Destination "Walls32/expatlib_2010-10-10" -Recurse -Force
+          }
+
+          # Copy zlib-1.2.8 to Walls32/ where zlib.props expects it ($(SolutionDir)\zlib-1.2.8)
+          if (Test-Path "zlib-1.2.8") {
+            Write-Host "Copying zlib-1.2.8/ to Walls32/"
+            Copy-Item -Path "zlib-1.2.8" -Destination "Walls32/zlib-1.2.8" -Recurse -Force
+          }
+
+          # Checkout is at D:\a\walls\walls\
+          # Solution at D:\a\walls\walls\Walls32\Walls.sln references ..\..\lib
+          # That resolves to D:\a\walls\lib (one level up from repo)
+          $parentDir = Split-Path -Parent (Get-Location)  # D:\a\walls
+
+          # Copy library folders to expected location
+          $libs = @("expatlib_2010-10-10", "pcrelib", "gziplib")
+          foreach ($lib in $libs) {
+            $src = Join-Path (Get-Location) $lib
+            $dst = Join-Path $parentDir $lib
+            if (Test-Path $src) {
+              Write-Host "Copying $lib to $dst"
+              Copy-Item -Path $src -Destination $dst -Recurse -Force
+            } else {
+              Write-Host "Warning: $lib not found in repo"
+            }
+          }
+
+          # Fix wallgps.vcxproj: update SDK version and toolset for CI build
+          $wallgpsPath = "Walls32/wallgps/wallgps.vcxproj"
+          $wallgpsXml = Get-Content $wallgpsPath -Raw
+          # Change WindowsTargetPlatformVersion from 7.0 to 10.0
+          $wallgpsXml = $wallgpsXml -replace '<WindowsTargetPlatformVersion>7\.0</WindowsTargetPlatformVersion>', '<WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>'
+          # Change PlatformToolset from v141_xp to v141 for Release|Win32
+          $wallgpsXml = $wallgpsXml -replace "(<PropertyGroup Condition=`"'\`$\(Configuration\)\|\`$\(Platform\)'=='Release\|Win32'`" Label=`"Configuration`">[\s\S]*?<PlatformToolset>)v141_xp(</PlatformToolset>)", '$1v141$2'
+          Set-Content $wallgpsPath -Value $wallgpsXml -NoNewline
+          Write-Host "Fixed wallgps.vcxproj SDK version and toolset"
+
+          # Fix Walls.sln: remove non-existent sefin project and fix config mappings
+          $slnPath = "Walls32/Walls.sln"
+          $slnContent = Get-Content $slnPath -Raw
+
+          # Remove sefin project (doesn't exist in repo)
+          $slnContent = $slnContent -replace 'Project\("\{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942\}"\) = "sefin"[^\r\n]*\r?\nEndProject\r?\n', ''
+          $slnContent = $slnContent -replace '\s*\{17D16115-259F-462A-9B4A-4C6F19C09EE6\}[^\r\n]*\r?\n', "`n"
+
+          # Replace Release_XP|Win32 with Release|Win32 for Release|x86 mappings
+          $slnContent = $slnContent -replace '(\.Release\|x86\.ActiveCfg = )Release_XP\|Win32', '$1Release|Win32'
+          $slnContent = $slnContent -replace '(\.Release\|x86\.Build\.0 = )Release_XP\|Win32', '$1Release|Win32'
+          Set-Content $slnPath -Value $slnContent -NoNewline
+          Write-Host "Fixed Walls.sln: removed sefin, fixed configuration mappings"
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: nuget/setup-nuget@v2
+
+      - name: Install NASM
+        run: |
+          choco install nasm -y --no-progress
+          echo "C:\Program Files\NASM" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Verify NASM
+        run: nasm --version
+
+      - name: Download OpenGL headers
+        run: |
+          $sdkPath = "C:\Program Files (x86)\Windows Kits\10\Include"
+          $sdkDirs = Get-ChildItem -Path $sdkPath -Directory | Sort-Object Name -Descending | Select-Object -First 1
+          if ($sdkDirs) {
+            $glPath = "$($sdkDirs.FullName)\um\gl"
+            $khrPath = "$($sdkDirs.FullName)\um\KHR"
+
+            if (-not (Test-Path $glPath)) {
+              New-Item -ItemType Directory -Force -Path $glPath | Out-Null
+            }
+            if (-not (Test-Path $khrPath)) {
+              New-Item -ItemType Directory -Force -Path $khrPath | Out-Null
+            }
+
+            Write-Host "Downloading OpenGL headers to $glPath"
+            Invoke-WebRequest -Uri "https://www.khronos.org/registry/OpenGL/api/GL/glext.h" -OutFile "$glPath\glext.h"
+            Invoke-WebRequest -Uri "https://www.khronos.org/registry/OpenGL/api/GL/wglext.h" -OutFile "$glPath\wglext.h"
+            Invoke-WebRequest -Uri "https://www.khronos.org/registry/EGL/api/KHR/khrplatform.h" -OutFile "$khrPath\khrplatform.h"
+          }
+
+      - name: Restore NuGet packages
+        run: nuget restore ${{ env.SOLUTION_PATH }}
+        continue-on-error: true
+
+      - name: Build Walls32
+        run: |
+          # First pass - builds libraries (may have link errors, that's expected)
+          msbuild ${{ env.SOLUTION_PATH }} `
+            /p:Configuration=${{ matrix.configuration }} `
+            /p:Platform=${{ matrix.platform }} `
+            /p:PlatformToolset=v143 `
+            /m `
+            /verbosity:minimal `
+            /p:ContinueOnError=true || true
+
+          # Second pass - now all libs are built, linking should succeed
+          msbuild ${{ env.SOLUTION_PATH }} `
+            /p:Configuration=${{ matrix.configuration }} `
+            /p:Platform=${{ matrix.platform }} `
+            /p:PlatformToolset=v143 `
+            /m `
+            /verbosity:minimal
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: walls-${{ matrix.configuration }}-${{ matrix.platform }}
+          path: |
+            Walls32/bin/*.exe
+            Walls32/bin/*.dll
+          retention-days: 7
+
+  # ==============================================================================
+  # WALLSMAP BUILD
+  # ==============================================================================
+  build-wallsmap:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Fix project paths
+        run: |
+          # Copy props files
+          Copy-Item -Path "vs_version.props" -Destination "Walls32/vs_version.props" -ErrorAction SilentlyContinue
+          Copy-Item -Path "vs_version.props" -Destination "WallsMap/vs_version.props" -ErrorAction SilentlyContinue
+          Copy-Item -Path "zlib.props" -Destination "Walls32/zlib.props" -ErrorAction SilentlyContinue
+          Copy-Item -Path "zlib.props" -Destination "WallsMap/zlib.props" -ErrorAction SilentlyContinue
+
+          # Copy inc/ and lib/ to WallsMap/
+          if (Test-Path "inc") {
+            Copy-Item -Path "inc" -Destination "WallsMap/inc" -Recurse -Force
+          }
+          if (Test-Path "lib") {
+            Copy-Item -Path "lib" -Destination "WallsMap/lib" -Recurse -Force
+          }
+
+          # Copy libjpeg-turbo and libjpegtbo to WallsMap/ where the projects expect them
+          if (Test-Path "libjpeg-turbo") {
+            Write-Host "Copying libjpeg-turbo to WallsMap/"
+            Copy-Item -Path "libjpeg-turbo" -Destination "WallsMap/libjpeg-turbo" -Recurse -Force
+          }
+          if (Test-Path "libjpegtbo") {
+            Write-Host "Copying libjpegtbo to WallsMap/"
+            Copy-Item -Path "libjpegtbo" -Destination "WallsMap/libjpegtbo" -Recurse -Force
+          }
+
+          # Checkout is at D:\a\walls\walls\
+          # WallsMap.sln references ..\..\ paths for many libraries
+          # That resolves to D:\a\walls\ (one level up from repo)
+          $parentDir = Split-Path -Parent (Get-Location)
+
+          # Copy all external libraries to parent directory
+          $libs = @(
+            "expatlib_2010-10-10",
+            "pcrelib",
+            "gziplib",
+            "zlib-1.2.8",
+            "Kakadu6_4",
+            "ECW_3.3",
+            "iqalib",
+            "libgdal_1110",
+            "libpng164",
+            "libjpegtbo",
+            "libwebp"
+          )
+          foreach ($lib in $libs) {
+            $src = Join-Path (Get-Location) $lib
+            $dst = Join-Path $parentDir $lib
+            if (Test-Path $src) {
+              Write-Host "Copying $lib to $dst"
+              Copy-Item -Path $src -Destination $dst -Recurse -Force
+            } else {
+              Write-Host "Warning: $lib not found in repo"
+            }
+          }
+
+          # Remove missing projects from solution (don't exist in repo)
+          $slnPath = "WallsMap/WallsMap.sln"
+          $content = Get-Content $slnPath -Raw
+
+          # Remove SampleSpellingClient project (EndProject is on separate line)
+          $content = $content -replace 'Project\("\{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942\}"\) = "SampleSpellingClient"[^\r\n]*\r?\nEndProject\r?\n', ''
+          $content = $content -replace '\s*\{6D04155E-C3D9-4CB6-BCFD-2B5A205C0329\}[^\r\n]*\r?\n', "`n"
+
+          # Remove webpc project (not in repo)
+          $content = $content -replace 'Project\("\{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942\}"\) = "webpc"[^\r\n]*\r?\nEndProject\r?\n', ''
+          $content = $content -replace '\s*\{7B365444-F5F6-4347-AE6E-11BA9C374FFC\}[^\r\n]*\r?\n', "`n"
+
+          # Remove webpd project (not in repo)
+          $content = $content -replace 'Project\("\{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942\}"\) = "webpd"[^\r\n]*\r?\nEndProject\r?\n', ''
+          $content = $content -replace '\s*\{A7CC633C-905E-4DE7-9EBE-FA3FAAF1FF1B\}[^\r\n]*\r?\n', "`n"
+
+          Set-Content $slnPath -Value $content -NoNewline
+          Write-Host "Removed missing projects from WallsMap.sln"
+
+          # Fix libjpegtbo CMake custom build issues
+          # Create stamp file so CMake custom builds think they're up-to-date
+          $stampDir = "WallsMap/libjpegtbo/CMakeFiles"
+          if (-not (Test-Path $stampDir)) {
+            New-Item -ItemType Directory -Force -Path $stampDir | Out-Null
+          }
+          "stamp" | Out-File -FilePath "$stampDir/generate.stamp" -Encoding ascii
+
+          # Create the stamp rule file that ZERO_CHECK looks for
+          $stampRuleDir = "WallsMap/libjpegtbo/CMakeFiles/1596c735aba799af362fbf67e22d12e2"
+          if (-not (Test-Path $stampRuleDir)) {
+            New-Item -ItemType Directory -Force -Path $stampRuleDir | Out-Null
+          }
+          "stamp" | Out-File -FilePath "$stampRuleDir/generate.stamp.rule" -Encoding ascii
+
+          # Also create in parent dir location (for ..\..\libjpegtbo references)
+          $parentStampDir = Join-Path $parentDir "libjpegtbo/CMakeFiles"
+          if (-not (Test-Path $parentStampDir)) {
+            New-Item -ItemType Directory -Force -Path $parentStampDir | Out-Null
+          }
+          "stamp" | Out-File -FilePath "$parentStampDir/generate.stamp" -Encoding ascii
+
+          $parentStampRuleDir = Join-Path $parentDir "libjpegtbo/CMakeFiles/1596c735aba799af362fbf67e22d12e2"
+          if (-not (Test-Path $parentStampRuleDir)) {
+            New-Item -ItemType Directory -Force -Path $parentStampRuleDir | Out-Null
+          }
+          "stamp" | Out-File -FilePath "$parentStampRuleDir/generate.stamp.rule" -Encoding ascii
+
+          # Remove CustomBuild sections from libjpegtbo vcxproj files to skip CMake calls
+          $vcxprojFiles = @(
+            "WallsMap/libjpegtbo/jpeg-static.vcxproj",
+            "WallsMap/libjpegtbo/turbojpeg-static.vcxproj",
+            "WallsMap/libjpegtbo/simd/simd.vcxproj",
+            "WallsMap/libjpegtbo/ZERO_CHECK.vcxproj",
+            (Join-Path $parentDir "libjpegtbo/jpeg-static.vcxproj"),
+            (Join-Path $parentDir "libjpegtbo/turbojpeg-static.vcxproj"),
+            (Join-Path $parentDir "libjpegtbo/simd/simd.vcxproj"),
+            (Join-Path $parentDir "libjpegtbo/ZERO_CHECK.vcxproj")
+          )
+          foreach ($vcxproj in $vcxprojFiles) {
+            if (Test-Path $vcxproj) {
+              Write-Host "Removing CustomBuild from $vcxproj"
+              $xml = Get-Content $vcxproj -Raw
+              # Remove entire ItemGroup containing CustomBuild for CMakeLists.txt
+              $xml = $xml -replace '(?s)<ItemGroup>\s*<CustomBuild Include="[^"]*CMakeLists\.txt"[^>]*>.*?</CustomBuild>\s*</ItemGroup>', ''
+              # Remove ItemGroup with generate.stamp.rule
+              $xml = $xml -replace '(?s)<ItemGroup>\s*<CustomBuild Include="[^"]*generate\.stamp\.rule"[^>]*>.*?</CustomBuild>\s*</ItemGroup>', ''
+              Set-Content $vcxproj -Value $xml -NoNewline
+            }
+          }
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: nuget/setup-nuget@v2
+
+      - name: Install NASM
+        run: |
+          choco install nasm -y --no-progress
+          echo "C:\Program Files\NASM" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+      - name: Download OpenGL headers
+        run: |
+          $sdkPath = "C:\Program Files (x86)\Windows Kits\10\Include"
+          $sdkDirs = Get-ChildItem -Path $sdkPath -Directory | Sort-Object Name -Descending | Select-Object -First 1
+          if ($sdkDirs) {
+            $glPath = "$($sdkDirs.FullName)\um\gl"
+            $khrPath = "$($sdkDirs.FullName)\um\KHR"
+
+            if (-not (Test-Path $glPath)) {
+              New-Item -ItemType Directory -Force -Path $glPath | Out-Null
+            }
+            if (-not (Test-Path $khrPath)) {
+              New-Item -ItemType Directory -Force -Path $khrPath | Out-Null
+            }
+
+            Invoke-WebRequest -Uri "https://www.khronos.org/registry/OpenGL/api/GL/glext.h" -OutFile "$glPath\glext.h"
+            Invoke-WebRequest -Uri "https://www.khronos.org/registry/OpenGL/api/GL/wglext.h" -OutFile "$glPath\wglext.h"
+            Invoke-WebRequest -Uri "https://www.khronos.org/registry/EGL/api/KHR/khrplatform.h" -OutFile "$khrPath\khrplatform.h"
+          }
+
+      - name: Restore NuGet packages
+        run: nuget restore ${{ env.WALLSMAP_SOLUTION_PATH }}
+        continue-on-error: true
+
+      - name: Build WallsMap
+        run: |
+          # First pass - builds libraries (may have link errors, that's expected)
+          msbuild ${{ env.WALLSMAP_SOLUTION_PATH }} `
+            /p:Configuration=Release `
+            /p:Platform=Win32 `
+            /p:PlatformToolset=v143 `
+            /m `
+            /verbosity:minimal `
+            /p:ContinueOnError=true || true
+
+          # Second pass - now all libs are built, linking should succeed
+          msbuild ${{ env.WALLSMAP_SOLUTION_PATH }} `
+            /p:Configuration=Release `
+            /p:Platform=Win32 `
+            /p:PlatformToolset=v143 `
+            /m `
+            /verbosity:minimal
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: wallsmap-release-x86
+          path: |
+            WallsMap/Release/*.exe
+            WallsMap/Release/*.dll
+          retention-days: 7
+
+  # ==============================================================================
+  # RELEASE (on tags)
+  # ==============================================================================
+  release:
+    runs-on: windows-latest
+    needs: [build-walls, build-wallsmap]
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - name: Download Walls artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: walls-Release-x86
+          path: release-files/walls
+
+      - name: Download WallsMap artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: wallsmap-release-x86
+          path: release-files/wallsmap
+        continue-on-error: true
+
+      - name: Create release archive
+        run: |
+          $tag = "${{ github.ref_name }}"
+          Compress-Archive -Path "release-files/*" -DestinationPath "Walls-$tag.zip"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: Walls-*.zip
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
