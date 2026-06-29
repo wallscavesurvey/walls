@@ -1,8 +1,8 @@
-# Install script for directory: $(SolutionDir)/libjpeg-turbo/simd
+# Install script for directory: C:/Users/jedwa/walls/libjpeg-turbo/simd
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "c:/libjpeg-turbo")
+  set(CMAKE_INSTALL_PREFIX "C:/Users/jedwa/walls/libjpegtbo")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -25,5 +25,10 @@ if(NOT CMAKE_INSTALL_COMPONENT)
   else()
     set(CMAKE_INSTALL_COMPONENT)
   endif()
+endif()
+
+# Is this installation the result of a crosscompile?
+if(NOT DEFINED CMAKE_CROSSCOMPILING)
+  set(CMAKE_CROSSCOMPILING "FALSE")
 endif()
 

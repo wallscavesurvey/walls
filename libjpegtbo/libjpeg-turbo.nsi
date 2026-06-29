@@ -1,7 +1,7 @@
 !include x64.nsh
 Name "libjpeg-turbo SDK for Visual C++"
-OutFile "$(SolutionDir)/libjpegtbo\${BUILDDIR}libjpeg-turbo-1.4.1-vc.exe"
-InstallDir c:\libjpeg-turbo
+OutFile "C:/Users/jedwa/walls/libjpegtbo\${BUILDDIR}libjpeg-turbo-1.4.1-vc.exe"
+InstallDir C:\Users\jedwa\walls\libjpegtbo
 
 SetCompressor bzip2
 
@@ -35,57 +35,57 @@ Section "libjpeg-turbo SDK for Visual C++ (required)"
 	notexists:
 	SetOutPath $SYSDIR
 !ifdef GCC
-	File "$(SolutionDir)/libjpegtbo\libturbojpeg.dll"
+	File "C:/Users/jedwa/walls/libjpegtbo\libturbojpeg.dll"
 !else
-	File "$(SolutionDir)/libjpegtbo\${BUILDDIR}turbojpeg.dll"
+	File "C:/Users/jedwa/walls/libjpegtbo\${BUILDDIR}turbojpeg.dll"
 !endif
 	SetOutPath $INSTDIR\bin
 !ifdef GCC
-	File "$(SolutionDir)/libjpegtbo\libturbojpeg.dll"
+	File "C:/Users/jedwa/walls/libjpegtbo\libturbojpeg.dll"
 !else
-	File "$(SolutionDir)/libjpegtbo\${BUILDDIR}turbojpeg.dll"
+	File "C:/Users/jedwa/walls/libjpegtbo\${BUILDDIR}turbojpeg.dll"
 !endif
 !ifdef GCC
-	File "/oname=libjpeg-62.dll" "$(SolutionDir)/libjpegtbo\sharedlib\libjpeg-*.dll"
+	File "/oname=libjpeg-62.dll" "C:/Users/jedwa/walls/libjpegtbo\sharedlib\libjpeg-*.dll"
 !else
-	File "$(SolutionDir)/libjpegtbo\sharedlib\${BUILDDIR}jpeg62.dll"
+	File "C:/Users/jedwa/walls/libjpegtbo\sharedlib\${BUILDDIR}jpeg62.dll"
 !endif
-	File "$(SolutionDir)/libjpegtbo\sharedlib\${BUILDDIR}cjpeg.exe"
-	File "$(SolutionDir)/libjpegtbo\sharedlib\${BUILDDIR}djpeg.exe"
-	File "$(SolutionDir)/libjpegtbo\sharedlib\${BUILDDIR}jpegtran.exe"
-	File "$(SolutionDir)/libjpegtbo\${BUILDDIR}tjbench.exe"
-	File "$(SolutionDir)/libjpegtbo\${BUILDDIR}rdjpgcom.exe"
-	File "$(SolutionDir)/libjpegtbo\${BUILDDIR}wrjpgcom.exe"
+	File "C:/Users/jedwa/walls/libjpegtbo\sharedlib\${BUILDDIR}cjpeg.exe"
+	File "C:/Users/jedwa/walls/libjpegtbo\sharedlib\${BUILDDIR}djpeg.exe"
+	File "C:/Users/jedwa/walls/libjpegtbo\sharedlib\${BUILDDIR}jpegtran.exe"
+	File "C:/Users/jedwa/walls/libjpegtbo\${BUILDDIR}tjbench.exe"
+	File "C:/Users/jedwa/walls/libjpegtbo\${BUILDDIR}rdjpgcom.exe"
+	File "C:/Users/jedwa/walls/libjpegtbo\${BUILDDIR}wrjpgcom.exe"
 	SetOutPath $INSTDIR\lib
 !ifdef GCC
-	File "$(SolutionDir)/libjpegtbo\libturbojpeg.dll.a"
-	File "$(SolutionDir)/libjpegtbo\libturbojpeg.a"
-	File "$(SolutionDir)/libjpegtbo\sharedlib\libjpeg.dll.a"
-	File "$(SolutionDir)/libjpegtbo\libjpeg.a"
+	File "C:/Users/jedwa/walls/libjpegtbo\libturbojpeg.dll.a"
+	File "C:/Users/jedwa/walls/libjpegtbo\libturbojpeg.a"
+	File "C:/Users/jedwa/walls/libjpegtbo\sharedlib\libjpeg.dll.a"
+	File "C:/Users/jedwa/walls/libjpegtbo\libjpeg.a"
 !else
-	File "$(SolutionDir)/libjpegtbo\${BUILDDIR}turbojpeg.lib"
-	File "$(SolutionDir)/libjpegtbo\${BUILDDIR}turbojpeg-static.lib"
-	File "$(SolutionDir)/libjpegtbo\sharedlib\${BUILDDIR}jpeg.lib"
-	File "$(SolutionDir)/libjpegtbo\${BUILDDIR}jpeg-static.lib"
+	File "C:/Users/jedwa/walls/libjpegtbo\${BUILDDIR}turbojpeg.lib"
+	File "C:/Users/jedwa/walls/libjpegtbo\${BUILDDIR}turbojpeg-static.lib"
+	File "C:/Users/jedwa/walls/libjpegtbo\sharedlib\${BUILDDIR}jpeg.lib"
+	File "C:/Users/jedwa/walls/libjpegtbo\${BUILDDIR}jpeg-static.lib"
 !endif
 !ifdef JAVA
 	SetOutPath $INSTDIR\classes
-	File "$(SolutionDir)/libjpegtbo\java\${BUILDDIR}turbojpeg.jar"
+	File "C:/Users/jedwa/walls/libjpegtbo\java\${BUILDDIR}turbojpeg.jar"
 !endif
 	SetOutPath $INSTDIR\include
-	File "$(SolutionDir)/libjpegtbo\jconfig.h"
-	File "$(SolutionDir)/libjpeg-turbo\jerror.h"
-	File "$(SolutionDir)/libjpeg-turbo\jmorecfg.h"
-	File "$(SolutionDir)/libjpeg-turbo\jpeglib.h"
-	File "$(SolutionDir)/libjpeg-turbo\turbojpeg.h"
+	File "C:/Users/jedwa/walls/libjpegtbo\jconfig.h"
+	File "C:/Users/jedwa/walls/libjpeg-turbo\jerror.h"
+	File "C:/Users/jedwa/walls/libjpeg-turbo\jmorecfg.h"
+	File "C:/Users/jedwa/walls/libjpeg-turbo\jpeglib.h"
+	File "C:/Users/jedwa/walls/libjpeg-turbo\turbojpeg.h"
 	SetOutPath $INSTDIR\doc
-	File "$(SolutionDir)/libjpeg-turbo\README"
-	File "$(SolutionDir)/libjpeg-turbo\README-turbo.txt"
-	File "$(SolutionDir)/libjpeg-turbo\example.c"
-	File "$(SolutionDir)/libjpeg-turbo\libjpeg.txt"
-	File "$(SolutionDir)/libjpeg-turbo\structure.txt"
-	File "$(SolutionDir)/libjpeg-turbo\usage.txt"
-	File "$(SolutionDir)/libjpeg-turbo\wizard.txt"
+	File "C:/Users/jedwa/walls/libjpeg-turbo\README"
+	File "C:/Users/jedwa/walls/libjpeg-turbo\README-turbo.txt"
+	File "C:/Users/jedwa/walls/libjpeg-turbo\example.c"
+	File "C:/Users/jedwa/walls/libjpeg-turbo\libjpeg.txt"
+	File "C:/Users/jedwa/walls/libjpeg-turbo\structure.txt"
+	File "C:/Users/jedwa/walls/libjpeg-turbo\usage.txt"
+	File "C:/Users/jedwa/walls/libjpeg-turbo\wizard.txt"
 
 	WriteRegStr HKLM "SOFTWARE\libjpeg-turbo 1.4.1" "Install_Dir" "$INSTDIR"
 
