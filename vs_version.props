@@ -10,8 +10,8 @@
     <LibV140XP>$(MSBuildProgramFiles32)\Windows Kits\10\lib\10.0.10240.0\ucrt\$(PlatformShortName)</LibV140XP>
   </PropertyGroup>
   <PropertyGroup>
-    <IncludePath>$(WorkINC);$(IncV140XP);$(IncludePath)</IncludePath>
-    <LibraryPath>$(WorkLIB);$(LibV140XP);$(LibraryPath)</LibraryPath>
+    <IncludePath>$(WorkINC);$(IncludePath)</IncludePath>
+    <LibraryPath>$(WorkLIB);$(LibraryPath)</LibraryPath>
     <ExecutablePath>$(ExecutablePath)</ExecutablePath>
     <OutDir>$(WorkBIN)\</OutDir>
   </PropertyGroup>
