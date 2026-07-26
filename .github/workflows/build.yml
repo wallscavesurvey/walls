@@ -49,13 +49,38 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Add MFC to Visual Studio
-        run: |
-          $vsInst = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -products * -requires Microsoft.Component.MSBuild -property installationPath -latest
-          & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vs_installer.exe" modify --installPath $vsInst --add Microsoft.VisualStudio.Component.VC.ATLMFC --quiet --norestart
-
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
+
+      - name: Add MFC to Visual Studio
+        run: |
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          if (-not (Test-Path $vswhere)) {
+            Write-Error "vswhere.exe noto found at $vswhere.  Cannot locate Visual Studio"
+            exit 1
+          }
+          $mfcInstall = & $vswhere -products * -requires Microsoft.VisualStudio.Component.VC.ATLMFC -property installationPath -latest
+          if ($mfcInstall) {
+            Write-Host "MFC already installed in Visual Studio at: $mfcInstall"
+            exit 0
+          }
+
+          $vsInstall = & $vswhere -products * -requires Microsoft.Component.MSBuild -property installationPath -latest
+          & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vs_installer.exe" modify --installPath $vsInstall --add Microsoft.VisualStudio.Component.VC.ATLMFC --includeRecommended --quiet --norestart --wait
+          $code = $LASTEXITCODE
+          if ($code -ne 0) {
+            Write-Error "vs_installer modify exited with code $code"
+            exit $code
+          }
+
+          $mfcInstall = & $vswhere -products * -requires Microsoft.VisualStudio.Component.VC.ATLMFC -property installationPath -latest
+          if ($mfcInstall) {
+            Write-Host "MFC installed successfully."
+            exit 0
+          } else {
+            Write-Error "MFC install failed (vswhere did not find component)."
+            exit 2
+          }
 
       - name: List Windows Kits
         run: |
