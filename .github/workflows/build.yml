@@ -19,8 +19,6 @@ on:
         options:
           - Release
           - Debug
-          - Release_XP
-          - Debug_XP
       platform:
         description: "Build platform"
         required: true
@@ -97,9 +95,10 @@ jobs:
             exit 2
           }
 
-      - name: List Windows Kits
+      - name: List all Visual Studio installations
         run: |
-          dir "${env:ProgramFiles(x86)}\Windows Kits\10\Include"
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          & $vswhere -products *  -include packages -format json
 
       - name: Setup NuGet
         uses: nuget/setup-nuget@v2
@@ -143,7 +142,15 @@ jobs:
             /p:Configuration=${{ matrix.configuration }} `
             /p:Platform=${{ matrix.platform }} `
             /p:PlatformToolset=v143 `
+            /bl:walls.binlog `
             /m
+
+      - name: Upload Build Log
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: walls.binlog
+          path: walls.binlog
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
