@@ -63,7 +63,7 @@ jobs:
       - name: Verify NASM
         run: nasm --version
 
-      - name: Download OpenGL headers
+      - name: Install OpenGL headers
         run: |
           $sdkPath = "C:\Program Files (x86)\Windows Kits\10\Include"
           $sdkDirs = Get-ChildItem -Path $sdkPath -Directory | Sort-Object Name -Descending | Select-Object -First 1
@@ -78,10 +78,10 @@ jobs:
               New-Item -ItemType Directory -Force -Path $khrPath | Out-Null
             }
 
-            Write-Host "Downloading OpenGL headers to $glPath"
-            Invoke-WebRequest -Uri "https://www.khronos.org/registry/OpenGL/api/GL/glext.h" -OutFile "$glPath\glext.h"
-            Invoke-WebRequest -Uri "https://www.khronos.org/registry/OpenGL/api/GL/wglext.h" -OutFile "$glPath\wglext.h"
-            Invoke-WebRequest -Uri "https://www.khronos.org/registry/EGL/api/KHR/khrplatform.h" -OutFile "$khrPath\khrplatform.h"
+            Write-Host "Copying OpenGL headers to $glPath"
+            Copy-Item -Path "inc\glext.h" -Destination "$glPath\glext.h"
+            Copy-Item -Path "inc\wglext.h" -Destination "$glPath\wglext.h"
+            Copy-Item -Path "inc\khrplatform.h" -Destination "$khrPath\khrplatform.h"
           }
 
       - name: Restore NuGet packages
