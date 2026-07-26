@@ -99,11 +99,11 @@ jobs:
 
       - name: List MFC key file directory
         run: |
-          dir C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC
-          dir C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.44.35207
-          dir C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.44.35207\atlmfc
-          dir C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.44.35207\atlmfc\lib
-          dir C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.44.35207\atlmfc\lib\x86
+          dir "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC"
+          dir "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.44.35207"
+          dir "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.44.35207\atlmfc"
+          dir "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.44.35207\atlmfc\lib"
+          dir "C:\Program Files\Microsoft Visual Studio\18\Enterprise\VC\Tools\MSVC\14.44.35207\atlmfc\lib\x86"
 
       - name: List all Visual Studio installations
         run: |
