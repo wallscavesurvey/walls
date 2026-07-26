@@ -49,6 +49,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Install Visual Studio with MFC components
+      - name: Install Visual Studio MFC Component
+        uses: microsoft/vswhere@v3 # Used implicitly or explicitly to manage VS workloads
+
+      - name: Modify Visual Studio to include MFC
+        run: |
+          # Use the VS Installer to append ATL and MFC libraries
+          Start-Process "$env:ProgramFiles(x86)\Microsoft Visual Studio\Installer\vs_installer.exe" -ArgumentList "modify --installPath `"$env:ProgramFiles\Microsoft Visual Studio\2022\Enterprise`" --add Microsoft.VisualStudio.Component.VC.ATLMFC --passive --norestart" -Wait
+
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
