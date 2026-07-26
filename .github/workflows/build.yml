@@ -59,13 +59,13 @@ jobs:
             Write-Error "vswhere.exe noto found at $vswhere.  Cannot locate Visual Studio"
             exit 1
           }
-          $mfcInstall = & $vswhere -products * -requires Microsoft.VisualStudio.Component.VC.ATLMFC -requires Microsoft.VisualStudio.Component.VC.ATLMFC.Spectre -requires Microsoft.VisualStudio.Component.VC.ATL -requires Microsoft.VisualStudio.Component.VC.ATL.Spectre -property installationPath -latest
+          $mfcInstall = & $vswhere -products * -requires Microsoft.VisualStudio.Component.Windows10SDK.* -requires Microsoft.VisualStudio.Component.VC.ATLMFC -requires Microsoft.VisualStudio.Component.VC.ATLMFC.Spectre -requires Microsoft.VisualStudio.Component.VC.ATL -requires Microsoft.VisualStudio.Component.VC.ATL.Spectre -property installationPath -latest
           if ($mfcInstall) {
             Write-Host "MFC already installed in Visual Studio at: $mfcInstall"
             exit 0
           }
 
-          $vsInstall = & $vswhere -products * -requires Microsoft.Component.MSBuild -property installationPath -latest
+          $vsInstall = & $vswhere -products * -requires Microsoft.VisualStudio.Component.Windows10SDK.* -requires Microsoft.Component.MSBuild -property installationPath -latest
           & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vs_installer.exe" modify --installPath $vsInstall --add Microsoft.VisualStudio.Component.VC.ATLMFC --add Microsoft.VisualStudio.Component.VC.ATLMFC.Spectre --add Microsoft.VisualStudio.Component.VC.ATL --add Microsoft.VisualStudio.Component.VC.ATL.Spectre --includeRecommended --quiet --norestart --wait
           $code = $LASTEXITCODE
           if ($code -ne 0) {
@@ -73,7 +73,7 @@ jobs:
             exit $code
           }
 
-          $mfcInstall = & $vswhere -products * -requires Microsoft.VisualStudio.Component.VC.ATLMFC -requires Microsoft.VisualStudio.Component.VC.ATLMFC.Spectre --requires Microsoft.VisualStudio.Component.VC.ATL --requires Microsoft.VisualStudio.Component.VC.ATL.Spectre -property installationPath -latest
+          $mfcInstall = & $vswhere -products * -requires Microsoft.VisualStudio.Component.Windows10SDK.* -requires Microsoft.VisualStudio.Component.VC.ATLMFC -requires Microsoft.VisualStudio.Component.VC.ATLMFC.Spectre --requires Microsoft.VisualStudio.Component.VC.ATL --requires Microsoft.VisualStudio.Component.VC.ATL.Spectre -property installationPath -latest
           if ($mfcInstall) {
             Write-Host "MFC installed successfully."
             exit 0
