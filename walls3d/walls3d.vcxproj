@@ -754,6 +754,11 @@
   <ItemGroup>
     <None Include="res\scene.rc2" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="qvlib\qvlib.vcxproj">
+      <Project>{b5345136-15c3-4184-8153-5e21a6792d35}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
 </Project>

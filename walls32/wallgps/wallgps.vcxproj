@@ -27,6 +27,11 @@
   <ItemGroup>
     <ClInclude Include="gps.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\trx_str\trx_str.vcxproj">
+      <Project>{91d50c30-ef3f-4719-8f48-b1aa29de7746}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{CAEAED53-C582-43B0-84BA-97B029383661}</ProjectGuid>
     <WindowsTargetPlatformVersion>7.0</WindowsTargetPlatformVersion>

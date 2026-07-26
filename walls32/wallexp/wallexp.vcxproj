@@ -285,6 +285,11 @@
   <ItemGroup>
     <ClCompile Include="wall-exp.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\trx_str\trx_str.vcxproj">
+      <Project>{91d50c30-ef3f-4719-8f48-b1aa29de7746}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
