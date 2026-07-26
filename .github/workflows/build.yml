@@ -51,10 +51,15 @@ jobs:
 
       - name: Add MFC to Visual Studio
         run: |
-          & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vs_installer.exe" modify --installPath "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise" --add Microsoft.VisualStudio.Component.VC.ATLMFC --quiet --norestart -Wait
+          $vsInst = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" -products * -requires Microsoft.Component.MSBuild -property installationPath -latest
+          & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vs_installer.exe" modify --installPath $vsInst --add Microsoft.VisualStudio.Component.VC.ATLMFC --quiet --norestart
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
+
+      - name: List Windows Kits
+        run: |
+          dir "${env:ProgramFiles(x86)}\Windows Kits\10\Include"
 
       - name: Setup NuGet
         uses: nuget/setup-nuget@v2
@@ -69,7 +74,7 @@ jobs:
 
       - name: Install OpenGL headers
         run: |
-          $sdkPath = "C:\Program Files (x86)\Windows Kits\10\Include"
+          $sdkPath = "${env:ProgramFiles(x86)}\Windows Kits\10\Include"
           $sdkDirs = Get-ChildItem -Path $sdkPath -Directory | Sort-Object Name -Descending | Select-Object -First 1
           if ($sdkDirs) {
             $glPath = "$($sdkDirs.FullName)\um\gl"
