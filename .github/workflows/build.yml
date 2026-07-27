@@ -111,27 +111,6 @@ jobs:
       - name: Verify NASM
         run: nasm --version
 
-      - name: Install OpenGL headers
-        run: |
-          $sdkPath = "${env:ProgramFiles(x86)}\Windows Kits\10\Include"
-          $sdkDirs = Get-ChildItem -Path $sdkPath -Directory | Sort-Object Name -Descending | Select-Object -First 1
-          if ($sdkDirs) {
-            $glPath = "$($sdkDirs.FullName)\um\gl"
-            $khrPath = "$($sdkDirs.FullName)\um\KHR"
-
-            if (-not (Test-Path $glPath)) {
-              New-Item -ItemType Directory -Force -Path $glPath | Out-Null
-            }
-            if (-not (Test-Path $khrPath)) {
-              New-Item -ItemType Directory -Force -Path $khrPath | Out-Null
-            }
-
-            Write-Host "Copying OpenGL headers to $glPath"
-            Copy-Item -Path "inc\glext.h" -Destination "$glPath\glext.h"
-            Copy-Item -Path "inc\wglext.h" -Destination "$glPath\wglext.h"
-            Copy-Item -Path "inc\khrplatform.h" -Destination "$khrPath\khrplatform.h"
-          }
-
       - name: Restore NuGet packages
         run: nuget restore ${{ env.SOLUTION_PATH }}
         continue-on-error: true
