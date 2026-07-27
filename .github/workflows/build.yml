@@ -50,56 +50,6 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      - name: Install Visual Studio Components
-        run: |
-          $requiredComps = @(
-            "Microsoft.VisualStudio.Component.Windows10SDK",
-            "Microsoft.VisualStudio.Component.VC.ATL",
-            "Microsoft.VisualStudio.Component.VC.ATL.Spectre",
-            "Microsoft.VisualStudio.Component.VC.ATLMFC",
-            "Microsoft.VisualStudio.Component.VC.ATLMFC.Spectre",
-            "Microsoft.Component.VC.Runtime.UCRTSDK"
-          )
-          [string]$requiresArgs = $requiredComps | ForEach-Object {" -requires " +  $_}
-          [string]$addArgs = $requiredComps | ForEach-Object {" --add " +  $_}
-          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
-          if (-not (Test-Path $vswhere)) {
-            Write-Error "vswhere.exe noto found at $vswhere.  Cannot locate Visual Studio"
-            exit 1
-          }
-          $vsinstaller = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vs_installer.exe"
-          if (-not (Test-Path $vsinstaller)) {
-            Write-Error "vswhere.exe noto found at $vswhere.  Cannot locate Visual Studio"
-            exit 1
-          }
-          $installed = & $vswhere -products * $requiresArgs -property installationPath -latest
-          if ($installed) {
-            Write-Host "Required components already installed in Visual Studio at: $installed"
-            exit 0
-          }
-
-          $vsInstall = & $vswhere -products * -requires Microsoft.Component.MSBuild -property installationPath -latest
-          & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vs_installer.exe" modify --installPath $vsInstall $addArgs --includeRecommended --quiet --norestart --wait
-          $code = $LASTEXITCODE
-          if ($code -ne 0) {
-            Write-Error "vs_installer modify exited with code $code"
-            exit $code
-          }
-
-          $installed = & $vswhere -products * $requiresArgs -property installationPath -latest
-          if ($installed) {
-            Write-Host "Visual Studio components installed successfully."
-            exit 0
-          } else {
-            Write-Error "Visual Studio components installation failed (vswhere did not find component)."
-            exit 2
-          }
-
-      - name: List all Visual Studio installations
-        run: |
-          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
-          & $vswhere -products *  -include packages -format json
-
       - name: Setup NuGet
         uses: nuget/setup-nuget@v2
 
@@ -124,18 +74,25 @@ jobs:
             /bl:walls.binlog `
             /m
 
-      - name: Upload Build Log
+      - name: Upload Build Log if Failed
         if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: walls.binlog
           path: walls.binlog
+          retention-days: 7
+
+      - name: Build Walls Installer
+        run: |
+          $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+          $installDir = & $vswhere -latest -property installationPath
+          $devenv = Join-Path $installDir "Common7\IDE\devenv.com"
+          & $devenv Walls32\Walls.sln /build "Release" /project "WallsInstaller"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: walls-${{ matrix.configuration }}-${{ matrix.platform }}
           path: |
-            Walls32/bin/*.exe
-            Walls32/bin/*.dll
+            bin/WallsInstaller.msi
           retention-days: 7
