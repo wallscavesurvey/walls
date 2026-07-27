@@ -51,10 +51,14 @@ jobs:
         run: |
           Invoke-WebRequest -Uri "https://www.helpandmanual.com/download/hm7setup.exe" -OutFile "hm7setup.exe"
           .\hm7setup.exe /SP- /SUPPRESSMSGBOXES /NORESTART
+          dir "${env:ProgramFiles(x86)}"
+          dir "${env:ProgramFiles(x86)}\EC Software"
+          dir "${env:ProgramFiles(x86)}\EC Software\HelpAndManual7"
           echo "${env:ProgramFiles(x86)}\EC Software\HelpAndManual7" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
       - name: Register Help+Manual
         run: |
+          echo $env:path
           HELPMAN.EXE /lic:${{ secrets.HELP_AND_MANUAL_LICENSE }}
 
       - name: Setup MSBuild
