@@ -47,28 +47,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Help+Manual
-        run: |
-          Invoke-WebRequest -Uri "https://www.helpandmanual.com/download/hm7setup.exe" -OutFile "hm7setup.exe"
-          .\hm7setup.exe /SP- /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /LOG=helpman.log
-          dir "${env:ProgramFiles}"
-          dir "${env:ProgramFiles(x86)}"
-          dir "${env:ProgramFiles(x86)}\EC Software"
-          dir "${env:ProgramFiles(x86)}\EC Software\HelpAndManual7"
-          echo "${env:ProgramFiles(x86)}\EC Software\HelpAndManual7" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      # - name: Install Help+Manual
+      #   run: |
+      #     Invoke-WebRequest -Uri "https://www.helpandmanual.com/download/hm7setup.exe" -OutFile "hm7setup.exe"
+      #     .\hm7setup.exe /SP- /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /LOG=helpman.log
+      #     dir "${env:ProgramFiles}"
+      #     dir "${env:ProgramFiles(x86)}"
+      #     dir "${env:ProgramFiles(x86)}\EC Software"
+      #     dir "${env:ProgramFiles(x86)}\EC Software\HelpAndManual7"
+      #     echo "${env:ProgramFiles(x86)}\EC Software\HelpAndManual7" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
-      - name: Upload Help+Manual install log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: helpman.log
-          path: helpman.log
-          retention-days: 1
+      # - name: Upload Help+Manual install log
+      #   if: always()
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: helpman.log
+      #     path: helpman.log
+      #     retention-days: 1
 
-      - name: Register Help+Manual
-        run: |
-          echo $env:path
-          HELPMAN.EXE /lic:${{ secrets.HELP_AND_MANUAL_LICENSE }}
+      # - name: Register Help+Manual
+      #   run: |
+      #     echo $env:path
+      #     HELPMAN.EXE /lic:${{ secrets.HELP_AND_MANUAL_LICENSE }}
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
