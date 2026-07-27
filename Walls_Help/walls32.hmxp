@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<helpproject xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="helpproject.xsd" version="1.9" isskin="false" isrepository="false">
+<helpproject xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="helpproject.xsd" version="2.0" isskin="false" isrepository="false">
   <config>
     <namespaces/>
     <export-task-groups>
@@ -34,16 +34,16 @@
         <export-tasks>
           <export-task name="Publish as CHM" format="CHM">
             <task-config-group name="settings">
-              <task-config-value name="outputfile">..\..\bin\walls32.chm</task-config-value>
-              <task-config-value name="skin">..\..\..\Program Files (x86)\EC Software\HelpAndManual6\Templates\HTML Skins\Integrated IFrames - Fancy Wood Style.hmskin</task-config-value>
+              <task-config-value name="outputfile">..\bin\walls32.chm</task-config-value>
+              <task-config-value name="skin">$(HMSYS)Templates\HTML Skins\CHM Skin, Dark Blue Header, Feature Images.hmskin</task-config-value>
               <task-config-value name="deletetemp">1</task-config-value>
-              <task-config-value name="make0include">CHM</task-config-value>
+              <task-config-value name="make0include">CHM,PDF</task-config-value>
               <task-config-value name="make0status">*</task-config-value>
             </task-config-group>
           </export-task>
           <export-task name="Publish as PDF" format="PDF">
             <task-config-group name="settings">
-              <task-config-value name="outputfile">..\..\bin\Walls_manual.pdf</task-config-value>
+              <task-config-value name="outputfile">..\bin\Walls_manual.pdf</task-config-value>
               <task-config-value name="template">Walls_manual.mnl</task-config-value>
               <task-config-value name="highlighthotspots">0</task-config-value>
               <task-config-value name="exportcomments">0</task-config-value>
@@ -119,7 +119,7 @@
         <config-value name="user3">User defined 3</config-value>
       </config-group>
       <config-value name="imageshortcuts_includebaggage">1</config-value>
-      <config-value name="make0include">CHM</config-value>
+      <config-value name="make0include">CHM,PDF</config-value>
       <config-value name="make0status">*</config-value>
       <config-group name="spellcheck">
         <config-value name="project">0</config-value>
@@ -145,7 +145,7 @@
 ..\nonscroll.js]]></config-value>
       <config-value name="hhcwindowstyles">8388645</config-value>
       <config-value name="usesecondarywindows">0</config-value>
-      <config-value name="outputfile">..\..\bin\walls32.chm</config-value>
+      <config-value name="outputfile">..\bin\walls32.chm</config-value>
       <config-value name="deletetemp">1</config-value>
       <config-group name="htmlpopupjavaoptions">
         <config-value name="borderwidth">1</config-value>
@@ -154,7 +154,7 @@
         <config-value name="bordercolor">#000000</config-value>
         <config-value name="filter0">progid:DXImageTransform.Microsoft.Shadow(color='B0B0B0', Direction=135, Strength=4)</config-value>
       </config-group>
-      <config-value name="skin">..\..\..\Program Files (x86)\EC Software\HelpAndManual6\Templates\HTML Skins\Integrated IFrames - Fancy Wood Style.hmskin</config-value>
+      <config-value name="skin">$(HMSYS)Templates\HTML Skins\CHM Skin, Dark Blue Header, Feature Images.hmskin</config-value>
       <config-value name="defaultext">.htm</config-value>
       <config-value name="cssfile">default.css</config-value>
       <config-value name="fontsizeencoding">0</config-value>
@@ -371,7 +371,7 @@ document.write('</frameset>');
       <config-value name="cidfontmode">0</config-value>
       <config-value name="newfontsubsetting">1</config-value>
       <config-value name="textasglyphs">0</config-value>
-      <config-value name="outputfile">..\..\bin\Walls_manual.pdf</config-value>
+      <config-value name="outputfile">..\bin\Walls_manual.pdf</config-value>
       <config-value name="highlighthotspots">0</config-value>
       <config-value name="exportcomments">0</config-value>
       <config-value name="exportcommentsdate">36526</config-value>
@@ -438,6 +438,11 @@ document.write('</frameset>');
       <config-group name="david">
         <config-group name="project">
           <config-value name="lastexport">0</config-value>
+        </config-group>
+      </config-group>
+      <config-group name="jedwa">
+        <config-group name="project">
+          <config-value name="lastexport">4</config-value>
         </config-group>
       </config-group>
     </config-group>
