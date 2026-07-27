@@ -87,7 +87,7 @@ jobs:
           $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
           $installDir = & $vswhere -latest -property installationPath
           $devenv = Join-Path $installDir "Common7\IDE\devenv.com"
-          & $devenv Walls32\Walls.sln /build "Release" /project "WallsInstaller"
+          & $devenv Walls32\Walls.sln /build "Release|x86" /project "WallsInstaller"
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
