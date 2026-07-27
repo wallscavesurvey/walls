@@ -50,7 +50,8 @@ jobs:
       - name: Install Help+Manual
         run: |
           Invoke-WebRequest -Uri "https://www.helpandmanual.com/download/hm7setup.exe" -OutFile "hm7setup.exe"
-          .\hm7setup.exe /SP- /SILENT /SUPPRESSMSGBOXES /NORESTART /LOG=helpman.log
+          .\hm7setup.exe /SP- /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /LOG=helpman.log
+          dir "${env:ProgramFiles}"
           dir "${env:ProgramFiles(x86)}"
           dir "${env:ProgramFiles(x86)}\EC Software"
           dir "${env:ProgramFiles(x86)}\EC Software\HelpAndManual7"
