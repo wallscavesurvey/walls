@@ -264,6 +264,7 @@
     <ClInclude Include="utility.h" />
     <ClInclude Include="vecdlg.h" />
     <ClInclude Include="VecInfo.h" />
+    <ClInclude Include="version.h" />
     <ClInclude Include="viewdlg.h" />
     <ClInclude Include="vnode.h" />
     <ClInclude Include="wall-srv.h" />

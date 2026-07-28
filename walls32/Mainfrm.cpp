@@ -21,7 +21,7 @@
 #include "compile.h"
 //#include "PictHolder.h"
 #include "mapframe.h"
-
+#include "version.h"
 #include <direct.h>
 
 //NOTE: This header was copied from ..\vc\mfc\src
@@ -420,6 +420,13 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CMDIFrameWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
+
+	CString titleFormat;
+	if (titleFormat.LoadString(IDR_MAINFRAME)) {
+		CString titleText;
+		titleText.Format(titleFormat, _T(VERSION), _T(BUILD_DATE));
+		SetWindowText(titleText);
+	}
 
 	::SetClassLong(m_hWnd, GCL_HBRBACKGROUND, (long)::GetStockObject(GRAY_BRUSH));
 
