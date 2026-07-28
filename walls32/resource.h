@@ -67,6 +67,7 @@
 #define IDS_WPJ_FILES                   39
 #define IDS_WPJBROWSE                   40
 #define IDS_PRJ_EXPORTLOG               41
+#define IDS_ABOUT_APP_FMT               42
 #define IDS_LST_FILES                   61
 #define IDD_ABOUTBOX                    100
 #define IDC_VECTORLIST                  100
@@ -759,6 +760,7 @@
 #define IDC_APPLYLBL                    682
 #define IDC_APPLYLBL2                   683
 #define IDC_RESET                       683
+#define IDC_ABOUT_APP_TEXT              683
 #define IDC_COPYSINGLE                  914
 #define IDC_COPYMULTIPLE                915
 #define ID_CHANGEFONT                   987
@@ -1226,7 +1228,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        260
 #define _APS_NEXT_COMMAND_VALUE         33034
-#define _APS_NEXT_CONTROL_VALUE         683
+#define _APS_NEXT_CONTROL_VALUE         684
 #define _APS_NEXT_SYMED_VALUE           149
 #endif
 #endif

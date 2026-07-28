@@ -6,6 +6,8 @@
 #include "walls.h"
 #include "aboutdlg.h"
 #include <direct.h>
+#include "resource.h"
+#include "version.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -81,6 +83,14 @@ BOOL CAboutDlg::OnInitDialog()
 {
 	m_textLink.SubclassDlgItem(IDC_WALLSURL, this);
 	CDialog::OnInitDialog();
+
+	CString aboutFormat;
+	if (aboutFormat.LoadString(IDS_ABOUT_APP_FMT)) {
+		CString aboutText;
+		aboutText.Format(aboutFormat, _T(VERSION), _T(BUILD_DATE));
+		SetDlgItemText(IDC_ABOUT_APP_TEXT, aboutText);
+	}
+
 	CString url = AfxGetApp()->GetProfileString("Tip", "Url", NULL);
 	if (!url.IsEmpty()) {
 		if (!strstr(url, "davidmck") && !strstr(url, "www.utexas.edu/tmm/")) m_textLink.SetLink(url);

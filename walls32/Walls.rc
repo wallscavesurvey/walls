@@ -533,7 +533,7 @@ BEGIN
     PUSHBUTTON      "Change Link",IDC_UPDATELINK,111,91,55,12
     DEFPUSHBUTTON   "OK",IDOK,173,91,55,12
     ICON            IDR_MAINFRAME,IDC_STATIC,7,14,20,20
-    CTEXT           "\nWALLS Project Editor -- Version 2.2.1\nBuild 2026-06-15",IDC_STATIC,32,7,219,38,SS_SUNKEN
+    CTEXT           "\nWALLS Project Editor -- Version %s\nBuild %s",IDC_ABOUT_APP_TEXT,32,7,219,38,SS_SUNKEN
     LTEXT           "This version of Walls may be freely distributed. Click on the link below\nto obtain information on new releases and related software.",IDC_STATIC,19,52,238,18,NOT WS_GROUP
     LTEXT           "http://texasspeleologicalsurvey.org/software/walls/tsswalls.php",IDC_WALLSURL,19,73,248,11
 END
@@ -2555,45 +2555,6 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// Version
-//
-
-VS_VERSION_INFO VERSIONINFO
- FILEVERSION 2,2,1,2
- PRODUCTVERSION 2,2,1,2
- FILEFLAGSMASK 0x3fL
-#ifdef _DEBUG
- FILEFLAGS 0x1L
-#else
- FILEFLAGS 0x0L
-#endif
- FILEOS 0x40004L
- FILETYPE 0x1L
- FILESUBTYPE 0x0L
-BEGIN
-    BLOCK "StringFileInfo"
-    BEGIN
-        BLOCK "040904b0"
-        BEGIN
-            VALUE "CompanyName", "David McKenzie"
-            VALUE "FileDescription", "Walls executable"
-            VALUE "FileVersion", "2.2.1.2"
-            VALUE "InternalName", "Walls32.exe"
-            VALUE "LegalCopyright", "(c) 2016, David McKenzie"
-            VALUE "OriginalFilename", "Walls32.exe"
-            VALUE "ProductName", "Walls Project Editor"
-            VALUE "ProductVersion", "2.2.1.2"
-        END
-    END
-    BLOCK "VarFileInfo"
-    BEGIN
-        VALUE "Translation", 0x409, 1200
-    END
-END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
 // Toolbar
 //
 
@@ -2649,7 +2610,7 @@ END
 STRINGTABLE
 BEGIN
     IDS_ERR_DELETEOPEN      "Existing file:  %s\nThe new name is that of an existing file you currently have open.\nYou must close it before it can be replaced or attached to this project."
-    IDR_MAINFRAME           "Walls Project Editor v2.2.1 2026-06-15"
+    IDR_MAINFRAME           "Walls Project Editor %s %s"
     IDR_PRJTYPE             "\nPROJECT\nWALLS Project\nProject Files (*.wpj)\n.wpj\nWPJFileType\nWPJ File Type"
     IDS_PRJ_FILES           "Project Files (*.wpj)"
     IDR_SRVTYPE             "\nSURVEY\nWALLS Survey\nSurvey Files (*.srv)\n.srv\nSRVFileType\nSRV File Type"
@@ -3387,6 +3348,7 @@ BEGIN
     IDS_WPJ_FILES           "Walls project files (*.wpj)"
     IDS_WPJBROWSE           "Select Folder and File Name for Walls Project"
     IDS_PRJ_EXPORTLOG       "Select OK to review errors logged during the export operation. Double-click file address in first column to edit survey data."
+    IDS_ABOUT_APP_FMT       "\nWALLS Project Editor -- Version %s\nBuild %s"
 END
 
 STRINGTABLE
