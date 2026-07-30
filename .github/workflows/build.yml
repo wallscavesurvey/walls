@@ -104,8 +104,13 @@ jobs:
           pnpm exec semantic-release --dry-run
 
       - name: Build Walls32
+        id: msbuild
         run: |
-          $versionStr = (Get-Content -Path ".\.version" -Raw).Trim()
+          try {
+            $versionStr = (Get-Content -Path ".\.version" -Raw -ErrorAction Stop).Trim()
+          } catch {
+            $versionStr = '1.0.0.0'
+          }
 
           if ($versionStr -match '^\d+\.\d+\.\d+\.\d+$') {
             $version = [version]$versionStr
@@ -128,7 +133,7 @@ jobs:
             /m
 
       - name: Upload Build Log if Failed
-        if: failure()
+        if: steps.msbuild.outcome == 'failure'
         uses: actions/upload-artifact@v4
         with:
           name: walls.binlog
@@ -137,7 +142,11 @@ jobs:
 
       - name: Build Walls Installer
         run: |
-          $versionStr = (Get-Content -Path ".\.version" -Raw).Trim()
+          try {
+            $versionStr = (Get-Content -Path ".\.version" -Raw -ErrorAction Stop).Trim()
+          } catch {
+            $versionStr = '1.0.0.0'
+          }
           (Get-Content '.\WallsInstaller\WallsInstaller.vdproj') -replace '"ProductVersion" = "8:2.0.0"', "`"ProductVersion`" = `"8:$versionStr`"" | Set-Content '.\WallsInstaller\WallsInstaller.vdproj'
 
           $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"

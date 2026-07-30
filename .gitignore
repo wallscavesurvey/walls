@@ -355,3 +355,5 @@ CTestTestfile.cmake
 
 lib/*
 !lib/WallsMap_sid*
+
+/.version
