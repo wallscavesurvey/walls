@@ -114,9 +114,7 @@ jobs:
 
           if ($versionStr -match '^\d+\.\d+\.\d+') {
             $version = [version]"$($Matches[0]).0"
-            Write-Host "Successfully parsed version $versionStr into environment variables."
           } else {
-            Write-Error "Error: File content '$versionStr' does not match expected X.Y.Z format."
             $version = [version]'1.0.0.0'
           }
 
