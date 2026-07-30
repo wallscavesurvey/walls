@@ -541,6 +541,15 @@
       <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions Condition="'$(WALLS_VER_MAJOR)'!=''">WALLS_VER_MAJOR=$(WALLS_VER_MAJOR);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(WALLS_VER_MINOR)'!=''">WALLS_VER_MINOR=$(WALLS_VER_MINOR);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(WALLS_VER_PATCH)'!=''">WALLS_VER_PATCH=$(WALLS_VER_PATCH);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(WALLS_VER_BUILD)'!=''">WALLS_VER_BUILD=$(WALLS_VER_BUILD);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(WALLS_BUILD_DATE)'!=''">WALLS_BUILD_DATE=$(WALLS_BUILD_DATE);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
   <ProjectExtensions>

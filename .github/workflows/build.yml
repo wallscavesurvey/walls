@@ -88,12 +88,41 @@ jobs:
       #   run: nuget restore ${{ env.SOLUTION_PATH }}
       #   continue-on-error: true
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Install Node build deps
+        run: |
+          corepack enable
+          pnpm install --frozen-lockfile
+
+      - name: Get Build Version
+        run: |
+          npm exec semantic-release --dry-run
+
       - name: Build Walls32
         run: |
+          $versionStr = (Get-Content -Path ".\.version" -Raw).Trim()
+
+          if ($versionStr -match '^\d+\.\d+\.\d+\.\d+$') {
+            $version = [version]$versionStr
+            Write-Host "Successfully parsed version $versionStr into environment variables."
+          } else {
+            Write-Error "Error: File content '$versionStr' does not match expected X.Y.Z.B format."
+            $version = [version]'1.0.0.0'
+          }
+
           msbuild ${{ env.SOLUTION_PATH }} `
             /p:Configuration=${{ matrix.configuration }} `
             /p:Platform=${{ matrix.platform }} `
             /p:PlatformToolset=v143 `
+            /p:WALLS_VER_MAJOR=$version.Major `
+            /p:WALLS_VER_MINOR=$version.Minor `
+            /p:WALLS_VER_PATCH=$version.Build `
+            /p:WALLS_VER_BUILD=$version.Revision `
+            /p:WALLS_BUILD_DATE=$(Get-Date -Format 'yyyy-MM-dd') `
             /bl:walls.binlog `
             /m
 
@@ -107,6 +136,9 @@ jobs:
 
       - name: Build Walls Installer
         run: |
+          $versionStr = (Get-Content -Path ".\.version" -Raw).Trim()
+          (Get-Content '.\WallsInstaller\WallsInstaller.vdproj') -replace '"ProductVersion" = "8:2.0.0"', "`"ProductVersion`" = `"8:$versionStr`"" | Set-Content '.\WallsInstaller\WallsInstaller.vdproj'
+
           $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
           $installDir = & $vswhere -latest -property installationPath
           $devenv = Join-Path $installDir "Common7\IDE\devenv.com"
