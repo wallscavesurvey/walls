@@ -46,7 +46,14 @@
           "verifyReleaseCmd": "echo ${nextRelease.version} > .version"
         }
       ],
-      "@semantic-release/github"
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            { "path": "bin/WallsInstaller.msi", "label": "WallsInstaller-${nextRelease.version}.msi" }
+          ]
+        }
+      ]
     ]
   }
 }

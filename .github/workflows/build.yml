@@ -88,7 +88,7 @@ jobs:
       #   run: nuget restore ${{ env.SOLUTION_PATH }}
       #   continue-on-error: true
 
-      - name: Set up Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "24"
@@ -109,14 +109,14 @@ jobs:
           try {
             $versionStr = (Get-Content -Path ".\.version" -Raw -ErrorAction Stop).Trim()
           } catch {
-            $versionStr = '1.0.0.0'
+            $versionStr = '1.0.0'
           }
 
-          if ($versionStr -match '^\d+\.\d+\.\d+\.\d+$') {
-            $version = [version]$versionStr
+          if ($versionStr -match '^\d+\.\d+\.\d+') {
+            $version = [version]"${Matches[0]}.0"
             Write-Host "Successfully parsed version $versionStr into environment variables."
           } else {
-            Write-Error "Error: File content '$versionStr' does not match expected X.Y.Z.B format."
+            Write-Error "Error: File content '$versionStr' does not match expected X.Y.Z format."
             $version = [version]'1.0.0.0'
           }
 
@@ -143,11 +143,14 @@ jobs:
       - name: Build Walls Installer
         run: |
           try {
-            $versionStr = (Get-Content -Path ".\.version" -Raw -ErrorAction Stop).Trim()
+            $version = (Get-Content -Path ".\.version" -Raw -ErrorAction Stop).Trim()
           } catch {
-            $versionStr = '1.0.0.0'
+            $version = '1.0.0'
           }
-          (Get-Content '.\WallsInstaller\WallsInstaller.vdproj') -replace '"ProductVersion" = "8:2.0.0"', "`"ProductVersion`" = `"8:$versionStr`"" | Set-Content '.\WallsInstaller\WallsInstaller.vdproj'
+          if ($version -match '^\d+\.\d+\.\d+') {
+            $version = $Matches[0]
+          }
+          (Get-Content '.\WallsInstaller\WallsInstaller.vdproj') -replace '"ProductVersion" = "8:2.0.0"', "`"ProductVersion`" = `"8:$version`"" | Set-Content '.\WallsInstaller\WallsInstaller.vdproj'
 
           $vswhere = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
           $installDir = & $vswhere -latest -property installationPath
@@ -161,3 +164,8 @@ jobs:
           path: |
             bin/WallsInstaller.msi
           retention-days: 7
+
+      - name: semantic-release
+        run: |
+          corepack enable
+          pnpm exec semantic-release
