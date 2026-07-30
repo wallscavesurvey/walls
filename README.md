@@ -38,3 +38,8 @@ as well as trying to find out who else is still using Walls.
 
 - Build the `Walls_Help` project first. I would make the installer project depend on `Walls_Help` if I could, but I can't...because Visual Studio/Installer Projects kinda suck.
 - Build the `WallsInstaller` project if you want to make an installer for distribution.
+
+## Thanks To
+
+- David McKenzie, of course
+- Dariusz Lubomski (@dlubom) for initial work on setting up a CI build
