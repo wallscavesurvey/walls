@@ -424,7 +424,7 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CString titleFormat;
 	if (titleFormat.LoadString(IDR_MAINFRAME)) {
 		CString titleText;
-		titleText.Format(titleFormat, _T(VERSION), _T(BUILD_DATE));
+		titleText.Format(titleFormat, _T(WALLS_VERSION), _T(WALLS_BUILD_DATE));
 		SetWindowText(titleText);
 	}
 

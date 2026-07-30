@@ -4,22 +4,22 @@
 #define STRINGIFY_HELPER(x)		#x
 #define STRINGIFY(x)			STRINGIFY_HELPER(x)
 
-#ifndef VER_MAJOR
-#define VER_MAJOR				2
+#ifndef WALLS_VER_MAJOR
+#define WALLS_VER_MAJOR				2
 #endif
-#ifndef VER_MINOR
-#define VER_MINOR				2
+#ifndef WALLS_VER_MINOR
+#define WALLS_VER_MINOR				2
 #endif
-#ifndef VER_PATCH
-#define VER_PATCH				1
+#ifndef WALLS_VER_PATCH
+#define WALLS_VER_PATCH				1
 #endif
-#ifndef VER_BUILD
-#define VER_BUILD				0
-#endif
-
-#ifndef BUILD_DATE
-#define BUILD_DATE				"2026-06-15"
+#ifndef WALLS_VER_BUILD
+#define WALLS_VER_BUILD				0
 #endif
 
-#define VERSION					STRINGIFY(VER_MAJOR) "." STRINGIFY(VER_MINOR) "." STRINGIFY(VER_PATCH) "." STRINGIFY(VER_BUILD)
+#ifndef WALLS_BUILD_DATE
+#define WALLS_BUILD_DATE				"2026-06-15"
+#endif
+
+#define WALLS_VERSION					STRINGIFY(WALLS_VER_MAJOR) "." STRINGIFY(WALLS_VER_MINOR) "." STRINGIFY(WALLS_VER_PATCH) "." STRINGIFY(WALLS_VER_BUILD)
 

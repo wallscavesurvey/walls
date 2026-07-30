@@ -22,8 +22,8 @@
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION VER_MAJOR,VER_MINOR,VER_PATCH,VER_BUILD
- PRODUCTVERSION VER_MAJOR,VER_MINOR,VER_PATCH,VER_BUILD
+ FILEVERSION WALLS_VER_MAJOR,WALLS_VER_MINOR,WALLS_VER_PATCH,WALLS_VER_BUILD
+ PRODUCTVERSION WALLS_VER_MAJOR,WALLS_VER_MINOR,WALLS_VER_PATCH,WALLS_VER_BUILD
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -40,12 +40,12 @@ BEGIN
         BEGIN
             VALUE "CompanyName", "David McKenzie"
             VALUE "FileDescription", "Walls executable"
-            VALUE "FileVersion", VERSION
+            VALUE "FileVersion", WALLS_VERSION
             VALUE "InternalName", "Walls32.exe"
             VALUE "LegalCopyright", "(c) 2016, David McKenzie"
             VALUE "OriginalFilename", "Walls32.exe"
             VALUE "ProductName", "Walls Project Editor"
-            VALUE "ProductVersion", VERSION
+            VALUE "ProductVersion", WALLS_VERSION
         END
     END
     BLOCK "VarFileInfo"

@@ -87,7 +87,7 @@ BOOL CAboutDlg::OnInitDialog()
 	CString aboutFormat;
 	if (aboutFormat.LoadString(IDS_ABOUT_APP_FMT)) {
 		CString aboutText;
-		aboutText.Format(aboutFormat, _T(VERSION), _T(BUILD_DATE));
+		aboutText.Format(aboutFormat, _T(WALLS_VERSION), _T(WALLS_BUILD_DATE));
 		SetDlgItemText(IDC_ABOUT_APP_TEXT, aboutText);
 	}
 

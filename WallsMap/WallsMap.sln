@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.35026.233
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37411.7 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WallsMap", "WallsMap.vcxproj", "{F4C4EAE5-C0E3-44E5-989C-202244DC047B}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -73,8 +73,6 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libpng164", "..\libpng164\libpng164.vcxproj", "{E07A7B76-08BA-430B-B1AA-883F75DE2379}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SampleSpellingClient", "..\SampleSpellingClient\SampleSpellingClient.vcxproj", "{6D04155E-C3D9-4CB6-BCFD-2B5A205C0329}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simd", "..\libjpegtbo\simd\simd.vcxproj", "{6627761B-B9DD-4374-B00F-A4D5C63956E2}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libjpeg-turbo", "..\libjpeg-turbo-vs\libjpeg-turbo.vcxproj", "{0C6684EE-8ABA-3E67-8E20-B0245D0B9832}"
 EndProject
@@ -1183,54 +1181,6 @@ Global
 		{6D04155E-C3D9-4CB6-BCFD-2B5A205C0329}.RelWithDebInfo|Mixed Platforms.ActiveCfg = Release|Win32
 		{6D04155E-C3D9-4CB6-BCFD-2B5A205C0329}.RelWithDebInfo|Win32.ActiveCfg = Release|Win32
 		{6D04155E-C3D9-4CB6-BCFD-2B5A205C0329}.RelWithDebInfo|x64.ActiveCfg = Release|x64
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Debug_XP|ARM.ActiveCfg = Release|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Debug_XP|ARM.Build.0 = Release|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Debug_XP|Itanium.ActiveCfg = Release|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Debug_XP|Itanium.Build.0 = Release|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Debug_XP|Mixed Platforms.ActiveCfg = Debug|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Debug_XP|Mixed Platforms.Build.0 = Debug|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Debug_XP|Win32.ActiveCfg = Debug|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Debug_XP|Win32.Build.0 = Debug|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Debug_XP|x64.ActiveCfg = Release|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Debug_XP|x64.Build.0 = Release|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Debug|ARM.ActiveCfg = Debug|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Debug|Itanium.ActiveCfg = Debug|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Debug|Mixed Platforms.Build.0 = Debug|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Debug|Win32.ActiveCfg = Debug|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Debug|Win32.Build.0 = Debug|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Debug|x64.ActiveCfg = Debug|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.MinSizeRel|ARM.ActiveCfg = MinSizeRel|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.MinSizeRel|Itanium.ActiveCfg = MinSizeRel|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.MinSizeRel|Mixed Platforms.ActiveCfg = MinSizeRel|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.MinSizeRel|Mixed Platforms.Build.0 = MinSizeRel|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.MinSizeRel|Win32.ActiveCfg = MinSizeRel|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.MinSizeRel|Win32.Build.0 = MinSizeRel|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.MinSizeRel|x64.ActiveCfg = MinSizeRel|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Release_XP|ARM.ActiveCfg = Release|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Release_XP|ARM.Build.0 = Release|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Release_XP|Itanium.ActiveCfg = Release|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Release_XP|Itanium.Build.0 = Release|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Release_XP|Mixed Platforms.ActiveCfg = Release|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Release_XP|Mixed Platforms.Build.0 = Release|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Release_XP|Win32.ActiveCfg = Release|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Release_XP|Win32.Build.0 = Release|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Release_XP|x64.ActiveCfg = Release|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Release_XP|x64.Build.0 = Release|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Release|ARM.ActiveCfg = Release|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Release|Itanium.ActiveCfg = Release|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Release|Mixed Platforms.ActiveCfg = Release|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Release|Mixed Platforms.Build.0 = Release|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Release|Win32.ActiveCfg = Release|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Release|Win32.Build.0 = Release|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.Release|x64.ActiveCfg = Release|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.RelWithDebInfo|ARM.ActiveCfg = RelWithDebInfo|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.RelWithDebInfo|Itanium.ActiveCfg = RelWithDebInfo|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.RelWithDebInfo|Mixed Platforms.ActiveCfg = RelWithDebInfo|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.RelWithDebInfo|Mixed Platforms.Build.0 = RelWithDebInfo|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.RelWithDebInfo|Win32.ActiveCfg = RelWithDebInfo|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.RelWithDebInfo|Win32.Build.0 = RelWithDebInfo|Win32
-		{6627761B-B9DD-4374-B00F-A4D5C63956E2}.RelWithDebInfo|x64.ActiveCfg = RelWithDebInfo|Win32
 		{0C6684EE-8ABA-3E67-8E20-B0245D0B9832}.Debug_XP|ARM.ActiveCfg = Release|Win32
 		{0C6684EE-8ABA-3E67-8E20-B0245D0B9832}.Debug_XP|ARM.Build.0 = Release|Win32
 		{0C6684EE-8ABA-3E67-8E20-B0245D0B9832}.Debug_XP|Itanium.ActiveCfg = Release|Win32

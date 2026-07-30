@@ -56,9 +56,6 @@
     <ClInclude Include="filecfg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\FltRect.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PromptPath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -81,6 +78,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="crack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="$(WorkDIR)inc\FltRect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
