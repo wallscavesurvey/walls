@@ -100,7 +100,8 @@ jobs:
 
       - name: Get Build Version
         run: |
-          npm exec semantic-release --dry-run
+          corepack enable
+          pnpm exec semantic-release --dry-run
 
       - name: Build Walls32
         run: |
