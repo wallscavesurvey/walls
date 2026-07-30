@@ -42,4 +42,5 @@ as well as trying to find out who else is still using Walls.
 ## Thanks To
 
 - David McKenzie, of course
+- Peter Sprouse for introducing me to David, and recommending me as the future maintainer
 - Dariusz Lubomski (@dlubom) for initial work on setting up a CI build
