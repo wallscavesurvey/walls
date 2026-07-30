@@ -99,6 +99,8 @@ jobs:
           pnpm install --frozen-lockfile
 
       - name: Get Build Version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           corepack enable
           pnpm exec semantic-release --dry-run
@@ -164,6 +166,8 @@ jobs:
           retention-days: 7
 
       - name: semantic-release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           corepack enable
           pnpm exec semantic-release
