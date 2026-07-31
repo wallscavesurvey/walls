@@ -1,0 +1,34 @@
+;Actun Kaua - West Passage (Left Wall)
+;Surveyed 19 July 1975
+#Units Feet Order=VDA A=mills
+#date 1975-07-19
+;Old well connection
+;#book	V:1	of 34
+2V	00	-6	10.3	2320	.5
+;#book	V:3	of 34
+146	0V	-3	10	6180	1
+0V	1V	-5	15.9	5720	1
+1V	2V	3	21.2	0340	-1
+;<section deleted due to 2003 resurvey>
+#units A=Deg
+15V	16V	-5	9.5	319.5	.5
+16V	17V	2	11.1	219.4	.5
+17V	18V	-7	11.2	244.1	.5
+18V	19V	3	16.2	175.5	.5
+19V	20V	6	11.8	96.8	.5
+20V	21V	0	11	119.3	.5
+21V	22V	-6	8.4	198	.5
+22V	23V	-4	4	97.9	.5
+16V	24V	-4	18.6	265.5	.5
+24V	25V	-4	15.9	276.8	.5
+25V	26V	-7	4.5	340.9	.5
+26V	27V	-5	7.6	263.3	.5
+27V	28V	0	10.7	209.3	.5
+28V	29V	-4	4.9	263.3	.5
+29V	30V	-7	5.5	349.9	.5
+30V	31V	-7	10.8	50.6	.5
+31V	32V	-5	8.7	327.4	.5
+32V	33V	-5	17.8	356.6	.5
+33V	34V	-5	7.6	281.3	.5
+34V	35V	-1	8.3	237.4	.5
+;<section onitted from sample project>

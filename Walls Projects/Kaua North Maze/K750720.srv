@@ -1,0 +1,17 @@
+;Actun Kaua - Left Wall
+;Surveyed 20 July 1975
+;Pages 2-3 of 3 of transcription (last page)
+#Units Feet Order=VDA
+#date 1975-07-20
+2V	36V	-6	16	340.9	.5
+;Dummy shot to attach 1975 left wall survey with resurveys --
+43V	D173	0	0.7m	122	.44m
+
+43V	44V	-2	6	297	.5
+44V	16V	-4	5.9	210.4	.5
+44V	45V	-6	12.7	351	.5
+45V	46V	-3	15.7	274.5	.5
+46V	47V	-3	29.8	254.3	.5
+47V	48V	-4	7	212.6	.5
+48V	27V	2	4.2	101.3	.5
+;Remaining data deleted from sample project --

@@ -1,0 +1,11 @@
+;South Maze (R-Survey)
+;Survey 9 Oct 1974
+#Units Feet Order=VDA A=mills
+#Date 1974-10-09
+#Seg Entrance Maze
+;#book	R:1	;of 42
+6	ON	14	40.1	3780	-.6
+ON	1R	-38.5	23.4	4580	1
+;#book	R:2	;of 42
+1R	2R	-20.5	21.7	4260	1
+;Section deleted from sample project --

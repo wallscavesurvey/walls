@@ -1,0 +1,84 @@
+;A:19-38 North Maze: T-J Surveys (19 Nov 74)
+;Middle Boundary
+#Units Feet Order=VDA
+#date 1974-11-19
+;#book	A:22	;of 65
+24	0T	-2	33.2	25.9	-1
+0T	1T	0	21.8	30.4	1.5
+1T	2T	3	12.7	29.3	1.5
+2T	3T	-1	24.2	102.4	.5
+3T	4T	-3	12.4	79.9	1
+4T	5T	-6	10.9	61.9	1
+;5T	6T	-4	10.9	55.1	1.5
+;5T-6T-7Treplaced with 5T to F71 to 7T in Jan 1 2002 F-Survey
+;8T replaced by F118 in Jan 6 2002 F-Survey
+;#book	A:24	;of 65
+;***floated: 3.2' hz, 1.4' vt closure, prob due to marker movement -- see note below.
+;6T	7T	-3	14.1	93.4	1.5	(?)
+;7T	8T	4	10.2	102.4	1.5
+;8T?	9T	-2	18.2	150.8	1.5
+;8T to 9T is not possible due to intervening wall but distance from 7T to 8T is correct.
+;F118 is in the approximate position of where 8T should be.
+;8T? is created here to float the vector and resolve the poor closure
+9T	10T	0	24.8	133.9	1
+10T	11T	1	34.2	108	1
+;#book	A:26	;of 65
+11T	36$	1	24.7	54	1
+11T	12T	-1	18.2	180	1
+12T	13T	1	43.3	157.5	1
+13T	35$	-1	50.5	24.8	1
+13T	14T	3	17.7	128.3	1
+14T	33$	2	18.4	63	1
+;#book	A:28	;of 65
+14T	15T	1	10.1	6.8	1
+15T	34$	-6	30.5	46.1	1
+13T	16T	0	26.4	218.3	1
+16T	25J	-3	4.9	139.5	1
+16T	50J	-4	25.4	232.9	1
+50J	51J	4	17.8	183.4	1
+51J	52J	-3	31.5	163.1	.5
+52J	53J	-2	23.1	105.8	2
+;#book	A:30	;of 65
+53J	54J	5	17.5	147.4	1
+54J	29J	-3	5.9	82.1	1
+31J	55J	-7	14	91.1	1
+55J	56J	-2	28.5	154.1	1.5
+56J	57J	1	16.3	127.1	1
+57J	58J	-1	13	120.4	1
+58J	11J	2	11.6	22.5	1
+;#book	A:32	;of 65
+31J	59J	-3	16.6	315	.5
+59J	60J	-5	34.8	325.1	1.5
+60J	61J	-8	16.3	293.6	1.5
+61J	62J	-2	13	180	1.5
+62J	63J	-2	17.4	167.6	1.5
+63J	47J	3	34.1	133.9	1
+63J	64J	-3	16.7	176.6	1.5
+64J	65J	-7	6.9	250.9	1
+65J	3J	6	29.4	151.9	-.5
+61J	66J	1	19.4	346.5	1.5
+66J	67J	-5	14.1	293.6	1
+67J	7J	-1	22.1	187.9	1
+;67J apparently duplicated in book and marker -
+;changed here to J67 --
+66J	J67	-4	16.9	123.8	1
+J67	60J	-1	16.7	160.9	1
+;#book	A:34	;of 65
+62J	6J	-2	15	267.8	1
+60J	68J	-2	15.4	70.9	1
+68J	69J	-3	10.3	137.3	1
+67J	51J	2	42.5	18	1
+;#book	A:36	;of 65
+8J	70J	-8	21.7	281.3	1
+70J	71J	-6	20.2	283.5	1.5
+;#book	A:37	;of 65
+71J	72J	-5	10.1	243	1.5
+;***Quest HC ; 3.1 too high - one of these should be -1.5?
+72J	73J	-2	14.9	153	1.5
+73J	74J	-7	9.6	245.3	2
+74J	75J	-2	10.9	158.6	1.5
+;***
+75J	76J	-4	9.1	124.9	1
+75J	16	2	22.7	239.6	1
+76J	77J	1	38.2	109.1	1.5
+77J	0J	-4	7.6	150.8	1.5

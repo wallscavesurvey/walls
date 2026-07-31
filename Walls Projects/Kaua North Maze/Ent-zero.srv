@@ -1,0 +1,10 @@
+;Fixed Reference at Station 5
+
+;For use only by the Walls 2B7 sample project. These are
+;entrance-relative coordinates oriented with respect
+;to the UTM grid (NAD27) as established by the geographical
+;reference properties of the project's root folder.
+
+#units meters
+;Reference --
+#fix	5	6.31	17.23	-18.88

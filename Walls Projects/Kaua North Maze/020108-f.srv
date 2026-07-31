@@ -1,0 +1,41 @@
+;Jan 08 2002 F-Survey
+;Veni (sk & tape), McKenzie (inst & tape)
+;Inst: Suunto compass #045066 (McK), Incl #315272 (McK)
+#units feet
+#date	2002-01-08
+9T	10T	26	137	.5	1	i8
+;The original 95X marker has obviously moved about 4 feet.
+;In the 1974 surveys, 95X was well-established by multiple
+;loops (very low UVE). We therefore consider the current
+;marker position new and call it 95X+.
+10T	95X+	15i10	51.5	0	2i6	1
+98X	95X+	16i10	170	-3	1i9	1
+F138	F152	29i4	91.5	-5	i10	0
+F153	F152	14i6	197.5	11.5	0	0
+;Sta 46 marker probably  moved 5' based on stats
+F153	46?	13	147.5	-4	0	i4.5
+F153	F137	24i10	264.5	-1	0	0
+F153	F154	21i7	25	3	0	0
+F153	F155	18i4	329	-6.5	0	i5
+F140	F155	11	224.5	-13.5	-i5	0
+F140	F154	12i8.5	104	9.5	-1i11	0
+F154	F156	14i10	90	6	-1i8	0
+F156	47	12i1	152	-4.5	-i8	1i6
+F156	N15	13i7	59	-7.5	-i7	1
+N16	F150	15i4	294.75	-6.5	2i6	0
+N16	C18	36i2	255.25	-2	2i4	0
+F150	N19	26i4	18	-2	0	0
+F150	C22	15i7	7.5	2	i2	0
+F88	F157	17i10.5	340	-4	1i10.5	0
+F157	F89	6i7.5	218.25	-5	-i6	i8
+;F157	F158	11i11.5	353	0	-i3	0
+;reshot Jan 10:
+F157	F158	13i11	353	0	-i3	0
+F158	F159	6i5	247.5	-3.5	0	i8
+F159	F89	16i6	166	0.75	i2	i8
+F159	16Q	9i11	254.75	-7.5	1	i2
+F159	F160	21i4	0	-6	i3	i8
+F161	F160	10i7.5	44	-15	0	0
+F161	16Q	16i5.5	188.75	-3	0	i2
+F161	F162	21	1.5	-3	-1i1	-i8
+

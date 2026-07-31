@@ -15,7 +15,25 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_02B23B8F7EC64A4EB614744AF34F5825"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_032407C853734B2889E1BB7CC4090E00"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_0894DFE858044CEBA3469E377422AD68"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_09663AB7E9B3406288F48E8457F2A9D9"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -33,7 +51,79 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_13CA45D6C9384CD5B92751C9928EA9A9"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_197B62E1575A4C35AB9146BD9E5A9C1B"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_1CE6315A7233416E887FACECDE45EC7B"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_1F9FD2B0B5814510804A09A80B0E2B54"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_227BFDFF894A4AB9B519A8BBFF6AF5FF"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_22A67B56FD404BF19FFAED8B306EADA3"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2410430D22D94C0EA5CA8B9C7408D16E"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_294D1CFB9B6143B99CE3921507018167"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2A855ADB61C74EF9B67BF598F3DFD972"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2B69188B87C044D4B34FF65C7257367C"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2C52A60F32924B3FBCF3AD451B69CA42"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2C8A91E3181C4545B2E13EF779450A9D"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2CE956F0167C4830BF3A6B6ABFEBDC2F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -45,14 +135,14 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_3777AB6FA59D7411F27542134E65B93E"
-        "OwnerKey" = "8:_032407C853734B2889E1BB7CC4090E00"
+        "MsmKey" = "8:_3650953B2BF04F2993CDB3600E18F716"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_3777AB6FA59D7411F27542134E65B93E"
-        "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
+        "OwnerKey" = "8:_032407C853734B2889E1BB7CC4090E00"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -69,8 +159,26 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_3777AB6FA59D7411F27542134E65B93E"
+        "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3894486ADC714104B420A2B16473AA1B"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_3A8DC16464A7E4B80D57CC4792E2E6A8"
         "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_3C2A3243356349CAAEFBAFB332677955"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -81,8 +189,32 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_3E94744081D749F393FEE0435DE1427D"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_401E3DF64CB89744530A9513F046BEEE"
         "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_41D919E052834C75BAABD2B6348BD0AE"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_43898E8CBE8048D29236EFB5298F6866"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_47C8DB1F0D054FDF8756FC8CB98715F6"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -105,6 +237,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_575557445BC541FDA51455EDD6D665AF"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5CC5E9F61A824F31A57499313D543BAE"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_635407BF5CCC78B780D97F30CE38DE15"
         "OwnerKey" = "8:_8079ECCAB4D3469497657642CC93FA18"
         "MsmSig" = "8:_UNDEFINED"
@@ -112,6 +256,24 @@
         "Entry"
         {
         "MsmKey" = "8:_6704107C4AF24631ACE010D2EEB75C0E"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_68B7B368DCFB40D3BED8E9FE2CDAA005"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_69BED289681D46D2981977486BE2B4F8"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_6D4222A544C6424F982B2D562C79CE0E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -129,6 +291,18 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_6EA89032DF924FF38E2F183469628BC2"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_79226F91177F4559829754A10DA12BF9"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_8079ECCAB4D3469497657642CC93FA18"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -137,6 +311,12 @@
         {
         "MsmKey" = "8:_85C82BCB69424D6B1B01B68849A11DDA"
         "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_86158847B71C49609E97A0EBF6D20926"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -166,12 +346,6 @@
         "Entry"
         {
         "MsmKey" = "8:_9169E50898AF23CD817ADF3F2C51C0AF"
-        "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_9169E50898AF23CD817ADF3F2C51C0AF"
         "OwnerKey" = "8:_9AF66B1327EE411AA98EEE3A2218570C"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -183,7 +357,55 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_9169E50898AF23CD817ADF3F2C51C0AF"
+        "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_93817A858A9E4DF387BAB2C0ACBEEBFB"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_93E1C00EA70D486796B495F57882E4C9"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_93F4D61253CB49CB9057875BFE06BF83"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_95604E5344224AFFBE4E7EEC806EB3C0"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_9621229F94444DCBA150BE32EA059567"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_964DCFCBF7B64B6CACC26C51B483814D"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_96BE41B75BDA4A5EB6BA59DE8128EB92"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9721E6C028EB402198D8F618C37C7FC9"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -207,8 +429,32 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_9FB0D6069C7547019E8E2DF49BA52426"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_A1CA40B02A9C4AA09408A0C001A11C9C"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_A43122BE60E41795C122AA133D6E116A"
         "OwnerKey" = "8:_C3DD1C9C0B7444AFB132662BB0802B5A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_AEB4EEC4DE0B41348219E44D0EA9992B"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B3A53B45F02C4996A1142F52DBA2D921"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -226,6 +472,12 @@
         "Entry"
         {
         "MsmKey" = "8:_BCEDEDEB9BD04C22810EC8B86B6E06E6"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C02D03C4D4604F48A87B75366B21EEF8"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -261,13 +513,79 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_D3B576843FA8454199C238AED842688B"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_D495BB5C7FB42F9E904A0DEE5BF99CDA"
         "OwnerKey" = "8:_C3DD1C9C0B7444AFB132662BB0802B5A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
+        "MsmKey" = "8:_D6BD47285DEF48ACBC20C0F7860D1130"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DB5D8DDA4C6D4B56ADB0EAA45F009DC5"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_DE890C42A1F4453589475158C4BDE380"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DEBED6E88CAE4FE092396FFB576D858B"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E25233650E994B328E32F6EE91328F45"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E3658DDC67D64B339F816D0BDD4D778F"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_E4D78BD0970C41309DF4B5A60C079E68"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_ED42E7C2F5194BC0A9F6A3C927A56E76"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_EE240CB899EE43A1AA27573D15FD2733"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_EE6A11B029F64787B2A9422F16310A25"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FB5EA5CF36A343B1B18B8AAE95F7B84F"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -280,12 +598,6 @@
         "Entry"
         {
         "MsmKey" = "8:_FCEAEBBAAEFC09598D6B6449670A6088"
-        "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_FCEAEBBAAEFC09598D6B6449670A6088"
         "OwnerKey" = "8:_9AF66B1327EE411AA98EEE3A2218570C"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -293,6 +605,12 @@
         {
         "MsmKey" = "8:_FCEAEBBAAEFC09598D6B6449670A6088"
         "OwnerKey" = "8:_8079ECCAB4D3469497657642CC93FA18"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_FCEAEBBAAEFC09598D6B6449670A6088"
+        "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -388,6 +706,66 @@
         }
         "File"
         {
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_02B23B8F7EC64A4EB614744AF34F5825"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\Kaua North Maze\\Kaua-nm.ntac"
+            "TargetName" = "8:Kaua-nm.ntac"
+            "Tag" = "8:"
+            "Folder" = "8:_59542CD4ABA2479B9D70C7E7B7965054"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0894DFE858044CEBA3469E377422AD68"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\K750720.srv"
+            "TargetName" = "8:K750720.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_09663AB7E9B3406288F48E8457F2A9D9"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\Warptest.srv"
+            "TargetName" = "8:Warptest.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0D58CAAC395720185443CED11A258EFA"
             {
             "SourcePath" = "8:api-ms-win-crt-runtime-l1-1-0.dll"
@@ -428,12 +806,272 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_13CA45D6C9384CD5B92751C9928EA9A9"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\K741109.srv"
+            "TargetName" = "8:K741109.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_197B62E1575A4C35AB9146BD9E5A9C1B"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\011230-n.srv"
+            "TargetName" = "8:011230-n.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1CE6315A7233416E887FACECDE45EC7B"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\K741021.srv"
+            "TargetName" = "8:K741021.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1F9FD2B0B5814510804A09A80B0E2B54"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\01-12-29.srv"
+            "TargetName" = "8:01-12-29.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_227BFDFF894A4AB9B519A8BBFF6AF5FF"
             {
             "SourcePath" = "8:..\\bin\\Walls_Manual.pdf"
             "TargetName" = "8:Walls_Manual.pdf"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_22A67B56FD404BF19FFAED8B306EADA3"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\K741010.srv"
+            "TargetName" = "8:K741010.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2410430D22D94C0EA5CA8B9C7408D16E"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\KAUA-NM_w2d_mrg.svg"
+            "TargetName" = "8:KAUA-NM_w2d_mrg.svg"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_294D1CFB9B6143B99CE3921507018167"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\Dsurv07.srv"
+            "TargetName" = "8:Dsurv07.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2A855ADB61C74EF9B67BF598F3DFD972"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Tutorial Project\\Polygon.srv"
+            "TargetName" = "8:Polygon.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_567B7CCE8AEB4AE9B05F760B1D84E063"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2B69188B87C044D4B34FF65C7257367C"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\020103n.srv"
+            "TargetName" = "8:020103n.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2C52A60F32924B3FBCF3AD451B69CA42"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\Dsurv09.srv"
+            "TargetName" = "8:Dsurv09.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2C8A91E3181C4545B2E13EF779450A9D"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\K741208.srv"
+            "TargetName" = "8:K741208.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2CE956F0167C4830BF3A6B6ABFEBDC2F"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\020101n.srv"
+            "TargetName" = "8:020101n.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3650953B2BF04F2993CDB3600E18F716"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\Dsurv01.srv"
+            "TargetName" = "8:Dsurv01.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -468,6 +1106,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3894486ADC714104B420A2B16473AA1B"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\K741120.srv"
+            "TargetName" = "8:K741120.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3A8DC16464A7E4B80D57CC4792E2E6A8"
             {
             "SourcePath" = "8:wallsvg.dll"
@@ -488,6 +1146,46 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3C2A3243356349CAAEFBAFB332677955"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\020108-n.srv"
+            "TargetName" = "8:020108-n.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3E94744081D749F393FEE0435DE1427D"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\011230f.srv"
+            "TargetName" = "8:011230f.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_401E3DF64CB89744530A9513F046BEEE"
             {
             "SourcePath" = "8:geomod.exe"
@@ -506,6 +1204,66 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_41D919E052834C75BAABD2B6348BD0AE"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\Rtwall.srv"
+            "TargetName" = "8:Rtwall.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_43898E8CBE8048D29236EFB5298F6866"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\020102f.srv"
+            "TargetName" = "8:020102f.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_47C8DB1F0D054FDF8756FC8CB98715F6"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\01-12-26.srv"
+            "TargetName" = "8:01-12-26.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4C051BA0929DE47EA6E19133B54C3FF9"
@@ -568,6 +1326,46 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_575557445BC541FDA51455EDD6D665AF"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\020107-f.srv"
+            "TargetName" = "8:020107-f.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5CC5E9F61A824F31A57499313D543BAE"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\020106f.srv"
+            "TargetName" = "8:020106f.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_635407BF5CCC78B780D97F30CE38DE15"
             {
             "SourcePath" = "8:OPENGL32.dll"
@@ -586,6 +1384,66 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_68B7B368DCFB40D3BED8E9FE2CDAA005"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\Nmazen.srv"
+            "TargetName" = "8:Nmazen.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_69BED289681D46D2981977486BE2B4F8"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\Kasurvey.srv"
+            "TargetName" = "8:Kasurvey.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6D4222A544C6424F982B2D562C79CE0E"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\Ent-zero.srv"
+            "TargetName" = "8:Ent-zero.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6D517EABDDA2687A0B283F7A27C96AA8"
@@ -608,6 +1466,46 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6EA89032DF924FF38E2F183469628BC2"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\K750719.srv"
+            "TargetName" = "8:K750719.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_79226F91177F4559829754A10DA12BF9"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\Notes.srv"
+            "TargetName" = "8:Notes.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_85C82BCB69424D6B1B01B68849A11DDA"
             {
             "SourcePath" = "8:wallexp.dll"
@@ -626,6 +1524,26 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_86158847B71C49609E97A0EBF6D20926"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\Nm-float.srv"
+            "TargetName" = "8:Nm-float.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_899B607ADB42485F8945D333DD2E24EC"
@@ -688,12 +1606,152 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_93817A858A9E4DF387BAB2C0ACBEEBFB"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Tutorial Project\\Tutorial\\Tutorial.nta"
+            "TargetName" = "8:Tutorial.nta"
+            "Tag" = "8:"
+            "Folder" = "8:_8E93204BF7B84F0EA40603AC10D8AF40"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_93E1C00EA70D486796B495F57882E4C9"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\Dsurv31.srv"
+            "TargetName" = "8:Dsurv31.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_93F4D61253CB49CB9057875BFE06BF83"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\Dsurv02.srv"
+            "TargetName" = "8:Dsurv02.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_95604E5344224AFFBE4E7EEC806EB3C0"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\Kaua North Maze.wpj"
+            "TargetName" = "8:Kaua North Maze.wpj"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9621229F94444DCBA150BE32EA059567"
             {
             "SourcePath" = "8:..\\bin\\walls32.chm"
             "TargetName" = "8:walls32.chm"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_964DCFCBF7B64B6CACC26C51B483814D"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\020110-f.srv"
+            "TargetName" = "8:020110-f.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_96BE41B75BDA4A5EB6BA59DE8128EB92"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\Kaua North Maze\\Kaua-nm.nta"
+            "TargetName" = "8:Kaua-nm.nta"
+            "Tag" = "8:"
+            "Folder" = "8:_59542CD4ABA2479B9D70C7E7B7965054"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9721E6C028EB402198D8F618C37C7FC9"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\020110n.srv"
+            "TargetName" = "8:020110n.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -748,6 +1806,46 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9FB0D6069C7547019E8E2DF49BA52426"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\020108-f.srv"
+            "TargetName" = "8:020108-f.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A1CA40B02A9C4AA09408A0C001A11C9C"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\Svginfo.txt"
+            "TargetName" = "8:Svginfo.txt"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A43122BE60E41795C122AA133D6E116A"
             {
             "SourcePath" = "8:VCRUNTIME140.dll"
@@ -766,6 +1864,46 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_AEB4EEC4DE0B41348219E44D0EA9992B"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\D-survey.srv"
+            "TargetName" = "8:D-survey.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B3A53B45F02C4996A1142F52DBA2D921"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Tutorial Project\\tutorial.wpj"
+            "TargetName" = "8:tutorial.wpj"
+            "Tag" = "8:"
+            "Folder" = "8:_567B7CCE8AEB4AE9B05F760B1D84E063"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B534C94AC57AC888A366C81895E15E18"
@@ -814,6 +1952,26 @@
             "TargetName" = "8:Postinstall.rtf"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C02D03C4D4604F48A87B75366B21EEF8"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\020109n.srv"
+            "TargetName" = "8:020109n.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -908,6 +2066,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D3B576843FA8454199C238AED842688B"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\020105-n.srv"
+            "TargetName" = "8:020105-n.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D495BB5C7FB42F9E904A0DEE5BF99CDA"
             {
             "SourcePath" = "8:api-ms-win-crt-heap-l1-1-0.dll"
@@ -926,6 +2104,206 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D6BD47285DEF48ACBC20C0F7860D1130"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\Dsurv04.srv"
+            "TargetName" = "8:Dsurv04.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DB5D8DDA4C6D4B56ADB0EAA45F009DC5"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\K741119.srv"
+            "TargetName" = "8:K741119.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_DEBED6E88CAE4FE092396FFB576D858B"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\Dsurv05.srv"
+            "TargetName" = "8:Dsurv05.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E25233650E994B328E32F6EE91328F45"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\020101f.srv"
+            "TargetName" = "8:020101f.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E3658DDC67D64B339F816D0BDD4D778F"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\K741009.srv"
+            "TargetName" = "8:K741009.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E4D78BD0970C41309DF4B5A60C079E68"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\020102n.srv"
+            "TargetName" = "8:020102n.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_ED42E7C2F5194BC0A9F6A3C927A56E76"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\Nmazen2.srv"
+            "TargetName" = "8:Nmazen2.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EE240CB899EE43A1AA27573D15FD2733"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Tutorial Project\\Tutorial\\Tutorial.ntac"
+            "TargetName" = "8:Tutorial.ntac"
+            "Tag" = "8:"
+            "Folder" = "8:_8E93204BF7B84F0EA40603AC10D8AF40"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EE6A11B029F64787B2A9422F16310A25"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Tutorial Project\\Polygon_w2d_mrg.svg"
+            "TargetName" = "8:Polygon_w2d_mrg.svg"
+            "Tag" = "8:"
+            "Folder" = "8:_567B7CCE8AEB4AE9B05F760B1D84E063"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FB5EA5CF36A343B1B18B8AAE95F7B84F"
+            {
+            "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\Dsurv08.srv"
+            "TargetName" = "8:Dsurv08.srv"
+            "Tag" = "8:"
+            "Folder" = "8:_A13EA610FD1541F2B37B82421E619250"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FCEAEBBAAEFC09598D6B6449670A6088"
@@ -1020,6 +2398,72 @@
         }
         "Folder"
         {
+            "{1525181F-901A-416C-8A58-119130FE478E}:_589F0031A6A54C8BA92A39C030777CEA"
+            {
+            "Name" = "8:#1918"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:PersonalFolder"
+                "Folders"
+                {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_8C52F0EDC3684ACF84A8DA5091F864E7"
+                    {
+                    "Name" = "8:Walls Projects"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_1CFAAC2F27504ACBBF635C9160511031"
+                        "Folders"
+                        {
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_567B7CCE8AEB4AE9B05F760B1D84E063"
+                            {
+                            "Name" = "8:Tutorial Project"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_D616FE25E6DE42FB8D424E36BDFD5D86"
+                                "Folders"
+                                {
+                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_8E93204BF7B84F0EA40603AC10D8AF40"
+                                    {
+                                    "Name" = "8:Tutorial"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "Condition" = "8:"
+                                    "Transitive" = "11:FALSE"
+                                    "Property" = "8:_5761ABCF04B9435F97645C725D5A8C3F"
+                                        "Folders"
+                                        {
+                                        }
+                                    }
+                                }
+                            }
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_A13EA610FD1541F2B37B82421E619250"
+                            {
+                            "Name" = "8:Kaua North Maze"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_ADB293CE3ACD416ABD3198E036B3A396"
+                                "Folders"
+                                {
+                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_59542CD4ABA2479B9D70C7E7B7965054"
+                                    {
+                                    "Name" = "8:Kaua North Maze"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "Condition" = "8:"
+                                    "Transitive" = "11:FALSE"
+                                    "Property" = "8:_3C8B660F1A774EE5AFBFC0D7BD70444B"
+                                        "Folders"
+                                        {
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
             "{1525181F-901A-416C-8A58-119130FE478E}:_6D4C4A48C2294E63B87CFA9843780CF5"
             {
             "Name" = "8:#1916"

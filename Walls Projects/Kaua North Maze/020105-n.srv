@@ -1,0 +1,45 @@
+;N Survey - Jan 6, 2002
+;McKenzie (inst) and Knox (sketch)
+;Inst: Suunto compass #045066 (Knox), Incl #315272 (Knox)
+#units feet
+#date	2002-01-06
+N45	B18	29.9	333.5	1.5	;N46 probably B18
+B18	N47	13.87	294.5	8.5
+;N47 prob B6 (question mark)
+N47	N34	26.7	37	-2.5
+N36	N48	30.25	350	-2
+N48	24Q	17.9	58.5	-1
+;The verticals of N48-N49-N50 were rechecked. The vertical discrepancy
+;originally observed is explained by the reversed sign in N55-N56 (see below):
+N48	N49	27.87	306.5	2.8
+N49	N49W	9.9	292	-6.5	;H2O level
+N49	N50	21.85	223	2
+N50	N51	15.45	243.5	-0.5
+N51	N52	26.85	269.5	2.5
+N52	N53	21.85	136	5
+N53	N54	13.2	64	0
+N54	N51	11.86	5	-3.75
+N54	N55	12.8	62.5	-1
+N55	N50	13.13	18.5	2
+;4.5 vert changed to -4.5 to comply with suggested -11 correction --
+N55	N56	18.5	78	-4.5
+N56	N48	24.8	69.25	5
+N48	N57	23.6	213	2
+N57	N36	21.28	118	7
+N56	N57	14.7	134	6
+N56	B8	28.98	154.5	6.75	;N58 is B8
+B8	N59	13.1	180	10
+N59	N60	10.4	130.5	5
+N59	N34	23.47	118	5
+N59	N61	19.15	271.5	-3.25
+N61	N62	21.95	333	-5.5
+N62	B2	3.95	21	15
+N62	N55	16.0	357.25	-2
+N62	N63	7.8	247.5	1.5
+N63	N54	14.2	339.5	-0.5
+N63	N64	13.8	206.5	4.5
+N64	B1	2.45	--	+90
+N61	N64	23.17	279	-1.5
+N61	N65	18.7	163.5	4
+;N47 prob B6 (question mark)
+N65	N47	24.1	125	7.5	2	1

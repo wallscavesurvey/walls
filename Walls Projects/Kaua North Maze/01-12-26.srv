@@ -1,0 +1,52 @@
+;Dec 26 2001 F-Survey
+;Veni (sk), Palit (inst), Mckenzie (tp)
+;Inst: Suunto compass #045066 (McK), Incl #315272 (McK)
+#units feet
+#date	2001-12-26
+146	P4S	13i5	106.5	-15	1i6
+;P4S is middle of shaft, level with passage floor
+P4S	S:P4W	11f	--	-90	;water level
+S:P4W	P4B	1i3	--	-90	;Bottom of well below H2O
+146	146A	23i4	134	-.5
+146A	A2	29i5	79.5	12	1i1.5	4i4
+A2	?A3	12i3	21.5	-7.5
+;reshot Dec 29, 2001 --
+A2	?A3	12i3	21.5	-8
+;
+?A3	F1	13i6	121.5	-.5
+F1	F2	5i3	149.5	-3
+F2	1T?	4i7	70.25	-11
+1T?	F3	5i11	11.5	12.5
+F3	F4	8i10	301	-8	1i1.5
+;The following was changed from 194 az to 184 az (BC)
+F4	F1	7i1.5	184	11	0	1i1.5
+F4	F5	7i7	358	-1.5	0	1i1.5 	#seg float
+F5	?A3	14i3	237	13
+F5	F6	7i7	4.5	14	2i3
+;az should be 121.5 (.6 m closure)? --
+F6	2T	23i5	118	0
+F6	A5	27	290	2	i3	-1
+F6	F7	18	288	-2	i6.75
+F7	F8	23i6	356.5	-4.5	i3
+F8	A6	6i9	264	6.5
+F8	F9	23	357	1	i6	1
+A7	F9	10i5	53	-4.5	1
+F9	F10	9	4.5	-5
+F10	A8	7	290	17
+F10	F11	11i9	121	4
+F10	F12	15i5	40	1
+F13	F12	8i9	354	2	i6
+F11	F13	9i8	4	-7
+F12	F14	14i10	349	-5.5	0	i3
+F12	9Q	19i1	21	-3.5	;F15 is probably 9Q
+9Q	F16	7	306	-1	i7	i3
+F16	F14	9	208	-4
+F14	F17	22i5	338	0	i6	1
+;F17 is at passage floor level of Well #3
+F17	W3C	2i6	235	0
+;F17	W3	3	345	0	;approx - W3 not present
+W3C	F18	8i3	--	-90	;F18 is H2O level in well
+W3C	F19	9i10	--	-90	;F19 is bttom of well
+F17	F20	6i10	238	3	1	i3
+F20	A8	41i5	176	.5	i3	-1i7
+A10	F20	16i11	36	1	i6	i3

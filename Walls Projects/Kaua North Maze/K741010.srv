@@ -1,0 +1,14 @@
+;South Maze (10 Oct 1974)
+#Units Feet Order=VDA A=mills
+#Seg Entrance Maze
+#date 1974-10-10
+;#book	R:19	;of 42
+8	9**	-3	17.5	6140	1
+9**	1A	3	39.3	4300	1
+1A	A0	-.5	20.9	2720	1
+1A	2A	-12	30.6	4390	1
+2A	3A	-7	39	3580	1.5
+;#book	R:20	;of 42
+3A	4A	-4.5	14.9	2460	1.5
+4A	2R	2	23.3	2900	1.5
+;Section deleted from sample project --

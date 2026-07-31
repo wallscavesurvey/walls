@@ -1,0 +1,36 @@
+;N Survey - Jan 2, 2002
+;Cobb (inst) and Knox (sketch)
+;Inst: Suunto compass #045066 (McK), Incl #315272 (McK)
+#units feet
+#date	2002-01-02
+;70	71	17.34	63.5	-2	;70 assumed on floor, top of rock +2.5d
+N22	N23	21.22	341.5	-2
+N23	N24	22.03	286.5	0
+N24	W2	9.06	30	-7	;ctr of well at passage floor level
+W2	S:P2B	4.65	--	-90	;dry floor, 3' diam
+N22	N25	17.87	306.5	-2.5
+N25	N24	20.72	319.5	0
+N24	B24	13.74	253.5	3	0	1
+B24	N26	12.6	204.5	-1
+B23	N26	16.94	307	-14.5	;Make B23 not show on plan
+B23	N27	4.31	--	-90
+N26	N27	16.43	125	2
+;Az 54 probably should be 64 --
+N27	N25	20.35	64	2
+N27	N22	32.78	94	3.5
+B24	N28	20.77	278.5	-4.5
+N28	N29	13.06	237.5	6	;N29 at B5 marker
+N29	N26	27.17	105.5	2.5
+N29	N30	23.53	132	1
+N30	N31	14.72	90.5	2.5
+N31	N26	10.42	326.5	2.5
+N31	N32	14.38	206	1
+N32	N33	11.13	308.5	0	;N33 at or near  B20
+N33	N30	6.04	3.5	0
+N30	N34	26.93	270.5	1
+N30	N35	23.52	214	6.5
+N35	N34	24.40	324.5	-3
+N34	N36	29.94	353	-2.5
+N29	N36	19.72	318	-5	;N29 is B5
+N28	N37	18.11	325	-5
+N36	N37	15.69	62	-2
