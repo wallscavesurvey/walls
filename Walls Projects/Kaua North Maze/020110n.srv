@@ -1,0 +1,8 @@
+;N Survey - Jan 10, 2002
+;Cobb (inst) and Knox (sketch)
+;Inst: Suunto compass # (Knox), Incl # (Knox)
+#units feet
+#date	2002-01-10
+N89	N93	20i9	324.5	-8
+F90	N93	20i0.5	23	-3.5
+N91	N93	18i1.5	197	-4

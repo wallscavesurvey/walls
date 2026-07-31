@@ -1,0 +1,10 @@
+;This is NOT a real measurement. When included in the compilation,
+;it constrains Well #2 to a point 10 meters north of its normal
+;adjusted location. Its purpose is only to demonstrate SVG morphing.
+;When this tree item is attached, a merged SVG export will require
+;a feature adjustment since 10 meters exceeds a user-specified
+;tolerance setting for a station's movement (0.3 meters by default).
+;When it's not attached, no adjustment occurs since the SVG source
+;file (KAUA-NM_w2d_mrg.svg) already matches the survey database.
+
+#fix	W2	60.77	279.11	-22.76	(0,?)	;North coord normally 269.11

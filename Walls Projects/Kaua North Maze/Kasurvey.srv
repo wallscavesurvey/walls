@@ -1,0 +1,66 @@
+;1994 ADDITIONS TO NORTH MAZE
+;A-Survey - Western Edge of North Maze - 12/28/94
+;Sk: B.Luke, Inst: C.Savvas, Lead: D.Read (proofed)
+
+#date	1994-12-28
+;NOTE: Compass calibration determined from fit alone.
+#UNITS Meters Order=VDA IncA=-2
+
+;A1 adjusts to about 1m away from 24* and 24. 24 marker
+;no longer present. The following vector will not be used --
+;;A1	A2	0	14.15	2
+A2	A3	-8	4	7.5
+A3	A4	10	3.5	328
+A4	A5	-2	4.35	346
+A5	A6	-9	5.9	2.5
+;***Horiz floated due to bad F-ratio (az correction -6 deg)
+A6	A7	0	5.6	358	(?,)
+A7	A8	3.5	5.25	12
+A8	A9	-6.5	3.7	338
+A9	A10	-1	5.34	340
+A10	A11	0	3.3	318
+A11	A21	-10	3.2	351.5
+;***A11-A20 in floated traverse (see A20-4Q below) --
+A11	A20	-8	2.65	221
+A10	A12	-2	3.05	210
+A13	A12	3	2.05	314.5
+A13	A16	-1	2.15	270
+A9	A13	-6.5	1.69	299
+A9	A14	-3	3.4	215.5
+;***Horiz floated due to bad F-ratio (az correction +10 deg):
+A16	A14	0	3.9	146	(?,)
+A14	A15	5	4.05	173.5
+A15	A7	3.5	3.05	128
+A15	A17	1	3.35	301
+A18	A17	7.5	3.28	83
+A19	A18	0	6.55	173.5
+A19	A16	-1	4.95	89.5
+A19	A22	2.5	4.2	135
+A22	A17	1.5	3.4	162
+A19	2Q	-8.5	3.15	340
+;***Floated: Station probably moved (A11-A20 also in traverse) --
+A20	4Q	9.5	1.85	267.5	(*)
+;***Deleted: Following reshot Jan 3 2003 (see that file) --
+;;5Q	A21	-18	1.25	171.5	;***deleted
+;***Horiz floated due to bad F-ratio (az correction +5.3 deg):
+A18	A23	3	10.85	150	(*,)
+A18	A24	11	3.15	206.5
+A24	1Q	-2.5	5.9	331	(*,)
+;Page break in book
+00	A23	0	5.28	83
+A23	A25	-1.5	4.43	11.5
+A25	A15	-3	4.2	8.5
+A15	A26	4	9.75	178
+A26	A5	7.5	4.08	138
+A27	A5	10	3.78	63.5
+A27	A28	5	3.2	304.5
+A28	00	-7.5	5.45	317
+26	A27	-5	10.35	6
+;Since the adjusted plot and Luke's '94 sketch are in agreement,
+;it's likely that the 25 marker has moved from its 1974 location.
+;Based on stats and '74 sketch, 25 was originally close to A2 (~2').
+;***Deleted: Assume movement of 25 --
+;;25	A2	-10	2.45	43
+;
+A2	A29	-1	4.75	334
+A29	A4	8	2.65	17.5

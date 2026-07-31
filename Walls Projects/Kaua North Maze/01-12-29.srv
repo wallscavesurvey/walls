@@ -1,0 +1,63 @@
+;Dec 29 2001 F-Survey
+;Veni (sk), Palit (inst), Mckenzie (tp)
+;Inst: Suunto compass #045066 (McK), Incl #315272 (McK)
+#units feet
+#date	2001-12-29
+1T?	0T	16	202	0	1	1
+;Redundant shots -- old 24 marker no longer present but
+;24* plots about 1m distant --
+;#[
+0T	24*	36i6	205	6	2	1i6
+24*	A2	46i9	0	0	1i6	i8
+;#]
+1T?	2T	19	42	13	i6	i11
+F6	F21	11i4	7	3	0	0
+F21	F22	15i6	322	-1	0	1i2
+F21	F23	19I6	358	0	0	0
+;F23 is 2i6 above floor
+F23	F11	25i8	340	0	-2	0
+F13	F24	12	31	0	i9	i6
+F24	F25	16i5	7	-4	i6	i3.5
+F25	9Q	1i6	288	0	i1.5	0
+F24	F26	33i8.5	158.5	0	1	i6
+F26	F23	16i3	221	6	i6	-i6
+F26	F27	13i6	147.5	2	i6	i3
+F27	F28	10	208	3	0	i5
+F28	F23	15i5	302	1	2	0
+F28	F29	9i6	194	7	i9	i5
+F29	F30	12i9	121	2	i6	1
+F29	F21	10i2	257	3	i6	0
+F30	2T	18i10	187	1	1	i11
+F30	F31	20i5	23.5	1	1	0
+F31	F28	16i9	260	-6	0	i6
+F31	F27	13i4.5	301	-7	0	i3
+F31	C3	4i10	352	-12	0	i7
+F31	F32	17	359	-6	0	i3
+F32	F33	12i1.5	348	0	i4	i3
+F33	F27	24i5	202	-1	i6	i3
+F33	F26	19i6	236	-4	1	i6
+F33	F34	8i2	359	-1	i3	i6
+F34	F35	12i5	140	13	i8	0
+F35	F32	11i4	210	-6.5	0	i3
+F34	10Q	30i6	332	-4	i9	i1.5
+F34	12Q	24i6	2	-6	i9	i4.5
+12Q	F36	18i9	148	2	1i6	i2.5
+F36	F37	20i3	140	0.5	i3	i5.5
+F37	F38	12i9	216	5	i6	i3
+F36	F38	26i1.5	167	2	i4	i3
+F36	F39	15	171	4	i6	0
+F39	F38	11i2	166	0	0	i3
+F39	F40	23i5	188	3	-i3	1i11
+;F39  mark on ceiling 1i3 above floor
+F31	F40	11i6	48	0	0	2i6
+F40	F41	7i2	68	-4	2	i7.5
+F41	F38	10i3	356	-.5	i8	i3
+F41	C4	8i2	145	6	i9	-i6
+;C4 is on wall 1i9 above floor
+F40	F42	18	189	5	i9	i9
+F42	F30	16i5	239	3	1	1i6
+F42	F43	7i4	107	0	1	i6
+F43	C4	17i2	24	7	i9	0
+F43	F44	17i8	198	7	i9	i7.5
+F44	2T	19i6	244	-3	i7.5	i11
+

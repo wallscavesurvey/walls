@@ -1,0 +1,7 @@
+;NOTES.SRV - Symbols and Notes
+;
+#Flag	P4S,W2,W3C /Wells
+#Note	P4S	Well #1
+#Note	W2	Well #2
+#Note	W3C	Well #3
+

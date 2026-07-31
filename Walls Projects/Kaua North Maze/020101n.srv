@@ -1,0 +1,19 @@
+;N Survey - Jan 1, 2002
+;Cobb (inst) and Knox (sketch)
+;Inst: Suunto compass #045066 (McK), Incl #315272 (McK)
+#units feet
+#date	2002-01-01
+N14	N15	16	317.5	-1.5
+;N16 assumed C19 due to plot alone?
+N15	N16	27.87	39	-1.5
+N16	N13	19.87	147.5	4
+N16	N17	8.12	70.0	7
+N17	N18	14.53	341.5	-2
+N18	N10	22.32	93	-.5
+N18	N19	17.12	330	-1
+N9	N19	10.95	280.5	7
+N19	N20	17.51	.5	-3.5
+N20	C29	25.45	7.5	0
+C29	N21	12.67	307	-3.5
+N21	N22	28.39	14.5	1.5
+N22	70	27.67	55	-1.5

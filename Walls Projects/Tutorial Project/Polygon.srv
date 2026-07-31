@@ -1,0 +1,244 @@
+;Polygon Cave
+#[
+As a working example, this data file is intended to serve as a guide for
+entering your own survey data into Walls and using it as the basis for an
+SVG map. Obviously not all features of the data format are illustrated.
+That's because field book data varies so much. The format was designed to
+resemble field book pages as near as practical. You can press F1 to seek
+details about features not fully covered here. Also, near the top of the page
+that's first displayed is a link to a topic describing this text editor.
+
+ We'll start with a data entry suggestion. Although you can use spaces or
+ commas instead of tab characters to separate items on a data line, we
+ don't recommend this. Upon first use of the Walls editor you'll notice that
+ pressing ENTER inserts a tab instead of a line break. The resulting
+ tabbed text is not only more readable but it's much easier to produce
+ with the numeric keypad. To end the line, use two successive ENTERs.
+ To break a line, use CTRL-ENTER. (This feature can be turned off.)
+
+The first line in the file is normally a comment, such as the survey title.
+Following it will be other comments -- any information you think is worth
+recording, such as survey team members, instrument details, cave area
+description, and so forth. Semicolons delimit either whole line comments
+or partial line comments. Blank lines are ignored. Lines beginning
+with "#" are directives that specify how subsequent lines should be
+interpreted. For example, another way to include comments is to use the
+block comment directives, "#[" and "#]", as we've done here.
+
+To start off, you might find it convenient to place all #Flag and #Note
+directives near the top of the file (or even in a separate data file). It
+doesn't matter that they reference stations that haven't yet been defined.
+#]
+
+;If a note is assiged, a long title can appear as a label on maps instead
+;of the station's name:
+;
+#note	CKS	/Main Entrance
+
+;Flag assignments allow stations to be marked with special symbols on maps.
+;On a Walls screen map a flagged station is a "hotspot" you can click on to
+;display information. Flags also let us produce maps with only certain kinds
+;of features shown. A station can belong to multiple categories and thus
+;have multiple flags. Futhermore, a single #flag directive can assign the
+;same named flag to multiple stations. Below we're assigning flag "GPS
+;Location" to two stations and assigning one station five different flags:
+
+#flag	CKS,CKS2	/GPS Location
+#flag	CKS	/Cave
+#flag	CKS	/Surveyed Cave
+#flag	CKS	/Bats: Myotis velifer  ;Flag names aren't case sensitive.
+#flag	CKS	/Gated Cave
+
+;#date directives allow the program to automatically compute magnetic
+;declinations for any compass-and-tape data lines that follow. (Coloring
+;maps by date is another benefit.) Insert them whenever the date
+;changes. The recommended format for dates is yyyy-mm-dd:
+
+#date 2003-07-21
+
+;Normally a #units directive is entered prior to any lines that define
+;survey vectors (control points and compass and tape shots). A file can
+;have several #units directives, even though it's more common that only one
+;per file (data from one team) is required. The one below is intended only
+;for the two control points (#fix stations) that follow and is actually
+;unnecessary in this case since it specifies default values:
+
+#units meters order=ENU	;Metric units, column order=easting,northing,up
+
+;Next we'll assign a named "path-like" attribute to the defined survey
+;vectors that follow. This is optional and will be explained later.
+
+#segment /Surface Survey/GPS Locations
+
+#[
+ To begin the actual survey data we'll enter a couple of "fixed" stations defined
+ as UTM easting, northing, and elevation. (Other formats are supported,
+ including lat/long.) When you have multiple fixed stations in your files, any
+ surveys connecting them will effectively form "loops" that require adjustment
+ during processing. You can also omit #fix directives entirely, in which case
+ the first station name encountered during processing (a shot's FROM station)
+ will be assigned zero coordinates.
+
+ To produce georeferenced maps we'll also need to specify the datum and
+ UTM zone number corresponding to the fixed stations. (Coordinates entered
+ as lat/long will be converted to UTM.) We don't do that here, however, since
+ those settings will often apply to many files and are easier to enter via a dialog.
+ We instead specify them as a property of the  corresponding project tree
+ branch. We do this on the Geographical Reference page of the Properties dialog
+ in Walls, where we've also turned on automatic calculation of declinations.
+ To see these settings now, right-click on this editor window and select "File
+ properties". Then select the "Geographical reference" tab. Property settings are
+ stored in  the project file (extension .PRJ).  We'll also include the datum info here
+ as comments:
+#]
+
+;GPS fix at entrance (UTM Zone 16, WGS84 datum, as set in Properties).
+;Station CKS is a metal tag near base of tree at lip of entrance drop.
+#fix	CKS	352628	2280225	1200	(R2,R4)
+;For fixed stations there is an alternative method for defining a note:
+#fix	CKS2	352642	2280222	1200	(R2,?) /Skylight Entrance
+
+#[
+ If we expect to have multiple #fix stations, say GPS locations that
+ are connected together by compass-and-tape surveys, then we'll need to
+ provide Walls with estimates of their accuracy. (Otherwise we can omit
+ the expressions in parentheses and the "fixed" points really won't move.)
+ We've done this for station CKS by entering estimated Root-Mean-Squared
+ (RMS) errors of 2 meters for the horzontal location and 4 meters for the
+ elevation. Specifying "?" as the vertical accuracy for station CKS2 means that
+ no elevation was obtained and no weight should be given to the vertical
+ component during adjustment. In this situation it doesn't matter what number
+ we've entered in the elevation column (in this case 1200). We're letting the
+ remaining survey data by itself determine the computed  elevation of CKS2.
+ More information on accuracy and what the statistics mean is in the help file:
+ "Survey Data Format | Variance Assignments."
+
+ Next we'll use another #units directive to specify survey shot format.
+ With this directive, only parameters that change need to be respecified.
+ By default, the type of shot is compass and tape, the units for azimuth and
+ inclination are degrees, and the units for distances are meters. The default
+ measurement order following the FROM and TO station names are Distance,
+ Azimuth, and Vertical angle (order=DAV). For this cave, however, the field
+ notes are in feet and the inclinations appear first. We also specify that
+ 0.3 degrees should be added to the verticals (if not -90 or +90) and that
+ 0.2 degrees should be subtracted from azimuths.
+#]
+
+#units feet order=VDA incV=0.3 incA=-0.2
+
+;This project also contains a surface survey connecting the two cave
+;entrances. Although we could put that and/or the GPS fixes in a
+;separate file or files (the usual choice), we'll include it here since it
+;consists of just two shots taken with the same instruments used in the cave.
+;So that these vectors can be represented on maps with a different color,
+;we'll use another segment directive to assign them just the "Surface Survey"
+;attribute. (It could be any word or phrase of our own choosing.)
+
+#segment /Surface Survey
+
+;Note that this segment directive overrides the one given earlier for the
+;GPS locations. After compiling, we can see the affect of these directives
+;on the Segments page of the Review dialog. (While on that page, press F1.)
+
+;We'll also use the surface survey to illustrate another important feature
+;of the format. If the surface survey were extensive, we would likely need
+;to qualify the station names with a prefix to avoid conflicts with names
+;given to cave stations. (Likewise, we would need to do this for multiple
+;cave surveys in a project if they were to be compiled together.)
+
+#prefix SURFACE
+:CKS	S1	0	44.8	112
+S1	:CKS2	-10	15.1	72
+#prefix
+
+;The effect is that station S1 is actually named SURFACE:S1. We used the
+;second prefix directive to remove the name prefix since we are not using
+;one for the cave stations. We needed to put colons in front of CKS and
+;CKS2. Without them they would have been interpreted as SURFACE:CKS
+;and SURFACE:CKS2. Alternatively we can omit the two #prefix directives
+;and simply replace S1 with SURFACE:S1.
+
+;Note that unprefixed station names are limited to eight characters in
+;length. Prefixes can be longer (127 characters) but you should restrict
+;them to eight characters as well since they will be truncated to eight
+;on maps and certain reports. Station names and prefixes are case sensitive.
+
+;The cave survey now begins. LRUD (Left, right, up, down) passage dimension
+;measurements are optional. Here we're assuming they were taken at the FROM
+;station, which is the default. (Otherwise we would have added "LRUD=TO"
+;to the #units directive line.) This means we'll need to have separate lines
+;that specify LRUDs at passage ends. Although the dimension numbers
+;can be enclosed in angle brackets, <..>, we'll use asterisks since they are easier
+;to type. (Also, space characters could have been used in place of the commas.)
+
+#segment /Cave Survey
+
+A1	A2	-1	47	52.5	*2,3.5,5.5,0*
+A1	A1A	0	35	300
+A1A 	*1,1.5,2,1*
+;LRUD at passage end, facing direction assumed to be 300 degrees.
+
+A2	A3	.3	43.3	147.8	*0,7,6,2,95* ;facing 95 deg
+A3	A4	0	36	195	*0,8,6,0*
+;Side shot to dome --
+A4	A4A	+15.5	15.2	320
+A4A	CKS2	+90	10.2	--	*2,2,--,0* ;skylight
+CKS2	*1,1,--,--,340*	;facing direction is 340 degrees
+
+;The LRUD at CKS2 specifies the width of a vertical entrance. Since
+;the preceeding shot was vertical, the facing direction had to be
+;explicitly specified.
+
+;Next we define two "wall shots" for passage drawing only. When
+;a single minus sign is specified as the TO station name, no actual
+;survey station is established --
+A4A	-	0	6	300
+A4A	-	-5	4.5	320
+
+A4	A5	0	37.2	255	*1.5,2,6,0*
+;A6 is beneath entrance CKS --
+A5	A6	-1	43.3	317	*2,2,3,0*
+A6	A1	2	25	40	;closure
+;Another wall shot --
+A6	-	0	5	260
+
+#date 2003-08-15
+
+;Since a meter tape was used with this shot only, we use an "m" suffix
+;to override the length units (feet) now in effect.
+;The L-R wall distances assume a facing direction of 40 deg --
+CKS	A6	-90	5.5m	--	*1.5,2,,,40*
+
+A6	A7	-5.5	17	80.5	*4,2.5,1.5,0*
+A7	A8	-5	18	82.3	*1,3,2,0*
+A8	A9	-12.3	19	170	*2,3,3,0,125*
+A9	*1,0.5,1,0*
+
+#[
+ After compiling the project tree root, select the Map page of the
+ Review dialog (if not already selected), check the Label and Mark boxes,
+ then click the "Display Map" button to open a map frame. Next, move the
+ mouse pointer over the cave's main entrance (red triangle) and right-
+ click. Select "Vector properties" from the pop-up menu. Note that the
+ final position of CKS differs from what we specified on the #FIX
+ directive. By assigning RMS error estimates to the GPS fixes, we've
+ allowed the compass and tape surveys to have some influence in
+ locating CKS and CKS2.
+
+ Finally, while the Review dialog is open, click the SVG Export toolbar
+ icon ("SVG" with arrow underneath). When the SVG export dialog opens,
+ click OK to generate a map in which passage outlines and other details
+ are obtained from the attached SVG source file. (The latter was produced
+ from an earlier SVG export that was, in turn, "decorated" using Adobe
+ Illustrator.) The map should display in the Walls2D viewer.
+
+ You can try this again after changing (but not deleting) some of the survey
+ vectors and recompiling. Also change the map's view prior to an SVG
+ export -- for example, rotate the view clockwise. Depending on their layer
+ placement in Illustrator some map features are not reshaped (morphed)
+ when the survey changes. Instead they are scaled and repositioned while
+ keeping either their page-relative or UTM grid-relative orientations unchanged.
+
+ For more information on SVG map generation see the topmost file item
+ in the Kaua North Maze sample project.
+#]

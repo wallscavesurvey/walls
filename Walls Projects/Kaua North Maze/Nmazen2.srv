@@ -1,0 +1,37 @@
+;Q:1-5 W3-W2 Well Connection (8 Oct 74?)
+;Page 4 of 4 of transcript
+;Traverse around northwest boundary of North Maze
+;(date below questionable)
+#Units Feet Order=VDA
+#date 1974-10-08
+;#book	Q:1	;of 5
+26	00	-3	55	334.5
+;<Sections omitted from sample project>
+;#book	Q:2	;of 5
+9Q	10Q	-1	14i3	95
+10Q	11Q	2	13.5	148
+11Q	12Q	0	13.5	45.5	-1
+12Q	13Q	0	32	40	2
+13Q	14Q+	0	13	63.5	-2
+14Q+	15Q	0	11	100
+;#book	Q:3	;of 5
+15Q	16Q	-6	31	359	1
+16Q	17Q	-5	51	359
+17Q	18Q	-3	26	25
+18Q	19Q	-2	41	35
+;#book	Q:4	;of 5
+;Water passage --
+19Q	20Q	-10	20	325	2
+19Q	21Q	0	28	29
+21Q	22Q	0	26	70
+22Q	23Q	0	36	131	2
+23Q	24Q	2	23	51
+24Q	25Q	-7	40	300
+24Q	26Q	0	21	37
+26Q	27Q	2	51	131.5
+27Q	78	3	10	121
+78	W2	3	11.5	194.5
+;#book	Q:5	;of 5
+25Q	79	0	47	35
+79	80	0	47	66.5
+80	81	0	20	0
