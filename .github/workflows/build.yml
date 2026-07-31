@@ -124,10 +124,10 @@ jobs:
             /p:Configuration=${{ matrix.configuration }} `
             /p:Platform=${{ matrix.platform }} `
             /p:PlatformToolset=v143 `
-            /p:WALLS_VER_MAJOR=$version.Major `
-            /p:WALLS_VER_MINOR=$version.Minor `
-            /p:WALLS_VER_PATCH=$version.Build `
-            /p:WALLS_VER_BUILD=$version.Revision `
+            /p:WALLS_VER_MAJOR=$($version.Major) `
+            /p:WALLS_VER_MINOR=$($version.Minor) `
+            /p:WALLS_VER_PATCH=$($version.Build) `
+            /p:WALLS_VER_BUILD=$($version.Revision) `
             /p:WALLS_BUILD_DATE=$(Get-Date -Format 'yyyy-MM-dd') `
             /bl:walls.binlog `
             /m
