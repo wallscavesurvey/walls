@@ -28,16 +28,12 @@ on:
           - x86
           - x64
 
-env:
-  SOLUTION_PATH: Walls32/Walls.sln
-  WALLSMAP_SOLUTION_PATH: WallsMap/WallsMap.sln
-
 jobs:
   # ==============================================================================
   # WALLS32 BUILD
   # ==============================================================================
   build-walls:
-    runs-on: windows-2022
+    runs-on: windows
     strategy:
       matrix:
         configuration: [Release]
@@ -85,7 +81,7 @@ jobs:
         run: nasm --version
 
       # - name: Restore NuGet packages
-      #   run: nuget restore ${{ env.SOLUTION_PATH }}
+      #   run: nuget restore Walls32\Walls.sln
       #   continue-on-error: true
 
       - name: Setup Node.js
@@ -120,10 +116,10 @@ jobs:
             $version = [version]'1.0.0.0'
           }
 
-          msbuild ${{ env.SOLUTION_PATH }} `
+          msbuild Walls32\Walls.sln `
             /p:Configuration=${{ matrix.configuration }} `
             /p:Platform=${{ matrix.platform }} `
-            /p:PlatformToolset=v143 `
+            /p:PlatformToolset=v145 `
             /p:WALLS_VER_MAJOR=$($version.Major) `
             /p:WALLS_VER_MINOR=$($version.Minor) `
             /p:WALLS_VER_PATCH=$($version.Build) `
