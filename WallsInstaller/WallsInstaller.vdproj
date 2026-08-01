@@ -39,13 +39,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_0D58CAAC395720185443CED11A258EFA"
+        "MsmKey" = "8:_09CD18F2AA1DAB15071EFD91EE00E7C7"
         "OwnerKey" = "8:_C3DD1C9C0B7444AFB132662BB0802B5A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_0F58981CD29CC33B02DCF2FD9D19B084"
+        "MsmKey" = "8:_0A3FCD787FB4B8A929BB6B691DD2D8A6"
         "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -75,6 +75,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_2005BF712B767C4E7929A2C4C388C732"
+        "OwnerKey" = "8:_C3DD1C9C0B7444AFB132662BB0802B5A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_227BFDFF894A4AB9B519A8BBFF6AF5FF"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -89,6 +95,12 @@
         {
         "MsmKey" = "8:_2410430D22D94C0EA5CA8B9C7408D16E"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_281AF3C45CE91724A634B63AD32C018D"
+        "OwnerKey" = "8:_C3DD1C9C0B7444AFB132662BB0802B5A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -135,6 +147,24 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_2E04FC62D20CE6A7D5068E69C148703A"
+        "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_2E28FFAF7CF7955BE874119894A6AC24"
+        "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_34F26E0EEAA97301665CFBE7FF9D325A"
+        "OwnerKey" = "8:_C3DD1C9C0B7444AFB132662BB0802B5A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_3650953B2BF04F2993CDB3600E18F716"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -171,12 +201,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_3A8DC16464A7E4B80D57CC4792E2E6A8"
-        "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_3C2A3243356349CAAEFBAFB332677955"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -191,12 +215,6 @@
         {
         "MsmKey" = "8:_3E94744081D749F393FEE0435DE1427D"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_401E3DF64CB89744530A9513F046BEEE"
-        "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -225,13 +243,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_4D65C6538DC2762CB1E22857B26F67D9"
-        "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_555D9BF1196F831B31FA92CF7BE4A2A3"
+        "MsmKey" = "8:_5102A33CA306556DB5C088D9A25CE7E0"
         "OwnerKey" = "8:_C3DD1C9C0B7444AFB132662BB0802B5A"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -245,6 +257,12 @@
         {
         "MsmKey" = "8:_5CC5E9F61A824F31A57499313D543BAE"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_61147B9D3BEF4A134A15DE119471D861"
+        "OwnerKey" = "8:_C3DD1C9C0B7444AFB132662BB0802B5A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -297,6 +315,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_6F21FA26CD5BA8DC6794524B22DB2758"
+        "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_79226F91177F4559829754A10DA12BF9"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -305,12 +329,6 @@
         {
         "MsmKey" = "8:_8079ECCAB4D3469497657642CC93FA18"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_85C82BCB69424D6B1B01B68849A11DDA"
-        "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -328,13 +346,19 @@
         "Entry"
         {
         "MsmKey" = "8:_8AB6B84161752B547E57765BF0C87DAE"
-        "OwnerKey" = "8:_8079ECCAB4D3469497657642CC93FA18"
+        "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_8AB6B84161752B547E57765BF0C87DAE"
         "OwnerKey" = "8:_9AF66B1327EE411AA98EEE3A2218570C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8AB6B84161752B547E57765BF0C87DAE"
+        "OwnerKey" = "8:_8079ECCAB4D3469497657642CC93FA18"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -411,12 +435,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_986FE678B951BB0BA16A0C2CE85A81D1"
-        "OwnerKey" = "8:_C3DD1C9C0B7444AFB132662BB0802B5A"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_9AF66B1327EE411AA98EEE3A2218570C"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -425,6 +443,12 @@
         {
         "MsmKey" = "8:_9C222D2AD216A292FB892134E04348BC"
         "OwnerKey" = "8:_C3DD1C9C0B7444AFB132662BB0802B5A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9D9B80F9217F0FBB15D10A47DF97D07A"
+        "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -459,13 +483,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_B534C94AC57AC888A366C81895E15E18"
-        "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_BCDB3501595850D32EDF125A964DCFF8"
+        "MsmKey" = "8:_BADC662C3051C90CB53A55DFB97B6A70"
         "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -489,26 +507,14 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_C29687F36D049694E3951C26772C11B7"
-        "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_C3DD1C9C0B7444AFB132662BB0802B5A"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_D134E103745398856638616C07EB874A"
-        "OwnerKey" = "8:_C3DD1C9C0B7444AFB132662BB0802B5A"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_D2029A9578A44D28A94413610C120500"
-        "OwnerKey" = "8:_C3DD1C9C0B7444AFB132662BB0802B5A"
+        "MsmKey" = "8:_CE11A751691135DB2CA747EEE094911F"
+        "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -519,7 +525,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_D495BB5C7FB42F9E904A0DEE5BF99CDA"
+        "MsmKey" = "8:_D50FE62229B236947F07D3C5487B51FD"
         "OwnerKey" = "8:_C3DD1C9C0B7444AFB132662BB0802B5A"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -573,6 +579,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_EDDCDF05501B3033113CE659BB4538CB"
+        "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_EE240CB899EE43A1AA27573D15FD2733"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -611,12 +623,6 @@
         {
         "MsmKey" = "8:_FCEAEBBAAEFC09598D6B6449670A6088"
         "OwnerKey" = "8:_2D776B216C874E44AE4F5F58C2BE6537"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_FF26637676C6F7486DE5C82D6F0965D3"
-        "OwnerKey" = "8:_C3DD1C9C0B7444AFB132662BB0802B5A"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -766,10 +772,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0D58CAAC395720185443CED11A258EFA"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_09CD18F2AA1DAB15071EFD91EE00E7C7"
             {
-            "SourcePath" = "8:api-ms-win-crt-runtime-l1-1-0.dll"
-            "TargetName" = "8:api-ms-win-crt-runtime-l1-1-0.dll"
+            "SourcePath" = "8:api-ms-win-crt-filesystem-l1-1-0.dll"
+            "TargetName" = "8:api-ms-win-crt-filesystem-l1-1-0.dll"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
             "Condition" = "8:"
@@ -786,10 +792,10 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0F58981CD29CC33B02DCF2FD9D19B084"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0A3FCD787FB4B8A929BB6B691DD2D8A6"
             {
-            "SourcePath" = "8:walls2D.exe"
-            "TargetName" = "8:walls2D.exe"
+            "SourcePath" = "8:wallsef.dll"
+            "TargetName" = "8:wallsef.dll"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
             "Condition" = "8:"
@@ -886,6 +892,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2005BF712B767C4E7929A2C4C388C732"
+            {
+            "SourcePath" = "8:api-ms-win-crt-runtime-l1-1-0.dll"
+            "TargetName" = "8:api-ms-win-crt-runtime-l1-1-0.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_227BFDFF894A4AB9B519A8BBFF6AF5FF"
             {
             "SourcePath" = "8:..\\bin\\Walls_Manual.pdf"
@@ -944,6 +970,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_281AF3C45CE91724A634B63AD32C018D"
+            {
+            "SourcePath" = "8:api-ms-win-crt-stdio-l1-1-0.dll"
+            "TargetName" = "8:api-ms-win-crt-stdio-l1-1-0.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_294D1CFB9B6143B99CE3921507018167"
@@ -1066,6 +1112,66 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2E04FC62D20CE6A7D5068E69C148703A"
+            {
+            "SourcePath" = "8:geomod.exe"
+            "TargetName" = "8:geomod.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_2E28FFAF7CF7955BE874119894A6AC24"
+            {
+            "SourcePath" = "8:wallshp.dll"
+            "TargetName" = "8:wallshp.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_34F26E0EEAA97301665CFBE7FF9D325A"
+            {
+            "SourcePath" = "8:api-ms-win-crt-string-l1-1-0.dll"
+            "TargetName" = "8:api-ms-win-crt-string-l1-1-0.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3650953B2BF04F2993CDB3600E18F716"
             {
             "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\Dsurv01.srv"
@@ -1126,26 +1232,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3A8DC16464A7E4B80D57CC4792E2E6A8"
-            {
-            "SourcePath" = "8:wallsvg.dll"
-            "TargetName" = "8:wallsvg.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3C2A3243356349CAAEFBAFB332677955"
             {
             "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\020108-n.srv"
@@ -1184,26 +1270,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_401E3DF64CB89744530A9513F046BEEE"
-            {
-            "SourcePath" = "8:geomod.exe"
-            "TargetName" = "8:geomod.exe"
-            "Tag" = "8:"
-            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_41D919E052834C75BAABD2B6348BD0AE"
@@ -1286,30 +1352,10 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4D65C6538DC2762CB1E22857B26F67D9"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5102A33CA306556DB5C088D9A25CE7E0"
             {
-            "SourcePath" = "8:wallsef.dll"
-            "TargetName" = "8:wallsef.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_555D9BF1196F831B31FA92CF7BE4A2A3"
-            {
-            "SourcePath" = "8:api-ms-win-crt-convert-l1-1-0.dll"
-            "TargetName" = "8:api-ms-win-crt-convert-l1-1-0.dll"
+            "SourcePath" = "8:api-ms-win-crt-math-l1-1-0.dll"
+            "TargetName" = "8:api-ms-win-crt-math-l1-1-0.dll"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
             "Condition" = "8:"
@@ -1364,6 +1410,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_61147B9D3BEF4A134A15DE119471D861"
+            {
+            "SourcePath" = "8:api-ms-win-crt-convert-l1-1-0.dll"
+            "TargetName" = "8:api-ms-win-crt-convert-l1-1-0.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_635407BF5CCC78B780D97F30CE38DE15"
@@ -1486,6 +1552,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_6F21FA26CD5BA8DC6794524B22DB2758"
+            {
+            "SourcePath" = "8:wallexp.dll"
+            "TargetName" = "8:wallexp.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_79226F91177F4559829754A10DA12BF9"
             {
             "SourcePath" = "8:..\\Walls Projects\\Kaua North Maze\\Notes.srv"
@@ -1504,26 +1590,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_85C82BCB69424D6B1B01B68849A11DDA"
-            {
-            "SourcePath" = "8:wallexp.dll"
-            "TargetName" = "8:wallexp.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_86158847B71C49609E97A0EBF6D20926"
@@ -1766,10 +1832,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_986FE678B951BB0BA16A0C2CE85A81D1"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9C222D2AD216A292FB892134E04348BC"
             {
-            "SourcePath" = "8:api-ms-win-crt-stdio-l1-1-0.dll"
-            "TargetName" = "8:api-ms-win-crt-stdio-l1-1-0.dll"
+            "SourcePath" = "8:mfc140.dll"
+            "TargetName" = "8:mfc140.dll"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
             "Condition" = "8:"
@@ -1786,10 +1852,10 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9C222D2AD216A292FB892134E04348BC"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_9D9B80F9217F0FBB15D10A47DF97D07A"
             {
-            "SourcePath" = "8:mfc140.dll"
-            "TargetName" = "8:mfc140.dll"
+            "SourcePath" = "8:walls3d.exe"
+            "TargetName" = "8:walls3d.exe"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
             "Condition" = "8:"
@@ -1906,30 +1972,10 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B534C94AC57AC888A366C81895E15E18"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BADC662C3051C90CB53A55DFB97B6A70"
             {
-            "SourcePath" = "8:wallshp.dll"
-            "TargetName" = "8:wallshp.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BCDB3501595850D32EDF125A964DCFF8"
-            {
-            "SourcePath" = "8:walls3d.exe"
-            "TargetName" = "8:walls3d.exe"
+            "SourcePath" = "8:wallgps.dll"
+            "TargetName" = "8:wallgps.dll"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
             "Condition" = "8:"
@@ -2006,50 +2052,10 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C29687F36D049694E3951C26772C11B7"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CE11A751691135DB2CA747EEE094911F"
             {
-            "SourcePath" = "8:wallgps.dll"
-            "TargetName" = "8:wallgps.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D134E103745398856638616C07EB874A"
-            {
-            "SourcePath" = "8:api-ms-win-crt-string-l1-1-0.dll"
-            "TargetName" = "8:api-ms-win-crt-string-l1-1-0.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D2029A9578A44D28A94413610C120500"
-            {
-            "SourcePath" = "8:api-ms-win-crt-filesystem-l1-1-0.dll"
-            "TargetName" = "8:api-ms-win-crt-filesystem-l1-1-0.dll"
+            "SourcePath" = "8:wallsvg.dll"
+            "TargetName" = "8:wallsvg.dll"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
             "Condition" = "8:"
@@ -2086,7 +2092,7 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D495BB5C7FB42F9E904A0DEE5BF99CDA"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D50FE62229B236947F07D3C5487B51FD"
             {
             "SourcePath" = "8:api-ms-win-crt-heap-l1-1-0.dll"
             "TargetName" = "8:api-ms-win-crt-heap-l1-1-0.dll"
@@ -2246,6 +2252,26 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EDDCDF05501B3033113CE659BB4538CB"
+            {
+            "SourcePath" = "8:walls2D.exe"
+            "TargetName" = "8:walls2D.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:TRUE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_EE240CB899EE43A1AA27573D15FD2733"
             {
             "SourcePath" = "8:..\\Walls Projects\\Tutorial Project\\Tutorial\\Tutorial.ntac"
@@ -2310,26 +2336,6 @@
             {
             "SourcePath" = "8:OLEACC.dll"
             "TargetName" = "8:OLEACC.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:TRUE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FF26637676C6F7486DE5C82D6F0965D3"
-            {
-            "SourcePath" = "8:api-ms-win-crt-math-l1-1-0.dll"
-            "TargetName" = "8:api-ms-win-crt-math-l1-1-0.dll"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
             "Condition" = "8:"
@@ -2526,7 +2532,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Walls v2"
         "ProductCode" = "8:{E891C7EB-389A-4F08-8526-F9DC2F19DE9B}"
-        "PackageCode" = "8:{E52CCEB6-B703-4400-93EF-7D23CEF9900F}"
+        "PackageCode" = "8:{4A7F3444-AD53-4843-BF01-EB2A149B9A10}"
         "UpgradeCode" = "8:{B8B0A649-478B-4F72-B710-B10AA12ACCA6}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -3192,7 +3198,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_032407C853734B2889E1BB7CC4090E00"
             {
-            "SourcePath" = "8:..\\bin\\wallsef.dll"
+            "SourcePath" = "8:..\\Walls32\\wallsef\\Debug\\wallsef.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -3332,7 +3338,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_2D776B216C874E44AE4F5F58C2BE6537"
             {
-            "SourcePath" = "8:..\\bin\\Walls32.exe"
+            "SourcePath" = "8:..\\Walls32\\Debug\\Walls32.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -3358,65 +3364,9 @@
                 {
                 }
             }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_2EC68490A32B442BBBF84D02C8B337B5"
-            {
-            "SourcePath" = "8:"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:LocalizedResourceDlls"
-            "OutputProjectGuid" = "8:{1AF752FA-87B9-43AB-AF5A-616D8682D84B}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_32B547F9BB7B406FB2A7DADE1B3E6ED0"
-            {
-            "SourcePath" = "8:"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:LocalizedResourceDlls"
-            "OutputProjectGuid" = "8:{97E30A78-7906-4BD9-BD16-02D6E0692109}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_3C67DCDCC01B46C996FB68357BD2B37E"
             {
-            "SourcePath" = "8:..\\bin\\wallexp.dll"
+            "SourcePath" = "8:..\\Walls32\\wallexp\\Debug\\wallexp.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -3470,62 +3420,6 @@
                 {
                 }
             }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_46C5D8EA39044EC19027C30C05813C33"
-            {
-            "SourcePath" = "8:"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:LocalizedResourceDlls"
-            "OutputProjectGuid" = "8:{144F0A1B-F415-4C25-9D74-DC4B7948E74F}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_62DDE66154304B68BABBE610873A076F"
-            {
-            "SourcePath" = "8:"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:LocalizedResourceDlls"
-            "OutputProjectGuid" = "8:{BC53265E-B85D-4197-BC91-C8662BC7A574}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_6638392008484036B466265F6E12AB25"
             {
             "SourcePath" = "8:"
@@ -3556,7 +3450,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_6704107C4AF24631ACE010D2EEB75C0E"
             {
-            "SourcePath" = "8:..\\bin\\wallgps.dll"
+            "SourcePath" = "8:..\\Walls32\\Debug\\wallgps.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -3612,7 +3506,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_6DAABEB434184776A5FFCB9180C36B33"
             {
-            "SourcePath" = "8:..\\bin\\wallsvg.dll"
+            "SourcePath" = "8:..\\Walls32\\Debug\\wallsvg.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -3633,34 +3527,6 @@
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{144F0A1B-F415-4C25-9D74-DC4B7948E74F}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_6EE722614F5D47178870AD8A5FE4360A"
-            {
-            "SourcePath" = "8:"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:LocalizedResourceDlls"
-            "OutputProjectGuid" = "8:{7B0542C7-E6CE-4A3F-B004-CB8ADC02BEB6}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {
@@ -3724,7 +3590,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_8079ECCAB4D3469497657642CC93FA18"
             {
-            "SourcePath" = "8:..\\bin\\walls3d.exe"
+            "SourcePath" = "8:..\\trx\\Walls32\\Debug\\walls3d.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -3778,34 +3644,6 @@
                 {
                 }
             }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_97FBA8A50899421F82C43E8198C1784D"
-            {
-            "SourcePath" = "8:"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:LocalizedResourceDlls"
-            "OutputProjectGuid" = "8:{01C5C176-01DA-4A62-8A6A-77571084E604}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_998142F769674F838551FBB29022AEBC"
             {
             "SourcePath" = "8:"
@@ -3836,7 +3674,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_9AF66B1327EE411AA98EEE3A2218570C"
             {
-            "SourcePath" = "8:..\\walls2D\\Release\\walls2D.exe"
+            "SourcePath" = "8:..\\walls2D\\Debug\\walls2D.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -3890,37 +3728,9 @@
                 {
                 }
             }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_C997634C934440478063AF9CA95295AD"
-            {
-            "SourcePath" = "8:"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:LocalizedResourceDlls"
-            "OutputProjectGuid" = "8:{CAEAED53-C582-43B0-84BA-97B029383661}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_DE890C42A1F4453589475158C4BDE380"
             {
-            "SourcePath" = "8:..\\bin\\wallshp.dll"
+            "SourcePath" = "8:..\\Walls32\\Debug\\wallshp.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
@@ -3941,34 +3751,6 @@
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Built"
             "OutputProjectGuid" = "8:{BC53265E-B85D-4197-BC91-C8662BC7A574}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_E214228B068F4D9D8DC3FEE38DEFAAAD"
-            {
-            "SourcePath" = "8:"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:LocalizedResourceDlls"
-            "OutputProjectGuid" = "8:{ECD8CE74-36CA-4575-A61A-73D5A2815BAE}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {
@@ -3997,34 +3779,6 @@
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:ContentFiles"
             "OutputProjectGuid" = "8:{7B0542C7-E6CE-4A3F-B004-CB8ADC02BEB6}"
-            "ShowKeyOutput" = "11:TRUE"
-                "ExcludeFilters"
-                {
-                }
-            }
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_F6DED91F80BC4EBB869E4E744DE88A3B"
-            {
-            "SourcePath" = "8:"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_B04DF6F6362A4E2590545F30A8853A9C"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
-            "OutputGroupCanonicalName" = "8:LocalizedResourceDlls"
-            "OutputProjectGuid" = "8:{EBF48651-B858-4D19-9DB7-16A5D63F07F6}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {
