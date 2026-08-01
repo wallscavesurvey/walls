@@ -141,6 +141,14 @@
     <ClInclude Include="$(WorkINC)\ntifile.h" />
     <ClInclude Include="$(WorkINC)\nti_file.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kakadu6_4\coresys\coresys_2008.vcxproj">
+      <Project>{f1cfe0f2-72da-464c-b752-38a198476012}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\zlib-1.2.8\contrib\vstudio\vc11\zlibstat.vcxproj">
+      <Project>{745dec58-ebb3-47a9-a9b8-4c6627c01bf8}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

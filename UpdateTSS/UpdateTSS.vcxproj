@@ -171,6 +171,23 @@
   <ItemGroup>
     <ResourceCompile Include="UpdateTSS.rc" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\dbf_file\dbf_file.vcxproj">
+      <Project>{3f61c2da-fab7-477b-96a6-5cf2d786c56d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libgeoref\libgeoref.vcxproj">
+      <Project>{51964b44-58aa-4fba-99b7-539104b81f85}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\trx_csh\trx_csh.vcxproj">
+      <Project>{f244d475-980c-4829-972d-a422d684766e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\trx_file\trx_file.vcxproj">
+      <Project>{d57dfa1d-df4e-4a6c-8251-910364e8545c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\trx_str\trx_str.vcxproj">
+      <Project>{91d50c30-ef3f-4719-8f48-b1aa29de7746}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

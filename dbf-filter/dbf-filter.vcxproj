@@ -94,6 +94,17 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\dbf_file\dbf_file.vcxproj">
+      <Project>{3f61c2da-fab7-477b-96a6-5cf2d786c56d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\trx_csh\trx_csh.vcxproj">
+      <Project>{f244d475-980c-4829-972d-a422d684766e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\trx_str\trx_str.vcxproj">
+      <Project>{91d50c30-ef3f-4719-8f48-b1aa29de7746}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

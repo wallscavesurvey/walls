@@ -495,6 +495,56 @@
     <Image Include="res\Delete_red.bmp" />
     <Image Include="res\toolbar1.bmp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\dbf_file\dbf_file.vcxproj">
+      <Project>{3f61c2da-fab7-477b-96a6-5cf2d786c56d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ECW_3.3\source\NCSBuildQmake\libecwj2_win32_net_static.vcxproj">
+      <Project>{a6103d1e-3e79-33f6-a4c9-19ce5e183f65}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\iqalib\iqa.vcxproj">
+      <Project>{3c7bb421-c147-4828-8eae-53a5f1a0394a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Kakadu6_4\coresys\coresys_2008.vcxproj">
+      <Project>{f1cfe0f2-72da-464c-b752-38a198476012}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libgdal_1110\libgdal_1110.vcxproj">
+      <Project>{07246777-7600-4117-8f4e-f3592aac97d1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libgeoref\libgeoref.vcxproj">
+      <Project>{51964b44-58aa-4fba-99b7-539104b81f85}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libjpeg-turbo-vs\libjpeg-turbo.vcxproj">
+      <Project>{0c6684ee-8aba-3e67-8e20-b0245d0b9832}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libloco\libloco.vcxproj">
+      <Project>{c01fad87-cf2d-4336-aaf5-3f6dd4e9d593}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libpng164\libpng164.vcxproj">
+      <Project>{e07a7b76-08ba-430b-b1aa-883f75de2379}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\libwebp\libwebp.vcxproj">
+      <Project>{e55ddd38-d597-4af4-8c2c-94d84de6a9ab}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\nti_file\nti_file.vcxproj">
+      <Project>{81d0165b-f662-498e-828a-ff05021cdca9}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Serial\Serial.vcxproj">
+      <Project>{bdcd0825-f7ac-4b44-b9d0-b013e7bf64cf}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\trx_csh\trx_csh.vcxproj">
+      <Project>{f244d475-980c-4829-972d-a422d684766e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\trx_file\trx_file.vcxproj">
+      <Project>{d57dfa1d-df4e-4a6c-8251-910364e8545c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\trx_str\trx_str.vcxproj">
+      <Project>{91d50c30-ef3f-4719-8f48-b1aa29de7746}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\zlib-1.2.8\contrib\vstudio\vc11\zlibstat.vcxproj">
+      <Project>{745dec58-ebb3-47a9-a9b8-4c6627c01bf8}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
   <ProjectExtensions>
