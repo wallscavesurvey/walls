@@ -22,7 +22,7 @@ as well as trying to find out who else is still using Walls.
 
 ## Quick Start for Developers
 
-- Install [Visual Studio 2022](https://www.visualstudio.com/downloads/)
+- Install [Visual Studio 2026](https://www.visualstudio.com/downloads/)
 - Install the [`nasm` assembler](http://www.nasm.us/) and make sure it's on your `PATH`
 - Install 32-bit CMake 3.3, afterward there should be files in C:\Program Files (x86)\CMake\share\cmake-3.3
 - Install the latest [Windows SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk)
