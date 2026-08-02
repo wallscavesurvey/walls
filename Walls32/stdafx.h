@@ -56,6 +56,4 @@
 #define WALLS_RELEASE 7		// Rel B6 (tooltip reinitialize if changed)
 #include "utility.h"
 #include "prjfont.h"
-#include <afxwin.h>
-#include <afxwin.h>
 
