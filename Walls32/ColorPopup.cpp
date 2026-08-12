@@ -142,15 +142,14 @@ void CColorPopup::Initialise()
 
 	m_nNumColumns = 0;
 	m_nNumRows = 0;
-	m_nBoxSize = 18;
-	m_nMargin = ::GetSystemMetrics(SM_CXEDGE);
 	m_nCurrentSel = INVALID_COLOUR;
 	m_nChosenColorSel = INVALID_COLOUR;
 	m_pParent = NULL;
 	m_crColor = m_crInitialColor = RGB(0, 0, 0);
 
-	// Idiot check: Make sure the colour square is at least 5 x 5;
-	if (m_nBoxSize - 2 * m_nMargin - 2 < 5) m_nBoxSize = 5 + 2 * m_nMargin + 2;
+	// Provisional metrics at 96 dpi. Recomputed for the real device in
+	// SetWindowSize(), which is the first point at which we have an HWND.
+	ScaleForDpi(NULL);
 
 	// Create the font
 	NONCLIENTMETRICS ncm;
@@ -626,6 +625,26 @@ BOOL CColorPopup::GetCellRect(int nIndex, const LPRECT& rect)
 	return TRUE;
 }
 
+//Nominal size of a colour swatch, expressed in 96-dpi pixels --
+static const int g_ciBaseBoxSize = 18;
+
+void CColorPopup::ScaleForDpi(CDC *pDC)
+{
+	//GetSystemMetrics() and lfMessageFont already scale with the system dpi,
+	//but the swatch grid is a fixed pixel size. Scale it explicitly so the
+	//grid stays in step with the text; otherwise the custom-colour swatch
+	//carved out of the right-hand end of a text row can end up with a
+	//negative width. See issue #42.
+	int nDpi = pDC ? pDC->GetDeviceCaps(LOGPIXELSX) : 96;
+	if (nDpi < 96) nDpi = 96;
+
+	m_nMargin = ::GetSystemMetrics(SM_CXEDGE);
+	m_nBoxSize = MulDiv(g_ciBaseBoxSize, nDpi, 96);
+
+	// Idiot check: Make sure the colour square is at least 5 x 5;
+	if (m_nBoxSize - 2 * m_nMargin - 2 < 5) m_nBoxSize = 5 + 2 * m_nMargin + 2;
+}
+
 // Works out an appropriate size and position of this window
 void CColorPopup::SetWindowSize()
 {
@@ -634,6 +653,9 @@ void CColorPopup::SetWindowSize()
 
 	//Get the font and text size.
 	CClientDC dc(this);
+
+	ScaleForDpi(&dc);
+
 	CFont* pOldFont = (CFont*)dc.SelectObject(&m_Font);
 	CSize size;
 
@@ -665,6 +687,17 @@ void CColorPopup::SetWindowSize()
 	m_WindowRect.SetRect(rect.left, rect.top,
 		rect.left + m_nNumColumns * m_nBoxSize + 2 * m_nMargin,
 		rect.top + m_nNumRows * m_nBoxSize + 2 * m_nMargin);
+
+	//The custom-colour swatch is drawn at the right-hand end of a text row,
+	//starting at (m_nTextWidth + 2*m_nMargin) and then deflated by
+	//(m_nMargin+1) and again by 1, so its width works out as
+	//   Width() - m_nTextWidth - 6*m_nMargin - 4.
+	//Widen the popup if needed so that stays >= one swatch --
+	{
+		int nMinWidth = m_nTextWidth + 6 * m_nMargin + 4 + m_nBoxSize;
+		if (m_WindowRect.Width() < nMinWidth)
+			m_WindowRect.right = m_WindowRect.left + nMinWidth;
+	}
 
 	// if default text, then expand window if necessary, and set text width as
 	// window width

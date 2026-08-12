@@ -101,10 +101,20 @@ BOOL CItemProp::OnInitDialog()
 	if (pw = GetDlgItem(IDCANCEL)) pw->EnableWindow(FALSE);
 	if (pw = GetDlgItem(IDOK)) pw->EnableWindow(FALSE);
 
-	CRect rectWnd;
-	GetWindowRect(rectWnd);
+	// Trim the (disabled) OK/Cancel/Apply/Help strip off the bottom of the window.
+	CRect rectWnd, rectBtn;
+	GetClientRect(&rectWnd);
+	if (pw = GetDlgItem(IDOK)) {
+		pw->GetWindowRect(rectBtn);
+		ScreenToClient(&rectBtn);
+		if (rectBtn.top > rectWnd.top) {
+			rectWnd.bottom = rectBtn.top;
+		}
+	}
+	CalcWindowRect(&rectWnd, CWnd::adjustOutside);
+
 	SetWindowPos(&wndNoTopMost, 0, 0, rectWnd.Width(),
-		rectWnd.Height() - 32,
+		rectWnd.Height(),// - nTrim,
 		SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
 	CenterWindow();
 	hPropWnd = m_hWnd;

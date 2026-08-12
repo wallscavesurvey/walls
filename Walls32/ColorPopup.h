@@ -82,6 +82,7 @@ public:
 protected:
 	BOOL GetCellRect(int nIndex, const LPRECT& rect);
 	void SetWindowSize();
+	void ScaleForDpi(CDC *pDC);
 	void CreateToolTips();
 	void ChangeSelection(int nIndex, BOOL bDrepressed = FALSE);
 	void EndSelection(int nMessage);

@@ -855,9 +855,13 @@ void CGradient::FillRect(CDC *dc, CRect *pRect, bool vertical)
 	COLORREF color;
 	int len = (vertical ? pRect->Height() : pRect->Width());
 
+	//A degenerate or inverted rectangle would make new[] convert a negative
+	//int to a huge size_t, throwing CMemoryException and giving the user
+	//MFC's stock "Out of memory." box. See issue #42.
+	ASSERT(len > 0);
+	if (len <= 0) return;
+
 	RGBTRIPLE *entry, *pal = new RGBTRIPLE[len];
-	ASSERT(pal);
-	if (!pal) return;
 
 	if (vertical) membmp.CreateCompatibleBitmap(dc, 1, len);
 	else membmp.CreateCompatibleBitmap(dc, len, 1);
