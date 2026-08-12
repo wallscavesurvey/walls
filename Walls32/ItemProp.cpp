@@ -114,7 +114,7 @@ BOOL CItemProp::OnInitDialog()
 	CalcWindowRect(&rectWnd, CWnd::adjustOutside);
 
 	SetWindowPos(&wndNoTopMost, 0, 0, rectWnd.Width(),
-		rectWnd.Height(),// - nTrim,
+		rectWnd.Height(),
 		SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
 	CenterWindow();
 	hPropWnd = m_hWnd;
