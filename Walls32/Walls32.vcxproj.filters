@@ -638,6 +638,12 @@
     <ClInclude Include="KMLExporter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Polygon2d.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="POINTPolygonAdapter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Walls.rc">

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.8.12023.21 stable
+VisualStudioVersion = 18.8.12023.21
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dbf_file", "..\dbf_file\dbf_file.vcxproj", "{3F61C2DA-FAB7-477B-96A6-5CF2D786C56D}"
 EndProject
@@ -102,6 +102,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "doc", "..\doc\doc.vcxproj", "{AB6C37BD-E070-4ED5-9F5A-F73F5A22440E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Walls_Help", "..\Walls_Help\Walls_Help.vcxproj", "{EA00AA8A-25A4-4874-AF33-EEB34DCE73EB}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Walls32Test", "..\Walls32Test\Walls32Test.vcxproj", "{BE48A40D-42CF-5BC9-6C92-ADFF9AF3FE08}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -257,6 +259,14 @@ Global
 		{EA00AA8A-25A4-4874-AF33-EEB34DCE73EB}.Release|x64.Build.0 = Release|x64
 		{EA00AA8A-25A4-4874-AF33-EEB34DCE73EB}.Release|x86.ActiveCfg = Release|Win32
 		{EA00AA8A-25A4-4874-AF33-EEB34DCE73EB}.Release|x86.Build.0 = Release|Win32
+		{BE48A40D-42CF-5BC9-6C92-ADFF9AF3FE08}.Debug|x64.ActiveCfg = Debug|x64
+		{BE48A40D-42CF-5BC9-6C92-ADFF9AF3FE08}.Debug|x64.Build.0 = Debug|x64
+		{BE48A40D-42CF-5BC9-6C92-ADFF9AF3FE08}.Debug|x86.ActiveCfg = Debug|Win32
+		{BE48A40D-42CF-5BC9-6C92-ADFF9AF3FE08}.Debug|x86.Build.0 = Debug|Win32
+		{BE48A40D-42CF-5BC9-6C92-ADFF9AF3FE08}.Release|x64.ActiveCfg = Release|x64
+		{BE48A40D-42CF-5BC9-6C92-ADFF9AF3FE08}.Release|x64.Build.0 = Release|x64
+		{BE48A40D-42CF-5BC9-6C92-ADFF9AF3FE08}.Release|x86.ActiveCfg = Release|Win32
+		{BE48A40D-42CF-5BC9-6C92-ADFF9AF3FE08}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
