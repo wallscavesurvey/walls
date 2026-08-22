@@ -22,6 +22,7 @@
     <ClCompile Include="3dconfig.cpp" />
     <ClCompile Include="aboutdlg.cpp" />
     <ClCompile Include="Buttonb.cpp" />
+    <ClCompile Include="CExportKmlDialog.cpp" />
     <ClCompile Include="ColorButton.cpp" />
     <ClCompile Include="ColorPopup.cpp" />
     <ClCompile Include="Compile.cpp" />
@@ -60,6 +61,7 @@
     <ClCompile Include="ImpCssDlg.cpp" />
     <ClCompile Include="ImpSefDlg.cpp" />
     <ClCompile Include="ItemProp.cpp" />
+    <ClCompile Include="KMLExporter.cpp" />
     <ClCompile Include="latlong.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
@@ -145,6 +147,7 @@
     <ClCompile Include="Walls.cpp" />
     <ClCompile Include="wallzip.cpp" />
     <ClCompile Include="Wedview.cpp" />
+    <ClCompile Include="XMLWriter.cpp" />
     <ClCompile Include="zip.cpp" />
     <ClCompile Include="ZipDlg.cpp" />
   </ItemGroup>
@@ -152,6 +155,7 @@
     <ClInclude Include="3dconfig.h" />
     <ClInclude Include="aboutdlg.h" />
     <ClInclude Include="Buttonb.h" />
+    <ClInclude Include="CExportKmlDialog.h" />
     <ClInclude Include="ColorButton.h" />
     <ClInclude Include="ColorPopup.h" />
     <ClInclude Include="Compile.h" />
@@ -182,6 +186,7 @@
     <ClInclude Include="ImpCssDlg.h" />
     <ClInclude Include="ImpSefDlg.h" />
     <ClInclude Include="ItemProp.h" />
+    <ClInclude Include="KMLExporter.h" />
     <ClInclude Include="Launchfd.h" />
     <ClInclude Include="linedoc.h" />
     <ClInclude Include="lineview.h" />
@@ -204,6 +209,7 @@
     <ClInclude Include="Picture.h" />
     <ClInclude Include="Plotview.h" />
     <ClInclude Include="pltfind.h" />
+    <ClInclude Include="Polygon2d.h" />
     <ClInclude Include="Prjdoc.h" />
     <ClInclude Include="prjfind.h" />
     <ClInclude Include="prjfont.h" />
@@ -218,7 +224,7 @@
     <ClInclude Include="ROCombo.h" />
     <ClInclude Include="ScaleWnd.h" />
     <ClInclude Include="seghier.h" />
-    <ClInclude Include="segview.h" />
+    <ClInclude Include="POINTPolygonAdapter.h" />
     <ClInclude Include="statdlg.h" />
     <ClInclude Include="StatLink.h" />
     <ClInclude Include="stdafx.h" />
@@ -242,6 +248,7 @@
     <ClInclude Include="Walls.h" />
     <ClInclude Include="wall_srv.h" />
     <ClInclude Include="wedview.h" />
+    <ClInclude Include="XMLWriter.h" />
     <ClInclude Include="zip.h" />
     <ClInclude Include="ZipDlg.h" />
   </ItemGroup>
@@ -412,7 +419,6 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -435,6 +441,7 @@
       <PrecompiledHeaderOutputFile>$(Configuration)/pcrelib.pch</PrecompiledHeaderOutputFile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <MinimalRebuild>false</MinimalRebuild>
+      <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -442,6 +449,10 @@
       <AdditionalDependencies>pcrelibd.lib;wallnetd.lib;trx_filed.lib;dbf_filed.lib;trx_cshd.lib;trx_strd.lib;gziplibd.lib;afxnmcdd.lib;nafxcwd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>afxnmcdd.lib;nafxcwd.lib</IgnoreSpecificDefaultLibraries>
     </Link>
+    <PreLinkEvent>
+      <Command>lib.exe /out:"$(WorkLIB)\$(TargetName)D.lib" "$(IntermediateOutputPath)*.obj"</Command>
+      <Message>Creating static library $(WorkLIB)\$(TargetName)D.lib from $(IntermediateOutputPath)*.obj...</Message>
+    </PreLinkEvent>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
       <ValidateAllParameters>true</ValidateAllParameters>
@@ -467,6 +478,10 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PreLinkEvent>
+      <Command>lib.exe /out:"$(WorkLIB)\$(TargetName)D.lib" "$(IntermediateOutputPath)*.obj"</Command>
+      <Message>Creating static library $(WorkLIB)\$(TargetName)D.lib from $(IntermediateOutputPath)*.obj...</Message>
+    </PreLinkEvent>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
       <ValidateAllParameters>true</ValidateAllParameters>
@@ -500,6 +515,10 @@
       <AdditionalDependencies>pcrelib.lib;wallnet.lib;trx_file.lib;dbf_file.lib;trx_csh.lib;trx_str.lib;gziplib.lib;afxnmcd.lib;nafxcw.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>afxnmcd.lib;nafxcw.lib</IgnoreSpecificDefaultLibraries>
     </Link>
+    <PreLinkEvent>
+      <Command>lib.exe /out:"$(WorkLIB)\$(TargetName).lib" "$(IntermediateOutputPath)*.obj"</Command>
+      <Message>Creating static library $(WorkLIB)\$(TargetName).lib from $(IntermediateOutputPath)*.obj...</Message>
+    </PreLinkEvent>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
       <ValidateAllParameters>true</ValidateAllParameters>
@@ -530,6 +549,10 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
+    <PreLinkEvent>
+      <Command>lib.exe /out:"$(WorkLIB)\$(TargetName).lib" "$(IntermediateOutputPath)*.obj"</Command>
+      <Message>Creating static library $(WorkLIB)\$(TargetName).lib from $(IntermediateOutputPath)*.obj...</Message>
+    </PreLinkEvent>
     <Midl>
       <MkTypLibCompatible>false</MkTypLibCompatible>
       <ValidateAllParameters>true</ValidateAllParameters>
