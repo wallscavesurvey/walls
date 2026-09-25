@@ -1171,6 +1171,11 @@ static apfcn_i ParseLineCommand(char *line)
 		if (*line == SRV_CHAR_LRUD || *line == '*') {
 			//Determine if this is an LRUD expression as opposed to a second station name --
 			pNote = strchr(line + 1, (*line == SRV_CHAR_LRUD) ? SRV_CHAR_LRUDEND : '*');
+			if (pNote && *line == SRV_CHAR_LRUD) {
+				// avoid misinterpreting 1	<2	3f	121	5	<2,3,4,150,C> as an LRUD-only line 
+				char* pOpen = strchr(line + 1, SRV_CHAR_LRUD);
+				if (pOpen && pOpen < pNote) pNote = NULL;
+			}
 			if (pNote && (!pNote[1] || isspace((BYTE)pNote[1]))) {
 				//lrud is terminated
 				if (!(p = strchr(line + 1, SRV_CHAR_COMMAND)) || p > pNote) {
