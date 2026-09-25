@@ -1193,6 +1193,14 @@ static apfcn_i ParseLineCommand(char *line)
 
 		if (!bLrudOnly && (*line == SRV_CHAR_LRUD || *line == '*')) bLrudOnly = 2;
 		p = strchr(line, SRV_CHAR_COMMAND);
+		if (bLrudOnly) {
+			for (char* b = line; *b && (!p || b < p); b++) {
+				if (!isspace((BYTE)b[0])) {
+					log_error("Unexpected text after LRUDs on LRUD-only line; only #SEG and/or a comment should follow LRUDs");
+					break;
+				}
+			}
+		}
 	}
 
 	/*For now, reject other than #SEG line commands --*/
