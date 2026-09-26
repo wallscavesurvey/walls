@@ -2077,7 +2077,7 @@ static int parse_lrud(int i)
 		if (bLrudEnd) break;
 	}
 	if (t < 4 && !bWarnedMissing) {
-		log_error("less than 4 LRUD measurements; use -- for omitted measurements");
+		log_error("Less than 4 LRUD measurements; use -- for omitted measurements");
 	}
 
 	if (i >= cfg_argc) return -SRV_ERR_NOPAREN;
