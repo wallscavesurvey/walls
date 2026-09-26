@@ -2028,14 +2028,21 @@ static int parse_lrud(int i)
 		}
 		p = cfg_argv[i];
 		if (*p) {
-			if (t > 5) return -SRV_ERR_LRUDARGS;
+			if (t > 5) {
+				set_charno(i);
+				return -SRV_ERR_LRUDARGS;
+			}
 			if (*p != '-' || p[1] != '-') {
 				if (t > 3) {
 					//Can now be either "C" or a facing direction --
-					if (*p == 'c' || *p == 'C') {
+					if (!(lruddat.flags & LRUD_FLG_CS) && (*p == 'c' || *p == 'C')) {
 						lruddat.flags |= LRUD_FLG_CS;
 						if (bLrudEnd) break;
 						continue;
+					}
+					else if (t >= 5) {
+						set_charno(i);
+						return -SRV_ERR_LRUDARGS;
 					}
 					if ((e = get_fTempAngle(p, TRUE)) >= 0) {
 						val = fTemp;
