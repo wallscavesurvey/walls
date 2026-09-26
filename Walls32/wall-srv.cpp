@@ -1140,12 +1140,32 @@ static apfcn_i parse_tape(char *p)
 	return 0;
 }
 
-static apfcn_nc skip_token(char *p)
+static apfcn_nc skip_token(char *p, bool handleComma = false)
 {
-	while (*p && !isspace((BYTE)*p)) p++;
+	while (*p && !isspace((BYTE)*p) && (!handleComma || *p != ',')) p++;
+	if (handleComma && *p == ',') p++;
 	while (isspace((BYTE)*p)) p++;
 	return p;
 }
+
+static bool is_delim(char p) {
+	return isspace(p) || p == ',';
+}
+
+static apfcn_nc skip_lrud(char* line)
+{
+	char* end = *line == '*'
+		? strchr(line + 1, '*')
+		: *line == SRV_CHAR_LRUD
+		?  strchr(line + 1, SRV_CHAR_LRUDEND)
+		: NULL;
+	char* nextOpen = strchr(line + 1, SRV_CHAR_LRUD);
+	if (end && (!nextOpen || end < nextOpen) && (!end[1] || isspace((BYTE)end[1]))) {
+		return end + 1;
+	}
+	return NULL;
+}
+
 
 static apfcn_i ParseLineCommand(char *line)
 {
@@ -1168,30 +1188,30 @@ static apfcn_i ParseLineCommand(char *line)
 		}
 	}
 	else {
-		if (*line == SRV_CHAR_LRUD || *line == '*') {
-			//Determine if this is an LRUD expression as opposed to a second station name --
-			pNote = strchr(line + 1, (*line == SRV_CHAR_LRUD) ? SRV_CHAR_LRUDEND : '*');
-			if (pNote && *line == SRV_CHAR_LRUD) {
-				// avoid misinterpreting 1	<2	3f	121	5	<2,3,4,150,C> as an LRUD-only line 
-				char* pOpen = strchr(line + 1, SRV_CHAR_LRUD);
-				if (pOpen && pOpen < pNote) pNote = NULL;
+		char* afterLrud = skip_lrud(line);
+		if (afterLrud) {
+			bLrudOnly = 1;
+			line = afterLrud;
+		}
+		else {
+			char* toStation = line;
+			char* afterToStation = skip_token(toStation, true);
+			afterLrud = skip_lrud(afterToStation);
+			if (afterLrud) {
+				bLrudOnly = 2;
+				line = afterLrud;
 			}
-			if (pNote && (!pNote[1] || isspace((BYTE)pNote[1]))) {
-				//lrud is terminated
-				if (!(p = strchr(line + 1, SRV_CHAR_COMMAND)) || p > pNote) {
-					bLrudOnly = 1;
-					line = pNote + 1;
+			else if (*toStation == '*' || *toStation == SRV_CHAR_LRUD) {
+				char closingChar = *toStation == '*' ? '*' : SRV_CHAR_LRUDEND;
+				char* toStationEnd = toStation + 1;
+				while (toStationEnd && !is_delim(*toStationEnd)) toStationEnd++;
+				if (!strchr(toStationEnd, '*') && !strchr(toStationEnd, SRV_CHAR_LRUD)) {
+					log_error("This line is interpreted as a vector to station %.*s, but it could be an LRUD-only line missing a closing %c.", (int)(toStationEnd - toStation), toStation, closingChar);
+					log_error("  If you intended LRUDs, add a closing %c after the LRUDs.", closingChar);
+					log_error("  Otherwise, add explicit blank LRUDs with <--,--,--,--> to suppress this warning.");
 				}
 			}
-			else {
-				//This could be a non-terminated LRUD or a station beginning with * or <
-				//check_lrudonly(line);
-				line = skip_token(line);
-			}
 		}
-		else line = skip_token(line);
-
-		if (!bLrudOnly && (*line == SRV_CHAR_LRUD || *line == '*')) bLrudOnly = 2;
 		p = strchr(line, SRV_CHAR_COMMAND);
 		if (bLrudOnly) {
 			for (char* b = line; *b && (!p || b < p); b++) {
