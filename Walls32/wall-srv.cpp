@@ -1140,12 +1140,32 @@ static apfcn_i parse_tape(char *p)
 	return 0;
 }
 
-static apfcn_nc skip_token(char *p)
+static apfcn_nc skip_token(char *p, bool handleComma = false)
 {
-	while (*p && !isspace((BYTE)*p)) p++;
+	while (*p && !isspace((BYTE)*p) && (!handleComma || *p != ',')) p++;
+	if (handleComma && *p == ',') p++;
 	while (isspace((BYTE)*p)) p++;
 	return p;
 }
+
+static bool is_delim(char p) {
+	return isspace(p) || p == ',';
+}
+
+static apfcn_nc skip_lrud(char* line)
+{
+	char* end = *line == '*'
+		? strchr(line + 1, '*')
+		: *line == SRV_CHAR_LRUD
+		?  strchr(line + 1, SRV_CHAR_LRUDEND)
+		: NULL;
+	char* nextOpen = strchr(line + 1, SRV_CHAR_LRUD);
+	if (end && (!nextOpen || end < nextOpen) && (!end[1] || isspace((BYTE)end[1]))) {
+		return end + 1;
+	}
+	return NULL;
+}
+
 
 static apfcn_i ParseLineCommand(char *line)
 {
@@ -1168,26 +1188,39 @@ static apfcn_i ParseLineCommand(char *line)
 		}
 	}
 	else {
-		if (*line == SRV_CHAR_LRUD || *line == '*') {
-			//Determine if this is an LRUD expression as opposed to a second station name --
-			pNote = strchr(line + 1, (*line == SRV_CHAR_LRUD) ? SRV_CHAR_LRUDEND : '*');
-			if (pNote && (!pNote[1] || isspace((BYTE)pNote[1]))) {
-				//lrud is terminated
-				if (!(p = strchr(line + 1, SRV_CHAR_COMMAND)) || p > pNote) {
-					bLrudOnly = 1;
-					line = pNote + 1;
+		char* afterLrud = skip_lrud(line);
+		if (afterLrud) {
+			bLrudOnly = 1;
+			line = afterLrud;
+		}
+		else {
+			char* toStation = line;
+			char* afterToStation = skip_token(toStation, true);
+			afterLrud = skip_lrud(afterToStation);
+			if (afterLrud) {
+				bLrudOnly = 2;
+				line = afterLrud;
+			}
+			else if (*toStation == '*' || *toStation == SRV_CHAR_LRUD) {
+				char closingChar = *toStation == '*' ? '*' : SRV_CHAR_LRUDEND;
+				char* toStationEnd = toStation + 1;
+				while (toStationEnd && !is_delim(*toStationEnd)) toStationEnd++;
+				if (!strchr(toStationEnd, '*') && !strchr(toStationEnd, SRV_CHAR_LRUD)) {
+					log_error("This line is interpreted as a vector to station %.*s, but it could be an LRUD-only line missing a closing %c.", (int)(toStationEnd - toStation), toStation, closingChar);
+					log_error("  If you intended LRUDs, add a closing %c after the LRUDs.", closingChar);
+					log_error("  Otherwise, add explicit blank LRUDs with <--,--,--,--> to suppress this warning.");
 				}
 			}
-			else {
-				//This could be a non-terminated LRUD or a station beginning with * or <
-				//check_lrudonly(line);
-				line = skip_token(line);
+		}
+		p = strchr(line, SRV_CHAR_COMMAND);
+		if (bLrudOnly) {
+			for (char* b = line; *b && (!p || b < p); b++) {
+				if (!isspace((BYTE)b[0])) {
+					log_error("Unexpected text after LRUDs on LRUD-only line; only #SEG and/or a comment should follow LRUDs");
+					break;
+				}
 			}
 		}
-		else line = skip_token(line);
-
-		if (!bLrudOnly && (*line == SRV_CHAR_LRUD || *line == '*')) bLrudOnly = 2;
-		p = strchr(line, SRV_CHAR_COMMAND);
 	}
 
 	/*For now, reject other than #SEG line commands --*/
@@ -1974,13 +2007,14 @@ static int parse_lrud(int i)
 
 	int t, e;
 	char *p;
+	char char_lrudstart = *cfg_argv[i];
 	char char_lrudend;
 	double val;
 	BOOL bLrudEnd = FALSE;
 	float dim[5], fswap;
 	byte flags = 0;
 
-	if (*cfg_argv[i] == '*') char_lrudend = '*';
+	if (char_lrudstart == '*') char_lrudend = '*';
 	else char_lrudend = SRV_CHAR_LRUDEND;
 	cfg_argv[i]++;
 
@@ -1988,21 +2022,42 @@ static int parse_lrud(int i)
 	lruddat.flags = 0;
 	lruddat.lineno = nLines;
 
+	BOOL bWarnedMissing = FALSE;
+
 	for (t = 0; i < cfg_argc; i++) {
 		if (p = strchr(cfg_argv[i], char_lrudend)) {
 			bLrudEnd = TRUE;
 			*p = 0;
 		}
+		if (!strlen(cfg_argv[i]) && !bWarnedMissing) {
+			if (t == 0) {
+				log_error("Missing LRUD measurement after opening %c; use -- for omitted measurements", char_lrudstart);
+			}
+			else if (bLrudEnd) {
+				log_error("Missing LRUD measurement before closing %c; use -- for omitted measurements", char_lrudend);
+			}
+			else {
+				log_error("Missing LRUD measurement between commas; use -- for omitted measurements", char_lrudend);
+			}
+			bWarnedMissing = true;
+		}
 		p = cfg_argv[i];
 		if (*p) {
-			if (t > 5) return -SRV_ERR_LRUDARGS;
+			if (t > 5) {
+				set_charno(i);
+				return -SRV_ERR_LRUDARGS;
+			}
 			if (*p != '-' || p[1] != '-') {
 				if (t > 3) {
 					//Can now be either "C" or a facing direction --
-					if (*p == 'c' || *p == 'C') {
+					if (!(lruddat.flags & LRUD_FLG_CS) && (*p == 'c' || *p == 'C')) {
 						lruddat.flags |= LRUD_FLG_CS;
 						if (bLrudEnd) break;
 						continue;
+					}
+					else if (t >= 5) {
+						set_charno(i);
+						return -SRV_ERR_LRUDARGS;
 					}
 					if ((e = get_fTempAngle(p, TRUE)) >= 0) {
 						val = fTemp;
@@ -2018,8 +2073,11 @@ static int parse_lrud(int i)
 				if (t < 5) dim[t] = (float)val;
 			}
 		}
-		if (bLrudEnd) break;
 		t++;
+		if (bLrudEnd) break;
+	}
+	if (t < 4 && !bWarnedMissing) {
+		log_error("Less than 4 LRUD measurements; use -- for omitted measurements");
 	}
 
 	if (i >= cfg_argc) return -SRV_ERR_NOPAREN;

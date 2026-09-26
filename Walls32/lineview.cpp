@@ -338,7 +338,7 @@ void CLineView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	int z = m_scrollX;
 
 	ASSERT(pScrollBar == GetScrollBarCtrl(SB_HORZ));    // may be null
-	ASSERT(m_scrollX == GetScrollPos(SB_HORZ));
+	int horizPos = GetScrollPos(SB_HORZ);
 
 #ifdef _DEBUG
 	int zMax, zMin;
