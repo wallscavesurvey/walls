@@ -2007,13 +2007,14 @@ static int parse_lrud(int i)
 
 	int t, e;
 	char *p;
+	char char_lrudstart = *cfg_argv[i];
 	char char_lrudend;
 	double val;
 	BOOL bLrudEnd = FALSE;
 	float dim[5], fswap;
 	byte flags = 0;
 
-	if (*cfg_argv[i] == '*') char_lrudend = '*';
+	if (char_lrudstart == '*') char_lrudend = '*';
 	else char_lrudend = SRV_CHAR_LRUDEND;
 	cfg_argv[i]++;
 
@@ -2021,10 +2022,24 @@ static int parse_lrud(int i)
 	lruddat.flags = 0;
 	lruddat.lineno = nLines;
 
+	BOOL bWarnedMissing = FALSE;
+
 	for (t = 0; i < cfg_argc; i++) {
 		if (p = strchr(cfg_argv[i], char_lrudend)) {
 			bLrudEnd = TRUE;
 			*p = 0;
+		}
+		if (!strlen(cfg_argv[i]) && !bWarnedMissing) {
+			if (t == 0) {
+				log_error("Missing LRUD measurement after opening %c; use -- for omitted measurements", char_lrudstart);
+			}
+			else if (bLrudEnd) {
+				log_error("Missing LRUD measurement before closing %c; use -- for omitted measurements", char_lrudend);
+			}
+			else {
+				log_error("Missing LRUD measurement between commas; use -- for omitted measurements", char_lrudend);
+			}
+			bWarnedMissing = true;
 		}
 		p = cfg_argv[i];
 		if (*p) {
@@ -2058,8 +2073,11 @@ static int parse_lrud(int i)
 				if (t < 5) dim[t] = (float)val;
 			}
 		}
-		if (bLrudEnd) break;
 		t++;
+		if (bLrudEnd) break;
+	}
+	if (t < 4 && !bWarnedMissing) {
+		log_error("less than 4 LRUD measurements; use -- for omitted measurements");
 	}
 
 	if (i >= cfg_argc) return -SRV_ERR_NOPAREN;
