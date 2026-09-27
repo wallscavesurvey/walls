@@ -332,12 +332,14 @@ enum {
 	   SRV_ERR_REL_DEPTH,
 	   SRV_ERR_SEGNAMLEN,
 	   SRV_ERR_UNITSDATE,
+	   SRV_ERR_DATEMONTH,
+	   SRV_ERR_DATEDAY,
 	   SRV_ERR_ERRLIM
 	};
 
 	//wallexp.dll only --
 	enum exp_err {
-	   EXP_ERR_INITSEF=SRV_ERR_ERRLIM, //==66
+	   EXP_ERR_INITSEF=SRV_ERR_ERRLIM, //==68
 	   EXP_ERR_LENGTH,
 	   EXP_ERR_VERSION		   //==68
 	};
@@ -409,7 +411,9 @@ static char *errmsg[] =
 	"Ambiguity caused by |IH-TH| > distance",
 	"Relative depth > taped distance",
 	"Segment name lengh >80",
-	"\"Date\" not a valid units argument"
+	"\"Date\" not a valid units argument",
+	"Month out of range",
+	"Day of month out of range"
 };
 
 BOOL _cdecl log_error(char *fmt, ...)
@@ -1522,6 +1526,23 @@ static int ParsePrefix(int cmd)
 	return e;
 }
 
+static apfcn_i validateDate(int year, int month, int day)
+{
+	if (month < 1 || month > 12) return SRV_ERR_DATEMONTH;
+	if (day < 1 || day > 31) return SRV_ERR_DATEDAY;
+
+	constexpr int days_in_months[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+	bool is_leap = (year % 4 == 0) && (year % 100 != 0 || year % 400 == 0);
+
+	int max_days = days_in_months[month];
+	if (month == 2 && is_leap) {
+		max_days = 29;
+	}
+	if (day > max_days) return SRV_ERR_DATEDAY;
+	return 0;
+}
+
 static apfcn_i ParseDate(char *p)
 {
 	//Allow mm-dd-yy, mm-dd-yyyy, or yyyy-mm-dd
@@ -1541,7 +1562,7 @@ static apfcn_i ParseDate(char *p)
 			y = atoi(p2 + 1); m = atoi(p); d = atoi(p1 + 1);
 		}
 		if (y < 100) y += 1900;
-		if (y >= 1000 && y < 2100 && m>0 && m < 13 && d>0 && d < 32) {
+		if (!(e = validateDate(y, m, d)) && y >= 1000 && y < 2100) {
 			dw = (y << 9) + (m << 5) + d; // 15:4:5
 			memcpy(pVec->date, (PBYTE)&dw, 3);
 			if (!bUseDates) return 0;
