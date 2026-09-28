@@ -5,10 +5,10 @@ name: Build Walls
 
 on:
   push:
-    branches: [master, main]
+    branches: [master, main, beta]
     tags: ["v*"]
   pull_request:
-    branches: [master, main]
+    branches: [master, main, beta]
   workflow_dispatch:
     inputs:
       configuration:
