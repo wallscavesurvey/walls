@@ -87,10 +87,9 @@ BOOL CExportShp::VecIsVertical(void)
 int CExportShp::GetLrud(SHP_TYP_LRUD *pL)
 {
 	//Return tne endpoint coordinates of an LRUD bar or passage shot --
-	SHP_TYP_STATION pS;
 	NTA_LRUDTREE_REC lrud;
 	static UINT id;
-	static double xy[2];
+	static double xyz[3];
 	int iNewKey;
 	char key[6];
 	double az;
@@ -103,9 +102,9 @@ int CExportShp::GetLrud(SHP_TYP_LRUD *pL)
 	while (TRUE) {
 		iNewKey = 0;
 		if (id == (UINT)-1) {
-			if (!GetStation(&pS)) break;
-			id = pS.id;
-			memcpy(xy, pS.xyz, sizeof(xy));
+			if (!GetStation(&pL->station)) break;
+			id = pL->station.id;
+			memcpy(xyz, pL->station.xyz, sizeof(xyz));
 			iNewKey = 1;
 		}
 		*key = 3;
@@ -119,37 +118,50 @@ int CExportShp::GetLrud(SHP_TYP_LRUD *pL)
 			ASSERT(ixSEG.SizRec() <= sizeof(NTA_LRUDTREE_REC));
 			VERIFY(!ixSEG.GetRec(&lrud, ixSEG.SizRec()));
 			if (lrud.az == LRUD_BLANK ||
-				(lrud.dim[1] == LRUD_BLANK && (lrud.dim[0] == LRUD_BLANK || lrud.dim[0] == LRUD_BLANK_NEG))) continue;
-			//We have at least one ray with a horizontal component
-			az = lrud.az*(PI / 180.0);
-			if (lrud.dim[1] == LRUD_BLANK || lrud.dim[0] == LRUD_BLANK || lrud.dim[0] == LRUD_BLANK_NEG) {
-				pL->xyFr[0] = xy[0];
-				pL->xyFr[1] = xy[1];
-				if (lrud.dim[1] == LRUD_BLANK) {
-					az -= PI2;
-					pL->xyTo[0] = xy[0] + lrud.dim[0] * sin(az);
-					pL->xyTo[1] = xy[1] + lrud.dim[0] * cos(az);
-				}
-				else {
-					if (lrud.dim[0] == LRUD_BLANK) az += PI2;
-					pL->xyTo[0] = xy[0] + lrud.dim[1] * sin(az);
-					pL->xyTo[1] = xy[1] + lrud.dim[1] * cos(az);
-				}
+				(lrud.dim[1] == LRUD_BLANK && lrud.dim[2] == LRUD_BLANK && lrud.dim[3] == LRUD_BLANK &&
+				(lrud.dim[0] == LRUD_BLANK || lrud.dim[0] == LRUD_BLANK_NEG))) {
+				continue;
+			}
+			pL->lt = lrud.dim[0] == LRUD_BLANK || lrud.dim[0] == LRUD_BLANK_NEG ? 0 : lrud.dim[0];
+			pL->rt = lrud.dim[1] == LRUD_BLANK || lrud.dim[1] == LRUD_BLANK_NEG ? 0 : lrud.dim[1];
+			pL->up = lrud.dim[2] == LRUD_BLANK || lrud.dim[2] == LRUD_BLANK_NEG ? 0 : lrud.dim[2];
+			pL->dn = lrud.dim[3] == LRUD_BLANK || lrud.dim[3] == LRUD_BLANK_NEG ? 0 : lrud.dim[3];
+			pL->flags = 0;
+			if (lrud.dim[1] == LRUD_BLANK && (lrud.dim[0] == LRUD_BLANK || lrud.dim[0] == LRUD_BLANK_NEG)) {
+				memcpy(pL->xyzFr, xyz, sizeof(xyz));
+				memcpy(pL->xyzTo, xyz, sizeof(xyz));
 			}
 			else {
-				az -= PI2;
-				pL->xyFr[0] = xy[0] + lrud.dim[0] * sin(az);
-				pL->xyFr[1] = xy[1] + lrud.dim[0] * cos(az);
-				az += PI;
-				pL->xyTo[0] = xy[0] + lrud.dim[1] * sin(az);
-				pL->xyTo[1] = xy[1] + lrud.dim[1] * cos(az);
+				//We have at least one ray with a horizontal component
+				az = lrud.az*(PI / 180.0);
+				pL->xyzFr[2] = xyz[2];
+				pL->xyzTo[2] = xyz[2];
+				if (lrud.dim[1] == LRUD_BLANK || lrud.dim[0] == LRUD_BLANK || lrud.dim[0] == LRUD_BLANK_NEG) {
+					pL->xyzFr[0] = xyz[0];
+					pL->xyzFr[1] = xyz[1];
+					if (lrud.dim[1] == LRUD_BLANK) {
+						az -= PI2;
+						pL->xyzTo[0] = xyz[0] + lrud.dim[0] * sin(az);
+						pL->xyzTo[1] = xyz[1] + lrud.dim[0] * cos(az);
+					}
+					else {
+						if (lrud.dim[0] == LRUD_BLANK) az += PI2;
+						pL->xyzTo[0] = xyz[0] + lrud.dim[1] * sin(az);
+						pL->xyzTo[1] = xyz[1] + lrud.dim[1] * cos(az);
+					}
+				}
+				else {
+					az -= PI2;
+					pL->xyzFr[0] = xyz[0] + lrud.dim[0] * sin(az);
+					pL->xyzFr[1] = xyz[1] + lrud.dim[0] * cos(az);
+					az += PI;
+					pL->xyzTo[0] = xyz[0] + lrud.dim[1] * sin(az);
+					pL->xyzTo[1] = xyz[1] + lrud.dim[1] * cos(az);
+				}
+				if ((lrud.flags&LRUD_FLG_CS) != 0 && lrud.dim[2] != LRUD_BLANK && lrud.dim[3] != LRUD_BLANK) {
+					pL->flags = lrud.flags;
+				}
 			}
-			if ((lrud.flags&LRUD_FLG_CS) != 0 && lrud.dim[2] != LRUD_BLANK && lrud.dim[3] != LRUD_BLANK) {
-				pL->flags = lrud.flags;
-				pL->up = lrud.dim[2];
-				pL->dn = lrud.dim[3];
-			}
-			else pL->flags = 0;
 			break;
 		}
 		else id = (UINT)-1;
