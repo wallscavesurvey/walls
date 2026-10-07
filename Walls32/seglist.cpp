@@ -700,8 +700,8 @@ void CSegView::WriteVectorList(SEGSTATS *st, LPCSTR pathname, CSegListNode *pNod
 				count = ListNames(&file,uFlags,uDecimals,ctm);
 			}
 			if (count && (uFlags&LFLG_GROUPBYLOC)) {
-				if (outCount) file.WriteArgv("Vectors Crossing Frame Boundary: %u",outCount);
-				file.WriteArgv("\nCoordinate Ranges of Stations Inside Frame --\r\n"
+				if (outCount) file.WriteArgv("Vectors Crossing Frame Boundary: %u\r\n",outCount);
+				file.WriteArgv("\r\nCoordinate Ranges of Stations Inside Frame --\r\n"
 					"East: \t%.*f\t%.*f\r\n"
 					"North:\t%.*f\t%.*f\r\n"
 					"Elev: \t%.*f\t%.*f\r\n",
