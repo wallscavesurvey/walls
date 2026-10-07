@@ -2174,6 +2174,10 @@ static int parse_lrud(int i)
 			}
 		}
 	}
+	else {
+		lruddat.az += u->declination;
+		if (bGenUTM) lruddat.az -= u->gridnorth;
+	}
 
 	pLastTo = NULL;
 
